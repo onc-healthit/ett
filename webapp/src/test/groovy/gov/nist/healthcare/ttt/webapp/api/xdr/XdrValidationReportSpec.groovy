@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.api.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr
 import gov.nist.healthcare.ttt.webapp.Application
 import gov.nist.healthcare.ttt.webapp.xdr.component.ResponseHandler
 import gov.nist.healthcare.ttt.xdr.web.TkListener

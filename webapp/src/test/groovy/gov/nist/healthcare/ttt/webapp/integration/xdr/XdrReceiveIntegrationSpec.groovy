@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.integration.xdr
+package gov.nist.healthcare.ttt.webapp.integration.xdr
 import gov.nist.healthcare.ttt.webapp.Application
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrReceiveController
 import org.junit.Before

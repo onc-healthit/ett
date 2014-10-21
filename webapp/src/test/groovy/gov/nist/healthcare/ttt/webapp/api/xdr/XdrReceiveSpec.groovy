@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.api.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr
 
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrReceiveController
