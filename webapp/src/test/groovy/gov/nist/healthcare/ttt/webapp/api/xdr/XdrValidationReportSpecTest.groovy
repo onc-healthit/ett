@@ -1,6 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.api.xdr
 import gov.nist.healthcare.ttt.webapp.Application
-import gov.nist.healthcare.ttt.webapp.xdr.component.ResponseHandler
+import gov.nist.healthcare.ttt.webapp.xdr.core.ResponseHandler
 import gov.nist.healthcare.ttt.xdr.web.TkListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

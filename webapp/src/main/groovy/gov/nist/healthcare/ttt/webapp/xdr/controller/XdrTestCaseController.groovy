@@ -5,7 +5,7 @@ import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
-import gov.nist.healthcare.ttt.webapp.xdr.component.ResponseHandler
+import gov.nist.healthcare.ttt.webapp.xdr.core.ResponseHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody

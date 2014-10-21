@@ -4,7 +4,7 @@ import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrReceiveController
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.Message
-import gov.nist.healthcare.ttt.webapp.xdr.component.ResponseHandler
+import gov.nist.healthcare.ttt.webapp.xdr.core.ResponseHandler
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.test.web.servlet.MockMvc

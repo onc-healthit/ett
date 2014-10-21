@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.component
+package gov.nist.healthcare.ttt.webapp.xdr.core
 
 import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
 import org.springframework.stereotype.Component
