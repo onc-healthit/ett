@@ -1,14 +1,13 @@
-package gov.nist.healthcare.ttt.xdr.unit
-import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
-import gov.nist.healthcare.ttt.xdr.helpers.testFramework.Application
-import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
+package gov.nist.healthcare.ttt.webapp.api.xdr
+import gov.nist.healthcare.ttt.webapp.Application
+import gov.nist.healthcare.ttt.webapp.xdr.component.ResponseHandler
 import gov.nist.healthcare.ttt.xdr.web.TkListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.http.MediaType
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
@@ -23,13 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = Application.class)
-class TkListenerSpec extends Specification {
+class XdrValidationReportSpecTest extends Specification {
 
     @Value('${xdr.tool.baseurl}')
     private String notificationUrl
 
     @Autowired
-    XdrReceiver receiver
+    ResponseHandler handler
 
     @Autowired
     TkListener listener
@@ -38,15 +37,13 @@ class TkListenerSpec extends Specification {
 
         given:  'a validation report notification'
         def mockMvc = MockMvcBuilders.standaloneSetup(listener)
-                .setMessageConverters(new Jaxb2RootElementHttpMessageConverter())
+                .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
-        def observer = Mock(IObserver)
-        receiver.registerObserver(observer)
 
         MockHttpServletRequestBuilder req = MockMvcRequestBuilders.post("/$notificationUrl")
                 .accept(MediaType.ALL)
-                .content(XML)
-                .contentType(MediaType.APPLICATION_XML)
+                .content(testCaseConfig)
+                .contentType(MediaType.APPLICATION_JSON)
 
         when: 'a notification by a web client is received'
 
@@ -56,12 +53,14 @@ class TkListenerSpec extends Specification {
                 .andReturn()
 
         then: 'the observer is notified'
-            1 * observer.getNotification(_)
-
+                true
     }
 
 
-    private static String XML =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
-                    "<report>success</report>";
+    public String testCaseConfig =
+            """{
+    "tc_config": {
+        "endpoint_url": "sut1.testlab1"
+    }
+}"""
 }

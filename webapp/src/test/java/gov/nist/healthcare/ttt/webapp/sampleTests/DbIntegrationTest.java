@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.sampleTests;
+package gov.nist.healthcare.ttt.webapp.sampleTests;
 
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 import org.junit.Test;

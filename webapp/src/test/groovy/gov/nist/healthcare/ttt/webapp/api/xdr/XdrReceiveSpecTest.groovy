@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.api.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr
 
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrReceiveController
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-class XdrReceiveSpec extends Specification{
+class XdrReceiveSpecTest extends Specification{
 
 
     XdrReceiver tkReceiver = Mock(XdrReceiver)

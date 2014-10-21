@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.integration;
+package gov.nist.healthcare.ttt.webapp.integration;
 
 import gov.nist.healthcare.ttt.webapp.Application;
 import org.junit.Ignore;
@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationContextLoader;
-import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Created by gerardin on 9/30/14.
@@ -33,15 +32,6 @@ public class RestTemplateTest {
 
     @Value("${local.server.port}")
      private int port;
-
-
-
-
-    @Test
-    public void hello2() throws Exception {
-        //same as RestTemplate, but can have user/pass headers
-        RestTemplate template = new TestRestTemplate();
-    }
 
 
 

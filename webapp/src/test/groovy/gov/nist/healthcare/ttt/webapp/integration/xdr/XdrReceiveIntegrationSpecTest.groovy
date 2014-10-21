@@ -1,4 +1,5 @@
-package gov.nist.healthcare.ttt.integration.xdr
+package gov.nist.healthcare.ttt.webapp.integration.xdr
+
 import gov.nist.healthcare.ttt.webapp.Application
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrReceiveController
 import org.junit.Before
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = Application.class)
-class XdrReceiveIntegrationSpec extends Specification{
+class XdrReceiveIntegrationSpecTest extends Specification{
 
     @Autowired
     XdrReceiveController xdrReceiveController
