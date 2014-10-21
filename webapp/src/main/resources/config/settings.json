@@ -1,0 +1,21 @@
+{
+    "config": {
+        "baseUrl": "http://localhost:8080/ttt/",
+        "basePort": "8080",
+        "listenerPort": "12999",
+        "domain": "localhost",
+        "lastUpdate": "May 09, 2014",
+        "versionNumber": "1.0"
+    },
+
+    "emailConfig": {
+        "fromAddress": "direct@localhost",
+        "hostSmtp": "smtp.gmail.com",
+        "smtpAuth": "true",
+        "smtpUser": "transport-testing@nist.gov",
+        "smtpPassword": "",
+        "smtpPort": "25",
+        "startTLS": "true",
+        "gmailStyle": "false"
+    }
+}

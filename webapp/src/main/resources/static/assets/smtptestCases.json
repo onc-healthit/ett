@@ -1,0 +1,535 @@
+{
+    "testingMode": true,
+    "tests": [{
+        "name": "SMTP test 1-8",
+        "id": 1,
+        "desc": "Tests the ability of SUT to send an email using SMTP protocol. SUT sends email to wellformed1@hostname",
+        "sutRole": "sender",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "Not Displayed",
+            "name": "tttSmtpAddress",
+            "datatype": "String",
+            "value": "test.ttt.com",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "tttUserName",
+            "datatype": "String",
+            "value": "tttUser",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "tttPassword",
+            "datatype": "String",
+            "value": "tttPassword",
+            "readOnly": "true",
+            "display": "false"
+        }]
+    }, {
+        "name": "SMTP test 9",
+        "id": 9,
+        "desc": "Tests the ability of SUT to receive an email. TTT sends an email to Test Address 1(SUT) from wellformed3@hostname. The test lab should verify the receipt of email with subject 'Test Case 9'",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "sutRole": "receiver",
+        "fields": [{
+            "label": "Not Displayed",
+            "name": "tttSmtpAddress",
+            "datatype": "String",
+            "value": "test.ttt.com",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "tttSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Email Address",
+            "name": "sutEmailAddress",
+            "datatype": "String",
+            "value": "testmail@sut.com",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "tttUserName",
+            "datatype": "String",
+            "value": "tttUser",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "tttPassword",
+            "datatype": "String",
+            "value": "tttPassword",
+            "readOnly": "true",
+            "display": "false"
+        }]
+    }, {
+        "name": "SMTP test 10",
+        "id": 10,
+        "desc": "Tests the ability of SUT to reject invalid data as part of DATA command. TTT sends an email to Test Address 1(SUT) from wellformed3@hostname. The test lab should verify the receipt of email with subject 'Test Case 9'",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 11",
+        "id": 11,
+        "desc": "Tests the ability of SUT to reject bad SMTP commands. The tool will send invalid SMTP commands to intiate the session following exception paths identified in Section 4.1.1 and 4.1.4 of RFC 2821",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 12",
+        "id": 12,
+        "desc": "Tests the ability of SUT to reject data beyond the size limit. The tool will send data beyond the allowed size limits per RFC 2821 section 4.5.3.1 to the SUT to ensure that they are appropriately rejected.",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 13",
+        "id": 13,
+        "desc": "Tests the timeouts for various SMTP commands. The tool will keep the transaction open for beyond the specified timelimits in RFC 2821 section 4.5.3.2",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 14",
+        "id": 14,
+        "desc": "Tests the ability of SUT to receive an email. TTT sends an email to Test Address 1(SUT) from wellformed3@hostname. The test lab should verify the receipt of email with subject 'Test Case 9'",
+        "sutRole": "sender",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Email Address",
+            "name": "sutEmailAddress",
+            "datatype": "String",
+            "value": "testmail@sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 16",
+        "id": 16,
+        "desc": "Tests the ability of SUT to accept a STARTTLS connection. TTT sends an email to Test Address 1(SUT) from wellformed3@hostname. The test lab should verify the receipt of email with subject 'STARTTLS",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Email Address",
+            "name": "sutEmailAddress",
+            "datatype": "String",
+            "value": "testmail@sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Username",
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Password",
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 17",
+        "id": 17,
+        "desc": "Tests the ability of SUT to reject invalid STARTTLS commands.The tool sends invalid STARTTLS commands and check for server behavior.",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "SUT Username",
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Password",
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 20",
+        "id": 20,
+        "desc": "Tests the ability of SUT to accept a PLAIN SASL connection. TTT sends an email to Test Address 1(SUT) from wellformed3@hostname. The test lab should verify the receipt of email with subject 'PLAIN SASL",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "SUT Email Address",
+            "name": "sutEmailAddress",
+            "datatype": "String",
+            "value": "testmail@sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Username",
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Password",
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }, {
+        "name": "SMTP test 22",
+        "id": 22,
+        "desc": "Tests the ability of SUT to reject a PLAIN SASL connection. TTT tries to authenticate with SUT using bad username/password",
+        "sutRole": "receiver",
+        "sutHisp": "true",
+        "sutEdge": "true",
+        "fields": [{
+            "label": "SUT SMTP Address",
+            "name": "sutSmtpAddress",
+            "datatype": "String",
+            "value": "test.sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "TLS",
+            "name": "useTLS",
+            "datatype": "boolean",
+            "value": "false",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutSmtpPort",
+            "datatype": "int",
+            "value": "25",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "Not Displayed",
+            "name": "sutStarttlsPort",
+            "datatype": "int",
+            "value": "587",
+            "readOnly": "true",
+            "display": "false"
+        }, {
+            "label": "SUT Email Address",
+            "name": "sutEmailAddress",
+            "datatype": "String",
+            "value": "testmail@sut.com",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Username",
+            "name": "sutUserName",
+            "datatype": "String",
+            "value": "sutUser",
+            "readOnly": "false",
+            "display": "true"
+        }, {
+            "label": "SUT Password",
+            "name": "sutPassword",
+            "datatype": "String",
+            "value": "sutPassword",
+            "readOnly": "false",
+            "display": "true"
+        }]
+    }]
+}

@@ -1,0 +1,87 @@
+{
+    "config": {
+        "domain": "localhost",
+        "lastUpdate": "May 09, 2014",
+        "versionNumber": "1.0"
+    },
+
+    "ccda": [{
+        "email": "direct-clinical-summary",
+        "description": "MU2 170.314(e)(2) - Clinical Summary"
+    }, {
+        "email": "direct-ambulatory",
+        "description": "MU2 170.314(b)(2) Transition of Care/Referral Summary - For Ambulatory Care"
+    }, {
+        "email": "direct-ambulatory",
+        "description": "MU2 170.314(b)(7) Data Portability - For Ambulatory Care"
+    }, {
+        "email": "direct-ambulatory",
+        "description": "MU 2 170.314(b)(1) Transition of Care Receive - For Ambulatory Care"
+    }, {
+        "email": "direct-inpatient",
+        "description": "MU2 170.314(b)(2) Transition of Care/Referral Summary - For Inpatient Care"
+    }, {
+        "email": "direct-inpatient",
+        "description": "MU2 170.314(b)(7) Data Portability - For Inpatient Care"
+    }, {
+        "email": "direct-inpatient",
+        "description": "MU 2 170.314(b)(1) Transition of Care Receive - For Inpatient Care"
+    }, {
+        "email": "direct-vdt-ambulatory",
+        "description": "MU2 170.314 (e)(1) Ambulatory Summary"
+    }, {
+        "email": "direct-vdt-ambulatory",
+        "description": "MU2 170.314 (e)(1) Inpatient Summary"
+    }, {
+        "email": "ccda",
+        "description": "Non-specific CCDA"
+    }],
+
+    "certificates": [{
+        "description": "TTT Public Cert can be displayed from here. The Mime Body of the Direct message must be encrypted with this self-signed Public Cert.",
+        "name": "transport-testing.nist.gov.der",
+        "link": "transport-testing.nist.gov.der"
+    }, {
+        "description": "TTT Trust Anchor can be displayed from here.",
+        "name": "nist.gov.der",
+        "link": "transport-testing.nist.gov.der"
+    }, {
+        "description": "TTT Trust Anchor representing an invalid trust relationship can be displayed from here.",
+        "name": "invalid-trust-relation.der",
+        "link": "invalid-trust-relation.der"
+    }, {
+        "description": "TTT Public Root CA can be displayed from here.",
+        "name": "sampleca.nist.gov.pem",
+        "link": "sampleca.nist.gov.pem"
+    }, {
+        "description": "Human readable CDA/CCR data can be displayed from here.",
+        "name": "samples.htm",
+        "link": "samples.htm"
+    }],
+
+    "cdaSamples": [{
+        "name": "CCDA_Ambulatory.xml"
+    }, {
+        "name": "CCDA_Ambulatory_in_XDM.zip"
+    }, {
+        "name": "CCDA_Inpatient.xml"
+    }, {
+        "name": "CCDA_Inpatient_in_XDM.zip"
+    }, {
+        "name": "CCR_Sample1.xml"
+    }, {
+        "name": "CCR_Sample1_in_XDM.zip"
+    }, {
+        "name": "C32_Sample1.xml"
+    }, {
+        "name": "C32_Sample1_in_XDM.zip"
+    }, {
+        "name": "CCR_Sample2.xml"
+    }, {
+        "name": "CCR_Sample2_in_XDM.zip"
+    }, {
+        "name": "C32_Sample2.xml"
+    }, {
+        "name": "C32_Sample2_in_XDM.zip"
+    }]
+}

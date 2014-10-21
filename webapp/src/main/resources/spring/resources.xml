@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        ">
+
+
+    <context:property-placeholder location="classpath:application.properties"/>
+
+
+    <bean id="DatabaseData" class="gov.nist.healthcare.ttt.webapp.common.db.DatabaseData">
+        <property name="databaseUsername" value="${ttt.db.username}"/>
+        <property name="databasePassword" value="${ttt.db.userpassword}"/>
+        <property name="databaseHostname" value="${ttt.db.hostname}"/>
+        <property name="databaseName" value="${ttt.db.dbname}"/>
+    </bean>
+
+    <bean id="DatabaseInstance" class="gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance"/>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="1000000"/>
+    </bean>
+
+</beans>
