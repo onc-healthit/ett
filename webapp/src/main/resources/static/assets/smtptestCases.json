@@ -7,28 +7,7 @@
         "sutRole": "sender",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "Not Displayed",
-            "name": "tttSmtpAddress",
-            "datatype": "String",
-            "value": "test.ttt.com",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "tttUserName",
-            "datatype": "String",
-            "value": "tttUser",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "tttPassword",
-            "datatype": "String",
-            "value": "tttPassword",
-            "readOnly": "true",
-            "display": "false"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 9",
         "id": 9,
@@ -36,47 +15,7 @@
         "sutHisp": "true",
         "sutEdge": "true",
         "sutRole": "receiver",
-        "fields": [{
-            "label": "Not Displayed",
-            "name": "tttSmtpAddress",
-            "datatype": "String",
-            "value": "test.ttt.com",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "tttSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Email Address",
-            "name": "sutEmailAddress",
-            "datatype": "String",
-            "value": "testmail@sut.com",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "tttUserName",
-            "datatype": "String",
-            "value": "tttUser",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "tttPassword",
-            "datatype": "String",
-            "value": "tttPassword",
-            "readOnly": "true",
-            "display": "false"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 10",
         "id": 10,
@@ -84,47 +23,7 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 11",
         "id": 11,
@@ -132,47 +31,7 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 12",
         "id": 12,
@@ -180,47 +39,7 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 13",
         "id": 13,
@@ -228,47 +47,7 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 14",
         "id": 14,
@@ -277,36 +56,10 @@
         "sutHisp": "true",
         "sutEdge": "true",
         "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
+            "label": "Example extra field",
+            "name": "extra",
             "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Email Address",
-            "name": "sutEmailAddress",
-            "datatype": "String",
-            "value": "testmail@sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
+            "value": "extra",
             "readOnly": "false",
             "display": "true"
         }]
@@ -317,56 +70,7 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Email Address",
-            "name": "sutEmailAddress",
-            "datatype": "String",
-            "value": "testmail@sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Username",
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Password",
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 17",
         "id": 17,
@@ -374,49 +78,7 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "SUT Username",
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Password",
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 20",
         "id": 20,
@@ -424,56 +86,7 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "SUT Email Address",
-            "name": "sutEmailAddress",
-            "datatype": "String",
-            "value": "testmail@sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Username",
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Password",
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 22",
         "id": 22,
@@ -481,55 +94,6 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "SUT SMTP Address",
-            "name": "sutSmtpAddress",
-            "datatype": "String",
-            "value": "test.sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "TLS",
-            "name": "useTLS",
-            "datatype": "boolean",
-            "value": "false",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutSmtpPort",
-            "datatype": "int",
-            "value": "25",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "Not Displayed",
-            "name": "sutStarttlsPort",
-            "datatype": "int",
-            "value": "587",
-            "readOnly": "true",
-            "display": "false"
-        }, {
-            "label": "SUT Email Address",
-            "name": "sutEmailAddress",
-            "datatype": "String",
-            "value": "testmail@sut.com",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Username",
-            "name": "sutUserName",
-            "datatype": "String",
-            "value": "sutUser",
-            "readOnly": "false",
-            "display": "true"
-        }, {
-            "label": "SUT Password",
-            "name": "sutPassword",
-            "datatype": "String",
-            "value": "sutPassword",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }]
 }
