@@ -13,6 +13,7 @@
     <modules>
         <module>webapp</module>
         <module>xdr</module>
+		<module>direct</module>
         <module>common-config</module>
     </modules>
 
