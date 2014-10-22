@@ -38,7 +38,7 @@ class XdrReceiveIntegrationSpecTest extends Specification{
                 .build()
     }
 
-    def "user fails in creating a new endpoint because system is unavailable (exception occured)"() throws Exception {
+    def "user fails in creating a new endpoint because toolkit is unavailable (exception occured)"() throws Exception {
 
         when : "receiving a request to create an endpoint"
             MockHttpServletRequestBuilder getRequest = createEndpointRequest()
@@ -59,10 +59,10 @@ class XdrReceiveIntegrationSpecTest extends Specification{
 
 
     public String testCaseConfig =
-        """{
-            "tc_config": {
-                "endpoint_url": "sut1.testlab1"
-            }
-        }"""
+            """{
+    "tc_config": {
+        "endpoint_url": "sut1.testlab1"
+    }
+}"""
 }
 
