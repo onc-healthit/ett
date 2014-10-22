@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.xdr.unit
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
-import gov.nist.healthcare.ttt.xdr.helpers.testFramework.Application
 import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
+import gov.nist.healthcare.ttt.xdr.helpers.testFramework.TestApplication
 import gov.nist.healthcare.ttt.xdr.web.TkListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
  */
 @WebAppConfiguration
 @IntegrationTest
-@ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = Application.class)
+@ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class TkListenerSpecTest extends Specification {
 
     @Value('${xdr.tool.baseurl}')
