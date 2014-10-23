@@ -131,13 +131,6 @@
             <version>${version.jackson}</version>
         </dependency>
 
-        <!-- alternatives to jackson for simple json manipulation -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20140107</version>
-        </dependency>
-
         <!-- groovy support -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

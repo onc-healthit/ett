@@ -7,7 +7,6 @@ import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
@@ -37,8 +36,8 @@ public class ListenerProcessor implements Runnable {
 	BufferedOutputStream out = null;
 	static final String CRLF = "\r\n";
 	
-	// Config Json
-	JSONObject configJson;
+	// Settings
+	Properties settings;
 
 	String domainName = "";
 	String servletName = "";
@@ -52,17 +51,17 @@ public class ListenerProcessor implements Runnable {
 	private static Logger logger = Logger.getLogger(ListenerProcessor.class
 			.getName());
 
-	ListenerProcessor(Socket server, JSONObject configJson, DatabaseInstance db, String contextPath)
+	ListenerProcessor(Socket server, Properties settings, DatabaseInstance db, String contextPath, int listenerPort)
 			throws DatabaseException, SQLException {
 		this.server = server;
 
 		this.db = db;
 
-		this.domainName = configJson.getJSONObject("config").getString("domain");
+		this.settings = settings;
+		this.domainName = settings.getProperty("direct.listener.domainName");
 		this.servletName = contextPath;
-		this.configJson = configJson;
-		this.port = Integer.parseInt(configJson.getJSONObject("config").getString("basePort"));
-		this.listenerPort = Integer.parseInt(configJson.getJSONObject("config").getString("listenerPort"));
+		this.port = Integer.parseInt(settings.getProperty("server.port"));
+		this.listenerPort = listenerPort;
 	}
 
 	/**
@@ -105,12 +104,11 @@ public class ListenerProcessor implements Runnable {
 
 		if (contactAddr == null || contactAddr.isEmpty()) {
 			logger.error("No contact address listed for Direct (From) address "
-					+ directFrom + " - cannot return report - giving up");
-			return;
+					+ directFrom);
+		} else {
+			logger.info("Direct addr (From) " + directFrom
+					+ " is registered and has contact email of " + contactAddr);
 		}
-
-		logger.info("Direct addr (From) " + directFrom
-				+ " is registered and has contact email of " + contactAddr);
 
 		/****************************************************************************************
 		 * 
@@ -231,16 +229,15 @@ public class ListenerProcessor implements Runnable {
 			}
 
 			// Send report
-			JSONObject emailConfig = this.configJson.getJSONObject("emailConfig");
 			EmailerModel emailerModel = new EmailerModel();
-			emailerModel.setFrom(emailConfig.getString("fromAddress"));
-			emailerModel.setHost(emailConfig.getString("hostSmtp"));
-			emailerModel.setSmtpAuth(emailConfig.getString("smtpAuth"));
-			emailerModel.setSmtpUser(emailConfig.getString("smtpUser"));
-			emailerModel.setSmtpPassword(emailConfig.getString("smtpPassword"));
-			emailerModel.setSmtpPort(emailConfig.getString("smtpPort"));
-			emailerModel.setStarttls(emailConfig.getString("startTLS"));
-			emailerModel.setGmailStyle(emailConfig.getString("gmailStyle"));
+			emailerModel.setFrom(settings.getProperty("direct.listener.email.from"));
+			emailerModel.setHost(settings.getProperty("direct.listener.email.host"));
+			emailerModel.setSmtpAuth(settings.getProperty("direct.listener.email.auth"));
+			emailerModel.setSmtpUser(settings.getProperty("direct.listener.email.username"));
+			emailerModel.setSmtpPassword(settings.getProperty("direct.listener.email.password"));
+			emailerModel.setSmtpPort(settings.getProperty("direct.listener.email.port"));
+			emailerModel.setStarttls(settings.getProperty("direct.listener.email.starttls"));
+			emailerModel.setGmailStyle(settings.getProperty("direct.listener.email.gmailStyle"));
 			Emailer emailer = new Emailer(emailerModel);
 
 			logger.debug("Sending report from " + emailerModel.getFrom()
