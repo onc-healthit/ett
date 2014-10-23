@@ -1,19 +1,17 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
-
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.Message
-import org.joda.time.DateTime
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
  * Created by gerardin on 10/21/14.
  */
@@ -21,6 +19,9 @@ import org.springframework.stereotype.Component
 @Component
 class TestCaseManager {
 
+
+    @Autowired
+    private final Clock clock
 
     private final DatabaseInstance db
     private final XdrReceiver receiver
@@ -39,13 +40,14 @@ class TestCaseManager {
     }
 
 
-    public UserMessage runTestCase1(Object userInput, String username) {
+    public UserMessage<XDRSimulatorImpl> runTestCase1(Object userInput, String username) {
 
         //Info from context : what test case, what user
         //EndpointId is generated from that
         String tcId = 1
-        DateTime dateTime = new DateTime();
-        Long timestamp = dateTime.getMillis()
+
+        def timestamp = clock.timestamp
+
         String endpointId = "${username}.${tcId}.${timestamp}"
 
         log.info("endpoint id generated is : ${endpointId}")
@@ -79,7 +81,7 @@ class TestCaseManager {
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.setXdrTestStepID("tc1.step1")
 
-        def steps = new LinkedList<XDRTestStepImpl>()
+         def steps = new LinkedList<XDRTestStepImpl>()
         steps.add(step)
 
         //TODO if interface, replace in method signature Impl by Interface

@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
+import sun.security.acl.PrincipalImpl
 
 import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = Application.class)
-class XdrReceiveIntegrationSpecTest extends Specification{
+class XdrReceiveIntegrationSpecTest extends Specification {
 
     @Autowired
     XdrReceiveController xdrReceiveController
@@ -40,11 +41,11 @@ class XdrReceiveIntegrationSpecTest extends Specification{
 
     def "user fails in creating a new endpoint because toolkit is unavailable (exception occured)"() throws Exception {
 
-        when : "receiving a request to create an endpoint"
-            MockHttpServletRequestBuilder getRequest = createEndpointRequest()
+        when: "receiving a request to create an endpoint"
+        MockHttpServletRequestBuilder getRequest = createEndpointRequest()
 
-        then : "send back a success message"
-            mockMvc.perform(getRequest)
+        then: "send back a success message"
+        mockMvc.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("ERROR")))
@@ -55,6 +56,7 @@ class XdrReceiveIntegrationSpecTest extends Specification{
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl("user1"))
     }
 
 

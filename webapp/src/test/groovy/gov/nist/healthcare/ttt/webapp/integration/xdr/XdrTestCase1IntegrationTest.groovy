@@ -1,12 +1,15 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
+
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
+import gov.nist.healthcare.ttt.xdr.web.TkListener
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
@@ -14,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
+import sun.security.acl.PrincipalImpl
 
 import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -23,32 +27,54 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase1IntegrationTest extends Specification{
+class XdrTestCase1IntegrationTest extends Specification {
 
     @Autowired
     XdrTestCaseController controller
 
-    MockMvc mockMvc
+    @Autowired
+    TkListener listener
+
+    MockMvc mockMvcClient
+    MockMvc mockMvcToolkit
 
     @Before
     public setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+        mockMvcClient = MockMvcBuilders.standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
+                .build()
+
+        mockMvcToolkit = MockMvcBuilders.standaloneSetup(listener)
+                .setMessageConverters(new Jaxb2RootElementHttpMessageConverter())
                 .build()
     }
 
 
     def "user succeeds in starting test case 1"() throws Exception {
 
-        when : "receiving a request to run test case 1"
-            MockHttpServletRequestBuilder getRequest = createEndpointRequest()
+        when: "receiving a request to run test case 1"
+        MockHttpServletRequestBuilder getRequest = createEndpointRequest()
 
-        then : "we receive back a success message"
+        then: "we receive back a success message"
 
-            mockMvc.perform(getRequest)
+        mockMvcClient.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("SUCCESS")))
+
+
+        when: "receiving a validation report from toolkit"
+        MockHttpServletRequestBuilder getRequest2 = reportRequest()
+
+        then: "we store the validation in the database"
+
+        mockMvcToolkit.perform(getRequest2)
+                .andDo(print())
+                .andReturn()
+
+
+
+        println "ok"
     }
 
 
@@ -57,7 +83,24 @@ class XdrTestCase1IntegrationTest extends Specification{
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl("user1"))
     }
+
+
+    MockHttpServletRequestBuilder reportRequest() {
+        MockMvcRequestBuilders.post("/xdrNotification")
+                .accept(MediaType.ALL)
+                .content(XML)
+                .contentType(MediaType.APPLICATION_XML)
+    }
+
+    private static String XML =
+            """
+<report>
+    <endpointId>user1.1.2014</endpointId>
+    <status>success</status>
+</report>
+            """
 
 
     public String testCaseConfig =
