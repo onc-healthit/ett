@@ -66,7 +66,7 @@ class TestCaseManager {
         //here, we try to effectively create the endpoints
         EndpointConfig config = new EndpointConfig()
         config.name = endpointId
-        Message<String> r = receiver.createEndpoints(config)
+        Message<Object> r = receiver.createEndpoints(config)
 
         //Config failed?
         if (!r.success()) {
@@ -77,23 +77,22 @@ class TestCaseManager {
 
         //Create steps for this test so execution can proceed
 
-        // step 1 : receive and validate
+        // step 1 : receive and validate.
+        // We create a simulator with the simID.
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.setXdrTestStepID("tc1.step1")
-
-         def steps = new LinkedList<XDRTestStepImpl>()
-        steps.add(step)
-
-        //TODO if interface, replace in method signature Impl by Interface
-        record.setTestSteps(steps)
-        //Save the simulator info.
-        //TODO indicate the step is completed
         XDRSimulatorInterface sim = new XDRSimulatorImpl()
-
-        sim.setSimulatorId(endpointId)
-        sim.setEndpoint("http://")
-        sim.setEndpointTLS("https://")
+        sim.simulatorId = r.content.simId.text()
+        sim.endpoint = r.content.endpoint.text()
+        sim.endpointTLS = r.content.endpointTLS.text()
         step.setXdrSimulator(sim)
+
+
+
+        //add step to the list of steps
+        def steps = new LinkedList<XDRTestStepImpl>()
+        steps.add(step)
+        record.setTestSteps(steps)
 
         //persist this record
         try {

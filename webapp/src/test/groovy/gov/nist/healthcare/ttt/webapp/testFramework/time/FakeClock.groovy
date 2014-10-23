@@ -15,7 +15,15 @@ import org.springframework.stereotype.Component
 @Component
 class FakeClock extends Clock{
 
+    Long timestamp
+
     public Long getTimestamp(){
+//        if(timestamp == null) {
+//            DateTime dateTime = new DateTime();
+//            Long timestamp = dateTime.getMillis()
+//            this.timestamp = timestamp
+//        }
+//            return timestamp
         return 2014
     }
 }

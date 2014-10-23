@@ -1,6 +1,5 @@
 package gov.nist.healthcare.ttt.xdr.api
 
-import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.notification.IObservable
 import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
@@ -27,7 +26,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${toolkit.createSim.url}')
     private String tkSimCreationUrl
 
-    public Message<String> createEndpoints(EndpointConfig config){
+    public Message<Object> createEndpoints(EndpointConfig config){
 
         //TODO what if not / or if exist already ?
         if(config.name == null){

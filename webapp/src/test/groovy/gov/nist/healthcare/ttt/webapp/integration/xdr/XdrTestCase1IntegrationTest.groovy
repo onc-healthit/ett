@@ -19,15 +19,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import sun.security.acl.PrincipalImpl
 
-import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class XdrTestCase1IntegrationTest extends Specification {
+
 
     @Autowired
     XdrTestCaseController controller
@@ -60,8 +60,9 @@ class XdrTestCase1IntegrationTest extends Specification {
         mockMvcClient.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("SUCCESS")))
-
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.endpoint").value("http://"))
+                .andExpect(jsonPath("content.endpointTLS").value("https://"))
 
         when: "receiving a validation report from toolkit"
         MockHttpServletRequestBuilder getRequest2 = reportRequest()
@@ -70,6 +71,7 @@ class XdrTestCase1IntegrationTest extends Specification {
 
         mockMvcToolkit.perform(getRequest2)
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andReturn()
 
 
@@ -97,8 +99,9 @@ class XdrTestCase1IntegrationTest extends Specification {
     private static String XML =
             """
 <report>
-    <endpointId>user1.1.2014</endpointId>
+    <simId>user1.1.2014</simId>
     <status>success</status>
+    <details>blabla</details>
 </report>
             """
 

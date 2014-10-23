@@ -23,7 +23,12 @@ public class FakeTkRestAPI {
         GPathResult xml =  new XmlSlurper().parseText(body)
         println "toolkit receive request at endpoint /createSim : $body"
         String id = xml.SimulatorId.text()
-        return "<response><status>ok</status><endpoint>"+ id + "</endpoint></response>"
+        return "<response>" +
+                "<status>ok</status>" +
+                "<simId>"+ id +"</simId>" +
+                "<endpoint>http://</endpoint>" +
+                "<endpointTLS>https://</endpointTLS>" +
+                "</response>"
     }
 
 

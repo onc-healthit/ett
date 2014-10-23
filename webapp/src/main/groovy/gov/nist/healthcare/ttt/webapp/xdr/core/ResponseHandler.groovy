@@ -42,10 +42,10 @@ class ResponseHandler implements IObserver{
 
     private handle(TkValidationReport report){
 
-        String id = report.endpointId
-        println "handle report"
+        String id = report.simId
+        println "handle report for simulator with simID : $id"
         List<XDRRecordInterface> records = db.xdrFacade.getXDRRecordsBySimulatorId(id)
-        XDRRecordInterface rec = records.get(0)
+        XDRRecordInterface rec = records.last()
         def step = rec.getTestSteps().find {
             it.xdrSimulator.simulatorId == id
         }
