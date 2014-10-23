@@ -6,10 +6,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({"gov.nist.healthcare.ttt.xdr.helpers.testFramework","gov.nist.healthcare.ttt.xdr"})
 @EnableAutoConfiguration
-public class Application {
+public class TestApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(TestApplication.class, args);
     }
-
-
 }

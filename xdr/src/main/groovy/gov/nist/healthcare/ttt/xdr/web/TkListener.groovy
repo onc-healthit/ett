@@ -27,7 +27,7 @@ public class TkListener {
     @ResponseBody
     TkValidationReport receive(@RequestBody TkValidationReport body) {
 
-        def m = new Message<Object>("new validation result received...", Message.Status.SUCCESS)
+        def m = new Message<Object>("new validation result received...", Message.Status.SUCCESS,body)
         println body
         receiver.notifyObserver(m)
 
