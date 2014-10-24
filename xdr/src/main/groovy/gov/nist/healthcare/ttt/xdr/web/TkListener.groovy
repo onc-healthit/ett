@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*
 
 /**
  * Created by gerardin on 10/14/14.
+ *
+ * Listener for for the toolkit.
+ * It listens for new validation reports.
+ * It tries to handle properly communication errors (if it does not understand the payload)
  */
 
 
@@ -26,6 +30,10 @@ public class TkListener {
     @Autowired
     XdrReceiver receiver
 
+    /**
+     * Notify of a new validation report
+     * @param body : the report
+     */
     @RequestMapping(value = 'api/xdrNotification', consumes = "application/xml")
     @ResponseBody
     public void receive(@RequestBody TkValidationReport body) {
@@ -33,10 +41,13 @@ public class TkListener {
         log.debug("receive a new validation report: $body")
 
         def m = new Message<TkValidationReport>(Message.Status.SUCCESS,"new validation result received...",body)
-        println body
+
         receiver.notifyObserver(m)
     }
 
+    /**
+     * Notify of a bad payload received.
+     */
     @ResponseStatus(value=HttpStatus.NOT_ACCEPTABLE, reason="Bad payload")
     @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
     public void contentNotUnderstood(){
