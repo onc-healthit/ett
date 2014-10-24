@@ -91,21 +91,12 @@ public class SmtpTestInput {
 		if (sutEmailAddress==null || sutEmailAddress.equals("")) {
 			this.sutEmailAddress = "blue@localhost";
 		}
-<<<<<<< mine
-		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
-			this.tttEmailAddress = "red@localhost";
-=======
 		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
 			this.tttEmailAddress = "wellformed1@" + prop.getProperty("direct.listener.domainName");
->>>>>>> theirs
 		}
-<<<<<<< mine
-		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
-			this.tttSmtpAddress = "localhost";
-=======
+
 		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
 			this.tttSmtpAddress = prop.getProperty("direct.listener.domainName");
->>>>>>> theirs
 		}
 
 		if (sutCommandTimeoutInSeconds==null || sutCommandTimeoutInSeconds.equals("0")) {
