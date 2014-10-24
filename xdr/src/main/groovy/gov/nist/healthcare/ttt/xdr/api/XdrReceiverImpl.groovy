@@ -32,13 +32,23 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     /*
     Synchronous call to the toolkit. Create a simulator in Bill's terminology.
      */
-    public Message<XDRSimulatorInterface> createEndpoints(EndpointConfig config) {
+    public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
         def createEndpointTkMsg = buildCreateEndpointRequest(config)
-        GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl)
-        def sim = buildSimulatorFromResponse(r)
-        return new Message(Message.Status.SUCCESS, "endpoint created",sim)
+        try {
+            GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl, 1000)
+            def sim = buildSimulatorFromResponse(r)
+            return sim
+        }
+        catch (groovyx.net.http.HttpResponseException e) {
+            return new RuntimeException("could not reach the toolkit.",e)
+        }
+        catch (java.net.SocketTimeoutException e) {
+            return new RuntimeException("connection timeout when calling toolkit.",e)
+        }
+        catch(groovyx.net.http.ResponseParseException e){
+            return new RuntimeException("could not understand response from toolkit.",e)
+        }
     }
-
 
 
 

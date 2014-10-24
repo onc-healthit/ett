@@ -8,7 +8,6 @@ import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
-import gov.nist.healthcare.ttt.xdr.domain.Message
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,6 +40,8 @@ class TestCaseManager {
 
     public UserMessage<XDRSimulatorImpl> runTestCase1(Object userInput, String username) {
 
+        log.info("running test case 1. Cconfigure test case")
+
         //Info from context : what test case, what user
         //EndpointId is generated from that
         String tcId = 1
@@ -65,25 +66,24 @@ class TestCaseManager {
         //here, we try to effectively create the endpoints
         EndpointConfig config = new EndpointConfig()
         config.name = endpointId
-        Message<XDRSimulatorInterface> r = receiver.createEndpoints(config)
-        def sim = r.content
 
-        //Config failed?
-        if (!r.success()) {
-            return new UserMessage(UserMessage.Status.ERROR, "unable to configure this test case")
+        log.info("trying to create new endpoints on toolkit")
+
+        XDRSimulatorInterface sim
+        try {
+            sim = receiver.createEndpoints(config)
+        }
+        catch(Exception e){
+            return new UserMessage(UserMessage.Status.ERROR, "unable to configure this test case" + e.getMessage())
         }
 
         //Config succeeded
-
         //Create steps for this test so execution can proceed
 
         // step 1 : receive and validate.
-
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.setXdrTestStepID("tc1.step1")
         step.setXdrSimulator(sim)
-
-
 
         //add step to the list of steps
         def steps = new LinkedList<XDRTestStepImpl>()

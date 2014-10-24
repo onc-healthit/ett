@@ -23,7 +23,7 @@ class TkClientSpecTest extends Specification {
     @Autowired
     GroovyRestClient client
 
-    def "test request"() {
+    def "test request on good endpoint"() {
         given:
 
         def id = "SimpleTest1"
@@ -41,12 +41,88 @@ class TkClientSpecTest extends Specification {
         def url = "http://localhost:8080/ttt/createSim"
 
         when:
-        def resp = client.postXml(config, url)
+        def resp = client.postXml(config, url, 1000)
 
         then:
             assert resp.simId.text() == id
 
     }
 
+
+    def "test request on wrong endpoint"() {
+        given:
+
+        def id = "SimpleTest1"
+
+        def config = {
+            createSim {
+                SimType("XDR Document Recipient")
+                SimulatorId(id)
+                MetadataValidationLevel("Full")
+                CodeValidation("false")
+                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+            }
+        }
+
+        def url = "http://localhost:8080/badEndpoint"
+
+        when:
+        def resp = client.postXml(config, url, 1000)
+
+        then:
+        thrown(groovyx.net.http.HttpResponseException)
+
+    }
+
+
+    def "test request on good endpoint but bad content"() {
+        given:
+
+        def id = "SimpleTest1"
+
+        def config = {
+            createSim {
+                SimType("XDR Document Recipient")
+                SimulatorId(id)
+                MetadataValidationLevel("Full")
+                CodeValidation("false")
+                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+            }
+        }
+
+        def url = "http://localhost:8080/ttt//createSimWithBadContent"
+
+        when:
+        def resp = client.postXml(config, url, 1000)
+
+        then:
+        thrown(groovyx.net.http.ResponseParseException)
+
+    }
+
+    def "test request on good endpoint "() {
+        given:
+
+        def id = "SimpleTest1"
+
+        def config = {
+            createSim {
+                SimType("XDR Document Recipient")
+                SimulatorId(id)
+                MetadataValidationLevel("Full")
+                CodeValidation("false")
+                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+            }
+        }
+
+        def url = "http://localhost:8080/ttt/createSim"
+
+        when:
+        def resp = client.postXml(config, url, 1000)
+
+        then:
+        assert resp.simId.text() == id
+
+    }
 
 }

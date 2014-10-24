@@ -45,7 +45,8 @@ class XdrTestCase1IntegrationTest extends Specification {
     MockMvc mockMvcCheckTestCaseStatus
 
     //Because we mock the user as user1 , twe are testing the test case 1 and the timestamp is fixed at 2014
-    String id = "user1.1.2014"
+    static String id = "user1.1.2014"
+    static String userId = "user1"
 
     @Before
     public setup() {
@@ -115,7 +116,7 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
-                .principal(new PrincipalImpl("user1"))
+                .principal(new PrincipalImpl(userId))
     }
 
 
@@ -131,7 +132,7 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .accept(MediaType.ALL)
                 .content(checkStatus)
                 .contentType(MediaType.APPLICATION_JSON)
-                .principal(new PrincipalImpl("user1"))
+                .principal(new PrincipalImpl(userId))
     }
 
     public static String testCaseConfig =
@@ -145,7 +146,7 @@ class XdrTestCase1IntegrationTest extends Specification {
     private static String toolkitMockMessage =
             """
 <report>
-    <simId>user1.1.2014</simId>
+    <simId>$id</simId>
     <status>success</status>
     <details>blabla</details>
 </report>
