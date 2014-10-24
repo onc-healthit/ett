@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.xdr.helpers.testFramework.web.controller
 
+import groovy.util.slurpersupport.GPathResult
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -10,11 +11,29 @@ import org.springframework.web.bind.annotation.RestController
 public class FakeTkRestAPI {
 
 
+//    """
+//                createSim {
+//                SimType("XDR Document Recipient")
+//                SimulatorId("config.name")
+//                MetadataValidationLevel("Full")
+//                CodeValidation("false")
+//                PostNotification("notificationUrl")
+//            }
+//    """
+
+
     @RequestMapping(value = "/createSim", method = RequestMethod.POST, headers = "Accept=*")
     @ResponseBody
     def receive(@RequestBody String body) {
-        println "request : $body"
-        return "<response><status>ok</status><endpoint>endpoint1.tk</endpoint></response>"
+        GPathResult xml =  new XmlSlurper().parseText(body)
+        println "toolkit receive postXml at endpoint /createSim : $body"
+        String id = xml.SimulatorId.text()
+        return "<response>" +
+                "<status>ok</status>" +
+                "<simId>"+ id +"</simId>" +
+                "<endpoint>http://</endpoint>" +
+                "<endpointTLS>https://</endpointTLS>" +
+                "</response>"
     }
 
 

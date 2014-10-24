@@ -1,8 +1,7 @@
 package gov.nist.healthcare.ttt.xdr.unit
 
-import gov.nist.healthcare.ttt.xdr.domain.Message
 import gov.nist.healthcare.ttt.xdr.helpers.testFramework.TestApplication
-import gov.nist.healthcare.ttt.xdr.web.GroovyTkClient
+import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.IntegrationTest
@@ -10,7 +9,6 @@ import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
-
 /**
  * Created by gerardin on 10/9/14.
  */
@@ -23,14 +21,17 @@ class TkClientSpecTest extends Specification {
     private String notificationUrl
 
     @Autowired
-    GroovyTkClient client
+    GroovyRestClient client
 
     def "test request"() {
         given:
+
+        def id = "SimpleTest1"
+
         def config = {
             createSim {
                 SimType("XDR Document Recipient")
-                SimulatorId("SimpleTest1")
+                SimulatorId(id)
                 MetadataValidationLevel("Full")
                 CodeValidation("false")
                 PostNotification("http://localhost:8080/ttt/$notificationUrl")
@@ -40,11 +41,10 @@ class TkClientSpecTest extends Specification {
         def url = "http://localhost:8080/ttt/createSim"
 
         when:
-        Message<String> resp = client.createEndpoint(config, url)
+        def resp = client.postXml(config, url)
 
         then:
-        assert resp.status == Message.Status.SUCCESS
-        assert resp.content == "endpoint1.tk"
+            assert resp.simId.text() == id
 
     }
 

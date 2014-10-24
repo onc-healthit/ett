@@ -1,10 +1,12 @@
 package gov.nist.healthcare.ttt.xdr.api
 
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.xdr.api.notification.IObservable
 import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.Message
-import gov.nist.healthcare.ttt.xdr.web.GroovyTkClient
+import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -18,7 +20,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     IObserver observer
 
     @Autowired
-    GroovyTkClient restClient
+    GroovyRestClient restClient
 
     @Value('${xdr.tool.baseurl}')
     private String notificationUrl
@@ -26,14 +28,21 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${toolkit.createSim.url}')
     private String tkSimCreationUrl
 
-    public Message<Object> createEndpoints(EndpointConfig config){
+    /*
+    Synchronous call to the toolkit. Create a simulator in Bill's terminology.
+     */
+    public Message<XDRSimulatorInterface> createEndpoints(EndpointConfig config) {
+        def createEndpointTkMsg = buildCreateEndpointRequest(config)
+        Message<String> r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl)
+        def sim = buildSimulatorFromResponse(r)
+        return new Message(Message.Status.SUCCESS, "endpoint created",sim)
+    }
 
-        //TODO what if not / or if exist already ?
-        if(config.name == null){
-            throw new RuntimeException("invalid null endpoint")
-        }
 
-        def createEndpointTkMsg = {
+
+
+    private def buildCreateEndpointRequest(EndpointConfig config) {
+        return {
             createSim {
                 SimType("XDR Document Recipient")
                 SimulatorId("${config.name}")
@@ -42,10 +51,16 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                 PostNotification("${notificationUrl}")
             }
         }
-
-        def resp = restClient.createEndpoint(createEndpointTkMsg, tkSimCreationUrl)
-        return resp
     }
+
+    private XDRSimulatorInterface buildSimulatorFromResponse(def r) {
+        XDRSimulatorInterface sim = new XDRSimulatorImpl()
+        sim.simulatorId = r.content.simId.text()
+        sim.endpoint = r.content.endpoint.text()
+        sim.endpointTLS = r.content.endpointTLS.text()
+        return sim
+    }
+
 
     @Override
     def notifyObserver(Message m) {
@@ -53,7 +68,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     }
 
     @Override
-    def registerObserver(IObserver o){
+    def registerObserver(IObserver o) {
         observer = o
     }
 }

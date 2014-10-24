@@ -5,9 +5,10 @@ package gov.nist.healthcare.ttt.xdr.domain
  */
 public class Message<E> {
 
-    final String message
 
     final Status status
+
+    final String message
 
     final E content
 
@@ -22,12 +23,12 @@ public class Message<E> {
         this.status = s
     }
 
-    public Message(String msg, Status s){
+    public Message(Status s, String msg){
         this.message = msg
         this.status = s
     }
 
-    public Message(String msg, Status s, E c){
+    public Message(Status s, String msg, E c){
         this.message = msg
         this.status = s
         this.content = c

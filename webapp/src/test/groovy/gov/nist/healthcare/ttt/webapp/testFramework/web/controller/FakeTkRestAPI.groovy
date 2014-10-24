@@ -21,7 +21,7 @@ public class FakeTkRestAPI {
     @ResponseBody
     def receive(@RequestBody String body) {
         GPathResult xml =  new XmlSlurper().parseText(body)
-        println "toolkit receive request at endpoint /createSim : $body"
+        println "toolkit receive postXml at endpoint /createSim : $body"
         String id = xml.SimulatorId.text()
         return "<response>" +
                 "<status>ok</status>" +

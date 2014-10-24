@@ -12,7 +12,7 @@ import java.security.Principal
  */
 
 @RestController
-@RequestMapping("/xdr/tc")
+@RequestMapping("api/xdr/tc")
 class XdrTestCaseController {
 
     private final TestCaseManager testCaseManager
@@ -23,7 +23,7 @@ class XdrTestCaseController {
     }
 
     @ApiOperation(value = "run a test case")
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
     @ResponseBody
     UserMessage<XDRSimulatorImpl> run(@PathVariable("id") String id, @RequestBody Object body, Principal principal) {
         //Find user by id, find test case by id -> get the test case description (step to perform etc...)

@@ -19,24 +19,22 @@ import org.springframework.stereotype.Component
 @Component
 class TestCaseManager {
 
-
-    @Autowired
-    private final Clock clock
-
     private final DatabaseInstance db
     private final XdrReceiver receiver
     private final ResponseHandler handler
     private final XdrSender sender
+    private final Clock clock
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
     @Autowired
-    TestCaseManager(DatabaseInstance db, XdrReceiver receiver, ResponseHandler handler, XdrSender sender) {
+    TestCaseManager(DatabaseInstance db, XdrReceiver receiver, ResponseHandler handler, XdrSender sender, Clock clock) {
         this.db = db
         this.receiver = receiver
         this.handler = handler
         receiver.registerObserver(handler)
         this.sender = sender
+        this.clock = clock
     }
 
 
@@ -66,7 +64,8 @@ class TestCaseManager {
         //here, we try to effectively create the endpoints
         EndpointConfig config = new EndpointConfig()
         config.name = endpointId
-        Message<Object> r = receiver.createEndpoints(config)
+        Message<XDRSimulatorInterface> r = receiver.createEndpoints(config)
+        def sim = r.content
 
         //Config failed?
         if (!r.success()) {
@@ -78,13 +77,9 @@ class TestCaseManager {
         //Create steps for this test so execution can proceed
 
         // step 1 : receive and validate.
-        // We create a simulator with the simID.
+
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.setXdrTestStepID("tc1.step1")
-        XDRSimulatorInterface sim = new XDRSimulatorImpl()
-        sim.simulatorId = r.content.simId.text()
-        sim.endpoint = r.content.endpoint.text()
-        sim.endpointTLS = r.content.endpointTLS.text()
         step.setXdrSimulator(sim)
 
 
