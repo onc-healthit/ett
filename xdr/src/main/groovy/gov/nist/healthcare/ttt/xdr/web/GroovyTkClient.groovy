@@ -38,7 +38,7 @@ public class GroovyTkClient {
 
             response.success = { resp , xml ->
                 logger.info(XmlUtil.serialize(xml))
-                new Message<String>(xml.status.text(), Message.Status.SUCCESS, xml.endpoint.text())
+                new Message<Object>(xml.status.text(), Message.Status.SUCCESS, xml)
             }
 
         }

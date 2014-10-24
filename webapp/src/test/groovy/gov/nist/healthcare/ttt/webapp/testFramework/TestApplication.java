@@ -21,6 +21,13 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 
+/**
+ * Same as the real application but here we have a additional @ComponentScan
+ * in gov.nist.healthcare.ttt.webapp.testFramework, which :
+ * - spins the mock toolkit.
+ * - replace the clock by a mock clock returning always the same time.
+ */
+
 @ComponentScan({"gov.nist.healthcare.ttt.webapp.testFramework"})
 @EnableWebMvcSecurity
 @EnableAutoConfiguration

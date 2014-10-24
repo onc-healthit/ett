@@ -1,5 +1,4 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
-
 import gov.nist.healthcare.ttt.webapp.Application
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrReceiveController
 import org.junit.Before
@@ -17,9 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import sun.security.acl.PrincipalImpl
 
-import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebAppConfiguration
@@ -48,7 +46,7 @@ class XdrReceiveIntegrationSpecTest extends Specification {
         mockMvc.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("ERROR")))
+                .andExpect(jsonPath("status").value("SUCCESS"))
     }
 
     MockHttpServletRequestBuilder createEndpointRequest() {

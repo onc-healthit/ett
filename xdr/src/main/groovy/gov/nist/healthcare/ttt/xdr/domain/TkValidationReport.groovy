@@ -15,7 +15,13 @@ class TkValidationReport {
     String status
 
     @XmlElement
-    String endpointId
+    String simId
+
+    @XmlElement
+    String endpoint
+
+    @XmlElement
+    String endpointTLS
 
 
 

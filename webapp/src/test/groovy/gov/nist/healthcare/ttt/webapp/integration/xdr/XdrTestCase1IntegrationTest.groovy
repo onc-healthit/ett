@@ -1,5 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
 
+import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
 import gov.nist.healthcare.ttt.xdr.web.TkListener
@@ -19,9 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import sun.security.acl.PrincipalImpl
 
-import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebAppConfiguration
@@ -29,14 +30,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class XdrTestCase1IntegrationTest extends Specification {
 
+
     @Autowired
     XdrTestCaseController controller
+
+    @Autowired
+    DatabaseInstance db
 
     @Autowired
     TkListener listener
 
     MockMvc mockMvcClient
     MockMvc mockMvcToolkit
+
+    //Because we mock the user as user1 , twe are testing the test case 1 and the timestamp is fixed at 2014
+    String id = "user1.1.2014"
 
     @Before
     public setup() {
@@ -50,6 +58,8 @@ class XdrTestCase1IntegrationTest extends Specification {
     }
 
 
+
+
     def "user succeeds in starting test case 1"() throws Exception {
 
         when: "receiving a request to run test case 1"
@@ -60,8 +70,9 @@ class XdrTestCase1IntegrationTest extends Specification {
         mockMvcClient.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("SUCCESS")))
-
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.endpoint").value("http://"))
+                .andExpect(jsonPath("content.endpointTLS").value("https://"))
 
         when: "receiving a validation report from toolkit"
         MockHttpServletRequestBuilder getRequest2 = reportRequest()
@@ -70,9 +81,16 @@ class XdrTestCase1IntegrationTest extends Specification {
 
         mockMvcToolkit.perform(getRequest2)
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andReturn()
 
+        List<XDRRecordInterface> records = db.xdrFacade.getXDRRecordsBySimulatorId(id)
+        XDRRecordInterface rec = records.last()
+        def step = rec.getTestSteps().find {
+            it.xdrSimulator.simulatorId == id
+        }
 
+        assert step.xdrReportItems.get(0).report == "success"
 
         println "ok"
     }
@@ -90,15 +108,16 @@ class XdrTestCase1IntegrationTest extends Specification {
     MockHttpServletRequestBuilder reportRequest() {
         MockMvcRequestBuilders.post("/xdrNotification")
                 .accept(MediaType.ALL)
-                .content(XML)
+                .content(toolkitMockMessage)
                 .contentType(MediaType.APPLICATION_XML)
     }
 
-    private static String XML =
+    private static String toolkitMockMessage =
             """
 <report>
-    <endpointId>user1.1.2014</endpointId>
+    <simId>user1.1.2014</simId>
     <status>success</status>
+    <details>blabla</details>
 </report>
             """
 

@@ -15,7 +15,7 @@ public interface XdrReceiver extends IObservable {
      * @return the result of the operation
      * if Message.status=SUCCESS, Message.content should contain the name of the endpoint created
      */
-    public Message<String> createEndpoints(EndpointConfig config)
+    public Message<Object> createEndpoints(EndpointConfig config)
 
 
 

@@ -22,13 +22,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>org.codehaus.groovy.modules.http-builder</groupId>
             <artifactId>http-builder</artifactId>
-            <version>0.4.1</version>
+            <version>0.7.1</version>
             <exclusions>
                 <exclusion>
                         <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-all</artifactId>
+                        <artifactId>groovy</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
