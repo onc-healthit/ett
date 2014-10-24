@@ -1,16 +1,15 @@
 package gov.nist.healthcare.ttt.webapp.direct.listener;
 
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import javax.servlet.ServletContext;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class DirectListener implements Runnable {
 
@@ -23,15 +22,21 @@ public class DirectListener implements Runnable {
 
 	// Config Json
 
-	JSONObject configJson;
+	Properties settings;
 	
 	private static Logger logger = Logger.getLogger(DirectListener.class.getName());
 
 	public DirectListener(DatabaseInstance db, ServletContext context) {
 		this.db = db;
 		this.context = context;
-		this.configJson = getConfig(context);
-		this.port = Integer.parseInt(this.configJson.getJSONObject("config").getString("listenerPort"));
+		try {
+			this.settings = getConfig();
+			this.port = Integer.parseInt(getConfig().getProperty("direct.listener.port"));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Listen for incoming connections and handle them
@@ -46,7 +51,7 @@ public class DirectListener implements Runnable {
 			while((i++ < maxConnections) || (maxConnections == 0)) {
 				server = listener.accept();
 				logger.debug("Running listener");
-				ListenerProcessor processor = new ListenerProcessor(server, configJson, db, context.getContextPath());
+				ListenerProcessor processor = new ListenerProcessor(server, settings, db, context.getContextPath(), this.port);
 				Thread t = new Thread(processor);
 				threadsList.add(t);
 				t.start();
@@ -62,23 +67,17 @@ public class DirectListener implements Runnable {
 			ioe.printStackTrace();
 		}
 	}
-
-    public JSONObject getConfig(ServletContext context) {
-
-        try {
-
-            URL path = this.getClass().getClassLoader().getResource("config/settings.json");
-            final InputStream is = path.openStream();
-            String jsonTxt = IOUtils.toString(is);
-            return new JSONObject(jsonTxt);
-
-        } catch (IOException e) {
-            logger.error("Could not find the configuration file settings.json");
-            e.printStackTrace();
-        }
-
-        return new JSONObject();
-
+    
+    public Properties getConfig() throws IOException {
+		Properties prop = new Properties();
+		String propFileName = "application.properties";
+ 
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+		prop.load(inputStream);
+		if (inputStream == null) {
+			throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+		}
+		return prop;
     }
 	
 	public void stopThreads() {

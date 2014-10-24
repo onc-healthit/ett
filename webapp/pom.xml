@@ -68,8 +68,8 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>gov.nist.healthcare.direct.smtp</groupId>
-            <artifactId>smtptests</artifactId>
+            <groupId>gov.nist.healthcare.ttt</groupId>
+            <artifactId>smtp</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

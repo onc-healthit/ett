@@ -75,20 +75,20 @@ public class SmtpTestInput {
 
 	public TestInput convert() {
 		// Default value
-		if (sutSmtpAddress.equals("")) {
+		if (sutSmtpAddress==null || sutSmtpAddress.equals("")) {
 			this.sutSmtpAddress = "localhost";
 		}
-		if (sutEmailAddress.equals("")) {
+		if (sutEmailAddress==null || sutEmailAddress.equals("")) {
 			this.sutEmailAddress = "blue@localhost";
 		}
-		if (tttEmailAddress.equals("")) {
+		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
 			this.tttEmailAddress = "red@localhost";
 		}
-		if (tttSmtpAddress.equals("")) {
+		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
 			this.tttSmtpAddress = "localhost";
 		}
 
-		if (sutCommandTimeoutInSeconds.equals("0")) {
+		if (sutCommandTimeoutInSeconds==null || sutCommandTimeoutInSeconds.equals("0")) {
 			this.sutCommandTimeoutInSeconds = "600";
 		}
 
@@ -117,6 +117,9 @@ public class SmtpTestInput {
 	}
 
 	public boolean getBool(String field) {
+		if(field == null) {
+			return false;
+		}
 		if (field.equals("true")) {
 			return true;
 		}
@@ -124,14 +127,14 @@ public class SmtpTestInput {
 	}
 
 	public String setDefaultAuthValue(String param) {
-		if (param.equals("")) {
+		if (param==null || param.equals("")) {
 			return "red";
 		}
 		return param;
 	}
 
 	public String setDefautlPort(String param) {
-		if (param.equals("0")) {
+		if (param==null || param.equals("0")) {
 			return "25";
 		} else {
 			return param;
