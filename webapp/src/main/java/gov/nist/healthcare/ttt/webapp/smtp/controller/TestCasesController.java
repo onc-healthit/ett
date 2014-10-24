@@ -1,10 +1,12 @@
 package gov.nist.healthcare.ttt.webapp.smtp.controller;
 
 import java.util.ArrayList;
-import gov.nist.healthcare.direct.smtp.ISMTPTestRunner;
-import gov.nist.healthcare.direct.smtp.ITestResult;
-import gov.nist.healthcare.direct.smtp.SMTPTestRunner;
+
+import gov.nist.healthcare.ttt.smtp.ISMTPTestRunner;
+import gov.nist.healthcare.ttt.smtp.ITestResult;
+import gov.nist.healthcare.ttt.smtp.SMTPTestRunner;
 import gov.nist.healthcare.ttt.webapp.smtp.model.SmtpTestInput;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

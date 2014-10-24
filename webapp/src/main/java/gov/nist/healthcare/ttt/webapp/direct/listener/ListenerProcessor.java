@@ -1,16 +1,18 @@
 package gov.nist.healthcare.ttt.webapp.direct.listener;
 
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException;
-import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
+import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
+
 import org.apache.log4j.Logger;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;

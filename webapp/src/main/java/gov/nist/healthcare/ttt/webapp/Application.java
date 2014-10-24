@@ -1,12 +1,16 @@
 package gov.nist.healthcare.ttt.webapp;
 
+import javax.servlet.Filter;
+
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
+
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
 import gov.nist.healthcare.ttt.webapp.direct.listener.DirectListenerServlet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -47,7 +51,6 @@ public class Application {
     public DirectListenerServlet listenerServlet() {
         return new DirectListenerServlet();
     }
-
 
     /*
     Config for swagger, we do not really use it for now
