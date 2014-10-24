@@ -7,6 +7,7 @@ import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.Message
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
+import groovy.util.slurpersupport.GPathResult
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -33,7 +34,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
      */
     public Message<XDRSimulatorInterface> createEndpoints(EndpointConfig config) {
         def createEndpointTkMsg = buildCreateEndpointRequest(config)
-        Message<String> r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl)
+        GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl)
         def sim = buildSimulatorFromResponse(r)
         return new Message(Message.Status.SUCCESS, "endpoint created",sim)
     }
@@ -55,9 +56,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
     private XDRSimulatorInterface buildSimulatorFromResponse(def r) {
         XDRSimulatorInterface sim = new XDRSimulatorImpl()
-        sim.simulatorId = r.content.simId.text()
-        sim.endpoint = r.content.endpoint.text()
-        sim.endpointTLS = r.content.endpointTLS.text()
+        sim.simulatorId = r.simId.text()
+        sim.endpoint = r.endpoint.text()
+        sim.endpointTLS = r.endpointTLS.text()
         return sim
     }
 

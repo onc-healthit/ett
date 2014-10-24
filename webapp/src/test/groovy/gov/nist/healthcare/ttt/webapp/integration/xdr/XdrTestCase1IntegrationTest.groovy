@@ -92,7 +92,6 @@ class XdrTestCase1IntegrationTest extends Specification {
 
         assert step.xdrReportItems.get(0).report == "success"
 
-        println "ok"
     }
 
 
