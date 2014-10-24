@@ -1,6 +1,9 @@
 package gov.nist.healthcare.ttt.xdr.unit
+
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
+import gov.nist.healthcare.ttt.xdr.domain.Message
+import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import gov.nist.healthcare.ttt.xdr.helpers.testFramework.TestApplication
 import gov.nist.healthcare.ttt.xdr.web.TkListener
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
+
 /**
  * Created by gerardin on 10/14/14.
  */
@@ -34,9 +38,9 @@ class TkListenerSpecTest extends Specification {
     @Autowired
     TkListener listener
 
-    def "test notification"() {
+    def "notify of a valid report"() {
 
-        given:  'a validation report notification'
+        given: 'a valid validation report notification'
         def mockMvc = MockMvcBuilders.standaloneSetup(listener)
                 .setMessageConverters(new Jaxb2RootElementHttpMessageConverter())
                 .build()
@@ -45,23 +49,59 @@ class TkListenerSpecTest extends Specification {
 
         MockHttpServletRequestBuilder req = MockMvcRequestBuilders.post("/$notificationUrl")
                 .accept(MediaType.ALL)
-                .content(XML)
+                .content(GOOD_REPORT_XML)
                 .contentType(MediaType.APPLICATION_XML)
 
         when: 'a notification by a web client is received'
-
         mockMvc
                 .perform(req)
                 .andDo(print())
                 .andReturn()
 
-        then: 'the observer is notified'
-            1 * observer.getNotification(_)
+        then: 'the observer is notified with a success message'
+        1 * observer.getNotification({
+            Message m ->
+                m.status.toString() == "SUCCESS"
+                m.content instanceof TkValidationReport
+        })
 
     }
 
-
-    private static String XML =
+    private static String GOOD_REPORT_XML =
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                     "<report>success</report>";
+
+
+    def "notify of a bad report"() {
+
+        given: 'a bad validation report notification (cannot be parsed to TkValidationReport)'
+        def mockMvc = MockMvcBuilders.standaloneSetup(listener)
+                .setMessageConverters(new Jaxb2RootElementHttpMessageConverter())
+                .build()
+        def observer = Mock(IObserver)
+        receiver.registerObserver(observer)
+
+        MockHttpServletRequestBuilder req = MockMvcRequestBuilders.post("/$notificationUrl")
+                .accept(MediaType.ALL)
+                .content(BAD_REPORT_XML)
+                .contentType(MediaType.APPLICATION_XML)
+
+        when: 'a notification by a web client is received'
+        mockMvc
+                .perform(req)
+                .andDo(print())
+                .andReturn()
+
+        then: 'the observer is notified with a success message'
+        1 * observer.getNotification({
+            Message m ->
+                m.status.toString() == "ERROR"
+                m.content == null
+        })
+
+    }
+
+    private static String BAD_REPORT_XML =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                    "<bad_report>success</bad_report>";
 }

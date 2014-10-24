@@ -2,9 +2,11 @@ package gov.nist.healthcare.ttt.webapp.api.xdr
 import gov.nist.healthcare.ttt.database.jdbc.XDRFacade
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
+import gov.nist.healthcare.ttt.webapp.testFramework.time.FakeClock
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
 import gov.nist.healthcare.ttt.webapp.xdr.core.ResponseHandler
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
+import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.xdr.domain.Message
@@ -15,10 +17,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
+import sun.security.acl.PrincipalImpl
 
-import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 class XdrTestCase1Test extends Specification{
@@ -28,8 +30,9 @@ class XdrTestCase1Test extends Specification{
     ResponseHandler handler = Mock(ResponseHandler)
     DatabaseInstance db = Mock(DatabaseInstance)
     XdrSender sender = Mock(XdrSender)
+    Clock clock = new FakeClock()
 
-    TestCaseManager manager = new TestCaseManager(db, receiver,handler, sender)
+    TestCaseManager manager = new TestCaseManager(db, receiver, handler, sender, clock)
 
     XdrTestCaseController tcController = new XdrTestCaseController(manager)
 
@@ -48,9 +51,11 @@ class XdrTestCase1Test extends Specification{
                 }
 
                 m.content >> {
-                    def sim = new XDRSimulatorImpl()
-                    sim.endpoint = "http://..."
-                    sim.endpointTLS = "https://..."
+                    def content = new XDRSimulatorImpl()
+                    content.endpoint = "http://..."
+                    content.endpointTLS = "https://..."
+                    content.simulatorId = "user1.1.2014"
+                    return content
                 }
 
                 return m
@@ -64,7 +69,7 @@ class XdrTestCase1Test extends Specification{
             return facade
         }
 
-        when : "receiving a request to create an endpoint"
+        when : "receiving a postXml to create an endpoint"
             MockHttpServletRequestBuilder getRequest = createEndpointRequest()
 
         then : "send back a success message"
@@ -72,7 +77,7 @@ class XdrTestCase1Test extends Specification{
             mockMvc.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("SUCCESS")))
+                .andExpect(jsonPath("status").value("SUCCESS"))
 
         when : "notification of a message received arrived"
             println "when a validation report arrived"
@@ -84,10 +89,11 @@ class XdrTestCase1Test extends Specification{
 
 
     MockHttpServletRequestBuilder createEndpointRequest() {
-        MockMvcRequestBuilders.post("/xdr/tc/1")
+        MockMvcRequestBuilders.post("/api/xdr/tc/1/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl("user1"))
     }
 
 

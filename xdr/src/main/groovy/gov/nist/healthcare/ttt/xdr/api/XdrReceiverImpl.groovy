@@ -1,10 +1,13 @@
 package gov.nist.healthcare.ttt.xdr.api
 
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.xdr.api.notification.IObservable
 import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.Message
-import gov.nist.healthcare.ttt.xdr.web.GroovyTkClient
+import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
+import groovy.util.slurpersupport.GPathResult
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -18,7 +21,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     IObserver observer
 
     @Autowired
-    GroovyTkClient restClient
+    GroovyRestClient restClient
 
     @Value('${xdr.tool.baseurl}')
     private String notificationUrl
@@ -26,14 +29,31 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${toolkit.createSim.url}')
     private String tkSimCreationUrl
 
-    public Message<Object> createEndpoints(EndpointConfig config){
-
-        //TODO what if not / or if exist already ?
-        if(config.name == null){
-            throw new RuntimeException("invalid null endpoint")
+    /*
+    Synchronous call to the toolkit. Create a simulator in Bill's terminology.
+     */
+    public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
+        def createEndpointTkMsg = buildCreateEndpointRequest(config)
+        try {
+            GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl, 1000)
+            def sim = buildSimulatorFromResponse(r)
+            return sim
         }
+        catch (groovyx.net.http.HttpResponseException e) {
+            return new RuntimeException("could not reach the toolkit.",e)
+        }
+        catch (java.net.SocketTimeoutException e) {
+            return new RuntimeException("connection timeout when calling toolkit.",e)
+        }
+        catch(groovyx.net.http.ResponseParseException e){
+            return new RuntimeException("could not understand response from toolkit.",e)
+        }
+    }
 
-        def createEndpointTkMsg = {
+
+
+    private def buildCreateEndpointRequest(EndpointConfig config) {
+        return {
             createSim {
                 SimType("XDR Document Recipient")
                 SimulatorId("${config.name}")
@@ -42,10 +62,16 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                 PostNotification("${notificationUrl}")
             }
         }
-
-        def resp = restClient.createEndpoint(createEndpointTkMsg, tkSimCreationUrl)
-        return resp
     }
+
+    private XDRSimulatorInterface buildSimulatorFromResponse(def r) {
+        XDRSimulatorInterface sim = new XDRSimulatorImpl()
+        sim.simulatorId = r.simId.text()
+        sim.endpoint = r.endpoint.text()
+        sim.endpointTLS = r.endpointTLS.text()
+        return sim
+    }
+
 
     @Override
     def notifyObserver(Message m) {
@@ -53,7 +79,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     }
 
     @Override
-    def registerObserver(IObserver o){
+    def registerObserver(IObserver o) {
         observer = o
     }
 }

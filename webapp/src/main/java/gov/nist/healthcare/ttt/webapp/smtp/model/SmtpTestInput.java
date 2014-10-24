@@ -1,7 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.smtp.model;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -95,6 +94,7 @@ public class SmtpTestInput {
 		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
 			this.tttEmailAddress = "wellformed1@" + prop.getProperty("direct.listener.domainName");
 		}
+
 		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
 			this.tttSmtpAddress = prop.getProperty("direct.listener.domainName");
 		}

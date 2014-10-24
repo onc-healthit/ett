@@ -2,12 +2,12 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseStatus
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
-import gov.nist.healthcare.ttt.xdr.domain.Message
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,28 +19,28 @@ import org.springframework.stereotype.Component
 @Component
 class TestCaseManager {
 
-
-    @Autowired
-    private final Clock clock
-
     private final DatabaseInstance db
     private final XdrReceiver receiver
     private final ResponseHandler handler
     private final XdrSender sender
+    private final Clock clock
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
     @Autowired
-    TestCaseManager(DatabaseInstance db, XdrReceiver receiver, ResponseHandler handler, XdrSender sender) {
+    TestCaseManager(DatabaseInstance db, XdrReceiver receiver, ResponseHandler handler, XdrSender sender, Clock clock) {
         this.db = db
         this.receiver = receiver
         this.handler = handler
         receiver.registerObserver(handler)
         this.sender = sender
+        this.clock = clock
     }
 
 
     public UserMessage<XDRSimulatorImpl> runTestCase1(Object userInput, String username) {
+
+        log.info("running test case 1. Cconfigure test case")
 
         //Info from context : what test case, what user
         //EndpointId is generated from that
@@ -66,28 +66,24 @@ class TestCaseManager {
         //here, we try to effectively create the endpoints
         EndpointConfig config = new EndpointConfig()
         config.name = endpointId
-        Message<Object> r = receiver.createEndpoints(config)
 
-        //Config failed?
-        if (!r.success()) {
-            return new UserMessage(UserMessage.Status.ERROR, "unable to configure this test case")
+        log.info("trying to create new endpoints on toolkit")
+
+        XDRSimulatorInterface sim
+        try {
+            sim = receiver.createEndpoints(config)
+        }
+        catch(Exception e){
+            return new UserMessage(UserMessage.Status.ERROR, "unable to configure this test case" + e.getMessage())
         }
 
         //Config succeeded
-
         //Create steps for this test so execution can proceed
 
         // step 1 : receive and validate.
-        // We create a simulator with the simID.
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.setXdrTestStepID("tc1.step1")
-        XDRSimulatorInterface sim = new XDRSimulatorImpl()
-        sim.simulatorId = r.content.simId.text()
-        sim.endpoint = r.content.endpoint.text()
-        sim.endpointTLS = r.content.endpointTLS.text()
         step.setXdrSimulator(sim)
-
-
 
         //add step to the list of steps
         def steps = new LinkedList<XDRTestStepImpl>()
@@ -97,6 +93,7 @@ class TestCaseManager {
         //persist this record
         try {
             String recordId = db.getXdrFacade().addNewXdrRecord(record)
+
         }
         catch (DatabaseException e) {
             return new UserMessage(UserMessage.Status.ERROR, "unable to save new test case record in db")
@@ -107,4 +104,9 @@ class TestCaseManager {
         return new UserMessage(UserMessage.Status.SUCCESS, msg, sim)
     }
 
+    public TestCaseStatus checkTestCaseStatus(Object body) {
+
+        return TestCaseStatus.SUCCESS
+
+    }
 }

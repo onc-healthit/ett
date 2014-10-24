@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TestCasesController {
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody ArrayList<ITestResult> startTestCases(@RequestBody SmtpTestInput ti) throws Exception {
+	public @ResponseBody
+    ArrayList<ITestResult> startTestCases(@RequestBody SmtpTestInput ti) throws Exception {
 		ISMTPTestRunner smtpTestRunner = new SMTPTestRunner();
 		ArrayList<ITestResult> res = new ArrayList<ITestResult>();
 		int testCaseNumber = Integer.parseInt(ti.getTestCaseNumber());
