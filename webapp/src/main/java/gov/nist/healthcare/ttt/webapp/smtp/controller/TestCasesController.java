@@ -1,16 +1,17 @@
 package gov.nist.healthcare.ttt.webapp.smtp.controller;
 
+import java.util.ArrayList;
+
 import gov.nist.healthcare.ttt.smtp.ISMTPTestRunner;
 import gov.nist.healthcare.ttt.smtp.ITestResult;
 import gov.nist.healthcare.ttt.smtp.SMTPTestRunner;
 import gov.nist.healthcare.ttt.webapp.smtp.model.SmtpTestInput;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/api/smtpTestCases")

@@ -1,6 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.smtp.model;
 
-
 import gov.nist.healthcare.ttt.smtp.ITestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 

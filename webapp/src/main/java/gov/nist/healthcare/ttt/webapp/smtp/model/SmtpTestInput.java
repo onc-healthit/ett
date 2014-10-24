@@ -1,9 +1,10 @@
 package gov.nist.healthcare.ttt.webapp.smtp.model;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
-
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
-
+import java.util.Properties;
 
 public class SmtpTestInput {
 
@@ -74,7 +75,15 @@ public class SmtpTestInput {
 		this.useTLS = useTLS;
 	}
 
-	public TestInput convert() {
+	public TestInput convert() throws FileNotFoundException {
+		Properties prop = new Properties();
+		String propFileName = "application.properties";
+ 
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+		if (inputStream == null) {
+			throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+		}
+		
 		// Default value
 		if (sutSmtpAddress==null || sutSmtpAddress.equals("")) {
 			this.sutSmtpAddress = "localhost";
@@ -82,11 +91,21 @@ public class SmtpTestInput {
 		if (sutEmailAddress==null || sutEmailAddress.equals("")) {
 			this.sutEmailAddress = "blue@localhost";
 		}
+<<<<<<< mine
 		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
 			this.tttEmailAddress = "red@localhost";
+=======
+		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
+			this.tttEmailAddress = "wellformed1@" + prop.getProperty("direct.listener.domainName");
+>>>>>>> theirs
 		}
+<<<<<<< mine
 		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
 			this.tttSmtpAddress = "localhost";
+=======
+		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
+			this.tttSmtpAddress = prop.getProperty("direct.listener.domainName");
+>>>>>>> theirs
 		}
 
 		if (sutCommandTimeoutInSeconds==null || sutCommandTimeoutInSeconds.equals("0")) {
