@@ -2,6 +2,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseStatus
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
@@ -92,6 +93,7 @@ class TestCaseManager {
         //persist this record
         try {
             String recordId = db.getXdrFacade().addNewXdrRecord(record)
+
         }
         catch (DatabaseException e) {
             return new UserMessage(UserMessage.Status.ERROR, "unable to save new test case record in db")
@@ -102,4 +104,9 @@ class TestCaseManager {
         return new UserMessage(UserMessage.Status.SUCCESS, msg, sim)
     }
 
+    public TestCaseStatus checkTestCaseStatus(Object body) {
+
+        return TestCaseStatus.SUCCESS
+
+    }
 }

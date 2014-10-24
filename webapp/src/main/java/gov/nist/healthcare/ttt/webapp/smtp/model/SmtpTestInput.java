@@ -1,8 +1,9 @@
 package gov.nist.healthcare.ttt.webapp.smtp.model;
 
+import gov.nist.healthcare.ttt.smtp.TestInput;
+
 import java.util.LinkedHashMap;
 
-import gov.nist.healthcare.direct.smtp.TestInput;
 
 public class SmtpTestInput {
 

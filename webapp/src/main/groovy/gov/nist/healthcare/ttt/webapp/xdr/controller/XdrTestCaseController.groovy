@@ -2,6 +2,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.controller
 import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseStatus
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -49,4 +50,26 @@ class XdrTestCaseController {
     }
 
 
+    @ApiOperation(value = "check status of a test case")
+    @RequestMapping(value = "/{id}/status", method = RequestMethod.POST)
+    @ResponseBody
+    UserMessage<TestCaseStatus> status(@PathVariable("id") String id, @RequestBody Object body, Principal principal) {
+
+        if (id != "1") {
+            return new UserMessage(UserMessage.Status.ERROR, "test case not implemented")
+        }
+
+        String username
+
+        //TODO enforce user must be authentified or run tests as anonymous?
+        if (principal == null) {
+            return new UserMessage(UserMessage.Status.ERROR, "user not identified")
+        } else {
+
+        }
+
+        TestCaseStatus result = testCaseManager.checkTestCaseStatus(body)
+
+        return new UserMessage<TestCaseStatus>(UserMessage.Status.SUCCESS,"result of this test",result)
+    }
 }

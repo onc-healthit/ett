@@ -40,34 +40,39 @@ class XdrTestCase1IntegrationTest extends Specification {
     @Autowired
     TkListener listener
 
-    MockMvc mockMvcClient
+    MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit
+    MockMvc mockMvcCheckTestCaseStatus
 
     //Because we mock the user as user1 , twe are testing the test case 1 and the timestamp is fixed at 2014
     String id = "user1.1.2014"
 
     @Before
     public setup() {
-        mockMvcClient = MockMvcBuilders.standaloneSetup(controller)
+        mockMvcRunTestCase = MockMvcBuilders.standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
 
         mockMvcToolkit = MockMvcBuilders.standaloneSetup(listener)
                 .setMessageConverters(new Jaxb2RootElementHttpMessageConverter())
                 .build()
+
+        mockMvcCheckTestCaseStatus = MockMvcBuilders.standaloneSetup(controller)
+                .setMessageConverters(new MappingJackson2HttpMessageConverter())
+                .build()
     }
 
 
 
 
-    def "user succeeds in starting test case 1"() throws Exception {
+    def "user succeeds in running test case 1"() throws Exception {
 
         when: "receiving a postXml to run test case 1"
         MockHttpServletRequestBuilder getRequest = createEndpointRequest()
 
         then: "we receive back a success message"
 
-        mockMvcClient.perform(getRequest)
+        mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
@@ -92,6 +97,16 @@ class XdrTestCase1IntegrationTest extends Specification {
 
         assert step.xdrReportItems.get(0).report == "success"
 
+
+        when: "check the status of testcase 1"
+        MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
+
+        then: "we receive back a success message"
+        mockMvcRunTestCase.perform(getRequest3)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content").value("SUCCESS"))
     }
 
 
@@ -111,6 +126,22 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .contentType(MediaType.APPLICATION_XML)
     }
 
+    MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/1/status")
+                .accept(MediaType.ALL)
+                .content(checkStatus)
+                .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl("user1"))
+    }
+
+    public static String testCaseConfig =
+            """{
+    "tc_config": {
+        "endpoint_url": "sut1.testlab1"
+    }
+}"""
+
+
     private static String toolkitMockMessage =
             """
 <report>
@@ -120,12 +151,8 @@ class XdrTestCase1IntegrationTest extends Specification {
 </report>
             """
 
-
-    public String testCaseConfig =
+    public static String checkStatus =
             """{
-    "tc_config": {
-        "endpoint_url": "sut1.testlab1"
-    }
-}"""
+            }"""
 }
 
