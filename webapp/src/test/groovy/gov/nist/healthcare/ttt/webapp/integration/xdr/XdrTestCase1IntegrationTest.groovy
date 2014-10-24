@@ -108,11 +108,11 @@ class XdrTestCase1IntegrationTest extends Specification {
     MockHttpServletRequestBuilder reportRequest() {
         MockMvcRequestBuilders.post("/xdrNotification")
                 .accept(MediaType.ALL)
-                .content(XML)
+                .content(toolkitMockMessage)
                 .contentType(MediaType.APPLICATION_XML)
     }
 
-    private static String XML =
+    private static String toolkitMockMessage =
             """
 <report>
     <simId>user1.1.2014</simId>
