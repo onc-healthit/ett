@@ -18,6 +18,10 @@ import org.springframework.stereotype.Component
 @Component
 public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
+
+    @Value('${toolkit.request.timeout}')
+    Integer timeout = 1000
+
     IObserver observer
 
     @Autowired
@@ -33,9 +37,12 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     Synchronous call to the toolkit. Create a simulator in Bill's terminology.
      */
     public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
+
+
+
         def createEndpointTkMsg = buildCreateEndpointRequest(config)
         try {
-            GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl, 1000)
+            GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl, timeout)
             def sim = buildSimulatorFromResponse(r)
             return sim
         }
