@@ -44,10 +44,13 @@ class XdrTestCase1IntegrationTest extends Specification {
     MockMvc mockMvcToolkit
     MockMvc mockMvcCheckTestCaseStatus
 
-    //Because we mock the user as user1 , twe are testing the test case 1 and the timestamp is fixed at 2014
+    //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
     static String id = "user1.1.2014"
     static String userId = "user1"
 
+    /*
+    Set up mockmvc with the necessary converter (json or xml)
+     */
     @Before
     public setup() {
         mockMvcRunTestCase = MockMvcBuilders.standaloneSetup(controller)
@@ -68,10 +71,10 @@ class XdrTestCase1IntegrationTest extends Specification {
 
     def "user succeeds in running test case 1"() throws Exception {
 
-        when: "receiving a postXml to run test case 1"
+        when: "receiving a request to run test case 1"
         MockHttpServletRequestBuilder getRequest = createEndpointRequest()
 
-        then: "we receive back a success message"
+        then: "we receive back a success message with the endpoints info"
 
         mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
@@ -99,7 +102,7 @@ class XdrTestCase1IntegrationTest extends Specification {
         assert step.xdrReportItems.get(0).report == "success"
 
 
-        when: "check the status of testcase 1"
+        when: "we check the status of testcase 1"
         MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
 
         then: "we receive back a success message"
@@ -109,6 +112,10 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content").value("SUCCESS"))
     }
+
+
+
+
 
 
     MockHttpServletRequestBuilder createEndpointRequest() {

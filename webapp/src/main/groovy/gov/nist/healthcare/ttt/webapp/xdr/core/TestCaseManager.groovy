@@ -74,7 +74,7 @@ class TestCaseManager {
             sim = receiver.createEndpoints(config)
         }
         catch(Exception e){
-            return new UserMessage(UserMessage.Status.ERROR, "unable to configure this test case" + e.getMessage())
+            return new UserMessage(UserMessage.Status.ERROR, "unable to configure this test case.\n" + e.getMessage())
         }
 
         //Config succeeded
@@ -100,7 +100,7 @@ class TestCaseManager {
         }
 
         //Now we can wait for receiving a message
-        String msg = "create new endpoint for test case ${tcId} with config : ${userInput}. Ready to receive message."
+        String msg = "successfully created new endpoints for test case ${tcId} with config : ${sim}. Ready to receive message."
         return new UserMessage(UserMessage.Status.SUCCESS, msg, sim)
     }
 
