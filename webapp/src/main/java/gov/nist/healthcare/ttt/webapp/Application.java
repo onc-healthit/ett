@@ -1,7 +1,5 @@
 package gov.nist.healthcare.ttt.webapp;
 
-import javax.servlet.Filter;
-
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
