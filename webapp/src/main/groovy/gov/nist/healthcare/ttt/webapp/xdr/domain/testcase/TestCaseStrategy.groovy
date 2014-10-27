@@ -9,11 +9,16 @@ import static org.slf4j.LoggerFactory.getLogger
 /**
  * Created by gerardin on 10/27/14.
  */
-abstract class TestCaseStrategy {
+ abstract class TestCaseStrategy {
 
     protected static Logger log = getLogger(TestCaseStrategy.class)
     protected TestCaseManager manager
     protected String id
+
+    public TestCaseStrategy(String id, TestCaseManager manager){
+         this.id = id
+         this.manager = manager
+     }
 
     public abstract UserMessage run(Object userInput, String username)
 

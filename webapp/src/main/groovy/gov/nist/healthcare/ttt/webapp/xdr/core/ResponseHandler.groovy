@@ -53,10 +53,10 @@ class ResponseHandler implements IObserver{
         reportRecord.report = report.status
         step.xdrReportItems.add(reportRecord)
 
+
+        //TODO we need to handle the validation report and change the status accordingly
+        //an update function is necessary
         db.xdrFacade.addNewReportItem(step.xdrTestStepID,reportRecord)
-
-
-
 
 
     }

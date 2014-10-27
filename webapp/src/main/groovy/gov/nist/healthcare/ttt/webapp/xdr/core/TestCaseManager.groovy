@@ -50,9 +50,9 @@ class TestCaseManager {
     public XDRRecordInterface.CriteriaMet checkTestCaseStatus(Object body) {
 
         XDRRecordInterface record = db.xdrFacade.getXDRRecordsByUsername("user1").last()
-        record.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
 
-        return XDRRecordInterface.CriteriaMet.PASSED
+
+        return record.criteriaMet
 
     }
 

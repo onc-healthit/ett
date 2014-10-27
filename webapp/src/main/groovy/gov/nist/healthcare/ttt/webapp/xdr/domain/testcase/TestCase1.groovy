@@ -15,8 +15,7 @@ class TestCase1 extends TestCaseStrategy{
     XDRSimulatorInterface sim
 
     TestCase1(String id, TestCaseManager manager){
-        this.id = id
-        this.manager = manager
+        super(id,manager)
     }
 
     @Override
@@ -33,7 +32,7 @@ class TestCase1 extends TestCaseStrategy{
         //Create steps for this test so execution can proceed
         // step 1 : receive and validate.
         XDRTestStepInterface step = new XDRTestStepImpl()
-        //TODO add test step name for description
+        step.name = "ttt has received a valid XDR message with limited metadata."
         step.xdrSimulator = sim
 
         //Create a new test record.

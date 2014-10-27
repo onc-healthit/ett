@@ -71,8 +71,6 @@ class XdrTestCaseController {
         //TODO enforce user must be authentified or run tests as anonymous?
         if (principal == null) {
             return new UserMessage(UserMessage.Status.ERROR, "user not identified")
-        } else {
-
         }
 
         XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus(body)
