@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.controller
 import com.wordnik.swagger.annotations.ApiOperation
+import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseStatus
@@ -68,8 +69,8 @@ class XdrTestCaseController {
 
         }
 
-        TestCaseStatus result = testCaseManager.checkTestCaseStatus(body)
+        XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus(body)
 
-        return new UserMessage<TestCaseStatus>(UserMessage.Status.SUCCESS,"result of this test",result)
+        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS,"result of this test",result)
     }
 }

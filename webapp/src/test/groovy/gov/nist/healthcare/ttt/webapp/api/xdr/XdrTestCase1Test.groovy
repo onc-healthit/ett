@@ -1,6 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.api.xdr
 import gov.nist.healthcare.ttt.database.jdbc.XDRFacade
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.time.FakeClock
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
@@ -9,7 +9,6 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
-import gov.nist.healthcare.ttt.xdr.domain.Message
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.test.web.servlet.MockMvc
@@ -45,20 +44,12 @@ class XdrTestCase1Test extends Specification{
 
         given: "a mock tk receiver that create a sim for this test case run"
             1 * receiver.createEndpoints(_) >> {
-                Message m = Mock(Message)
-                1 * m.success() >> {
-                    true
-                }
+                XDRSimulatorInterface sim = Mock(XDRSimulatorInterface)
+                sim.endpoint >> { "http://..." }
+                sim.endpointTLS >> {"https://..."}
+                sim.simulatorId >> {"user1.1.2014"}
 
-                m.content >> {
-                    def content = new XDRSimulatorImpl()
-                    content.endpoint = "http://..."
-                    content.endpointTLS = "https://..."
-                    content.simulatorId = "user1.1.2014"
-                    return content
-                }
-
-                return m
+                return sim
             }
 
         db.getXdrFacade() >> {
@@ -79,12 +70,6 @@ class XdrTestCase1Test extends Specification{
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
 
-        when : "notification of a message received arrived"
-            println "when a validation report arrived"
-
-        then : "check it is logged properly"
-
-            println "it is stored in the db (not tested here)"
     }
 
 
