@@ -2,7 +2,6 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseStatus
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
@@ -82,13 +81,18 @@ class TestCaseManager {
 
         // step 1 : receive and validate.
         XDRTestStepInterface step = new XDRTestStepImpl()
+
+        //TODO change for test step name
         step.setXdrTestStepID("tc1.step1")
+        
         step.setXdrSimulator(sim)
 
         //add step to the list of steps
         def steps = new LinkedList<XDRTestStepImpl>()
         steps.add(step)
         record.setTestSteps(steps)
+
+        record.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
 
         //persist this record
         try {
@@ -104,9 +108,13 @@ class TestCaseManager {
         return new UserMessage(UserMessage.Status.SUCCESS, msg, sim)
     }
 
-    public TestCaseStatus checkTestCaseStatus(Object body) {
+    //TODO implement. For now just return a bogus success message.
+    public XDRRecordInterface.CriteriaMet checkTestCaseStatus(Object body) {
 
-        return TestCaseStatus.SUCCESS
+        XDRRecordInterface record = db.xdrFacade.getXDRRecordsByUsername("user1").get(0)
+        record.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+
+        return XDRRecordInterface.CriteriaMet.PASSED
 
     }
 }

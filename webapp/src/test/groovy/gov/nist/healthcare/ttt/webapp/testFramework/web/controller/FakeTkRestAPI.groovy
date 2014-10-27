@@ -26,8 +26,8 @@ public class FakeTkRestAPI {
         return "<response>" +
                 "<status>ok</status>" +
                 "<simId>"+ id +"</simId>" +
-                "<endpoint>http://</endpoint>" +
-                "<endpointTLS>https://</endpointTLS>" +
+                "<endpoint>http://ttt.test.endpoint1</endpoint>" +
+                "<endpointTLS>https://ttt.test.endpoint2</endpointTLS>" +
                 "</response>"
     }
 

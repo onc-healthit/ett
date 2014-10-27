@@ -1,11 +1,12 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
-
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
 import gov.nist.healthcare.ttt.xdr.web.TkListener
 import org.junit.Before
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationContextLoader
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class XdrTestCase1IntegrationTest extends Specification {
 
+    Logger log = LoggerFactory.getLogger(this.class)
 
     @Autowired
     XdrTestCaseController controller
@@ -53,6 +55,9 @@ class XdrTestCase1IntegrationTest extends Specification {
      */
     @Before
     public setup() {
+
+        setupDb()
+
         mockMvcRunTestCase = MockMvcBuilders.standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
@@ -65,7 +70,6 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
     }
-
 
 
 
@@ -162,5 +166,20 @@ class XdrTestCase1IntegrationTest extends Specification {
     public static String checkStatus =
             """{
             }"""
+
+    def setupDb() {
+        createUserInDB()
+        db.xdrFacade.removeAllByUsername(userId)
+        log.info("db data fixture set up.")
+    }
+
+    public void createUserInDB() throws Exception {
+        if (!db.getDf().doesUsernameExist(userId)) {
+            db.getDf().addUsernamePassword(userId, "pass")
+        }
+        assert db.getDf().doesUsernameExist(userId)
+
+
+    }
 }
 
