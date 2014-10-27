@@ -84,8 +84,8 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.endpoint").value("http://"))
-                .andExpect(jsonPath("content.endpointTLS").value("https://"))
+                .andExpect(jsonPath("content.endpoint").value("http://ttt.test.endpoint1"))
+                .andExpect(jsonPath("content.endpointTLS").value("https://ttt.test.endpoint2"))
 
         when: "receiving a validation report from toolkit"
         MockHttpServletRequestBuilder getRequest2 = reportRequest()
@@ -97,8 +97,7 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andExpect(status().isOk())
                 .andReturn()
 
-        List<XDRRecordInterface> records = db.xdrFacade.getXDRRecordsBySimulatorId(id)
-        XDRRecordInterface rec = records.last()
+        XDRRecordInterface rec = db.xdrFacade.getXDRRecordBySimulatorId(id)
         def step = rec.getTestSteps().find {
             it.xdrSimulator.simulatorId == id
         }
@@ -114,7 +113,7 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content").value("SUCCESS"))
+                .andExpect(jsonPath("content").value("PASSED"))
     }
 
 
