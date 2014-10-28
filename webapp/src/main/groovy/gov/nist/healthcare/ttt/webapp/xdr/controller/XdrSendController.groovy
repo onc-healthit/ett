@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
  */
 
 @RestController
-@RequestMapping("/xdr/send")
+@RequestMapping("api/xdr/send")
 class XdrSendController {
 
     private final DatabaseInstance db

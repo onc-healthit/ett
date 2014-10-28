@@ -13,7 +13,7 @@ public class DatabaseInstance {
 	private DatabaseFacade df;
 	private LogFacade logFacade;
 
-    public XDRFacade xdrFacade;
+    private XDRFacade xdrFacade;
 
 	@Autowired
 	public DatabaseInstance(DatabaseData config) throws SQLException, DatabaseException {
@@ -44,4 +44,11 @@ public class DatabaseInstance {
 		this.logFacade = logFacade;
 	}
 
+    public XDRFacade getXdrFacade(){
+        return xdrFacade;
+    }
+
+    public void setXdrFacade(XDRFacade xdrFacade){
+        this.xdrFacade = xdrFacade;
+    }
 }

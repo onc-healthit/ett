@@ -26,4 +26,10 @@ class UserMessage<E> {
         this.status = s
         this.message = msg
     }
+
+    public UserMessage(Status s, String msg, E c){
+        this.status = s
+        this.message = msg
+        this.content= c
+    }
 }
