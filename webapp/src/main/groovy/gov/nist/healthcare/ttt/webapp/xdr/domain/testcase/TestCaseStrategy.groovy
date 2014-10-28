@@ -1,4 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
+
+import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
@@ -14,6 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger
     protected static Logger log = getLogger(TestCaseStrategy.class)
     protected TestCaseManager manager
     protected String id
+    protected static ObjectMapper mapper = new ObjectMapper()
 
     public TestCaseStrategy(String id, TestCaseManager manager){
          this.id = id

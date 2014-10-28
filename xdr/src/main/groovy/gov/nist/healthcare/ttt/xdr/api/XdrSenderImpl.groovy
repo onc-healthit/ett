@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.xdr.api
 
+import gov.nist.healthcare.ttt.xdr.domain.TkSendReport
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,7 +50,7 @@ class XdrSenderImpl implements XdrSender{
 
      */
     @Override
-    Object sendXdr(Object config) {
+    TkSendReport sendXdr(Object config) {
         def sendXdrMessage = sendXdrMessage(config)
         try {
             GPathResult r = restClient.postXml(sendXdrMessage, tkSendXdrUrl, timeout)
@@ -67,7 +68,14 @@ class XdrSenderImpl implements XdrSender{
         }
     }
 
-    def parseReport(GPathResult gPathResult) {}
+    def parseReport(GPathResult response) {
+        TkSendReport report = new TkSendReport()
+        report.test = response.Test.text()
+        report.status = response.Status.text()
+        report.result = response.Result.text()
+        report.inHeader = response.InHeader.text()
+        return report
+    }
 
     private def sendXdrMessage(Object config) {
         return {
