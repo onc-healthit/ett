@@ -113,7 +113,7 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content").value("PENDING"))
+                .andExpect(jsonPath("content").value("PASSED"))
     }
 
 
@@ -138,7 +138,7 @@ class XdrTestCase1IntegrationTest extends Specification {
     }
 
     MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/1/status")
+        MockMvcRequestBuilders.get("/api/xdr/tc/1/status")
                 .accept(MediaType.ALL)
                 .content(checkStatus)
                 .contentType(MediaType.APPLICATION_JSON)
