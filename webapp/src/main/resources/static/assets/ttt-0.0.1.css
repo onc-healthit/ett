@@ -1079,12 +1079,26 @@
   line-height: 1;
   /*margin-top: 20px;*/
 }
+.event-list > li > time > .refresh {
+  display: block;
+  font-size: 14pt;
+  font-weight: 500;
+  line-height: 1;
+  /*margin-top: 20px;*/
+}
 .event-list > li time > .month {
   display: block;
   font-size: 24pt;
   font-weight: 900;
   line-height: 1;
   margin-top: 43px;
+}
+.event-list > li time > .pending {
+  display: block;
+  font-size: 16pt;
+  font-weight: 900;
+  line-height: 1;
+  margin-top: 35px;
 }
 .event-list > li > img {
   width: 100%;
