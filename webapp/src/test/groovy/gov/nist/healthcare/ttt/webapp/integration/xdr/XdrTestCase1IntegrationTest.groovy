@@ -99,7 +99,7 @@ class XdrTestCase1IntegrationTest extends Specification {
 
         XDRRecordInterface rec = db.xdrFacade.getXDRRecordBySimulatorId(id)
         def step = rec.getTestSteps().find {
-            it.xdrSimulator.simulatorId == id
+            it.xdrSimulator?.simulatorId == id
         }
 
         assert step.xdrReportItems.get(0).report == "success"

@@ -60,15 +60,15 @@ class XdrTestCaseController {
     UserMessage<XDRRecordInterface.CriteriaMet> status(
             @PathVariable("id") String id, Principal principal) {
 
-
-        String username
-
         //TODO enforce user must be authentified or run tests as anonymous?
         if (principal == null) {
             return new UserMessage(UserMessage.Status.ERROR, "user not identified")
         }
 
-  //      XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus()
+        def tcid = id
+        def username = principal.getName()
+
+        XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus(username,tcid)
 
   //      return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", result)
 

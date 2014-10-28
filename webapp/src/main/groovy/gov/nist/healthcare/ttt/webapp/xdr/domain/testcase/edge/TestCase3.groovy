@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
 
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
@@ -8,6 +8,8 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
+
 /**
  * Created by gerardin on 10/27/14.
  */

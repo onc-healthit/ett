@@ -47,10 +47,10 @@ class TestCaseManager {
     }
 
     //TODO implement. For now just return a bogus success message.
-    public XDRRecordInterface.CriteriaMet checkTestCaseStatus() {
+    public XDRRecordInterface.CriteriaMet checkTestCaseStatus(String username, String tcid) {
 
-        XDRRecordInterface record = db.xdrFacade.getXDRRecordsByUsername("user1").last()
 
+        XDRRecordInterface record = db.xdrFacade.getLatestXDRRecordByUsernameTestCase(username,tcid)
 
         return record.criteriaMet
 
@@ -58,8 +58,22 @@ class TestCaseManager {
 
 
     def findTestCase(String id) {
-        Class c = Class.forName("gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase$id")
-        Constructor ctor = c.getDeclaredConstructor(String,TestCaseManager)
-        return ctor.newInstance(id,this)
+
+        Class c
+
+        try {
+            c = Class.forName("gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.TestCase$id")
+        }
+        catch(Exception e){
+            try{
+                c = Class.forName("gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.TestCase$id")
+            }
+            catch(Exception ex){
+                throw ex
+            }
+        }
+
+            Constructor ctor = c.getDeclaredConstructor(String,TestCaseManager)
+            return ctor.newInstance(id,this)
     }
 }
