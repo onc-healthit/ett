@@ -140,7 +140,6 @@ class XdrTestCase1IntegrationTest extends Specification {
     MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
         MockMvcRequestBuilders.get("/api/xdr/tc/1/status")
                 .accept(MediaType.ALL)
-                .content(checkStatus)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
@@ -161,10 +160,6 @@ class XdrTestCase1IntegrationTest extends Specification {
     <details>blabla</details>
 </report>
             """
-
-    public static String checkStatus =
-            """{
-            }"""
 
     def setupDb() {
         createUserInDB()

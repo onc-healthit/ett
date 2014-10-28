@@ -58,7 +58,7 @@ class XdrTestCaseController {
     @RequestMapping(value = "/{id}/status", method = RequestMethod.GET)
     @ResponseBody
     UserMessage<XDRRecordInterface.CriteriaMet> status(
-            @PathVariable("id") String id, @RequestBody Object body, Principal principal) {
+            @PathVariable("id") String id, Principal principal) {
 
 
         String username
@@ -68,7 +68,7 @@ class XdrTestCaseController {
             return new UserMessage(UserMessage.Status.ERROR, "user not identified")
         }
 
-        XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus(body)
+  //      XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus()
 
   //      return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", result)
 

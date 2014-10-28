@@ -47,7 +47,7 @@ class TestCaseManager {
     }
 
     //TODO implement. For now just return a bogus success message.
-    public XDRRecordInterface.CriteriaMet checkTestCaseStatus(Object body) {
+    public XDRRecordInterface.CriteriaMet checkTestCaseStatus() {
 
         XDRRecordInterface record = db.xdrFacade.getXDRRecordsByUsername("user1").last()
 
