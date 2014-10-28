@@ -29,7 +29,7 @@ class XdrTestCaseController {
     UserMessage<XDRSimulatorImpl> run(@PathVariable("id") String id, @RequestBody Object body, Principal principal) {
 
         //Check if we have implemented this test case
-        def testcase = null
+        def testcase
         try{
             testcase = testCaseManager.findTestCase(id)
         }

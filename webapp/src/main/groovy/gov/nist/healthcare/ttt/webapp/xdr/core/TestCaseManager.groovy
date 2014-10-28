@@ -29,11 +29,9 @@ class TestCaseManager {
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
     @Autowired
-    TestCaseManager(DatabaseInstance db, XdrReceiver receiver, ResponseHandler handler, XdrSender sender, Clock clock) {
+    TestCaseManager(DatabaseInstance db, XdrReceiver receiver, XdrSender sender, Clock clock) {
         this.db = db
         this.receiver = receiver
-        this.handler = handler
-        receiver.registerObserver(handler)
         this.sender = sender
         this.clock = clock
     }

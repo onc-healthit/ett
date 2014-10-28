@@ -31,7 +31,7 @@ class XdrTestCase1Test extends Specification{
     XdrSender sender = Mock(XdrSender)
     Clock clock = new FakeClock()
 
-    TestCaseManager manager = new TestCaseManager(db, receiver, handler, sender, clock)
+    TestCaseManager manager = new TestCaseManager(db, receiver, sender, clock)
 
     XdrTestCaseController tcController = new XdrTestCaseController(manager)
 

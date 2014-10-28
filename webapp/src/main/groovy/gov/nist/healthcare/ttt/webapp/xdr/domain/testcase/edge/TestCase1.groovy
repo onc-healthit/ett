@@ -8,13 +8,12 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
-
 /**
  * Created by gerardin on 10/27/14.
  */
-class TestCase1 extends TestCaseStrategy{
+final class TestCase1 extends TestCaseStrategy{
 
-    XDRSimulatorInterface sim
+
 
     TestCase1(String id, TestCaseManager manager){
         super(id,manager)
@@ -22,6 +21,8 @@ class TestCase1 extends TestCaseStrategy{
 
     @Override
     UserMessage run(Object userInput, String username) {
+
+        XDRSimulatorInterface sim
 
         try {
             sim = createEndpoints(username, userInput)

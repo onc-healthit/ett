@@ -13,7 +13,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
 /**
  * Created by gerardin on 10/27/14.
  */
-class TestCase3 extends TestCaseStrategy {
+final class TestCase3 extends TestCaseStrategy {
 
 
     TestCase3(String id, TestCaseManager manager){

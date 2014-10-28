@@ -1,9 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
-
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordImpl
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
-
 /**
  * Created by gerardin on 10/27/14.
  *
