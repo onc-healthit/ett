@@ -1,12 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
-
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
-import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
-import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
-import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,20 +15,13 @@ import java.lang.reflect.Constructor
 @Component
 class TestCaseManager {
 
-    private final DatabaseInstance db
-    private final XdrReceiver receiver
-    private final ResponseHandler handler
-    private final XdrSender sender
-    private final Clock clock
+    TestCaseExecutor executor
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
     @Autowired
-    TestCaseManager(DatabaseInstance db, XdrReceiver receiver, XdrSender sender, Clock clock) {
-        this.db = db
-        this.receiver = receiver
-        this.sender = sender
-        this.clock = clock
+    TestCaseManager(TestCaseExecutor executor){
+        this.executor = executor
     }
 
 
@@ -41,12 +29,17 @@ class TestCaseManager {
 
         log.info("running test case $testcase.id")
 
-        return testcase.run(userInput,username)
+        try {
+            return testcase.run(userInput, username)
+        }
+        catch(e){
+            e.printStackTrace()
+            return new UserMessage(UserMessage.Status.ERROR, e.getMessage(),e.getCause().getMessage())
+        }
     }
 
     //TODO implement. For now just return a bogus success message.
     public XDRRecordInterface.CriteriaMet checkTestCaseStatus(String username, String tcid) {
-
 
         XDRRecordInterface record = db.xdrFacade.getLatestXDRRecordByUsernameTestCase(username,tcid)
 
