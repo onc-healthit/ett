@@ -28,15 +28,6 @@ class XdrTestCaseController {
     @ResponseBody
     UserMessage<XDRSimulatorImpl> run(@PathVariable("id") String id, @RequestBody Object body, Principal principal) {
 
-        //Check if we have implemented this test case
-        def testcase
-        try{
-            testcase = testCaseManager.findTestCase(id)
-        }
-        catch (Exception) {
-            return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented")
-        }
-
         //User must be authenticated for this test case to be run
         String username
         //TODO enforce user must be authentified or run tests as anonymous?
@@ -49,7 +40,7 @@ class XdrTestCaseController {
         //We get the config from the client
         def config = body
 
-        testCaseManager.runTestCase(testcase, config, username)
+        testCaseManager.runTestCase(id, config, username)
 
     }
 

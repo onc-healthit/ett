@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRReportItemImpl
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
+import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
 import gov.nist.healthcare.ttt.xdr.domain.Message
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
@@ -13,13 +13,16 @@ import org.springframework.stereotype.Component
 @Component
 class ResponseHandler implements IObserver{
 
-
     private final TestCaseManager manager
+    private final XdrReceiver receiver
+    private final DatabaseProxy db
 
     @Autowired
-    public ResponseHandler(TestCaseManager manager){
+    public ResponseHandler(TestCaseManager manager, XdrReceiver receiver, DatabaseProxy db){
         this.manager = manager
-        manager.receiver.registerObserver(this)
+        this.receiver = receiver
+        this.db = db
+        receiver.registerObserver(this)
     }
 
     @Override
@@ -39,9 +42,13 @@ class ResponseHandler implements IObserver{
 
     private handle(TkValidationReport report){
 
+        String id = report.simId
+        println "handle report for simulator with simID : $id"
 
+        //TODO instead of making it unique, just return the last one (the current)
+        XDRRecordInterface rec = db.getXDRRecordBySimulatorId(id)
 
-        TestCaseStrategy testcase = manager.findTestCase(id)
-        testcase.notifyXdrReceive(rec,step,report)
+        TestCaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
+        testcase.notifyXdrReceive(rec, report)
     }
 }

@@ -16,21 +16,32 @@ import java.lang.reflect.Constructor
 class TestCaseManager {
 
     TestCaseExecutor executor
+    DatabaseProxy db
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
     @Autowired
-    TestCaseManager(TestCaseExecutor executor){
+    TestCaseManager(TestCaseExecutor executor, DatabaseProxy db){
         this.executor = executor
+        this.db = db
     }
 
 
-    public UserMessage<Object> runTestCase(TestCaseStrategy testcase, Object userInput, String username) {
+    public UserMessage<Object> runTestCase(String id, Object userInput, String username) {
 
-        log.info("running test case $testcase.id")
+        log.info("running test case $id")
+
+        //Check if we have implemented this test case
+        TestCaseStrategy testcase
+        try{
+            testcase = findTestCase(id)
+        }
+        catch (Exception) {
+            return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented")
+        }
 
         try {
-            return testcase.run(userInput, username)
+            return testcase.run(id, userInput, username)
         }
         catch(e){
             e.printStackTrace()
@@ -41,13 +52,14 @@ class TestCaseManager {
     //TODO implement. For now just return a bogus success message.
     public XDRRecordInterface.CriteriaMet checkTestCaseStatus(String username, String tcid) {
 
-        XDRRecordInterface record = db.xdrFacade.getLatestXDRRecordByUsernameTestCase(username,tcid)
+        XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username,tcid)
 
         return record.criteriaMet
 
     }
 
 
+    //TODO check if we want to rely on reflection or use spring for that matter
     def findTestCase(String id) {
 
         Class c
@@ -64,7 +76,7 @@ class TestCaseManager {
             }
         }
 
-            Constructor ctor = c.getDeclaredConstructor(String,TestCaseManager)
-            return ctor.newInstance(id,this)
+            Constructor ctor = c.getDeclaredConstructor(TestCaseExecutor)
+            return ctor.newInstance(executor)
     }
 }

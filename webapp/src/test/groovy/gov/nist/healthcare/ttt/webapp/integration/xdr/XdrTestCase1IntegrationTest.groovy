@@ -98,9 +98,10 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andReturn()
 
         XDRRecordInterface rec = db.xdrFacade.getXDRRecordBySimulatorId(id)
-        def step = rec.getTestSteps().find {
-            it.xdrSimulator?.simulatorId == id
+        def step = rec.testSteps.find{
+            it.name == "XDR_RECEIVE"
         }
+
 
         assert step.xdrReportItems.get(0).report == "success"
 
@@ -115,11 +116,6 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content").value("PASSED"))
     }
-
-
-
-
-
 
     MockHttpServletRequestBuilder createEndpointRequest() {
         MockMvcRequestBuilders.post("/api/xdr/tc/1/run")
