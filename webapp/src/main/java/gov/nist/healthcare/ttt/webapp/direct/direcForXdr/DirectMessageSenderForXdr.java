@@ -18,9 +18,15 @@ public class DirectMessageSenderForXdr {
 	// Used to get the ressources
 	private ListenerProcessor listener = new ListenerProcessor();
 	DirectMessageSender sender = new DirectMessageSender();
+	
+	private int port = 25;
 
 	public DirectMessageSenderForXdr() {
 
+	}
+	
+	public DirectMessageSenderForXdr(int port) {
+		this.port = port;
 	}
 
 	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress) throws Exception {
@@ -53,10 +59,18 @@ public class DirectMessageSenderForXdr {
 
 		MimeMessage msg = messageGenerator.generateMessage();
 
-		sender.send(25, messageGenerator.getTargetDomain(sutSmtpAddress),
+		sender.send(this.port, messageGenerator.getTargetDomain(sutSmtpAddress),
 				msg, "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain);
 		
 		return new DirectMessageInfoForXdr(msg.getMessageID(), "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain, msg.getReceivedDate(), "CCDA_Ambulatory.xml");
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }
