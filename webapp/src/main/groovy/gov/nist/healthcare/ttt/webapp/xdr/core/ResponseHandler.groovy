@@ -44,8 +44,7 @@ class ResponseHandler implements IObserver{
 
         String id = report.simId
         println "handle report for simulator with simID : $id"
-        List<XDRRecordInterface> records = db.xdrFacade.getXDRRecordsBySimulatorId(id)
-        XDRRecordInterface rec = records.last()
+        XDRRecordInterface rec = db.xdrFacade.getXDRRecordBySimulatorId(id)
         def step = rec.getTestSteps().find {
             it.xdrSimulator.simulatorId == id
         }
@@ -54,10 +53,10 @@ class ResponseHandler implements IObserver{
         reportRecord.report = report.status
         step.xdrReportItems.add(reportRecord)
 
+
+        //TODO we need to handle the validation report and change the status accordingly
+        //an update function is necessary
         db.xdrFacade.addNewReportItem(step.xdrTestStepID,reportRecord)
-
-
-
 
 
     }

@@ -47,7 +47,14 @@
         "sutRole": "receiver",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": []
+        "fields": [{
+            "label": "SUT Command in seconds",
+            "name": "sutCommandTimeoutInSeconds",
+            "datatype": "String",
+            "value": "sutCommandTimeoutInSeconds",
+            "readOnly": "false",
+            "display": "true"
+        }]
     }, {
         "name": "SMTP test 14",
         "id": 14,
@@ -55,14 +62,7 @@
         "sutRole": "sender",
         "sutHisp": "true",
         "sutEdge": "true",
-        "fields": [{
-            "label": "Example extra field",
-            "name": "extra",
-            "datatype": "String",
-            "value": "extra",
-            "readOnly": "false",
-            "display": "true"
-        }]
+        "fields": []
     }, {
         "name": "SMTP test 16",
         "id": 16,
