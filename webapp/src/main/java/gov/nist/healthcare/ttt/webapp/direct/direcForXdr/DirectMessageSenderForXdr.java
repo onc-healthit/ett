@@ -16,31 +16,21 @@ public class DirectMessageSenderForXdr {
 	private static Logger logger = Logger.getLogger(DirectMessageSenderForXdr.class.getName());
 
 	// Used to get the ressources
-	private ListenerProcessor listener = new ListenerProcessor();
-	DirectMessageSender sender = new DirectMessageSender();
-	
-	private int port = 25;
+	private static ListenerProcessor listener = new ListenerProcessor();
+	static DirectMessageSender sender = new DirectMessageSender();
 
-	public DirectMessageSenderForXdr() {
-
-	}
-	
-	public DirectMessageSenderForXdr(int port) {
-		this.port = port;
-	}
-
-	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress) throws Exception {
-		InputStream attachmentFile = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml");
-		return sendDirect(attachmentFile, sutSmtpAddress);
+	public static DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress, int port) throws Exception {
+		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml");
+		return sendDirect(attachmentFile, sutSmtpAddress, port);
 
 	}
 	
-	public DirectMessageInfoForXdr sendDirectWithXDMForXdr(String sutSmtpAddress) throws Exception {
-		InputStream attachmentFile = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip");
-		return sendDirect(attachmentFile, sutSmtpAddress);
+	public static DirectMessageInfoForXdr sendDirectWithXDMForXdr(String sutSmtpAddress, int port) throws Exception {
+		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip");
+		return sendDirect(attachmentFile, sutSmtpAddress, port);
 	}
 	
-	public DirectMessageInfoForXdr sendDirect(InputStream attachmentFile, String sutSmtpAddress) throws Exception {
+	public static DirectMessageInfoForXdr sendDirect(InputStream attachmentFile, String sutSmtpAddress, int port) throws Exception {
 		InputStream signingCert = listener.getPrivateCert("/signing-certificates/good/", ".p12");
 
 		String tttDomain = ApplicationPropertiesConfig.getConfig().getProperty("direct.listener.domainName");
@@ -59,18 +49,10 @@ public class DirectMessageSenderForXdr {
 
 		MimeMessage msg = messageGenerator.generateMessage();
 
-		sender.send(this.port, messageGenerator.getTargetDomain(sutSmtpAddress),
+		sender.send(port, messageGenerator.getTargetDomain(sutSmtpAddress),
 				msg, "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain);
 		
 		return new DirectMessageInfoForXdr(msg.getMessageID(), "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain, msg.getReceivedDate(), "CCDA_Ambulatory.xml");
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
 	}
 
 }
