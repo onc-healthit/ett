@@ -44,6 +44,9 @@ class TestCaseManager {
             return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented")
         }
 
+
+        //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet.
+
         try {
             return testcase.run(id, userInput, username)
         }

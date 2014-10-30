@@ -38,8 +38,8 @@ class DatabaseProxy {
     }
 
     //TODO check. Does it throw any kind of exception?
-    XDRRecordInterface getXDRRecordBySimulatorId(String id) {
-        instance.xdrFacade.getXDRRecordBySimulatorId(id)
+    XDRRecordInterface getLatestXDRRecordBySimulatorId(String id) {
+        instance.xdrFacade.getLatestXDRRecordBySimulatorId(id)
     }
 
 

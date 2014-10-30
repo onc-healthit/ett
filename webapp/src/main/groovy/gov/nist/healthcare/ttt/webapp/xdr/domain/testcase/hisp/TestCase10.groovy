@@ -26,5 +26,6 @@ class TestCase10 extends TestCaseStrategy{
         // receive xdr (we can have one endpoint or create multiple)
         // validate also the content to make sure it matches the direct message
 
+        
     }
 }

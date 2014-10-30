@@ -45,8 +45,7 @@ class ResponseHandler implements IObserver{
         String id = report.simId
         println "handle report for simulator with simID : $id"
 
-        //TODO instead of making it unique, just return the last one (the current)
-        XDRRecordInterface rec = db.getXDRRecordBySimulatorId(id)
+        XDRRecordInterface rec = db.getLatestXDRRecordBySimulatorId(id)
 
         TestCaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
         testcase.notifyXdrReceive(rec, report)
