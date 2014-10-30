@@ -23,8 +23,18 @@ public class DirectMessageSenderForXdr {
 
 	}
 
-	public boolean sendDirectForXdr(String sutSmtpAddress) throws Exception {
+	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress) throws Exception {
 		InputStream attachmentFile = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml");
+		return sendDirect(attachmentFile, sutSmtpAddress);
+
+	}
+	
+	public DirectMessageInfoForXdr sendDirectWithXDMForXdr(String sutSmtpAddress) throws Exception {
+		InputStream attachmentFile = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip");
+		return sendDirect(attachmentFile, sutSmtpAddress);
+	}
+	
+	public DirectMessageInfoForXdr sendDirect(InputStream attachmentFile, String sutSmtpAddress) throws Exception {
 		InputStream signingCert = listener.getPrivateCert("/signing-certificates/good/", ".p12");
 
 		String tttDomain = ApplicationPropertiesConfig.getConfig().getProperty("direct.listener.domainName");
@@ -43,9 +53,10 @@ public class DirectMessageSenderForXdr {
 
 		MimeMessage msg = messageGenerator.generateMessage();
 
-		return sender.send(25, messageGenerator.getTargetDomain(sutSmtpAddress),
+		sender.send(25, messageGenerator.getTargetDomain(sutSmtpAddress),
 				msg, "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain);
-
+		
+		return new DirectMessageInfoForXdr(msg.getMessageID(), "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain, msg.getReceivedDate(), "CCDA_Ambulatory.xml");
 	}
 
 }
