@@ -26,7 +26,7 @@ class XdrTestCaseController {
     @ApiOperation(value = "run a test case")
     @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
     @ResponseBody
-    UserMessage<XDRSimulatorImpl> run(@PathVariable("id") String id, @RequestBody Object body, Principal principal) {
+    UserMessage<XDRSimulatorImpl> run(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
 
         //User must be authenticated for this test case to be run
         String username

@@ -17,16 +17,16 @@ final class TestCase1 extends TestCaseStrategy {
     }
 
     @Override
-    UserMessage run(String tcid, Object userInput, String username) {
+    UserMessage run(String tcid, Map context, String username) {
 
-         XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, userInput)
+         XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
-        String msg = "successfully created new endpoints for test case ${tcid} with config : ${userInput}. Ready to receive message."
+        String msg = "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
         return new UserMessage(UserMessage.Status.SUCCESS, msg, step.xdrSimulator)
     }
 

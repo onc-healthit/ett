@@ -20,7 +20,7 @@ import static org.slf4j.LoggerFactory.getLogger
 
     protected static Logger log = getLogger(TestCaseStrategy.class)
 
-    public abstract UserMessage run(String tcid, Object userInput, String username)
+    public abstract UserMessage run(String tcid, Map context, String username)
 
     public UserMessage notifyXdrReceive(XDRRecordInterface record, TkValidationReport report){
         throw UnsupportedOperationException()

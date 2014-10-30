@@ -97,7 +97,7 @@ class XdrTestCase1IntegrationTest extends Specification {
                 .andExpect(status().isOk())
                 .andReturn()
 
-        XDRRecordInterface rec = db.xdrFacade.getXDRRecordBySimulatorId(id)
+        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordBySimulatorId(id)
         def step = rec.testSteps.find{
             it.name == "XDR_RECEIVE"
         }
