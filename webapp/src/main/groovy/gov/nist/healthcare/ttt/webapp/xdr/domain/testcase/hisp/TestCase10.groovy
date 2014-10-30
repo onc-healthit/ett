@@ -16,6 +16,10 @@ class TestCase10 extends TestCaseStrategy{
     @Override
     UserMessage run(String tcid, Object userInput, String username) {
 
+        //validate input
+        userInput.sutAddress = "antoine@localhost"
+        userInput.port = "12099"
+
         //TODO tc10
         // store record in db
         // sends a direct message (Needs to provide a message id for correlation)

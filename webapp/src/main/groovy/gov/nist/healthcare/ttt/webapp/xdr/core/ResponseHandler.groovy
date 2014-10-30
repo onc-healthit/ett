@@ -51,4 +51,6 @@ class ResponseHandler implements IObserver{
         TestCaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
         testcase.notifyXdrReceive(rec, report)
     }
+
+
 }

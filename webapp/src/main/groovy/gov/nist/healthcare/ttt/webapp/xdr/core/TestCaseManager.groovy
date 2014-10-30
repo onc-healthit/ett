@@ -5,6 +5,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 import java.lang.reflect.Constructor
@@ -19,6 +20,9 @@ class TestCaseManager {
     DatabaseProxy db
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
+
+    @Value('${direct.listener.port}')
+    String = directListenerPort
 
     @Autowired
     TestCaseManager(TestCaseExecutor executor, DatabaseProxy db){
