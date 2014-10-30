@@ -14,21 +14,21 @@ public class DirectMessageSenderForXdr {
 	private static Logger logger = Logger.getLogger(DirectMessageSenderForXdr.class.getName());
 
 	// Used to get the ressources
-	private static ListenerProcessor listener = new ListenerProcessor();
-	static DirectMessageSender sender = new DirectMessageSender();
+	private ListenerProcessor listener = new ListenerProcessor();
+	private DirectMessageSender sender = new DirectMessageSender();
 
-	public static DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress, int port) throws Exception {
+	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress, int port) throws Exception {
 		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml");
 		return sendDirect(attachmentFile, sutSmtpAddress, port);
 
 	}
 	
-	public static DirectMessageInfoForXdr sendDirectWithXDMForXdr(String sutSmtpAddress, int port) throws Exception {
+	public DirectMessageInfoForXdr sendDirectWithXDMForXdr(String sutSmtpAddress, int port) throws Exception {
 		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip");
 		return sendDirect(attachmentFile, sutSmtpAddress, port);
 	}
 	
-	public static DirectMessageInfoForXdr sendDirect(InputStream attachmentFile, String sutSmtpAddress, int port) throws Exception {
+	public DirectMessageInfoForXdr sendDirect(InputStream attachmentFile, String sutSmtpAddress, int port) throws Exception {
 		InputStream signingCert = listener.getPrivateCert("/signing-certificates/good/", ".p12");
 
 		String tttDomain = ApplicationPropertiesConfig.getConfig().getProperty("direct.listener.domainName");

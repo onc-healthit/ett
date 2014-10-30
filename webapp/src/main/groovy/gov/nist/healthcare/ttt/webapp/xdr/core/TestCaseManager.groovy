@@ -21,8 +21,11 @@ class TestCaseManager {
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
+    @Value('${direct.listener.domainName}')
+    String directListenerDomain
+
     @Value('${direct.listener.port}')
-    String directListenerPort
+    int directListenerPort
 
     @Autowired
     TestCaseManager(TestCaseExecutor executor, DatabaseProxy db){
@@ -42,9 +45,10 @@ class TestCaseManager {
 
             //TODO have an other context object rather than passing it with user input
             //prevent passing back unwanted info to user
-            
+
             //extra context info should be provided here
             userInput.directListenerPort = directListenerPort
+            userInput.directListenerDomain = directListenerDomain
         }
         catch (Exception) {
             return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented")

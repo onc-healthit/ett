@@ -17,11 +17,7 @@ class TestCase10 extends TestCaseStrategy{
     @Override
     UserMessage run(String tcid, Map context, String username) {
 
-        //validate input
-        context.sutAddress = "antoine@localhost"
-        context.port = "12099"
-
-        new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr()
+        new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.sutDirectAddress,context.sutDirectPort)
         
         //TODO tc10
         // store record in db
