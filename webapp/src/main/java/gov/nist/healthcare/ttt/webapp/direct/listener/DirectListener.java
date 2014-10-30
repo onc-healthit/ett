@@ -1,8 +1,10 @@
 package gov.nist.healthcare.ttt.webapp.direct.listener;
 
+import gov.nist.healthcare.ttt.webapp.common.config.ApplicationPropertiesConfig;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
 import org.apache.log4j.Logger;
+
 import javax.servlet.ServletContext;
 
 import java.io.*;
@@ -30,8 +32,8 @@ public class DirectListener implements Runnable {
 		this.db = db;
 		this.context = context;
 		try {
-			this.settings = getConfig();
-			this.port = Integer.parseInt(getConfig().getProperty("direct.listener.port"));
+			this.settings = ApplicationPropertiesConfig.getConfig();
+			this.port = Integer.parseInt(this.settings.getProperty("direct.listener.port"));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -67,18 +69,6 @@ public class DirectListener implements Runnable {
 			ioe.printStackTrace();
 		}
 	}
-    
-    public Properties getConfig() throws IOException {
-		Properties prop = new Properties();
-		String propFileName = "application.properties";
- 
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-		prop.load(inputStream);
-		if (inputStream == null) {
-			throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-		}
-		return prop;
-    }
 	
 	public void stopThreads() {
 		for(Thread t : threadsList) {
