@@ -15,6 +15,12 @@ class TestCase10 extends TestCaseStrategy{
 
     @Override
     UserMessage run(String tcid, Object userInput, String username) {
-        return null
+
+        //TODO tc10
+        // store record in db
+        // sends a direct message (Needs to provide a message id for correlation)
+        // receive xdr (we can have one endpoint or create multiple)
+        // validate also the content to make sure it matches the direct message
+
     }
 }

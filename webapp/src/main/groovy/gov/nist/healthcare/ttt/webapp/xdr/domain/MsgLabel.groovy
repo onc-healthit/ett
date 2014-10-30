@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
+package gov.nist.healthcare.ttt.webapp.xdr.domain
 
 /**
  * Created by gerardin on 10/29/14.

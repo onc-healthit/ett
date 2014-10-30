@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
@@ -47,9 +47,11 @@ class TestCaseExecutor {
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(report)
             step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+
+            return step
         }
         catch (e){
-            return new Exception(MsgLabel.SEND_XDR_FAILED.msg,e)
+            throw new Exception(MsgLabel.SEND_XDR_FAILED.msg,e)
         }
 
     }
