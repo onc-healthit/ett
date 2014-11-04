@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class TkListenerSpecTest extends Specification {
 
-    @Value('${xdr.tool.baseurl}')
+    @Value('${xdr.notification}')
     private String notificationUrl
 
     @Autowired

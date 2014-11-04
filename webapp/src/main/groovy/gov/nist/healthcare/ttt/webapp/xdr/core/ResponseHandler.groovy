@@ -44,11 +44,9 @@ class ResponseHandler implements IObserver{
     private handle(TkValidationReport report){
 
         String msgId = report.messageId
+        String unescapedMsgId = "<" + msgId + ">"
 
-        //TODO try to correlate with messageId.
-   //     XDRRecordInterface rec = db.getRecordByMessageId(id)
-        XDRRecordInterface rec = null
-
+        XDRRecordInterface rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
 
         //if not working, find with simulatorId
         if(rec != null) {

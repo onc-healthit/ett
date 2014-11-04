@@ -21,7 +21,7 @@ class TestCase10 extends TestCaseStrategy{
     @Override
     UserMessage run(String tcid, Map context, String username) {
 
-        DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.sutDirectAddress,context.sutDirectPort)
+        DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.sutDirectAddress, Integer.parseInt(context.sutDirectPort))
 
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.name = "SEND_DIRECT"
@@ -30,13 +30,14 @@ class TestCase10 extends TestCaseStrategy{
         step.xdrReportItems = new LinkedList<>()
 
         //TODO we need to store a info object
-        XDRReportItemInterface report = new XDRReportItemImpl().report = info.toString()
+        XDRReportItemInterface report = new XDRReportItemImpl()
+        report.report = info.messageId
         step.xdrReportItems.add(report)
 
         XDRRecordInterface record = new TestCaseBuilder(tcid,username).addStep(step).build()
         executor.db.addNewXdrRecord(record)
 
-        return new UserMessage(UserMessage.Status.SUCCESS,"direct message sent",info)
+        return new UserMessage(UserMessage.Status.SUCCESS,"direct message sent and response received",info)
     }
 
     @Override

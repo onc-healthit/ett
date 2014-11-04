@@ -1,9 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+
+import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
 import gov.nist.healthcare.ttt.xdr.web.TkListener
+import groovy.json.JsonSlurper
 import org.junit.Before
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,6 +18,7 @@ import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConvert
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -33,6 +36,8 @@ class XdrTestCase10IntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
+    ObjectMapper mapper = new ObjectMapper()
+
     @Autowired
     XdrTestCaseController controller
 
@@ -47,12 +52,12 @@ class XdrTestCase10IntegrationTest extends Specification {
     MockMvc mockMvcCheckTestCaseStatus
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
-    static String id = "user1.1.2014"
     static String userId = "user1"
 
     /*
     Set up mockmvc with the necessary converter (json or xml)
      */
+
     @Before
     public setup() {
 
@@ -72,41 +77,35 @@ class XdrTestCase10IntegrationTest extends Specification {
     }
 
 
+    def "user succeeds in running test case 10"() throws Exception {
 
-    def "user succeeds in running test case 1"() throws Exception {
+        when: "receiving a request to run test case 10"
+        MockHttpServletRequestBuilder getRequest = runTestcase10()
 
-        when: "receiving a request to run test case 1"
-        MockHttpServletRequestBuilder getRequest = createEndpointRequest()
+        then: "we receive a response that direct has been successfully sent"
 
-        then: "we receive back a success message with the endpoints info"
-
-        mockMvcRunTestCase.perform(getRequest)
+        MvcResult res = mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.endpoint").value("http://ttt.test.endpoint1"))
-                .andExpect(jsonPath("content.endpointTLS").value("https://ttt.test.endpoint2"))
+                .andReturn()
 
         when: "receiving a validation report from toolkit"
-        MockHttpServletRequestBuilder getRequest2 = reportRequest()
+        def response = res.response.contentAsString
+        def slurper = new JsonSlurper()
+        def result = slurper.parseText(response)
+        def id = result.content.messageId
 
-        then: "we store the validation in the database"
+        MockHttpServletRequestBuilder getRequest2 = reportRequest(id)
+
+        then: "toolkit receives an ok"
 
         mockMvcToolkit.perform(getRequest2)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
 
-        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordBySimulatorId(id)
-        def step = rec.testSteps.find{
-            it.name == "XDR_RECEIVE"
-        }
-
-
-        assert step.xdrReportItems.get(0).report == "success"
-
-
-        when: "we check the status of testcase 1"
+        when: "we check the status of testcase 10"
         MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
 
         then: "we receive back a success message"
@@ -117,24 +116,26 @@ class XdrTestCase10IntegrationTest extends Specification {
                 .andExpect(jsonPath("content").value("PASSED"))
     }
 
-    MockHttpServletRequestBuilder createEndpointRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/1/run")
+    MockHttpServletRequestBuilder runTestcase10() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/10/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
+    MockHttpServletRequestBuilder reportRequest(String id) {
 
-    MockHttpServletRequestBuilder reportRequest() {
+        String content = toolkitMockMessage(id)
+
         MockMvcRequestBuilders.post("/api/xdrNotification")
                 .accept(MediaType.ALL)
-                .content(toolkitMockMessage)
+                .content(content)
                 .contentType(MediaType.APPLICATION_XML)
     }
 
     MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
-        MockMvcRequestBuilders.get("/api/xdr/tc/1/status")
+        MockMvcRequestBuilders.get("/api/xdr/tc/10/status")
                 .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
@@ -142,20 +143,24 @@ class XdrTestCase10IntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "tc_config": {
-        "endpoint_url": "sut1.testlab1"
-    }
+                "sutDirectAddress" : "antoine@transport-testing.nist.gov",
+                "sutDirectPort" : "25"
 }"""
 
 
-    private static String toolkitMockMessage =
-            """
+    private String toolkitMockMessage(String id) {
+
+        def cleanedUpId = id.substring(1, id.length() - 1)
+
+        return """
 <report>
-    <simId>$id</simId>
+    <simulatorId>yo</simulatorId>
+    <messageId>$cleanedUpId</messageId>
     <status>success</status>
     <details>blabla</details>
 </report>
             """
+    }
 
     def setupDb() {
         createUserInDB()

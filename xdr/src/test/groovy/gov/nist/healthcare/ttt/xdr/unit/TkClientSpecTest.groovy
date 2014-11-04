@@ -17,7 +17,7 @@ import spock.lang.Specification
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class TkClientSpecTest extends Specification {
 
-    @Value('${xdr.tool.baseurl}')
+    @Value('${xdr.notification')
     private String notificationUrl
 
     @Autowired
