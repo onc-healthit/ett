@@ -24,8 +24,10 @@ public class TkListener {
 
     private static Logger log = LoggerFactory.getLogger(TkListener)
 
-    @Value('${xdr.tool.baseurl}')
+    //TODO @Antoine. should be used to configure the endpoint or at least to check config
+    @Value('${xdr.notification}')
     private String notificationUrl
+
 
     @Autowired
     XdrReceiver receiver
@@ -36,7 +38,7 @@ public class TkListener {
      */
     @RequestMapping(value = 'api/xdrNotification', consumes = "application/xml")
     @ResponseBody
-    public void receive(@RequestBody TkValidationReport body) {
+    public void receiveBySimulatorId(@RequestBody TkValidationReport body) {
 
         log.debug("receive a new validation report: $body")
 
@@ -44,6 +46,7 @@ public class TkListener {
 
         receiver.notifyObserver(m)
     }
+
 
     /**
      * Notify of a bad payload received.
@@ -55,6 +58,7 @@ public class TkListener {
         log.error("receive an invalid validation report. Bad payload rejected")
 
         def m = new Message<TkValidationReport>(Message.Status.ERROR,"new validation result received...")
+
         receiver.notifyObserver(m)
     }
 

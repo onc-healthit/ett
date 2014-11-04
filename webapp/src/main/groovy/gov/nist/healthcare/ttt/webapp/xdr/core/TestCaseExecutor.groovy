@@ -114,6 +114,20 @@ class TestCaseExecutor {
     }
 
 
+    def configureGlobalEndpoint(String name, Map params) {
+        EndpointConfig config = new EndpointConfig()
+        config.putAll(params)
+        config.name = name
+
+        log.info("trying to create new endpoints on toolkit...")
+
+        XDRSimulatorInterface sim = receiver.createEndpoints(config)
+
+        db.instance.xdrFacade.addNewSimulator(sim)
+
+        log.info("new global simulator has been created.")
+    }
+
 
 
 }

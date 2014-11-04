@@ -26,5 +26,10 @@ import static org.slf4j.LoggerFactory.getLogger
         throw UnsupportedOperationException()
     }
 
+     //TODO create
+//     public UserMessage notifyDirectReceive(DirectMessage record){
+//         throw UnsupportedOperationException()
+//     }
+
 
  }

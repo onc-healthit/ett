@@ -23,7 +23,8 @@ class TkValidationReport {
     @XmlElement
     String endpointTLS
 
-
+    @XmlElement
+    String messageId
 
 
 }
