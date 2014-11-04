@@ -17,7 +17,7 @@ class TestCase3 extends TestCaseStrategy {
 
     @Override
     UserMessage run(String tcid, Map context, String username) {
-            XDRTestStepInterface step = executor.executeSendXDRStep()
+            XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
             //Create a new test record.
             XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()

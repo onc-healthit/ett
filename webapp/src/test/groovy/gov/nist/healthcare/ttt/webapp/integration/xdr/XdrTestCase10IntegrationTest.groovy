@@ -1,5 +1,4 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
@@ -37,6 +36,11 @@ class XdrTestCase10IntegrationTest extends Specification {
     Logger log = LoggerFactory.getLogger(this.class)
 
     ObjectMapper mapper = new ObjectMapper()
+
+
+    //depends on the test performed. This pointing to the actual NIST tool
+    static String sutDirectAddress = "antoine@transport-testing.nist.gov"
+    static String sutDirectPort = "25"
 
     @Autowired
     XdrTestCaseController controller
@@ -143,8 +147,8 @@ class XdrTestCase10IntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-                "sutDirectAddress" : "antoine@transport-testing.nist.gov",
-                "sutDirectPort" : "25"
+                "sutDirectAddress" : $sutDirectAddress,
+                "sutDirectPort" : $sutDirectPort
 }"""
 
 

@@ -1,5 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
+import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
+import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
 import gov.nist.healthcare.ttt.xdr.web.TkListener
@@ -7,6 +9,7 @@ import org.junit.Before
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.http.MediaType
@@ -27,9 +30,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase3IntegrationTest extends Specification {
+class XdrTestCase13IntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
+
+    @Value('${direct.listener.domainName}')
+    String directListenerDomain
+
+    @Value('${direct.listener.port}')
+    int directListenerPort
 
     @Autowired
     XdrTestCaseController controller
@@ -65,21 +74,34 @@ class XdrTestCase3IntegrationTest extends Specification {
     def "user succeeds in running test case 3"() throws Exception {
 
         when: "receiving a request to run test case 3"
-        MockHttpServletRequestBuilder getRequest = sendXdrRequest()
+        MockHttpServletRequestBuilder runTestCase13 = runTestCase13()
 
         then: "we receive back a message with status and report of the transaction"
 
-        mockMvcRunTestCase.perform(getRequest)
+        mockMvcRunTestCase.perform(runTestCase13)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
+
+
+        when : "a direct message is sent to ttt"
+
+        DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr("antoine@$directListenerDomain", directListenerPort)
+
+        then: "ttt sent back a MDN"
+
+        when : "a user check the test status"
+
+
+
+        then : "we return the result of the direct validation"
     }
 
 
 
 
-    MockHttpServletRequestBuilder sendXdrRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/3/run")
+    MockHttpServletRequestBuilder runTestCase13() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/13/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +110,7 @@ class XdrTestCase3IntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "targetEndpoint": "https://example.com/xdr"
+    "targetEndpoint":"https://example.com/xdr"
 }"""
 
     def setupDb() {

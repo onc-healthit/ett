@@ -1,6 +1,8 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
+import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
+import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
@@ -26,6 +28,9 @@ class TestCaseExecutor {
 
     private static Logger log = LoggerFactory.getLogger(TestCaseExecutor.class)
 
+
+
+
     @Autowired
     TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, Clock clock) {
         this.db = db
@@ -34,11 +39,11 @@ class TestCaseExecutor {
         this.clock = clock
     }
 
-    protected XDRTestStepInterface executeSendXDRStep() {
+    protected XDRTestStepInterface executeSendXDRStep(Map context) {
 
         Object r
         try {
-            r  = sender.sendXdr()
+            r  = sender.sendXdr(context)
 
             String json = mapper.writeValueAsString(r)
             XDRReportItemInterface report = new XDRReportItemImpl()
@@ -54,6 +59,25 @@ class TestCaseExecutor {
             throw new Exception(MsgLabel.SEND_XDR_FAILED.msg,e)
         }
 
+    }
+
+
+    protected XDRTestStepInterface executeSendDirectStep(def context){
+
+        DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.sutDirectAddress, Integer.parseInt(context.sutDirectPort))
+
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "SEND_DIRECT"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        step.messageId = info.messageId
+        step.xdrReportItems = new LinkedList<>()
+
+        //TODO we need to store a info object
+        XDRReportItemInterface report = new XDRReportItemImpl()
+        report.report = info.messageId
+        step.xdrReportItems.add(report)
+
+        return step
     }
 
 

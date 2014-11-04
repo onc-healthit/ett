@@ -1,5 +1,4 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
-
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
@@ -7,13 +6,11 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 
 import java.lang.reflect.Constructor
-
 /**
  * Created by gerardin on 10/21/14.
  */
@@ -31,12 +28,6 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
     DatabaseProxy db
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
-
-    @Value('${direct.listener.domainName}')
-    String directListenerDomain
-
-    @Value('${direct.listener.port}')
-    int directListenerPort
 
     @Autowired
     TestCaseManager(TestCaseExecutor executor, DatabaseProxy db) {
@@ -62,13 +53,6 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         TestCaseStrategy testcase
         try {
             testcase = findTestCase(id)
-
-            //TODO have an other context object rather than passing it with user input
-            //prevent passing back unwanted info to user
-
-            //extra context info should be provided here
-            userInput.directListenerPort = directListenerPort
-            userInput.directListenerDomain = directListenerDomain
         }
         catch (Exception) {
             return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented")

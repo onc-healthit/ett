@@ -3,6 +3,8 @@ package gov.nist.healthcare.ttt.xdr.api
 import gov.nist.healthcare.ttt.xdr.domain.TkSendReport
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component
 @Component
 class XdrSenderImpl implements XdrSender{
 
+    Logger log = LoggerFactory.getLogger(XdrSender.class)
+
     @Autowired
     GroovyRestClient restClient
 
@@ -20,6 +24,9 @@ class XdrSenderImpl implements XdrSender{
 
     @Value('${toolkit.sendXdr.url}')
     private String tkSendXdrUrl
+
+    @Value('${toolkit.testName}')
+    private String testName
 
 
     /*
@@ -50,7 +57,10 @@ class XdrSenderImpl implements XdrSender{
 
      */
     @Override
-    TkSendReport sendXdr(Object config) {
+    TkSendReport sendXdr(Map config) {
+
+        log.debug("try to send xdr with config : $config")
+
         def sendXdrMessage = sendXdrMessage(config)
         try {
             GPathResult r = restClient.postXml(sendXdrMessage, tkSendXdrUrl, timeout)
@@ -80,10 +90,10 @@ class XdrSenderImpl implements XdrSender{
     private def sendXdrMessage(Object config) {
         return {
             TestClientRequest {
-                TestName("11696")
-                TargetEndpoint("https://example.com/xdr")
-                DirectAddressBlock("")
-                MessageId("xxxx")
+                TestName(testName)
+                TargetEndpoint(config.targetEndpoint)
+                DirectAddressBlock(config.addressBlock)
+                MessageId(config.messageId)
             }
         }
     }
