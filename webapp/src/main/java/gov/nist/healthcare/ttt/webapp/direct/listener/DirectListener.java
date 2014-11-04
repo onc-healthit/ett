@@ -43,6 +43,10 @@ public class DirectListener implements Runnable {
 
 	// Listen for incoming connections and handle them
 	public void run() {
+		if(this.port == 0) {
+			logger.info("Listener port is configured to 0 so the listener is not starting");
+			return;
+		}
 		logger.info("Starting listener on port: " + this.port);
 		int i = 0;
 

@@ -38,9 +38,11 @@ public class PartValidation {
 	private DirectSignatureValidator signatureValidator = new DirectSignatureValidator();
 	
 	private boolean wrapped;
+	private boolean hasError;
 	
 	public PartValidation(boolean wrapped) {
 		this.wrapped = wrapped;
+		this.hasError = false;
 	}
 	
 	public void processMainPart(PartModel part) throws Exception {
@@ -72,6 +74,10 @@ public class PartValidation {
 				this.processLeafPart(part);
 				convertLeafContentToBlob(part, p);
 			}
+		}
+		
+		if(!part.isStatus()) {
+			this.hasError = true;
 		}
 		
 		if(part.hasChild()) {
@@ -269,6 +275,14 @@ public class PartValidation {
 			res = res.split(";")[0];
 		}
 		return res;
+	}
+
+	public boolean isHasError() {
+		return hasError;
+	}
+
+	public void setHasError(boolean hasError) {
+		this.hasError = hasError;
 	}
 
 }

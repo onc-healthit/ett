@@ -2,11 +2,16 @@ package gov.nist.healthcare.ttt.webapp.direct.controller;
 
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException;
 import gov.nist.healthcare.ttt.database.log.LogInterface;
+import gov.nist.healthcare.ttt.database.log.LogInterface.Status;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException;
 import gov.nist.healthcare.ttt.webapp.direct.model.messageStatus.MessageStatusDetail;
 import gov.nist.healthcare.ttt.webapp.direct.model.messageStatus.MessageStatusList;
+
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -68,7 +74,16 @@ public class DirectMessageStatusController {
 		while(logIt.hasNext()) {
 			LogInterface tmpLog = logIt.next();
 			
-			tmpDetail.add(new MessageStatusDetail(getGoodAddressType(incoming, tmpLog), tmpLog.getMessageId(), tmpLog.getOrigDate(), "Success"));
+			// Check if MDN timed out
+			if(!tmpLog.getIncoming() && tmpLog.getStatus().equals(Status.WAITING)) {
+				DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss Z (zzz)");
+				DateTime dt = formatter.parseDateTime(tmpLog.getOrigDate());
+				dt = dt.plusMinutes(15);
+				if(dt.isBeforeNow()) {
+					tmpLog.setStatus(Status.TIMEOUT);
+				}
+			}
+			tmpDetail.add(new MessageStatusDetail(getGoodAddressType(incoming, tmpLog), tmpLog.getMessageId(), tmpLog.getOrigDate(), tmpLog.getStatus().toString()));
 		}
 		MessageStatusList tmpList = new MessageStatusList(convertAddressType(incoming), direct, tmpDetail);
 		
