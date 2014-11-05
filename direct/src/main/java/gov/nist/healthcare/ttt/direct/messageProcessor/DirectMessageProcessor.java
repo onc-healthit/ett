@@ -47,6 +47,7 @@ public class DirectMessageProcessor {
 	private PartModel mainPart;
 	private boolean wrapped;
 	private boolean isMdn;
+	private String originalMessageId;
 	
 	public DirectMessageProcessor() {
 		super();
@@ -159,6 +160,9 @@ public class DirectMessageProcessor {
 			} else if (p.isMimeType("message/disposition-notification")) {
 				this.isMdn = true;
 				this.logModel.setMdn(true);
+				ProcessMDN mdnProcessor = new ProcessMDN(p);
+				mdnProcessor.validate(currentlyProcessedPart);
+				this.setOriginalMessageId(mdnProcessor.getOriginalMessageId());
 				logger.debug("Processing part " + p.getContentType());
 			} else {
 
@@ -176,6 +180,8 @@ public class DirectMessageProcessor {
 							"",
 							"-",
 							gov.nist.healthcare.ttt.database.log.DetailInterface.Status.ERROR));
+			logger.error(e.getMessage());
+			e.printStackTrace();
 		}
 		
 		
@@ -333,4 +339,13 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 	public void setMdn(boolean isMdn) {
 		this.isMdn = isMdn;
 	}
+
+	public String getOriginalMessageId() {
+		return originalMessageId;
+	}
+
+	public void setOriginalMessageId(String originalMessageId) {
+		this.originalMessageId = originalMessageId;
+	}
+	
 }

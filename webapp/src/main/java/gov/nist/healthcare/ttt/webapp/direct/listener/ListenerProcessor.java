@@ -184,6 +184,9 @@ public class ListenerProcessor implements Runnable {
 			
 			// If it's an MDN update the status to MDN RECEIVED
 			if(processor.isMdn()) {
+				String originalMessageLogID = db.getLogFacade().getLogIDByMessageId(processor.getOriginalMessageId());
+				// TODO check if not timeout
+				logger.info("Updating MDN status to MDN_RECEIVED for message " + processor.getOriginalMessageId());
 				db.getLogFacade().updateStatus(processor.getOriginalMessageId(), Status.MDN_RECEIVED);
 			}
 
