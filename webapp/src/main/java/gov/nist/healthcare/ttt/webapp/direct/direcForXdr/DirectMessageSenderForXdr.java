@@ -4,10 +4,14 @@ import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.webapp.common.config.ApplicationPropertiesConfig;
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor;
-import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.mail.internet.MimeMessage;
-import java.io.InputStream;
+
+import org.apache.log4j.Logger;
 
 public class DirectMessageSenderForXdr {
 	
@@ -16,7 +20,9 @@ public class DirectMessageSenderForXdr {
 	// Used to get the ressources
 	private ListenerProcessor listener = new ListenerProcessor();
 	private DirectMessageSender sender = new DirectMessageSender();
-
+	private boolean dnsLookup = true;
+	private String encryptionCertPath;
+	
 	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress, int port) throws Exception {
 		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml");
 		return sendDirect(attachmentFile, sutSmtpAddress, port);
@@ -40,8 +46,13 @@ public class DirectMessageSenderForXdr {
 				true);
 
 		// Get encryption cert
-		logger.debug("Trying to fetch encryption cert by DNS Lookup");
-		InputStream encryptionCert = messageGenerator.getEncryptionCertByDnsLookup(sutSmtpAddress);
+		InputStream encryptionCert = null;
+		if(dnsLookup) {
+			logger.debug("Trying to fetch encryption cert by DNS Lookup");
+			encryptionCert = messageGenerator.getEncryptionCertByDnsLookup(sutSmtpAddress);
+		} else {
+			encryptionCert = new FileInputStream(new File(encryptionCertPath));
+		}
 
 		messageGenerator.setEncryptionCert(encryptionCert);
 
@@ -51,6 +62,22 @@ public class DirectMessageSenderForXdr {
 				msg, "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain);
 		
 		return new DirectMessageInfoForXdr(msg.getMessageID(), "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain, msg.getReceivedDate(), "CCDA_Ambulatory.xml");
+	}
+
+	public boolean isDnsLookup() {
+		return dnsLookup;
+	}
+
+	public void setDnsLookup(boolean dnsLookup) {
+		this.dnsLookup = dnsLookup;
+	}
+
+	public String getEncryptionCertPath() {
+		return encryptionCertPath;
+	}
+
+	public void setEncryptionCertPath(String encryptionCertPath) {
+		this.encryptionCertPath = encryptionCertPath;
 	}
 
 }

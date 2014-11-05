@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.model.logging;
 
 import gov.nist.healthcare.ttt.database.log.DetailInterface;
+import gov.nist.healthcare.ttt.database.log.DetailInterface.Status;
 import gov.nist.healthcare.ttt.database.log.PartImpl;
 import gov.nist.healthcare.ttt.database.log.PartInterface;
 
@@ -98,7 +99,7 @@ public class PartModel extends PartImpl implements PartInterface {
 
 	public void addNewDetailLine(DetailInterface detail) {
 		this.details.add(detail);
-		if(detail.getStatus().equals("ERROR")) {
+		if(detail.getStatus().equals(Status.ERROR)) {
 			this.status = false;
 		}
 	}

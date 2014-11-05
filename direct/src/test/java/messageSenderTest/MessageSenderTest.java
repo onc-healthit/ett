@@ -71,6 +71,9 @@ public class MessageSenderTest {
 				encryptionCert, messageInfo.isWrapped());
 
 		MimeMessage msg = messageGenerator.generateMessage();
+		
+		// To fail
+//		msg.setSender(new InternetAddress("test"));
 
 		// Log the outgoing message in the database
 //		LogModel outgoingMessage = new LogModel(msg);
