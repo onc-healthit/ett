@@ -5,6 +5,8 @@ import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.webapp.common.config.ApplicationPropertiesConfig;
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.mail.internet.MimeMessage;
@@ -18,7 +20,21 @@ public class DirectMessageSenderForXdr {
 	// Used to get the ressources
 	private ListenerProcessor listener = new ListenerProcessor();
 	private DirectMessageSender sender = new DirectMessageSender();
+	private boolean dnsLookup = true;
+	private String encryptionCertPath;
 
+	public DirectMessageInfoForXdr sendDirectWithCCDAForXdrNoDNSLookUp(String sutSmtpAddress, int port, String encryptionCertPath) throws Exception {
+		this.dnsLookup = false;
+		this.encryptionCertPath = encryptionCertPath;
+		return sendDirectWithCCDAForXdr(sutSmtpAddress, port);
+	}
+	
+	public DirectMessageInfoForXdr sendDirectWithXDMForXdrNoDNSLookUp(String sutSmtpAddress, int port, String encryptionCertPath) throws Exception {
+		this.dnsLookup = false;
+		this.encryptionCertPath = encryptionCertPath;
+		return sendDirectWithXDMForXdr(sutSmtpAddress, port);
+	}
+	
 	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress, int port) throws Exception {
 		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml");
 		return sendDirect(attachmentFile, sutSmtpAddress, port);
@@ -42,8 +58,13 @@ public class DirectMessageSenderForXdr {
 				true);
 
 		// Get encryption cert
-		logger.debug("Trying to fetch encryption cert by DNS Lookup");
-		InputStream encryptionCert = messageGenerator.getEncryptionCertByDnsLookup(sutSmtpAddress);
+		InputStream encryptionCert = null;
+		if(dnsLookup) {
+			logger.debug("Trying to fetch encryption cert by DNS Lookup");
+			encryptionCert = messageGenerator.getEncryptionCertByDnsLookup(sutSmtpAddress);
+		} else {
+			encryptionCert = new FileInputStream(new File(encryptionCertPath));
+		}
 
 		messageGenerator.setEncryptionCert(encryptionCert);
 

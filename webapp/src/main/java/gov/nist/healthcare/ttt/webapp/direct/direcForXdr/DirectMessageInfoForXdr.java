@@ -8,16 +8,16 @@ public class DirectMessageInfoForXdr {
 	private String from;
 	private String to;
 	private Date date;
-	private String attachementName;
+	private String attachmentName;
 	
 	public DirectMessageInfoForXdr(String messageId, String from, String to,
-			Date date, String attachementName) {
+			Date date, String attachmentName) {
 		super();
 		this.messageId = messageId;
 		this.from = from;
 		this.to = to;
 		this.date = date;
-		this.attachementName = attachementName;
+		this.attachmentName = attachmentName;
 	}
 
 	public String getMessageId() {
@@ -52,12 +52,12 @@ public class DirectMessageInfoForXdr {
 		this.date = date;
 	}
 
-	public String getAttachementName() {
-		return attachementName;
+	public String getAttachmentName() {
+		return attachmentName;
 	}
 
-	public void setAttachementName(String attachementName) {
-		this.attachementName = attachementName;
+	public void setAttachmentName(String attachmentName) {
+		this.attachmentName = attachmentName;
 	}
 
 }
