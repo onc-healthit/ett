@@ -66,7 +66,7 @@ public class DirectMessageStatusController {
 		return logList;
 	}
 	
-	public MessageStatusList convertLog(boolean incoming, String direct, Collection<LogInterface> logList) {
+	public MessageStatusList convertLog(boolean incoming, String direct, Collection<LogInterface> logList) throws DatabaseException {
 		Iterator<LogInterface> logIt = logList.iterator();
 		
 		Collection<MessageStatusDetail> tmpDetail = new ArrayList<MessageStatusDetail>();
@@ -81,6 +81,7 @@ public class DirectMessageStatusController {
 				dt = dt.plusMinutes(15);
 				if(dt.isBeforeNow()) {
 					tmpLog.setStatus(Status.TIMEOUT);
+					db.getLogFacade().updateStatus(tmpLog.getMessageId(), Status.TIMEOUT);
 				}
 			}
 			tmpDetail.add(new MessageStatusDetail(getGoodAddressType(incoming, tmpLog), tmpLog.getMessageId(), tmpLog.getOrigDate(), tmpLog.getStatus().toString()));
