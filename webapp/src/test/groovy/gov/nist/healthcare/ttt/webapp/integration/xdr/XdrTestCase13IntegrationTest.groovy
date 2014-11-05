@@ -144,6 +144,7 @@ class XdrTestCase13IntegrationTest extends Specification {
     public void createUserInDB() throws Exception {
         if (!db.getDf().doesUsernameExist(userId)) {
             db.getDf().addUsernamePassword(userId, "pass")
+
         }
         assert db.getDf().doesUsernameExist(userId)
 

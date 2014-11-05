@@ -5,10 +5,10 @@ import org.springframework.context.annotation.ComponentScan
 
 @ComponentScan("gov.nist.healthcare.ttt.fakeToolkit")
 @EnableAutoConfiguration
-public class Application {
+public class FakeToolkitApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args)
+        SpringApplication.run(FakeToolkitApplication.class, args)
 
     }
 
