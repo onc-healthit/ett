@@ -22,18 +22,6 @@ public class DirectMessageSenderForXdr {
 	private DirectMessageSender sender = new DirectMessageSender();
 	private boolean dnsLookup = true;
 	private String encryptionCertPath;
-
-	public DirectMessageInfoForXdr sendDirectWithCCDAForXdrNoDNSLookUp(String sutSmtpAddress, int port, String encryptionCertPath) throws Exception {
-		this.dnsLookup = false;
-		this.encryptionCertPath = encryptionCertPath;
-		return sendDirectWithCCDAForXdr(sutSmtpAddress, port);
-	}
-	
-	public DirectMessageInfoForXdr sendDirectWithXDMForXdrNoDNSLookUp(String sutSmtpAddress, int port, String encryptionCertPath) throws Exception {
-		this.dnsLookup = false;
-		this.encryptionCertPath = encryptionCertPath;
-		return sendDirectWithXDMForXdr(sutSmtpAddress, port);
-	}
 	
 	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress, int port) throws Exception {
 		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml");
@@ -74,6 +62,22 @@ public class DirectMessageSenderForXdr {
 				msg, "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain);
 		
 		return new DirectMessageInfoForXdr(msg.getMessageID(), "directFrom4Xdr@" + tttDomain, "directTo4Xdr@" + tttDomain, msg.getReceivedDate(), "CCDA_Ambulatory.xml");
+	}
+
+	public boolean isDnsLookup() {
+		return dnsLookup;
+	}
+
+	public void setDnsLookup(boolean dnsLookup) {
+		this.dnsLookup = dnsLookup;
+	}
+
+	public String getEncryptionCertPath() {
+		return encryptionCertPath;
+	}
+
+	public void setEncryptionCertPath(String encryptionCertPath) {
+		this.encryptionCertPath = encryptionCertPath;
 	}
 
 }
