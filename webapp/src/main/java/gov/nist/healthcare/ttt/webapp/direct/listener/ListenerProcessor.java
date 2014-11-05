@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.direct.listener;
 
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException;
+import gov.nist.healthcare.ttt.database.log.LogInterface.Status;
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
@@ -88,7 +89,7 @@ public class ListenerProcessor implements Runnable {
 
 		// Valid Direct (From) addr?
 		try {
-			if (!db.getDf().isDirectMappedToAUsername(directFrom)) {
+			if (!db.getDf().doesDirectExist(directFrom)) {
 				// looks like spam - unregistered direct (from) Addr
 				logger.error("Throw away message from " + directFrom
 						+ " not a registered Direct (From) email account name");
@@ -179,6 +180,11 @@ public class ListenerProcessor implements Runnable {
 				logger.error("Error trying to log in the database "
 						+ e.getMessage());
 				e.printStackTrace();
+			}
+			
+			// If it's an MDN update the status to MDN RECEIVED
+			if(processor.isMdn()) {
+				db.getLogFacade().updateStatus(processor.getOriginalMessageId(), Status.MDN_RECEIVED);
 			}
 
 			logger.info("Message Validation Complete");
