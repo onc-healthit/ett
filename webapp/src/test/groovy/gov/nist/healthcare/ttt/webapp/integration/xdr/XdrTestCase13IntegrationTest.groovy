@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
-import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
+import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdrNoLookUp
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
 import gov.nist.healthcare.ttt.xdr.web.TkListener
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationContextLoader
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.test.context.ContextConfiguration
@@ -55,6 +56,7 @@ class XdrTestCase13IntegrationTest extends Specification {
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
     static String id = "user1.1.2014"
     static String userId = "user1"
+    static String tcid = "13"
 
     /*
     Set up mockmvc with the necessary converter (json or xml)
@@ -62,7 +64,7 @@ class XdrTestCase13IntegrationTest extends Specification {
     @Before
     public setup() {
 
-        setupDb()
+        setupDbForDirectTesting()
 
         mockMvcRunTestCase = MockMvcBuilders.standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
@@ -71,9 +73,9 @@ class XdrTestCase13IntegrationTest extends Specification {
 
 
 
-    def "user succeeds in running test case 3"() throws Exception {
+    def "user succeeds in running test case 13"() throws Exception {
 
-        when: "receiving a request to run test case 3"
+        when: "receiving a request to run test case $tcid"
         MockHttpServletRequestBuilder runTestCase13 = runTestCase13()
 
         then: "we receive back a message with status and report of the transaction"
@@ -85,37 +87,57 @@ class XdrTestCase13IntegrationTest extends Specification {
 
 
         when : "a direct message is sent to ttt"
-
-        DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr("antoine@$directListenerDomain", directListenerPort)
+        File cert = new ClassPathResource("directCert/testCert.der").getFile()
+        DirectMessageInfoForXdr info = new DirectMessageSenderForXdrNoLookUp().sendDirectWithCCDAForXdrNoDNSLookUp("antoine@$directListenerDomain", directListenerPort,cert.absolutePath)
 
         then: "ttt sent back a MDN"
+        String logId = db.logFacade.getLogIDByMessageId(info.getMessageId())
+        assert logId
+
+        println logId
+
+        //This is not tested! How to get back the MDN?
 
         when : "a user check the test status"
+        MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
 
+        then : "we return the result of the direct validation which is successful"
+        mockMvcRunTestCase.perform(getRequest3)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content").value("PASSED"))
 
-
-        then : "we return the result of the direct validation"
     }
 
 
 
 
     MockHttpServletRequestBuilder runTestCase13() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/13/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/$tcid/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
+    MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
+        MockMvcRequestBuilders.get("/api/xdr/tc/$tcid/status")
+                .accept(MediaType.ALL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl(userId))
+    }
+
+
     public static String testCaseConfig =
             """{
     "targetEndpoint":"https://example.com/xdr"
 }"""
 
-    def setupDb() {
+    def setupDbForDirectTesting() {
         createUserInDB()
         db.xdrFacade.removeAllByUsername(userId)
+        db.df.addNewDirectEmail("directfrom4xdr@localhost")
         log.info("db data fixture set up.")
     }
 
