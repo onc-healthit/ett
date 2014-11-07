@@ -17,7 +17,7 @@ import org.bouncycastle.util.encoders.Base64;
 public class MDNSenderTest {
 public static void main(String args[]) throws Exception {
 	
-		String messageId = "<712521145.1.1415131244305.JavaMail.jnp3@P854708>";
+		String messageId = "<2089499608.1.1415378903537.JavaMail.jnp3@P854708>";
 		
 		SendDirectMessage messageInfo = new SendDirectMessage();
 		messageInfo.setAttachmentFile("CCDA_Inpatient.xml");

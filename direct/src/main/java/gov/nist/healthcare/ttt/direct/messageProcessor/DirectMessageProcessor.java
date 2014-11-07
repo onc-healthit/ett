@@ -163,6 +163,7 @@ public class DirectMessageProcessor {
 				ProcessMDN mdnProcessor = new ProcessMDN(p);
 				mdnProcessor.validate(currentlyProcessedPart);
 				this.setOriginalMessageId(mdnProcessor.getOriginalMessageId());
+				this.logModel.setOriginalMessageId(mdnProcessor.getOriginalMessageId());
 				logger.debug("Processing part " + p.getContentType());
 			} else {
 

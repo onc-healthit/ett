@@ -28,6 +28,21 @@ public class MessageStatusDetail extends LogImpl implements LogInterface {
 		this.b_messageID = log.getMessageId();
 		this.c_time = log.getOrigDate();
 		this.d_status = log.getStatus().toString();
+		this.setContentDisposition(log.getContentDisposition());
+		this.setFromLine(log.getFromLine());
+		this.setIncoming(log.getIncoming());
+		this.setLogID(log.getLogID());
+		this.setMdn(log.isMdn());
+		this.setMessageId(log.getMessageId());
+		this.setMimeVersion(log.getMimeVersion());
+		this.setOrigDate(log.getOrigDate());
+		this.setOriginalMessageId(log.getOriginalMessageId());
+		this.setReceived(log.getReceived());
+		this.setReplyTo(log.getReplyTo());
+		this.setStatus(log.getStatus());
+		this.setSubject(log.getSubject());
+		this.setTimestamp(log.getTimestamp());
+		this.setToLine(log.getToLine());
 	}
 
 	public String getA_from() {
