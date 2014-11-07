@@ -1,6 +1,9 @@
 package gov.nist.healthcare.ttt.webapp.direct.model.messageStatus;
 
-public class MessageStatusDetail {
+import gov.nist.healthcare.ttt.database.log.LogImpl;
+import gov.nist.healthcare.ttt.database.log.LogInterface;
+
+public class MessageStatusDetail extends LogImpl implements LogInterface {
 	
 	private String a_address;
 	private String b_messageID;
@@ -14,6 +17,17 @@ public class MessageStatusDetail {
 		this.b_messageID = b_messageID;
 		this.c_time = c_time;
 		this.d_status = d_status;
+	}
+	
+	public MessageStatusDetail(LogInterface log) {
+		if(log.getIncoming()) {
+			this.a_address = log.getToLine().iterator().next();
+		} else {
+			this.a_address = log.getFromLine().iterator().next();
+		}
+		this.b_messageID = log.getMessageId();
+		this.c_time = log.getOrigDate();
+		this.d_status = log.getStatus().toString();
 	}
 
 	public String getA_from() {
@@ -46,6 +60,6 @@ public class MessageStatusDetail {
 
 	public void setD_status(String d_status) {
 		this.d_status = d_status;
-	}	
+	}
 
 }

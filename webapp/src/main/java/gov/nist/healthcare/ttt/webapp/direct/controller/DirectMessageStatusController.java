@@ -37,9 +37,20 @@ public class DirectMessageStatusController {
 	private DatabaseInstance db;
 	
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody Collection<MessageStatusList> getAllLogsForUser(HttpServletRequest request) throws IOException, DatabaseException, TTTCustomException {
+	@RequestMapping(value = "/outgoing", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody Collection<MessageStatusList> getAllOutgoingLogsForUser(HttpServletRequest request) throws IOException, DatabaseException, TTTCustomException {
 
+		return getLogs(false, request);
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value = "/incoming", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody Collection<MessageStatusList> getAllIncomingLogsForUser(HttpServletRequest request) throws IOException, DatabaseException, TTTCustomException {
+		
+		return getLogs(true, request);
+	}
+	
+	public Collection<MessageStatusList> getLogs(boolean incoming, HttpServletRequest request) throws TTTCustomException, DatabaseException {
 		String username = "";
 		Collection<MessageStatusList> logList = new ArrayList<MessageStatusList>();
 		
@@ -57,10 +68,11 @@ public class DirectMessageStatusController {
 		Iterator<String> it = directList.iterator();
 		while(it.hasNext()) {
 			String direct = it.next();
-			
-			
-			logList.add(convertLog(false, direct, db.getLogFacade().getOutgoingByToLine(direct)));
-			logList.add(convertLog(true, direct, db.getLogFacade().getIncomingByFromLine(direct)));
+			if(incoming) {
+				logList.add(convertLog(true, direct, db.getLogFacade().getIncomingByFromLine(direct)));
+			} else {
+				logList.add(convertLog(false, direct, db.getLogFacade().getOutgoingByToLine(direct)));
+			}		
 		}
 			
 		return logList;
@@ -69,22 +81,25 @@ public class DirectMessageStatusController {
 	public MessageStatusList convertLog(boolean incoming, String direct, Collection<LogInterface> logList) throws DatabaseException {
 		Iterator<LogInterface> logIt = logList.iterator();
 		
-		Collection<MessageStatusDetail> tmpDetail = new ArrayList<MessageStatusDetail>();
+		Collection<LogInterface> tmpDetail = new ArrayList<LogInterface>();
 		
 		while(logIt.hasNext()) {
 			LogInterface tmpLog = logIt.next();
 			
-			// Check if MDN timed out
-			if(!tmpLog.getIncoming() && tmpLog.getStatus().equals(Status.WAITING)) {
-				DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss Z (zzz)");
-				DateTime dt = formatter.parseDateTime(tmpLog.getOrigDate());
-				dt = dt.plusMinutes(15);
-				if(dt.isBeforeNow()) {
-					tmpLog.setStatus(Status.TIMEOUT);
-					db.getLogFacade().updateStatus(tmpLog.getMessageId(), Status.TIMEOUT);
+			if(!tmpLog.isMdn()) {
+				// Check if MDN timed out
+				if(!tmpLog.getIncoming() && tmpLog.getStatus().equals(Status.WAITING)) {
+					DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss Z (zzz)");
+					DateTime dt = formatter.parseDateTime(tmpLog.getOrigDate());
+					dt = dt.plusMinutes(15);
+					if(dt.isBeforeNow()) {
+						tmpLog.setStatus(Status.TIMEOUT);
+						db.getLogFacade().updateStatus(tmpLog.getMessageId(), Status.TIMEOUT);
+					}
 				}
+				MessageStatusDetail tmpStatusDetail = new MessageStatusDetail(tmpLog);
+				tmpDetail.add(tmpStatusDetail);
 			}
-			tmpDetail.add(new MessageStatusDetail(getGoodAddressType(incoming, tmpLog), tmpLog.getMessageId(), tmpLog.getOrigDate(), tmpLog.getStatus().toString()));
 		}
 		MessageStatusList tmpList = new MessageStatusList(convertAddressType(incoming), direct, tmpDetail);
 		

@@ -184,10 +184,13 @@ public class ListenerProcessor implements Runnable {
 			
 			// If it's an MDN update the status to MDN RECEIVED
 			if(processor.isMdn()) {
-				String originalMessageLogID = db.getLogFacade().getLogIDByMessageId(processor.getOriginalMessageId());
-				// TODO check if not timeout
-				logger.info("Updating MDN status to MDN_RECEIVED for message " + processor.getOriginalMessageId());
-				db.getLogFacade().updateStatus(processor.getOriginalMessageId(), Status.MDN_RECEIVED);
+				// Check if message not already timed out
+				if(db.getLogFacade().getLogByMessageId(processor.getOriginalMessageId()).getStatus().equals(Status.WAITING)) {
+					logger.info("Updating MDN status to MDN_RECEIVED for message " + processor.getOriginalMessageId());
+					db.getLogFacade().updateStatus(processor.getOriginalMessageId(), Status.MDN_RECEIVED);
+				} else {
+					logger.info("Not Updating MDN status because message already timed out " + processor.getOriginalMessageId());
+				}
 			}
 
 			logger.info("Message Validation Complete");
@@ -195,11 +198,11 @@ public class ListenerProcessor implements Runnable {
 			// Log line for the stats
 			if (directTo != null) {
 				String docType;
-				// if(isMDN) {
-				// docType = "mdn";
-				// } else {
-				docType = getCcdaType(directTo.get(0));
-				// }
+				 if(processor.isMdn()) {
+					 docType = "mdn";
+				 } else {
+					 docType = getCcdaType(directTo.get(0));
+				 }
 				SimpleDateFormat dateFormat = new SimpleDateFormat(
 						"dd/MMM/yyyy:hh:mm:ss Z"); // Date format
 				String statLog = "|" + logHostname + " - - ["

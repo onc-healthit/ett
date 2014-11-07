@@ -1,16 +1,18 @@
 package gov.nist.healthcare.ttt.webapp.direct.model.messageStatus;
 
+import gov.nist.healthcare.ttt.database.log.LogInterface;
+
 import java.util.Collection;
 
 public class MessageStatusList {
 	
 	private String type;
 	private String directAddress;
-	private Collection<MessageStatusDetail> logList;
+	private Collection<LogInterface> logList;
 	
 	
 	public MessageStatusList(String type, String directAddress,
-			Collection<MessageStatusDetail> logList) {
+			Collection<LogInterface> logList) {
 		super();
 		this.type = type;
 		this.directAddress = directAddress;
@@ -37,13 +39,12 @@ public class MessageStatusList {
 		this.directAddress = directAddress;
 	}
 
-
-	public Collection<MessageStatusDetail> getLogList() {
+	public Collection<LogInterface> getLogList() {
 		return logList;
 	}
 
 
-	public void setLogList(Collection<MessageStatusDetail> logList) {
+	public void setLogList(Collection<LogInterface> logList) {
 		this.logList = logList;
 	}
 
