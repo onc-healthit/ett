@@ -2,24 +2,29 @@ package gov.nist.healthcare.ttt.webapp;
 
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.plugin.EnableSwagger;
-import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
-
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
 import gov.nist.healthcare.ttt.webapp.direct.listener.DirectListenerServlet;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.catalina.connector.Connector;
+import org.apache.catalina.valves.AccessLogValve;
+import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.io.File;
+import java.io.IOException;
 
 @EnableWebMvcSecurity
 @EnableAutoConfiguration
@@ -55,15 +60,15 @@ public class Application {
      */
     private SpringSwaggerConfig springSwaggerConfig;
 
-    @Autowired
-    public void setSpringSwaggerConfig(SpringSwaggerConfig springSwaggerConfig) {
-        this.springSwaggerConfig = springSwaggerConfig;
-    }
-
-    @Bean //Don't forget the @Bean annotation
-    public SwaggerSpringMvcPlugin customImplementation() {
-        return new SwaggerSpringMvcPlugin(this.springSwaggerConfig);
-    }
+//    @Autowired
+//    public void setSpringSwaggerConfig(SpringSwaggerConfig springSwaggerConfig) {
+//        this.springSwaggerConfig = springSwaggerConfig;
+//    }
+//
+//    @Bean //Don't forget the @Bean annotation
+//    public SwaggerSpringMvcPlugin customImplementation() {
+//        return new SwaggerSpringMvcPlugin(this.springSwaggerConfig);
+//    }
 
 
     /*
@@ -82,6 +87,37 @@ public class Application {
         };
     }
 
+
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+        tomcat.addAdditionalTomcatConnectors(createSslConnector());
+        tomcat.addContextValves(new AccessLogValve());
+        return tomcat;
+    }
+
+
+    private Connector createSslConnector() {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
+        try {
+            File keystore = new ClassPathResource("keystore/keystore").getFile();
+            File truststore = new ClassPathResource("keystore/keystore").getFile();
+            connector.setScheme("https");
+            connector.setSecure(true);
+            connector.setPort(8443);
+            protocol.setSSLEnabled(true);
+            protocol.setKeystoreFile(keystore.getAbsolutePath());
+            protocol.setKeystorePass("changeit");
+            protocol.setTruststoreFile(truststore.getAbsolutePath());
+            protocol.setTruststorePass("changeit");
+            protocol.setKeyAlias("1");
+            return connector;
+        } catch (IOException ex) {
+            throw new IllegalStateException("can't access keystore: [" + "keystore"
+                    + "] or truststore: [" + "keystore" + "]", ex);
+        }
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

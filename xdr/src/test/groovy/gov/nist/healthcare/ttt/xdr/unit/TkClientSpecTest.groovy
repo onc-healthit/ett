@@ -17,7 +17,7 @@ import spock.lang.Specification
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class TkClientSpecTest extends Specification {
 
-    @Value('${xdr.tool.baseurl}')
+    @Value('${xdr.notification')
     private String notificationUrl
 
     @Autowired
@@ -97,31 +97,6 @@ class TkClientSpecTest extends Specification {
 
         then:
         thrown(groovyx.net.http.ResponseParseException)
-
-    }
-
-    def "test request on good endpoint "() {
-        given:
-
-        def id = "SimpleTest1"
-
-        def config = {
-            createSim {
-                SimType("XDR Document Recipient")
-                SimulatorId(id)
-                MetadataValidationLevel("Full")
-                CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
-            }
-        }
-
-        def url = "http://localhost:8080/ttt/createSim"
-
-        when:
-        def resp = client.postXml(config, url, 1000)
-
-        then:
-        assert resp.simId.text() == id
 
     }
 

@@ -27,7 +27,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Autowired
     GroovyRestClient restClient
 
-    @Value('${xdr.tool.baseurl}')
+    @Value('${xdr.notification}')
     private String notificationUrl
 
     @Value('${toolkit.createSim.url}')

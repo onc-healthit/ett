@@ -1,9 +1,7 @@
-package gov.nist.healthcare.ttt.webapp.xdr.core
-
+package gov.nist.healthcare.ttt.webapp.xdr.domain
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordImpl
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
-
 /**
  * Created by gerardin on 10/27/14.
  *
@@ -19,6 +17,10 @@ class TestCaseBuilder {
         record.setUsername(username)
         record.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
         record.testSteps = new LinkedList<XDRTestStepInterface>()
+    }
+
+    public TestCaseBuilder(XDRRecordInterface record){
+        this.record = record
     }
 
     public XDRRecordInterface build(){

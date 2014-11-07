@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.xdr.helpers.testFramework.web.controller
+package gov.nist.healthcare.ttt.fakeToolkit.web.controller
 import groovy.util.slurpersupport.GPathResult
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*

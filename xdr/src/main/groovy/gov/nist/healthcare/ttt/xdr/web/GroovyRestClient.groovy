@@ -29,6 +29,8 @@ public class GroovyRestClient {
      */
     GPathResult postXml(payload, url, timeout) {
 
+        logger.debug("posting payload to url : $url with timewout : $timeout")
+
         def http = new HTTPBuilder(url)
 
         //HTTPBuilder has no direct methods to add timeouts. We have to add them to the HttpParams of the underlying HttpClient
