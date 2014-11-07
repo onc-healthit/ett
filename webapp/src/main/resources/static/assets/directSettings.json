@@ -1,10 +1,4 @@
 {
-    "config": {
-        "domain": "localhost",
-        "lastUpdate": "May 09, 2014",
-        "versionNumber": "1.0"
-    },
-
     "ccda": [{
         "email": "direct-clinical-summary",
         "description": "MU2 170.314(e)(2) - Clinical Summary"
