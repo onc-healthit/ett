@@ -14,12 +14,10 @@ import org.xbill.DNS.TextParseException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class ListenerProcessor implements Runnable {
 	Socket server;
@@ -32,11 +30,11 @@ public class ListenerProcessor implements Runnable {
 	InputStream messageStream = null;
 	InputStream certStream = null;
 	String certPassword = "";
+	BufferedReader inReader = null;
+	BufferedOutputStream outStream = null;
 
 	Collection<String> contactAddr = null;
 	String logHostname = "";
-	BufferedReader in = null;
-	BufferedOutputStream out = null;
 	static final String CRLF = "\r\n";
 	
 	// Settings
@@ -203,12 +201,11 @@ public class ListenerProcessor implements Runnable {
 				 } else {
 					 docType = getCcdaType(directTo.get(0));
 				 }
-				SimpleDateFormat dateFormat = new SimpleDateFormat(
-						"dd/MMM/yyyy:hh:mm:ss Z"); // Date format
-				String statLog = "|" + logHostname + " - - ["
-						+ dateFormat.format(new Date()) + "] "
-						+ "\"POST /ttt/xdstools2/toolkit/" + docType
-						+ " HTTP/1.1\" 200 75";
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
+				String statLog = """| ${logHostname}  - - [
+								|${dateFormat.format(new Date())} ]
+								|\"POST /ttt/xdstools2/toolkit/${docType}
+								|HTTP/1.1\" 200 75""".stripMargin()
 				logger.info(statLog);
 			}
 
@@ -220,15 +217,14 @@ public class ListenerProcessor implements Runnable {
 
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
-		String url = "http://" + domainName + ":" + port + servletName
-				+ "/direct/#/validationReport/"
-				+ this.processor.getLogModel().getMessageId();
+		String url = """http://${domainName}:${port}${servletName}
+				/direct/#/validationReport/
+				${this.processor.getLogModel().getMessageId()}""".stripMargin()
 
 		// Generate report template
-		String announcement = "<h2>Direct Validation Report"
-//				+ processor.getLogModel().getMessageId()
-				+ "</h2>Validation from " + new Date()
-				+ "<p>Report link: <a href=\"" + url + "\">" + url + "</p>";
+		String announcement = """<h2>Direct Validation Report
+								|</h2>Validation from ${new Date()}
+								|<p>Report link: <a href=\"${url}\">${url}</p>""".stripMargin()
 
 		logger.debug("Announcement is:\n" + announcement);
 
@@ -364,8 +360,8 @@ public class ListenerProcessor implements Runnable {
 		this.domainName = domainname;
 		String buf = null;
 
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new BufferedOutputStream(socket.getOutputStream());
+		inReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		outStream = new BufferedOutputStream(socket.getOutputStream());
 
 		try {
 			send("220 " + domainname + " SMTP Exim");
@@ -380,10 +376,8 @@ public class ListenerProcessor implements Runnable {
 		} catch (IOException e) {
 			return "";
 		} finally {
-			in.close();
-			out.close();
-			in = null;
-			out = null;
+			inReader.close();
+			outStream.close();
 		}
 
 		return buf;
@@ -392,8 +386,8 @@ public class ListenerProcessor implements Runnable {
 	void send(String cmd) throws IOException {
 		logger.debug("SMTP SEND: " + cmd);
 		cmd = cmd + CRLF;
-		out.write(cmd.getBytes());
-		out.flush();
+		outStream.write(cmd.getBytes());
+		outStream.flush();
 	}
 
 	String rcvStateMachine() throws IOException, RSETException, Exception {
@@ -477,7 +471,7 @@ public class ListenerProcessor implements Runnable {
 	}
 
 	String rcv() throws IOException, RSETException {
-		String msg = in.readLine();
+		String msg = inReader.readLine();
 		if (logInputs)
 			logger.debug("SMTP RCV: " + msg);
 		return (msg == null) ? "" : msg;
@@ -568,27 +562,27 @@ public class ListenerProcessor implements Runnable {
 	/**
 	 * Strip surrounding < > brackets if present
 	 * 
-	 * @param in
+	 * @param input
 	 * @return
 	 */
-	public String stripBrackets(String in) {
-		if (in == null || in.length() == 0)
-			return in;
-		in = in.trim();
-		int openI = in.indexOf('<');
+	public String stripBrackets(String input) {
+		if (input == null || input.length() == 0)
+			return input;
+		input = input.trim();
+		int openI = input.indexOf('<');
 		while (openI > -1) {
-			in = in.substring(1);
-			openI = in.indexOf('<');
+			input = input.substring(1);
+			openI = input.indexOf('<');
 		}
 
-		if (in.length() == 0)
-			return in;
+		if (input.length() == 0)
+			return input;
 
-		int closeI = in.indexOf('>');
+		int closeI = input.indexOf('>');
 		if (closeI > 0)
-			in = in.substring(0, closeI);
+			input = input.substring(0, closeI);
 
-		return in;
+		return input;
 	}
 
 	public MimeMessage generateMDN(String from, String to, String messageId, InputStream signingCert, String signingCertPassword) throws MessagingException, Exception {
@@ -659,8 +653,8 @@ public class ListenerProcessor implements Runnable {
 	}
 	
 	public InputStream getPrivateCert(String path, String extension) throws IOException {
-		InputStream in = getClass().getResourceAsStream(path);
-        BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
+		InputStream input = getClass().getResourceAsStream(path);
+        BufferedReader rdr = new BufferedReader(new InputStreamReader(input));
         String line;
         while ((line = rdr.readLine()) != null) {
             if(line.endsWith(extension)) {
