@@ -42,7 +42,7 @@ class DirectMessageStatusController {
 	@ResponseBody
 	Collection<MessageStatusList> getAllOutgoingLogsForUser(HttpServletRequest request) throws IOException, DatabaseException, TTTCustomException {
 
-		return getLogs(false, request)
+		getLogs(false, request)
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -50,7 +50,7 @@ class DirectMessageStatusController {
 	@ResponseBody
 	Collection<MessageStatusList> getAllIncomingLogsForUser(HttpServletRequest request) throws IOException, DatabaseException, TTTCustomException {
 		
-		return getLogs(true, request)
+		getLogs(true, request)
 	}
 	
 	Collection<MessageStatusList> getLogs(boolean incoming, HttpServletRequest request) throws TTTCustomException, DatabaseException {
@@ -68,17 +68,16 @@ class DirectMessageStatusController {
 		
 		// Iterate for each direct for the user
 		Collection<String> directList = db.getDf().getDirectEmailsForUser(username)
-		Iterator<String> it = directList.iterator()
-		while(it.hasNext()) {
-			String direct = it.next()
+		
+		directList.each {
 			if(incoming) {
-				logList.add(convertLog(true, direct, db.getLogFacade().getIncomingByFromLine(direct)))
+				logList.add(convertLog(true, it, db.getLogFacade().getIncomingByFromLine(it)))
 			} else {
-				logList.add(convertLog(false, direct, db.getLogFacade().getOutgoingByToLine(direct)))
-			}		
+				logList.add(convertLog(false, it, db.getLogFacade().getOutgoingByToLine(it)))
+			}
 		}
 			
-		return logList
+		logList
 	}
 	
 	MessageStatusList convertLog(boolean incoming, String direct, Collection<LogInterface> logList) throws DatabaseException {
@@ -86,27 +85,27 @@ class DirectMessageStatusController {
 		
 		Collection<LogInterface> tmpDetail = new ArrayList<LogInterface>()
 		
-		while(logIt.hasNext()) {
-			LogInterface tmpLog = logIt.next()
-			
-			if(!tmpLog.isMdn()) {
-				// Check if MDN timed out
-				if(!tmpLog.getIncoming() && tmpLog.getStatus().equals(Status.WAITING)) {
-					DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss Z (zzz)")
-					DateTime dt = formatter.parseDateTime(tmpLog.getOrigDate())
-					dt = dt.plusMinutes(15)
-					if(dt.isBeforeNow()) {
-						tmpLog.setStatus(Status.TIMEOUT)
-						db.getLogFacade().updateStatus(tmpLog.getMessageId(), Status.TIMEOUT)
-					}
-				}
-				MessageStatusDetail tmpStatusDetail = new MessageStatusDetail(tmpLog)
-				tmpDetail.add(tmpStatusDetail)
+		logList.each { 
+			if(!it.isMdn()) {
+				updateMdnStatus(it)
+				tmpDetail.add(new MessageStatusDetail(it))
 			}
 		}
-		MessageStatusList tmpList = new MessageStatusList(convertAddressType(incoming), direct, tmpDetail)
 		
-		return tmpList
+		def tmpList = new MessageStatusList(convertAddressType(incoming), direct, tmpDetail)
+	}
+	
+	void updateMdnStatus(LogInterface tmpLog) {
+		// Check if MDN timed out
+		if(!tmpLog.getIncoming() && tmpLog.getStatus().equals(Status.WAITING)) {
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss Z (zzz)")
+			DateTime dt = formatter.parseDateTime(tmpLog.getOrigDate())
+			dt = dt.plusMinutes(60)
+			if(dt.isBeforeNow()) {
+				tmpLog.setStatus(Status.TIMEOUT)
+				db.getLogFacade().updateStatus(tmpLog.getMessageId(), Status.TIMEOUT)
+			}
+		}
 	}
 	
 	String convertAddressType(boolean incoming) {
