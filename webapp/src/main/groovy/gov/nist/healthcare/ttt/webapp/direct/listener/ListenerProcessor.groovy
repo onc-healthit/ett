@@ -9,6 +9,7 @@ import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
@@ -40,9 +41,15 @@ public class ListenerProcessor implements Runnable {
 	// Settings
 	Properties settings;
 
+	@Value('${direct.listener.domainName}')
 	String domainName = "";
+	
+	@Value('${server.contextPath}')
 	String servletName = "";
+	
 	int port = 0;
+	
+	@Value('${direct.listener.port}')
 	int listenerPort = 0;
 
 	DirectMessageProcessor processor = new DirectMessageProcessor();
@@ -52,17 +59,15 @@ public class ListenerProcessor implements Runnable {
 	private static Logger logger = Logger.getLogger(ListenerProcessor.class
 			.getName());
 
-	ListenerProcessor(Socket server, Properties settings, DatabaseInstance db, String contextPath, int listenerPort)
+	ListenerProcessor(Socket server, Properties settings, DatabaseInstance db)
 			throws DatabaseException, SQLException {
 		this.server = server;
 
 		this.db = db;
 
 		this.settings = settings;
-		this.domainName = settings.getProperty("direct.listener.domainName");
 		this.servletName = contextPath;
 		this.port = Integer.parseInt(settings.getProperty("server.port"));
-		this.listenerPort = listenerPort;
 	}
 
 	/**
