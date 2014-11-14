@@ -64,4 +64,12 @@ class SmtpProfileController {
 		
 		db.getSmtpEdgeLogFacade().addNewSmtpProfile(smtpProfile)
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, produces = "application/json")
+	@ResponseBody
+	boolean deleteProfile(HttpServletRequest request) throws Exception {
+		
+		
+	}
+	
 }
