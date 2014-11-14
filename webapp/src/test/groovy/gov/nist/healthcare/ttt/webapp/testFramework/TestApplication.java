@@ -4,7 +4,6 @@ import com.mangofactory.swagger.plugin.EnableSwagger;
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
-import gov.nist.healthcare.ttt.webapp.direct.listener.DirectListenerServlet;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.slf4j.Logger;
@@ -89,14 +88,6 @@ public class TestApplication {
         registration.addUrlMappings("/");
         registration.setLoadOnStartup(1);
         return registration;
-    }
-
-    /*
-    We register the direct listener Bill's way. We should probably clean that up later
-     */
-    @Bean
-    public DirectListenerServlet listenerServlet() {
-        return new DirectListenerServlet();
     }
 
     /*

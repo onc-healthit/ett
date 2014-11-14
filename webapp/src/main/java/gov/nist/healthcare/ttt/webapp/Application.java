@@ -5,7 +5,6 @@ import com.mangofactory.swagger.plugin.EnableSwagger;
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
-import gov.nist.healthcare.ttt.webapp.direct.listener.DirectListenerServlet;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.valves.AccessLogValve;
 import org.apache.coyote.http11.Http11NioProtocol;
@@ -25,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 @EnableWebMvcSecurity
 @EnableAutoConfiguration
@@ -50,10 +50,10 @@ public class Application {
     /*
     We register the direct listener Bill's way. We should probably clean that up later
      */
-    @Bean
-    public DirectListenerServlet listenerServlet() {
-        return new DirectListenerServlet();
-    }
+//    @Bean
+//    public DirectListenerServlet listenerServlet() {
+//        return new DirectListenerServlet();
+//    }
 
     /*
     Config for swagger, we do not really use it for now
@@ -90,6 +90,10 @@ public class Application {
 
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
+                URL url = getClass().getClassLoader().getResource("application.properties");
+                System.out.println("properties file:" + url.getPath());
+
+
         TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
 //        tomcat.addAdditionalTomcatConnectors(createSslConnector());
         tomcat.addContextValves(new AccessLogValve());

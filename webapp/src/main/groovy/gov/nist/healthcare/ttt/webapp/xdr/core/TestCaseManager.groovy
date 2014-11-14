@@ -74,6 +74,8 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username, tcid)
 
+        //IF require manual_check status, we need to send back the validation to the user.
+
         return record.criteriaMet
 
     }
