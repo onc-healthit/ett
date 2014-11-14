@@ -176,6 +176,9 @@
                     <compilerId>groovy-eclipse-compiler</compilerId>
                     <source>${project.build.javaVersion}</source>
                     <target>${project.build.javaVersion}</target>
+                    <debug>true</debug>
+                    <debuglevel>lines,vars,source</debuglevel>
+                    <optimize>false</optimize>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -190,7 +193,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
 
 
             <plugin>

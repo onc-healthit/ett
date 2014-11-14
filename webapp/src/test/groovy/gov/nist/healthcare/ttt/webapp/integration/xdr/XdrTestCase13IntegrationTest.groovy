@@ -91,22 +91,25 @@ class XdrTestCase13IntegrationTest extends Specification {
         DirectMessageInfoForXdr info = new DirectMessageSenderForXdrNoLookUp().sendDirectWithCCDAForXdrNoDNSLookUp("antoine@$directListenerDomain", directListenerPort,cert.absolutePath)
 
         then: "ttt sent back a MDN"
-        String logId = db.logFacade.getLogIDByMessageId(info.getMessageId())
-        assert logId
-
-        println logId
-
-        //This is not tested! How to get back the MDN?
+        //This is what should happen, we cannot automate the test since the direct sender uses the DNSLookup.
 
         when : "a user check the test status"
         MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
 
         then : "we return the result of the direct validation which is successful"
+        //TODO not satisfactory. Direct takes some time to receive and validate.
+        //We should have a timeout. If result is pending, wait until status is success or pending_manual_check
+        //A timeout that expires is equivalent to failing the test.
+        Thread.sleep(2000)
+        String logId = db.logFacade.getLogIDByMessageId(info.getMessageId())
+        assert logId : "sb has no log direct message. Was it given enough time?"
+
         mockMvcRunTestCase.perform(getRequest3)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content").value("PASSED"))
+
 
     }
 
