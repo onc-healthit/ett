@@ -34,7 +34,7 @@ public class SendDirectController {
 	String certificatesPath
 	
 	@Value('${direct.certificates.password}')
-	String certPassword = ""
+	String certPassword
 	
 	// Used to get the ressources
 	private ListenerProcessor listener = new ListenerProcessor();

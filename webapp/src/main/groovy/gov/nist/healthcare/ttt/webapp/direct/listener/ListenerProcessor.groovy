@@ -650,9 +650,27 @@ public class ListenerProcessor implements Runnable {
         return null;
 	}
 	
+	public InputStream getSigningCertFromFolder(String path, String extension) throws Exception {
+		FileInputStream res = null
+		File folder = new File(path)
+		if(folder.isDirectory()) {
+			folder.listFiles().each {
+				if(it.getName().endsWith(extension)) {
+					logger.info("Getting signing certificates " + it.getAbsolutePath())
+					res = new FileInputStream(it)
+				}
+			}
+		}
+		if(res == null) {
+			throw new Exception("Cannot find certificate in path " + path)
+		} else {
+			return res
+		}
+	}
+	
 	public InputStream getSigningPrivateCert(String type = 'good') {
 		try {
-			InputStream res = getClasspathPrivateCert(this.certificatesPath + type, ".p12")
+			InputStream res = getSigningCertFromFolder(this.certificatesPath + type, ".p12")
 			return res
 		} catch(Exception e) {
 			logger.info("Cannot get certificate from configured location " + this.certificatesPath + type)
