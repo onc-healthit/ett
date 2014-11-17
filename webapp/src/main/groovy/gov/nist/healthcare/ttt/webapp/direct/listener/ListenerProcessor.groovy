@@ -9,7 +9,9 @@ import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
@@ -30,44 +32,36 @@ public class ListenerProcessor implements Runnable {
 	StringBuffer message = new StringBuffer();
 	InputStream messageStream = null;
 	InputStream certStream = null;
-	String certPassword = "";
 	BufferedReader inReader = null;
 	BufferedOutputStream outStream = null;
 
 	Collection<String> contactAddr = null;
 	String logHostname = "";
 	static final String CRLF = "\r\n";
-	
-	// Settings
-	Properties settings;
 
-	@Value('${direct.listener.domainName}')
-	String domainName = "";
+	String domainName
 	
-	@Value('${server.contextPath}')
-	String servletName = "";
+	String servletName
 	
-	int port = 0;
+	int port
 	
-	@Value('${direct.listener.port}')
-	int listenerPort = 0;
+	int listenerPort = 0
+	
+	String certificatesPath
+
+	String certPassword
+	
+	Emailer emailer
 
 	DirectMessageProcessor processor = new DirectMessageProcessor();
 
 	private DatabaseInstance db;
 
-	private static Logger logger = Logger.getLogger(ListenerProcessor.class
-			.getName());
+	private static Logger logger = Logger.getLogger(ListenerProcessor.class.getName());
 
-	ListenerProcessor(Socket server, Properties settings, DatabaseInstance db)
-			throws DatabaseException, SQLException {
+	ListenerProcessor(Socket server, DatabaseInstance db) throws DatabaseException, SQLException {
 		this.server = server;
-
 		this.db = db;
-
-		this.settings = settings;
-		this.servletName = contextPath;
-		this.port = Integer.parseInt(settings.getProperty("server.port"));
 	}
 
 	/**
@@ -127,7 +121,7 @@ public class ListenerProcessor implements Runnable {
 		// continue
 		try {	
 			
-			this.certStream = getPrivateCert("/signing-certificates/good/", ".p12");
+			this.certStream = getSigningPrivateCert();
 
 			if (this.certStream == null) {
 				logger.error("Cannot load private decryption key");
@@ -207,10 +201,7 @@ public class ListenerProcessor implements Runnable {
 					 docType = getCcdaType(directTo.get(0));
 				 }
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
-				String statLog = """| ${logHostname}  - - [
-								|${dateFormat.format(new Date())} ]
-								|\"POST /ttt/xdstools2/toolkit/${docType}
-								|HTTP/1.1\" 200 75""".stripMargin()
+				String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
 				logger.info(statLog);
 			}
 
@@ -227,9 +218,7 @@ public class ListenerProcessor implements Runnable {
 				${this.processor.getLogModel().getMessageId()}""".stripMargin()
 
 		// Generate report template
-		String announcement = """<h2>Direct Validation Report
-								|</h2>Validation from ${new Date()}
-								|<p>Report link: <a href=\"${url}\">${url}</p>""".stripMargin()
+		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
 
 		logger.debug("Announcement is:\n" + announcement);
 
@@ -244,18 +233,8 @@ public class ListenerProcessor implements Runnable {
 			}
 
 			// Send report
-			EmailerModel emailerModel = new EmailerModel();
-			emailerModel.setFrom(settings.getProperty("direct.listener.email.from"));
-			emailerModel.setHost(settings.getProperty("direct.listener.email.host"));
-			emailerModel.setSmtpAuth(settings.getProperty("direct.listener.email.auth"));
-			emailerModel.setSmtpUser(settings.getProperty("direct.listener.email.username"));
-			emailerModel.setSmtpPassword(settings.getProperty("direct.listener.email.password"));
-			emailerModel.setSmtpPort(settings.getProperty("direct.listener.email.port"));
-			emailerModel.setStarttls(settings.getProperty("direct.listener.email.starttls"));
-			emailerModel.setGmailStyle(settings.getProperty("direct.listener.email.gmailStyle"));
-			Emailer emailer = new Emailer(emailerModel);
 
-			logger.debug("Sending report from " + emailerModel.getFrom()
+			logger.debug("Sending report from " + emailer.model.getFrom()
 					+ "   to " + contactAddr);
 			Iterator<String> it = contactAddr.iterator();
 			while (it.hasNext()) {
@@ -285,7 +264,7 @@ public class ListenerProcessor implements Runnable {
 			
 			try {
 				logger.info("Generating MDN for message " + processor.getLogModel().getMessageId());
-				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), getPrivateCert("/signing-certificates/good/", ".p12"),
+				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), this.certStream,
 						this.certPassword);
 				DirectMessageSender sender = new DirectMessageSender();
 				logger.info("Sending MDN to " + toMDN);
@@ -657,18 +636,29 @@ public class ListenerProcessor implements Runnable {
 		return res;
 	}
 	
-	public InputStream getPrivateCert(String path, String extension) throws IOException {
+	public InputStream getClasspathPrivateCert(String path, String extension) throws IOException {
 		InputStream input = getClass().getResourceAsStream(path);
         BufferedReader rdr = new BufferedReader(new InputStreamReader(input));
         String line;
         while ((line = rdr.readLine()) != null) {
             if(line.endsWith(extension)) {
-            	logger.info("Loading private key (decryption) from " + path + line);
+            	logger.info("Loading private key (decryption) from classpath " + path + line);
             	return getClass().getResourceAsStream(path + line);
             }
         }
         rdr.close();
         return null;
+	}
+	
+	public InputStream getSigningPrivateCert(String type = 'good') {
+		try {
+			InputStream res = getClasspathPrivateCert(this.certificatesPath + type, ".p12")
+			return res
+		} catch(Exception e) {
+			logger.info("Cannot get certificate from configured location " + this.certificatesPath + type)
+			this.certPassword = ""
+			return getClasspathPrivateCert("/signing-certificates/good/", ".p12")
+		}
 	}
 
 }

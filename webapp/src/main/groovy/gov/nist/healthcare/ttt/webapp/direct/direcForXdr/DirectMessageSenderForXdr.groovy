@@ -2,7 +2,6 @@ package gov.nist.healthcare.ttt.webapp.direct.direcForXdr;
 
 import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
-import gov.nist.healthcare.ttt.webapp.common.config.ApplicationPropertiesConfig;
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor;
 
 import java.io.File;
@@ -35,7 +34,7 @@ class DirectMessageSenderForXdr {
 	}
 	
 	public DirectMessageInfoForXdr sendDirect(InputStream attachmentFile, String sutSmtpAddress, int port) throws Exception {
-		InputStream signingCert = listener.getPrivateCert("/signing-certificates/good/", ".p12")
+		InputStream signingCert = listener.getSigningPrivateCert()
 
 		String tttDomain = ApplicationPropertiesConfig.getConfig().getProperty("direct.listener.domainName")
 		
