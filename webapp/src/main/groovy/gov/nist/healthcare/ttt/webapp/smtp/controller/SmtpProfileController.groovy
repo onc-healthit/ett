@@ -17,6 +17,7 @@ import gov.nist.healthcare.ttt.webapp.smtp.model.SmtpTestInput;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,11 +66,20 @@ class SmtpProfileController {
 		db.getSmtpEdgeLogFacade().addNewSmtpProfile(smtpProfile)
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, produces = "application/json")
+	@RequestMapping(value = "/{profile:.+}", method = RequestMethod.DELETE, produces = "application/json")
 	@ResponseBody
-	boolean deleteProfile(HttpServletRequest request) throws Exception {
-		
-		
+	boolean deleteProfile(@PathVariable String profile, Principal principal) throws Exception {
+		if (principal == null) {
+			throw new TTTCustomException("0x0035", "You must be logged in to save profile")
+		} else {
+			String username = principal.getName()
+			if(db.getSmtpEdgeLogFacade().removeSmtpProfile(username, profile)) {
+				return true
+			} else {
+				throw new TTTCustomException("0x0034", "Could not delete profile $profile")
+			}
+		}
+		return false
 	}
 	
 }
