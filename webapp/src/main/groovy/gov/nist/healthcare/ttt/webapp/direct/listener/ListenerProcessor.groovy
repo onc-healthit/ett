@@ -6,6 +6,7 @@ import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
+import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
 import org.apache.log4j.Logger;
@@ -76,12 +77,26 @@ public class ListenerProcessor implements Runnable {
 		if (readSMTPMessage() == false)
 			return;
 		logger.info("Processing message from " + directFrom);
+		
+		// Get inputstream message
+		byte[] messageBytes = message.toString().getBytes();
+		this.messageStream = new ByteArrayInputStream(messageBytes);
 
-		// Need to know if it is a MDN or not so we know if we have to send MDN
-		// back
-		// boolean isMDN = false;
-		// boolean isDirect = false;
-
+		// Need to know if this is a message for MDN answer: one of those addresses 
+		// processedonly5
+		// processeddispatched6
+		// processdelayeddispatch7
+		// nomdn8
+		// noaddressfailure9
+		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9']
+		String smtpFrom = directTo?.get(0)
+		smtpFrom = smtpFrom.split("@")[0]
+		if(smtpAddressList.contains(smtpFrom)) {
+			logger.info("MDN address found $smtpFrom sending back appropriate MDN")
+			manageMDNAddresses(smtpFrom, directTo?.get(0), directFrom, messageStream)
+			return
+		}
+		
 		logger.info("Mime Message parsing successful");
 
 		// Valid Direct (From) addr?
@@ -155,8 +170,6 @@ public class ListenerProcessor implements Runnable {
 
 			// Validate
 			// yadda, yadda, yadda
-			byte[] messageBytes = message.toString().getBytes();
-			this.messageStream = new ByteArrayInputStream(messageBytes);
 
 			logger.info("Message Validation Begins");
 
@@ -676,6 +689,38 @@ public class ListenerProcessor implements Runnable {
 			logger.info("Cannot get certificate from configured location " + this.certificatesPath + type)
 			this.certPassword = ""
 			return getClasspathPrivateCert("/signing-certificates/good/", ".p12")
+		}
+	}
+	
+	public void manageMDNAddresses(String smtpFrom, String from, String to, InputStream message) {
+		switch(smtpFrom) {
+			case 'processedonly5':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				break
+				
+			case 'processeddispatched6':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				break
+				
+			case 'processdelayeddispatch7':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
+				this.sleep(3900000);
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				break
+				
+			case 'nomdn8':
+				logger.info("Found address $smtpFrom so no mdn sent")
+				break
+				
+			case 'noaddressfailure9':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN')
+				break
+				
+			default:
+				logger.info("Could not intepret the address $smtpFrom")
+				break
 		}
 	}
 

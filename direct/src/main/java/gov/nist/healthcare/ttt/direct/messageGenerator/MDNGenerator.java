@@ -16,6 +16,7 @@ public class MDNGenerator extends DirectMessageGenerator {
 	private String final_recipient;
 	private String original_message_id;
 	private String disposition;
+	private String failure;
 	private String text;
 
 	public MDNGenerator() {
@@ -24,12 +25,13 @@ public class MDNGenerator extends DirectMessageGenerator {
 		this.original_recipient = "";
 		this.original_message_id = "";
 		this.final_recipient = "";
+		this.failure = "";
 		this.disposition = "";
 	}
 
 	public MDNGenerator(String reporting_UA_name, String reporting_UA_product,
 			String original_recipient, String final_recipient,
-			String original_message_id, String disposition, String text) {
+			String original_message_id, String disposition, String failure, String text) {
 		super();
 		this.reporting_UA_name = reporting_UA_name;
 		this.reporting_UA_product = reporting_UA_product;
@@ -37,6 +39,7 @@ public class MDNGenerator extends DirectMessageGenerator {
 		this.final_recipient = final_recipient;
 		this.original_message_id = original_message_id;
 		this.disposition = disposition;
+		this.failure = failure;
 		this.text = text;
 	}
 
@@ -55,6 +58,9 @@ public class MDNGenerator extends DirectMessageGenerator {
 			notification.addHeader("Original-Message-ID", original_message_id);
 		if(!isNullorEmpty(disposition))
 			notification.addHeader("Disposition", disposition);
+		if(!isNullorEmpty(failure))
+			notification.addHeader("Failure", failure);
+		
 		
 		// Create disposition/notification
 		DispositionNotification dispositionNotification = new DispositionNotification();
@@ -147,6 +153,14 @@ public class MDNGenerator extends DirectMessageGenerator {
 
 	public void setDisposition(String disposition) {
 		this.disposition = disposition;
+	}
+
+	public String getFailure() {
+		return failure;
+	}
+
+	public void setFailure(String failure) {
+		this.failure = failure;
 	}
 
 	public String getText() {
