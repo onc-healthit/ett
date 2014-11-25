@@ -14,9 +14,6 @@ public class DirectListenerManager {
 
     Thread t;
 
-
-
-
     @Autowired
     public DirectListenerManager(DirectListener listener) {
         t = new Thread(listener);

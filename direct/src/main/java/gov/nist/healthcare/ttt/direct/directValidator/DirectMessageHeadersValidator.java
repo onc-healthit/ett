@@ -312,9 +312,13 @@ public class DirectMessageHeadersValidator {
 			}
 		} else {
 			if(sender.equals("")) {
-				return new DetailModel("116", "Sender", "Not present", "Sender field not used if from address contains only one mailbox", rfc, Status.SUCCESS);
+				return new DetailModel("116", "Sender", "Not present", "Sender field not used if same as From address", rfc, Status.SUCCESS);
 			} else {
-				return new DetailModel("116", "Sender", sender, "Sender field should not be present, from address contains only one mailbox", rfc, Status.ERROR);
+				if(sender.equals(from[0])) {
+					return new DetailModel("116", "Sender", sender, "Sender and From value are the same therefore sender should not be used", rfc, Status.WARNING);
+				} else {
+					return new DetailModel("116", "Sender", sender, "mailbox", rfc, Status.SUCCESS);
+				}
 			}
 		}
 		

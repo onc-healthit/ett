@@ -12,24 +12,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/api/smtpTestCases")
-public class TestCasesController {
+class TestCasesController {
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody
+	@ResponseBody
     ArrayList<ITestResult> startTestCases(@RequestBody SmtpTestInput ti) throws Exception {
-		ISMTPTestRunner smtpTestRunner = new SMTPTestRunner();
-		ArrayList<ITestResult> res = new ArrayList<ITestResult>();
-		int testCaseNumber = Integer.parseInt(ti.getTestCaseNumber());
-		ITestResult[] trs;
-		trs = smtpTestRunner.runTestCase(testCaseNumber, ti.convert());
-		if (trs != null) {
-			for (ITestResult t : trs) {
-				res.add(t);
-			}
-		}
-		return res;
+		ISMTPTestRunner smtpTestRunner = new SMTPTestRunner()
+		ArrayList<ITestResult> res = new ArrayList<ITestResult>()
+		def trs = smtpTestRunner.runTestCase(ti.getTestCaseNumber().toInteger(), ti.convert())
+		trs.each { res << it }
+		
+		res
 	}
 }

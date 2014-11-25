@@ -1,22 +1,27 @@
 package gov.nist.healthcare.ttt.webapp.direct.listener;
 
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException;
+import gov.nist.healthcare.ttt.database.log.LogInterface.Status;
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
+import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.*;
+
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class ListenerProcessor implements Runnable {
 	Socket server;
@@ -28,40 +33,36 @@ public class ListenerProcessor implements Runnable {
 	StringBuffer message = new StringBuffer();
 	InputStream messageStream = null;
 	InputStream certStream = null;
-	String certPassword = "";
+	BufferedReader inReader = null;
+	BufferedOutputStream outStream = null;
 
 	Collection<String> contactAddr = null;
 	String logHostname = "";
-	BufferedReader in = null;
-	BufferedOutputStream out = null;
 	static final String CRLF = "\r\n";
-	
-	// Settings
-	Properties settings;
 
-	String domainName = "";
-	String servletName = "";
-	int port = 0;
-	int listenerPort = 0;
+	String domainName
+	
+	String servletName
+	
+	int port
+	
+	int listenerPort = 0
+	
+	String certificatesPath
+
+	String certPassword
+	
+	Emailer emailer
 
 	DirectMessageProcessor processor = new DirectMessageProcessor();
 
 	private DatabaseInstance db;
 
-	private static Logger logger = Logger.getLogger(ListenerProcessor.class
-			.getName());
+	private static Logger logger = Logger.getLogger(ListenerProcessor.class.getName());
 
-	ListenerProcessor(Socket server, Properties settings, DatabaseInstance db, String contextPath, int listenerPort)
-			throws DatabaseException, SQLException {
+	ListenerProcessor(Socket server, DatabaseInstance db) throws DatabaseException, SQLException {
 		this.server = server;
-
 		this.db = db;
-
-		this.settings = settings;
-		this.domainName = settings.getProperty("direct.listener.domainName");
-		this.servletName = contextPath;
-		this.port = Integer.parseInt(settings.getProperty("server.port"));
-		this.listenerPort = listenerPort;
 	}
 
 	/**
@@ -76,12 +77,26 @@ public class ListenerProcessor implements Runnable {
 		if (readSMTPMessage() == false)
 			return;
 		logger.info("Processing message from " + directFrom);
+		
+		// Get inputstream message
+		byte[] messageBytes = message.toString().getBytes();
+		this.messageStream = new ByteArrayInputStream(messageBytes);
 
-		// Need to know if it is a MDN or not so we know if we have to send MDN
-		// back
-		// boolean isMDN = false;
-		// boolean isDirect = false;
-
+		// Need to know if this is a message for MDN answer: one of those addresses 
+		// processedonly5
+		// processeddispatched6
+		// processdelayeddispatch7
+		// nomdn8
+		// noaddressfailure9
+		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9']
+		String smtpFrom = directTo?.get(0)
+		smtpFrom = smtpFrom.split("@")[0]
+		if(smtpAddressList.contains(smtpFrom)) {
+			logger.info("MDN address found $smtpFrom sending back appropriate MDN")
+			manageMDNAddresses(smtpFrom, directTo?.get(0), directFrom, messageStream)
+			return
+		}
+		
 		logger.info("Mime Message parsing successful");
 
 		// Valid Direct (From) addr?
@@ -121,7 +136,7 @@ public class ListenerProcessor implements Runnable {
 		// continue
 		try {	
 			
-			this.certStream = getPrivateCert("/signing-certificates/good/", ".p12");
+			this.certStream = getSigningPrivateCert();
 
 			if (this.certStream == null) {
 				logger.error("Cannot load private decryption key");
@@ -155,8 +170,6 @@ public class ListenerProcessor implements Runnable {
 
 			// Validate
 			// yadda, yadda, yadda
-			byte[] messageBytes = message.toString().getBytes();
-			this.messageStream = new ByteArrayInputStream(messageBytes);
 
 			logger.info("Message Validation Begins");
 
@@ -181,7 +194,13 @@ public class ListenerProcessor implements Runnable {
 			
 			// If it's an MDN update the status to MDN RECEIVED
 			if(processor.isMdn()) {
-	//			db.getLogFacade().updateStatus(processor.getOriginalMessageId(), Status.MDN_RECEIVED);
+				// Check if message not already timed out
+				if(db.getLogFacade().getLogByMessageId(processor.getOriginalMessageId()).getStatus().equals(Status.WAITING)) {
+					logger.info("Updating MDN status to MDN_RECEIVED for message " + processor.getOriginalMessageId());
+					db.getLogFacade().updateStatus(processor.getOriginalMessageId(), Status.MDN_RECEIVED);
+				} else {
+					logger.info("Not Updating MDN status because message already timed out " + processor.getOriginalMessageId());
+				}
 			}
 
 			logger.info("Message Validation Complete");
@@ -189,17 +208,13 @@ public class ListenerProcessor implements Runnable {
 			// Log line for the stats
 			if (directTo != null) {
 				String docType;
-				// if(isMDN) {
-				// docType = "mdn";
-				// } else {
-				docType = getCcdaType(directTo.get(0));
-				// }
-				SimpleDateFormat dateFormat = new SimpleDateFormat(
-						"dd/MMM/yyyy:hh:mm:ss Z"); // Date format
-				String statLog = "|" + logHostname + " - - ["
-						+ dateFormat.format(new Date()) + "] "
-						+ "\"POST /ttt/xdstools2/toolkit/" + docType
-						+ " HTTP/1.1\" 200 75";
+				 if(processor.isMdn()) {
+					 docType = "mdn";
+				 } else {
+					 docType = getCcdaType(directTo.get(0));
+				 }
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
+				String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
 				logger.info(statLog);
 			}
 
@@ -211,15 +226,12 @@ public class ListenerProcessor implements Runnable {
 
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
-		String url = "http://" + domainName + ":" + port + servletName
-				+ "/direct/#/validationReport/"
-				+ this.processor.getLogModel().getMessageId();
+		String url = """http://${domainName}:${port}${servletName}
+				/direct/#/validationReport/
+				${this.processor.getLogModel().getMessageId()}""".stripMargin()
 
 		// Generate report template
-		String announcement = "<h2>Direct Validation Report"
-//				+ processor.getLogModel().getMessageId()
-				+ "</h2>Validation from " + new Date()
-				+ "<p>Report link: <a href=\"" + url + "\">" + url + "</p>";
+		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
 
 		logger.debug("Announcement is:\n" + announcement);
 
@@ -234,18 +246,8 @@ public class ListenerProcessor implements Runnable {
 			}
 
 			// Send report
-			EmailerModel emailerModel = new EmailerModel();
-			emailerModel.setFrom(settings.getProperty("direct.listener.email.from"));
-			emailerModel.setHost(settings.getProperty("direct.listener.email.host"));
-			emailerModel.setSmtpAuth(settings.getProperty("direct.listener.email.auth"));
-			emailerModel.setSmtpUser(settings.getProperty("direct.listener.email.username"));
-			emailerModel.setSmtpPassword(settings.getProperty("direct.listener.email.password"));
-			emailerModel.setSmtpPort(settings.getProperty("direct.listener.email.port"));
-			emailerModel.setStarttls(settings.getProperty("direct.listener.email.starttls"));
-			emailerModel.setGmailStyle(settings.getProperty("direct.listener.email.gmailStyle"));
-			Emailer emailer = new Emailer(emailerModel);
 
-			logger.debug("Sending report from " + emailerModel.getFrom()
+			logger.debug("Sending report from " + emailer.model.getFrom()
 					+ "   to " + contactAddr);
 			Iterator<String> it = contactAddr.iterator();
 			while (it.hasNext()) {
@@ -275,7 +277,7 @@ public class ListenerProcessor implements Runnable {
 			
 			try {
 				logger.info("Generating MDN for message " + processor.getLogModel().getMessageId());
-				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), getPrivateCert("/signing-certificates/good/", ".p12"),
+				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), this.certStream,
 						this.certPassword);
 				DirectMessageSender sender = new DirectMessageSender();
 				logger.info("Sending MDN to " + toMDN);
@@ -355,8 +357,8 @@ public class ListenerProcessor implements Runnable {
 		this.domainName = domainname;
 		String buf = null;
 
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new BufferedOutputStream(socket.getOutputStream());
+		inReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		outStream = new BufferedOutputStream(socket.getOutputStream());
 
 		try {
 			send("220 " + domainname + " SMTP Exim");
@@ -371,10 +373,8 @@ public class ListenerProcessor implements Runnable {
 		} catch (IOException e) {
 			return "";
 		} finally {
-			in.close();
-			out.close();
-			in = null;
-			out = null;
+			inReader.close();
+			outStream.close();
 		}
 
 		return buf;
@@ -383,8 +383,8 @@ public class ListenerProcessor implements Runnable {
 	void send(String cmd) throws IOException {
 		logger.debug("SMTP SEND: " + cmd);
 		cmd = cmd + CRLF;
-		out.write(cmd.getBytes());
-		out.flush();
+		outStream.write(cmd.getBytes());
+		outStream.flush();
 	}
 
 	String rcvStateMachine() throws IOException, RSETException, Exception {
@@ -468,7 +468,7 @@ public class ListenerProcessor implements Runnable {
 	}
 
 	String rcv() throws IOException, RSETException {
-		String msg = in.readLine();
+		String msg = inReader.readLine();
 		if (logInputs)
 			logger.debug("SMTP RCV: " + msg);
 		return (msg == null) ? "" : msg;
@@ -559,27 +559,27 @@ public class ListenerProcessor implements Runnable {
 	/**
 	 * Strip surrounding < > brackets if present
 	 * 
-	 * @param in
+	 * @param input
 	 * @return
 	 */
-	public String stripBrackets(String in) {
-		if (in == null || in.length() == 0)
-			return in;
-		in = in.trim();
-		int openI = in.indexOf('<');
+	public String stripBrackets(String input) {
+		if (input == null || input.length() == 0)
+			return input;
+		input = input.trim();
+		int openI = input.indexOf('<');
 		while (openI > -1) {
-			in = in.substring(1);
-			openI = in.indexOf('<');
+			input = input.substring(1);
+			openI = input.indexOf('<');
 		}
 
-		if (in.length() == 0)
-			return in;
+		if (input.length() == 0)
+			return input;
 
-		int closeI = in.indexOf('>');
+		int closeI = input.indexOf('>');
 		if (closeI > 0)
-			in = in.substring(0, closeI);
+			input = input.substring(0, closeI);
 
-		return in;
+		return input;
 	}
 
 	public MimeMessage generateMDN(String from, String to, String messageId, InputStream signingCert, String signingCertPassword) throws MessagingException, Exception {
@@ -649,18 +649,79 @@ public class ListenerProcessor implements Runnable {
 		return res;
 	}
 	
-	public InputStream getPrivateCert(String path, String extension) throws IOException {
-		InputStream in = getClass().getResourceAsStream(path);
-        BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
+	public InputStream getClasspathPrivateCert(String path, String extension) throws IOException {
+		InputStream input = getClass().getResourceAsStream(path);
+        BufferedReader rdr = new BufferedReader(new InputStreamReader(input));
         String line;
         while ((line = rdr.readLine()) != null) {
             if(line.endsWith(extension)) {
-            	logger.info("Loading private key (decryption) from " + path + line);
+            	logger.info("Loading private key (decryption) from classpath " + path + line);
             	return getClass().getResourceAsStream(path + line);
             }
         }
         rdr.close();
         return null;
+	}
+	
+	public InputStream getSigningCertFromFolder(String path, String extension) throws Exception {
+		FileInputStream res = null
+		File folder = new File(path)
+		if(folder.isDirectory()) {
+			folder.listFiles().each {
+				if(it.getName().endsWith(extension)) {
+					logger.info("Getting signing certificates " + it.getAbsolutePath())
+					res = new FileInputStream(it)
+				}
+			}
+		}
+		if(res == null) {
+			throw new Exception("Cannot find certificate in path " + path)
+		} else {
+			return res
+		}
+	}
+	
+	public InputStream getSigningPrivateCert(String type = 'good') {
+		try {
+			InputStream res = getSigningCertFromFolder(this.certificatesPath + type, ".p12")
+			return res
+		} catch(Exception e) {
+			logger.info("Cannot get certificate from configured location " + this.certificatesPath + type)
+			this.certPassword = ""
+			return getClasspathPrivateCert("/signing-certificates/good/", ".p12")
+		}
+	}
+	
+	public void manageMDNAddresses(String smtpFrom, String from, String to, InputStream message) {
+		switch(smtpFrom) {
+			case 'processedonly5':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				break
+				
+			case 'processeddispatched6':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				break
+				
+			case 'processdelayeddispatch7':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
+				this.sleep(3900000);
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				break
+				
+			case 'nomdn8':
+				logger.info("Found address $smtpFrom so no mdn sent")
+				break
+				
+			case 'noaddressfailure9':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN')
+				break
+				
+			default:
+				logger.info("Could not intepret the address $smtpFrom")
+				break
+		}
 	}
 
 }

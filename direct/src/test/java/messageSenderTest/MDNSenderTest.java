@@ -1,6 +1,6 @@
 package messageSenderTest;
 
-import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator;
+import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
 import gov.nist.healthcare.ttt.model.sendDirect.SendDirectMessage;
@@ -14,9 +14,10 @@ import javax.mail.internet.MimeMessage;
 
 import org.bouncycastle.util.encoders.Base64;
 
-public class MessageSenderTest {
-
-	public static void main(String args[]) throws Exception {
+public class MDNSenderTest {
+public static void main(String args[]) throws Exception {
+	
+		String messageId = "<2089499608.1.1415378903537.JavaMail.jnp3@P854708>";
 		
 		SendDirectMessage messageInfo = new SendDirectMessage();
 		messageInfo.setAttachmentFile("CCDA_Inpatient.xml");
@@ -26,14 +27,9 @@ public class MessageSenderTest {
 		messageInfo.setSigningCertPassword("");
 		messageInfo.setSubject("Internal Test");
 		messageInfo.setTextMessage("Internal Test");
-		messageInfo.setToAddress("processedonly5@localhost");
+		messageInfo.setToAddress("me@localhost");
 		messageInfo.setWrapped(true);
 		
-
-		InputStream attachmentFile = null;
-		if(!messageInfo.getAttachmentFile().equals("")) {
-			attachmentFile = new FileInputStream(new File("src/test/java/messageSenderTest/CCDA_Inpatient.xml"));
-		}
 		InputStream signingCert = new FileInputStream(new File("src/test/java/messageSenderTest/testCert.p12"));
 
 		// Get the target domain
@@ -63,14 +59,22 @@ public class MessageSenderTest {
 			}
 		}
 
-		DirectMessageGenerator messageGenerator = new DirectMessageGenerator(
-				messageInfo.getTextMessage(), messageInfo.getSubject(),
-				messageInfo.getFromAddress(), messageInfo.getToAddress(),
-				attachmentFile, messageInfo.getAttachmentFile(),
-				signingCert, messageInfo.getSigningCertPassword(),
-				encryptionCert, messageInfo.isWrapped());
-
-		MimeMessage msg = messageGenerator.generateMessage();
+		MDNGenerator generator = new MDNGenerator();
+		generator.setDisposition("automatic-action/MDN-sent-automatically;processed");
+		generator.setFinal_recipient("test@localhost");
+		generator.setFromAddress("me@localhost");
+		generator.setOriginal_message_id(messageId);
+		generator.setOriginal_recipient("me@localhost");
+		generator.setReporting_UA_name("direct.nist.gov");
+		generator.setReporting_UA_product("Security Agent");
+		generator.setSigningCert(signingCert);
+		generator.setSigningCertPassword("");
+		generator.setSubject("Automatic MDN");
+		generator.setText("Your message was successfully processed.");;
+		generator.setToAddress("test@localhost");
+		generator.setEncryptionCert(encryptionCert);
+		
+		MimeMessage mdn = generator.generateMDN();
 		
 		// To fail
 //		msg.setSender(new InternetAddress("test"));
@@ -80,6 +84,6 @@ public class MessageSenderTest {
 //		this.db.getLogFacade().addNewLog(outgoingMessage);
 
 		DirectMessageSender sender = new DirectMessageSender();
-		sender.sendMessage(12999, targetDomain, msg, messageInfo.getFromAddress(), messageInfo.getToAddress());
+		sender.sendMessage(12999, targetDomain, mdn, messageInfo.getToAddress(), messageInfo.getFromAddress());
 	}
 }

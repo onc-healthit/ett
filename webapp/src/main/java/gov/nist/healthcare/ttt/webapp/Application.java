@@ -95,7 +95,7 @@ public class Application {
 
 
         TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
-        tomcat.addAdditionalTomcatConnectors(createSslConnector());
+   //     tomcat.addAdditionalTomcatConnectors(createSslConnector());
         tomcat.addContextValves(new AccessLogValve());
         return tomcat;
     }
@@ -124,6 +124,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
+        System.setProperty("java.net.preferIPv4Stack", "true");
         SpringApplication.run(Application.class, args);
     }
 
