@@ -44,7 +44,9 @@ class SmtpLogController {
 	@RequestMapping(value = "/{profile:.+}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	boolean addLog(@PathVariable String profile, @RequestBody SmtpEdgeLogImpl log, Principal principal) throws Exception {
-		db.getSmtpEdgeLogFacade().addNewSmtpLog(log, principal?.getName(), profile)
+		if (principal != null) {
+			db.getSmtpEdgeLogFacade().addNewSmtpLog(log, principal?.getName(), profile)
+		}
 	}
 	
 }

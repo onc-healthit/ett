@@ -32,19 +32,24 @@
     }],
 
     "certificates": [{
-        "description": "TTT Public Cert can be displayed from here. The Mime Body of the Direct message must be encrypted with this self-signed Public Cert.",
+        "description": "TTT Public Cert",
+        "icon": "key",
         "name": ""
     }, {
-        "description": "TTT Trust Anchor can be displayed from here.",
+        "description": "TTT Trust Anchor",
+        "icon": "anchor",
         "name": "nist.gov.der"
     }, {
-        "description": "TTT Trust Anchor representing an invalid trust relationship can be displayed from here.",
+        "description": "Invalid Trust Anchor",
+        "icon": "anchor",
         "name": "invalid-trust-relation.der"
     }, {
-        "description": "TTT Public Root CA can be displayed from here.",
+        "description": "TTT Public Root CA",
+        "icon": "key",
         "name": "sampleca.nist.gov.pem"
     }, {
-        "description": "Human readable CDA/CCR data can be displayed from here.",
+        "description": "Human readable CDA/CCR",
+        "icon": "file-code-o",
         "name": "ccda-samples"
     }],
 
