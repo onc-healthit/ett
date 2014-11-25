@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.xdr.unit
+package gov.nist.healthcare.ttt.xdr.integration
 
 import gov.nist.healthcare.ttt.xdr.helpers.testFramework.TestApplication
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
