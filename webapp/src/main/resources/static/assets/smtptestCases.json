@@ -40,7 +40,7 @@
         "sutHisp": "true",
         "sutEdge": "true",
         "fields": [{
-            "label": "the Vendor Command in seconds",
+            "label": "Command timeout in seconds",
             "name": "sutCommandTimeoutInSeconds",
             "datatype": "String",
             "value": "sutCommandTimeoutInSeconds",
