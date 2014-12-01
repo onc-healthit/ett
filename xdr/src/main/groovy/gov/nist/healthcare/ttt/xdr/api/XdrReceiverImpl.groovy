@@ -36,6 +36,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${toolkit.createSim.url}')
     private String tkSimCreationUrl
 
+    @Value('${toolkit.getSimConfig.url}')
+    private String tkSimInfo
+
     @PostConstruct
     def cleanUrls(){
         tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
@@ -50,7 +53,10 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         def createEndpointTkMsg = buildCreateEndpointRequest(config)
         try {
             GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl+"/"+config.name, timeout)
-            def sim = buildSimulatorFromResponse(r)
+
+            //TODO check if success first
+            GPathResult r2 = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
+            def sim = buildSimulatorFromResponse(r2)
             return sim
         }
         catch (groovyx.net.http.HttpResponseException e) {
@@ -84,11 +90,12 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         }
     }
 
+    //TODO improve that, make it its own parser
     private XDRSimulatorInterface buildSimulatorFromResponse(def r) {
+        def transactions = r.depthFirst().findAll{it.name() == "endpoint"}
         XDRSimulatorInterface sim = new XDRSimulatorImpl()
-        sim.simulatorId = r.simId.text()
-        sim.endpoint = r.endpoint.text()
-        sim.endpointTLS = r.endpointTLS.text()
+        sim.endpoint = transactions[0].@value.text()
+        sim.endpointTLS = transactions[1].@value.text()
         return sim
     }
 
