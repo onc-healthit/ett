@@ -126,7 +126,7 @@ class TestCaseExecutor {
 
             //TODO this is where we convert the report into sth we can store
             def reportRecord = new XDRReportItemImpl()
-            reportRecord.report = report.status.toString()
+            reportRecord.report = report.response
             step.xdrReportItems.add(reportRecord)
             step.criteriaMet = report.status
             step.name = "XDR_RECEIVE"
