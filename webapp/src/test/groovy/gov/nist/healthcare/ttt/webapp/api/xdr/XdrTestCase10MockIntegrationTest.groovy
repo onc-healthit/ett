@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.integration.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase10IntegrationTest extends Specification {
+class XdrTestCase10MockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
