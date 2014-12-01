@@ -56,8 +56,8 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
             //TODO check if success first
             GPathResult r2 = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
-            def sim = buildSimulatorFromResponse(r2)
-            return sim
+            def sim = buildSimulatorFromResponse(r2, config.name)
+                return sim
         }
         catch (groovyx.net.http.HttpResponseException e) {
             throw new RuntimeException("could not reach the toolkit.",e)
@@ -82,7 +82,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                         "boolean"(name:'modelCheck' , value:'false')
                         "boolean"(name:'codingCheck' , value:'false')
                         "boolean"(name:'soapCheck' , value:'true')
-                        text(msgCallBack : "http://localhost:8080/ttt/$notificationUrl")
+                        text(name : 'msgCallback', value:"http://localhost:8080/ttt/$notificationUrl")
                         webservices( value :'prb')
                     }
                 }
@@ -91,9 +91,10 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     }
 
     //TODO improve that, make it its own parser
-    private XDRSimulatorInterface buildSimulatorFromResponse(def r) {
+    private XDRSimulatorInterface buildSimulatorFromResponse(def r, String simId) {
         def transactions = r.depthFirst().findAll{it.name() == "endpoint"}
         XDRSimulatorInterface sim = new XDRSimulatorImpl()
+        sim.simulatorId = simId
         sim.endpoint = transactions[0].@value.text()
         sim.endpointTLS = transactions[1].@value.text()
         return sim

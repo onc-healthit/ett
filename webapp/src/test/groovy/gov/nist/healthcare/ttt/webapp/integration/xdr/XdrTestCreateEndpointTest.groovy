@@ -47,7 +47,7 @@ class XdrTestCreateEndpointTest extends Specification {
     MockMvc mockMvcCheckTestCaseStatus
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
-    static String id = "user1.1.2014"
+    static String id = "user1_1_2014"
     static String userId = "user1"
 
     /*
