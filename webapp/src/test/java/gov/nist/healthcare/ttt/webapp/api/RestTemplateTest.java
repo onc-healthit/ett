@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.integration;
+package gov.nist.healthcare.ttt.webapp.api;
 
 import gov.nist.healthcare.ttt.webapp.Application;
 import org.junit.Ignore;

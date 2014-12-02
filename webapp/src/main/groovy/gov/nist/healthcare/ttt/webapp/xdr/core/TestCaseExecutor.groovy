@@ -92,7 +92,8 @@ class TestCaseExecutor {
 
             def timestamp = clock.timestamp
 
-            String endpointId = "${username}.${tcid}.${timestamp}"
+            //TODO harcoded here. This is dangerous!
+            String endpointId = "${username}_${tcid}_${timestamp}"
 
             log.info("trying to generate endpoints with id : ${endpointId}")
 
@@ -125,9 +126,9 @@ class TestCaseExecutor {
 
             //TODO this is where we convert the report into sth we can store
             def reportRecord = new XDRReportItemImpl()
-            reportRecord.report = report.status
+            reportRecord.report = report.response
             step.xdrReportItems.add(reportRecord)
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+            step.criteriaMet = report.status
             step.name = "XDR_RECEIVE"
 
             return step

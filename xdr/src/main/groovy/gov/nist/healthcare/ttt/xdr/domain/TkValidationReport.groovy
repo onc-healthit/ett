@@ -1,30 +1,35 @@
 package gov.nist.healthcare.ttt.xdr.domain
+
+import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlRootElement
 /**
+ * TODO
+ * This class use to be automatically instantiated by jaxb.
+ * Now it is done manually with groovy slurper, until a
+ * stable format is defined.
+ *
  * Created by gerardin on 10/15/14.
  */
 
-@XmlRootElement(name = "report")
+@XmlRootElement(name = "transactionLog")
 @XmlAccessorType(value=XmlAccessType.FIELD)
 class TkValidationReport {
 
     @XmlElement
-    String status
+    String request
 
     @XmlElement
-    String simId
+    String response
 
-    @XmlElement
-    String endpoint
+    XDRRecordInterface.CriteriaMet status
 
-    @XmlElement
-    String endpointTLS
-
-    @XmlElement
     String messageId
+
+    String simId
 
 
 }
