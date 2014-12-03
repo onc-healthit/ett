@@ -76,7 +76,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         //IF require manual_check status, we need to send back the validation to the user.
 
-        return record.criteriaMet
+        return record.testSteps.last().criteriaMet
 
     }
 
