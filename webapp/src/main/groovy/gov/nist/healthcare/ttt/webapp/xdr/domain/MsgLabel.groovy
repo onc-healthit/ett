@@ -9,7 +9,10 @@ enum MsgLabel {
     UPDATE_RECORD_FAILED("unable to update record"),
     CREATE_NEW_ENDPOINTS_FAILED("unable to create new endpoints"),
     STORE_XDR_RECEIVE_FAILED("unable to store xdr report"),
-    SEND_XDR_FAILED("a problem occured while sending the XDR document")
+    SEND_XDR_FAILED("a problem occured while sending the XDR document"),
+
+    XDR_RECEIVED("XDR message received"),
+    XDR_SEND_AND_RECEIVE("xdr message has been sent and response received.")
 
     private final String msg
 

@@ -24,9 +24,11 @@ class TestCase13 extends TestCaseStrategy {
 
             executor.db.addNewXdrRecord(record)
 
+            XDRRecordInterface.CriteriaMet testStatus = done(record,step.criteriaMet)
+
             String msg = "xdr message has been sent and response received."
 
-            return new UserMessage(UserMessage.Status.SUCCESS, msg, step.xdrReportItems.last())
+            return new UserMessage(UserMessage.Status.SUCCESS, msg, testStatus)
         }
 
 
