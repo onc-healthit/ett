@@ -4,6 +4,8 @@ import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -15,6 +17,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("api/xdr/tc")
 class XdrTestCaseController {
+
+    private static Logger log = LoggerFactory.getLogger(XdrTestCaseController.class)
 
     private final TestCaseManager testCaseManager
 
@@ -37,6 +41,8 @@ class XdrTestCaseController {
             username = principal.getName();
         }
 
+        log.info("received run test case $id request from $username")
+
         //We get the config from the client
         def config = body
 
@@ -51,6 +57,8 @@ class XdrTestCaseController {
     UserMessage<XDRRecordInterface.CriteriaMet> status(
             @PathVariable("id") String id, Principal principal) {
 
+
+
         //TODO enforce user must be authentified or run tests as anonymous?
         if (principal == null) {
             return new UserMessage(UserMessage.Status.ERROR, "user not identified")
@@ -59,12 +67,14 @@ class XdrTestCaseController {
         def tcid = id
         def username = principal.getName()
 
+        log.info("received get status of test case $id request from $username")
+
         XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus(username,tcid)
 
-  //      return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", result)
+        log.info("[status is $result]")
 
         //TODO change just for test we return passed
-        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", XDRRecordInterface.CriteriaMet.PASSED)
+        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", result)
 
     }
 }

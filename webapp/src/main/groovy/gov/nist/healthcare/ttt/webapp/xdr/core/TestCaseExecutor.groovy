@@ -93,7 +93,11 @@ class TestCaseExecutor {
             def timestamp = clock.timestamp
 
             //TODO harcoded here. This is dangerous!
-            String endpointId = "${username}_${tcid}_${timestamp}"
+            //Moreover it has to take into account implicit rules to satisfy Bill's views on ID.
+            //For example, no dots are allowed anywhere, thus we need to sanitize username
+            //(for example the GUI mandates to use email addresses for username, thus the dots!)
+            def sanitized_username = username.replaceAll(/\./,"_")
+            String endpointId = "${sanitized_username}_${tcid}_${timestamp}"
 
             log.info("trying to generate endpoints with id : ${endpointId}")
 
