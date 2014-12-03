@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,8 @@ class SmtpLogController {
 
 	@Autowired
 	private DatabaseInstance db
+	
+	static Logger logger = Logger.getLogger(SmtpLogController.class.getName())
 	
 	@RequestMapping(value = "/{profile:.+}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
@@ -45,7 +48,13 @@ class SmtpLogController {
 	@ResponseBody
 	boolean addLog(@PathVariable String profile, @RequestBody SmtpEdgeLogImpl log, Principal principal) throws Exception {
 		if (principal != null) {
-			db.getSmtpEdgeLogFacade().addNewSmtpLog(log, principal?.getName(), profile)
+			if(profile != null && !profile.equals("")) {
+				try {
+					db.getSmtpEdgeLogFacade().addNewSmtpLog(log, principal?.getName(), profile)
+				} catch(Exception e) {
+					logger.info("Could not log the test: " + e.getMessage());
+				}
+			}
 		}
 	}
 	
