@@ -36,20 +36,14 @@ class TestCase10 extends TestCaseStrategy{
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
 
-
-        String msg = "received xdr message"
-        if(! step.criteriaMet){
-            def msg2 = "test failed."
-            return new UserMessage(UserMessage.Status.SUCCESS, msg + msg2 , step.criteriaMet)
-        }
-
         //TODO validate also the content to make sure it matches the direct message ?
 
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
-        executor.db.updateXDRRecord(updatedRecord)
+        XDRRecordInterface.CriteriaMet testStatus = done(updatedRecord,step.criteriaMet)
 
-        def msg3 = "test succeeded"
-        return new UserMessage(UserMessage.Status.SUCCESS, msg + msg3, step.criteriaMet)
+        String msg = "received xdr message."
+
+        return new UserMessage(UserMessage.Status.SUCCESS, msg, testStatus)
     }
 }
