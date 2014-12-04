@@ -114,7 +114,7 @@ public class SmtpTestInput {
 
 		// Generate attachment
 		LinkedHashMap<String, byte[]> attachment = new LinkedHashMap<String, byte[]>()
-		attachment.put("Test.txt", "test attachemnt".getBytes())
+		attachment.put("CCDA_Ambulatory.xml", IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")))
 
 		TestInput res = new TestInput(this.sutSmtpAddress, this.tttSmtpAddress,
 				Integer.parseInt(this.sutSmtpPort),
