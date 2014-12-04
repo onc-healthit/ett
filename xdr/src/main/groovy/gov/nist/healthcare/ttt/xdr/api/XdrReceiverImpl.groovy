@@ -42,6 +42,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${server.contextPath}')
     private String contextPath
 
+    @Value('${server.port}')
+    private String port
+
     //TODO change that : either find a better way or rename property
     @Value('${direct.listener.domainName}')
     private String hostname
@@ -53,7 +56,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
 
         notificationUrl = notificationUrl.replaceAll('/$', "")
-        fullNotificationUrl = "http://"+hostname+contextPath+notificationUrl
+        fullNotificationUrl = "http://"+hostname+":"+port+contextPath+notificationUrl
     }
 
     /*
