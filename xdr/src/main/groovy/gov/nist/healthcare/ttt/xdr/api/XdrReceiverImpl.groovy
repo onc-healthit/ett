@@ -39,17 +39,21 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${toolkit.getSimConfig.url}')
     private String tkSimInfo
 
-    @Value('$server.contextPath')
+    @Value('${server.contextPath}')
     private String contextPath
 
     //TODO change that : either find a better way or rename property
-    @Value('direct.listener.domainName')
+    @Value('${direct.listener.domainName}')
     private String hostname
 
+    private String fullNotificationUrl
+
     @PostConstruct
-    def cleanUrls(){
+    def buildUrls(){
         tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
+
         notificationUrl = notificationUrl.replaceAll('/$', "")
+        fullNotificationUrl = "http://"+hostname+contextPath+notificationUrl
     }
 
     /*
@@ -89,7 +93,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                         "boolean"(name:'modelCheck' , value:'false')
                         "boolean"(name:'codingCheck' , value:'false')
                         "boolean"(name:'soapCheck' , value:'true')
-                        text(name : 'msgCallback', value: "$hostname+$contextPath+$notificationUrl")
+                        text(name : 'msgCallback', value: fullNotificationUrl)
                         webservices( value :'prb')
                     }
                 }
