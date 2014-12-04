@@ -1,10 +1,13 @@
 package gov.nist.healthcare.ttt.webapp.smtp.model;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Properties;
+
+import org.apache.commons.io.IOUtils;
 
 public class SmtpTestInput {
 
