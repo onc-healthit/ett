@@ -10,54 +10,57 @@ import java.net.URI;
 import java.security.KeyStore;
 
 public class SslReverseEchoer {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        String ksName = "test/resources/keystore/keystore";
         InputStream is = SslReverseEchoer.class.getClassLoader().getResourceAsStream("keystore/keystore");
         char ksPass[] = "changeit".toCharArray();
         char ctPass[] = "changeit".toCharArray();
 
-
+        boolean run = true;
         SSLServerSocket s = null;
 
+        try {
+            URI uri = SslReverseEchoer.class.getClassLoader().getResource("keystore/keystore").toURI();
+            File file = new File(uri);
+
+            System.out.println(file.getAbsolutePath());
+
+            KeyStore ks = KeyStore.getInstance("JKS");
+            ks.load(is, ksPass);
+            KeyManagerFactory kmf =
+                    KeyManagerFactory.getInstance("SunX509");
+            kmf.init(ks, ctPass);
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(kmf.getKeyManagers(), null, null);
+            SSLServerSocketFactory ssf = sc.getServerSocketFactory();
+            s = (SSLServerSocket) ssf.createServerSocket(8888);
+            printServerSocketInfo(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("unable to set ssl server");
+
+        }
+
+        while(run) {
+
+            SSLSocket c = null;
+            BufferedWriter w = null;
+            BufferedReader r = null;
+
             try {
-                URI uri = SslReverseEchoer.class.getClassLoader().getResource("keystore/keystore").toURI();
-                File file = new File(uri);
-
-                System.out.println(file.getAbsolutePath());
-
-                KeyStore ks = KeyStore.getInstance("JKS");
-                ks.load(is, ksPass);
-                KeyManagerFactory kmf =
-                        KeyManagerFactory.getInstance("SunX509");
-                kmf.init(ks, ctPass);
-
-                SSLContext sc = SSLContext.getInstance("TLS");
-                sc.init(kmf.getKeyManagers(), null, null);
-                SSLServerSocketFactory ssf = sc.getServerSocketFactory();
-                s = (SSLServerSocket) ssf.createServerSocket(8888);
-                printServerSocketInfo(s);
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                System.out.println("unable to set ssl server");
-
-            }
-
-            while (true) {
-
-                try {
-                SSLSocket c = (SSLSocket) s.accept();
+                c = (SSLSocket) s.accept();
                 printSocketInfo(c);
-                BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
+                w = new BufferedWriter(new OutputStreamWriter(
                         c.getOutputStream()));
-                BufferedReader r = new BufferedReader(new InputStreamReader(
+                r = new BufferedReader(new InputStreamReader(
                         c.getInputStream()));
                 String m = "Welcome to SSL Reverse Echo Server." +
                         " Please type in some words.";
                 w.write(m, 0, m.length());
                 w.newLine();
                 w.flush();
+
                 while ((m = r.readLine()) != null) {
                     if (m.equals(".")) break;
                     char[] a = m.toCharArray();
@@ -71,43 +74,49 @@ public class SslReverseEchoer {
                     w.newLine();
                     w.flush();
                 }
+            } catch (Exception e) {
+                System.err.println(e.toString());
+                System.out.println("client has dropped the connection");
+            } finally {
                 w.close();
                 r.close();
                 c.close();
-                s.close();
-            }catch(Exception e){
-                System.err.println(e.toString());
-                System.out.println("client has dropped the connection");
             }
+
         }
+
+        s.close();
     }
+
+
     private static void printSocketInfo(SSLSocket s) {
-        System.out.println("Socket class: "+s.getClass());
+        System.out.println("Socket class: " + s.getClass());
         System.out.println("   Remote address = "
-                +s.getInetAddress().toString());
-        System.out.println("   Remote port = "+s.getPort());
+                + s.getInetAddress().toString());
+        System.out.println("   Remote port = " + s.getPort());
         System.out.println("   Local socket address = "
-                +s.getLocalSocketAddress().toString());
+                + s.getLocalSocketAddress().toString());
         System.out.println("   Local address = "
-                +s.getLocalAddress().toString());
-        System.out.println("   Local port = "+s.getLocalPort());
+                + s.getLocalAddress().toString());
+        System.out.println("   Local port = " + s.getLocalPort());
         System.out.println("   Need client authentication = "
-                +s.getNeedClientAuth());
+                + s.getNeedClientAuth());
         SSLSession ss = s.getSession();
-        System.out.println("   Cipher suite = "+ss.getCipherSuite());
-        System.out.println("   Protocol = "+ss.getProtocol());
+        System.out.println("   Cipher suite = " + ss.getCipherSuite());
+        System.out.println("   Protocol = " + ss.getProtocol());
     }
+
     private static void printServerSocketInfo(SSLServerSocket s) {
-        System.out.println("Server socket class: "+s.getClass());
+        System.out.println("Server socket class: " + s.getClass());
         System.out.println("   Socker address = "
-                +s.getInetAddress().toString());
+                + s.getInetAddress().toString());
         System.out.println("   Socker port = "
-                +s.getLocalPort());
+                + s.getLocalPort());
         System.out.println("   Need client authentication = "
-                +s.getNeedClientAuth());
+                + s.getNeedClientAuth());
         System.out.println("   Want client authentication = "
-                +s.getWantClientAuth());
+                + s.getWantClientAuth());
         System.out.println("   Use client mode = "
-                +s.getUseClientMode());
+                + s.getUseClientMode());
     }
 }

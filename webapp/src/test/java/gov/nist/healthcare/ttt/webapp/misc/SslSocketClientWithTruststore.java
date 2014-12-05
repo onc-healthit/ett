@@ -8,21 +8,45 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
+import java.net.URI;
 
 /**
- * To run a successful SSL connection :
- * java -cp . -Djavax.net.ssl.trustStore=clientKeystore/keystore.jks  gov.nist.healthcare.ttt.webapp.misc.SslSocketClient
- *
- * The client truststore contains the cert of the server.
+ * This Socket is not working for now.
  */
 
-public class SslSocketClient {
+public class SslSocketClientWithTruststore {
     public static void main(String[] args) {
+
+        String relativePath = "clientKeystore"+File.separator+"keystore.jks";
+
+        InputStream is = SslSocketClientWithTruststore.class.getClassLoader().getResourceAsStream(relativePath);
+        char ksPass[] = "changeit".toCharArray();
+        char ctPass[] = "changeit".toCharArray();
+
+        SSLSocketFactory f = null;
+
+        try {
+
+            URI uri = SslSocketClientWithTruststore.class.getClassLoader().getResource(relativePath).toURI();
+            File file = new File(uri);
+            System.out.println("use keystore at : " + file.getAbsolutePath());
+
+            System.setProperty("javax.net.ssl.trustStore", file.getAbsolutePath());
+            f = (SSLSocketFactory) SSLSocketFactory.getDefault();
+
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("unable to set ssl factory");
+
+        }
+
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(System.in));
         PrintStream out = System.out;
-        SSLSocketFactory f =
-                (SSLSocketFactory) SSLSocketFactory.getDefault();
+
         try {
             SSLSocket c =
                     (SSLSocket) f.createSocket("localhost", 8888);
