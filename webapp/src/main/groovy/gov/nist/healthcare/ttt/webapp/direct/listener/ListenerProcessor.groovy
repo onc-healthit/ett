@@ -687,6 +687,7 @@ public class ListenerProcessor implements Runnable {
 			return res
 		} catch(Exception e) {
 			logger.info("Cannot get certificate from configured location " + this.certificatesPath + type)
+			logger.info(e.getMessage())
 			this.certPassword = ""
 			return getClasspathPrivateCert("/signing-certificates/good/", ".p12")
 		}
