@@ -89,7 +89,7 @@ class XdrTestCase3MockIntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "targetEndpoint": "https://example.com/xdr"
+    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/f8488a75-fc7d-4d70-992b-e5b2c852b412/reg/rb"
 }"""
 
     def setupDb() {

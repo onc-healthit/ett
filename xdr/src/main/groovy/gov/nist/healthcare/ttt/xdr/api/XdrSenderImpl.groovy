@@ -1,6 +1,5 @@
 package gov.nist.healthcare.ttt.xdr.api
-
-import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
+import gov.nist.healthcare.ttt.tempxdrcommunication.SimpleSOAPSender
 import gov.nist.healthcare.ttt.xdr.domain.TkSendReport
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
@@ -64,11 +63,15 @@ class XdrSenderImpl implements XdrSender{
 
         def sendXdrMessage = sendXdrMessage(config)
         try {
-            ArtifactManagement.
-            SimpleSOAPSender.sendMessage(tkSendXdrUrl,
-            )
-            GPathResult r = restClient.postXml(sendXdrMessage, tkSendXdrUrl, timeout)
-            def report = parseReport(r)
+            String payload = "<xdr></xdr>"
+            String response = SimpleSOAPSender.sendMessage(config.targetEndpoint, payload)
+            def r = new XmlSlurper().parseText(response)
+
+            def report = new TkSendReport()
+
+
+     //       GPathResult r = restClient.postXml(sendXdrMessage, tkSendXdrUrl, timeout)
+     //       def report = parseReport(r)
             return report
         }
         catch (groovyx.net.http.HttpResponseException e) {
