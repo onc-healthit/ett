@@ -3,11 +3,12 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
-import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
-import gov.nist.healthcare.ttt.xdr.domain.Message
+import gov.nist.healthcare.ttt.commons.notification.IObserver
+import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
 /**
  * Created by gerardin on 10/14/14.
  */
@@ -30,6 +31,11 @@ class ResponseHandler implements IObserver{
     def getNotification(Message msg) {
 
         println "notification received"
+
+        if(msg.status == Message.Status.ERROR){
+            throw Exception()
+        }
+
 
         try {
             handle(msg.content)

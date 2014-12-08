@@ -1,10 +1,13 @@
 package gov.nist.healthcare.ttt.webapp.smtp.model;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Properties;
+
+import org.apache.commons.io.IOUtils;
 
 public class SmtpTestInput {
 
@@ -114,7 +117,7 @@ public class SmtpTestInput {
 
 		// Generate attachment
 		LinkedHashMap<String, byte[]> attachment = new LinkedHashMap<String, byte[]>()
-		attachment.put("Test.txt", "test attachemnt".getBytes())
+		attachment.put("CCDA_Ambulatory.xml", IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")))
 
 		TestInput res = new TestInput(this.sutSmtpAddress, this.tttSmtpAddress,
 				Integer.parseInt(this.sutSmtpPort),

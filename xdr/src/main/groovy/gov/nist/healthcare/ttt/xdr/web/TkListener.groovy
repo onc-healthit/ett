@@ -1,15 +1,17 @@
 package gov.nist.healthcare.ttt.xdr.web
-
+import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
-import gov.nist.healthcare.ttt.xdr.domain.Message
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
+
 /**
  * Created by gerardin on 10/14/14.
  *
@@ -41,47 +43,41 @@ public class TkListener {
     public void receiveBySimulatorId(@RequestBody String body) {
 
         log.debug("receive a new validation report: $body")
+        Message m = null
 
-        def report = new XmlSlurper().parseText(body)
+        try {
+            def report = new XmlSlurper().parseText(body)
 
-        def tkValidationReport = new TkValidationReport()
-        tkValidationReport.request = report.request.text()
-        tkValidationReport.response = report.response.text()
-        tkValidationReport.simId = report.@simId.text()
+            def tkValidationReport = new TkValidationReport()
+            tkValidationReport.request = report.request.text()
+            tkValidationReport.response = report.response.text()
+            tkValidationReport.simId = report.@simId.text()
 
-        //TODO modify : all that to extract registryResponseStatus info!
-        String content = report.response.body.text()
-        def registryResponse = content.split("<.?S:Body>")
-        def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
-        def registryResponseStatus = registryResponseXml.@status.text()
-        def criteriaMet = parseStatus(registryResponseStatus)
-        tkValidationReport.status = criteriaMet
+            //TODO modify : all that to extract registryResponseStatus info!
+            String content = report.response.body.text()
+            def registryResponse = content.split("<.?S:Body>")
+            def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
+            def registryResponseStatus = registryResponseXml.@status.text()
+            def criteriaMet = parseStatus(registryResponseStatus)
+            tkValidationReport.status = criteriaMet
 
-        def m = new Message<TkValidationReport>(Message.Status.SUCCESS,"new validation result received...",tkValidationReport)
+            m = new Message<TkValidationReport>(Message.Status.SUCCESS, "new validation result received...", tkValidationReport)
+        }
+        catch(Exception e) {
+            log.error("receive an invalid validation report. Bad payload rejected :\n $body")
 
-        receiver.notifyObserver(m)
+            m = new Message<TkValidationReport>(Message.Status.ERROR, "new validation result received...")
+        }
+        finally {
+            receiver.notifyObserver(m)
+        }
     }
 
     def parseStatus(String registryResponseStatus) {
-        if(registryResponseStatus.contains("Failure")){
+        if (registryResponseStatus.contains("Failure")) {
             return XDRRecordInterface.CriteriaMet.FAILED
-        }
-        else if(registryResponseStatus.contains("Success")){
+        } else if (registryResponseStatus.contains("Success")) {
             return XDRRecordInterface.CriteriaMet.PASSED
         }
     }
-/**
-     * Notify of a bad payload received.
-     */
-    @ResponseStatus(value=HttpStatus.NOT_ACCEPTABLE, reason="Bad payload")
-    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
-    public void contentNotUnderstood(){
-
-        log.error("receive an invalid validation report. Bad payload rejected")
-
-        def m = new Message<TkValidationReport>(Message.Status.ERROR,"new validation result received...")
-
-        receiver.notifyObserver(m)
-    }
-
 }

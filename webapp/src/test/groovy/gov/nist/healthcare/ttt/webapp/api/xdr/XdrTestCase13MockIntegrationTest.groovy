@@ -72,7 +72,6 @@ class XdrTestCase13MockIntegrationTest extends Specification {
     }
 
 
-
     def "user succeeds in running test case 13"() throws Exception {
 
         when: "receiving a request to run test case $tcid"

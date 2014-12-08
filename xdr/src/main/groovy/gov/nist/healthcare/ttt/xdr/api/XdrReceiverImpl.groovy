@@ -2,10 +2,10 @@ package gov.nist.healthcare.ttt.xdr.api
 
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
-import gov.nist.healthcare.ttt.xdr.api.notification.IObservable
-import gov.nist.healthcare.ttt.xdr.api.notification.IObserver
+import gov.nist.healthcare.ttt.commons.notification.IObservable
+import gov.nist.healthcare.ttt.commons.notification.IObserver
+import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
-import gov.nist.healthcare.ttt.xdr.domain.Message
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
 import org.springframework.beans.factory.annotation.Autowired
