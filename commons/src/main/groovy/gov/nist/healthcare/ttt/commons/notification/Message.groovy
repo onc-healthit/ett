@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.xdr.domain
+package gov.nist.healthcare.ttt.commons.notification
 
 /**
  * Created by gerardin on 10/9/14.
