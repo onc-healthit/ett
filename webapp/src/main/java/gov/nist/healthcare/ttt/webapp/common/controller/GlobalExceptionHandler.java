@@ -29,6 +29,7 @@ public class GlobalExceptionHandler {
 		}
 		
 		// Log the error first
+		ex.printStackTrace();
     	logger.error(username + ": " + ex.getMessage());
     	
 		ExceptionJSONInfo response = new ExceptionJSONInfo();
