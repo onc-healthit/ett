@@ -12,6 +12,7 @@ public class SendDirectMessage {
 	private String fromAddress;
 	private String toAddress;
 	private String attachmentFile;
+	private String ownCcdaAttachment;
 	// Signing certificate
 	private String signingCert;
 	private String signingCertPassword;
@@ -140,6 +141,14 @@ public class SendDirectMessage {
 		this.isWrapped = isWrapped;
 	}
 	
+	public String getOwnCcdaAttachment() {
+		return ownCcdaAttachment;
+	}
+
+	public void setOwnCcdaAttachment(String ownCcdaAttachment) {
+		this.ownCcdaAttachment = ownCcdaAttachment;
+	}
+
 	public boolean isValidSendEmail() throws Exception {
 		if(this.fromAddress.equals("")) {
 			logger.log(Level.WARNING, "From address can't be null");

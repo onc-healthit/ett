@@ -52,7 +52,11 @@ public class SendDirectController {
 		
 		if (messageInfo.isValidSendEmail()) {
 			InputStream attachmentFile = null;
-			if(!messageInfo.getAttachmentFile().equals("")) {
+			if(messageInfo.getOwnCcdaAttachment() != null && !messageInfo.getOwnCcdaAttachment().equals("")) {
+				File ownCcda = new File(messageInfo.getOwnCcdaAttachment());
+				messageInfo.setAttachmentFile(ownCcda.getName());
+				attachmentFile = new FileInputStream(ownCcda);
+			} else if(!messageInfo.getAttachmentFile().equals("")) {
 				attachmentFile = getClass().getResourceAsStream("/cda-samples/" + messageInfo.getAttachmentFile());
 			}
 			InputStream signingCert = listener.getSigningPrivateCert(messageInfo.getSigningCert().toLowerCase());
