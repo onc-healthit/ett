@@ -5,13 +5,13 @@ import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 /**
  * Created by gerardin on 12/8/14.
  */
-class TestCaseEvent<E> {
+class TestCaseEvent {
 
-    E value
+    String value
 
     XDRRecordInterface.CriteriaMet criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
 
-    public TestCaseEvent(E content, XDRRecordInterface.CriteriaMet tcStatus){
+    public TestCaseEvent(String content, XDRRecordInterface.CriteriaMet tcStatus){
         this.value = content
         this.criteriaMet = tcStatus
     }

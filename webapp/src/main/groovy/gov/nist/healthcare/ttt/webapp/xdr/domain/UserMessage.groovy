@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude
  * Created by gerardin on 10/9/14.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class UserMessage<E> {
+class UserMessage {
 
     Status status
 
     String message
 
-    E content
+    TestCaseEvent content
 
     enum Status  {SUCCESS , ERROR}
 
@@ -25,7 +25,7 @@ class UserMessage<E> {
         this.message = msg
     }
 
-    public UserMessage(Status s, String msg, E c){
+    public UserMessage(Status s, String msg, TestCaseEvent c){
         this.status = s
         this.message = msg
         this.content= c

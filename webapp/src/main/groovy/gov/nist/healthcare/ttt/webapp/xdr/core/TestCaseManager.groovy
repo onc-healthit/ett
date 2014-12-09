@@ -45,7 +45,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         }
     }
 
-    public UserMessage<Object> runTestCase(String id, Map userInput, String username) {
+    public UserMessage runTestCase(String id, Map userInput, String username) {
 
 
         log.info("running test case $id")

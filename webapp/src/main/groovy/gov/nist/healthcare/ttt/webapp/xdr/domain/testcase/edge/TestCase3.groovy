@@ -36,9 +36,7 @@ class TestCase3 extends TestCaseBaseStrategy {
         //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         XDRRecordInterface.CriteriaMet testStatus = done(record,step.criteriaMet)
 
-        def report = step.xdrReportItems.last().report
-
-        println(report)
+        String report = step.xdrReportItems.last().report
 
         return new UserMessage(UserMessage.Status.SUCCESS, MsgLabel.XDR_SEND_AND_RECEIVE.msg, new TestCaseEvent(report ,testStatus))
     }

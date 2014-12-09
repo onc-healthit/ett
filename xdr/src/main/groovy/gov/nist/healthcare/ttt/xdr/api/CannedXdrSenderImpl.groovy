@@ -31,6 +31,9 @@ class CannedXdrSenderImpl implements XdrSender {
             def payload = prepareMessage(config)
             log.info("contacting remote endpoint...")
             String response = SimpleSOAPSender.sendMessage(config.targetEndpoint, payload)
+
+            println response
+
             return response
         }
         catch (Exception e) {
