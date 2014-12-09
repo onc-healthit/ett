@@ -1777,6 +1777,13 @@ pre {
 .fade-animation {
   position: absolute;
 }
+.basic-fade-animation.ng-enter,
+.fade-animation.ng-move {
+  -webkit-animation: fadeIn 1s;
+  -moz-animation: fadeIn 1s;
+  -o-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
 .field-tight {
   margin: 0px 0px 0px 0px !important;
   padding: 0px 0px 0px 0px !important;
