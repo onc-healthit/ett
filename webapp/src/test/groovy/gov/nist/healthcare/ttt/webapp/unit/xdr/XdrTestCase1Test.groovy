@@ -45,6 +45,7 @@ class XdrTestCase1Test extends Specification{
     It is much harder to test since we cannot mock the testcase themselves and anything
     behind them once we rely on reflection
      */
+    @org.junit.Ignore
     @Ignore
     def "user succeeds in starting test case 1"() throws Exception {
 

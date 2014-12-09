@@ -76,13 +76,16 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username, tcid)
 
         //IF require manual_check status, we need to send back the validation to the user.
+        def report
 
-        //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
-        def step = record.getTestSteps().find{
-            it.name = "XDR_RECEIVE"
+        if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
+            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
+            def step = record.getTestSteps().find {
+                it.name = "XDR_RECEIVE"
+            }
+
+            report = step.xdrReportItems.last().report
         }
-
-        def report = step.xdrReportItems.last().report
 
         return new TestCaseEvent(report,record.criteriaMet)
 
