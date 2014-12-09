@@ -1,7 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.controller
-//import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
+//import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
@@ -31,7 +30,7 @@ class XdrTestCaseController {
 //    @ApiOperation(value = "run a test case")
     @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
     @ResponseBody
-    UserMessage<XDRSimulatorImpl> run(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
+    UserMessage run(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
 
         //User must be authenticated for this test case to be run
         String username
@@ -47,15 +46,17 @@ class XdrTestCaseController {
         //We get the config from the client
         def config = body
 
-        testCaseManager.runTestCase(id, config, username)
+        UserMessage msg = testCaseManager.runTestCase(id, config, username)
+        println "before sending back :\n " + msg.content.value
 
+        return msg
     }
 
 
 //    @ApiOperation(value = "check status of a test case")
     @RequestMapping(value = "/{id}/status", method = RequestMethod.GET)
     @ResponseBody
-    UserMessage<XDRRecordInterface.CriteriaMet> status(
+    UserMessage status(
             @PathVariable("id") String id, Principal principal) {
 
 
