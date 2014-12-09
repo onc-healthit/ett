@@ -81,6 +81,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content.value").value("http://hit-dev.nist.gov:11080/xdstools3/sim/user1_1_2014/docrec/prb"))
+                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 
         when: "receiving a validation report from toolkit"
