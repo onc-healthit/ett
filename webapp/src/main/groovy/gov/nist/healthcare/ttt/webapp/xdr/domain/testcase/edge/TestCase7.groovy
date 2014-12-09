@@ -6,7 +6,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
-import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
+import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -31,11 +31,9 @@ final class TestCase7 extends TestCaseBaseStrategy {
     }
 
     @Override
-    public void notifyXdrReceive(XDRRecordInterface record, TLSValidationReport report) {
-
+    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         record.testSteps.last().criteriaMet = report.status
 
         done(record,report.status)
-
     }
 }

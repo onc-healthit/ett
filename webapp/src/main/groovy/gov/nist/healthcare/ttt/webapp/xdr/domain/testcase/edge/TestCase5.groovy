@@ -18,7 +18,7 @@ class TestCase5 extends TestCaseBaseStrategy {
 
     @Override
     UserMessage run(String tcid, Map context, String username) {
-        testcase.run()
+        testcase.run(tcid,context,username)
     }
 
     @Override

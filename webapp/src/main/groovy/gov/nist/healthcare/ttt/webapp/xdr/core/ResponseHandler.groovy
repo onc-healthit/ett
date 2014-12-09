@@ -55,7 +55,7 @@ class ResponseHandler implements IObserver{
         XDRRecordInterface rec = null
         //rec = db.instance.xdrFacade.getXDRRecordByAddress(report.address)
         TestCaseBaseStrategy testcase = manager.findTestCase("7")
-        testcase.notifyXdrReceive(rec, report)
+        testcase.notifyTLSReceive(rec, report)
     }
 
     private handle(TkValidationReport report){

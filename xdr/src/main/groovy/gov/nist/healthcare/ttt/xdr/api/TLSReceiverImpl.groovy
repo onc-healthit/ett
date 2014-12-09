@@ -30,7 +30,7 @@ import java.util.concurrent.Executors
 public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
     IObserver observer
-    SSLServerSocket s
+    SSLServerSocket server
     int maxConnections = 10
     ExecutorService executorService = Executors.newFixedThreadPool(maxConnections)
     Logger log = LoggerFactory.getLogger(TLSReceiverImpl.class)
@@ -46,7 +46,6 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
     @PreDestroy
     def cleanup() {
-        s.close();
         executorService.shutdownNow()
     }
 
@@ -64,7 +63,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     void run() {
 
         while (true) {
-            SSLSocket connection = (SSLSocket) s.accept();
+            SSLSocket connection = (SSLSocket) server.accept();
 
             Runnable task = new Runnable() {
                 @Override
@@ -127,7 +126,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
         char[] ctPass = "changeit".toCharArray();
 
         boolean run = true;
-        s = null;
+        server = null;
 
         try {
             URI uri = this.class.getClassLoader().getResource("keystore/keystore").toURI();
@@ -142,8 +141,8 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(kmf.getKeyManagers(), null, null);
             SSLServerSocketFactory ssf = sc.getServerSocketFactory();
-            s = (SSLServerSocket) ssf.createServerSocket(8888);
-            printServerSocketInfo(s);
+            server = (SSLServerSocket) ssf.createServerSocket(8888);
+            printServerSocketInfo(server);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("unable to set ssl server");
@@ -152,34 +151,34 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     }
 
 
-    private static void printSocketInfo(SSLSocket s) {
-        System.out.println("Socket class: " + s.getClass());
+    private static void printSocketInfo(SSLSocket socket) {
+        System.out.println("Socket class: " + socket.getClass());
         System.out.println("   Remote address = "
-                + s.getInetAddress().toString());
-        System.out.println("   Remote port = " + s.getPort());
+                + socket.getInetAddress().toString());
+        System.out.println("   Remote port = " + socket.getPort());
         System.out.println("   Local socket address = "
-                + s.getLocalSocketAddress().toString());
+                + socket.getLocalSocketAddress().toString());
         System.out.println("   Local address = "
-                + s.getLocalAddress().toString());
-        System.out.println("   Local port = " + s.getLocalPort());
+                + socket.getLocalAddress().toString());
+        System.out.println("   Local port = " + socket.getLocalPort());
         System.out.println("   Need client authentication = "
-                + s.getNeedClientAuth());
-        SSLSession ss = s.getSession();
+                + socket.getNeedClientAuth());
+        SSLSession ss = socket.getSession();
         System.out.println("   Cipher suite = " + ss.getCipherSuite());
         System.out.println("   Protocol = " + ss.getProtocol());
     }
 
-    private static void printServerSocketInfo(SSLServerSocket s) {
-        System.out.println("Server socket class: " + s.getClass());
+    private static void printServerSocketInfo(SSLServerSocket server) {
+        System.out.println("Server socket class: " + server.getClass());
         System.out.println("   Socker address = "
-                + s.getInetAddress().toString());
+                + server.getInetAddress().toString());
         System.out.println("   Socker port = "
-                + s.getLocalPort());
+                + server.getLocalPort());
         System.out.println("   Need client authentication = "
-                + s.getNeedClientAuth());
+                + server.getNeedClientAuth());
         System.out.println("   Want client authentication = "
-                + s.getWantClientAuth());
+                + server.getWantClientAuth());
         System.out.println("   Use client mode = "
-                + s.getUseClientMode());
+                + server.getUseClientMode());
     }
 }

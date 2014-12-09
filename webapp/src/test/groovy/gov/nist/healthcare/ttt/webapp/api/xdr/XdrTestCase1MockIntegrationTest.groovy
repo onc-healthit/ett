@@ -80,8 +80,8 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.value.endpoint").value("http://hit-dev.nist.gov:11080/xdstools3/sim/user1_1_2014/docrec/prb"))
-                .andExpect(jsonPath("content.value.endpointTLS").value("https://hit-dev.nist.gov:11080/xdstools3/sim/user1_1_2014/docrec/prb"))
+                .andExpect(jsonPath("content.value").value("http://hit-dev.nist.gov:11080/xdstools3/sim/user1_1_2014/docrec/prb"))
+
 
         when: "receiving a validation report from toolkit"
         MockHttpServletRequestBuilder getRequest2 = reportRequest()
@@ -108,7 +108,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content").value("FAILED"))
+                .andExpect(jsonPath("content.criteriaMet").value("FAILED"))
     }
 
     MockHttpServletRequestBuilder createEndpointRequest() {
