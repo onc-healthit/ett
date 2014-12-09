@@ -110,6 +110,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content.criteriaMet").value("FAILED"))
+                .andExpect(jsonPath("content.value").exists())
     }
 
     MockHttpServletRequestBuilder createEndpointRequest() {
