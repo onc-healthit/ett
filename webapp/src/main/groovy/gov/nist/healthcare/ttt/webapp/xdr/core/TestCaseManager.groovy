@@ -82,7 +82,9 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             it.name = "XDR_RECEIVE"
         }
 
-        return new TestCaseEvent(step.xdrReportItems.last().report,record.criteriaMet)
+        def report = step.xdrReportItems.last().report
+
+        return new TestCaseEvent(report,record.criteriaMet)
 
     }
 

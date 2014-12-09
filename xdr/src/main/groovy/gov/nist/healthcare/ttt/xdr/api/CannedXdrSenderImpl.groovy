@@ -23,7 +23,7 @@ class CannedXdrSenderImpl implements XdrSender {
     Integer timeout = 1000
 
     @Override
-    TkSendReport sendXdr(Map config) {
+    String sendXdr(Map config) {
 
         log.info("try to send xdr with config : $config")
 
@@ -31,9 +31,7 @@ class CannedXdrSenderImpl implements XdrSender {
             def payload = prepareMessage(config)
             log.info("contacting remote endpoint...")
             String response = SimpleSOAPSender.sendMessage(config.targetEndpoint, payload)
-            def report = new TkSendReport()
-            report.xdrResponse = response
-            return report
+            return response
         }
         catch (Exception e) {
             e.printStackTrace()
