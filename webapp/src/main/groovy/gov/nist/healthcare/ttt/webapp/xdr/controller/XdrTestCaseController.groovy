@@ -1,5 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.xdr.controller
-import com.wordnik.swagger.annotations.ApiOperation
+//import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
@@ -28,7 +28,7 @@ class XdrTestCaseController {
         testCaseManager = manager
     }
 
-    @ApiOperation(value = "run a test case")
+//    @ApiOperation(value = "run a test case")
     @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
     @ResponseBody
     UserMessage<XDRSimulatorImpl> run(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
@@ -52,7 +52,7 @@ class XdrTestCaseController {
     }
 
 
-    @ApiOperation(value = "check status of a test case")
+//    @ApiOperation(value = "check status of a test case")
     @RequestMapping(value = "/{id}/status", method = RequestMethod.GET)
     @ResponseBody
     UserMessage<XDRRecordInterface.CriteriaMet> status(

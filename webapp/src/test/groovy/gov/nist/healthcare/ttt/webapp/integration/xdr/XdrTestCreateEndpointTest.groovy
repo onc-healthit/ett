@@ -78,18 +78,36 @@ class XdrTestCreateEndpointTest extends Specification {
         when: "receiving a request to run test case 1"
         MockHttpServletRequestBuilder getRequest = createEndpointRequest()
 
-        then: "we receive back a success message with the endpoints info"
+        then: "we receive back a success message with the http endpoint info"
 
         mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.endpoint").exists())
-                .andExpect(jsonPath("content.endpointTLS").exists())
+                .andExpect(jsonPath("content.value").exists())
+
+        when: "receiving a request to run test case 6"
+        MockHttpServletRequestBuilder getTLSRequest = createTLSEndpointRequest()
+
+        then: "we receive back a success message with the https endpoints info"
+
+        mockMvcRunTestCase.perform(getTLSRequest)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.value").exists())
     }
 
     MockHttpServletRequestBuilder createEndpointRequest() {
         MockMvcRequestBuilders.post("/api/xdr/tc/1/run")
+                .accept(MediaType.ALL)
+                .content(testCaseConfig)
+                .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl(userId))
+    }
+
+    MockHttpServletRequestBuilder createTLSEndpointRequest() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/6/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)

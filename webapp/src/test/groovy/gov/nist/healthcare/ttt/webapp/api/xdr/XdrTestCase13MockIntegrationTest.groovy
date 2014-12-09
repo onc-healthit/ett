@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import spock.lang.Ignore
 import spock.lang.Specification
 import sun.security.acl.PrincipalImpl
 
@@ -72,6 +73,7 @@ class XdrTestCase13MockIntegrationTest extends Specification {
     }
 
 
+    @Ignore
     def "user succeeds in running test case 13"() throws Exception {
 
         when: "receiving a request to run test case $tcid"

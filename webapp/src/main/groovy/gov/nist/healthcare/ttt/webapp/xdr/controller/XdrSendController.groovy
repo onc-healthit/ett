@@ -1,6 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.controller
 
-import com.wordnik.swagger.annotations.ApiOperation
+//import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
@@ -22,7 +22,7 @@ class XdrSendController {
     public XdrSendController(XdrSender xdrSender, DatabaseInstance database) {
     }
 
-    @ApiOperation(value = "send an xdr ")
+//    @ApiOperation(value = "send an xdr ")
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     UserMessage send(@RequestBody Object body) {
