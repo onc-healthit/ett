@@ -1,14 +1,14 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
-
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
-import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
+import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
+import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
+import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
+import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
  * Created by gerardin on 10/14/14.
  */
@@ -16,15 +16,18 @@ import org.springframework.stereotype.Component
 class ResponseHandler implements IObserver{
 
     private final TestCaseManager manager
-    private final XdrReceiver receiver
+    private final XdrReceiver xdrReceiver
+    private final TLSReceiver tlsReceiver
     private final DatabaseProxy db
 
     @Autowired
-    public ResponseHandler(TestCaseManager manager, XdrReceiver receiver, DatabaseProxy db){
+    public ResponseHandler(TestCaseManager manager, XdrReceiver xdrReceiver, TLSReceiver tlsReceiver, DatabaseProxy db){
         this.manager = manager
-        this.receiver = receiver
+        this.xdrReceiver = xdrReceiver
+        this.tlsReceiver = tlsReceiver
         this.db = db
-        receiver.registerObserver(this)
+        xdrReceiver.registerObserver(this)
+        tlsReceiver.registerObserver(this)
     }
 
     @Override
@@ -46,6 +49,9 @@ class ResponseHandler implements IObserver{
         }
     }
 
+    private handle(TLSValidationReport report){
+        println "handle tls report"
+    }
 
     private handle(TkValidationReport report){
 
