@@ -11,6 +11,8 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
 
+import javax.annotation.PostConstruct
+
 /**
  * Created by gerardin on 10/9/14.
  */
@@ -25,8 +27,27 @@ class RealTkClientSpecTest extends Specification {
     @Value('${toolkit.createSim.url}')
     private String createSimUrl
 
+    @Value('${server.contextPath}')
+    private String contextPath
+
+    @Value('${server.port}')
+    private String port
+
+    //TODO change that : either find a better way or rename property
+    @Value('${direct.listener.domainName}')
+    private String hostname
+
+    private String fullNotificationUrl
+
+    private String toolkitUrl = "http://localhost:9080"
+
     @Autowired
     GroovyRestClient client
+
+    @PostConstruct
+    def buildUrls(){
+        fullNotificationUrl = "http://"+hostname+":"+port+contextPath+notificationUrl
+    }
 
     def "test successful endpoint creation"() {
         given:
@@ -60,7 +81,7 @@ class RealTkClientSpecTest extends Specification {
                         "boolean"(name: 'modelCheck', value: 'false')
                         "boolean"(name: 'codingCheck', value: 'false')
                         "boolean"(name: 'soapCheck', value: 'true')
-                        text(msgCallBack: "http://localhost:8080/ttt/$notificationUrl")
+                        text(msgCallBack: "$fullNotificationUrl")
                         webservices(value: 'prb')
                     }
                 }
@@ -76,7 +97,7 @@ class RealTkClientSpecTest extends Specification {
         println resp.text()
 
         when:
-        def getConfigUrl = "http://localhost:9080/xdstools3/rest/sim/config/$id"
+        def getConfigUrl = "$toolkitUrl/xdstools3/rest/sim/config/$id"
         GPathResult resp2 = client.getXml(getConfigUrl, 1000)
 
         then:

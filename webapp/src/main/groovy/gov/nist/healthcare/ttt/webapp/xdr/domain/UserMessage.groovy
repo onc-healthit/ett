@@ -1,7 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain
-
 import com.fasterxml.jackson.annotation.JsonInclude
-
 /**
  * Created by gerardin on 10/9/14.
  */

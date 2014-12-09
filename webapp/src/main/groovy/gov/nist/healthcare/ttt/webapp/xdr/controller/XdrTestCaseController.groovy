@@ -3,6 +3,7 @@ import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -74,7 +75,7 @@ class XdrTestCaseController {
         log.info("[status is $result]")
 
         //TODO change just for test we return passed
-        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", result)
+        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", new TestCaseEvent("",result))
 
     }
 }

@@ -63,18 +63,21 @@ class XdrSenderImpl implements XdrSender{
 
         def sendXdrMessage = sendXdrMessage(config)
         try {
-            GPathResult r = restClient.postXml(sendXdrMessage, tkSendXdrUrl, timeout)
+             GPathResult r = restClient.postXml(sendXdrMessage, tkSendXdrUrl, timeout)
             def report = parseReport(r)
             return report
         }
         catch (groovyx.net.http.HttpResponseException e) {
-            return new RuntimeException("could not reach the toolkit.",e)
+            e.printStackTrace()
+            throw new RuntimeException("could not reach the toolkit at url $tkSendXdrUrl",e)
         }
         catch (java.net.SocketTimeoutException e) {
-            return new RuntimeException("connection timeout when calling toolkit.",e)
+            e.printStackTrace()
+            throw new RuntimeException("connection timeout when calling toolkit.",e)
         }
         catch(groovyx.net.http.ResponseParseException e){
-            return new RuntimeException("could not understand response from toolkit.",e)
+            e.printStackTrace()
+            throw new RuntimeException("could not understand response from toolkit.",e)
         }
     }
 

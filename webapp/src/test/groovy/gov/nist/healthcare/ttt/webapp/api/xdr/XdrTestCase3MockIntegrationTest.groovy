@@ -44,7 +44,7 @@ class XdrTestCase3MockIntegrationTest extends Specification {
     MockMvc mockMvcToolkit
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
-    static String id = "user1.1.2014"
+    static String id = "user1_1_2014"
     static String userId = "user1"
 
     /*
@@ -59,6 +59,7 @@ class XdrTestCase3MockIntegrationTest extends Specification {
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
     }
+
 
 
 
@@ -88,7 +89,7 @@ class XdrTestCase3MockIntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "targetEndpoint": "https://example.com/xdr"
+    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/f8488a75-fc7d-4d70-992b-e5b2c852b412/reg/rb"
 }"""
 
     def setupDb() {
