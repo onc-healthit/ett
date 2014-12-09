@@ -45,9 +45,8 @@ class TestCaseExecutor {
         Object r
         try {
             r  = sender.sendXdr(config)
-            String json = mapper.writeValueAsString(r)
             XDRReportItemInterface report = new XDRReportItemImpl()
-            report.setReport(json)
+            report.setReport(r)
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(report)
