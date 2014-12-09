@@ -6,12 +6,12 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 /**
  * Created by gerardin on 10/27/14.
  */
-class TestCase10 extends TestCaseStrategy{
+class TestCase10 extends TestCaseBaseStrategy{
 
 
     TestCase10(TestCaseExecutor executor) {

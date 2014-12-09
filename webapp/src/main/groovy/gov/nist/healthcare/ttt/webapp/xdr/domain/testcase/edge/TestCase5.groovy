@@ -7,13 +7,13 @@ import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 /**
  * Created by gerardin on 10/27/14.
  */
-final class TestCase6 extends TestCaseBaseStrategy {
+class TestCase5 extends TestCaseBaseStrategy {
 
-    TestCase2 testcase
+    TestCase3 testcase
 
-    public TestCase6(TestCaseExecutor ex) {
+    public TestCase5(TestCaseExecutor ex) {
         super(ex)
-        testcase = new TestCase2(ex)
+        testcase = new TestCase3(ex)
     }
 
     @Override

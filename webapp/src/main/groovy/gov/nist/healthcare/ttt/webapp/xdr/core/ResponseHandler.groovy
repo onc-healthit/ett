@@ -2,7 +2,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
@@ -51,6 +51,11 @@ class ResponseHandler implements IObserver{
 
     private handle(TLSValidationReport report){
         println "handle tls report"
+
+        XDRRecordInterface rec = null
+        //rec = db.instance.xdrFacade.getXDRRecordByAddress(report.address)
+        TestCaseBaseStrategy testcase = manager.findTestCase("7")
+        testcase.notifyXdrReceive(rec, report)
     }
 
     private handle(TkValidationReport report){
@@ -73,7 +78,7 @@ class ResponseHandler implements IObserver{
         //else
         //should report the unability to correlate this report to a test
 
-        TestCaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
+        TestCaseBaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
         testcase.notifyXdrReceive(rec, report)
     }
 

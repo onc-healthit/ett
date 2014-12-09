@@ -4,6 +4,7 @@ import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
@@ -39,19 +40,19 @@ class TestCaseExecutor {
         this.clock = clock
     }
 
-    protected XDRTestStepInterface executeSendXDRStep(Map context) {
+    protected XDRTestStepInterface executeSendXDRStep(Map config) {
 
         Object r
         try {
-            r  = sender.sendXdr(context)
-
+            r  = sender.sendXdr(config)
             String json = mapper.writeValueAsString(r)
             XDRReportItemInterface report = new XDRReportItemImpl()
             report.setReport(json)
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(report)
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+            //TODO should be : PENDING_MANUAL_VALIDATION
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
 
             return step
         }
@@ -157,6 +158,10 @@ class TestCaseExecutor {
         log.info("new global simulator has been created.")
     }
 
-
-
+    XDRTestStepInterface recordSenderAddress(Map info) {
+        XDRTestStepInterface step = new TestStepBuilder("BAD_CERT_MUST_DISCONNECT").build();
+        //TODO uncomment when ready
+        // step.clientAddress = info.address
+        return step
+    }
 }

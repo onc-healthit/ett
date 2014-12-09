@@ -84,8 +84,6 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         }
     }
 
-
-
     private def buildCreateEndpointRequest(EndpointConfig config) {
         return {
             actor(type:'docrec') {
