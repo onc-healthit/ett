@@ -2,7 +2,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,7 +50,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info("running test case $id")
 
         //Check if we have implemented this test case
-        TestCaseStrategy testcase
+        TestCaseBaseStrategy testcase
         try {
             testcase = findTestCase(id)
         }

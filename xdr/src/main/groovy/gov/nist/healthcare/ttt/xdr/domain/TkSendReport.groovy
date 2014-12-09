@@ -41,4 +41,6 @@ class TkSendReport {
     @XmlElement(name="Result")
     String result
 
+    String xdrResponse
+
 }

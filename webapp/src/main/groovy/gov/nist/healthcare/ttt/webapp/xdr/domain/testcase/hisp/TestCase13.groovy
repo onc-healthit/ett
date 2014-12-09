@@ -4,11 +4,11 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 /**
  * Created by gerardin on 10/27/14.
  */
-class TestCase13 extends TestCaseStrategy {
+class TestCase13 extends TestCaseBaseStrategy {
 
     public TestCase13(TestCaseExecutor executor){
         super(executor)
