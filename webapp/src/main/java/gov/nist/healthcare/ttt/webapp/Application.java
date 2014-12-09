@@ -6,13 +6,10 @@ import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
 import org.apache.catalina.connector.Connector;
-import org.apache.catalina.valves.AccessLogValve;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
@@ -24,7 +21,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 @EnableWebMvcSecurity
 @EnableAutoConfiguration
@@ -87,18 +83,20 @@ public class Application {
         };
     }
 
-
-    @Bean
-    public EmbeddedServletContainerFactory servletContainer() {
-                URL url = getClass().getClassLoader().getResource("application.properties");
-                System.out.println("properties file:" + url.getPath());
-
-
-        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
-   //     tomcat.addAdditionalTomcatConnectors(createSslConnector());
-        tomcat.addContextValves(new AccessLogValve());
-        return tomcat;
-    }
+/*
+we currently do not use tomcat ssl capabilities.
+ */
+//    @Bean
+//    public EmbeddedServletContainerFactory servletContainer() {
+//                URL url = getClass().getClassLoader().getResource("application.properties");
+//                System.out.println("properties file:" + url.getPath());
+//
+//
+//        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+//   //     tomcat.addAdditionalTomcatConnectors(createSslConnector());
+//   //     tomcat.addContextValves(new AccessLogValve());
+//        return tomcat;
+//    }
 
 
     private Connector createSslConnector() {

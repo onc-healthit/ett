@@ -38,7 +38,7 @@ abstract class TestCaseStrategy {
 
     public abstract UserMessage run(String tcid, Map context, String username)
 
-    public UserMessage notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         throw UnsupportedOperationException()
     }
 
