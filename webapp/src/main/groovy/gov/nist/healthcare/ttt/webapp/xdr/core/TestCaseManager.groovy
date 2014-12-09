@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import org.slf4j.Logger
@@ -70,13 +71,20 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     //TODO implement. For now just return a bogus success message.
-    public XDRRecordInterface.CriteriaMet checkTestCaseStatus(String username, String tcid) {
+    public TestCaseEvent checkTestCaseStatus(String username, String tcid) {
 
         XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username, tcid)
 
         //IF require manual_check status, we need to send back the validation to the user.
 
-        return record.criteriaMet
+        //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
+        def step = record.getTestSteps().find{
+            it.name = "XDR_RECEIVE"
+        }
+
+        def report = step.xdrReportItems.last().report
+
+        return new TestCaseEvent(report,record.criteriaMet)
 
     }
 

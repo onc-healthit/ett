@@ -70,12 +70,12 @@ class XdrTestCaseController {
 
         log.info("received get status of test case $id request from $username")
 
-        XDRRecordInterface.CriteriaMet result = testCaseManager.checkTestCaseStatus(username,tcid)
+        TestCaseEvent result = testCaseManager.checkTestCaseStatus(username,tcid)
 
-        log.info("[status is $result]")
+        log.info("[status is $result.criteriaMet]")
 
         //TODO change just for test we return passed
-        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", new TestCaseEvent("",result))
+        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", result)
 
     }
 }
