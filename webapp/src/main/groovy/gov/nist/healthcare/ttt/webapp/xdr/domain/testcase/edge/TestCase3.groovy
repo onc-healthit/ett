@@ -38,6 +38,8 @@ class TestCase3 extends TestCaseBaseStrategy {
 
         def report = step.xdrReportItems.last().report
 
+        println(report)
+
         return new UserMessage(UserMessage.Status.SUCCESS, MsgLabel.XDR_SEND_AND_RECEIVE.msg, new TestCaseEvent(report ,testStatus))
     }
 }
