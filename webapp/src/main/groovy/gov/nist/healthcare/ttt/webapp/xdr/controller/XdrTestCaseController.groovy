@@ -70,8 +70,8 @@ class XdrTestCaseController {
 
         def tcid = id
         def username = principal.getName()
-        def status = UserMessage.Status.ERROR
-        def msg = "result of test case $id"
+        def status
+        String msg
         TestCaseEvent result
 
         log.info("received get status of test case $id request from $username")
@@ -80,15 +80,14 @@ class XdrTestCaseController {
             result = testCaseManager.checkTestCaseStatus(username, tcid)
 
             log.info("[status is $result.criteriaMet]")
-
             status = UserMessage.Status.SUCCESS
-            msg = 'error while trying to fetch status for test case $id'
-
+            msg = "result of test case $id"
+            return new UserMessage<XDRRecordInterface.CriteriaMet>(status, msg , result)
         }catch(Exception e){
-
-        }
-        finally{
-            //TODO change just for test we return passed
+            e.printStackTrace()
+            status = UserMessage.Status.ERROR
+            msg = "error while trying to fetch status for test case $id"
+            result = new TestCaseEvent(XDRRecordInterface.CriteriaMet.FAILED,e.getCause())
             return new UserMessage<XDRRecordInterface.CriteriaMet>(status, msg , result)
         }
     }
