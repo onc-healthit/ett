@@ -1,7 +1,9 @@
 package gov.nist.healthcare.ttt.webapp.xdr.controller
+
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-//import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
+
+//import com.wordnik.swagger.annotations.ApiOperation
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import org.slf4j.Logger
@@ -68,15 +70,26 @@ class XdrTestCaseController {
 
         def tcid = id
         def username = principal.getName()
+        def status = UserMessage.Status.ERROR
+        def msg = "result of test case $id"
+        TestCaseEvent result
 
         log.info("received get status of test case $id request from $username")
 
-        TestCaseEvent result = testCaseManager.checkTestCaseStatus(username,tcid)
+        try {
+            result = testCaseManager.checkTestCaseStatus(username, tcid)
 
-        log.info("[status is $result.criteriaMet]")
+            log.info("[status is $result.criteriaMet]")
 
-        //TODO change just for test we return passed
-        return new UserMessage<XDRRecordInterface.CriteriaMet>(UserMessage.Status.SUCCESS, "result of this test", result)
+            status = UserMessage.Status.SUCCESS
+            msg = 'error while trying to fetch status for test case $id'
 
+        }catch(Exception e){
+
+        }
+        finally{
+            //TODO change just for test we return passed
+            return new UserMessage<XDRRecordInterface.CriteriaMet>(status, msg , result)
+        }
     }
 }

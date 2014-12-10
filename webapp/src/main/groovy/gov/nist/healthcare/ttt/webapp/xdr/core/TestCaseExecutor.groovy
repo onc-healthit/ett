@@ -51,7 +51,7 @@ class TestCaseExecutor {
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(report)
             //TODO should be : PENDING_MANUAL_VALIDATION
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
 
             return step
         }
