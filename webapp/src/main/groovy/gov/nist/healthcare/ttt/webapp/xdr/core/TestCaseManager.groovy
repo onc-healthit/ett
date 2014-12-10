@@ -73,18 +73,36 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
     //TODO implement. For now just return a bogus success message.
     public TestCaseEvent checkTestCaseStatus(String username, String tcid) {
 
+        log.info("check status for test case $tcid")
+
         XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username, tcid)
 
-        //IF require manual_check status, we need to send back the validation to the user.
-        def report
+        log.info("number of test steps found : " + record.testSteps.size())
+
+        log.info("test steps recorded :")
+
+        def report = null
+
 
         if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
-            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
-            def step = record.getTestSteps().find {
-                it.name = "XDR_RECEIVE"
+            record.getTestSteps().each {
+                log.info it.name
+                if(it.xdrReportItems != null && it.xdrReportItems.size() != 0){
+                    report = it.xdrReportItems.last().report
+                }
             }
 
-            report = step.xdrReportItems.last().report
+//            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
+//            def step = record.getTestSteps().find {
+//                it.name = "XDR_RECEIVE"
+//            }
+//            log.info("found XDR_RECEIVE step. " + step.xdrReportItems.size() + "report found.")
+
+ //           report = step.xdrReportItems.last().report
+        }
+
+        if(report != null){
+            log.info("found report")
         }
 
         return new TestCaseEvent(report,record.criteriaMet)
