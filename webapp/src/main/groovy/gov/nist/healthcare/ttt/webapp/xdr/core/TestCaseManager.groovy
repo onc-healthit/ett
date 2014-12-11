@@ -97,16 +97,12 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             log.info("found XDR_RECEIVE step. " + step.xdrReportItems.size() + " report found.")
 
            report = step.xdrReportItems
-        }
 
-        if(report != null){
-            log.info("found report")
+            def content = new StandardContent()
+            content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST}.report
+            content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE}.report
+            //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
         }
-
-        def content = new StandardContent()
-        content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST}.report
-        content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE}.report
-      //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
 
         return new TestCaseEvent(record.criteriaMet,content)
 
