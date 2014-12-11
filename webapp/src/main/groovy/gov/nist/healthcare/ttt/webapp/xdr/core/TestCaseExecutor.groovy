@@ -50,7 +50,6 @@ class TestCaseExecutor {
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(report)
-            //TODO should be : PENDING_MANUAL_VALIDATION
             step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
 
             return step
@@ -123,15 +122,20 @@ class TestCaseExecutor {
    protected XDRTestStepInterface executeStoreXDRReport(TkValidationReport report){
 
         try {
-
-
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
 
             //TODO this is where we convert the report into sth we can store
-            def reportRecord = new XDRReportItemImpl()
-            reportRecord.report = report.response
-            step.xdrReportItems.add(reportRecord)
+            def response = new XDRReportItemImpl()
+            response.report = report.response
+            response.reportType = XDRReportItemInterface.ReportType.RESPONSE
+
+            def request = new XDRReportItemImpl()
+            request.report = report.request
+            request.reportType = XDRReportItemInterface.ReportType.REQUEST
+
+            step.xdrReportItems.add(response)
+            step.xdrReportItems.add(request)
             step.criteriaMet = report.status
             step.name = "XDR_RECEIVE"
 

@@ -27,7 +27,7 @@ final class TestCase1 extends TestCaseBaseStrategy {
         executor.db.addNewXdrRecord(record)
 
         String msg = "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
-        return new UserMessage(UserMessage.Status.SUCCESS, msg, new TestCaseEvent(step.xdrSimulator.endpoint, XDRRecordInterface.CriteriaMet.PENDING))
+        return new UserMessage(UserMessage.Status.SUCCESS, msg, new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING,step.xdrSimulator.endpoint))
     }
 
     @Override

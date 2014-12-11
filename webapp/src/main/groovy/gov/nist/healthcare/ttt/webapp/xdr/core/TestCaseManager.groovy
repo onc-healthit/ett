@@ -55,19 +55,13 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         try {
             testcase = findTestCase(id)
         }
-        catch (Exception) {
-            return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented")
+        catch (Exception e) {
+            return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented", e.getCause().getMessage())
         }
 
         //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet.
 
-        try {
             return testcase.run(id, userInput, username)
-        }
-        catch (e) {
-            e.printStackTrace()
-            return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), e.getCause().getMessage())
-        }
     }
 
     //TODO implement. For now just return a bogus success message.
@@ -79,33 +73,41 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         log.info("number of test steps found : " + record.testSteps.size())
 
-        log.info("test steps recorded :")
+        def stepLists = "test steps recorded :"
+
+        record.getTestSteps().each {
+            stepLists <<= "$it.name , "
+        }
+
+        log.info stepLists.substring(0,stepLists.length()-1)
+
 
         def report = null
 
 
         if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
-            record.getTestSteps().each {
-                log.info it.name
-                if(it.xdrReportItems != null && it.xdrReportItems.size() != 0){
-                    report = it.xdrReportItems.last().report
-                }
+//            record.getTestSteps().each {
+//                log.info it.name
+//                if(it.xdrReportItems != null && it.xdrReportItems.size() != 0){
+//                    report = it.xdrReportItems.last().report
+//                }
+//            }
+
+            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
+            def step = record.getTestSteps().find {
+                it.name == "XDR_RECEIVE"
             }
 
-//            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
-//            def step = record.getTestSteps().find {
-//                it.name = "XDR_RECEIVE"
-//            }
-//            log.info("found XDR_RECEIVE step. " + step.xdrReportItems.size() + "report found.")
+            log.info("found XDR_RECEIVE step. " + step.xdrReportItems.size() + " report found.")
 
- //           report = step.xdrReportItems.last().report
+           report = step.xdrReportItems
         }
 
         if(report != null){
             log.info("found report")
         }
 
-        return new TestCaseEvent(report,record.criteriaMet)
+        return new TestCaseEvent(record.criteriaMet,report)
 
     }
 

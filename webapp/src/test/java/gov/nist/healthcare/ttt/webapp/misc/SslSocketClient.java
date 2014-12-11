@@ -25,7 +25,7 @@ public class SslSocketClient {
                 (SSLSocketFactory) SSLSocketFactory.getDefault();
         try {
             SSLSocket c =
-                    (SSLSocket) f.createSocket("localhost", 8888);
+                    (SSLSocket) f.createSocket("hit-dev.nist.gov", 12084);
             printSocketInfo(c);
             c.startHandshake();
             BufferedWriter w = new BufferedWriter(
