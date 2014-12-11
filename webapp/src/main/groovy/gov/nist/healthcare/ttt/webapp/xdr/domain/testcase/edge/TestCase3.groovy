@@ -38,6 +38,6 @@ class TestCase3 extends TestCaseBaseStrategy {
 
         String report = step.xdrReportItems.last().report
 
-        return new UserMessage(UserMessage.Status.SUCCESS, MsgLabel.XDR_SEND_AND_RECEIVE.msg, new TestCaseEvent(report ,testStatus))
+        return new UserMessage(UserMessage.Status.SUCCESS, MsgLabel.XDR_SEND_AND_RECEIVE.msg, new TestCaseEvent(testStatus,report))
     }
 }
