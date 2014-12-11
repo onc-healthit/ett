@@ -80,7 +80,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.value").value("http://hit-dev.nist.gov:11080/xdstools3/sim/user1_1_2014/docrec/prb"))
+                .andExpect(jsonPath("content.value.endpoint").value("http://hit-dev.nist.gov:11080/xdstools3/sim/user1_1_2014/docrec/prb"))
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 
@@ -109,7 +109,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("FAILED"))
+                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
                 .andExpect(jsonPath("content.value").exists())
     }
 

@@ -3,7 +3,7 @@ import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 /**
  * Created by gerardin on 10/27/14.
@@ -16,7 +16,7 @@ class TestCase13 extends TestCaseBaseStrategy {
 
 
     @Override
-    UserMessage run(String tcid, Map context, String username) {
+    TestCaseEvent run(String tcid, Map context, String username) {
             XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
             //Create a new test record.
@@ -24,7 +24,7 @@ class TestCase13 extends TestCaseBaseStrategy {
 
             executor.db.addNewXdrRecord(record)
 
-            done(record,step.criteriaMet)
+            done(step.criteriaMet, record)
         }
 
 

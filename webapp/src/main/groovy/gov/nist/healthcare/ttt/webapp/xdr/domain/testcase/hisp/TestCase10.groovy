@@ -19,7 +19,7 @@ class TestCase10 extends TestCaseBaseStrategy{
     }
 
     @Override
-    UserMessage run(String tcid, Map context, String username) {
+    TestCaseEvent run(String tcid, Map context, String username) {
 
        XDRTestStepInterface step = executor.executeSendDirectStep(context)
 
@@ -41,7 +41,7 @@ class TestCase10 extends TestCaseBaseStrategy{
 
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
-        done(updatedRecord,step.criteriaMet)
+        done(step.criteriaMet, updatedRecord)
 
     }
 }

@@ -1,8 +1,9 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -45,7 +46,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         }
     }
 
-    public UserMessage runTestCase(String id, Map userInput, String username) {
+    public TestCaseEvent runTestCase(String id, Map userInput, String username) {
 
 
         log.info("running test case $id")
@@ -55,19 +56,12 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         try {
             testcase = findTestCase(id)
         }
-        catch (Exception) {
-            return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented")
+        catch (Exception e) {
+            throw new Exception("test case $id is not yet implemented",e)
         }
 
-        //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet.
-
-        try {
-            return testcase.run(id, userInput, username)
-        }
-        catch (e) {
-            e.printStackTrace()
-            return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), e.getCause().getMessage())
-        }
+        //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet
+        testcase.run(id, userInput, username)
     }
 
     //TODO implement. For now just return a bogus success message.
@@ -79,33 +73,42 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         log.info("number of test steps found : " + record.testSteps.size())
 
-        log.info("test steps recorded :")
+        def stepLists = "test steps recorded :"
+        record.getTestSteps().each {
+            stepLists <<= "$it.name , "
+        }
+        log.info stepLists.substring(0,stepLists.length()-1)
 
         def report = null
 
-
         if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
-            record.getTestSteps().each {
-                log.info it.name
-                if(it.xdrReportItems != null && it.xdrReportItems.size() != 0){
-                    report = it.xdrReportItems.last().report
-                }
+//            record.getTestSteps().each {
+//                log.info it.name
+//                if(it.xdrReportItems != null && it.xdrReportItems.size() != 0){
+//                    report = it.xdrReportItems.last().report
+//                }
+//            }
+
+            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
+            def step = record.getTestSteps().find {
+                it.name == "XDR_RECEIVE"
             }
 
-//            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
-//            def step = record.getTestSteps().find {
-//                it.name = "XDR_RECEIVE"
-//            }
-//            log.info("found XDR_RECEIVE step. " + step.xdrReportItems.size() + "report found.")
+            log.info("found XDR_RECEIVE step. " + step.xdrReportItems.size() + " report found.")
 
- //           report = step.xdrReportItems.last().report
+           report = step.xdrReportItems
         }
 
         if(report != null){
             log.info("found report")
         }
 
-        return new TestCaseEvent(report,record.criteriaMet)
+        def content = new StandardContent()
+        content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST}.report
+        content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE}.report
+      //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
+
+        return new TestCaseEvent(record.criteriaMet,content)
 
     }
 

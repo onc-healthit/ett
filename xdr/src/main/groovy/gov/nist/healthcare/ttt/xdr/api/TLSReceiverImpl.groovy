@@ -141,7 +141,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(kmf.getKeyManagers(), null, null);
             SSLServerSocketFactory ssf = sc.getServerSocketFactory();
-            server = (SSLServerSocket) ssf.createServerSocket(8888);
+            server = (SSLServerSocket) ssf.createServerSocket(12084);
             printServerSocketInfo(server);
         } catch (Exception e) {
             e.printStackTrace();
