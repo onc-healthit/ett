@@ -5,6 +5,7 @@ import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 /**
  * Created by gerardin on 10/27/14.
@@ -34,6 +35,9 @@ class TestCase4 extends TestCaseBaseStrategy {
 
         XDRRecordInterface.CriteriaMet testStatus = done(XDRRecordInterface.CriteriaMet.MANUAL, record)
 
-        return new TestCaseEvent(step.xdrReportItems.last(),testStatus)
+        def content = new StandardContent()
+        content.response = step.xdrReportItems.last().report
+
+        return new TestCaseEvent(testStatus, content)
     }
 }

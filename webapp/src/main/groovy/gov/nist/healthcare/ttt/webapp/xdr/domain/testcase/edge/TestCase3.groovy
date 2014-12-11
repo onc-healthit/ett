@@ -6,6 +6,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 /**
  * Created by gerardin on 10/27/14.
@@ -35,10 +36,11 @@ class TestCase3 extends TestCaseBaseStrategy {
         //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
-        String report = step.xdrReportItems.last().report
+        def content = new StandardContent()
+        content.response = step.xdrReportItems.last().report
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
-        new TestCaseEvent(testStatus,report)
+        new TestCaseEvent(testStatus,content)
     }
 }

@@ -1,7 +1,9 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -101,7 +103,12 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             log.info("found report")
         }
 
-        return new TestCaseEvent(record.criteriaMet,report)
+        def content = new StandardContent()
+        content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST}.report
+        content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE}.report
+      //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
+
+        return new TestCaseEvent(record.criteriaMet,content)
 
     }
 

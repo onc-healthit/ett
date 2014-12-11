@@ -4,6 +4,7 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 /**
@@ -24,8 +25,11 @@ final class TestCase6 extends TestCaseBaseStrategy {
 
         executor.db.addNewXdrRecord(record)
 
+        def content = new StandardContent()
+        content.endpoint = step.xdrSimulator.endpoint
+
         log.info "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING , step.xdrSimulator.endpoint)
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING , content)
     }
 
     @Override

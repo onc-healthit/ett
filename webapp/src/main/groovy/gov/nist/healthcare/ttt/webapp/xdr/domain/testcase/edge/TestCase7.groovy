@@ -26,7 +26,9 @@ final class TestCase7 extends TestCaseBaseStrategy {
         executor.db.addNewXdrRecord(record)
 
         log.info "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
-        return new TestCaseEvent(context, XDRRecordInterface.CriteriaMet.PENDING)
+
+        throw new Exception("review")
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, "")
     }
 
     @Override
