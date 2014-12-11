@@ -80,16 +80,10 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info stepLists.substring(0,stepLists.length()-1)
 
         def report = null
+        def content = new StandardContent()
 
         if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
-//            record.getTestSteps().each {
-//                log.info it.name
-//                if(it.xdrReportItems != null && it.xdrReportItems.size() != 0){
-//                    report = it.xdrReportItems.last().report
-//                }
-//            }
 
-            //TODO find by name and also ask Andrew to return an ordered list (last added is first for now)
             def step = record.getTestSteps().find {
                 it.name == "XDR_RECEIVE"
             }
@@ -98,7 +92,6 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
            report = step.xdrReportItems
 
-            def content = new StandardContent()
             content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST}.report
             content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE}.report
             //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
