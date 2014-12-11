@@ -109,7 +109,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("FAILED"))
+                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
                 .andExpect(jsonPath("content.value").exists())
     }
 

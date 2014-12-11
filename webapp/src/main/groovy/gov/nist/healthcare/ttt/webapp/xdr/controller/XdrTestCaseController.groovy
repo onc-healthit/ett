@@ -48,10 +48,15 @@ class XdrTestCaseController {
         //We get the config from the client
         def config = body
 
-        UserMessage msg = testCaseManager.runTestCase(id, config, username)
-        println "before sending back :\n " + msg.content.value
+        try {
+            TestCaseEvent event = testCaseManager.runTestCase(id, config, username)
+            return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id has run successfully", event)
+        }
+        catch(Exception e){
+            return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), null)
+        }
 
-        return msg
+
     }
 
 

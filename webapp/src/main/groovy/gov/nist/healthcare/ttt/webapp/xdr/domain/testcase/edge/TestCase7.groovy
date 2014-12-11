@@ -4,7 +4,6 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 /**
@@ -17,7 +16,7 @@ final class TestCase7 extends TestCaseBaseStrategy {
     }
 
     @Override
-    UserMessage run(String tcid, Map context, String username) {
+    TestCaseEvent run(String tcid, Map context, String username) {
 
          XDRTestStepInterface step = executor.recordSenderAddress(context)
 
@@ -26,14 +25,14 @@ final class TestCase7 extends TestCaseBaseStrategy {
 
         executor.db.addNewXdrRecord(record)
 
-        String msg = "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
-        return new UserMessage(UserMessage.Status.SUCCESS, msg, new TestCaseEvent(context, XDRRecordInterface.CriteriaMet.PENDING))
+        log.info "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
+        return new TestCaseEvent(context, XDRRecordInterface.CriteriaMet.PENDING)
     }
 
     @Override
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         record.testSteps.last().criteriaMet = report.status
 
-        done(record,report.status)
+        done(report.status, record)
     }
 }

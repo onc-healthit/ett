@@ -1,15 +1,13 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
-
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
 
 import static org.slf4j.LoggerFactory.getLogger
-
 /**
  * Base class for implementing test cases. It defines a 2-parts contract :
  *
@@ -37,7 +35,7 @@ abstract class TestCaseBaseStrategy {
 
     protected static Logger log = getLogger(TestCaseBaseStrategy.class)
 
-    public abstract UserMessage run(String tcid, Map context, String username)
+    public abstract TestCaseEvent run(String tcid, Map context, String username)
 
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         throw UnsupportedOperationException()
@@ -54,7 +52,7 @@ abstract class TestCaseBaseStrategy {
      * @param status : final status of the test case.
      * @return
      */
-    protected CriteriaMet done(XDRRecordInterface record, CriteriaMet status) {
+    protected CriteriaMet done(CriteriaMet status, XDRRecordInterface record) {
         record.criteriaMet = status
         executor.db.updateXDRRecord(record)
         return status

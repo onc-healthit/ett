@@ -2,7 +2,6 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -45,7 +44,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         }
     }
 
-    public UserMessage runTestCase(String id, Map userInput, String username) {
+    public TestCaseEvent runTestCase(String id, Map userInput, String username) {
 
 
         log.info("running test case $id")
@@ -56,12 +55,11 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             testcase = findTestCase(id)
         }
         catch (Exception e) {
-            return new UserMessage(UserMessage.Status.ERROR, "test case with id $id is not implemented", e.getCause().getMessage())
+            throw new Exception("test case $id is not yet implemented",e)
         }
 
-        //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet.
-
-            return testcase.run(id, userInput, username)
+        //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet
+        testcase.run(id, userInput, username)
     }
 
     //TODO implement. For now just return a bogus success message.
@@ -74,16 +72,12 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info("number of test steps found : " + record.testSteps.size())
 
         def stepLists = "test steps recorded :"
-
         record.getTestSteps().each {
             stepLists <<= "$it.name , "
         }
-
         log.info stepLists.substring(0,stepLists.length()-1)
 
-
         def report = null
-
 
         if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
 //            record.getTestSteps().each {

@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 /**
@@ -17,7 +17,7 @@ class TestCase5 extends TestCaseBaseStrategy {
     }
 
     @Override
-    UserMessage run(String tcid, Map context, String username) {
+    TestCaseEvent run(String tcid, Map context, String username) {
         testcase.run(tcid,context,username)
     }
 
