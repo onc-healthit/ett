@@ -5,6 +5,7 @@ import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
@@ -35,12 +36,12 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     ExecutorService executorService = Executors.newFixedThreadPool(maxConnections)
     Logger log = LoggerFactory.getLogger(TLSReceiverImpl.class)
 
-    public TLSReceiverImpl() {
-        setupServerSocketKeystore()
-    }
+    @Value('${xdr.tls.test.port}')
+    String port
 
     @PostConstruct
     def bootstrap() {
+        setupServerSocketKeystore()
         this.start()
     }
 
@@ -121,6 +122,9 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     }
 
     def setupServerSocketKeystore() {
+
+        def socketPort = Integer.parseInt(port);
+
         InputStream is = this.class.getClassLoader().getResourceAsStream("keystore/keystore");
         char[] ksPass = "changeit".toCharArray();
         char[] ctPass = "changeit".toCharArray();
@@ -141,7 +145,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(kmf.getKeyManagers(), null, null);
             SSLServerSocketFactory ssf = sc.getServerSocketFactory();
-            server = (SSLServerSocket) ssf.createServerSocket(12084);
+            server = (SSLServerSocket) ssf.createServerSocket(socketPort);
             printServerSocketInfo(server);
         } catch (Exception e) {
             e.printStackTrace();
