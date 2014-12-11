@@ -83,6 +83,7 @@ public class SmtpTestInput {
 		String propFileName = "application.properties"
  
 		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName)
+		prop.load(inputStream)
 		if (inputStream == null) {
 			throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath")
 		}
@@ -99,8 +100,9 @@ public class SmtpTestInput {
 		}
 
 		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
-			this.tttSmtpAddress = prop.getProperty("direct.listener.domainName")
+			this.tttSmtpAddress = prop.getProperty("ett.smtp.host")
 		}
+		
 
 		if (sutCommandTimeoutInSeconds==null || sutCommandTimeoutInSeconds.equals("0")) {
 			this.sutCommandTimeoutInSeconds = "600"
