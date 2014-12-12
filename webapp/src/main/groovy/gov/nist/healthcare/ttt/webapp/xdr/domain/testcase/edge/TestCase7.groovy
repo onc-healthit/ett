@@ -25,9 +25,12 @@ final class TestCase7 extends TestCaseBaseStrategy {
 
         executor.db.addNewXdrRecord(record)
 
+        String endpoint = executor.tlsReceiver.getEndpoint()
+
         log.info "successfully recorded hostname for test case ${tcid} with config : ${context}. Ready to test TLS."
 
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, "")
+
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, endpoint)
     }
 
     @Override

@@ -6,6 +6,7 @@ import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForX
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
+import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
@@ -20,23 +21,22 @@ import org.springframework.stereotype.Component
 @Component
 class TestCaseExecutor {
 
-    private final DatabaseProxy db
+    public final DatabaseProxy db
     private final XdrReceiver receiver
     private final XdrSender sender
     private final Clock clock
+    public final TLSReceiver tlsReceiver
 
     protected static ObjectMapper mapper = new ObjectMapper()
 
     private static Logger log = LoggerFactory.getLogger(TestCaseExecutor.class)
 
-
-
-
     @Autowired
-    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, Clock clock) {
+    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, TLSReceiver tlsReceiver, Clock clock) {
         this.db = db
         this.receiver = receiver
         this.sender = sender
+        this.tlsReceiver = tlsReceiver
         this.clock = clock
     }
 
@@ -174,4 +174,5 @@ class TestCaseExecutor {
         step.hostname = info.hostname
         return step
     }
+
 }
