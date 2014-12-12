@@ -22,14 +22,14 @@ public class SSLContextManager {
 
     @PostConstruct
     setupContext(){
-        String relativePath = "clientKeystore" + File.separator + "keystore.jks";
+        String relativePath = "keystore" + File.separator + "keystore";
         InputStream keystoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         InputStream truststoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         badSSLContext = setSSLFactories(keystoreInput, "changeit", truststoreInput, "changeit");
         keystoreInput.close();
         truststoreInput.close();
 
-        String relativePath2 = "clientKeystore" + File.separator + "keystore.jks";
+        String relativePath2 = "keystore" + File.separator + "keystore";
         InputStream keystoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         InputStream truststoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         goodSSLContext = setSSLFactories(keystoreInput, "changeit", truststoreInput, "changeit");
