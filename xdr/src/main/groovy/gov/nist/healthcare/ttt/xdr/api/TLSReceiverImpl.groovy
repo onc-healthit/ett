@@ -125,17 +125,13 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         def socketPort = Integer.parseInt(port);
 
-        InputStream is = this.class.getClassLoader().getResourceAsStream("keystore/keystore");
+        InputStream is = this.class.getClassLoader().getResourceAsStream("keystore"+File.separator+"keystore");
         char[] ksPass = "changeit".toCharArray();
         char[] ctPass = "changeit".toCharArray();
 
-        boolean run = true;
         server = null;
 
         try {
-            URI uri = this.class.getClassLoader().getResource("keystore/keystore").toURI();
-            log.info("set up tls/ssl receiver with keystore : " + uri.toString())
-
             KeyStore ks = KeyStore.getInstance("JKS");
             ks.load(is, ksPass);
             KeyManagerFactory kmf =

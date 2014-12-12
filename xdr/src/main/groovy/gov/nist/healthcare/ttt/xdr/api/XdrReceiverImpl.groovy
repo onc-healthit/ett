@@ -90,7 +90,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                 transaction(name: 'prb'){
                     endpoint(value : 'NOT_USED')
                     settings {
-                        "boolean"(name:'schemaCheck' , value:'true')
+                        "boolean"(name:'schemaCheck' , value:'false')
                         "boolean"(name:'modelCheck' , value:'false')
                         "boolean"(name:'codingCheck' , value:'false')
                         "boolean"(name:'soapCheck' , value:'true')

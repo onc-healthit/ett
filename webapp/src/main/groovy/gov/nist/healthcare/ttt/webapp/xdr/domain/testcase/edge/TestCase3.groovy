@@ -21,8 +21,8 @@ class TestCase3 extends TestCaseBaseStrategy {
     @Override
     TestCaseEvent run(String tcid, Map context, String username) {
 
-        context.directTo = "directTo"
-        context.directFrom = "directFrom"
+        context.directTo = "testcase3@nist.gov"
+        context.directFrom = "testcase3@nist.gov"
         context.wsaTo = context.targetEndpoint
         context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
 

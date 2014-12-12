@@ -5,7 +5,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
-import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -25,14 +25,13 @@ final class TestCase7 extends TestCaseBaseStrategy {
 
         executor.db.addNewXdrRecord(record)
 
-        log.info "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
+        log.info "successfully recorded hostname for test case ${tcid} with config : ${context}. Ready to test TLS."
 
-        throw new Exception("review")
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, "")
     }
 
     @Override
-    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+    public void notifyTLSReceive(XDRRecordInterface record, TLSValidationReport report) {
         record.testSteps.last().criteriaMet = report.status
 
         done(report.status, record)

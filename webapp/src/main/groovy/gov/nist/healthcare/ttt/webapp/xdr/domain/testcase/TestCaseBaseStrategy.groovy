@@ -58,7 +58,7 @@ abstract class TestCaseBaseStrategy {
         return status
     }
 
-    def notifyTLSReceive(XDRRecordInterface xdrRecordInterface, TLSValidationReport tlsValidationReport) {
+    public void notifyTLSReceive(XDRRecordInterface xdrRecordInterface, TLSValidationReport tlsValidationReport) {
         throw UnsupportedOperationException()
     }
 }
