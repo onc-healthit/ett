@@ -2,8 +2,6 @@ package gov.nist.healthcare.ttt.xdr.api
 import gov.nist.healthcare.ttt.tempxdrcommunication.SimpleSOAPSender
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
-import gov.nist.healthcare.ttt.xdr.domain.TkSendReport
-import groovy.util.slurpersupport.GPathResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -23,7 +21,7 @@ class CannedXdrSenderImpl implements XdrSender {
     Integer timeout = 1000
 
     @Override
-    String sendXdr(Map config) {
+    Object sendXdr(Map config) {
 
         log.info("try to send xdr with config : $config")
 
@@ -32,24 +30,15 @@ class CannedXdrSenderImpl implements XdrSender {
             log.info("contacting remote endpoint...")
             String response = SimpleSOAPSender.sendMessage(config.targetEndpoint, payload)
 
-            println response
+            def map = [request:payload, response:response]
 
-            return response
+            return map
         }
         catch (Exception e) {
             e.printStackTrace()
             log.error("problem occured when trying to send to : $config.targetEndpoint")
             throw new RuntimeException(e);
         }
-    }
-
-    def parseReport(GPathResult response) {
-        TkSendReport report = new TkSendReport()
-        report.test = response.Test.text()
-        report.status = response.Status.text()
-        report.result = response.Result.text()
-        report.inHeader = response.InHeader.text()
-        return report
     }
 
     private def prepareMessage(Object config) {

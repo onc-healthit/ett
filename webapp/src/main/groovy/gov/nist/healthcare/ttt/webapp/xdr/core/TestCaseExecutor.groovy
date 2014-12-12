@@ -42,14 +42,22 @@ class TestCaseExecutor {
 
     protected XDRTestStepInterface executeSendXDRStep(Map config) {
 
-        Object r
+        def r
         try {
             r  = sender.sendXdr(config)
-            XDRReportItemInterface report = new XDRReportItemImpl()
-            report.setReport(r)
+            XDRReportItemInterface request = new XDRReportItemImpl()
+            request.setReport(r.request)
+            request.setReportType(XDRReportItemInterface.ReportType.REQUEST)
+
+            XDRReportItemInterface response = new XDRReportItemImpl()
+            response.setReport(r.response)
+            response.setReportType(XDRReportItemInterface.ReportType.RESPONSE)
+
+
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
-            step.xdrReportItems.add(report)
+            step.xdrReportItems.add(request)
+            step.xdrReportItems.add(response)
             step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
 
             return step
@@ -163,8 +171,7 @@ class TestCaseExecutor {
 
     XDRTestStepInterface recordSenderAddress(Map info) {
         XDRTestStepInterface step = new TestStepBuilder("BAD_CERT_MUST_DISCONNECT").build();
-        //TODO uncomment when ready
-        // step.clientAddress = info.address
+        step.hostname = info.hostname
         return step
     }
 }
