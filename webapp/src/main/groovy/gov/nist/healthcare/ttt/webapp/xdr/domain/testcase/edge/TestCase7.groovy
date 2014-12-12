@@ -4,6 +4,7 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 /**
@@ -25,9 +26,14 @@ final class TestCase7 extends TestCaseBaseStrategy {
 
         executor.db.addNewXdrRecord(record)
 
+        String endpoint = executor.tlsReceiver.getEndpoint()
+        def content = new StandardContent()
+        content.endpoint = endpoint
+
         log.info "successfully recorded hostname for test case ${tcid} with config : ${context}. Ready to test TLS."
 
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, "")
+
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
     }
 
     @Override

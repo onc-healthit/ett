@@ -37,7 +37,11 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     Logger log = LoggerFactory.getLogger(TLSReceiverImpl.class)
 
     @Value('${xdr.tls.test.port}')
-    String port
+    private String port
+
+    //TODO change that : either find a better way or rename property
+    @Value('${direct.listener.domainName}')
+    private String hostname
 
     @PostConstruct
     def bootstrap() {
@@ -48,6 +52,11 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     @PreDestroy
     def cleanup() {
         executorService.shutdownNow()
+    }
+
+    @Override
+    public String getEndpoint(){
+        "$hostname:$port"
     }
 
     @Override
