@@ -95,36 +95,37 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
         printSocketInfo(connection);
 
         try {
-            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            r = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String m = "Welcome to SSL Reverse Echo Server." +
-                    " Please type in some words.";
-            w.write(m, 0, m.length());
-            w.newLine();
-            w.flush();
-
-            while ((m = r.readLine()) != null) {
-                if (m.equals(".")) break;
-                char[] a = m.toCharArray();
-                int n = a.length;
-                for (int i = 0; i < n / 2; i++) {
-                    char t = a[i];
-                    a[i] = a[n - 1 - i];
-                    a[n - i - 1] = t;
-                }
-                w.write(a, 0, n);
-                w.newLine();
-                w.flush();
-            }
+            System.out.println("fds");
+//            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+//            r = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            String m = "Welcome to SSL Reverse Echo Server." +
+//                    " Please type in some words.";
+//            w.write(m, 0, m.length());
+//            w.newLine();
+//            w.flush();
+//
+//            while ((m = r.readLine()) != null) {
+//                if (m.equals(".")) break;
+//                char[] a = m.toCharArray();
+//                int n = a.length;
+//                for (int i = 0; i < n / 2; i++) {
+//                    char t = a[i];
+//                    a[i] = a[n - 1 - i];
+//                    a[n - i - 1] = t;
+//                }
+//                w.write(a, 0, n);
+//                w.newLine();
+//                w.flush();
+//            }
         } catch (Exception e) {
             System.err.println(e.toString());
             System.out.println("client has dropped the connection");
             status = XDRRecordInterface.CriteriaMet.PASSED
         } finally {
-            w.close();
-            r.close();
+//            w.close();
+//            r.close();
             connection.close();
-            String address = connection.remoteSocketAddress.toString()
+            String address = connection.getInetAddress().canonicalHostName
             println "tls receiver notification for address $address"
             notifyObserver(new Message(Message.Status.SUCCESS, "tls receiver notification for address $address" ,new TLSValidationReport(status,address)))
         }

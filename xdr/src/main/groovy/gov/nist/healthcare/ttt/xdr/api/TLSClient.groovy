@@ -4,5 +4,5 @@ package gov.nist.healthcare.ttt.xdr.api
  */
 interface TLSClient {
 
-    public void connectOverBadTLS()
+    public void connectOverBadTLS(Map config)
 }

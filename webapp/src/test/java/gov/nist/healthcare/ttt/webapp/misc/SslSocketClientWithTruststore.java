@@ -17,7 +17,7 @@ import java.net.URI;
 public class SslSocketClientWithTruststore {
     public static void main(String[] args) {
 
-        String relativePath = "clientKeystore"+File.separator+"keystore.jks";
+        String relativePath = "badKeystore" +File.separator+"keystore.jks";
 
         InputStream is = SslSocketClientWithTruststore.class.getClassLoader().getResourceAsStream(relativePath);
         char ksPass[] = "changeit".toCharArray();

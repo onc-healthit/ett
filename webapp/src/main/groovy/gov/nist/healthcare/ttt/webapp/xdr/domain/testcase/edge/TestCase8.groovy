@@ -11,9 +11,9 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 /**
  * Created by gerardin on 10/27/14.
  */
-class TestCase4 extends TestCaseBaseStrategy {
+class TestCase8 extends TestCaseBaseStrategy {
 
-    public TestCase4(TestCaseExecutor executor) {
+    public TestCase8(TestCaseExecutor executor) {
         super(executor)
     }
 
@@ -21,10 +21,10 @@ class TestCase4 extends TestCaseBaseStrategy {
     @Override
     TestCaseEvent run(String tcid, Map context, String username) {
 
-        context.directTo = "testcase4@nist.gov"
-        context.directFrom = "testcase4@nist.gov"
+        context.directTo = "testcase8@nist.gov"
+        context.directFrom = "testcase8@nist.gov"
         context.wsaTo = context.targetEndpoint
-        context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
 
         XDRTestStepInterface step = executor.executeSendXDRStep(context)
 

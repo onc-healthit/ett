@@ -1,15 +1,14 @@
 package gov.nist.healthcare.ttt.xdr.api
+
 import gov.nist.healthcare.ttt.xdr.ssl.SSLContextManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component;
 
-/* SslSocketClient.java
- - Copyright (c) 2014, HerongYang.com, All Rights Reserved.
- */
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
+
 /**
  * This Socket is not working for now.
  */
@@ -20,39 +19,28 @@ public class SslSocketClientImpl implements TLSClient {
 
     SSLContextManager sslContextManager
 
+
     @Autowired
-    public SslSocketClientImpl(SSLContextManager manager){
+    public SslSocketClientImpl(SSLContextManager manager) {
         sslContextManager = manager
     }
 
-    public void connectOverBadTLS(){
-
+    public void connectOverBadTLS(Map config) {
         SSLContext sc = sslContextManager.badSSLContext
         SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
+        startConnection(f,config)
+    }
 
-        BufferedReader inb = new BufferedReader(
-                new InputStreamReader(System.in));
-        PrintStream outb = System.out;
-
+    public void startConnection(SSLSocketFactory f,Map config){
         try {
+
+            String hostname = config.hostname
+            def port = config.port
+
             SSLSocket c =
-                    (SSLSocket) f.createSocket("localhost", 8888);
+                    (SSLSocket) f.createSocket(hostname, port);
             printSocketInfo(c);
             c.startHandshake();
-            BufferedWriter w = new BufferedWriter(
-                    new OutputStreamWriter(c.getOutputStream()));
-            BufferedReader r = new BufferedReader(
-                    new InputStreamReader(c.getInputStream()));
-            String m = null;
-            while ((m = r.readLine()) != null) {
-                outb.println(m);
-                m = inb.readLine();
-                w.write(m, 0, m.length());
-                w.newLine();
-                w.flush();
-            }
-            w.close();
-            r.close();
             c.close();
         } catch (IOException e) {
             System.err.println(e.toString());
@@ -74,5 +62,27 @@ public class SslSocketClientImpl implements TLSClient {
         SSLSession ss = s.getSession();
         System.out.println("   Cipher suite = " + ss.getCipherSuite());
         System.out.println("   Protocol = " + ss.getProtocol());
+    }
+
+    private void infoExchange(SSLSocket c) {
+
+        BufferedReader inb = new BufferedReader(
+                new InputStreamReader(System.in));
+        PrintStream outb = System.out;
+
+        BufferedWriter w = new BufferedWriter(
+                new OutputStreamWriter(c.getOutputStream()));
+        BufferedReader r = new BufferedReader(
+                new InputStreamReader(c.getInputStream()));
+        String m = null;
+        while ((m = r.readLine()) != null) {
+            outb.println(m);
+            m = inb.readLine();
+            w.write(m, 0, m.length());
+            w.newLine();
+            w.flush();
+        }
+        w.close();
+        r.close();
     }
 }

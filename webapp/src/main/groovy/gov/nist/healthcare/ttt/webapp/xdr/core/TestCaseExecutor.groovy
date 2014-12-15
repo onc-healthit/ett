@@ -6,6 +6,7 @@ import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForX
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
+import gov.nist.healthcare.ttt.xdr.api.TLSClient
 import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
@@ -26,17 +27,19 @@ class TestCaseExecutor {
     private final XdrSender sender
     private final Clock clock
     public final TLSReceiver tlsReceiver
+    public final TLSClient tlsClient
 
     protected static ObjectMapper mapper = new ObjectMapper()
 
     private static Logger log = LoggerFactory.getLogger(TestCaseExecutor.class)
 
     @Autowired
-    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, TLSReceiver tlsReceiver, Clock clock) {
+    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, TLSReceiver tlsReceiver, TLSClient tlsClient, Clock clock) {
         this.db = db
         this.receiver = receiver
         this.sender = sender
         this.tlsReceiver = tlsReceiver
+        this.tlsClient = tlsClient
         this.clock = clock
     }
 
@@ -171,7 +174,7 @@ class TestCaseExecutor {
 
     XDRTestStepInterface recordSenderAddress(Map info) {
         XDRTestStepInterface step = new TestStepBuilder("BAD_CERT_MUST_DISCONNECT").build();
-        step.hostname = info.hostname
+        step.hostname = info.tc_config.hostname
         return step
     }
 

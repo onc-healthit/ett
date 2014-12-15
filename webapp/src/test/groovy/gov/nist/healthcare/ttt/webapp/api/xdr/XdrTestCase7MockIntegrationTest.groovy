@@ -77,18 +77,20 @@ class XdrTestCase7MockIntegrationTest extends Specification {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
 
-        client.connectOverBadTLS()
+
 
 
         when: "we check the status of testcase 7"
+        client.connectOverBadTLS([hostname:"localhost",port:12084])
         MockHttpServletRequestBuilder checkStatus = checkTestCaseStatusRequest()
+        Thread.sleep(1000)
 
         then: "we receive back a success message"
         mockMvcRunTestCase.perform(checkStatus)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("PASSED"))
+                .andExpect(jsonPath("content.criteriaMet").value("FAILED"))
     }
 
     MockHttpServletRequestBuilder createHostnameCorrelation() {

@@ -84,17 +84,16 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
 
-            def step = record.getTestSteps().find {
-                it.name == "XDR_RECEIVE"
+            def step = record.getTestSteps().last()
+
+
+            if(!step.xdrReportItems.empty) {
+                log.info(step.xdrReportItems.size() + " report(s) found.")
+                report = step.xdrReportItems
+                content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST }.report
+                content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE }.report
+                //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
             }
-
-            log.info("found XDR_RECEIVE step. " + step.xdrReportItems.size() + " report found.")
-
-           report = step.xdrReportItems
-
-            content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST}.report
-            content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE}.report
-            //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
         }
 
         return new TestCaseEvent(record.criteriaMet,content)

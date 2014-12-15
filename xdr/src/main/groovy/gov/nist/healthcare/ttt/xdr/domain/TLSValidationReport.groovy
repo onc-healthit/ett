@@ -10,10 +10,10 @@ class TLSValidationReport {
 
     public TLSValidationReport(CriteriaMet status, String address){
         this.status = status
-        this.incomingRequestAddress = address
+        this.hostname = address
     }
 
     XDRRecordInterface.CriteriaMet status
 
-    String incomingRequestAddress
+    String hostname
 }
