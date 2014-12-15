@@ -66,10 +66,10 @@ public class SslSocketClientImpl implements TLSClient {
         System.out.println("   Cipher suite = " + ss.getCipherSuite());
         System.out.println("   Protocol = " + ss.getProtocol());
 
-        System.out.println("certs used :")
-        ss.peerCertificateChain.each{
-            System.out.println(it.subjectDN)
-        }
+//        System.out.println("certs used by client :")
+//        ss.peerCertificateChain.each{
+//            System.out.println(it.subjectDN)
+//        }
     }
 
     private void infoExchange(SSLSocket c) {
