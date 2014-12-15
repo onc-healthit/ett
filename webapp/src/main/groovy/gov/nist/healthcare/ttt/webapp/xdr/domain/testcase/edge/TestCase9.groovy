@@ -1,11 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
-import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
+import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
 /**
@@ -21,23 +21,26 @@ class TestCase9 extends TestCaseBaseStrategy {
     @Override
     TestCaseEvent run(String tcid, Map context, String username) {
 
-        context.directTo = "testcase8@nist.gov"
-        context.directFrom = "testcase8@nist.gov"
-        context.wsaTo = context.targetEndpoint
-        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        XDRTestStepImpl step = new TestStepBuilder("SEND_OVER_SSL_WITH_BAD_CERT").build()
 
-        XDRTestStepInterface step = executor.tlsClient.connectOverBadTLS([hostname:context.hostname,port:context.port])
-
+        try {
+            executor.tlsClient.connectOverBadTLS([hostname: context.hostname, port: context.port])
+            log.info("tls connection succeeded.")
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+        }
+        catch(javax.net.ssl.SSLException e){
+            log.info("tls connection failed.")
+            e.printStackTrace()
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        }
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
-        //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
         def content = new StandardContent()
-        content.response = step.xdrReportItems.last().report
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 

@@ -30,8 +30,8 @@ public class SSLContextManager {
         truststoreInput.close();
 
         String relativePath2 = "goodKeystore" + File.separator + "goodKeystore";
-        InputStream keystoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
-        InputStream truststoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
+        InputStream keystoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath2);
+        InputStream truststoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath2);
         goodSSLContext = setSSLFactories(keystoreInput2, "changeit", truststoreInput2, "changeit");
         keystoreInput2.close();
         truststoreInput2.close();

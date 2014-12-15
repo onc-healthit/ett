@@ -39,9 +39,7 @@ public class SslSocketClientImpl implements TLSClient {
         startConnection(f,config)
     }
 
-    public void startConnection(SSLSocketFactory f,Map config){
-        try {
-
+    public void startConnection(SSLSocketFactory f,Map config) throws IOException{
             String hostname = config.hostname
             def port = config.port
 
@@ -50,9 +48,6 @@ public class SslSocketClientImpl implements TLSClient {
             printSocketInfo(c);
             c.startHandshake();
             c.close();
-        } catch (IOException e) {
-            System.err.println(e.toString());
-        }
     }
 
     private static void printSocketInfo(SSLSocket s) {
