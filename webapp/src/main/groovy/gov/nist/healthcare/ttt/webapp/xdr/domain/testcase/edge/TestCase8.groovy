@@ -1,7 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
-import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
@@ -21,12 +20,7 @@ class TestCase8 extends TestCaseBaseStrategy {
     @Override
     TestCaseEvent run(String tcid, Map context, String username) {
 
-        context.directTo = "testcase8@nist.gov"
-        context.directFrom = "testcase8@nist.gov"
-        context.wsaTo = context.targetEndpoint
-        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
-
-        XDRTestStepInterface step = executor.executeSendXDRStep(context)
+        XDRTestStepInterface step = executor.tlsClient.connectOverGoodTLS()
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()

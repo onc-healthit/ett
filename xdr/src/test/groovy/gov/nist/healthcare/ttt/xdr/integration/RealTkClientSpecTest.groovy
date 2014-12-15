@@ -39,7 +39,11 @@ class RealTkClientSpecTest extends Specification {
 
     private String fullNotificationUrl
 
-    private String toolkitUrl = "http://localhost:9080"
+    @Value('${toolkit.getSimConfig.url}')
+    private String getSimConfigUrl
+
+    @Value('${toolkit.request.timeout}')
+    private int timeout
 
     @Autowired
     GroovyRestClient client
@@ -91,14 +95,14 @@ class RealTkClientSpecTest extends Specification {
         def url = "$createSimUrl/$id"
 
         when:
-        def resp = client.postXml(config, url, 1000)
+        def resp = client.postXml(config, url, timeout)
 
         then:
         println resp.text()
 
         when:
-        def getConfigUrl = "$toolkitUrl/xdstools3/rest/sim/config/$id"
-        GPathResult resp2 = client.getXml(getConfigUrl, 1000)
+        def getConfigUrl = "$getSimConfigUrl/$id"
+        GPathResult resp2 = client.getXml(getConfigUrl, timeout)
 
         then:
         def transactions = resp2.depthFirst().findAll{it.name() == "endpoint"}

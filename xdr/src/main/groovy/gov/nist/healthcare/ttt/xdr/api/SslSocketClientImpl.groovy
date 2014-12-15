@@ -25,8 +25,16 @@ public class SslSocketClientImpl implements TLSClient {
         sslContextManager = manager
     }
 
+    @Override
     public void connectOverBadTLS(Map config) {
         SSLContext sc = sslContextManager.badSSLContext
+        SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
+        startConnection(f,config)
+    }
+
+    @Override
+    public void connectOverGoodTLS(Map config) {
+        SSLContext sc = sslContextManager.goodSSLContext
         SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
         startConnection(f,config)
     }
