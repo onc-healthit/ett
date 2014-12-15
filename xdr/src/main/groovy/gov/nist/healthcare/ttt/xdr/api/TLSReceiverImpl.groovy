@@ -95,15 +95,15 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
         printSocketInfo(connection);
 
         try {
-            System.out.println("fds");
-//            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+            log.info("tls receiver has accepted the connection.");
+            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
 //            r = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            String m = "Welcome to SSL Reverse Echo Server." +
-//                    " Please type in some words.";
-//            w.write(m, 0, m.length());
-//            w.newLine();
-//            w.flush();
-//
+            String m = "Welcome to SSL Reverse Echo Server." +
+                    " Please type in some words.";
+            w.write(m, 0, m.length());
+            w.newLine();
+            w.flush();
+
 //            while ((m = r.readLine()) != null) {
 //                if (m.equals(".")) break;
 //                char[] a = m.toCharArray();
@@ -118,11 +118,12 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 //                w.flush();
 //            }
         } catch (Exception e) {
+            e.printStackTrace()
             System.err.println(e.toString());
-            System.out.println("client has dropped the connection");
+            System.out.println("client has dropped the connection.");
             status = XDRRecordInterface.CriteriaMet.PASSED
         } finally {
-//            w.close();
+            w.close();
 //            r.close();
             connection.close();
             String address = connection.getInetAddress().canonicalHostName
@@ -135,7 +136,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         def socketPort = Integer.parseInt(port);
 
-        InputStream is = this.class.getClassLoader().getResourceAsStream("keystore"+File.separator+"keystore");
+        InputStream is = this.class.getClassLoader().getResourceAsStream("goodKeystore"+File.separator+"goodKeystore");
         char[] ksPass = "changeit".toCharArray();
         char[] ctPass = "changeit".toCharArray();
 
@@ -176,6 +177,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
         SSLSession ss = socket.getSession();
         System.out.println("   Cipher suite = " + ss.getCipherSuite());
         System.out.println("   Protocol = " + ss.getProtocol());
+
     }
 
     private static void printServerSocketInfo(SSLServerSocket server) {

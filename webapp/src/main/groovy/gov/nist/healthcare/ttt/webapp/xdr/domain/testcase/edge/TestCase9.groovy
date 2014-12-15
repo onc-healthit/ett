@@ -25,11 +25,11 @@ class TestCase9 extends TestCaseBaseStrategy {
 
         try {
             executor.tlsClient.connectOverBadTLS([hostname: context.hostname, port: context.port])
-            log.info("tls connection succeeded.")
+            log.info("tls connection succeeded. Test failed.")
             step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
         }
         catch(javax.net.ssl.SSLException e){
-            log.info("tls connection failed.")
+            log.info("tls connection failed. Test succeeded.")
             e.printStackTrace()
             step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
         }

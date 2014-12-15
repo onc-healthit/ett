@@ -81,7 +81,13 @@ class XdrTestCase7MockIntegrationTest extends Specification {
 
 
         when: "we check the status of testcase 7"
-        client.connectOverBadTLS([hostname:"localhost",port:12084])
+        try {
+            client.connectOverBadTLS([hostname: "localhost", port: 12084])
+        }
+        catch(Exception e){
+            //TODO improve that
+            println("it is ok to throw exception there")
+        }
         MockHttpServletRequestBuilder checkStatus = checkTestCaseStatusRequest()
         Thread.sleep(1000)
 
