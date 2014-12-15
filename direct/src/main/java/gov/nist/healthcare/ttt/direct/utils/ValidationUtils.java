@@ -57,7 +57,7 @@ public class ValidationUtils {
 	final static String textWithSpace = "[0-9,a-z,A-Z,_,.,\\-,\\s]*";
 	final static String actionMode = "(manual-action|automatic-action)";
 	final static String sendingMode = "(mdn-sent-manually|mdn-sent-automatically)";
-	final static String dispositionType = "(displayed|processed|deleted)";
+	final static String dispositionType = "(displayed|processed|deleted|dispatched|denied|failed)";
 	final static String dispositionModifier = "(error|" + atom + ")";
 	
 	// Dates patterns

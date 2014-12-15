@@ -1,6 +1,6 @@
 package gov.nist.healthcare.ttt.xdr.api
+import gov.nist.healthcare.ttt.tempxdrcommunication.RequestResponse
 import gov.nist.healthcare.ttt.tempxdrcommunication.SimpleSOAPSender
-import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -26,11 +26,12 @@ class CannedXdrSenderImpl implements XdrSender {
         log.info("try to send xdr with config : $config")
 
         try {
-            def payload = prepareMessage(config)
+            Settings settings = prepareMessage(config)
             log.info("contacting remote endpoint...")
-            String response = SimpleSOAPSender.sendMessage(config.targetEndpoint, payload)
 
-            def map = [request:payload, response:response]
+            RequestResponse rr = SimpleSOAPSender.sendMTOMPackage(config.targetEndpoint, config.messageType, settings);
+
+            def map = [request:rr.getRequest(), response:rr.getResponse()]
 
             return map
         }
@@ -47,12 +48,12 @@ class CannedXdrSenderImpl implements XdrSender {
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.targetEndpoint)
 
-        String request =
-                ArtifactManagement.getPayload(config.messageType, settings);
+//        String request =
+//                ArtifactManagement.getPayload(config.messageType, settings);
 
         log.info("generated xdr payload successfully")
 
-        return request
+        return settings
     }
 
 }
