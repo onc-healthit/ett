@@ -118,7 +118,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 //                w.flush();
 //            }
         } catch (Exception e) {
-            e.printStackTrace()
+            //e.printStackTrace()
             System.err.println(e.toString());
             System.out.println("client has dropped the connection.");
             status = XDRRecordInterface.CriteriaMet.PASSED
