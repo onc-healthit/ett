@@ -86,10 +86,11 @@ class XdrTestCase7MockIntegrationTest extends Specification {
         }
         catch(Exception e){
             //TODO improve that
-            println("it is ok to throw exception there")
+            println(e.getCause())
+            println("it is ok for the client to throw an exception")
         }
         MockHttpServletRequestBuilder checkStatus = checkTestCaseStatusRequest()
-        Thread.sleep(1000)
+        Thread.sleep(4000)
 
         then: "we receive back a success message"
         mockMvcRunTestCase.perform(checkStatus)
