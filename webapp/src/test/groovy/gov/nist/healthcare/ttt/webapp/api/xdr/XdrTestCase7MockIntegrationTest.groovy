@@ -1,9 +1,8 @@
 package gov.nist.healthcare.ttt.webapp.api.xdr
-
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
-import gov.nist.healthcare.ttt.xdr.web.TkListener
+import gov.nist.healthcare.ttt.xdr.api.TLSClient
 import org.junit.Before
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -33,13 +32,13 @@ class XdrTestCase7MockIntegrationTest extends Specification {
     Logger log = LoggerFactory.getLogger(this.class)
 
     @Autowired
+    TLSClient client
+
+    @Autowired
     XdrTestCaseController controller
 
     @Autowired
     DatabaseInstance db
-
-    @Autowired
-    TkListener listener
 
     MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit
@@ -61,9 +60,6 @@ class XdrTestCase7MockIntegrationTest extends Specification {
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
 
-        mockMvcToolkit = MockMvcBuilders.standaloneSetup(listener)
-                .build()
-
         mockMvcCheckTestCaseStatus = MockMvcBuilders.standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
@@ -81,6 +77,7 @@ class XdrTestCase7MockIntegrationTest extends Specification {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
 
+        client.connectOverBadTLS()
 
 
         when: "we check the status of testcase 7"

@@ -1,11 +1,11 @@
 package gov.nist.healthcare.ttt.xdr.api
-import gov.nist.healthcare.ttt.xdr.ssl.SSLContextManager;
+import gov.nist.healthcare.ttt.xdr.ssl.SSLContextManager
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component;
 
 /* SslSocketClient.java
  - Copyright (c) 2014, HerongYang.com, All Rights Reserved.
  */
-import org.springframework.beans.factory.annotation.Autowired
-
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.SSLSocket
@@ -14,7 +14,9 @@ import javax.net.ssl.SSLSocketFactory
  * This Socket is not working for now.
  */
 
-public class SslSocketClientImpl {
+
+@Component
+public class SslSocketClientImpl implements TLSClient {
 
     SSLContextManager sslContextManager
 
