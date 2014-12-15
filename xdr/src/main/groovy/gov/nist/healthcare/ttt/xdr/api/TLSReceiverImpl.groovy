@@ -95,31 +95,31 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
         printSocketInfo(connection);
 
         try {
-            System.out.println("fds");
-//            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-//            r = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            String m = "Welcome to SSL Reverse Echo Server." +
-//                    " Please type in some words.";
-//            w.write(m, 0, m.length());
-//            w.newLine();
-//            w.flush();
-//
-//            while ((m = r.readLine()) != null) {
-//                if (m.equals(".")) break;
-//                char[] a = m.toCharArray();
-//                int n = a.length;
-//                for (int i = 0; i < n / 2; i++) {
-//                    char t = a[i];
-//                    a[i] = a[n - 1 - i];
-//                    a[n - i - 1] = t;
-//                }
-//                w.write(a, 0, n);
-//                w.newLine();
-//                w.flush();
-//            }
+            log.info("tls receiver has accepted the connection.");
+            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+            r = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String m = "Welcome to SSL Reverse Echo Server." +
+                    " Please type in some words.";
+            w.write(m, 0, m.length());
+            w.newLine();
+            w.flush();
+
+            while ((m = r.readLine()) != null) {
+                if (m.equals(".")) break;
+                char[] a = m.toCharArray();
+                int n = a.length;
+                for (int i = 0; i < n / 2; i++) {
+                    char t = a[i];
+                    a[i] = a[n - 1 - i];
+                    a[n - i - 1] = t;
+                }
+                w.write(a, 0, n);
+                w.newLine();
+                w.flush();
+            }
         } catch (Exception e) {
             System.err.println(e.toString());
-            System.out.println("client has dropped the connection");
+            System.out.println("client has dropped the connection.");
             status = XDRRecordInterface.CriteriaMet.PASSED
         } finally {
 //            w.close();
@@ -135,7 +135,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         def socketPort = Integer.parseInt(port);
 
-        InputStream is = this.class.getClassLoader().getResourceAsStream("keystore"+File.separator+"keystore");
+        InputStream is = this.class.getClassLoader().getResourceAsStream("goodKeystore"+File.separator+"goodKeystore");
         char[] ksPass = "changeit".toCharArray();
         char[] ctPass = "changeit".toCharArray();
 
