@@ -17,7 +17,7 @@ import java.net.URI;
 public class SslSocketClientWithTruststore {
     public static void main(String[] args) {
 
-        String relativePath = "clientKeystore"+File.separator+"keystore.jks";
+        String relativePath = "badKeystore" +File.separator+"keystore.jks";
 
         InputStream is = SslSocketClientWithTruststore.class.getClassLoader().getResourceAsStream(relativePath);
         char ksPass[] = "changeit".toCharArray();
@@ -39,7 +39,10 @@ public class SslSocketClientWithTruststore {
         }
         catch (Exception e){
             e.printStackTrace();
-            System.out.println("unable to set ssl factory");
+            System.out.println("unable to set s " +
+                    "" +
+                    " " +
+                    "N BV sl factory");
 
         }
 
@@ -49,7 +52,7 @@ public class SslSocketClientWithTruststore {
 
         try {
             SSLSocket c =
-                    (SSLSocket) f.createSocket("localhost", 8888);
+                    (SSLSocket) f.createSocket("hit-dev.nist.gov", 12084);
             printSocketInfo(c);
             c.startHandshake();
             BufferedWriter w = new BufferedWriter(

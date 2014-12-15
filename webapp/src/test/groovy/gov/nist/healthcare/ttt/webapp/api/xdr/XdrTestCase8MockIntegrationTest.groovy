@@ -2,7 +2,7 @@ package gov.nist.healthcare.ttt.webapp.api.xdr
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
-import gov.nist.healthcare.ttt.xdr.api.TLSClient
+import gov.nist.healthcare.ttt.xdr.web.TkListener
 import org.junit.Before
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -27,12 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase7MockIntegrationTest extends Specification {
+class XdrTestCase8MockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
-
-    @Autowired
-    TLSClient client
 
     @Autowired
     XdrTestCaseController controller
@@ -40,9 +37,11 @@ class XdrTestCase7MockIntegrationTest extends Specification {
     @Autowired
     DatabaseInstance db
 
+    @Autowired
+    TkListener listener
+
     MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit
-    MockMvc mockMvcCheckTestCaseStatus
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
     static String id = "user1_1_2014"
@@ -59,62 +58,41 @@ class XdrTestCase7MockIntegrationTest extends Specification {
         mockMvcRunTestCase = MockMvcBuilders.standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
-
-        mockMvcCheckTestCaseStatus = MockMvcBuilders.standaloneSetup(controller)
-                .setMessageConverters(new MappingJackson2HttpMessageConverter())
-                .build()
     }
 
 
-    def "user succeeds in running test case 7"() throws Exception {
-
-        when: "receiving a request to run test case 7"
-        MockHttpServletRequestBuilder runTc7Request = createHostnameCorrelation()
-
-        then: "we receive back a success message with the endpoints info"
-        mockMvcRunTestCase.perform(runTc7Request)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("status").value("SUCCESS"))
 
 
+    def "user succeeds in running test case 8"() throws Exception {
 
+        when: "receiving a request to run test case 8"
+        MockHttpServletRequestBuilder getRequest = sendXdrRequest()
 
-        when: "we check the status of testcase 7"
-        client.connectOverBadTLS([hostname:"localhost",port:12084])
-        MockHttpServletRequestBuilder checkStatus = checkTestCaseStatusRequest()
-        Thread.sleep(1000)
+        then: "we receive back a message with status and report of the transaction"
 
-        then: "we receive back a success message"
-        mockMvcRunTestCase.perform(checkStatus)
+        mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content.criteriaMet").value("PASSED"))
     }
 
-    MockHttpServletRequestBuilder createHostnameCorrelation() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/7/run")
+
+
+
+    MockHttpServletRequestBuilder sendXdrRequest() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/8/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
-    MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
-        MockMvcRequestBuilders.get("/api/xdr/tc/7/status")
-                .accept(MediaType.ALL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .principal(new PrincipalImpl(userId))
-    }
-
     public static String testCaseConfig =
             """{
-    "tc_config": {
-        "hostname": "localhost"
-    }
+    "hostname": "hit-dev.nist.gov",
+    "port": 12084
 }"""
-
 
     def setupDb() {
         createUserInDB()

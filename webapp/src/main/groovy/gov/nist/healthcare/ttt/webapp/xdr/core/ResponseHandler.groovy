@@ -52,9 +52,8 @@ class ResponseHandler implements IObserver{
     private handle(TLSValidationReport report){
         println "handle tls report"
 
-        XDRRecordInterface rec = null
-        //rec = db.instance.xdrFacade.getXDRRecordByAddress(report.address)
-        TestCaseBaseStrategy testcase = manager.findTestCase("7")
+        XDRRecordInterface rec = db.instance.xdrFacade.getLatestXDRRecordByHostname(report.hostname)
+        TestCaseBaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
         testcase.notifyTLSReceive(rec, report)
     }
 

@@ -15,7 +15,7 @@ import java.security.KeyStore;
 public class SslSocketClientWithTruststore2ndImpl {
     public static void main(String[] args) {
 
-        String relativePath = "clientKeystore" + File.separator + "keystore.jks";
+        String relativePath = "badKeystore" + File.separator + "keystore.jks";
         InputStream keystoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         InputStream truststoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
 
