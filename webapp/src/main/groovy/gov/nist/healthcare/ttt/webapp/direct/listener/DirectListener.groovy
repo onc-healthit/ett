@@ -40,6 +40,9 @@ public class DirectListener implements Runnable {
 	@Value('${direct.certificates.password}')
 	String certPassword = ""
 	
+	@Value('${server.tomcat.basedir}')
+	String tomcatDir = ""
+	
 	// Emailer settings
 	@Value('${direct.listener.email.from}')
 	String emailerFom
@@ -96,6 +99,8 @@ public class DirectListener implements Runnable {
 				server = listener.accept();
 				logger.debug("Running listener");
 				
+				String logFilePath = this.tomcatDir + File.separator + "logs" + File.separator + "listener.log"
+				
 				// Set the processor
 				ListenerProcessor processor = new ListenerProcessor(server, db);
 				processor.setEmailer(this.emailer)
@@ -105,6 +110,7 @@ public class DirectListener implements Runnable {
 				processor.setListenerPort(this.listenerPort)
 				processor.setCertificatesPath(this.certificatesPath)
 				processor.setCertPassword(this.certPassword)
+				processor.setLogFilePath(logFilePath)
 				
 				Thread t = new Thread(processor);
 				threadsList.add(t);

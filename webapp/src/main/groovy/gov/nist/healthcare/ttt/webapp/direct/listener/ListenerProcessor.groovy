@@ -16,12 +16,14 @@ import org.springframework.stereotype.Component;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 
 public class ListenerProcessor implements Runnable {
 	Socket server;
@@ -35,6 +37,8 @@ public class ListenerProcessor implements Runnable {
 	InputStream certStream = null;
 	BufferedReader inReader = null;
 	BufferedOutputStream outStream = null;
+	
+	String logFilePath = ""
 
 	Collection<String> contactAddr = null;
 	String logHostname = "";
@@ -90,10 +94,20 @@ public class ListenerProcessor implements Runnable {
 		// noaddressfailure9
 		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9']
 		String smtpFrom = directTo?.get(0)
+		logger.info("To " + smtpFrom)
 		smtpFrom = smtpFrom.split("@")[0]
 		if(smtpAddressList.contains(smtpFrom)) {
 			logger.info("MDN address found $smtpFrom sending back appropriate MDN")
 			manageMDNAddresses(smtpFrom, directTo?.get(0), directFrom, messageStream)
+			return
+		} else if(smtpFrom.equals("wellformed1")) {
+			// Get the session variable
+			Properties props = System.getProperties();
+			Session session = Session.getDefaultInstance(props, null);
+			MimeMessage forward = new MimeMessage(session, this.messageStream);
+			DirectMessageSender sender = new DirectMessageSender();
+			logger.info("Forwarding message to unpublishedwellformed1@hit-testing2.nist.gov");
+			sender.sendMessage(25, "hit-testing2.nist.gov", forward, forward.getFrom()[0].toString(), "unpublishedwellformed1@hit-testing2.nist.gov");
 			return
 		}
 		
@@ -208,14 +222,26 @@ public class ListenerProcessor implements Runnable {
 			// Log line for the stats
 			if (directTo != null) {
 				String docType;
-				 if(processor.isMdn()) {
-					 docType = "mdn";
-				 } else {
-					 docType = getCcdaType(directTo.get(0));
-				 }
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
-				String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
-				logger.info(statLog);
+				if(processor.isMdn()) {
+					docType = "mdn";
+				} else {
+					docType = getCcdaType(directTo.get(0));
+				}
+				 
+				try {
+					FileWriter fw = new FileWriter(this.logFilePath, true); //the true will append the new data
+					
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
+					String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
+					logger.info(statLog);
+					
+					// Write in listener log
+					fw.write(statLog +"\n");
+					fw.close();
+					
+				} catch(Exception e) {
+					logger.info(e.getMessage())
+				}
 			}
 
 		} catch (Exception e) {
@@ -277,7 +303,7 @@ public class ListenerProcessor implements Runnable {
 			
 			try {
 				logger.info("Generating MDN for message " + processor.getLogModel().getMessageId());
-				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), this.certStream,
+				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), getSigningPrivateCert(),
 						this.certPassword);
 				DirectMessageSender sender = new DirectMessageSender();
 				logger.info("Sending MDN to " + toMDN);
