@@ -63,7 +63,7 @@ class SmtpProfileController {
 		smtpProfile.setSutUsername(profile?.get("sutUsername"))
 		smtpProfile.setSutPassword(profile?.get("sutPassword"))
 		
-		db.getSmtpEdgeLogFacade().addNewSmtpProfile(smtpProfile)
+		db.getSmtpEdgeLogFacade().saveSmtpProfile(smtpProfile)
 	}
 	
 	@RequestMapping(value = "/{profile:.+}", method = RequestMethod.DELETE, produces = "application/json")

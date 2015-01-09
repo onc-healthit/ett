@@ -665,8 +665,13 @@ public class ListenerProcessor implements Runnable {
 				res = directAddress.split("@")[0];
 				res = res.toLowerCase();
 				if (!res.equals("direct-clinical-summary")
-						&& !res.equals("direct-ambulatory")
-						&& !res.equals("direct-inpatient")
+						&& !res.equals("direct-ambulatory2")
+						&& !res.equals("direct-ambulatory7")
+						&& !res.equals("direct-ambulatory1")
+						&& !res.equals("direct-inpatient2")
+						&& !res.equals("direct-inpatient7")
+						&& !res.equals("direct-inpatient1")
+						&& !res.equals("direct-vdt-inpatient")
 						&& !res.equals("direct-vdt-ambulatory")) {
 					res = "non-specific";
 				}

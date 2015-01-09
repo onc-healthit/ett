@@ -35,14 +35,22 @@ public class CCDAValidatorController {
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String sendDirectMessage(@RequestBody HashMap<String, String> filePath) throws Exception {
 		if(filePath.containsKey("messageFilePath")) {
+			String ccdaType = "NonSpecificCCDA"
+			if(filePath.containsKey("ccdaType")) {
+				ccdaType = filePath.get("ccdaType")
+			}
+			
+			logger.info("Validating CCDA " + filePath.get("messageFilePath") + " with type " + ccdaType);
+			
 			CloseableHttpClient client = HttpClients.createDefault();
 			File file = new File(filePath.get("messageFilePath"));
-			HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r2.0/");
+			HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
 			FileBody fileBody = new FileBody(file);
 			//
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 			builder.addPart("file", fileBody);
+			builder.addTextBody("type_val", ccdaType);
 			HttpEntity entity = builder.build();
 			//
 			post.setEntity(entity);
