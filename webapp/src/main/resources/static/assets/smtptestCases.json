@@ -1,10 +1,10 @@
 {
-    "testingMode": "true",
+    "testingMode": "false",
     "tests": [
         {
             "name": "SMTP test 1-8, 14, 18",
             "id": 1,
-            "desc": "Tests the ability of the Vendor to send an email using SMTP protocol with STARTTLS and PLAIN SASL Authentication. the Vendor sends email to wellformed1@hit-testing2.nist.gov",
+            "desc": "Tests the ability of the Vendor to send an email using SMTP protocol with STARTTLS and PLAIN SASL Authentication. the Vendor sends email to wellformed1@hit-dev.nist.gov",
             "sutRole": "sender",
             "sutHisp": "true",
             "sutEdge": "true"
