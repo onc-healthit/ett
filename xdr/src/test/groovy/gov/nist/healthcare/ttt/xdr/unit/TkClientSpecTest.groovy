@@ -11,6 +11,10 @@ import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
 /**
  * Created by gerardin on 10/9/14.
+ *
+ * Here we only test the http client behavior under various conditions.
+ * The fake toolkit we use does not comply with the new API but this is largely irrelevant.
+ * We want to know if the client reacts appropriately.
  */
 @WebAppConfiguration
 @IntegrationTest
@@ -25,7 +29,7 @@ class TkClientSpecTest extends Specification {
 
     def "test request on good endpoint"() {
         given:
-
+        // a working url
         def id = "SimpleTest1"
 
         def config = {
@@ -44,6 +48,7 @@ class TkClientSpecTest extends Specification {
         def resp = client.postXml(config, url, 1000)
 
         then:
+        //we have a successful interaction
             assert resp.simId.text() == id
 
     }

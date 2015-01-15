@@ -20,6 +20,9 @@ import spock.lang.Specification
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 /**
  * Created by gerardin on 10/14/14.
+ *
+ * Here we only test the notification process.
+ * If we receive sth on the notification url, we should notify the observer either of a well-formed or problematic message.
  */
 @WebAppConfiguration
 @IntegrationTest
@@ -42,7 +45,9 @@ class TkListenerSpecTest extends Specification {
         def observer = Mock(IObserver)
         receiver.registerObserver(observer)
 
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders.post("/$notificationUrl")
+        println "we want to send to notification url : $notificationUrl"
+
+        MockHttpServletRequestBuilder req = MockMvcRequestBuilders.post(notificationUrl)
                 .accept(MediaType.ALL)
                 .content(GOOD_REPORT_XML)
                 .contentType(MediaType.APPLICATION_XML)
@@ -71,7 +76,9 @@ class TkListenerSpecTest extends Specification {
         def observer = Mock(IObserver)
         receiver.registerObserver(observer)
 
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders.post("/$notificationUrl")
+        println "URL to send to is : " + notificationUrl
+
+        MockHttpServletRequestBuilder req = MockMvcRequestBuilders.post(notificationUrl)
                 .accept(MediaType.ALL)
                 .content(BAD_REPORT_XML)
                 .contentType(MediaType.APPLICATION_XML)

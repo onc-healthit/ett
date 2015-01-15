@@ -8,12 +8,15 @@ import spock.lang.Specification
  */
 class RegexSpecTest extends Specification {
 
+
     def testReport() {
 
         given:
+        //a hardcoded report
         def report = new XmlSlurper().parseText(report)
 
         when:
+        //we parse it
         def tkValidationReport = new TkValidationReport()
         tkValidationReport.request = report.request.text()
         tkValidationReport.response = report.response.text()
@@ -22,6 +25,7 @@ class RegexSpecTest extends Specification {
         def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
         def status = registryResponseXml.@status.text()
         then:
+        //we can extract the status from the report
         assert status == "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure"
 
 
