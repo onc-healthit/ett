@@ -61,8 +61,6 @@ class XdrTestCase8MockIntegrationTest extends Specification {
     }
 
 
-
-
     def "user succeeds in running test case 8"() throws Exception {
 
         when: "receiving a request to run test case 8"
@@ -83,15 +81,15 @@ class XdrTestCase8MockIntegrationTest extends Specification {
     MockHttpServletRequestBuilder sendXdrRequest() {
         MockMvcRequestBuilders.post("/api/xdr/tc/8/run")
                 .accept(MediaType.ALL)
-                .content(testCaseConfig)
+                .content(testCaseConfigGoodTLSPort)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
-    public static String testCaseConfig =
+    public static String testCaseConfigGoodTLSPort =
             """{
     "hostname": "localhost",
-    "port": 12084
+    "port": 12085
 }"""
 
     def setupDb() {
