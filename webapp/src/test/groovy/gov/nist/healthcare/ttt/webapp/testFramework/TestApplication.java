@@ -20,7 +20,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 /**
  * Same as the real application but here we have a additional @ComponentScan
  * in gov.nist.healthcare.ttt.webapp.testFramework, which :
- * - spins the mock toolkit.
  * - replace the clock by a mock clock returning always the same time.
  */
 

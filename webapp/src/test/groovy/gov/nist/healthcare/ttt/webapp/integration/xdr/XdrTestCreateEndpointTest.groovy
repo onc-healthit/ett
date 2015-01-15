@@ -89,7 +89,7 @@ class XdrTestCreateEndpointTest extends Specification {
         when: "receiving a request to run test case 6"
         MockHttpServletRequestBuilder getTLSRequest = createTLSEndpointRequest()
 
-        then: "we receive back a success message with the https endpoints info"
+        then: "we receive back a success message with the https endpoint info"
 
         mockMvcRunTestCase.perform(getTLSRequest)
                 .andDo(print())

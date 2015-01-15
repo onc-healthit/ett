@@ -85,7 +85,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 
-        when: "receiving a validation report from toolkit"
+        when: "receiving a validation report from toolkit. We mock the actual interaction!"
         MockHttpServletRequestBuilder getRequest2 = reportRequest()
         mockMvcToolkit.perform(getRequest2)
                 .andDo(print())
@@ -105,7 +105,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
         when: "we check the status of testcase 1"
         MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
 
-        then: "we receive back a success message"
+        then: "we receive back a success message asking for manual validation"
         mockMvcRunTestCase.perform(getRequest3)
                 .andDo(print())
                 .andExpect(status().isOk())

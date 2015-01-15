@@ -136,7 +136,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         def socketPort = Integer.parseInt(port);
 
-        InputStream is = this.class.getClassLoader().getResourceAsStream("goodKeystore"+File.separator+"goodKeystore");
+        InputStream is = this.class.getClassLoader().getResourceAsStream("badKeystore"+File.separator+"badKeystore");
         char[] ksPass = "changeit".toCharArray();
         char[] ctPass = "changeit".toCharArray();
 

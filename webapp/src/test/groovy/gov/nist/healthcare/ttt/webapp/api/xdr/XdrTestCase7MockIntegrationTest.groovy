@@ -71,28 +71,28 @@ class XdrTestCase7MockIntegrationTest extends Specification {
         when: "receiving a request to run test case 7"
         MockHttpServletRequestBuilder runTc7Request = createHostnameCorrelation()
 
-        then: "we receive back a success message with the endpoints info"
+        then: "we receive back a success message, correlation parameters have been accepted"
         mockMvcRunTestCase.perform(runTc7Request)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
 
 
+        //setup is completed
 
-
-        when: "we check the status of testcase 7"
+        when: "we try to connect to TTT with what we consider a good cert"
         try {
-            client.connectOverBadTLS([hostname: "localhost", port: 12084])
+            client.connectOverGoodTLS([hostname: "localhost", port: 12084])
         }
         catch(Exception e){
             //TODO improve that
             println(e.getCause())
-            println("it is ok for the client to throw an exception")
+            println("we should throw an exception because TTT give us a bad cert")
         }
         MockHttpServletRequestBuilder checkStatus = checkTestCaseStatusRequest()
         Thread.sleep(4000)
 
-        then: "we receive back a success message"
+        then: "we receive back a success message if we have disconnect"
         mockMvcRunTestCase.perform(checkStatus)
                 .andDo(print())
                 .andExpect(status().isOk())
