@@ -1,15 +1,19 @@
 package gov.nist.healthcare.ttt.direct.messageProcessor;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -35,6 +39,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.mail.smime.SMIMESigned;
 import org.bouncycastle.util.Store;
 
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportImpl;
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
 import gov.nist.healthcare.ttt.database.log.DetailInterface.Status;
 import gov.nist.healthcare.ttt.database.log.PartInterface;
 import gov.nist.healthcare.ttt.direct.directValidator.DirectMessageValidator;
@@ -55,8 +61,8 @@ public class PartValidation {
 	private boolean wrapped;
 	private boolean hasError;
 	
-	private boolean skipChild = false;
 	private String ccdaType;
+	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
 	
 	public PartValidation(boolean wrapped) {
 		this.wrapped = wrapped;
@@ -98,13 +104,11 @@ public class PartValidation {
 			this.hasError = true;
 		}
 
-		if(part.hasChild() && !skipChild) {
+		if(part.hasChild()) {
 			Iterator<PartInterface> it = part.getChildren().iterator();
 			while(it.hasNext()) {
 				this.processMainPart((PartModel) it.next());
 			}
-		} else if(skipChild) {
-			skipChild = false;
 		}
 	}
 	
@@ -186,18 +190,18 @@ public class PartValidation {
 		
 		// Validate CCDA
 		if(p.isMimeType("text/xml") || p.isMimeType("application/xml")) {
-			PartModel ccdaValidation = new PartModel();
-			ccdaValidation.setContentType("MDHT CCDA Validation");
-			ccdaValidation.setRawMessage(validateCCDAwithMDHT(part));
-			ccdaValidation.setContentDisposition("attachment; filename=MDHT_CCDA_Validation");
-			part.addChild(ccdaValidation);
-			this.skipChild = true;
+			validateCCDAwithMDHT(part);
 		}
 	}
 	
 	public String validateCCDAwithMDHT(PartModel part) throws Exception {
 		Part p = part.getContent();
-		File ccdaFile = getCCDAFile(p.getInputStream(), p.getFileName());
+		String ccdaFilename = "";
+		File ccdaFile = null;
+		if(p.getFileName() != null) {
+			ccdaFilename = p.getFileName();
+			ccdaFile = getCCDAFile(p.getInputStream(), p.getFileName());
+		}
 		
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
@@ -214,6 +218,18 @@ public class PartValidation {
 			HttpResponse response = client.execute(post);
 			// CONVERT RESPONSE TO STRING
 			String result = EntityUtils.toString(response.getEntity());
+			
+//			File bite = new File("ccda.txt");
+//			FileWriter fw = new FileWriter(bite.getAbsoluteFile());
+//			BufferedWriter bw = new BufferedWriter(fw);
+//			bw.write(result);
+//			bw.close();
+			
+			CCDAValidationReportImpl report = new CCDAValidationReportImpl();
+			report.setFilename(ccdaFilename);
+			report.setValidationReport(result);
+			
+			ccdaReport.add(report);
 			
 			return result;
 		} catch (Exception e) {
@@ -411,6 +427,14 @@ public class PartValidation {
 		} else {
 			return "NonSpecificCCDA";
 		}
+	}
+
+	public List<CCDAValidationReportInterface> getCcdaReport() {
+		return ccdaReport;
+	}
+
+	public void setCcdaReport(List<CCDAValidationReportInterface> ccdaReport) {
+		this.ccdaReport = ccdaReport;
 	}
 
 }

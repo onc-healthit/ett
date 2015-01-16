@@ -2,6 +2,7 @@ package messageProcessorTests;
 
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException;
 import gov.nist.healthcare.ttt.database.jdbc.LogFacade;
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.misc.Configuration;
 
@@ -62,6 +63,9 @@ public class DirectMessageProcessorTest {
 		try {
 			db.addNewLog(processor.getLogModel());
 			db.addNewPart(processor.getLogModel().getMessageId(), processor.getMainPart());
+			for(CCDAValidationReportInterface report : processor.getCcdaReport()) {
+				db.addNewCCDAValidationReport(processor.getLogModel().getMessageId(), report);				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

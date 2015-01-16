@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.direct.messageProcessor;
 
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
 import gov.nist.healthcare.ttt.database.log.LogInterface.Status;
 import gov.nist.healthcare.ttt.direct.certificates.PrivateCertificateLoader;
 import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
@@ -13,6 +14,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -48,6 +51,7 @@ public class DirectMessageProcessor {
 	private boolean wrapped;
 	private boolean isMdn;
 	private String originalMessageId;
+	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
 	
 	public DirectMessageProcessor() {
 		super();
@@ -89,6 +93,8 @@ public class DirectMessageProcessor {
 		if (validationPart.isHasError()) {
 			this.logModel.setStatus(Status.ERROR);
 		}
+		
+		this.ccdaReport = validationPart.getCcdaReport();
 	}
 
 	public PartModel processPart(Part p, PartModel parent) throws Exception {
@@ -348,5 +354,19 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 	public void setOriginalMessageId(String originalMessageId) {
 		this.originalMessageId = originalMessageId;
 	}
+
+	public List<CCDAValidationReportInterface> getCcdaReport() {
+		return ccdaReport;
+	}
+
+	public void setCcdaReport(List<CCDAValidationReportInterface> ccdaReport) {
+		this.ccdaReport = ccdaReport;
+	}
 	
+	public boolean hasCCDAReport() {
+		if(this.ccdaReport.isEmpty())
+			return false;
+		else
+			return true;
+	}
 }

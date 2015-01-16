@@ -14,16 +14,16 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class Emailer extends Authenticator {
 	
 	private Logger logger = Logger.getLogger(Emailer.class.getName());
-	
+
 	private EmailerModel model;
 
 	public Emailer(EmailerModel model) {
 		this.model = model;
-		logger.info("MY INFO");
 	}
 
 	public PasswordAuthentication getPasswordAuthentication() {

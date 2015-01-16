@@ -26,7 +26,7 @@ public class MessageSenderTest {
 		messageInfo.setSigningCertPassword("");
 		messageInfo.setSubject("Internal Test");
 		messageInfo.setTextMessage("Internal Test");
-		messageInfo.setToAddress("wellformed1@localhost");
+		messageInfo.setToAddress("julien@localhost");
 		messageInfo.setWrapped(true);
 		
 

@@ -200,6 +200,11 @@ public class ListenerProcessor implements Runnable {
 				db.getLogFacade().addNewPart(
 						processor.getLogModel().getMessageId(),
 						processor.getMainPart());
+				if(processor.hasCCDAReport()) {
+					processor.getCcdaReport().each {
+						db.getLogFacade().addNewCCDAValidationReport(processor.getLogModel().getMessageId(), it);					
+				}
+			}
 			} catch (DatabaseException e) {
 				logger.error("Error trying to log in the database "
 						+ e.getMessage());
@@ -252,9 +257,7 @@ public class ListenerProcessor implements Runnable {
 
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
-		String url = """http://${domainName}:${port}${servletName}
-				/direct/#/validationReport/
-				${this.processor.getLogModel().getMessageId()}""".stripMargin()
+		String url = "http://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
 
 		// Generate report template
 		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
@@ -273,7 +276,7 @@ public class ListenerProcessor implements Runnable {
 
 			// Send report
 
-			logger.debug("Sending report from " + emailer.model.getFrom()
+			logger.info("Sending report from " + emailer.model.getFrom()
 					+ "   to " + contactAddr);
 			Iterator<String> it = contactAddr.iterator();
 			while (it.hasNext()) {
@@ -282,9 +285,7 @@ public class ListenerProcessor implements Runnable {
 			}
 
 		} catch (Exception e) {
-			logger.error("Cannot send email (" + e.getClass().getName() + ". "
-					+ e.getMessage());
-		} catch (Throwable e) {
+			e.printStackTrace();
 			logger.error("Cannot send email (" + e.getClass().getName() + ". "
 					+ e.getMessage());
 		}

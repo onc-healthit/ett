@@ -44,24 +44,8 @@ public class DirectListener implements Runnable {
 	String tomcatDir = ""
 	
 	// Emailer settings
-	@Value('${direct.listener.email.from}')
-	String emailerFom
-	@Value('${direct.listener.email.host}')
-	String emailerHost
-	@Value('${direct.listener.email.port}')
-	String emailerPort
-	@Value('${direct.listener.email.auth}')
-	String emailerAuth
-	@Value('${direct.listener.email.username}')
-	String emailerUsername
-	@Value('${direct.listener.email.password}')
-	String emailerPassword
-	@Value('${direct.listener.email.starttls}')
-	String emailerStarttls
-	@Value('${direct.listener.email.gmailStyle}')
-	String emailerGmailStyle
-	
-	Emailer emailer
+	@Autowired
+	EmailerModel emailerModel
 	
 	private int maxConnections = 0;
 
@@ -70,16 +54,7 @@ public class DirectListener implements Runnable {
 	private static Logger logger = Logger.getLogger(DirectListener.class.getName());
 
 	public DirectListener() {
-		EmailerModel emailerModel = new EmailerModel();
-		emailerModel.setFrom(this.emailerFom);
-		emailerModel.setHost(this.emailerHost);
-		emailerModel.setSmtpAuth(this.emailerAuth);
-		emailerModel.setSmtpUser(this.emailerUsername);
-		emailerModel.setSmtpPassword(this.emailerPassword);
-		emailerModel.setSmtpPort(this.emailerPort);
-		emailerModel.setStarttls(this.emailerStarttls);
-		emailerModel.setGmailStyle(this.emailerGmailStyle);
-		this.emailer = new Emailer(emailerModel);
+		
 	}
 
 	// Listen for incoming connections and handle them
@@ -103,7 +78,7 @@ public class DirectListener implements Runnable {
 				
 				// Set the processor
 				ListenerProcessor processor = new ListenerProcessor(server, db);
-				processor.setEmailer(this.emailer)
+				processor.setEmailer(new Emailer(this.emailerModel))
 				processor.setDomainName(this.domainName)
 				processor.setServletName(this.servletName)
 				processor.setPort(this.port)
