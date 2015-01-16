@@ -8,6 +8,8 @@ import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -21,6 +23,7 @@ import javax.annotation.PostConstruct
 @Component
 public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
+    Logger log = LoggerFactory.getLogger(XdrReceiverImpl.class)
 
     @Value('${toolkit.request.timeout}')
     Integer timeout = 1000
@@ -54,9 +57,10 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @PostConstruct
     def buildUrls(){
         tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
-
         notificationUrl = notificationUrl.replaceAll('/$', "")
         fullNotificationUrl = "http://"+hostname+":"+port+contextPath+notificationUrl
+
+        log.debug("notification url is :" + fullNotificationUrl)
     }
 
     /*

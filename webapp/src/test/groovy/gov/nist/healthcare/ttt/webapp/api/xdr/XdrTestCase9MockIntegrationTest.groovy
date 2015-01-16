@@ -91,7 +91,7 @@ class XdrTestCase9MockIntegrationTest extends Specification {
     public static String testCaseConfig =
             """{
     "hostname": "localhost",
-    "port": 12084
+    "port": 12085
 }"""
 
     def setupDb() {

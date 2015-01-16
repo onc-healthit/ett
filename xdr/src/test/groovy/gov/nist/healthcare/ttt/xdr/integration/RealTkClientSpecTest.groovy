@@ -95,16 +95,17 @@ class RealTkClientSpecTest extends Specification {
         def url = "$createSimUrl/$id"
 
         when:
+        //we post an endpoint creation request
         def resp = client.postXml(config, url, timeout)
 
-        then:
-        println resp.text()
-
-        when:
+        and :
+        //we get the config result through a get request
+        //TODO : ask if Bill now returns it in the response. This would simplify the workflow.
         def getConfigUrl = "$getSimConfigUrl/$id"
         GPathResult resp2 = client.getXml(getConfigUrl, timeout)
 
         then:
+        //We check we have created 2 endpoints containing the ids we provided.
         def transactions = resp2.depthFirst().findAll{it.name() == "endpoint"}
         assert transactions.size() == 2
         transactions.each {

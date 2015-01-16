@@ -1,8 +1,5 @@
-package gov.nist.healthcare.ttt.xdr.api
-import gov.nist.healthcare.ttt.commons.notification.IObserver
-import gov.nist.healthcare.ttt.commons.notification.Message
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
+package gov.nist.healthcare.ttt.webapp.testFramework
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -10,34 +7,26 @@ import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
-import javax.net.ssl.KeyManagerFactory
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLServerSocket
-import javax.net.ssl.SSLServerSocketFactory
-import javax.net.ssl.SSLSession
-import javax.net.ssl.SSLSocket
+import javax.net.ssl.*
 import java.security.KeyStore
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 /**
- * TODO make it configurable
- * Little server that listens on port 8888
- * and then notify observer when a request come.
- * Different requests will be identified by their remote addresses.
+ * Used as a fixture for test 8 and 9.
+ * We need to mock the SUT that accept the connection from TTT in test case 8 and rejects it in test case 9.
+ *
  * Created by gerardin on 12/8/14.
  */
 
 @Component
-public class TLSReceiverImpl extends Thread implements TLSReceiver {
+public class MockSUTThatAcceptsTLSWithGoodCert extends Thread {
 
-    IObserver observer
     SSLServerSocket server
     int maxConnections = 10
     ExecutorService executorService = Executors.newFixedThreadPool(maxConnections)
-    Logger log = LoggerFactory.getLogger(TLSReceiverImpl.class)
+    Logger log = LoggerFactory.getLogger(MockSUTThatAcceptsTLSWithGoodCert.class)
 
-    @Value('${xdr.tls.test.port}')
-    private String port
+    private String port = '12085'
 
     //TODO change that : either find a better way or rename property
     @Value('${direct.listener.domainName}')
@@ -52,21 +41,6 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     @PreDestroy
     def cleanup() {
         executorService.shutdownNow()
-    }
-
-    @Override
-    public String getEndpoint(){
-        "$hostname:$port"
-    }
-
-    @Override
-    def notifyObserver(Message m) {
-        observer.getNotification(m)
-    }
-
-    @Override
-    def registerObserver(IObserver o) {
-        this.observer = o
     }
 
     @Override
@@ -88,11 +62,9 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
     void handleRequest(SSLSocket connection) {
 
-        BufferedWriter w = null;
-        BufferedReader r = null;
-        XDRRecordInterface.CriteriaMet status = XDRRecordInterface.CriteriaMet.FAILED
-
         printSocketInfo(connection);
+
+        def w,r
 
         try {
             log.info("tls receiver has accepted the connection.");
@@ -121,14 +93,11 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             //e.printStackTrace()
             System.err.println(e.toString());
             System.out.println("client has dropped the connection.");
-            status = XDRRecordInterface.CriteriaMet.PASSED
         } finally {
             w.close();
-//            r.close();
+            r.close();
             connection.close();
-            String address = connection.getInetAddress().canonicalHostName
-            println "tls receiver notification for address $address"
-            notifyObserver(new Message(Message.Status.SUCCESS, "tls receiver notification for address $address" ,new TLSValidationReport(status,address)))
+
         }
     }
 
@@ -136,7 +105,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         def socketPort = Integer.parseInt(port);
 
-        InputStream is = this.class.getClassLoader().getResourceAsStream("badKeystore"+File.separator+"badKeystore");
+        InputStream is = this.class.getClassLoader().getResourceAsStream("goodKeystore"+File.separator+"goodKeystore");
         char[] ksPass = "changeit".toCharArray();
         char[] ctPass = "changeit".toCharArray();
 

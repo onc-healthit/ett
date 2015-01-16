@@ -70,6 +70,7 @@ class XdrTestCase3MockIntegrationTest extends Specification {
 
         then: "we receive back a message with status and report of the transaction"
 
+        //TODO we cannot validate the body because for now we always get error messages!
         mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -90,7 +91,7 @@ class XdrTestCase3MockIntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/f8488a75-fc7d-4d70-992b-e5b2c852b412/reg/rb"
+    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/c8860bc9-6acb-4679-b07d-f6c51e276f1a/reg/rb"
 }"""
 
     def setupDb() {
