@@ -29,6 +29,8 @@ public class GroovyRestClient {
      */
     GPathResult postXml(payload, url, timeout) {
 
+        logger.info("posting payload to url : $url with timewout : $timeout")
+
         def http = new HTTPBuilder(url)
 
         //HTTPBuilder has no direct methods to add timeouts. We have to add them to the HttpParams of the underlying HttpClient
@@ -40,6 +42,36 @@ public class GroovyRestClient {
             // if ContentType.XML is set, Accept is automatically set to XML as well
             def resp = http.request(Method.POST, ContentType.XML) {
                 body = payload
+
+                response.success = { resp, xml ->
+                    logger.debug("received xml response :" + XmlUtil.serialize(xml))
+                    return xml
+                }
+
+            }
+            return resp
+        }
+
+        finally{
+            http.shutdown()
+        }
+    }
+
+
+    GPathResult getXml(url, timeout) {
+
+        logger.debug("get on url : $url with timewout : $timeout")
+
+        def http = new HTTPBuilder(url)
+
+        //HTTPBuilder has no direct methods to add timeouts. We have to add them to the HttpParams of the underlying HttpClient
+        http.getClient().getParams().setParameter("http.connection.timeout", timeout)
+        http.getClient().getParams().setParameter("http.socket.timeout", timeout)
+
+
+        try {
+            // if ContentType.XML is set, Accept is automatically set to XML as well
+            def resp = http.request(Method.GET, ContentType.XML) {
 
                 response.success = { resp, xml ->
                     logger.debug("received xml response :" + XmlUtil.serialize(xml))

@@ -1,7 +1,9 @@
 package gov.nist.healthcare.ttt.direct.messageProcessor;
 
+import gov.nist.healthcare.ttt.database.log.LogInterface.Status;
 import gov.nist.healthcare.ttt.direct.certificates.PrivateCertificateLoader;
 import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
+import gov.nist.healthcare.ttt.model.logging.DetailModel;
 import gov.nist.healthcare.ttt.model.logging.LogModel;
 import gov.nist.healthcare.ttt.model.logging.PartModel;
 
@@ -45,6 +47,7 @@ public class DirectMessageProcessor {
 	private PartModel mainPart;
 	private boolean wrapped;
 	private boolean isMdn;
+	private String originalMessageId;
 	
 	public DirectMessageProcessor() {
 		super();
@@ -65,92 +68,124 @@ public class DirectMessageProcessor {
 	}
 
 	public void processDirectMessage() throws Exception {
-		
+
 		// Get the session variable
 		Properties props = System.getProperties();
 		Session session = Session.getDefaultInstance(props, null);
-		
+
 		// Get the MimeMessage object
 		MimeMessage msg = new MimeMessage(session, this.directMessage);
-		
+
 		// Fill the log information
 		fillLogModel(msg);
-		
+
 		// Process the message
 		this.mainPart = processPart(msg, null);
-		
+
 		PartValidation validationPart = new PartValidation(this.wrapped);
 		validationPart.processMainPart(this.mainPart);
+
+		// Set status to error if the part contains error
+		if (validationPart.isHasError()) {
+			this.logModel.setStatus(Status.ERROR);
+		}
 	}
-	
+
 	public PartModel processPart(Part p, PartModel parent) throws Exception {
 		if (p == null) {
 			logger.info("Part is null");
 			return null;
 		}
-		
+
 		// Decode if quoted printable
 		String encoding = "";
-		encoding = ValidationUtils.getSingleHeader(p, "content-transfer-encoding");
-		if(encoding.equals("quoted-printable")) {
+		encoding = ValidationUtils.getSingleHeader(p,
+				"content-transfer-encoding");
+		if (encoding.equals("quoted-printable")) {
 			p = decodeQP(p.getInputStream());
 		}
 
 		// Add the child except if it is the first Part
 		PartModel currentlyProcessedPart = fillPartModel(p, parent);
-		if(parent != null) {
+		if (parent != null) {
 			parent.addChild(currentlyProcessedPart);
 		}
 
-		// If the Part is a Message then first validate the Envelope
-		if (p instanceof MimeMessage){
-			logger.debug("Processing enveloppe of the message");
+		try {
 
-		}
+			// If the Part is a Message then first validate the Envelope
+			if (p instanceof MimeMessage) {
+				logger.debug("Processing enveloppe of the message");
 
-		
-		// Check if message/rfc822 (wrapped message)
-		if (p.isMimeType("message/rfc822")) {
-			logger.debug("Processing message/rfc822 part");
-			this.wrapped = true;
+			}
 
-			Object o = p.getContent();
-			if (o instanceof Part) {
-				logger.debug("message/rfc822 contains part");
-				this.processPart((Part) o, currentlyProcessedPart);
-			} else if(o instanceof MimeMultipart) {
+			// Check if message/rfc822 (wrapped message)
+			if (p.isMimeType("message/rfc822")) {
+				logger.debug("Processing message/rfc822 part");
+				this.wrapped = true;
 
-				logger.debug("message/rfc822 is multipart");
+				Object o = p.getContent();
+				if (o instanceof Part) {
+					logger.debug("message/rfc822 contains part");
+					this.processPart((Part) o, currentlyProcessedPart);
+				} else if (o instanceof MimeMultipart) {
 
-				MimeMultipart mp = (MimeMultipart)p.getContent();
+					logger.debug("message/rfc822 is multipart");
 
+					MimeMultipart mp = (MimeMultipart) p.getContent();
+
+					int count = mp.getCount();
+					for (int i = 0; i < count; i++) {
+						this.processPart(mp.getBodyPart(i),
+								currentlyProcessedPart);
+					}
+				}
+
+			} else if (p.isMimeType("application/pkcs7-mime")
+					|| p.isMimeType("application/x-pkcs7-mime")) {
+				logger.debug("Processing application/pkcs7-mime");
+				this.processPart(
+						processSMIMEEnvelope(p, certificate,
+								certificatePassword), currentlyProcessedPart);
+
+			} else if (p.isMimeType("multipart/*")) {
+				logger.debug("Processing part " + p.getContentType());
+
+				MimeMultipart mp = (MimeMultipart) p.getContent();
 				int count = mp.getCount();
-				for (int i = 0; i < count; i++){
+				for (int i = 0; i < count; i++) {
 					this.processPart(mp.getBodyPart(i), currentlyProcessedPart);
 				}
+
+			} else if (p.isMimeType("message/disposition-notification")) {
+				this.isMdn = true;
+				this.logModel.setMdn(true);
+				ProcessMDN mdnProcessor = new ProcessMDN(p);
+				mdnProcessor.validate(currentlyProcessedPart);
+				this.setOriginalMessageId(mdnProcessor.getOriginalMessageId());
+				this.logModel.setOriginalMessageId(mdnProcessor.getOriginalMessageId());
+				logger.debug("Processing part " + p.getContentType());
+			} else {
+
+				// This is a leaf part
+				logger.debug("Processing part " + p.getContentType());
 			}
-
-		} else if (p.isMimeType("application/pkcs7-mime") || p.isMimeType("application/x-pkcs7-mime")) {
-			logger.debug("Processing application/pkcs7-mime");
-			this.processPart(processSMIMEEnvelope(p, certificate, certificatePassword), currentlyProcessedPart);
-
-		} else if (p.isMimeType("multipart/*")) {
-			logger.debug("Processing part " + p.getContentType());
-
-			MimeMultipart mp = (MimeMultipart)p.getContent();
-			int count = mp.getCount();
-			for (int i = 0; i < count; i++){
-				this.processPart(mp.getBodyPart(i), currentlyProcessedPart);
-			}
-
-		} else if(p.isMimeType("message/disposition-notification")) {
-			this.isMdn = true;
-			logger.debug("Processing part " + p.getContentType());
-		} else {
 			
-			// This is a leaf part
-			logger.debug("Processing part " + p.getContentType());
+			
+		} catch (Exception e) {
+			currentlyProcessedPart
+					.addNewDetailLine(new DetailModel(
+							"No DTS",
+							"Unexpected Error",
+							e.getMessage(),
+							"",
+							"-",
+							gov.nist.healthcare.ttt.database.log.DetailInterface.Status.ERROR));
+			logger.error(e.getMessage());
+			e.printStackTrace();
 		}
+		
+		
 		return currentlyProcessedPart;
 	}
 	
@@ -178,8 +213,8 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 			logger.error(e1.getMessage());
 			throw e1;
 		} catch (Exception e1) {
-			logger.error("Probably wrong format file or wrong password" + e1.getMessage());
-			throw new Exception("Probably wrong format file or wrong password" + e1.getMessage());
+			logger.error("Probably wrong format file or wrong certificate " + e1.getMessage());
+			throw new Exception("Probably wrong format file or wrong certificate " + e1.getMessage());
 		}
 
 
@@ -207,8 +242,8 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 			logger.error(e1.getMessage());
 			throw e1;
 		} catch (Exception e1) {
-			logger.error("Probably wrong format file or wrong certificate " + e1.getMessage());
-			throw new Exception("Probably wrong format file or wrong password" + e1.getMessage());
+			logger.error("Encryption certificate was probably wrong file " + e1.getMessage());
+			throw new Exception("Encryption certificate was probably wrong file " + e1.getMessage());
 		}
 
 		return res;
@@ -219,6 +254,8 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 		this.logModel.setContentDisposition(ValidationUtils.getSingleHeader(msg, "content-disposition"));
 		this.logModel.setFromLine(ValidationUtils.fillArrayLog(msg.getFrom()));
 		this.logModel.setIncoming(true);
+		this.logModel.setMdn(false);
+		this.logModel.setStatus(Status.SUCCESS);
 		this.logModel.setMimeVersion(ValidationUtils.getSingleHeader(msg, "mime-version"));
 		this.logModel.setMessageId(msg.getMessageID());
 		this.logModel.setOrigDate(ValidationUtils.getSingleHeader(msg, "date"));
@@ -228,14 +265,18 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 		this.logModel.setToLine(ValidationUtils.fillArrayLog(msg.getRecipients(Message.RecipientType.TO)));
 	}
 	
-	public PartModel fillPartModel(Part p, PartModel parent) throws IOException, MessagingException {
+	public PartModel fillPartModel(Part p, PartModel parent) {
 		PartModel partModel = new PartModel();
-		partModel.setContent(p);
-		partModel.setContentDisposition(ValidationUtils.getSingleHeader(p, "content-disposition"));
-		partModel.setContentTransferEncoding(ValidationUtils.getSingleHeader(p, "content-transfer-encoding"));
-		partModel.setContentType(p.getContentType());
-		partModel.setStatus(true);
-		partModel.setParent(parent);
+		try {
+			partModel.setContent(p);
+			partModel.setContentDisposition(ValidationUtils.getSingleHeader(p, "content-disposition"));
+			partModel.setContentTransferEncoding(ValidationUtils.getSingleHeader(p, "content-transfer-encoding"));
+			partModel.setContentType(p.getContentType());
+			partModel.setStatus(true);
+			partModel.setParent(parent);
+		} catch(Exception e) {
+			partModel.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", e.getMessage(), "", "-", gov.nist.healthcare.ttt.database.log.DetailInterface.Status.ERROR));
+		}
 		return partModel;
 	}
 	
@@ -299,4 +340,13 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 	public void setMdn(boolean isMdn) {
 		this.isMdn = isMdn;
 	}
+
+	public String getOriginalMessageId() {
+		return originalMessageId;
+	}
+
+	public void setOriginalMessageId(String originalMessageId) {
+		this.originalMessageId = originalMessageId;
+	}
+	
 }

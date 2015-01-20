@@ -51,6 +51,15 @@ public class ValidationUtils {
 	public static boolean multipart = false;
 	public static final String domainNameFormat = "[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4}";
 	
+	// MDN variables
+	final static String atom = "[0-9,a-z,A-Z]*";
+	final static String text = "[0-9,a-z,A-Z,_,.,\\-]*";
+	final static String textWithSpace = "[0-9,a-z,A-Z,_,.,\\-,\\s]*";
+	final static String actionMode = "(manual-action|automatic-action)";
+	final static String sendingMode = "(mdn-sent-manually|mdn-sent-automatically)";
+	final static String dispositionType = "(displayed|processed|deleted|dispatched|denied|failed)";
+	final static String dispositionModifier = "(error|" + atom + ")";
+	
 	// Dates patterns
 	final static String dayOfWeek = "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)";
 	final static String time = "([01]?[0-9]|2[0-3])(:[0-5][0-9]){1,2}";
@@ -535,6 +544,47 @@ public class ValidationUtils {
 		}
 	}
 	
+	// MDN methods
+	
+	public static boolean validateAtomTextField(String field) {
+		final String stringPattern =  atom + ";" + text;
+		Pattern pattern = Pattern.compile(stringPattern, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(field);
+		if(matcher.matches()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean validateDisposition(String disposition) {
+		String dispositionPattern = "(" + actionMode + "/" + sendingMode + ")" + ";" +"(\\s)?" + dispositionType;
+		dispositionPattern += "(/" + dispositionModifier + "(,\\s" + dispositionModifier + ")*)?";
+		Pattern pattern = Pattern.compile(dispositionPattern, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(disposition);
+		if(matcher.matches()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static String getAtom() {
+		return atom;
+	}
+
+	public static boolean validateTextField(String textField) {
+		Pattern pattern = Pattern.compile(textWithSpace, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(textField);
+		if(matcher.matches()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// End
+	
 	public static boolean validateEmail(String email) {
 		boolean valid = true;
 		try {
@@ -604,6 +654,5 @@ public class ValidationUtils {
 		}
 		return res;
 	}
-	
 
 }

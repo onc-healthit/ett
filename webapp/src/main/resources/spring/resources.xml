@@ -10,9 +10,6 @@
         ">
 
 
-    <context:property-placeholder location="classpath:application.properties"/>
-
-
     <bean id="DatabaseData" class="gov.nist.healthcare.ttt.webapp.common.db.DatabaseData">
         <property name="databaseUsername" value="${ttt.db.username}"/>
         <property name="databasePassword" value="${ttt.db.userpassword}"/>

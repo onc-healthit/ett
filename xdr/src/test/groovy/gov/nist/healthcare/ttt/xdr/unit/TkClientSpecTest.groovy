@@ -11,13 +11,17 @@ import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
 /**
  * Created by gerardin on 10/9/14.
+ *
+ * Here we only test the http client behavior under various conditions.
+ * The fake toolkit we use does not comply with the new API but this is largely irrelevant.
+ * We want to know if the client reacts appropriately.
  */
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
 class TkClientSpecTest extends Specification {
 
-    @Value('${xdr.tool.baseurl}')
+    @Value('${xdr.notification')
     private String notificationUrl
 
     @Autowired
@@ -25,7 +29,7 @@ class TkClientSpecTest extends Specification {
 
     def "test request on good endpoint"() {
         given:
-
+        // a working url
         def id = "SimpleTest1"
 
         def config = {
@@ -44,6 +48,7 @@ class TkClientSpecTest extends Specification {
         def resp = client.postXml(config, url, 1000)
 
         then:
+        //we have a successful interaction
             assert resp.simId.text() == id
 
     }
@@ -97,31 +102,6 @@ class TkClientSpecTest extends Specification {
 
         then:
         thrown(groovyx.net.http.ResponseParseException)
-
-    }
-
-    def "test request on good endpoint "() {
-        given:
-
-        def id = "SimpleTest1"
-
-        def config = {
-            createSim {
-                SimType("XDR Document Recipient")
-                SimulatorId(id)
-                MetadataValidationLevel("Full")
-                CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
-            }
-        }
-
-        def url = "http://localhost:8080/ttt/createSim"
-
-        when:
-        def resp = client.postXml(config, url, 1000)
-
-        then:
-        assert resp.simId.text() == id
 
     }
 

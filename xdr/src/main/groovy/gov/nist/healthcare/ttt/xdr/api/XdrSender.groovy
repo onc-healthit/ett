@@ -6,7 +6,7 @@ package gov.nist.healthcare.ttt.xdr.api
 public interface XdrSender  {
 
 
-    public Object sendXdr(Object config)
+    public Object sendXdr(Map config)
 
 
 

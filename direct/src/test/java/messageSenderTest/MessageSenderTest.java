@@ -26,7 +26,7 @@ public class MessageSenderTest {
 		messageInfo.setSigningCertPassword("");
 		messageInfo.setSubject("Internal Test");
 		messageInfo.setTextMessage("Internal Test");
-		messageInfo.setToAddress("me@localhost");
+		messageInfo.setToAddress("processedonly5@localhost");
 		messageInfo.setWrapped(true);
 		
 
@@ -71,6 +71,9 @@ public class MessageSenderTest {
 				encryptionCert, messageInfo.isWrapped());
 
 		MimeMessage msg = messageGenerator.generateMessage();
+		
+		// To fail
+//		msg.setSender(new InternetAddress("test"));
 
 		// Log the outgoing message in the database
 //		LogModel outgoingMessage = new LogModel(msg);
