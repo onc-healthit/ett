@@ -9,6 +9,9 @@ import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
+
+import javax.annotation.PostConstruct
+
 /**
  * Created by gerardin on 10/9/14.
  *
@@ -24,6 +27,25 @@ class TkClientSpecTest extends Specification {
     @Value('${xdr.notification')
     private String notificationUrl
 
+    @Value('${server.contextPath}')
+    private String contextPath
+
+    @Value('${server.port}')
+    private String port
+
+    //TODO change that : either find a better way or rename property
+    @Value('${direct.listener.domainName}')
+    private String hostname
+
+    private String fullNotificationUrl
+    private String fullUrl
+
+    @PostConstruct
+    def buildUrls(){
+        fullNotificationUrl = "http://"+hostname+":"+port+contextPath+notificationUrl
+        fullUrl = "http://"+hostname+":"+port+contextPath
+    }
+
     @Autowired
     GroovyRestClient client
 
@@ -38,11 +60,11 @@ class TkClientSpecTest extends Specification {
                 SimulatorId(id)
                 MetadataValidationLevel("Full")
                 CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+                PostNotification("$fullNotificationUrl")
             }
         }
 
-        def url = "http://localhost:8080/ttt/createSim"
+        def url = fullUrl + "/createSim"
 
         when:
         def resp = client.postXml(config, url, 1000)
@@ -65,11 +87,11 @@ class TkClientSpecTest extends Specification {
                 SimulatorId(id)
                 MetadataValidationLevel("Full")
                 CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+                PostNotification("$fullNotificationUrl")
             }
         }
 
-        def url = "http://localhost:8080/badEndpoint"
+        def url = fullUrl + "/badEndpoint"
 
         when:
         def resp = client.postXml(config, url, 1000)
@@ -91,11 +113,11 @@ class TkClientSpecTest extends Specification {
                 SimulatorId(id)
                 MetadataValidationLevel("Full")
                 CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+                PostNotification("$fullNotificationUrl")
             }
         }
 
-        def url = "http://localhost:8080/ttt//createSimWithBadContent"
+        def url = fullUrl + "/createSimWithBadContent"
 
         when:
         def resp = client.postXml(config, url, 1000)
