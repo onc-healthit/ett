@@ -7,6 +7,7 @@ import org.junit.Before
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.http.MediaType
@@ -43,6 +44,14 @@ class XdrTestCase7MockIntegrationTest extends Specification {
     MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit
     MockMvc mockMvcCheckTestCaseStatus
+
+
+    //TODO change that : either find a better way or rename property
+    @Value('${direct.listener.domainName}')
+    private String hostname
+
+    @Value('${xdr.tls.test.port}')
+    Integer tlsPort
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
     static String id = "user1_1_2014"
@@ -82,7 +91,7 @@ class XdrTestCase7MockIntegrationTest extends Specification {
 
         when: "we try to connect to TTT with what we consider a good cert"
         try {
-            client.connectOverGoodTLS([hostname: "localhost", port: 12084])
+            client.connectOverGoodTLS([hostname: hostname, port: tlsPort])
         }
         catch(Exception e){
             //TODO improve that
