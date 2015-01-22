@@ -126,7 +126,7 @@ class XdrTestCase7MockIntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-        "hostname": "localhost"
+        "hostname": "127.0.0.1"
 }"""
 
 
