@@ -44,6 +44,7 @@ public class XDRFacade extends DatabaseFacade {
     public final static String XDRTESTSTEP_TIMESTAMP = "Timestamp";
     public final static String XDRTESTSTEP_NAME = "Name";
     public final static String XDRTESTSTEP_MESSAGEID = "MessageId";
+    public final static String XDRTESTSTEP_DIRECTFROM = "DirectFrom";
     public final static String XDRTESTSTEP_CRITERIAMET = "CriteriaMet";
     public final static String XDRTESTSTEP_HOSTNAME = "Hostname";
 
@@ -148,6 +149,8 @@ public class XDRFacade extends DatabaseFacade {
         sql.append(", ");
         sql.append(XDRTESTSTEP_MESSAGEID);
         sql.append(", ");
+        sql.append(XDRTESTSTEP_DIRECTFROM);
+        sql.append(", ");
         sql.append(XDRTESTSTEP_CRITERIAMET);
         sql.append(", ");
         sql.append(XDRTESTSTEP_HOSTNAME);
@@ -179,7 +182,9 @@ public class XDRFacade extends DatabaseFacade {
             sql.append("' ");
         }
         sql.append(", '");
-
+        sql.append(DatabaseConnection.makeSafe(testStep.getDirectFrom()));
+        sql.append("', '");
+        
         CriteriaMet criteriaMet = testStep.getCriteriaMet();
         if (criteriaMet == CriteriaMet.PASSED) {
             sql.append("1");
@@ -199,6 +204,7 @@ public class XDRFacade extends DatabaseFacade {
         sql.append(testStep.getHostname());
 
         sql.append("');");
+
         try {
             this.getConnection().executeUpdate(sql.toString());
         } catch (SQLException ex) {
@@ -378,11 +384,39 @@ public class XDRFacade extends DatabaseFacade {
         if (recordId == null) {
             return null;
         }
-
         return this.getXDRRecordByRecordId(recordId);
-
     }
 
+    // TODO: A lot of redundency here.  Need to clean up.
+    
+    public XDRRecordInterface getLatestXDRRecordByDirectFrom(String directFrom) throws DatabaseException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT rec." + XDRRECORD_XDRRECORDID + ' ');
+        sql.append("FROM " + XDRRECORD_TABLE + " rec, " + XDRTESTSTEP_TABLE + " ts ");
+        sql.append("WHERE rec." + XDRRECORD_XDRRECORDID + " = ts." + XDRRECORD_XDRRECORDID + " AND ");
+        sql.append("ts." + XDRTESTSTEP_DIRECTFROM + " = '" + directFrom + "' ");
+        sql.append("ORDER BY rec." + XDRRECORD_TIMESTAMP + " DESC ");
+        sql.append("LIMIT 1;");
+
+        ResultSet result = null;
+        String recordId = null;
+
+        try {
+            result = this.getConnection().executeQuery(sql.toString());
+            if (result.next()) {
+                recordId = result.getString(XDRRECORD_XDRRECORDID);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+        if (recordId == null) {
+            return null;
+        }
+        return this.getXDRRecordByRecordId(recordId);
+    }    
+    
+    
     public XDRRecordInterface getXDRRecordByRecordId(String xdrRecordId) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
@@ -475,7 +509,7 @@ public class XDRFacade extends DatabaseFacade {
                 testStep.setTimestamp(result.getString(XDRTESTSTEP_TIMESTAMP));
                 testStep.setName(result.getString(XDRTESTSTEP_NAME));
                 testStep.setMessageId(result.getString(XDRTESTSTEP_MESSAGEID));
-
+                testStep.setDirectFrom(result.getString(XDRTESTSTEP_DIRECTFROM));
                 int i = result.getInt(XDRTESTSTEP_CRITERIAMET);
                 if (i == 1) {
                     testStep.setCriteriaMet(CriteriaMet.PASSED);
@@ -756,7 +790,37 @@ public class XDRFacade extends DatabaseFacade {
             records.add(record);
         }
         return records;
+    }
+    
+    // TODO: A lot of redundency here.  Need to clean up.
+    
+    public List<XDRRecordInterface> getXDRRecordsByDirectFrom(String directFrom) throws DatabaseException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT " + XDRRECORD_XDRRECORDID + ' ');
+        sql.append("FROM " + XDRTESTSTEP_TABLE + ' ');
+        sql.append("WHERE " + XDRTESTSTEP_DIRECTFROM + " = '" + DatabaseConnection.makeSafe(directFrom) + "';");
+        
+        ResultSet result = null;
+        List<XDRRecordInterface> records = new ArrayList<XDRRecordInterface>();
+        List<String> recordIds = new ArrayList<String>();
 
+        try {
+            result = this.getConnection().executeQuery(sql.toString());
+            while (result.next()) {
+                String recordId = result.getString(XDRRECORD_XDRRECORDID);
+                recordIds.add(recordId);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+        Iterator<String> it = recordIds.iterator();
+        while (it.hasNext()) {
+            XDRRecordInterface record = this.getXDRRecordByRecordId(it.next());
+            records.add(record);
+        }
+        return records;
     }
 
     private String getXDRTestStepIdByMessageId(String messageId) throws DatabaseException {
@@ -1165,6 +1229,7 @@ public class XDRFacade extends DatabaseFacade {
             testStep.setName("Say my name.");
             testStep.setHostname("localhost");
             testStep.setMessageId(UUID.randomUUID().toString());
+            testStep.setDirectFrom("from@direct.com");
             XDRReportItemImpl reportItem = new XDRReportItemImpl();
             String report = readFile("/home/mccaffrey/body.txt", Charset.defaultCharset());
             reportItem.setReport(report);
@@ -1187,7 +1252,11 @@ public class XDRFacade extends DatabaseFacade {
 
             XDRFacade facade = new XDRFacade(config);
             facade.addNewXdrRecord(record);
-
+            List<XDRRecordInterface> getRecord = facade.getXDRRecordsByDirectFrom("from@direct.com");
+            
+            System.out.append(Integer.toString(getRecord.size()));
+            
+/*
             testStep.setName("NEW NAME!!!");
             facade.updateXDRTestStep(testStep);
 
@@ -1195,6 +1264,12 @@ public class XDRFacade extends DatabaseFacade {
 
             System.out.println("timestamp = " + facade.getLatestXDRRecordByHostname("localhost").getTimestamp());
 
+  */
+            
+            
+            
+            
+            
             //     facade.addNewSimulator(simulator);
             //  XDRRecordImpl getRecord = (XDRRecordImpl) facade.getXDRRecordByRecordId("76f47c21-dea3-475e-bc3f-51b2cc41eb2d");
 //            System.out.println(getRecord.getTimestamp() + "timestamp");

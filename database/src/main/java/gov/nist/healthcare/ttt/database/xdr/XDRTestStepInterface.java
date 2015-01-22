@@ -40,6 +40,8 @@ public interface XDRTestStepInterface {
     
     String getHostname();
     
+    String getDirectFrom();
+    
     /**
      * @param messageId the messageId to set
      */
@@ -65,4 +67,5 @@ public interface XDRTestStepInterface {
     
     void setHostname(String hostname);
     
+    void setDirectFrom(String directFrom);
 }
