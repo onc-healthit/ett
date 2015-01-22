@@ -174,7 +174,7 @@ class TestCaseExecutor {
 
     XDRTestStepInterface recordSenderAddress(Map info) {
         XDRTestStepInterface step = new TestStepBuilder("BAD_CERT_MUST_DISCONNECT").build();
-        step.hostname = info.hostname
+        step.hostname = info.ip_address
         return step
     }
 
