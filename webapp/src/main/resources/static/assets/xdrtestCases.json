@@ -21,7 +21,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
-        "key": "endpoint",
+        "key": "targetEndpoint",
         "type": "string"
     }]
 }, {
@@ -33,7 +33,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
-        "key": "endpoint",
+        "key": "targetEndpoint",
         "type": "string"
     }]
 }, {
@@ -45,7 +45,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
-        "key": "endpoint",
+        "key": "targetEndpoint",
         "type": "string"
     }]
 }, {
@@ -63,8 +63,8 @@
     "sutHisp": false,
     "sutRole": "sender",
     "inputs": [{
-        "name": "Hostname",
-        "key": "hostname",
+        "name": "IP Address",
+        "key": "ip_address",
         "type": "string"
     }]
 }, {
@@ -76,7 +76,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
-        "key": "endpoint",
+        "key": "targetEndpoint",
         "type": "string"
     }]
 }, {
@@ -88,7 +88,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
-        "key": "endpoint",
+        "key": "targetEndpoint",
         "type": "string"
     }]
 }, {
