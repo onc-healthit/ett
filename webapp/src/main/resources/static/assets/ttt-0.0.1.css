@@ -2328,21 +2328,21 @@ For pdf
   margin-bottom: 15px;
 }
 /* tab color */
-.nav-tabs > li > a {
+.reportTab .nav-tabs > li > a {
   background-color: #333333;
   border-color: #777777;
   color: #fff;
 }
 /* active tab color */
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
+.reportTab .nav-tabs > li.active > a,
+.reportTab .nav-tabs > li.active > a:hover,
+.reportTab .nav-tabs > li.active > a:focus {
   color: #fff;
   background-color: #666;
   border: 1px solid #888888;
 }
 /* hover tab color */
-.nav-tabs > li > a:hover {
+.reportTab .nav-tabs > li > a:hover {
   border-color: #000000;
   background-color: #111111;
 }
@@ -2352,6 +2352,15 @@ table.fancy td {
 table.fancy tr.foobar {
   color: white;
   background-color: #428BCA;
+}
+.actualReport > a {
+  border-color: #454644;
+  background-color: #3D003D !important;
+}
+.actualReport > a:hover,
+.actualReport > a:focus {
+  border-color: #454644;
+  background-color: #501950 !important;
 }
 /* Validation report css */
 .carousel-row {
