@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="http://www.w3.org/2003/05/soap-envelope">
+    <Header/>
+    <Body>
+        <submitSingleMessage>
+            <username>leonidas</username>
+            <password>Spartans300!</password>
+            <facilityID>EHR1234</facilityID>
+            <hl7Message>                <![CDATA[MSH|^~\&|Test EHR Application|X68||NIST Test Iz Reg|201207010822||VXU^V04^VXU_V04|NIST-IZ-007.00|P|2.5.1|||AL|ER
+PID|1||MR-99922^^^NIST MPI^MR||Montgomery^Lewis^^^^^L||20010821|M
+ORC|RE||IZ-783276^NDA
+RXA|0|1|20110215||118^HPV^CVX|999|||01^Historical information - source unspecified^NIP001]]></hl7Message>
+        </submitSingleMessage>
+    </Body>
+</Envelope>
