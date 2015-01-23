@@ -39,10 +39,21 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     //TODO
     public def setupTestCases() {
-        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId("xdr.global.endpoint.matchby.messageId")
+        String[] simulators  = [
+                                "xdr.global.endpoint.matchby.messageId",
+                                "xdr.global.endpoint.tc.19"
+                                ]
 
-        if (sim == null) {
-            executor.configureGlobalEndpoint("xdr.global.endpoint.matchby.messageId", new HashMap())
+        String[] missingSimulators = simulators.each{
+            XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(it)
+            if(sim == null){
+                return it
+            }
+        }
+
+        //if simulators do not exist, we create them
+        missingSimulators.each(){
+            executor.configureGlobalEndpoint(it, new HashMap())
         }
     }
 

@@ -31,5 +31,7 @@ class TkValidationReport {
 
     String simId
 
+    String directFrom
+
 
 }

@@ -71,18 +71,25 @@ class ResponseHandler implements IObserver {
 
     private handle(TkValidationReport report) {
 
+        String directFrom = report.directFrom
+
+        XDRRecordInterface rec = db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
+
+        if(rec != null){
+            log.info( "handle report for message with directFrom address : $directFrom")
+        }
+
         String msgId = report.messageId
         String unescapedMsgId = "<" + msgId + ">"
 
-        XDRRecordInterface rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
+        rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
 
-        //if not working, find with simulatorId
         if (rec != null) {
-            println "handle report for message with messageId : $msgId"
+            log.info( "handle report for message with messageId : $msgId")
         } else {
             String simId = report.simId
             rec = db.getLatestXDRRecordBySimulatorId(simId)
-            println "handle report for simulator with simId : $simId"
+            log.info( "handle report for simulator with simId : $simId")
         }
 
         //else

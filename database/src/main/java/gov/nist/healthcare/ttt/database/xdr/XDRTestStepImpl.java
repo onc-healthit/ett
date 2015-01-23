@@ -20,6 +20,7 @@ public class XDRTestStepImpl implements XDRTestStepInterface {
     private XDRSimulatorInterface simulator = null;
     private CriteriaMet criteriaMet = null;
     private String hostname = null;
+    private String directFrom = null;
     
     public XDRTestStepImpl() {
         this.setXdrReportItems(new ArrayList<XDRReportItemInterface>());
@@ -140,6 +141,20 @@ public class XDRTestStepImpl implements XDRTestStepInterface {
      */
     public void setHostname(String hostname) {
         this.hostname = hostname;
+    }
+
+    /**
+     * @return the directFrom
+     */
+    public String getDirectFrom() {
+        return directFrom;
+    }
+
+    /**
+     * @param directFrom the directFrom to set
+     */
+    public void setDirectFrom(String directFrom) {
+        this.directFrom = directFrom;
     }
 
 

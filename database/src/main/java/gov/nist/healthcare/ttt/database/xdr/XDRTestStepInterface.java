@@ -7,7 +7,7 @@
 package gov.nist.healthcare.ttt.database.xdr;
 
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet;
-import java.sql.Timestamp;
+
 import java.util.List;
 
 /**
@@ -40,6 +40,8 @@ public interface XDRTestStepInterface {
     
     String getHostname();
     
+    String getDirectFrom();
+    
     /**
      * @param messageId the messageId to set
      */
@@ -65,4 +67,5 @@ public interface XDRTestStepInterface {
     
     void setHostname(String hostname);
     
+    void setDirectFrom(String directFrom);
 }

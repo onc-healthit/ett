@@ -1,16 +1,10 @@
-package gov.nist.healthcare.ttt.webapp.direct.direcForXdr;
+package gov.nist.healthcare.ttt.webapp.direct.direcForXdr
+import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator
+import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender
+import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
+import org.apache.log4j.Logger
 
-import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator;
-import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
-import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import javax.mail.internet.MimeMessage;
-
-import org.apache.log4j.Logger;
+import javax.mail.internet.MimeMessage
 
 class DirectMessageSenderForXdr {
 	
@@ -21,7 +15,11 @@ class DirectMessageSenderForXdr {
 	private DirectMessageSender sender = new DirectMessageSender()
 	private boolean dnsLookup = true
 	private String encryptionCertPath
-	
+
+	public sendMdn(String type, String toAddress, String fromAddress){
+
+	}
+
 	public DirectMessageInfoForXdr sendDirectWithCCDAForXdr(String sutSmtpAddress, int port) throws Exception {
 		InputStream attachmentFile = DirectMessageSenderForXdr.class.getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")
 		return sendDirect(attachmentFile, sutSmtpAddress, port)

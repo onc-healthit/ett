@@ -91,7 +91,7 @@ class TestCaseExecutor {
     }
 
 
-    protected XDRTestStepInterface executeCreateEndpointsStep(String tcid, String username, def userInput){
+    protected XDRTestStepInterface executeCreateEndpointsStep(String tcid, String username, Map userInput){
 
         try {
 
@@ -102,21 +102,9 @@ class TestCaseExecutor {
 
             def timestamp = clock.timestamp
 
-            //TODO harcoded here. This is dangerous!
-            //Moreover it has to take into account implicit rules to satisfy Bill's views on ID.
-            //For example, no dots are allowed anywhere, thus we need to sanitize username
-            //(for example the GUI mandates to use email addresses for username, thus the dots!)
-            def sanitized_username = username.replaceAll(/\./,"_")
-            String endpointId = "${sanitized_username}_${tcid}_${timestamp}"
+            String endpointId = "${username}_${tcid}_${timestamp}"
 
-            log.info("trying to generate endpoints with id : ${endpointId}")
-
-            EndpointConfig config = new EndpointConfig()
-            config.name = endpointId
-
-            log.info("trying to create new endpoints on toolkit...")
-
-            XDRSimulatorInterface sim = receiver.createEndpoints(config)
+            XDRSimulatorInterface sim = createEndpoint(endpointId,userInput)
 
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.name = "CREATE_ENDPOINTS"
@@ -128,6 +116,33 @@ class TestCaseExecutor {
         catch(e){
             throw new Exception(MsgLabel.CREATE_NEW_ENDPOINTS_FAILED.msg, e)
         }
+    }
+
+    def configureGlobalEndpoint(String name, Map params) {
+
+        //TODO params not used for now
+        XDRSimulatorInterface sim = createEndpoint(name, params)
+
+        db.instance.xdrFacade.addNewSimulator(sim)
+
+        log.info("new global simulator has been created.")
+    }
+
+    private XDRSimulatorInterface createEndpoint(String endpointId, Map params){
+
+        EndpointConfig config = new EndpointConfig()
+
+        //TODO harcoded here. This is dangerous!
+        //Moreover it has to take into account implicit rules to satisfy Bill's views on ID.
+        //For example, no dots are allowed anywhere, thus we need to sanitize username
+        //(for example the GUI mandates to use email addresses for username, thus the dots!)
+        config.putAll(params)
+        config.name = endpointId.replaceAll(/\./,"_")
+
+
+        log.info("trying to create new endpoints on toolkit... [${config.name}]")
+
+        return receiver.createEndpoints(config)
     }
 
    protected XDRTestStepInterface executeStoreXDRReport(TkValidationReport report){
@@ -157,25 +172,24 @@ class TestCaseExecutor {
         }
     }
 
-
-    def configureGlobalEndpoint(String name, Map params) {
-        EndpointConfig config = new EndpointConfig()
-        config.putAll(params)
-        config.name = name
-
-        log.info("trying to create new endpoints on toolkit...")
-
-        XDRSimulatorInterface sim = receiver.createEndpoints(config)
-
-        db.instance.xdrFacade.addNewSimulator(sim)
-
-        log.info("new global simulator has been created.")
-    }
-
     XDRTestStepInterface recordSenderAddress(Map info) {
         XDRTestStepInterface step = new TestStepBuilder("BAD_CERT_MUST_DISCONNECT").build();
         step.hostname = info.ip_address
         return step
     }
 
+    XDRTestStepInterface executeDirectAddressCorrelationStep(String tcid, String directFrom) {
+        XDRTestStepInterface step = new TestStepBuilder("ENDPOINT EXISTS").build()
+
+        //TODO handle exception if not found
+
+        //TODO have a util method instead
+        String simId = ("xdr.global.endpoint.tc."+tcid).replaceAll(/\./,"_")
+        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(simId)
+        step.xdrSimulator = sim
+        step.directFrom = directFrom
+
+        log.debug("$simId found. Correlation with direct address $directFrom performed.")
+        return step
+    }
 }

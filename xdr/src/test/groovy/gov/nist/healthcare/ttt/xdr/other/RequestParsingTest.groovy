@@ -1,32 +1,41 @@
 package gov.nist.healthcare.ttt.xdr.other
 
-import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import spock.lang.Specification
 
+import javax.mail.Multipart
+import javax.mail.Session
+import javax.mail.internet.MimeBodyPart
+import javax.mail.internet.MimeMessage
 /**
  * Created by gerardin on 12/1/14.
  */
-class RegexSpecTest extends Specification {
+class RequestParsingTest extends Specification {
 
 
-    def testReport() {
+    def testRequestParsing() {
 
         given:
-        //a hardcoded report
-        def report = new XmlSlurper().parseText(report)
+
+        def file = this.getClass().getClassLoader().getResourceAsStream("xdr_full_metadata_sample_request.txt")
 
         when:
-        //we parse it
-        def tkValidationReport = new TkValidationReport()
-        tkValidationReport.request = report.request.text()
-        tkValidationReport.response = report.response.text()
-        String content = report.response.body.text()
-        def registryResponse = content.split("<.?S:Body>")
-        def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
-        def status = registryResponseXml.@status.text()
+
+        MimeMessage msg = new MimeMessage(Session.getDefaultInstance(new Properties()), file)
+        Multipart content = msg.getContent()
+        MimeBodyPart part1 = content.getBodyPart(0)
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream()
+        part1.writeTo(out)
+        println out.toString()
+
+        def envelope = new XmlSlurper().parse(part1.getInputStream())
+
+        def directFrom = envelope.Header.addressBlock.from.text()
+
+        println directFrom
+
         then:
-        //we can extract the status from the report
-        assert status == "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure"
+        assert directFrom == "directFrom"
 
 
     }

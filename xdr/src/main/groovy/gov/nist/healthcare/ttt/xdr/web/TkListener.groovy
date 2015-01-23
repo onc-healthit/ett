@@ -53,7 +53,13 @@ public class TkListener {
             tkValidationReport.response = report.response.text()
             tkValidationReport.simId = report.@simId.text()
 
-            //TODO modify : all that to extract registryResponseStatus info!
+            //Extract direct from address
+            def request = report.request.body.text()
+            def requestXml = new XmlSlurper().parseText(request)
+            def directFrom = requestXml.directAddressing.messageID
+            tkValidationReport.directFrom = directFrom
+
+                    //TODO modify : all that to extract registryResponseStatus info!
             String content = report.response.body.text()
             def registryResponse = content.split("<.?S:Body>")
             def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])

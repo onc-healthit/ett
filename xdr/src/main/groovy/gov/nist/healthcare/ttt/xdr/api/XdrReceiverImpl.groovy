@@ -78,7 +78,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                 return sim
         }
         catch (groovyx.net.http.HttpResponseException e) {
-            throw new RuntimeException("could not reach the toolkit.",e)
+            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
         }
         catch (java.net.SocketTimeoutException e) {
             throw new RuntimeException("connection timeout when calling toolkit.",e)
