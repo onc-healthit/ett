@@ -126,8 +126,8 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             w.close();
 //            r.close();
             connection.close();
-            String address = connection.getInetAddress().canonicalHostName
-            println "tls receiver notification for address $address"
+            String address = connection.inetAddress.hostAddress
+            println "tls receiver notification for IP address $address"
             notifyObserver(new Message(Message.Status.SUCCESS, "tls receiver notification for address $address" ,new TLSValidationReport(status,address)))
         }
     }
