@@ -49,14 +49,14 @@ final class TestCase20 extends TestCaseBaseStrategy {
         generator.setReporting_UA_product("Security Agent");
         generator.setDisposition("automatic-action/MDN-sent-automatically;processed");
         generator.setFinal_recipient("transport-testing.nist.gov");
-        generator.setFromAddress("test@transport-testing.nist.gov");
+        generator.setFromAddress("from@transport-testing.nist.gov");
         generator.setOriginal_message_id("<812748939.14.1386951907564.JavaMail.tomcat7@ip-10-185-147-33.ec2.internal>");
         generator.setSubject("Automatic MDN");
         generator.setText("Your message was successfully processed.");
         generator.setToAddress("to@hit-dev.nist.gov");
         generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup("to@hit-dev.nist.gov"))
 
-        private ListenerProcessor listener = new ListenerProcessor()
+        ListenerProcessor listener = new ListenerProcessor()
         listener.setCertificatesPath('${direct.certifiactes.repository.path}')
         listener.setCertPassword('${direct.certificates.password}')
 
@@ -65,7 +65,7 @@ final class TestCase20 extends TestCaseBaseStrategy {
 
         def mdn = generator.generateMDN()
 
-        new DirectMessageSender().send(25,"toAddress@hit_dev.nist.gov", mdn,"fromAddress","toAddress@localhost")
+        new DirectMessageSender().send(25,"toAddress@hit_dev.nist.gov", mdn,"from@transport-testing.nist.gov","toAddress@hit_dev.nist.gov")
 
         done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
 

@@ -46,6 +46,7 @@ public class TkListener {
         Message m = null
 
         try {
+
             def report = new XmlSlurper().parseText(body)
 
             def tkValidationReport = new TkValidationReport()

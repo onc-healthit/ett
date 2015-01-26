@@ -13,6 +13,7 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 
 import java.lang.reflect.Constructor
+
 /**
  * Created by gerardin on 10/21/14.
  */
@@ -39,20 +40,20 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     //TODO
     public def setupTestCases() {
-        String[] simulators  = [
-                                "xdr.global.endpoint.matchby.messageId",
-                                "xdr.global.endpoint.tc.19"
-                                ]
+        String[] simulators = [
+                "xdr.global.endpoint.matchby.messageId",
+                "xdr.global.endpoint.tc.19"
+        ]
 
-        String[] missingSimulators = simulators.each{
+        String[] missingSimulators = simulators.each {
             XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(it)
-            if(sim == null){
+            if (sim == null) {
                 return it
             }
         }
 
         //if simulators do not exist, we create them
-        missingSimulators.each(){
+        missingSimulators.each() {
             executor.configureGlobalEndpoint(it, new HashMap())
         }
     }
@@ -68,7 +69,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             testcase = findTestCase(id)
         }
         catch (Exception e) {
-            throw new Exception("test case $id is not yet implemented",e)
+            throw new Exception("test case $id is not yet implemented", e)
         }
 
         //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet
@@ -88,17 +89,17 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         record.getTestSteps().each {
             stepLists <<= "$it.name , "
         }
-        log.info stepLists.substring(0,stepLists.length()-1)
+        log.info stepLists.substring(0, stepLists.length() - 1)
 
         def report = null
         def content = new StandardContent()
 
-        if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
+        if (record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
 
             def step = record.getTestSteps().last()
 
 
-            if(!step.xdrReportItems.empty) {
+            if (!step.xdrReportItems.empty) {
                 log.info(step.xdrReportItems.size() + " report(s) found.")
                 report = step.xdrReportItems
                 content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST }.report
@@ -107,24 +108,24 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             }
         }
 
-        return new TestCaseEvent(record.criteriaMet,content)
+        return new TestCaseEvent(record.criteriaMet, content)
 
     }
 
     //TODO check if we want to rely on reflection or use spring for that matter
     def findTestCase(String id) {
 
-        Class c
+        String[] packagesToLookUp = [ "gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge",
+                                      "gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.mu2",
+                                      "gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp"
+                                    ]
 
-        try {
-            c = Class.forName("gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.TestCase$id")
-        }
-        catch (Exception e) {
+
+        Class c = packagesToLookUp.findResult {
             try {
-                c = Class.forName("gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.TestCase$id")
+                Class.forName(it + ".TestCase$id")
             }
             catch (Exception ex) {
-                throw ex
             }
         }
 

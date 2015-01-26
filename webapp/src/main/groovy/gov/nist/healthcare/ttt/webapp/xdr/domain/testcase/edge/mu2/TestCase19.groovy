@@ -19,7 +19,7 @@ final class TestCase19 extends TestCaseBaseStrategy {
     @Override
     TestCaseEvent run(String tcid, Map context, String username) {
 
-        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(tcid, context.directFrom)
+        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(tcid, context.direct_from)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()

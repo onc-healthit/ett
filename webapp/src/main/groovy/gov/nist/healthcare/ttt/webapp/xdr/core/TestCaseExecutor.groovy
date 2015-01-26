@@ -179,7 +179,7 @@ class TestCaseExecutor {
     }
 
     XDRTestStepInterface executeDirectAddressCorrelationStep(String tcid, String directFrom) {
-        XDRTestStepInterface step = new TestStepBuilder("ENDPOINT EXISTS").build()
+        XDRTestStepInterface step = new TestStepBuilder("CORRELATE_ENDPOINT_WITH_DIRECTFROM_ADDRESS").build()
 
         //TODO handle exception if not found
 
