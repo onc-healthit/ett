@@ -1,4 +1,5 @@
-content-type: multipart/related; boundary="MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20"; type="application/xop+xml"; start="&lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;"; start-info="application/soap+xml"; action="urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b"
+content-type: multipart/related; boundary=&quot;MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20&quot;; type=&quot;application/xop+xml&quot;; start=&quot;&lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;&quot;; start-info=&quot;application/soap+xml&quot;; action=&quot;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b&quot;
 user-agent: TempXDRSender
 host: edge.nist.gov:8080
 Content-Length: 123393
+

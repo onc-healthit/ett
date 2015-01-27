@@ -48,15 +48,6 @@
             <version>2.4</version>
         </dependency>
 
-
-
-        <!-- Needed for parsing xml with jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.4.3</version>
-        </dependency>
-
         <!-- Groovy code for building rest clients -->
         <dependency>
             <groupId>org.codehaus.groovy.modules.http-builder</groupId>
