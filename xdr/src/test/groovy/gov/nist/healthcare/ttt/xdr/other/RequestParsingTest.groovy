@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.xdr.other
 
+import org.apache.commons.lang.StringEscapeUtils
 import spock.lang.Specification
 
 import javax.mail.Multipart
@@ -12,11 +13,11 @@ import javax.mail.internet.MimeMessage
 class RequestParsingTest extends Specification {
 
 
-    def testRequestParsing() {
+    def testRequestParsingWithEscapedXmlAndHttpHeaders() {
 
         given:
 
-        def file = this.getClass().getClassLoader().getResourceAsStream("xdr_full_metadata_sample_request.txt")
+        def file = this.getClass().getClassLoader().getResourceAsStream("xdr_full_metadata_sample_request_escaped_FOR_REAL.txt")
 
         when:
 
@@ -28,7 +29,15 @@ class RequestParsingTest extends Specification {
         part1.writeTo(out)
         println out.toString()
 
-        def envelope = new XmlSlurper().parse(part1.getInputStream())
+        String xml = org.apache.commons.io.IOUtils.toString(part1.getInputStream(), "UTF-8");
+
+        String processed = StringEscapeUtils.unescapeXml(xml)
+
+        println processed
+
+        def envelope = new XmlSlurper().parseText(processed)
+
+
 
         def directFrom = envelope.Header.addressBlock.from.text()
 
@@ -41,56 +50,91 @@ class RequestParsingTest extends Specification {
     }
 
 
-    def report =
-            """
-<transactionLog type='docrec' simId='1'>
-    <request>
-        <header>content-type: multipart/related; boundary="MIMEBoundary_f41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70"; type="application/xop+xml"; start="&lt;0.c41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70@apache.org&gt;"; start-info="application/soap+xml"; action="urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b"
-        user-agent: Axis2
-        host: localhost:9080
-        transfer-encoding: chunked
-        </header>
-        <body>
-        --MIMEBoundary_f41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70
-        Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
-        Content-Transfer-Encoding: binary
-        Content-ID: &lt;0.c41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70@apache.org&gt;
+    def testRequestParsingWithEscapedXmlAndHttpHeadersFrom2Files() {
 
-        &lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;
-        Rest removed because of size
-        </body>
-    </request>
-    <response>
-        <header>
-        content-type: multipart/related; boundary=MIMEBoundary112233445566778899;  type="application/xop+xml"; start="&lt;doc0@ihexds.nist.gov&gt;"; start-info="application/soap+xml"
-        </header>
-        <body>
-        --MIMEBoundary112233445566778899
-        Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
-        Content-Transfer-Encoding: binary
-        Content-ID: &lt;doc0@ihexds.nist.gov&gt;
+        given:
+
+        def file1 = this.getClass().getClassLoader().getResourceAsStream("new/header.txt")
+        def file2 = this.getClass().getClassLoader().getResourceAsStream("new/body.txt")
+        when:
+
+        def file3 = new java.io.SequenceInputStream(file1, file2)
+
+        MimeMessage msg = new MimeMessage(Session.getDefaultInstance(new Properties()), file3)
+        Multipart content = msg.getContent()
+        MimeBodyPart part1 = content.getBodyPart(0)
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream()
+        part1.writeTo(out)
+        println out.toString()
+
+        String xml = org.apache.commons.io.IOUtils.toString(part1.getInputStream(), "UTF-8");
+
+        String processed = StringEscapeUtils.unescapeXml(xml)
+
+        println processed
+
+        def envelope = new XmlSlurper().parseText(processed)
 
 
-        &lt;S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope"&gt;
-        &lt;S:Header&gt;
-        &lt;wsa:Action s:mustUnderstand="1" xmlns:s="http://www.w3.org/2003/05/soap-envelope"
-        xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-bResponse&lt;/wsa:Action&gt;
-        &lt;wsa:RelatesTo xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:uuid:2E3E584BB87837BC3B1417028462849&lt;/wsa:RelatesTo&gt;
-        &lt;/S:Header&gt;
-        &lt;S:Body&gt;
-        &lt;rs:RegistryResponse status="urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure"
-        xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"&gt;
-        &lt;rs:RegistryErrorList&gt;
-        &lt;rs:RegistryError errorCode="" codeContext="EXPECTED: XML starts with; FOUND: &amp;lt;soapenv:Body xmlns:soape : MSG Schema: cvc-elt.1: Cannot find the declaration of element 'soapenv:Body'."
-        location=""/&gt;
-        &lt;/rs:RegistryErrorList&gt;
-        &lt;/rs:RegistryResponse&gt;
-        &lt;/S:Body&gt;
-        &lt;/S:Envelope&gt;
 
-        --MIMEBoundary112233445566778899--
-        </body>
-    </response>
-</transactionLog>
-"""
+        def directFrom = envelope.Header.addressBlock.from.text()
+
+        println directFrom
+
+        then:
+        assert directFrom == "directFrom"
+
+
+    }
+
+
+
+    def testRequestParsingWithEscapedXmlAndHttpHeadersFrom2FilesWithSerialization() {
+
+        given:
+
+        def file1 = this.getClass().getClassLoader().getResourceAsStream("new/header.txt")
+        def file2 = this.getClass().getClassLoader().getResourceAsStream("new/body.txt")
+        when:
+
+        String header = org.apache.commons.io.IOUtils.toString(file1, "UTF-8");
+        String body = org.apache.commons.io.IOUtils.toString(file2, "UTF-8");
+
+        def request = header + body
+
+        InputStream req = new ByteArrayInputStream(request.getBytes());
+
+        MimeMessage msg = new MimeMessage(Session.getDefaultInstance(new Properties()), req)
+        Multipart content = msg.getContent()
+        MimeBodyPart part1 = content.getBodyPart(0)
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream()
+        part1.writeTo(out)
+        println out.toString()
+
+        String xml = org.apache.commons.io.IOUtils.toString(part1.getInputStream(), "UTF-8");
+
+        String processed = StringEscapeUtils.unescapeXml(xml)
+
+        println processed
+
+        def envelope = new XmlSlurper().parseText(processed)
+
+
+
+        def directFrom = envelope.Header.addressBlock.from.text()
+
+        println directFrom
+
+        then:
+        assert directFrom == "directFrom"
+
+
+    }
+
+
+
+
+
 }

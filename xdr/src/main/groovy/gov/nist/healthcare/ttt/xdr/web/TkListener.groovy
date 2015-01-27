@@ -3,6 +3,8 @@ import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+import groovy.util.slurpersupport.GPathResult
+import org.apache.commons.lang.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
+import javax.mail.Multipart
+import javax.mail.Session
+import javax.mail.internet.MimeBodyPart
+import javax.mail.internet.MimeMessage
 /**
  * Created by gerardin on 10/14/14.
  *
@@ -55,10 +61,7 @@ public class TkListener {
             tkValidationReport.simId = report.@simId.text()
 
             //Extract direct from address
-            def request = report.request.body.text()
-            def requestXml = new XmlSlurper().parseText(request)
-            def directFrom = requestXml.directAddressing.messageID
-            tkValidationReport.directFrom = directFrom
+            tkValidationReport.directFrom = parseRequest(report)
 
                     //TODO modify : all that to extract registryResponseStatus info!
             String content = report.response.body.text()
@@ -86,5 +89,34 @@ public class TkListener {
         } else if (registryResponseStatus.contains("Success")) {
             return XDRRecordInterface.CriteriaMet.PASSED
         }
+    }
+
+    def parseRequest(GPathResult report){
+
+        String request = report.request.body.text()
+
+        InputStream is = new ByteArrayInputStream( request.getBytes() )
+
+
+        MimeMessage msg = new MimeMessage(Session.getDefaultInstance(new Properties()),is)
+
+        Multipart content = msg.getContent()
+        MimeBodyPart part1 = content.getBodyPart(0)
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream()
+        part1.writeTo(out)
+        println out.toString()
+
+        String xml = org.apache.commons.io.IOUtils.toString(part1.getInputStream(), "UTF-8");
+
+        String processed = StringEscapeUtils.unescapeXml(xml)
+
+        println processed
+
+        def envelope = new XmlSlurper().parseText(processed)
+
+        def directFrom = envelope.Header.addressBlock.from.text()
+
+        println directFrom
     }
 }
