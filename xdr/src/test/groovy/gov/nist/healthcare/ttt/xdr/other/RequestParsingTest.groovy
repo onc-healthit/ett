@@ -102,6 +102,8 @@ class RequestParsingTest extends Specification {
 
         def request = unescapedString1 + unescapedString2
 
+        println request
+
         InputStream req = new ByteArrayInputStream(request.getBytes());
 
         MimeMessage msg = new MimeMessage(Session.getDefaultInstance(new Properties()), req)
