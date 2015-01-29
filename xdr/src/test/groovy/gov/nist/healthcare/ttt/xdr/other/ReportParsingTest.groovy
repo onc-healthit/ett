@@ -1,6 +1,5 @@
 package gov.nist.healthcare.ttt.xdr.other
 
-import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.apache.commons.lang.StringEscapeUtils
 import spock.lang.Specification
 
@@ -9,7 +8,6 @@ import javax.mail.Session
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage
 import java.util.regex.Matcher
-
 /**
  * Created by gerardin on 12/1/14.
  */
@@ -109,7 +107,20 @@ class ReportParsingTest extends Specification {
         String header = report.request.header.text()
         String body = report.request.body.text()
 
-        Matcher matcher = body =~ /MessageID[^>]+>([^<]+)</
+
+        Matcher matcher2 = body =~ /from>([^<]+)</
+
+        matcher2.each{
+            println it
+        }
+
+        println matcher2[0][1]
+
+        return
+
+
+      //  Matcher matcher = body =~ /MessageID[^>]+>([^<]+)</
+        Matcher matcher = body =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
 
         //we expect only one match (thus the 0) and we want to get back the first group match
 
@@ -118,9 +129,13 @@ class ReportParsingTest extends Specification {
 
         assert matcher.size() == 1
 
+        def updated = body.replaceAll(/(MessageID[^>]+>)([^<]+)(<)/){
+            String it , pre, id , post ->
+                    return pre + "1" + post
+        }
 
 
         then:
-        println "ok"
+        println updated
     }
 }

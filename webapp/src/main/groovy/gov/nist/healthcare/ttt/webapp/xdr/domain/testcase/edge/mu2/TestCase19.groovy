@@ -38,10 +38,32 @@ final class TestCase19 extends TestCaseBaseStrategy {
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+        step.directFrom = report.directFrom
+        step.messageId = report.messageId
 
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
-        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
+        if(record.testSteps.size() != 4) {
+            executor.db.updateXDRRecord(record)
+        }
+        else {
+
+            def steps = record.testSteps.findAll{
+                 it.name == "XDR_RECEIVE"
+            }
+
+
+
+            boolean one = steps[0].messageId != steps[1].messageId
+            boolean two = steps[0].messageId != steps[2].messageId
+            boolean three = steps[1].messageId != steps[2].messageId
+            if(one & two & three) {
+                done(XDRRecordInterface.CriteriaMet.PASSED, updatedRecord)
+            }
+            else{
+                done(XDRRecordInterface.CriteriaMet.FAILED, updatedRecord)
+            }
+        }
 
     }
 }

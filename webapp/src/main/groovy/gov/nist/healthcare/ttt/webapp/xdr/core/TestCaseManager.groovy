@@ -42,7 +42,9 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
     public def setupTestCases() {
         String[] simulators = [
                 "xdr.global.endpoint.matchby.messageId",
-                "xdr.global.endpoint.tc.19"
+                "xdr.global.endpoint.tc.19",
+                "xdr.global.endpoint.tc.20.goodEndpoint",
+                "xdr.global.endpoint.tc.20.badEndpoint"
         ]
 
         String[] missingSimulators = simulators.each {

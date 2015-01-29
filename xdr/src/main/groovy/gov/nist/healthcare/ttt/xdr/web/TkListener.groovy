@@ -3,7 +3,6 @@ import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
-import groovy.util.slurpersupport.GPathResult
 import org.apache.commons.lang.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
-import javax.mail.Multipart
-import javax.mail.Session
-import javax.mail.internet.MimeBodyPart
-import javax.mail.internet.MimeMessage
+import java.util.regex.Matcher
+
 /**
  * Created by gerardin on 10/14/14.
  *
@@ -61,7 +58,8 @@ public class TkListener {
             tkValidationReport.simId = report.@simId.text()
 
             //Extract direct from address
-            tkValidationReport.directFrom = parseRequest(report)
+            tkValidationReport.directFrom = parseRequestBodyForDirectFrom( report.request.body.text() )
+            tkValidationReport.messageId = parseRequestBody( report.request.body.text() )
 
                     //TODO modify : all that to extract registryResponseStatus info!
             String content = report.response.body.text()
@@ -91,32 +89,29 @@ public class TkListener {
         }
     }
 
-    def parseRequest(GPathResult report){
+    def parseRequestBody(String body){
 
-        String request = report.request.body.text()
+        String unescapeXml = StringEscapeUtils.unescapeXml(body)
 
-        InputStream is = new ByteArrayInputStream( request.getBytes() )
+        Matcher matcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
 
+        //we expect only one match (thus the 0) and we want to get back the first group match
+        matcher[0][1]
 
-        MimeMessage msg = new MimeMessage(Session.getDefaultInstance(new Properties()),is)
+    }
 
-        Multipart content = msg.getContent()
-        MimeBodyPart part1 = content.getBodyPart(0)
+    def parseRequestBodyForDirectFrom(String body){
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream()
-        part1.writeTo(out)
-        println out.toString()
+        String unescapeXml = StringEscapeUtils.unescapeXml(body)
 
-        String xml = org.apache.commons.io.IOUtils.toString(part1.getInputStream(), "UTF-8");
+        Matcher matcher2 = unescapeXml =~ /from>([^<]+)</
 
-        String processed = StringEscapeUtils.unescapeXml(xml)
+        matcher2.each{
+            println it
+        }
 
-        println processed
+        //we expect only one match (thus the 0) and we want to get back the first group match
+        matcher2[0][1]
 
-        def envelope = new XmlSlurper().parseText(processed)
-
-        def directFrom = envelope.Header.addressBlock.from.text()
-
-        println directFrom
     }
 }

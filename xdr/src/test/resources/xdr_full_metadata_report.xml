@@ -19,8 +19,8 @@
             &lt;direct:addressBlock xmlns:direct=&quot;urn:direct:addressing&quot;
             soapenv:role=&quot;urn:direct:addressing:destination&quot;
             soapenv:relay=&quot;true&quot;&gt;
-            &lt;direct:from&gt;directFrom&lt;/direct:from&gt;
-            &lt;direct:to&gt;directTo&lt;/direct:to&gt;
+            &lt;direct:from&gt;from@edge.nist.gov&lt;/direct:from&gt;
+            &lt;direct:to&gt;to@edge.nist.gov&lt;/direct:to&gt;
             &lt;/direct:addressBlock&gt;
             &lt;wsa:To soapenv:mustUnderstand=&quot;true&quot; xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
             xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;

@@ -75,28 +75,25 @@ class ResponseHandler implements IObserver {
 
         XDRRecordInterface rec = db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
 
-        if(rec != null){
-            log.info( "handle report for message with directFrom address : $directFrom")
-        }
-
-        String msgId = report.messageId
-        String unescapedMsgId = "<" + msgId + ">"
-
-        rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
-
         if (rec != null) {
-            log.info( "handle report for message with messageId : $msgId")
+            log.info("handle report for message with directFrom address : $directFrom")
         } else {
-            String simId = report.simId
-            rec = db.getLatestXDRRecordBySimulatorId(simId)
-            log.info( "handle report for simulator with simId : $simId")
+            String msgId = report.messageId
+            String unescapedMsgId = "<" + msgId + ">"
+            rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
+            if (rec != null) {
+                log.info("handle report for message with messageId : $msgId")
+            } else {
+                String simId = report.simId
+                rec = db.getLatestXDRRecordBySimulatorId(simId)
+                log.info("handle report for simulator with simId : $simId")
+            }
+
+            //else
+            //should report the unability to correlate this report to a test
         }
-
-        //else
-        //should report the unability to correlate this report to a test
-
-        TestCaseBaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
-        testcase.notifyXdrReceive(rec, report)
+            TestCaseBaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
+            testcase.notifyXdrReceive(rec, report)
     }
 
 
