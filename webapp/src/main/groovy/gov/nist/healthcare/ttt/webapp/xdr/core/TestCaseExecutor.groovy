@@ -1,8 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
+import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
+import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
+import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
@@ -15,12 +18,19 @@ import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 /**
  * Created by gerardin on 10/28/14.
  */
 @Component
 class TestCaseExecutor {
+
+    @Value('${direct.certificates.repository.path}')
+    private String directCertPath
+
+    @Value('${direct.certificates.password}')
+    private String directPassword
 
     public final DatabaseProxy db
     private final XdrReceiver receiver
@@ -116,6 +126,80 @@ class TestCaseExecutor {
         catch(e){
             throw new Exception(MsgLabel.CREATE_NEW_ENDPOINTS_FAILED.msg, e)
         }
+    }
+
+    protected XDRTestStepInterface executeSendMDN(def report){
+        def generator = new MDNGenerator();
+        generator.setReporting_UA_name("direct.nist.gov");
+        generator.setReporting_UA_product("Security Agent");
+        generator.setDisposition("automatic-action/MDN-sent-automatically;processed");
+        generator.setFinal_recipient("transport-testing.nist.gov");
+        generator.setFromAddress("from@transport-testing.nist.gov");
+        generator.setOriginal_message_id("<812748939.14.1386951907564.JavaMail.tomcat7@ip-10-185-147-33.ec2.internal>");
+        generator.setSubject("Automatic MDN");
+        generator.setText("Your message was successfully processed.");
+        generator.setToAddress("to@hit-dev.nist.gov");
+        generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup("to@hit-dev.nist.gov"))
+
+        ListenerProcessor listener = new ListenerProcessor()
+        listener.setCertificatesPath(directCertPath)
+        listener.setCertPassword(directPassword)
+
+        generator.setSigningCert(listener.getSigningPrivateCert("good"))
+        generator.setSigningCertPassword(directPassword)
+
+        def mdn = generator.generateMDN()
+
+        //TODO fix
+        try {
+            new DirectMessageSender().send(25, "toAddress@hit-dev.nist.gov", mdn, "from@transport-testing.nist.gov", "toAddress@hit_dev.nist.gov")
+        }
+        catch(Exception e){
+            log.error("for now we do not complain but fix that")
+        }
+
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "DIRECT_MDN_SENT"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+
+        return step
+    }
+
+    protected XDRTestStepInterface executeSendFailureMDN(def report){
+        def generator = new MDNGenerator();
+        generator.setReporting_UA_name("direct.nist.gov");
+        generator.setReporting_UA_product("Security Agent");
+        generator.setDisposition("automatic-action/MDN-sent-automatically;failure");
+        generator.setFinal_recipient("transport-testing.nist.gov");
+        generator.setFromAddress("from@transport-testing.nist.gov");
+        generator.setOriginal_message_id("<812748939.14.1386951907564.JavaMail.tomcat7@ip-10-185-147-33.ec2.internal>");
+        generator.setSubject("Automatic MDN");
+        generator.setText("Your message was NOT successfully processed.");
+        generator.setToAddress("to@hit-dev.nist.gov");
+        generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup("to@hit-dev.nist.gov"))
+
+        ListenerProcessor listener = new ListenerProcessor()
+        listener.setCertificatesPath(directCertPath)
+        listener.setCertPassword(directPassword)
+
+        generator.setSigningCert(listener.getSigningPrivateCert("good"))
+        generator.setSigningCertPassword(directPassword)
+
+        def mdn = generator.generateMDN()
+
+        //TODO fix
+        try {
+            new DirectMessageSender().send(25, "toAddress@hit-dev.nist.gov", mdn, "from@transport-testing.nist.gov", "toAddress@hit_dev.nist.gov")
+        }
+        catch(Exception e){
+            log.error("for now we do not complain but fix that")
+        }
+
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "DIRECT_FAILURE_MDN_SENT"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+
+        return step
     }
 
     def configureGlobalEndpoint(String name, Map params) {

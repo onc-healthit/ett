@@ -3,6 +3,7 @@ import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+import groovy.util.slurpersupport.GPathResult
 import org.apache.commons.lang.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -39,42 +40,30 @@ public class TkListener {
 
     /**
      * Notify of a new validation report
-     * @param body : the report
+     * @param httpBody : the report
      */
     @RequestMapping(value = 'api/xdrNotification', consumes = "application/xml")
     @ResponseBody
-    public void receiveBySimulatorId(@RequestBody String body) {
+    public void receiveBySimulatorId(@RequestBody String httpBody) {
 
-        log.debug("receive a new validation report: $body")
+        log.debug("receive a new validation report: $httpBody")
         Message m = null
 
         try {
 
-            def report = new XmlSlurper().parseText(body)
-
             def tkValidationReport = new TkValidationReport()
-            tkValidationReport.request = report.request.text()
-            tkValidationReport.response = report.response.text()
-            tkValidationReport.simId = report.@simId.text()
+            def report = new XmlSlurper().parseText(httpBody)
 
-            //Extract direct from address
-            tkValidationReport.directFrom = parseRequestBodyForDirectFrom( report.request.body.text() )
-            tkValidationReport.messageId = parseRequestBody( report.request.body.text() )
-
-                    //TODO modify : all that to extract registryResponseStatus info!
-            String content = report.response.body.text()
-            def registryResponse = content.split("<.?S:Body>")
-            def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
-            def registryResponseStatus = registryResponseXml.@status.text()
-            def criteriaMet = parseStatus(registryResponseStatus)
-            tkValidationReport.status = criteriaMet
+            parseReportFormat(tkValidationReport, report)
+            parseRequest(tkValidationReport , report.request)
+            parseResponse(tkValidationReport, report.response)
 
             m = new Message<TkValidationReport>(Message.Status.SUCCESS, "new validation result received...", tkValidationReport)
         }
         catch(Exception e) {
-            log.error("receive an invalid validation report. Bad payload rejected :\n $body")
+            log.error("receive an invalid validation report. Bad payload rejected :\n $httpBody")
 
-            m = new Message<TkValidationReport>(Message.Status.ERROR, "new validation result received...")
+            m = new Message<TkValidationReport>(Message.Status.ERROR, "received unparseable payload...", null)
         }
         finally {
             receiver.notifyObserver(m)
@@ -89,29 +78,34 @@ public class TkListener {
         }
     }
 
-    def parseRequestBody(String body){
+    def parseResponse(TkValidationReport tkValidationReport, GPathResult response){
 
-        String unescapeXml = StringEscapeUtils.unescapeXml(body)
+        //TODO modify : all that to extract registryResponseStatus info!
+        String content = response.body.text()
+        def registryResponse = content.split("<.?S:Body>")
+        def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
+        def registryResponseStatus = registryResponseXml.@status.text()
+        def criteriaMet = parseStatus(registryResponseStatus)
+        tkValidationReport.status = criteriaMet
+    }
 
-        Matcher matcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
+    def parseRequest(TkValidationReport tkValidationReport, GPathResult request){
+        String text = request.body.text()
+        String unescapeXml = StringEscapeUtils.unescapeXml(text)
+
+        Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
+        Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
 
         //we expect only one match (thus the 0) and we want to get back the first group match
-        matcher[0][1]
+
+        tkValidationReport.messageId = (messageIDMatcher.find()) ? messageIDMatcher[0][1] : null
+        tkValidationReport.directFrom = (directFromMatcher.find()) ? directFromMatcher[0][1] : null
 
     }
 
-    def parseRequestBodyForDirectFrom(String body){
-
-        String unescapeXml = StringEscapeUtils.unescapeXml(body)
-
-        Matcher matcher2 = unescapeXml =~ /from>([^<]+)</
-
-        matcher2.each{
-            println it
-        }
-
-        //we expect only one match (thus the 0) and we want to get back the first group match
-        matcher2[0][1]
-
+    def parseReportFormat(TkValidationReport tkValidationReport,  GPathResult report){
+        tkValidationReport.request = report.request.text()
+        tkValidationReport.response = report.response.text()
+        tkValidationReport.simId = report.@simId.text()
     }
 }

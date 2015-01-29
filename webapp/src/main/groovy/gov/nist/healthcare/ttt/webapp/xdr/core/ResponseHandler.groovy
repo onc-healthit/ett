@@ -42,21 +42,28 @@ class ResponseHandler implements IObserver {
         println "notification received"
 
         if (msg.status == Message.Status.ERROR) {
-            throw Exception()
+            handleBadNotification(msg)
         }
 
+        else {
 
-        try {
-            handle(msg.content)
-        }
-        catch (Exception e) {
-            e.printStackTrace()
-            println "notification content not understood"
+            try {
+                handle(msg.content)
+            }
+            catch (Exception e) {
+                e.printStackTrace()
+                println "notification content not understood"
+            }
         }
     }
 
+    private def handleBadNotification(Message message) {
+        log.error("$message.status : $message.message")
+        log.error("recovery method : Logging error and silent failure")
+    }
+
     private handle(TLSValidationReport report) {
-        println "handle tls report"
+        println "handle tls report."
 
 
         XDRRecordInterface rec = db.instance.xdrFacade.getLatestXDRRecordByHostname(report.hostname)

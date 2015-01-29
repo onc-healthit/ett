@@ -41,6 +41,11 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     @Autowired
     TkListener listener
 
+    String messageID = 12345
+
+    static String goodEndpointId = "xdr_global_endpoint_tc_20_goodEndpoint"
+    static String badEndpointId = "xdr_global_endpoint_tc_20_badEndpoint"
+
     MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit
     MockMvc mockMvcCheckTestCaseStatus
@@ -82,7 +87,7 @@ class XdrTestCase20MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
+                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
 
 
         when: "receiving a validation report from toolkit. We mock the actual interaction!"
@@ -91,22 +96,22 @@ class XdrTestCase20MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
+        MockHttpServletRequestBuilder getRequest3 = reportRequest2()
+        mockMvcToolkit.perform(getRequest3)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
 
         then: "we store the validation in the database"
-        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordBySimulatorId(id)
-        def steps = rec.testSteps.find{
-            it.name == "XDR_RECEIVE"
-        }
+        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom("from@edge.nist.gov")
+        assert rec != null
 
 
-        assert steps == rec.testSteps.size() == 2
-
-
-        when: "we check the status of testcase201"
-        MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
+        when: "we check the status of testcase20"
+        MockHttpServletRequestBuilder getRequest4 = checkTestCaseStatusRequest()
 
         then: "we receive back a success message asking for manual validation"
-        mockMvcRunTestCase.perform(getRequest3)
+        mockMvcRunTestCase.perform(getRequest4)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
@@ -130,8 +135,15 @@ class XdrTestCase20MockIntegrationTest extends Specification {
                 .contentType(MediaType.APPLICATION_XML)
     }
 
+    MockHttpServletRequestBuilder reportRequest2() {
+        MockMvcRequestBuilders.post("/api/xdrNotification")
+                .accept(MediaType.ALL)
+                .content(toolkitReport2)
+                .contentType(MediaType.APPLICATION_XML)
+    }
+
     MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
-        MockMvcRequestBuilders.get("/api/xdr/tc/1/status")
+        MockMvcRequestBuilders.get("/api/xdr/tc/20/status")
                 .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
@@ -139,64 +151,182 @@ class XdrTestCase20MockIntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "tc_config": {
-        "endpoint_url": "sut1.testlab1"
-    }
+        "direct_from": "from@edge.nist.gov"
 }"""
 
 
-    private static String toolkitReport =
+    private toolkitReport =
             """
-<transactionLog type='docrec' simId='$id'>
+    <transactionLog type='docrec' simId='$goodEndpointId'>
     <request>
-        <header>content-type: multipart/related; boundary="MIMEBoundary_f41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70"; type="application/xop+xml"; start="&lt;0.c41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70@apache.org&gt;"; start-info="application/soap+xml"; action="urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b"
-        user-agent: Axis2
-        host: localhost:9080
-        transfer-encoding: chunked
+        <header>content-type: multipart/related; boundary=&quot;MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20&quot;; type=&quot;application/xop+xml&quot;; start=&quot;&lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;&quot;; start-info=&quot;application/soap+xml&quot;; action=&quot;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b&quot;
+            user-agent: TempXDRSender
+            host: edge.nist.gov:8080
+            Content-Length: 123393
+
         </header>
         <body>
-        --MIMEBoundary_f41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70
-        Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
-        Content-Transfer-Encoding: binary
-        Content-ID: &lt;0.c41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70@apache.org&gt;
+            --MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20
+            Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
+            Content-Transfer-Encoding: binary
+            Content-ID: &lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;
 
-        &lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;
-        Rest removed because of size
+            &lt;s:Envelope xmlns:s=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:a=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;
+            &lt;soapenv:Header xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&gt;
+            &lt;direct:metadata-level xmlns:direct=&quot;urn:direct:addressing&quot;&gt;XDS&lt;/direct:metadata-level&gt;
+            &lt;direct:addressBlock xmlns:direct=&quot;urn:direct:addressing&quot;
+            soapenv:role=&quot;urn:direct:addressing:destination&quot;
+            soapenv:relay=&quot;true&quot;&gt;
+            &lt;direct:from&gt;from@edge.nist.gov&lt;/direct:from&gt;
+            &lt;direct:to&gt;to@edge.nist.gov&lt;/direct:to&gt;
+            &lt;/direct:addressBlock&gt;
+            &lt;wsa:To soapenv:mustUnderstand=&quot;true&quot; xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;
+            &gt;http://transport-testing.nist.gov:12080/ttt/sim/f8488a75-fc7d-4d70-992b-e5b2c852b412/rep/prb&lt;/wsa:To&gt;
+            &lt;wsa:MessageID soapenv:mustUnderstand=&quot;true&quot;
+            xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;
+            &gt;$messageID&lt;/wsa:MessageID&gt;
+            &lt;wsa:Action soapenv:mustUnderstand=&quot;true&quot;
+            xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;
+            &gt;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b&lt;/wsa:Action&gt;
+            &lt;/soapenv:Header&gt;
+            &lt;soapenv:Body xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&gt;
+            &lt;/soapenv:Body&gt;
+            &lt;/s:Envelope&gt;
+
+            --MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20
+            Content-Type: application/octet-stream
+            Content-Transfer-Encoding: binary
+            Content-ID: &lt;1.3293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;
+
+            content
+
+            --MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20--
         </body>
     </request>
     <response>
         <header>
-        content-type: multipart/related; boundary=MIMEBoundary112233445566778899;  type="application/xop+xml"; start="&lt;doc0@ihexds.nist.gov&gt;"; start-info="application/soap+xml"
+            content-type: multipart/related; boundary=MIMEBoundary112233445566778899;  type="application/xop+xml"; start="&lt;doc0@ihexds.nist.gov&gt;"; start-info="application/soap+xml"
         </header>
         <body>
-        --MIMEBoundary112233445566778899
-        Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
-        Content-Transfer-Encoding: binary
-        Content-ID: &lt;doc0@ihexds.nist.gov&gt;
+            --MIMEBoundary112233445566778899
+            Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
+            Content-Transfer-Encoding: binary
+            Content-ID: &lt;doc0@ihexds.nist.gov&gt;
 
 
-        &lt;S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope"&gt;
-        &lt;S:Header&gt;
-        &lt;wsa:Action s:mustUnderstand="1" xmlns:s="http://www.w3.org/2003/05/soap-envelope"
-        xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-bResponse&lt;/wsa:Action&gt;
-        &lt;wsa:RelatesTo xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:uuid:2E3E584BB87837BC3B1417028462849&lt;/wsa:RelatesTo&gt;
-        &lt;/S:Header&gt;
-        &lt;S:Body&gt;
-        &lt;rs:RegistryResponse status="urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure"
-        xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"&gt;
-        &lt;rs:RegistryErrorList&gt;
-        &lt;rs:RegistryError errorCode="" codeContext="EXPECTED: XML starts with; FOUND: &amp;lt;soapenv:Body xmlns:soape : MSG Schema: cvc-elt.1: Cannot find the declaration of element 'soapenv:Body'."
-        location=""/&gt;
-        &lt;/rs:RegistryErrorList&gt;
-        &lt;/rs:RegistryResponse&gt;
-        &lt;/S:Body&gt;
-        &lt;/S:Envelope&gt;
+            &lt;S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope"&gt;
+            &lt;S:Header&gt;
+            &lt;wsa:Action s:mustUnderstand="1" xmlns:s="http://www.w3.org/2003/05/soap-envelope"
+            xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-bResponse&lt;/wsa:Action&gt;
+            &lt;wsa:RelatesTo xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:uuid:2E3E584BB87837BC3B1417028462849&lt;/wsa:RelatesTo&gt;
+            &lt;/S:Header&gt;
+            &lt;S:Body&gt;
+            &lt;rs:RegistryResponse status="urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure"
+            xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"&gt;
+            &lt;rs:RegistryErrorList&gt;
+            &lt;rs:RegistryError errorCode="" codeContext="EXPECTED: XML starts with; FOUND: &amp;lt;soapenv:Body xmlns:soape : MSG Schema: cvc-elt.1: Cannot find the declaration of element 'soapenv:Body'."
+            location=""/&gt;
+            &lt;/rs:RegistryErrorList&gt;
+            &lt;/rs:RegistryResponse&gt;
+            &lt;/S:Body&gt;
+            &lt;/S:Envelope&gt;
 
-        --MIMEBoundary112233445566778899--
+            --MIMEBoundary112233445566778899--
         </body>
     </response>
 </transactionLog>
-"""
+    """
+
+
+    private toolkitReport2 =
+            """
+    <transactionLog type='docrec' simId='$badEndpointId'>
+    <request>
+        <header>content-type: multipart/related; boundary=&quot;MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20&quot;; type=&quot;application/xop+xml&quot;; start=&quot;&lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;&quot;; start-info=&quot;application/soap+xml&quot;; action=&quot;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b&quot;
+            user-agent: TempXDRSender
+            host: edge.nist.gov:8080
+            Content-Length: 123393
+
+        </header>
+        <body>
+            --MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20
+            Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
+            Content-Transfer-Encoding: binary
+            Content-ID: &lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;
+
+            &lt;s:Envelope xmlns:s=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:a=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;
+            &lt;soapenv:Header xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&gt;
+            &lt;direct:metadata-level xmlns:direct=&quot;urn:direct:addressing&quot;&gt;XDS&lt;/direct:metadata-level&gt;
+            &lt;direct:addressBlock xmlns:direct=&quot;urn:direct:addressing&quot;
+            soapenv:role=&quot;urn:direct:addressing:destination&quot;
+            soapenv:relay=&quot;true&quot;&gt;
+            &lt;direct:from&gt;from@edge.nist.gov&lt;/direct:from&gt;
+            &lt;direct:to&gt;to@edge.nist.gov&lt;/direct:to&gt;
+            &lt;/direct:addressBlock&gt;
+            &lt;wsa:To soapenv:mustUnderstand=&quot;true&quot; xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;
+            &gt;http://transport-testing.nist.gov:12080/ttt/sim/f8488a75-fc7d-4d70-992b-e5b2c852b412/rep/prb&lt;/wsa:To&gt;
+            &lt;wsa:MessageID soapenv:mustUnderstand=&quot;true&quot;
+            xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;
+            &gt;$messageID&lt;/wsa:MessageID&gt;
+            &lt;wsa:Action soapenv:mustUnderstand=&quot;true&quot;
+            xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
+            xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;
+            &gt;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b&lt;/wsa:Action&gt;
+            &lt;/soapenv:Header&gt;
+            &lt;soapenv:Body xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&gt;
+            &lt;/soapenv:Body&gt;
+            &lt;/s:Envelope&gt;
+
+            --MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20
+            Content-Type: application/octet-stream
+            Content-Transfer-Encoding: binary
+            Content-ID: &lt;1.3293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;
+
+            content
+
+            --MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20--
+        </body>
+    </request>
+    <response>
+        <header>
+            content-type: multipart/related; boundary=MIMEBoundary112233445566778899;  type="application/xop+xml"; start="&lt;doc0@ihexds.nist.gov&gt;"; start-info="application/soap+xml"
+        </header>
+        <body>
+            --MIMEBoundary112233445566778899
+            Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
+            Content-Transfer-Encoding: binary
+            Content-ID: &lt;doc0@ihexds.nist.gov&gt;
+
+
+            &lt;S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope"&gt;
+            &lt;S:Header&gt;
+            &lt;wsa:Action s:mustUnderstand="1" xmlns:s="http://www.w3.org/2003/05/soap-envelope"
+            xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-bResponse&lt;/wsa:Action&gt;
+            &lt;wsa:RelatesTo xmlns:wsa="http://www.w3.org/2005/08/addressing"&gt;urn:uuid:2E3E584BB87837BC3B1417028462849&lt;/wsa:RelatesTo&gt;
+            &lt;/S:Header&gt;
+            &lt;S:Body&gt;
+            &lt;rs:RegistryResponse status="urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure"
+            xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"&gt;
+            &lt;rs:RegistryErrorList&gt;
+            &lt;rs:RegistryError errorCode="" codeContext="EXPECTED: XML starts with; FOUND: &amp;lt;soapenv:Body xmlns:soape : MSG Schema: cvc-elt.1: Cannot find the declaration of element 'soapenv:Body'."
+            location=""/&gt;
+            &lt;/rs:RegistryErrorList&gt;
+            &lt;/rs:RegistryResponse&gt;
+            &lt;/S:Body&gt;
+            &lt;/S:Envelope&gt;
+
+            --MIMEBoundary112233445566778899--
+        </body>
+    </response>
+</transactionLog>
+    """
 
     def setupDb() {
         createUserInDB()
