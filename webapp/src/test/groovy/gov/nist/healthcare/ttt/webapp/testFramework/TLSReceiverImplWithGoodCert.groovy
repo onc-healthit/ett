@@ -62,8 +62,16 @@ public class MockSUTThatAcceptsTLSWithGoodCert extends Thread {
 
     void handleRequest(SSLSocket connection) {
 
+        def w
+
+        printServerSocketInfo(server)
+
         try {
-            log.info("SUT check if it should accept incoming connection...");
+            log.info("SUT is receiver. Responding to incoming request...")
+            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+            String m = "TLS test : try to send stuff across"
+            w.write(m, 0, m.length());
+            w.flush();
         } catch (Exception e) {
             log.error(e.toString());
             log.error("client has dropped the connection.");
@@ -100,6 +108,9 @@ public class MockSUTThatAcceptsTLSWithGoodCert extends Thread {
             log.error("unable to set ssl server");
 
         }
+
+        //That is forcing clients authenticate
+        server.setNeedClientAuth(true)
     }
 
 

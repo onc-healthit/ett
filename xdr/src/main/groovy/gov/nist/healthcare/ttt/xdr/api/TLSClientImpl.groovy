@@ -1,27 +1,25 @@
 package gov.nist.healthcare.ttt.xdr.api
-
 import gov.nist.healthcare.ttt.xdr.ssl.SSLContextManager
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component
 
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
 
-/**
- * This Socket is not working for now.
- */
-
-
 @Component
-public class SslSocketClientImpl implements TLSClient {
+public class TLSClientImpl implements TLSClient {
 
     SSLContextManager sslContextManager
 
+    Logger log = LoggerFactory.getLogger(TLSClientImpl.class)
+
 
     @Autowired
-    public SslSocketClientImpl(SSLContextManager manager) {
+    public TLSClientImpl(SSLContextManager manager) {
         sslContextManager = manager
     }
 
@@ -43,33 +41,27 @@ public class SslSocketClientImpl implements TLSClient {
             String hostname = config.hostname
             def port = config.port
 
-            SSLSocket c =
-                    (SSLSocket) f.createSocket(hostname, port);
-            printSocketInfo(c);
+            SSLSocket c = (SSLSocket) f.createSocket(hostname, port);
+            log.info("Sending a request to the server using socket: \n" + socketInfo(c))
             c.startHandshake();
             c.close();
     }
 
-    private static void printSocketInfo(SSLSocket s) {
-        System.out.println("Socket class: " + s.getClass());
-        System.out.println("   Remote address = "
-                + s.getInetAddress().toString());
-        System.out.println("   Remote port = " + s.getPort());
-        System.out.println("   Local socket address = "
-                + s.getLocalSocketAddress().toString());
-        System.out.println("   Local address = "
-                + s.getLocalAddress().toString());
-        System.out.println("   Local port = " + s.getLocalPort());
-        System.out.println("   Need client authentication = "
-                + s.getNeedClientAuth());
-        SSLSession ss = s.getSession();
-        System.out.println("   Cipher suite = " + ss.getCipherSuite());
-        System.out.println("   Protocol = " + ss.getProtocol());
+    private static def socketInfo(SSLSocket socket) {
+        StringBuffer info = new StringBuffer()
+        info << "   Socket class: " + socket.getClass() + "\n"
+        info << "   Remote address = " + socket.getInetAddress().toString() + "\n"
+        info << "   Remote port = " + socket.getPort() + "\n"
+        info << "   Local socket address = " + socket.getLocalSocketAddress().toString() + "\n"
+        info << "   Local address = " + socket.getLocalAddress().toString() + "\n"
+        info << "   Local port = " + socket.getLocalPort() + "\n"
+        info << "   Need client authentication = " + socket.getNeedClientAuth() + "\n"
 
-//        System.out.println("certs used by client :")
-//        ss.peerCertificateChain.each{
-//            System.out.println(it.subjectDN)
-//        }
+        SSLSession ss = socket.getSession()
+        info << "   Cipher suite = " + ss.getCipherSuite() + "\n"
+        info << "   Protocol = " + ss.getProtocol()
+
+        return info.toString()
     }
 
     private void infoExchange(SSLSocket c) {
