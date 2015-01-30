@@ -1,14 +1,14 @@
 package gov.nist.healthcare.ttt.webapp.testFramework
-
+import gov.nist.healthcare.ttt.xdr.ssl.SSLContextManager
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.net.ssl.*
-import java.security.KeyStore
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 /**
@@ -31,6 +31,10 @@ public class MockSUTThatAcceptsTLSWithGoodCert extends Thread {
     //TODO change that : either find a better way or rename property
     @Value('${direct.listener.domainName}')
     private String hostname
+
+    @Autowired
+    SSLContextManager manager
+
 
     @PostConstruct
     def bootstrap() {
@@ -84,22 +88,12 @@ public class MockSUTThatAcceptsTLSWithGoodCert extends Thread {
     def setupServerSocketKeystore() {
 
         def socketPort = Integer.parseInt(port);
-
-        InputStream is = this.class.getClassLoader().getResourceAsStream("goodKeystore"+File.separator+"goodKeystore");
-        char[] ksPass = "changeit".toCharArray();
-        char[] ctPass = "changeit".toCharArray();
-
         server = null;
 
         try {
-            KeyStore ks = KeyStore.getInstance("JKS");
-            ks.load(is, ksPass);
-            KeyManagerFactory kmf =
-                    KeyManagerFactory.getInstance("SunX509");
-            kmf.init(ks, ctPass);
 
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(kmf.getKeyManagers(), null, null);
+            SSLContext sc = manager.goodSSLContext
+
             SSLServerSocketFactory ssf = sc.getServerSocketFactory();
             server = (SSLServerSocket) ssf.createServerSocket(socketPort);
             printServerSocketInfo(server);

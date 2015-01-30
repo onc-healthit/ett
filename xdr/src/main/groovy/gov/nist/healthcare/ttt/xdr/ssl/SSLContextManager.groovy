@@ -13,8 +13,8 @@ import java.security.KeyStore
 @Component
 public class SSLContextManager {
 
-    public badSSLContext
-    public goodSSLContext
+    public def badSSLContext
+    public def goodSSLContext
 
 
     SSLContextManager(){
