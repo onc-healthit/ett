@@ -76,8 +76,6 @@ class XdrTestCase8MockIntegrationTest extends Specification {
     }
 
 
-
-
     MockHttpServletRequestBuilder sendXdrRequest() {
         MockMvcRequestBuilders.post("/api/xdr/tc/8/run")
                 .accept(MediaType.ALL)

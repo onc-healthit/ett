@@ -62,40 +62,12 @@ public class MockSUTThatAcceptsTLSWithGoodCert extends Thread {
 
     void handleRequest(SSLSocket connection) {
 
-        printSocketInfo(connection);
-
-        def w,r
-
         try {
-            log.info("tls receiver has accepted the connection.");
-            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-//            r = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String m = "Welcome to SSL Reverse Echo Server." +
-                    " Please type in some words.";
-            w.write(m, 0, m.length());
-            w.newLine();
-            w.flush();
-
-//            while ((m = r.readLine()) != null) {
-//                if (m.equals(".")) break;
-//                char[] a = m.toCharArray();
-//                int n = a.length;
-//                for (int i = 0; i < n / 2; i++) {
-//                    char t = a[i];
-//                    a[i] = a[n - 1 - i];
-//                    a[n - i - 1] = t;
-//                }
-//                w.write(a, 0, n);
-//                w.newLine();
-//                w.flush();
-//            }
+            log.info("SUT check if it should accept incoming connection...");
         } catch (Exception e) {
-            //e.printStackTrace()
-            System.err.println(e.toString());
-            System.out.println("client has dropped the connection.");
+            log.error(e.toString());
+            log.error("client has dropped the connection.");
         } finally {
-            w.close();
-            r.close();
             connection.close();
 
         }
@@ -131,22 +103,21 @@ public class MockSUTThatAcceptsTLSWithGoodCert extends Thread {
     }
 
 
-    private static void printSocketInfo(SSLSocket socket) {
-        System.out.println("Socket class: " + socket.getClass());
-        System.out.println("   Remote address = "
-                + socket.getInetAddress().toString());
-        System.out.println("   Remote port = " + socket.getPort());
-        System.out.println("   Local socket address = "
-                + socket.getLocalSocketAddress().toString());
-        System.out.println("   Local address = "
-                + socket.getLocalAddress().toString());
-        System.out.println("   Local port = " + socket.getLocalPort());
-        System.out.println("   Need client authentication = "
-                + socket.getNeedClientAuth());
-        SSLSession ss = socket.getSession();
-        System.out.println("   Cipher suite = " + ss.getCipherSuite());
-        System.out.println("   Protocol = " + ss.getProtocol());
+    private static def socketInfo(SSLSocket socket) {
+        StringBuffer info = new StringBuffer("\n")
+        info << "   Socket class: " + socket.getClass() + "\n"
+        info << "   Remote address = " + socket.getInetAddress().toString() + "\n"
+        info << "   Remote port = " + socket.getPort() + "\n"
+        info << "   Local socket address = " + socket.getLocalSocketAddress().toString() + "\n"
+        info << "   Local address = " + socket.getLocalAddress().toString() + "\n"
+        info << "   Local port = " + socket.getLocalPort() + "\n"
+        info << "   Need client authentication = " + socket.getNeedClientAuth() + "\n"
 
+        SSLSession ss = socket.getSession()
+        info << "   Cipher suite = " + ss.getCipherSuite() + "\n"
+        info << "   Protocol = " + ss.getProtocol()
+
+        return info.toString()
     }
 
     private static void printServerSocketInfo(SSLServerSocket server) {
