@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component
 @Component
 final class TestCase20 extends TestCase {
 
-    final String goodEndpoint = "xdr_global_endpoint_tc_20_goodEndpoint"
-    final String badEndpoint = "xdr.global.endpoint.tc.20.badEndpoint"
+    final public String goodEndpoint = "xdr_global_endpoint_tc_20_goodEndpoint"
+    final public String badEndpoint = "xdr.global.endpoint.tc.20.badEndpoint"
 
     @Autowired
     public TestCase20(TestCaseExecutor ex) {

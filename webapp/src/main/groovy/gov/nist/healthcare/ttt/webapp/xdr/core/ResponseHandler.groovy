@@ -75,15 +75,19 @@ class ResponseHandler implements IObserver {
 
     private handle(TkValidationReport report) {
 
+        XDRRecordInterface rec
         String directFrom = report.directFrom
+        String msgId = report.messageId
 
-        XDRRecordInterface rec = db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
+        if (directFrom != null) {
+            db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
 
-        if (rec != null) {
-            log.info("found correlation with existing record using directFrom address : $directFrom")
-        } else {
-            log.warn("could not find report correlated with the following directFrom address : $directFrom")
-            String msgId = report.messageId
+            if (rec != null) {
+                log.info("found correlation with existing record using directFrom address : $directFrom")
+            } else {
+                log.warn("could not find report correlated with the following directFrom address : $directFrom")
+            }
+        } else if (msgId != null) {
             String unescapedMsgId = "<" + msgId + ">"
             rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
 
@@ -91,20 +95,21 @@ class ResponseHandler implements IObserver {
                 log.info("found correlation with existing record using messageID : $msgId")
             } else {
                 log.warn("could not find report correlated with the following messageID : $msgId")
-                String simId = report.simId
-                rec = db.getLatestXDRRecordBySimulatorId(simId)
+            }
+        } else {
+            String simId = report.simId
+            rec = db.getLatestXDRRecordBySimulatorId(simId)
 
-                if (rec != null) {
-                    log.info("found correlation with existing record using simId : $simId")
-                } else {
-                    log.error("error : could not correlate report with any existing record")
-                    throw new Exception("error : could not correlate report with any existing record")
-                }
+            if (rec != null) {
+                log.info("found correlation with existing record using simId : $simId")
+            } else {
+                log.error("error : could not correlate report with any existing record")
+                throw new Exception("error : could not correlate report with any existing record")
             }
         }
 
-            TestCase testcase = manager.findTestCase(rec.testCaseNumber)
-            testcase.notifyXdrReceive(rec, report)
+        TestCase testcase = manager.findTestCase(rec.testCaseNumber)
+        testcase.notifyXdrReceive(rec, report)
     }
 
 
