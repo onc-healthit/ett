@@ -5,13 +5,18 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+
 /**
  * Created by gerardin on 10/27/14.
  */
-final class TestCase7 extends TestCaseBaseStrategy {
+@Component
+final class TestCase7 extends TestCase {
 
+    @Autowired
     public TestCase7(TestCaseExecutor ex) {
         super(ex)
     }

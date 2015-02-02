@@ -25,15 +25,15 @@ import static org.slf4j.LoggerFactory.getLogger
  *
  * Created by gerardin on 10/27/14.
  */
-abstract class TestCaseBaseStrategy {
+abstract class TestCase {
 
     protected final TestCaseExecutor executor
 
-    public TestCaseBaseStrategy(TestCaseExecutor executor) {
+    public TestCase(TestCaseExecutor executor) {
         this.executor = executor
     }
 
-    protected static Logger log = getLogger(TestCaseBaseStrategy.class)
+    protected static Logger log = getLogger(TestCase.class)
 
     public abstract TestCaseEvent run(String tcid, Map context, String username)
 

@@ -7,12 +7,17 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+
 /**
  * Created by gerardin on 10/27/14.
  */
-class TestCase8 extends TestCaseBaseStrategy {
+@Component
+final class TestCase8 extends TestCase {
 
+    @Autowired
     public TestCase8(TestCaseExecutor executor) {
         super(executor)
     }

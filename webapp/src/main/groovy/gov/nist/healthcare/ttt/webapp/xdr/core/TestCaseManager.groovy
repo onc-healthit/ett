@@ -4,16 +4,13 @@ import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
-
-import java.lang.reflect.Constructor
-
 /**
  * Created by gerardin on 10/21/14.
  */
@@ -29,13 +26,18 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     TestCaseExecutor executor
     DatabaseProxy db
+    Map<String,TestCase> tcs = [:]
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
     @Autowired
-    TestCaseManager(TestCaseExecutor executor, DatabaseProxy db) {
+    TestCaseManager(TestCaseExecutor executor, DatabaseProxy db,List<TestCase> tcList) {
         this.executor = executor
         this.db = db
+        tcList.each {
+            def tcIdAsKey =  it.getClass().getSimpleName().split("TestCase")[1]
+            tcs[tcIdAsKey] = it
+        }
     }
 
     //TODO
@@ -66,7 +68,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info("running test case $id")
 
         //Check if we have implemented this test case
-        TestCaseBaseStrategy testcase
+        TestCase testcase
         try {
             testcase = findTestCase(id)
         }
@@ -114,25 +116,17 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     }
 
-    //TODO check if we want to rely on reflection or use spring for that matter
     def findTestCase(String id) {
 
-        String[] packagesToLookUp = [ "gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge",
-                                      "gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.mu2",
-                                      "gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp"
-                                    ]
+        def tc = tcs[id]
 
-
-        Class c = packagesToLookUp.findResult {
-            try {
-                Class.forName(it + ".TestCase$id")
-            }
-            catch (Exception ex) {
-            }
+        if(tc == null){
+            throw new Exception("could not find implementation of test case with id $id.")
         }
 
-        Constructor ctor = c.getDeclaredConstructor(TestCaseExecutor)
-        return ctor.newInstance(executor)
+        log.debug("found test case implementation : " + tc.getClass().getSimpleName())
+
+        return tc
     }
 
 
