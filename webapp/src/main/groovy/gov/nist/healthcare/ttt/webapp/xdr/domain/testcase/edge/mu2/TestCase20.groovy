@@ -16,9 +16,14 @@ import org.springframework.stereotype.Component
 @Component
 final class TestCase20 extends TestCase {
 
+    final String goodEndpoint = "xdr_global_endpoint_tc_20_goodEndpoint"
+    final String badEndpoint = "xdr.global.endpoint.tc.20.badEndpoint"
+
     @Autowired
     public TestCase20(TestCaseExecutor ex) {
         super(ex)
+        registerGlobalEndpoints(goodEndpoint, new HashMap())
+        registerGlobalEndpoints(badEndpoint, new HashMap())
     }
 
     @Override
@@ -48,9 +53,9 @@ final class TestCase20 extends TestCase {
         XDRTestStepInterface step2
 
 
-            if (report.simId == "xdr_global_endpoint_tc_20_goodEndpoint") {
+            if (report.simId == goodEndpoint) {
                 step2 = executor.executeSendProcessedMDN(report)
-            } else if (report.simId == "xdr_global_endpoint_tc_20_badEndpoint") {
+            } else if (report.simId == badEndpoint) {
                 step2 = executor.executeSendFailureMDN(report)
             } else {
                 throw new Exception("problem in the workflow")

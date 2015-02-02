@@ -19,6 +19,7 @@ final class TestCase19 extends TestCase {
     @Autowired
     public TestCase19(TestCaseExecutor ex) {
         super(ex)
+        registerGlobalEndpoints("xdr.global.endpoint.tc.19",new HashMap())
     }
 
     @Override
@@ -58,8 +59,6 @@ final class TestCase19 extends TestCase {
             def steps = record.testSteps.findAll{
                  it.name == "XDR_RECEIVE"
             }
-
-
 
             boolean one = steps[0].messageId != steps[1].messageId
             boolean two = steps[0].messageId != steps[2].messageId

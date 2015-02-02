@@ -184,12 +184,17 @@ class TestCaseExecutor {
 
     def configureGlobalEndpoint(String name, Map params) {
 
-        //TODO params not used for now
-        XDRSimulatorInterface sim = createEndpoint(name, params)
+        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(name)
 
-        db.instance.xdrFacade.addNewSimulator(sim)
-
-        log.info("new global simulator has been created.")
+        if(sim == null){
+            log.debug("simulator with id $name does not exists. It will be created now!")
+            sim = createEndpoint(name, params)
+            String id = db.instance.xdrFacade.addNewSimulator(sim)
+            log.debug("new global simulator has been created with the following id : $id")
+        }
+        else{
+            log.debug("simulator with id $name already exists.")
+        }
     }
 
     private XDRSimulatorInterface createEndpoint(String endpointId, Map params){

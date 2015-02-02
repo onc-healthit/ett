@@ -61,4 +61,8 @@ abstract class TestCase {
     public void notifyTLSReceive(XDRRecordInterface xdrRecordInterface, TLSValidationReport tlsValidationReport) {
         throw UnsupportedOperationException()
     }
+
+    public def registerGlobalEndpoints(String name, Map params){
+        executor.configureGlobalEndpoint(name, params)
+    }
 }

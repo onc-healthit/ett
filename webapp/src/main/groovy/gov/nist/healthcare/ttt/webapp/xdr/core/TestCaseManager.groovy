@@ -1,7 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
@@ -40,26 +39,9 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         }
     }
 
-    //TODO
+
     public def setupTestCases() {
-        String[] simulators = [
-                "xdr.global.endpoint.matchby.messageId",
-                "xdr.global.endpoint.tc.19",
-                "xdr.global.endpoint.tc.20.goodEndpoint",
-                "xdr.global.endpoint.tc.20.badEndpoint"
-        ]
-
-        String[] missingSimulators = simulators.each {
-            XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(it)
-            if (sim == null) {
-                return it
-            }
-        }
-
-        //if simulators do not exist, we create them
-        missingSimulators.each() {
-            executor.configureGlobalEndpoint(it, new HashMap())
-        }
+        //Nothing done here anymore but we leave the hook in case
     }
 
     public TestCaseEvent runTestCase(String id, Map userInput, String username) {
