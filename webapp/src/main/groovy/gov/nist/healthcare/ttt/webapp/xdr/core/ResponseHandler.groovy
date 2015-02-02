@@ -1,5 +1,4 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
-
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
@@ -12,7 +11,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
  * Created by gerardin on 10/14/14.
  */
@@ -85,16 +83,25 @@ class ResponseHandler implements IObserver {
         if (rec != null) {
             log.info("handle report for message with directFrom address : $directFrom")
         } else {
+            log.warn("could not find report correlated with the following directFrom address : $directFrom")
             String msgId = report.messageId
             String unescapedMsgId = "<" + msgId + ">"
             rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
             if (rec != null) {
                 log.info("handle report for message with messageId : $msgId")
             } else {
+                log.warn("could not find report correlated with the following messageID : $msgId")
                 String simId = report.simId
                 rec = db.getLatestXDRRecordBySimulatorId(simId)
-                log.info("handle report for simulator with simId : $simId")
+
+                if(rec != null) {
+                    log.info("handle report for simulator with simId : $simId")
+                }
+                else{
+                    log.error("could not correlate report with anything")
+                }
             }
+
 
             //else
             //should report the unability to correlate this report to a test

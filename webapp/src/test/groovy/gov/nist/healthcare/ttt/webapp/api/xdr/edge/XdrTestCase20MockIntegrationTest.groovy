@@ -42,6 +42,8 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     TkListener listener
 
     String messageID = 12345
+    String fromAddress = "from@hit-dev.nist.gov"
+    String toAddress = "to@hit-dev.nist.gov"
 
     static String goodEndpointId = "xdr_global_endpoint_tc_20_goodEndpoint"
     static String badEndpointId = "xdr_global_endpoint_tc_20_badEndpoint"
@@ -103,7 +105,7 @@ class XdrTestCase20MockIntegrationTest extends Specification {
                 .andReturn()
 
         then: "we store the validation in the database"
-        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom("from@edge.nist.gov")
+        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom("$fromAddress")
         assert rec != null
 
 
@@ -149,9 +151,9 @@ class XdrTestCase20MockIntegrationTest extends Specification {
                 .principal(new PrincipalImpl(userId))
     }
 
-    public static String testCaseConfig =
+    public String testCaseConfig =
             """{
-        "direct_from": "from@edge.nist.gov"
+        "direct_from": "$fromAddress"
 }"""
 
 
@@ -178,8 +180,8 @@ class XdrTestCase20MockIntegrationTest extends Specification {
             &lt;direct:addressBlock xmlns:direct=&quot;urn:direct:addressing&quot;
             soapenv:role=&quot;urn:direct:addressing:destination&quot;
             soapenv:relay=&quot;true&quot;&gt;
-            &lt;direct:from&gt;from@edge.nist.gov&lt;/direct:from&gt;
-            &lt;direct:to&gt;to@edge.nist.gov&lt;/direct:to&gt;
+            &lt;direct:from&gt;$fromAddress&lt;/direct:from&gt;
+            &lt;direct:to&gt;$toAddress&lt;/direct:to&gt;
             &lt;/direct:addressBlock&gt;
             &lt;wsa:To soapenv:mustUnderstand=&quot;true&quot; xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
             xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;
@@ -265,8 +267,8 @@ class XdrTestCase20MockIntegrationTest extends Specification {
             &lt;direct:addressBlock xmlns:direct=&quot;urn:direct:addressing&quot;
             soapenv:role=&quot;urn:direct:addressing:destination&quot;
             soapenv:relay=&quot;true&quot;&gt;
-            &lt;direct:from&gt;from@edge.nist.gov&lt;/direct:from&gt;
-            &lt;direct:to&gt;to@edge.nist.gov&lt;/direct:to&gt;
+            &lt;direct:from&gt;$fromAddress&lt;/direct:from&gt;
+            &lt;direct:to&gt;$toAddress&lt;/direct:to&gt;
             &lt;/direct:addressBlock&gt;
             &lt;wsa:To soapenv:mustUnderstand=&quot;true&quot; xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;
             xmlns:wsa=&quot;http://www.w3.org/2005/08/addressing&quot;

@@ -43,6 +43,8 @@ final class TestCase19 extends TestCaseBaseStrategy {
 
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
+        //TODO cleaner implementation : choose relevant steps + better way to compare message ids.
+
         if(record.testSteps.size() != 4) {
             executor.db.updateXDRRecord(record)
         }

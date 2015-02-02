@@ -44,7 +44,7 @@ final class TestCase20 extends TestCaseBaseStrategy {
 
 
             if (report.simId == "xdr_global_endpoint_tc_20_goodEndpoint") {
-                step2 = executor.executeSendMDN(report)
+                step2 = executor.executeSendProcessedMDN(report)
             } else if (report.simId == "xdr_global_endpoint_tc_20_badEndpoint") {
                 step2 = executor.executeSendFailureMDN(report)
             } else {
