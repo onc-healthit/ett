@@ -12,4 +12,6 @@ class StandardContent {
     String report
 
     String endpoint
+
+    String endpointTLS
 }
