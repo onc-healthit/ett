@@ -91,12 +91,12 @@ class  XdrTestCase7MockIntegrationTest extends Specification {
 
         when: "we try to connect to TTT with what we consider a good cert"
         try {
-            client.connectOverGoodTLS([hostname: hostname, port: tlsPort])
+            client.connectOverGoodTLS([ip_address: hostname, port: tlsPort])
         }
         catch(Exception e){
             //TODO improve that
             println(e.getCause())
-            println("we should throw an exception because TTT give us a bad cert")
+            println("Success. We should throw an exception because TTT give us a bad cert")
         }
         MockHttpServletRequestBuilder checkStatus = checkTestCaseStatusRequest()
         Thread.sleep(4000)
