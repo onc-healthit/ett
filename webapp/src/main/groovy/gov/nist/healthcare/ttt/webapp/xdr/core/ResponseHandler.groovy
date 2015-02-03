@@ -80,7 +80,7 @@ class ResponseHandler implements IObserver {
         String msgId = report.messageId
 
         if (directFrom != null) {
-            db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
+            rec = db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
 
             if (rec != null) {
                 log.info("found correlation with existing record using directFrom address : $directFrom")

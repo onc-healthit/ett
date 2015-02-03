@@ -36,6 +36,7 @@ final class TestCase1 extends TestCase {
 
         def content = new StandardContent()
         content.endpoint = step.xdrSimulator.endpoint
+        content.endpointTLS = step.xdrSimulator.endpointTLS
 
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
     }
