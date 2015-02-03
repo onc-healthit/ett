@@ -1,8 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
+import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
+import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
+import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
@@ -15,12 +18,22 @@ import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 /**
  * Created by gerardin on 10/28/14.
  */
 @Component
 class TestCaseExecutor {
+
+    @Value('${direct.certificates.repository.path}')
+    private String directCertPath
+
+    @Value('${direct.certificates.password}')
+    private String directPassword
+
+    @Value('${direct.sender.port}')
+    private int senderPort
 
     public final DatabaseProxy db
     private final XdrReceiver receiver
@@ -91,7 +104,7 @@ class TestCaseExecutor {
     }
 
 
-    protected XDRTestStepInterface executeCreateEndpointsStep(String tcid, String username, def userInput){
+    protected XDRTestStepInterface executeCreateEndpointsStep(String tcid, String username, Map userInput){
 
         try {
 
@@ -102,21 +115,9 @@ class TestCaseExecutor {
 
             def timestamp = clock.timestamp
 
-            //TODO harcoded here. This is dangerous!
-            //Moreover it has to take into account implicit rules to satisfy Bill's views on ID.
-            //For example, no dots are allowed anywhere, thus we need to sanitize username
-            //(for example the GUI mandates to use email addresses for username, thus the dots!)
-            def sanitized_username = username.replaceAll(/\./,"_")
-            String endpointId = "${sanitized_username}_${tcid}_${timestamp}"
+            String endpointId = "${username}_${tcid}_${timestamp}"
 
-            log.info("trying to generate endpoints with id : ${endpointId}")
-
-            EndpointConfig config = new EndpointConfig()
-            config.name = endpointId
-
-            log.info("trying to create new endpoints on toolkit...")
-
-            XDRSimulatorInterface sim = receiver.createEndpoints(config)
+            XDRSimulatorInterface sim = createEndpoint(endpointId,userInput)
 
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.name = "CREATE_ENDPOINTS"
@@ -128,6 +129,89 @@ class TestCaseExecutor {
         catch(e){
             throw new Exception(MsgLabel.CREATE_NEW_ENDPOINTS_FAILED.msg, e)
         }
+    }
+
+    protected XDRTestStepInterface executeSendProcessedMDN(TkValidationReport report){
+
+        sendMDN(report, "processed")
+
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "DIRECT_PROCESSED_MDN_SENT"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+
+        return step
+    }
+
+    protected XDRTestStepInterface executeSendFailureMDN(def report){
+
+        sendMDN(report, "failure")
+
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "DIRECT_FAILURE_MDN_SENT"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+
+        return step
+    }
+
+    private def sendMDN(TkValidationReport report, String state) {
+
+        String toAddress = report.directFrom
+        def generator = new MDNGenerator();
+
+        generator.setReporting_UA_name("direct.nist.gov");
+        generator.setReporting_UA_product("Security Agent");
+        generator.setDisposition("automatic-action/MDN-sent-automatically;$state");
+        generator.setFinal_recipient("from@transport-testing.nist.gov");//COMING FROM MESSAGE TO_ADDRESS
+        generator.setFromAddress("from@transport-testing.nist.gov"); //COMING FROM MESSAGE TO_ADDRESS
+        generator.setOriginal_message_id("<$report.messageId>");
+        generator.setSubject("Automatic MDN");
+        generator.setText("Your message was successfully processed.");
+        generator.setToAddress(toAddress);
+        generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup(toAddress))
+
+        ListenerProcessor listener = new ListenerProcessor()
+        listener.setCertificatesPath(directCertPath)
+        listener.setCertPassword(directPassword)
+
+        generator.setSigningCert(listener.getSigningPrivateCert("good"))
+        generator.setSigningCertPassword(directPassword)
+
+        def mdn = generator.generateMDN()
+
+        new DirectMessageSender().send(senderPort, toAddress, mdn, "from@transport-testing.nist.gov", toAddress)
+    }
+
+
+    def configureGlobalEndpoint(String name, Map params) {
+
+        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(name)
+
+        if(sim == null){
+            log.debug("simulator with id $name does not exists. It will be created now!")
+            sim = createEndpoint(name, params)
+            String id = db.instance.xdrFacade.addNewSimulator(sim)
+            log.debug("new global simulator has been created with the following id : $id")
+        }
+        else{
+            log.debug("simulator with id $name already exists.")
+        }
+    }
+
+    private XDRSimulatorInterface createEndpoint(String endpointId, Map params){
+
+        EndpointConfig config = new EndpointConfig()
+
+        //TODO harcoded here. This is dangerous!
+        //Moreover it has to take into account implicit rules to satisfy Bill's views on ID.
+        //For example, no dots are allowed anywhere, thus we need to sanitize username
+        //(for example the GUI mandates to use email addresses for username, thus the dots!)
+        config.putAll(params)
+        config.name = endpointId.replaceAll(/\./,"_")
+
+
+        log.info("trying to create new endpoints on toolkit... [${config.name}]")
+
+        return receiver.createEndpoints(config)
     }
 
    protected XDRTestStepInterface executeStoreXDRReport(TkValidationReport report){
@@ -157,25 +241,24 @@ class TestCaseExecutor {
         }
     }
 
-
-    def configureGlobalEndpoint(String name, Map params) {
-        EndpointConfig config = new EndpointConfig()
-        config.putAll(params)
-        config.name = name
-
-        log.info("trying to create new endpoints on toolkit...")
-
-        XDRSimulatorInterface sim = receiver.createEndpoints(config)
-
-        db.instance.xdrFacade.addNewSimulator(sim)
-
-        log.info("new global simulator has been created.")
-    }
-
     XDRTestStepInterface recordSenderAddress(Map info) {
         XDRTestStepInterface step = new TestStepBuilder("BAD_CERT_MUST_DISCONNECT").build();
         step.hostname = info.ip_address
         return step
     }
 
+    XDRTestStepInterface executeDirectAddressCorrelationStep(String tcid, String directFrom) {
+        XDRTestStepInterface step = new TestStepBuilder("CORRELATE_ENDPOINT_WITH_DIRECTFROM_ADDRESS").build()
+
+        //TODO handle exception if not found
+
+        //TODO have a util method instead
+        String simId = ("xdr.global.endpoint.tc."+tcid).replaceAll(/\./,"_")
+        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(simId)
+        step.xdrSimulator = sim
+        step.directFrom = directFrom
+
+        log.debug("$simId found. Correlation with direct address $directFrom performed.")
+        return step
+    }
 }

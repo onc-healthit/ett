@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.mu2
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
@@ -13,31 +13,34 @@ import org.springframework.stereotype.Component
 /**
  * Created by gerardin on 10/27/14.
  */
-
 @Component
-final class TestCase1 extends TestCase {
+final class TestCase20 extends TestCase {
+
+    final public String goodEndpoint = "xdr_global_endpoint_tc_20_goodEndpoint"
+    final public String badEndpoint = "xdr.global.endpoint.tc.20.badEndpoint"
 
     @Autowired
-    public TestCase1(TestCaseExecutor ex){
-       super(ex)
+    public TestCase20(TestCaseExecutor ex) {
+        super(ex)
+        registerGlobalEndpoints(goodEndpoint, new HashMap())
+        registerGlobalEndpoints(badEndpoint, new HashMap())
     }
 
     @Override
     TestCaseEvent run(String tcid, Map context, String username) {
 
-         XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
+        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(tcid, context.direct_from)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
-        log.info  "test case ${tcid} : successfully created new endpoints with config : ${context}. Ready to receive message."
+        log.info  "test case ${tcid} : successfully configured. Ready to receive messages."
 
         def content = new StandardContent()
-        content.endpoint = step.xdrSimulator.endpoint
 
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.MANUAL, content)
     }
 
     @Override
@@ -46,6 +49,21 @@ final class TestCase1 extends TestCase {
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
 
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+
+        XDRTestStepInterface step2
+
+
+            if (report.simId == goodEndpoint) {
+                step2 = executor.executeSendProcessedMDN(report)
+            } else if (report.simId == badEndpoint) {
+                step2 = executor.executeSendFailureMDN(report)
+            } else {
+                throw new Exception("problem in the workflow")
+            }
+
+        updatedRecord = new TestCaseBuilder(updatedRecord).addStep(step).build()
+
+        executor.db.addNewXdrRecord(updatedRecord)
 
         done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
 

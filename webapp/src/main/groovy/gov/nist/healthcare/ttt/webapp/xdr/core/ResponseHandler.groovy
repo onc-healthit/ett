@@ -3,7 +3,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
@@ -39,56 +39,76 @@ class ResponseHandler implements IObserver {
     @Override
     def getNotification(Message msg) {
 
-        println "notification received"
+        log.info "notification received"
 
         if (msg.status == Message.Status.ERROR) {
-            throw Exception()
-        }
+            handleBadNotification(msg)
+        } else {
 
-
-        try {
-            handle(msg.content)
-        }
-        catch (Exception e) {
-            e.printStackTrace()
-            println "notification content not understood"
+            try {
+                handle(msg.content)
+            }
+            catch (Exception e) {
+                e.printStackTrace()
+                log.error "notification content not understood"
+            }
         }
     }
 
+    private def handleBadNotification(Message message) {
+        log.error("$message.status : $message.message")
+        log.error("recovery method : Logging error and silent failure")
+    }
+
     private handle(TLSValidationReport report) {
-        println "handle tls report"
+        log.info "handle tls report."
 
 
         XDRRecordInterface rec = db.instance.xdrFacade.getLatestXDRRecordByHostname(report.hostname)
         if (rec == null) {
             log.info "could not correlate TLS connection with an existing record."
-        }
-        else {
-            TestCaseBaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
+        } else {
+            TestCase testcase = manager.findTestCase(rec.testCaseNumber)
             testcase.notifyTLSReceive(rec, report)
         }
     }
 
     private handle(TkValidationReport report) {
 
+        XDRRecordInterface rec
+        String directFrom = report.directFrom
         String msgId = report.messageId
-        String unescapedMsgId = "<" + msgId + ">"
 
-        XDRRecordInterface rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
+        if (directFrom != null) {
+            db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
 
-        //if not working, find with simulatorId
-        if (rec != null) {
-            println "handle report for message with messageId : $msgId"
+            if (rec != null) {
+                log.info("found correlation with existing record using directFrom address : $directFrom")
+            } else {
+                log.warn("could not find report correlated with the following directFrom address : $directFrom")
+            }
+        } else if (msgId != null) {
+            String unescapedMsgId = "<" + msgId + ">"
+            rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
+
+            if (rec != null) {
+                log.info("found correlation with existing record using messageID : $msgId")
+            } else {
+                log.warn("could not find report correlated with the following messageID : $msgId")
+            }
         } else {
             String simId = report.simId
             rec = db.getLatestXDRRecordBySimulatorId(simId)
-            println "handle report for simulator with simId : $simId"
+
+            if (rec != null) {
+                log.info("found correlation with existing record using simId : $simId")
+            } else {
+                log.error("error : could not correlate report with any existing record")
+                throw new Exception("error : could not correlate report with any existing record")
+            }
         }
 
-        //else
-        //should report the unability to correlate this report to a test
-
-        TestCaseBaseStrategy testcase = manager.findTestCase(rec.testCaseNumber)
+        TestCase testcase = manager.findTestCase(rec.testCaseNumber)
         testcase.notifyXdrReceive(rec, report)
     }
 

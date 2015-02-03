@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.mu2
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
@@ -13,29 +13,29 @@ import org.springframework.stereotype.Component
 /**
  * Created by gerardin on 10/27/14.
  */
-
 @Component
-final class TestCase1 extends TestCase {
+final class TestCase19 extends TestCase {
 
     @Autowired
-    public TestCase1(TestCaseExecutor ex){
-       super(ex)
+    public TestCase19(TestCaseExecutor ex) {
+        super(ex)
+        registerGlobalEndpoints("xdr.global.endpoint.tc.19",new HashMap())
     }
 
     @Override
     TestCaseEvent run(String tcid, Map context, String username) {
 
-         XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
+        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(tcid, context.direct_from)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
-        log.info  "test case ${tcid} : successfully created new endpoints with config : ${context}. Ready to receive message."
+        log.info  "test case ${tcid} : successfully configured. Ready to receive messages."
 
         def content = new StandardContent()
-        content.endpoint = step.xdrSimulator.endpoint
+        content.endpoint = step.xdrSimulator.endpointTLS
 
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
     }
@@ -44,10 +44,32 @@ final class TestCase1 extends TestCase {
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+        step.directFrom = report.directFrom
+        step.messageId = report.messageId
 
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
-        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
+        //TODO cleaner implementation : choose relevant steps + better way to compare message ids.
+
+        if(record.testSteps.size() != 4) {
+            executor.db.updateXDRRecord(record)
+        }
+        else {
+
+            def steps = record.testSteps.findAll{
+                 it.name == "XDR_RECEIVE"
+            }
+
+            boolean one = steps[0].messageId != steps[1].messageId
+            boolean two = steps[0].messageId != steps[2].messageId
+            boolean three = steps[1].messageId != steps[2].messageId
+            if(one & two & three) {
+                done(XDRRecordInterface.CriteriaMet.PASSED, updatedRecord)
+            }
+            else{
+                done(XDRRecordInterface.CriteriaMet.FAILED, updatedRecord)
+            }
+        }
 
     }
 }

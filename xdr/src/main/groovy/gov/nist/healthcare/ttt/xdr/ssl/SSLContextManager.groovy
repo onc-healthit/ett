@@ -13,8 +13,8 @@ import java.security.KeyStore
 @Component
 public class SSLContextManager {
 
-    public badSSLContext
-    public goodSSLContext
+    public def badSSLContext
+    public def goodSSLContext
 
 
     SSLContextManager(){
@@ -30,8 +30,9 @@ public class SSLContextManager {
         truststoreInput.close();
 
         String relativePath2 = "goodKeystore" + File.separator + "goodKeystore";
+        String relativePath3 = "goodKeystore" + File.separator + "goodTruststore";
         InputStream keystoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath2);
-        InputStream truststoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath2);
+        InputStream truststoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath3);
         goodSSLContext = setSSLFactories(keystoreInput2, "changeit", truststoreInput2, "changeit");
         keystoreInput2.close();
         truststoreInput2.close();

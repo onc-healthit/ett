@@ -1,18 +1,15 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBaseStrategy
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
-
-import java.lang.reflect.Constructor
 /**
  * Created by gerardin on 10/21/14.
  */
@@ -28,22 +25,23 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     TestCaseExecutor executor
     DatabaseProxy db
+    Map<String,TestCase> tcs = [:]
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
     @Autowired
-    TestCaseManager(TestCaseExecutor executor, DatabaseProxy db) {
+    TestCaseManager(TestCaseExecutor executor, DatabaseProxy db,List<TestCase> tcList) {
         this.executor = executor
         this.db = db
+        tcList.each {
+            def tcIdAsKey =  it.getClass().getSimpleName().split("TestCase")[1]
+            tcs[tcIdAsKey] = it
+        }
     }
 
-    //TODO
-    public def setupTestCases() {
-        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId("xdr.global.endpoint.matchby.messageId")
 
-        if (sim == null) {
-            executor.configureGlobalEndpoint("xdr.global.endpoint.matchby.messageId", new HashMap())
-        }
+    public def setupTestCases() {
+        //Nothing done here anymore but we leave the hook in case
     }
 
     public TestCaseEvent runTestCase(String id, Map userInput, String username) {
@@ -52,12 +50,12 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info("running test case $id")
 
         //Check if we have implemented this test case
-        TestCaseBaseStrategy testcase
+        TestCase testcase
         try {
             testcase = findTestCase(id)
         }
         catch (Exception e) {
-            throw new Exception("test case $id is not yet implemented",e)
+            throw new Exception("test case $id is not yet implemented", e)
         }
 
         //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet
@@ -77,17 +75,17 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         record.getTestSteps().each {
             stepLists <<= "$it.name , "
         }
-        log.info stepLists.substring(0,stepLists.length()-1)
+        log.info stepLists.substring(0, stepLists.length() - 1)
 
         def report = null
         def content = new StandardContent()
 
-        if(record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
+        if (record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
 
             def step = record.getTestSteps().last()
 
 
-            if(!step.xdrReportItems.empty) {
+            if (!step.xdrReportItems.empty) {
                 log.info(step.xdrReportItems.size() + " report(s) found.")
                 report = step.xdrReportItems
                 content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST }.report
@@ -96,29 +94,21 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             }
         }
 
-        return new TestCaseEvent(record.criteriaMet,content)
+        return new TestCaseEvent(record.criteriaMet, content)
 
     }
 
-    //TODO check if we want to rely on reflection or use spring for that matter
     def findTestCase(String id) {
 
-        Class c
+        def tc = tcs[id]
 
-        try {
-            c = Class.forName("gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.TestCase$id")
-        }
-        catch (Exception e) {
-            try {
-                c = Class.forName("gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.TestCase$id")
-            }
-            catch (Exception ex) {
-                throw ex
-            }
+        if(tc == null){
+            throw new Exception("could not find implementation of test case with id $id.")
         }
 
-        Constructor ctor = c.getDeclaredConstructor(TestCaseExecutor)
-        return ctor.newInstance(executor)
+        log.debug("found test case implementation : " + tc.getClass().getSimpleName())
+
+        return tc
     }
 
 

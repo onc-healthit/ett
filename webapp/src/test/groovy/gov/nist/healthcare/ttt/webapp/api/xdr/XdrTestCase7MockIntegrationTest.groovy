@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase7MockIntegrationTest extends Specification {
+class  XdrTestCase7MockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 

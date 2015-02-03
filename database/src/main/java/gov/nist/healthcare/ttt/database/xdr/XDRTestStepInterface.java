@@ -7,7 +7,7 @@
 package gov.nist.healthcare.ttt.database.xdr;
 
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet;
-import java.sql.Timestamp;
+
 import java.util.List;
 
 /**

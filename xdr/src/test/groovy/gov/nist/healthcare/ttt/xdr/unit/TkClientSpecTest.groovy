@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct
  *
  * Here we only test the http client behavior under various conditions.
  * The fake toolkit we use does not comply with the new API but this is largely irrelevant.
- * We want to know if the client reacts appropriately.
+ * We want to know whether the client reacts appropriately.
  */
 @WebAppConfiguration
 @IntegrationTest
