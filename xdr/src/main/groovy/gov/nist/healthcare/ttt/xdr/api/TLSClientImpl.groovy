@@ -38,10 +38,10 @@ public class TLSClientImpl implements TLSClient {
     }
 
     public void startConnection(SSLSocketFactory f,Map config) throws IOException{
-            String hostname = config.hostname
+            String ipAddress = config.ip_address
             def port = config.port
 
-            SSLSocket c = (SSLSocket) f.createSocket(hostname, port);
+            SSLSocket c = (SSLSocket) f.createSocket(ipAddress, port);
             log.info("Sending a request to the server using socket: \n" + socketInfo(c))
             c.startHandshake();
             c.close();

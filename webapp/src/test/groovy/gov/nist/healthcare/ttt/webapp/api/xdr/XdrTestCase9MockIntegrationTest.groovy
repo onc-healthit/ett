@@ -90,7 +90,7 @@ class XdrTestCase9MockIntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "hostname": "localhost",
+    "ip_address": "localhost",
     "port": 12085
 }"""
 

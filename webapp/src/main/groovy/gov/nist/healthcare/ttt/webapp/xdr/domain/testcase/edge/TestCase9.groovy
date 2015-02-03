@@ -29,7 +29,7 @@ class TestCase9 extends TestCase {
         XDRTestStepImpl step = new TestStepBuilder("SEND_OVER_SSL_WITH_BAD_CERT").build()
 
         try {
-            executor.tlsClient.connectOverBadTLS([hostname: context.hostname, port: context.port])
+            executor.tlsClient.connectOverBadTLS([ip_address: context.ip_address, port: context.port])
             log.info("tls connection succeeded. Test failed.")
             step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
         }
