@@ -75,8 +75,12 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpoint",
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }, {
+        "name": "Port",
+        "key": "port",
         "type": "string"
     }]
 }, {
@@ -87,8 +91,12 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpoint",
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }, {
+        "name": "Port",
+        "key": "port",
         "type": "string"
     }]
 }, {
