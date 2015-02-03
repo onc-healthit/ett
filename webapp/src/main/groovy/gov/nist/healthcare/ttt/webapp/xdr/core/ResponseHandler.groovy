@@ -78,6 +78,7 @@ class ResponseHandler implements IObserver {
         XDRRecordInterface rec
         String directFrom = report.directFrom
         String msgId = report.messageId
+        String simId = report.simId
 
         if (directFrom != null) {
             rec = db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
@@ -87,7 +88,9 @@ class ResponseHandler implements IObserver {
             } else {
                 log.warn("could not find report correlated with the following directFrom address : $directFrom")
             }
-        } else if (msgId != null) {
+        }
+
+        if(rec == null & msgId != null) {
             String unescapedMsgId = "<" + msgId + ">"
             rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
 
@@ -96,8 +99,9 @@ class ResponseHandler implements IObserver {
             } else {
                 log.warn("could not find report correlated with the following messageID : $msgId")
             }
-        } else {
-            String simId = report.simId
+        }
+
+        if(rec == null & simId != null ) {
             rec = db.getLatestXDRRecordBySimulatorId(simId)
 
             if (rec != null) {
@@ -106,6 +110,10 @@ class ResponseHandler implements IObserver {
                 log.error("error : could not correlate report with any existing record")
                 throw new Exception("error : could not correlate report with any existing record")
             }
+        }
+
+        if(rec == null){
+            throw new Exception("error : could not correlate report with any existing record")
         }
 
         TestCase testcase = manager.findTestCase(rec.testCaseNumber)
