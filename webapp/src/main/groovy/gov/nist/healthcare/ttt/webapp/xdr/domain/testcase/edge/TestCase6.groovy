@@ -31,7 +31,7 @@ final class TestCase6 extends TestCase {
         executor.db.addNewXdrRecord(record)
 
         def content = new StandardContent()
-        content.endpoint = step.xdrSimulator.endpointTLS
+        content.endpointTLS = step.xdrSimulator.endpointTLS
 
         log.info "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING , content)

@@ -86,7 +86,7 @@ class XdrTestCase8MockIntegrationTest extends Specification {
 
     public static String testCaseConfigGoodTLSPort =
             """{
-    "hostname": "localhost",
+    "ip_address": "127.0.0.1",
     "port": 12085
 }"""
 

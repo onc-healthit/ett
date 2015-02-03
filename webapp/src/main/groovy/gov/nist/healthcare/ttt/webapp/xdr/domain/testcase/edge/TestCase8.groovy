@@ -29,7 +29,7 @@ final class TestCase8 extends TestCase {
         XDRTestStepImpl step = new TestStepBuilder("SEND_OVER_SSL_WITH_GOOD_CERT").build()
 
         try {
-            executor.tlsClient.connectOverGoodTLS([hostname: context.hostname, port: context.port])
+            executor.tlsClient.connectOverGoodTLS([ip_address: context.ip_address, port: context.port])
             log.info("tls connection succeeded.")
             step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
         }
