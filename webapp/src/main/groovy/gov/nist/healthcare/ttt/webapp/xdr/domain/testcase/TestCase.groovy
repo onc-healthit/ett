@@ -70,6 +70,11 @@ abstract class TestCase {
         throw UnsupportedOperationException()
     }
 
+    public TestCaseEvent getReport(XDRRecordInterface record){
+        log.warn("no report info available for this test case")
+        return new TestCaseEvent(record.criteriaMet, new StandardContent())
+    }
+
     public XDRSimulatorInterface registerGlobalEndpoints(String name, Map params){
         executor.configureGlobalEndpoint(name, params)
     }

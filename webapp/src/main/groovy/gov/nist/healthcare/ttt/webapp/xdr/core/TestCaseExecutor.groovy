@@ -8,7 +8,9 @@ import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.TLSClient
 import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
@@ -277,5 +279,23 @@ class TestCaseExecutor {
 
         log.debug("$simId found. Correlation with direct address $directFrom performed.")
         return step
+    }
+
+    TestCaseEvent getSimpleSendReport(XDRRecordInterface record) {
+        def content = new StandardContent()
+
+        if (record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
+
+            def step = record.getTestSteps().last()
+
+            if (!step.xdrReportItems.empty) {
+                log.info(step.xdrReportItems.size() + " report(s) found.")
+                def report = step.xdrReportItems
+                content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST }.report
+                content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE }.report
+            }
+        }
+
+        return new TestCaseEvent(record.criteriaMet, content)
     }
 }

@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.api.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr.edge.sending.tls
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase9MockIntegrationTest extends Specification {
+class XdrTestCase8MockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
@@ -61,11 +61,9 @@ class XdrTestCase9MockIntegrationTest extends Specification {
     }
 
 
+    def "user succeeds in running test case 8"() throws Exception {
 
-
-    def "user succeeds in running test case 9"() throws Exception {
-
-        when: "receiving a request to configure test case 9"
+        when: "receiving a request to configure test case 8"
         MockHttpServletRequestBuilder getRequest = sendXdrRequest()
 
         then: "we receive back a message with status and report of the transaction"
@@ -78,19 +76,17 @@ class XdrTestCase9MockIntegrationTest extends Specification {
     }
 
 
-
-
     MockHttpServletRequestBuilder sendXdrRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/9/configure")
+        MockMvcRequestBuilders.post("/api/xdr/tc/8/configure")
                 .accept(MediaType.ALL)
-                .content(testCaseConfig)
+                .content(testCaseConfigGoodTLSPort)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
-    public static String testCaseConfig =
+    public static String testCaseConfigGoodTLSPort =
             """{
-    "ip_address": "localhost",
+    "ip_address": "127.0.0.1",
     "port": 12085
 }"""
 

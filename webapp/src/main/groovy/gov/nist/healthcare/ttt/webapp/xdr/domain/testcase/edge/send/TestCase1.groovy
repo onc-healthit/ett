@@ -44,10 +44,12 @@ final class TestCase1 extends TestCase {
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
-
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-
         done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
 
+    }
+
+    public TestCaseEvent getReport(XDRRecordInterface record) {
+        executor.getSimpleSendReport(record)
     }
 }

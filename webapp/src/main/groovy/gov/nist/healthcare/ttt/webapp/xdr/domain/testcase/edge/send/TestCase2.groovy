@@ -50,4 +50,8 @@ final class TestCase2 extends TestCase {
         done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
 
     }
+
+    public TestCaseEvent getReport(XDRRecordInterface record) {
+        executor.getSimpleSendReport(record)
+    }
 }

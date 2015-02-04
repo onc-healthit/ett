@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.api.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr.edge.sending
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication

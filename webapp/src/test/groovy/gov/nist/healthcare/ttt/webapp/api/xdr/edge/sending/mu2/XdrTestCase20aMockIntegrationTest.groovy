@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.api.xdr.edge
+package gov.nist.healthcare.ttt.webapp.api.xdr.edge.sending.mu2
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase20bMockIntegrationTest extends Specification {
+class XdrTestCase20aMockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
@@ -77,9 +77,9 @@ class XdrTestCase20bMockIntegrationTest extends Specification {
     }
 
 
-    def "user succeeds in running test case 20b"() throws Exception {
+    def "user succeeds in running test case 20a"() throws Exception {
 
-        when: "receiving a request to configure test case 20b"
+        when: "receiving a request to configure test case 20a"
         MockHttpServletRequestBuilder getRequest = configureTestCaseRequest()
 
         then: "we receive back a success message with the endpoints info"
@@ -114,7 +114,7 @@ class XdrTestCase20bMockIntegrationTest extends Specification {
         assert rec.testSteps.size() == 2
 
 
-        when: "we check the status of testcase20b"
+        when: "we check the status of testcase20a"
         MockHttpServletRequestBuilder getRequest4 = checkTestCaseStatusRequest()
 
         then: "we receive back a success message asking for manual validation"
@@ -127,7 +127,7 @@ class XdrTestCase20bMockIntegrationTest extends Specification {
     }
 
     MockHttpServletRequestBuilder configureTestCaseRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/20b/configure")
+        MockMvcRequestBuilders.post("/api/xdr/tc/20a/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
