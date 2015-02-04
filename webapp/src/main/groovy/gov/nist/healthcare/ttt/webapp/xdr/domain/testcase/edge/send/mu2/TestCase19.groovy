@@ -1,6 +1,5 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.mu2
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.mu2
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
@@ -19,21 +18,20 @@ final class TestCase19 extends TestCase {
     @Autowired
     public TestCase19(TestCaseExecutor ex) {
         super(ex)
-        XDRSimulatorInterface sim1 = registerGlobalEndpoints(id,new HashMap())
-        endpoints = [sim1.endpoint, sim1.endpointTLS]
+        sim = registerGlobalEndpoints(id,new HashMap())
     }
 
     @Override
-    TestCaseEvent configure(String tcid, Map context, String username) {
+    TestCaseEvent configure(Map context, String username) {
 
-        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(tcid, context.direct_from)
+        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(id, context.direct_from)
 
         //Create a new test record.
-        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
-        log.info  "test case ${tcid} : successfully configured. Ready to receive messages."
+        log.info  "test case ${id} : successfully configured. Ready to receive messages."
 
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, new StandardContent())
     }

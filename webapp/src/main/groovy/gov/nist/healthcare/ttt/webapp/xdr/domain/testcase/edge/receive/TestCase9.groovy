@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
@@ -24,7 +24,7 @@ class TestCase9 extends TestCase {
 
 
     @Override
-    TestCaseEvent configure(String tcid, Map context, String username) {
+    TestCaseEvent configure(Map context, String username) {
 
         XDRTestStepImpl step = new TestStepBuilder("SEND_OVER_SSL_WITH_BAD_CERT").build()
 
@@ -39,7 +39,7 @@ class TestCase9 extends TestCase {
             step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
         }
         //Create a new test record.
-        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 

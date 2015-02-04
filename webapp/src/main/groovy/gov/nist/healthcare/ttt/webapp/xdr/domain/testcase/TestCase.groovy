@@ -30,7 +30,7 @@ import static org.slf4j.LoggerFactory.getLogger
  */
 abstract class TestCase {
 
-    protected List<String> endpoints
+    protected XDRSimulatorInterface sim
 
     protected final String id
 
@@ -43,7 +43,7 @@ abstract class TestCase {
 
     protected static Logger log = getLogger(TestCase.class)
 
-    public abstract TestCaseEvent configure(String tcid, Map context, String username)
+    public abstract TestCaseEvent configure(Map context, String username)
 
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         throw UnsupportedOperationException()
@@ -75,6 +75,6 @@ abstract class TestCase {
     }
 
     public List<String> getEndpoints() {
-        return endpoints
+        return [sim.endpoint, sim.endpointTLS]
     }
 }

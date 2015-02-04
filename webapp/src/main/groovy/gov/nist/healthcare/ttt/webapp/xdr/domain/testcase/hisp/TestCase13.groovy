@@ -21,11 +21,11 @@ final class TestCase13 extends TestCase {
 
 
     @Override
-    TestCaseEvent configure(String tcid, Map context, String username) {
+    TestCaseEvent configure(Map context, String username) {
             XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
             //Create a new test record.
-            XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+            XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
             executor.db.addNewXdrRecord(record)
 

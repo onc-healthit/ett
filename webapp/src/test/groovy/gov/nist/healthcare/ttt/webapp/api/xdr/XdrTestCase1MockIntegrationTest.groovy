@@ -46,7 +46,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
     MockMvc mockMvcCheckTestCaseStatus
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
-    static String id = "user1_1_2014"
+    static String simId = "1"
     static String userId = "user1"
 
     /*
@@ -80,8 +80,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.value.endpoint" +
-                "").value("http://hit-dev.nist.gov:11080/xdstools3/sim/user1_1_2014/docrec/prb"))
+                .andExpect(jsonPath("content.value.endpoint").value("http://hit-dev.nist.gov:11080/xdstools3/sim/1/docrec/prb"))
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 
@@ -93,7 +92,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
                 .andReturn()
 
         then: "we store the validation in the database"
-        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordBySimulatorId(id)
+        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordBySimulatorId(simId)
         def step = rec.testSteps.find{
             it.name == "XDR_RECEIVE"
         }
@@ -147,7 +146,7 @@ class XdrTestCase1MockIntegrationTest extends Specification {
 
     private static String toolkitReport =
             """
-<transactionLog type='docrec' simId='$id'>
+<transactionLog type='docrec' simId='$simId'>
     <request>
         <header>content-type: multipart/related; boundary="MIMEBoundary_f41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70"; type="application/xop+xml"; start="&lt;0.c41f86a92d39c3883023f2dbbaee45f5ae5bba5d4ffbfe70@apache.org&gt;"; start-info="application/soap+xml"; action="urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b"
         user-agent: Axis2

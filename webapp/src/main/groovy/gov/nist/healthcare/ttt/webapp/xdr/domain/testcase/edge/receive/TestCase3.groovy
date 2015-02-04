@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
@@ -24,7 +24,7 @@ final class TestCase3 extends TestCase {
 
 
     @Override
-    TestCaseEvent configure(String tcid, Map context, String username) {
+    TestCaseEvent configure(Map context, String username) {
 
         context.directTo = "testcase3@nist.gov"
         context.directFrom = "testcase3@nist.gov"
@@ -34,7 +34,7 @@ final class TestCase3 extends TestCase {
         XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
         //Create a new test record.
-        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 

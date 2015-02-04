@@ -153,12 +153,19 @@ class TestCaseExecutor {
 
     protected XDRTestStepInterface executeSendFailureMDN(def report) {
 
-        sendMDN(report, "failure")
-
         XDRTestStepInterface step = new XDRTestStepImpl()
-        step.name = "DIRECT_FAILURE_MDN_SENT"
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
 
+        try {
+            sendMDN(report, "failure")
+            step.name = "DIRECT_FAILURE_MDN_SENT"
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+
+        }
+        catch (Exception e) {
+            step.name = "DIRECT_FAILURE_MDN_ERROR"
+            step.xdrReportItems = e.getMessage()
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+        }
         return step
     }
 

@@ -77,7 +77,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         //TODO each time a test case is configure for a user, the previous record status should be set to cancelled if it has not return yet
-        testcase.configure(id, userInput, username)
+        testcase.configure(userInput, username)
     }
 
     //TODO implement. For now just return a bogus success message.

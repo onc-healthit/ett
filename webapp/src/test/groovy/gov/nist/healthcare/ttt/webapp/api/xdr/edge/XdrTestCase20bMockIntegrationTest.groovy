@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase20MockIntegrationTest extends Specification {
+class XdrTestCase20bMockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
@@ -77,9 +77,9 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     }
 
 
-    def "user succeeds in running test case 20"() throws Exception {
+    def "user succeeds in running test case 20b"() throws Exception {
 
-        when: "receiving a request to configure test case 20"
+        when: "receiving a request to configure test case 20b"
         MockHttpServletRequestBuilder getRequest = configureTestCaseRequest()
 
         then: "we receive back a success message with the endpoints info"
@@ -111,10 +111,10 @@ class XdrTestCase20MockIntegrationTest extends Specification {
         then: "we store the validation in the database"
         XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom("$fromAddress")
         assert rec != null
-        assert rec.testSteps.size() == 3
+        assert rec.testSteps.size() == 2
 
 
-        when: "we check the status of testcase20"
+        when: "we check the status of testcase20b"
         MockHttpServletRequestBuilder getRequest4 = checkTestCaseStatusRequest()
 
         then: "we receive back a success message asking for manual validation"
@@ -127,7 +127,7 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     }
 
     MockHttpServletRequestBuilder configureTestCaseRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/20/configure")
+        MockMvcRequestBuilders.post("/api/xdr/tc/20b/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +150,7 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     }
 
     MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
-        MockMvcRequestBuilders.get("/api/xdr/tc/20/status")
+        MockMvcRequestBuilders.get("/api/xdr/tc/20a/status")
                 .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))

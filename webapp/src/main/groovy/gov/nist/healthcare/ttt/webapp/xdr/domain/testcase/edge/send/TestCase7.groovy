@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
@@ -22,12 +22,12 @@ final class TestCase7 extends TestCase {
     }
 
     @Override
-    TestCaseEvent configure(String tcid, Map context, String username) {
+    TestCaseEvent configure(Map context, String username) {
 
          XDRTestStepInterface step = executor.recordSenderAddress(context)
 
         //Create a new test record.
-        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
@@ -35,7 +35,7 @@ final class TestCase7 extends TestCase {
         def content = new StandardContent()
         content.endpoint = endpoint
 
-        log.info "successfully recorded hostname for test case ${tcid} with config : ${context}. Ready to test TLS."
+        log.info "successfully recorded hostname for test case ${id} with config : ${context}. Ready to test TLS."
 
 
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
