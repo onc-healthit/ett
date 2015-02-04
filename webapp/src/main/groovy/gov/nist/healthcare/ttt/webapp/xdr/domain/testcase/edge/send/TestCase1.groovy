@@ -26,15 +26,13 @@ final class TestCase1 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
         XDRTestStepInterface step = new XDRTestStepImpl()
-        step.name = "CREATE_ENDPOINTS"
+        step.name = "CORRELATE_RECORD_WITH_SIMID_AND_DIRECT_FROM_ADDRESS"
         step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
         step.xdrSimulator = sim
-        //Create a new test record.
+
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-
-
-
         executor.db.addNewXdrRecord(record)
+
         def content = new StandardContent()
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]

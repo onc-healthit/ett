@@ -39,7 +39,7 @@ final class TestCase8 extends TestCase {
             step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
         }
         //Create a new test record.
-        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
