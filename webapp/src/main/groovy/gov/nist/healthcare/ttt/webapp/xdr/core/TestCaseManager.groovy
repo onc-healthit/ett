@@ -44,9 +44,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         //Nothing done here anymore but we leave the hook in case
     }
 
-    public TestCaseEvent runTestCase(String id, Map userInput, String username) {
-
-
+    TestCaseEvent getTestCaseEndpoint(String id) {
         log.info("running test case $id")
 
         //Check if we have implemented this test case
@@ -58,8 +56,23 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             throw new Exception("test case $id is not yet implemented", e)
         }
 
-        //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet
-        testcase.run(id, userInput, username)
+        testcase.getEndpoints()
+    }
+
+    public TestCaseEvent configureTestCase(String id, Map userInput, String username) {
+        log.info("configure test case $id")
+
+        //Check if we have implemented this test case
+        TestCase testcase
+        try {
+            testcase = findTestCase(id)
+        }
+        catch (Exception e) {
+            throw new Exception("test case $id is not yet implemented", e)
+        }
+
+        //TODO each time a test case is configure for a user, the previous record status should be set to cancelled if it has not return yet
+        testcase.configure(id, userInput, username)
     }
 
     //TODO implement. For now just return a bogus success message.
@@ -110,6 +123,4 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         return tc
     }
-
-
 }

@@ -23,7 +23,7 @@ final class TestCase1 extends TestCase {
     }
 
     @Override
-    TestCaseEvent run(String tcid, Map context, String username) {
+    TestCaseEvent configure(String tcid, Map context, String username) {
 
          XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
 

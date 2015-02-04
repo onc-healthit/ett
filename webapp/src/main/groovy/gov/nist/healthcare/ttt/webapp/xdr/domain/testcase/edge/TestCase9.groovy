@@ -24,7 +24,7 @@ class TestCase9 extends TestCase {
 
 
     @Override
-    TestCaseEvent run(String tcid, Map context, String username) {
+    TestCaseEvent configure(String tcid, Map context, String username) {
 
         XDRTestStepImpl step = new TestStepBuilder("SEND_OVER_SSL_WITH_BAD_CERT").build()
 

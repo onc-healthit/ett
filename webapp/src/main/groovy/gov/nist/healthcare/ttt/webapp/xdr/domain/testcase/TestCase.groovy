@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
@@ -15,7 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger
  * TestCaseStrategy defines generic hooks that execute some piece of logic when certain events occur.
  *
  * Possible events are :
- * - user starts a use case (run)
+ * - user starts a use case (configure)
  * - ttt received a notification from Bill's toolkit (notifyXdrReceive)
  * - ttt received a notification from the direct tool (notifyDirectReceive)
  *
@@ -27,6 +28,8 @@ import static org.slf4j.LoggerFactory.getLogger
  */
 abstract class TestCase {
 
+    protected Map<String,List<String>> simulators = [:]
+
     protected final TestCaseExecutor executor
 
     public TestCase(TestCaseExecutor executor) {
@@ -35,7 +38,7 @@ abstract class TestCase {
 
     protected static Logger log = getLogger(TestCase.class)
 
-    public abstract TestCaseEvent run(String tcid, Map context, String username)
+    public abstract TestCaseEvent configure(String tcid, Map context, String username)
 
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         throw UnsupportedOperationException()
@@ -62,7 +65,11 @@ abstract class TestCase {
         throw UnsupportedOperationException()
     }
 
-    public def registerGlobalEndpoints(String name, Map params){
+    public XDRSimulatorInterface registerGlobalEndpoints(String name, Map params){
         executor.configureGlobalEndpoint(name, params)
+    }
+
+    public Map<String,List<String>>getEndpoints() {
+        return simulators
     }
 }

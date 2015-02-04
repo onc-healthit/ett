@@ -33,7 +33,7 @@ class DatabaseProxy {
             instance.getXdrFacade().updateXDRRecord(record)
         }
         catch(e){
-            throw new Exception(MsgLabel.UPDATE_RECORD_FAILED,e)
+            throw new Exception(MsgLabel.UPDATE_RECORD_FAILED.msg,e)
         }
     }
 

@@ -63,7 +63,7 @@ class XdrTestCase8MockIntegrationTest extends Specification {
 
     def "user succeeds in running test case 8"() throws Exception {
 
-        when: "receiving a request to run test case 8"
+        when: "receiving a request to configure test case 8"
         MockHttpServletRequestBuilder getRequest = sendXdrRequest()
 
         then: "we receive back a message with status and report of the transaction"
@@ -77,7 +77,7 @@ class XdrTestCase8MockIntegrationTest extends Specification {
 
 
     MockHttpServletRequestBuilder sendXdrRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/8/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/8/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfigGoodTLSPort)
                 .contentType(MediaType.APPLICATION_JSON)

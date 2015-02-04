@@ -76,7 +76,7 @@ class XdrTestCase13MockIntegrationTest extends Specification {
     @Ignore
     def "user succeeds in running test case 13"() throws Exception {
 
-        when: "receiving a request to run test case $tcid"
+        when: "receiving a request to configure test case $tcid"
         MockHttpServletRequestBuilder runTestCase13 = runTestCase13()
 
         then: "we receive back a message with status and report of the transaction"
@@ -118,7 +118,7 @@ class XdrTestCase13MockIntegrationTest extends Specification {
 
 
     MockHttpServletRequestBuilder runTestCase13() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/$tcid/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/$tcid/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)

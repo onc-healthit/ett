@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.mu2
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
@@ -19,11 +20,12 @@ final class TestCase19 extends TestCase {
     @Autowired
     public TestCase19(TestCaseExecutor ex) {
         super(ex)
-        registerGlobalEndpoints("xdr.global.endpoint.tc.19",new HashMap())
+        XDRSimulatorInterface sim1 = registerGlobalEndpoints("tc19",new HashMap())
+        simulators[sim1.simulatorId] = [ sim1.endpoint , sim1.endpointTLS ]
     }
 
     @Override
-    TestCaseEvent run(String tcid, Map context, String username) {
+    TestCaseEvent configure(String tcid, Map context, String username) {
 
         XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(tcid, context.direct_from)
 

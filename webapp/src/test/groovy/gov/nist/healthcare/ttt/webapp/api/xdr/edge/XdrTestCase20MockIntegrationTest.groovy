@@ -45,8 +45,8 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     String fromAddress = "from@hit-dev.nist.gov"
     String toAddress = "to@hit-dev.nist.gov"
 
-    static String goodEndpointId = "xdr_global_endpoint_tc_20_goodEndpoint"
-    static String badEndpointId = "xdr_global_endpoint_tc_20_badEndpoint"
+    static String goodEndpointId = "tc20_goodEndpoint"
+    static String badEndpointId = "tc20_badEndpoint"
 
     MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit
@@ -55,8 +55,6 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
     static String id = "user1_1_2014"
     static String userId = "user1"
-
-    String simEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/xdr.global.endpoint.tc.20/docrec/prb"
 
     /*
     Set up mockmvc with the necessary converter (json or xml)
@@ -81,8 +79,8 @@ class XdrTestCase20MockIntegrationTest extends Specification {
 
     def "user succeeds in running test case 20"() throws Exception {
 
-        when: "receiving a request to run test case 20"
-        MockHttpServletRequestBuilder getRequest = createEndpointRequest()
+        when: "receiving a request to configure test case 20"
+        MockHttpServletRequestBuilder getRequest = configureTestCaseRequest()
 
         then: "we receive back a success message with the endpoints info"
         mockMvcRunTestCase.perform(getRequest)
@@ -92,21 +90,28 @@ class XdrTestCase20MockIntegrationTest extends Specification {
                 .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
 
 
-        when: "receiving a validation report from toolkit. We mock the actual interaction!"
-        MockHttpServletRequestBuilder getRequest2 = reportRequest()
+        when: "receiving 2 xdr messages from toolkit. We mock the actual interaction!"
+
+        println "first message..."
+        MockHttpServletRequestBuilder getRequest2 = sendXDRMessageRequest()
         mockMvcToolkit.perform(getRequest2)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
-        MockHttpServletRequestBuilder getRequest3 = reportRequest2()
+        println "first message done..."
+
+        println "second message..."
+        MockHttpServletRequestBuilder getRequest3 = send2ndXDRMessageRequest()
         mockMvcToolkit.perform(getRequest3)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
+        println "second message done..."
 
         then: "we store the validation in the database"
         XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom("$fromAddress")
         assert rec != null
+        assert rec.testSteps.size() == 3
 
 
         when: "we check the status of testcase20"
@@ -121,8 +126,8 @@ class XdrTestCase20MockIntegrationTest extends Specification {
                 .andExpect(jsonPath("content.value").exists())
     }
 
-    MockHttpServletRequestBuilder createEndpointRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/20/run")
+    MockHttpServletRequestBuilder configureTestCaseRequest() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/20/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -130,14 +135,14 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     }
 
 
-    MockHttpServletRequestBuilder reportRequest() {
+    MockHttpServletRequestBuilder sendXDRMessageRequest() {
         MockMvcRequestBuilders.post("/api/xdrNotification")
                 .accept(MediaType.ALL)
                 .content(toolkitReport)
                 .contentType(MediaType.APPLICATION_XML)
     }
 
-    MockHttpServletRequestBuilder reportRequest2() {
+    MockHttpServletRequestBuilder send2ndXDRMessageRequest() {
         MockMvcRequestBuilders.post("/api/xdrNotification")
                 .accept(MediaType.ALL)
                 .content(toolkitReport2)

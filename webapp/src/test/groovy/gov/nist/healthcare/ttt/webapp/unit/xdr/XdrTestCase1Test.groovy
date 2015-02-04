@@ -49,7 +49,7 @@ class XdrTestCase1Test extends Specification{
     @Ignore
     def "user succeeds in starting test case 1"() throws Exception {
 
-        given: "a mock tk receiver that create a sim for this test case run"
+        given: "a mock tk receiver that create a sim for this test case configure"
             1 * receiver.createEndpoints(_) >> {
                 XDRSimulatorInterface sim = Mock(XDRSimulatorInterface)
                 sim.endpoint >> { "http://..." }
@@ -81,7 +81,7 @@ class XdrTestCase1Test extends Specification{
 
 
     MockHttpServletRequestBuilder createEndpointRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/1/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/1/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)

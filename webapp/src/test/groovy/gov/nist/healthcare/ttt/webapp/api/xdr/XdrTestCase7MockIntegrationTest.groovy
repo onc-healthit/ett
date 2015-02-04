@@ -77,7 +77,7 @@ class  XdrTestCase7MockIntegrationTest extends Specification {
 
     def "user succeeds in running test case 7"() throws Exception {
 
-        when: "receiving a request to run test case 7"
+        when: "receiving a request to configure test case 7"
         MockHttpServletRequestBuilder runTc7Request = createHostnameCorrelation()
 
         then: "we receive back a success message, correlation parameters have been accepted"
@@ -110,7 +110,7 @@ class  XdrTestCase7MockIntegrationTest extends Specification {
     }
 
     MockHttpServletRequestBuilder createHostnameCorrelation() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/7/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/7/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)

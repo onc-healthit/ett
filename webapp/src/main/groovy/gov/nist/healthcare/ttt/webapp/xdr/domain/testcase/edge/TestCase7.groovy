@@ -22,7 +22,7 @@ final class TestCase7 extends TestCase {
     }
 
     @Override
-    TestCaseEvent run(String tcid, Map context, String username) {
+    TestCaseEvent configure(String tcid, Map context, String username) {
 
          XDRTestStepInterface step = executor.recordSenderAddress(context)
 

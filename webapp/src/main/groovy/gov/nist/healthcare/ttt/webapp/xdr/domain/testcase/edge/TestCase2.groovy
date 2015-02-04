@@ -23,8 +23,8 @@ final class TestCase2 extends TestCase {
     }
 
     @Override
-    TestCaseEvent run(String tcid, Map context, String username) {
-        testcase.run(tcid,context,username)
+    TestCaseEvent configure(String tcid, Map context, String username) {
+        testcase.configure(tcid,context,username)
     }
 
     @Override

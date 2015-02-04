@@ -29,28 +29,48 @@ class XdrTestCaseController {
         testCaseManager = manager
     }
 
-//    @ApiOperation(value = "run a test case")
-    @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
+    //    @ApiOperation(value = "configure a test case")
+    @RequestMapping(value = "/{id}/endpoint", method = RequestMethod.GET)
     @ResponseBody
-    UserMessage run(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
+    UserMessage endpoint(@PathVariable("id") String id) {
 
-        //User must be authenticated for this test case to be run
+        log.info("received test case get endpoints $id request")
+
+
+        try {
+            TestCaseEvent event = testCaseManager.getTestCaseEndpoint(id)
+            return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id has one or several endpoints defined", event)
+        }
+        catch(Exception e){
+            return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), null)
+        }
+
+
+    }
+
+
+//    @ApiOperation(value = "configure a test case")
+    @RequestMapping(value = "/{id}/configure", method = RequestMethod.POST)
+    @ResponseBody
+    UserMessage configure(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
+
+        //User must be authenticated for this test case to be configure
         String username
-        //TODO enforce user must be authentified or run tests as anonymous?
+        //TODO enforce user must be authentified or configure tests as anonymous?
         if (principal == null) {
             return new UserMessage(UserMessage.Status.ERROR, "user not identified")
         } else {
             username = principal.getName();
         }
 
-        log.info("received run test case $id request from $username")
+        log.info("received configure test case $id request from $username")
 
         //We get the config from the client
         def config = body
 
         try {
-            TestCaseEvent event = testCaseManager.runTestCase(id, config, username)
-            return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id has run successfully", event)
+            TestCaseEvent event = testCaseManager.configureTestCase(id, config, username)
+            return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id has been configured successfully", event)
         }
         catch(Exception e){
             return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), null)
@@ -66,9 +86,7 @@ class XdrTestCaseController {
     UserMessage status(
             @PathVariable("id") String id, Principal principal) {
 
-
-
-        //TODO enforce user must be authentified or run tests as anonymous?
+        //TODO enforce user must be authentified or configure tests as anonymous?
         if (principal == null) {
             return new UserMessage(UserMessage.Status.ERROR, "user not identified")
         }
