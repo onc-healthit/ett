@@ -25,14 +25,19 @@ import static org.slf4j.LoggerFactory.getLogger
  * Failure to do so will keep its status to the initial PENDING value.
  *
  * Created by gerardin on 10/27/14.
+ *
+ * TODO get rid of testcase event here
  */
 abstract class TestCase {
 
-    protected Map<String,List<String>> simulators = [:]
+    protected List<String> endpoints
+
+    protected final String id
 
     protected final TestCaseExecutor executor
 
     public TestCase(TestCaseExecutor executor) {
+        this.id = this.getClass().getSimpleName().split("TestCase")[1]
         this.executor = executor
     }
 
@@ -69,7 +74,7 @@ abstract class TestCase {
         executor.configureGlobalEndpoint(name, params)
     }
 
-    public Map<String,List<String>>getEndpoints() {
-        return simulators
+    public List<String> getEndpoints() {
+        return endpoints
     }
 }

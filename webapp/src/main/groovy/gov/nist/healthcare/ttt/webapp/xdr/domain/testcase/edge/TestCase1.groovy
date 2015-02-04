@@ -1,5 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
+
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
@@ -18,21 +20,23 @@ import org.springframework.stereotype.Component
 final class TestCase1 extends TestCase {
 
     @Autowired
-    public TestCase1(TestCaseExecutor ex){
-       super(ex)
+    public TestCase1(TestCaseExecutor ex) {
+        super(ex)
+        XDRSimulatorInterface sim1 = registerGlobalEndpoints(id, new HashMap())
+        endpoints = [sim1.endpoint, sim1.endpointTLS]
     }
 
     @Override
     TestCaseEvent configure(String tcid, Map context, String username) {
 
-         XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
+        XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
-        log.info  "test case ${tcid} : successfully created new endpoints with config : ${context}. Ready to receive message."
+        log.info "test case ${tcid} : successfully created new endpoints with config : ${context}. Ready to receive message."
 
         def content = new StandardContent()
         content.endpoint = step.xdrSimulator.endpoint

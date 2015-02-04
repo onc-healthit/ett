@@ -1,4 +1,5 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.mu2
+
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
@@ -14,44 +15,57 @@ import org.springframework.stereotype.Component
 /**
  * Created by gerardin on 10/27/14.
  */
-
 @Component
-final class TestCase2 extends TestCase {
+final class TestCase20b extends TestCase {
+
+    final public String badEndpoint = id+"_badEndpoint"
 
     @Autowired
-    public TestCase2(TestCaseExecutor ex){
+    public TestCase20b(TestCaseExecutor ex) {
         super(ex)
-        XDRSimulatorInterface sim1 = registerGlobalEndpoints(id, new HashMap())
+        XDRSimulatorInterface sim1 = registerGlobalEndpoints(badEndpoint, new HashMap())
         endpoints = [sim1.endpoint, sim1.endpointTLS]
     }
 
     @Override
     TestCaseEvent configure(String tcid, Map context, String username) {
 
-        XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
+        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(tcid, context.direct_from)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
 
-        log.info  "test case ${tcid} : successfully created new endpoints with config : ${context}. Ready to receive message."
+        log.info "test case ${tcid} : successfully configured. Ready to receive messages."
 
         def content = new StandardContent()
-        content.endpoint = step.xdrSimulator.endpoint
-        content.endpointTLS = step.xdrSimulator.endpointTLS
 
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.MANUAL, content)
     }
 
     @Override
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
-        XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+        XDRTestStepInterface step
 
-        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+        if (report.simId == goodEndpoint) {
+            step = executor.executeSendProcessedMDN(report)
+        } else if (report.simId == badEndpoint) {
+            step = executor.executeSendFailureMDN(report)
+        } else {
+            throw new Exception("problem in the workflow")
+        }
 
-        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
+        record = new TestCaseBuilder(record).addStep(step).build()
+
+        record.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+
+        executor.db.updateXDRRecord(record)
+        executor.db.updateXDRRecord(record)
+        executor.db.updateXDRRecord(record)
+
+        done(XDRRecordInterface.CriteriaMet.MANUAL, record)
 
     }
 }

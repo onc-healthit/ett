@@ -45,8 +45,8 @@ class XdrTestCase20MockIntegrationTest extends Specification {
     String fromAddress = "from@hit-dev.nist.gov"
     String toAddress = "to@hit-dev.nist.gov"
 
-    static String goodEndpointId = "tc20_goodEndpoint"
-    static String badEndpointId = "tc20_badEndpoint"
+    static String goodEndpointId = "20_goodEndpoint"
+    static String badEndpointId = "20_badEndpoint"
 
     MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit

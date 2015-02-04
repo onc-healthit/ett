@@ -16,18 +16,15 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase20 extends TestCase {
+final class TestCase20a extends TestCase {
 
-    final public String goodEndpoint = "tc20_goodEndpoint"
-    final public String badEndpoint = "tc20_badEndpoint"
+    final public String goodEndpoint = id+"_goodEndpoint"
 
     @Autowired
-    public TestCase20(TestCaseExecutor ex) {
+    public TestCase20a(TestCaseExecutor ex) {
         super(ex)
         XDRSimulatorInterface sim1 = registerGlobalEndpoints(goodEndpoint, new HashMap())
-        XDRSimulatorInterface sim2 = registerGlobalEndpoints(badEndpoint, new HashMap())
-        simulators[sim1.simulatorId] = [sim1.endpoint, sim1.endpointTLS]
-        simulators[sim2.simulatorId] = [sim2.endpoint, sim2.endpointTLS]
+        endpoints = [sim1.endpoint, sim1.endpointTLS]
     }
 
     @Override

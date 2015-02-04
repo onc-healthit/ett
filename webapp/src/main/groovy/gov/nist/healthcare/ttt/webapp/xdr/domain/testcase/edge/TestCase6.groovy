@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
@@ -19,10 +20,13 @@ final class TestCase6 extends TestCase {
     @Autowired
     public TestCase6(TestCaseExecutor ex) {
         super(ex)
+        XDRSimulatorInterface sim1 = registerGlobalEndpoints(id, new HashMap())
+        endpoints = [sim1.endpointTLS]
     }
 
     @Override
     TestCaseEvent configure(String tcid, Map context, String username) {
+
         XDRTestStepInterface step = executor.executeCreateEndpointsStep(tcid, username, context)
 
         //Create a new test record.
@@ -30,11 +34,13 @@ final class TestCase6 extends TestCase {
 
         executor.db.addNewXdrRecord(record)
 
+        log.info  "test case ${tcid} : successfully created new endpoints with config : ${context}. Ready to receive message."
+
         def content = new StandardContent()
+        content.endpoint = step.xdrSimulator.endpoint
         content.endpointTLS = step.xdrSimulator.endpointTLS
 
-        log.info "successfully created new endpoints for test case ${tcid} with config : ${context}. Ready to receive message."
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING , content)
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
     }
 
     @Override
@@ -44,7 +50,7 @@ final class TestCase6 extends TestCase {
 
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
-        //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
+
     }
 }

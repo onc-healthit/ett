@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class RealTkClientSpecTest extends Specification {
+class  RealTkClientSpecTest extends Specification {
 
     @Value('${xdr.notification')
     private String notificationUrl

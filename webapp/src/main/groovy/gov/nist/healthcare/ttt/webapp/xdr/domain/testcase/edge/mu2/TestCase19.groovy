@@ -10,7 +10,6 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -20,8 +19,8 @@ final class TestCase19 extends TestCase {
     @Autowired
     public TestCase19(TestCaseExecutor ex) {
         super(ex)
-        XDRSimulatorInterface sim1 = registerGlobalEndpoints("tc19",new HashMap())
-        simulators[sim1.simulatorId] = [ sim1.endpoint , sim1.endpointTLS ]
+        XDRSimulatorInterface sim1 = registerGlobalEndpoints(id,new HashMap())
+        endpoints = [sim1.endpoint, sim1.endpointTLS]
     }
 
     @Override
@@ -36,10 +35,7 @@ final class TestCase19 extends TestCase {
 
         log.info  "test case ${tcid} : successfully configured. Ready to receive messages."
 
-        def content = new StandardContent()
-        content.endpoint = step.xdrSimulator.endpointTLS
-
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, new StandardContent())
     }
 
     @Override

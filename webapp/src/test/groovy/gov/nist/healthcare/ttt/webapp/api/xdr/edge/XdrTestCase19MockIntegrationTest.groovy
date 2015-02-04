@@ -78,16 +78,27 @@ class XdrTestCase19MockIntegrationTest extends Specification {
 
     def "user succeeds in running test case 19"() throws Exception {
 
-        when: "receiving a request to configure test case $testId"
-        MockHttpServletRequestBuilder getRequest = createEndpointRequest()
+        when : "we looking for the endpoint"
+        MockHttpServletRequestBuilder endpointRequest = getEndpoints()
 
+        //TODO find a way to test endpoint
         then: "we receive back a success message with the endpoints info"
+        mockMvcRunTestCase.perform(endpointRequest)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.value.endpoints").exists())
+                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
+
+
+        when: "receiving a request to configure test case $testId"
+        MockHttpServletRequestBuilder getRequest = configure()
+
+        then: "we successfully configured our test"
         mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.value.endpoint")
-                .value("https://hit-dev.nist.gov:11080/xdstools3/sim/xdr_global_endpoint_tc_19/docrec/prb"))
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
         when: "receiving a validation report from toolkit. We mock the actual interaction!"
@@ -131,14 +142,21 @@ class XdrTestCase19MockIntegrationTest extends Specification {
                 .andExpect(jsonPath("content.value").exists())
     }
 
-    MockHttpServletRequestBuilder createEndpointRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/$testId/configure")
+    MockHttpServletRequestBuilder getEndpoints() {
+        MockMvcRequestBuilders.get("/api/xdr/tc/$testId/endpoint")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
+    MockHttpServletRequestBuilder configure() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/$testId/configure")
+                .accept(MediaType.ALL)
+                .content(testCaseConfig)
+                .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl(userId))
+    }
 
     MockHttpServletRequestBuilder reportRequest(String toolkitReport) {
         MockMvcRequestBuilders.post("/api/xdrNotification")

@@ -14,4 +14,7 @@ class StandardContent {
     String endpoint
 
     String endpointTLS
+
+    List<String> endpoints
+
 }
