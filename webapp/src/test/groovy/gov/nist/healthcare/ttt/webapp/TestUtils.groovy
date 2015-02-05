@@ -13,19 +13,16 @@ import sun.security.acl.PrincipalImpl
  */
 class TestUtils {
 
+    /*
+    GUI Mock calls
+     */
+
     static MockHttpServletRequestBuilder configure(String tcId, String userId, String testCaseConfig) {
         MockMvcRequestBuilders.post("/api/xdr/tc/$tcId/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
-    }
-
-    static MockHttpServletRequestBuilder reportNotification(String toolkitReport) {
-        MockMvcRequestBuilders.post("/api/xdrNotification")
-                .accept(MediaType.ALL)
-                .content(toolkitReport)
-                .contentType(MediaType.APPLICATION_XML)
     }
 
     static MockHttpServletRequestBuilder status(tcId, userId) {
@@ -35,6 +32,27 @@ class TestUtils {
                 .principal(new PrincipalImpl(userId))
     }
 
+    static MockHttpServletRequestBuilder getEndpoints(String tcId, String userId, String testCaseConfig) {
+        MockMvcRequestBuilders.get("/api/xdr/tc/$tcId/endpoint")
+                .accept(MediaType.ALL)
+                .content(testCaseConfig)
+                .contentType(MediaType.APPLICATION_JSON)
+                .principal(new PrincipalImpl(userId))
+    }
+
+    /*
+    Toolkit mock calls
+     */
+    static MockHttpServletRequestBuilder reportNotification(String toolkitReport) {
+        MockMvcRequestBuilders.post("/api/xdrNotification")
+                .accept(MediaType.ALL)
+                .content(toolkitReport)
+                .contentType(MediaType.APPLICATION_XML)
+    }
+
+    /*
+    Template for toolkit data
+     */
     static def buildReportTemplate(String simId,String messageID, String fromAddress, String toAddress) {
         """
     <transactionLog type='docrec' simId='$simId'>

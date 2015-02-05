@@ -1,5 +1,4 @@
 package gov.nist.healthcare.ttt.webapp.api.xdr.edge.sending.mu2
-
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.TestUtils
 import gov.nist.healthcare.ttt.webapp.XDRSpecification
@@ -17,43 +16,59 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
+class XdrTestCase19Test extends XDRSpecification {
 
-class XdrTestCase20bMockIntegrationTest extends XDRSpecification {
-
-
-    String simId = "20b"
-    String tcId = "20b"
+    String simId = "19"
+    String tcId = "19"
     String simEndpoint = TestUtils.simEndpoint(simId)
     String testCaseConfig =
             """{
         "direct_from": "$fromAddress"
 }"""
 
+    def "user succeeds in running test case - positive test : message ids are all distinct"() throws Exception {
 
-    def "user succeeds in running test case"() throws Exception {
+        when : "we looking for the endpoint"
+        MockHttpServletRequestBuilder endpoint = TestUtils.getEndpoints(tcId,userId,testCaseConfig)
+
+        //TODO find a way to test endpoint
+        then: "we receive back a success message with the endpoints info"
+        gui.perform(endpoint)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.value.endpoints").exists())
+                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
         when: "receiving a request to configure test case"
         MockHttpServletRequestBuilder configure = TestUtils.configure(tcId,userId,testCaseConfig)
 
-        then: "we receive back a success message with manual validation"
+        then: "we receive back a success message"
         gui.perform(configure)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
-
+                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
         when: "receiving xdr report from toolkit."
-        MockHttpServletRequestBuilder toolkitNotification = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,messageID,fromAddress,toAddress))
+        MockHttpServletRequestBuilder toolkitNotification = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,"1",fromAddress,toAddress))
         toolkit.perform(toolkitNotification)
                 .andDo(print())
                 .andReturn()
 
-        then: "we store the validation in the database"
-        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom("$fromAddress")
-        assert rec != null
-        assert rec.testSteps.size() == 2
+        MockHttpServletRequestBuilder toolkitNotification2 = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,"2",fromAddress,toAddress))
+        toolkit.perform(toolkitNotification2)
+                .andDo(print())
+                .andReturn()
 
+        MockHttpServletRequestBuilder toolkitNotification3 = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,"3",fromAddress,toAddress))
+        toolkit.perform(toolkitNotification3)
+                .andDo(print())
+                .andReturn()
+
+        then: "we store the validation in the database"
+        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom(fromAddress)
+        assert rec.testSteps.size() == 4
 
         when: "we check the status of testcase"
         MockHttpServletRequestBuilder status = TestUtils.status(tcId,userId)
@@ -62,8 +77,9 @@ class XdrTestCase20bMockIntegrationTest extends XDRSpecification {
         gui.perform(status)
                 .andDo(print())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
+                .andExpect(jsonPath("content.criteriaMet").value("PASSED"))
                 .andExpect(jsonPath("content.value").exists())
     }
+
 }
 
