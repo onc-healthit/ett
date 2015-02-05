@@ -1,23 +1,23 @@
-package gov.nist.healthcare.ttt.webapp.api.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr.hisp
+import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
-import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
-import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdrNoLookUp
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
 import gov.nist.healthcare.ttt.xdr.web.TkListener
+import groovy.json.JsonSlurper
 import org.junit.Before
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationContextLoader
-import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -32,15 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase13MockIntegrationTest extends Specification {
+class XdrTestCase10MockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
-    @Value('${direct.listener.domainName}')
-    String directListenerDomain
+    ObjectMapper mapper = new ObjectMapper()
 
-    @Value('${direct.listener.port}')
-    int directListenerPort
+
+    //depends on the test performed. This pointing to the actual NIST tool
+    static String sutDirectAddress = "antoine@transport-testing.nist.gov"
+    static String sutDirectPort = "25"
 
     @Autowired
     XdrTestCaseController controller
@@ -53,102 +54,129 @@ class XdrTestCase13MockIntegrationTest extends Specification {
 
     MockMvc mockMvcRunTestCase
     MockMvc mockMvcToolkit
+    MockMvc mockMvcCheckTestCaseStatus
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
-    static String id = "user1.1.2014"
     static String userId = "user1"
-    static String tcid = "13"
 
     /*
     Set up mockmvc with the necessary converter (json or xml)
      */
+
     @Before
     public setup() {
 
-        setupDbForDirectTesting()
+        setupDb()
 
         mockMvcRunTestCase = MockMvcBuilders.standaloneSetup(controller)
+                .setMessageConverters(new MappingJackson2HttpMessageConverter())
+                .build()
+
+        mockMvcToolkit = MockMvcBuilders.standaloneSetup(listener)
+                .setMessageConverters(new Jaxb2RootElementHttpMessageConverter())
+                .build()
+
+        mockMvcCheckTestCaseStatus = MockMvcBuilders.standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build()
     }
 
 
     @Ignore
-    def "user succeeds in running test case 13"() throws Exception {
+    def "user succeeds in running test case 10"() throws Exception {
 
-        when: "receiving a request to configure test case $tcid"
-        MockHttpServletRequestBuilder runTestCase13 = runTestCase13()
+        when: "receiving a request to configure test case 10"
+        MockHttpServletRequestBuilder getRequest = runTestcase10()
 
-        then: "we receive back a message with status and report of the transaction"
+        then: "we receive a response that direct has been successfully sent"
 
-        mockMvcRunTestCase.perform(runTestCase13)
+        MvcResult res = mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
+                .andReturn()
 
+        when: "receiving a validation report from toolkit"
+        def response = res.response.contentAsString
+        def slurper = new JsonSlurper()
+        def result = slurper.parseText(response)
+        def id = result.content.messageId
 
-        when : "a direct message is sent to ttt"
-        File cert = new ClassPathResource("directCert/testCert.der").getFile()
-        DirectMessageInfoForXdr info = new DirectMessageSenderForXdrNoLookUp().sendDirectWithCCDAForXdrNoDNSLookUp("antoine@$directListenerDomain", directListenerPort,cert.absolutePath)
+        MockHttpServletRequestBuilder getRequest2 = reportRequest(id)
 
-        then: "ttt sent back a MDN"
-        //This is what should happen, we cannot automate the test since the direct sender uses the DNSLookup.
+        then: "toolkit receives an ok"
 
-        when : "a user check the test status"
+        mockMvcToolkit.perform(getRequest2)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+
+        when: "we check the status of testcase 10"
         MockHttpServletRequestBuilder getRequest3 = checkTestCaseStatusRequest()
 
-        then : "we return the result of the direct validation which is successful"
-        //TODO not satisfactory. Direct takes some time to receive and validate.
-        //We should have a timeout. If result is pending, wait until status is success or pending_manual_check
-        //A timeout that expires is equivalent to failing the test.
-        Thread.sleep(2000)
-        String logId = db.logFacade.getLogIDByMessageId(info.getMessageId())
-        assert logId : "sb has no log direct message. Was it given enough time?"
-
+        then: "we receive back a success message"
         mockMvcRunTestCase.perform(getRequest3)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content").value("PASSED"))
-
-
     }
 
-
-
-
-    MockHttpServletRequestBuilder runTestCase13() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/$tcid/configure")
+    MockHttpServletRequestBuilder runTestcase10() {
+        MockMvcRequestBuilders.post("/api/xdr/tc/10/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
+    MockHttpServletRequestBuilder reportRequest(String id) {
+
+        String content = toolkitMockMessage(id)
+
+        MockMvcRequestBuilders.post("/api/xdrNotification")
+                .accept(MediaType.ALL)
+                .content(content)
+                .contentType(MediaType.APPLICATION_XML)
+    }
+
     MockHttpServletRequestBuilder checkTestCaseStatusRequest() {
-        MockMvcRequestBuilders.get("/api/xdr/tc/$tcid/status")
+        MockMvcRequestBuilders.get("/api/xdr/tc/10/status")
                 .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
     }
 
-
     public static String testCaseConfig =
             """{
-    "targetEndpoint":"https://example.com/xdr"
+                "sutDirectAddress" : $sutDirectAddress,
+                "sutDirectPort" : $sutDirectPort
 }"""
 
-    def setupDbForDirectTesting() {
+
+    private String toolkitMockMessage(String id) {
+
+        def cleanedUpId = id.substring(1, id.length() - 1)
+
+        return """
+<report>
+    <simulatorId>yo</simulatorId>
+    <messageId>$cleanedUpId</messageId>
+    <status>success</status>
+    <details>blabla</details>
+</report>
+            """
+    }
+
+    def setupDb() {
         createUserInDB()
         db.xdrFacade.removeAllByUsername(userId)
-        db.df.addNewDirectEmail("directfrom4xdr@localhost")
         log.info("db data fixture set up.")
     }
 
     public void createUserInDB() throws Exception {
         if (!db.getDf().doesUsernameExist(userId)) {
             db.getDf().addUsernamePassword(userId, "pass")
-
         }
         assert db.getDf().doesUsernameExist(userId)
 
