@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 @Component
 final class TestCase20b extends TestCase {
 
-    final public String badEndpoint = id+"_badEndpoint"
+    final public String badEndpoint = id
 
     @Autowired
     public TestCase20b(TestCaseExecutor ex) {

@@ -147,7 +147,6 @@ class TestCaseExecutor {
         }
         catch (Exception e) {
             step.name = "DIRECT_PROCESSED_MDN_ERROR"
-            step.xdrReportItems = e.getMessage()
             step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
         }
         return step
@@ -165,7 +164,6 @@ class TestCaseExecutor {
         }
         catch (Exception e) {
             step.name = "DIRECT_FAILURE_MDN_ERROR"
-            step.xdrReportItems = e.getMessage()
             step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
         }
         return step

@@ -24,6 +24,7 @@ class DatabaseProxy {
             return recordId
         }
         catch(e){
+            e.printStackTrace()
             throw new Exception(MsgLabel.CREATE_NEW_RECORD_FAILED,e)
         }
     }
@@ -33,6 +34,7 @@ class DatabaseProxy {
             instance.getXdrFacade().updateXDRRecord(record)
         }
         catch(e){
+            e.printStackTrace()
             throw new Exception(MsgLabel.UPDATE_RECORD_FAILED.msg,e)
         }
     }
