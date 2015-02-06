@@ -67,7 +67,8 @@ public class XDRFacade extends DatabaseFacade {
     // multiple "NULL" values.
     public String addNewXdrRecord(XDRRecordInterface xdr) throws DatabaseException {
 
-        String recordID = UUID.randomUUID().toString();
+        String recordID = UUID.randomUUID().toString();   
+        
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + XDRRECORD_TABLE + ' ');
         sql.append("(" + XDRRECORD_XDRRECORDID);
@@ -161,7 +162,7 @@ public class XDRFacade extends DatabaseFacade {
         sql.append("' , '");
         /*
          if (testStep.getTimestamp() != null) {
-         sql.append(testStep.getTimestamp());
+         sqlDirectFrom.append(testStep.getTimestamp());
          } 
          else {
          */
@@ -320,7 +321,7 @@ public class XDRFacade extends DatabaseFacade {
         }
         sql.append("');");
 
-        // System.out.println(sql.toString());
+        // System.out.println(sqlDirectFrom.toString());
         try {
             this.getConnection().executeUpdate(sql.toString());
         } catch (SQLException ex) {
@@ -823,6 +824,62 @@ public class XDRFacade extends DatabaseFacade {
         return records;
     }
 
+    public XDRRecordInterface getLatestXDRRecordBySimulatorAndDirectFrom(String simulatorId, String directFrom) throws DatabaseException {
+        StringBuilder sqlDirectFrom = new StringBuilder();
+        sqlDirectFrom.append("SELECT " + XDRRECORD_XDRRECORDID + ' ');
+        sqlDirectFrom.append("FROM " + XDRTESTSTEP_TABLE + ' ');
+        sqlDirectFrom.append("WHERE " + XDRTESTSTEP_DIRECTFROM + " = '" + DatabaseConnection.makeSafe(directFrom) + "';");
+        
+        ResultSet result = null;
+        List<String> recordIdsByDirectFrom = new ArrayList<String>();
+System.out.println(sqlDirectFrom.toString());
+        try {
+            result = this.getConnection().executeQuery(sqlDirectFrom.toString());
+            while (result.next()) {
+                String recordId = result.getString(XDRRECORD_XDRRECORDID);
+                recordIdsByDirectFrom.add(recordId);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+
+        StringBuilder sqlSim = new StringBuilder();
+        sqlSim.append("SELECT ts." + XDRRECORD_XDRRECORDID + ' ');
+        sqlSim.append("FROM " + XDRTESTSTEP_TABLE + " ts, ");
+        sqlSim.append(XDRSIMULATOR_TABLE + " s ");
+        sqlSim.append("WHERE s." + XDRSIMULATOR_SIMULATORID + " = '" + DatabaseConnection.makeSafe(simulatorId) + "' AND ");
+        sqlSim.append("ts." + XDRTESTSTEP_XDRTESTSTEPID + " = s." + XDRTESTSTEP_XDRTESTSTEPID + ' ');
+        sqlSim.append("ORDER BY " + XDRRECORD_TIMESTAMP + " DESC;");
+
+        ResultSet resultSim = null;
+        
+        List<String> recordIdsBySim = new ArrayList<String>();
+
+        try {
+            resultSim = this.getConnection().executeQuery(sqlSim.toString());
+            while (resultSim.next()) {
+                recordIdsBySim.add(resultSim.getString(XDRRECORD_XDRRECORDID));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+        
+        if (recordIdsBySim.size() == 0 || recordIdsByDirectFrom.size() == 0 )
+            return null;
+        
+        Iterator<String> itSim = recordIdsBySim.iterator();
+        while(itSim.hasNext()) {
+            String recordIdBySim = itSim.next();
+            if(recordIdsByDirectFrom.contains(recordIdBySim)) {
+                return this.getXDRRecordByRecordId(recordIdBySim);
+            }
+        }
+        return null;
+    }
+    
     private String getXDRTestStepIdByMessageId(String messageId) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + XDRTESTSTEP_XDRTESTSTEPID + ' ');
@@ -1145,12 +1202,25 @@ public class XDRFacade extends DatabaseFacade {
         return i;
     }
 
+    //private String lookUpRecordId(XDRRecordImpl record) throws DatabaseException {
+        //StringBuilder sqlDirectFrom = new StringBuilder();
+        //sql.append("SELECT " + XDRRECORD_XDRRECORDID + " ");
+        //sql.append("FROM " + XDRRECORD_TABLE + " " );
+        //sql.append("WHERE ")
+    //}
+
+    
     // returns void because I can't think of what should be returned if no exception run
     public void updateXDRRecord(XDRRecordImpl record) throws DatabaseException {
 
         // TODO: This should be done as a db roll-back instead of manually like this...
         //get a copy for safekeeping...
-        XDRRecordImpl original = (XDRRecordImpl) this.getXDRRecordByRecordId(record.getXdrRecordID());
+        String recordId = record.getXdrRecordID();
+        if(recordId == null) {
+            this.addNewXdrRecord(record);
+            return;
+        }
+        XDRRecordImpl original = (XDRRecordImpl) this.getXDRRecordByRecordId(recordId);
         try {
             this.removeXdrRecord(record.getXdrRecordID());
         } catch (DatabaseException e) {
@@ -1252,9 +1322,17 @@ public class XDRFacade extends DatabaseFacade {
 
             XDRFacade facade = new XDRFacade(config);
             facade.addNewXdrRecord(record);
-            List<XDRRecordInterface> getRecord = facade.getXDRRecordsByDirectFrom("from@direct.com");
             
-            System.out.append(Integer.toString(getRecord.size()));
+            XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectFrom("endpointstandalone", "from@direct.com");
+            System.out.println(get.getTimestamp());
+//            facade.updateXDRRecord(record);
+  //          facade.updateXDRRecord(record);
+    //        facade.updateXDRRecord(record);
+      //      facade.updateXDRRecord(record);
+        //    facade.updateXDRRecord(record);
+            //List<XDRRecordInterface> getRecord = facade.getXDRRecordsByDirectFrom("from@direct.com");
+            
+            //System.out.append(Integer.toString(getRecord.size()));
             
 /*
             testStep.setName("NEW NAME!!!");
