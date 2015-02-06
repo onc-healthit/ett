@@ -18,6 +18,8 @@ public interface XDRRecordInterface {
         MANUAL,
     }
     
+    String getXdrRecordDatabaseId();
+    
     /**
      * @return the testCaseNumber
      */
@@ -43,6 +45,9 @@ public interface XDRRecordInterface {
      */
     CriteriaMet getCriteriaMet();
 
+    
+    void setXdrRecordDatabaseId(String databaseId);
+    
     /**
      * @param criteriaMet the criteriaMet to set
      */

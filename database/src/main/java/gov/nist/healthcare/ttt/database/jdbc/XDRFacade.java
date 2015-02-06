@@ -68,7 +68,7 @@ public class XDRFacade extends DatabaseFacade {
     public String addNewXdrRecord(XDRRecordInterface xdr) throws DatabaseException {
 
         String recordID = UUID.randomUUID().toString();   
-        
+        xdr.setXdrRecordDatabaseId(recordID);
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + XDRRECORD_TABLE + ' ');
         sql.append("(" + XDRRECORD_XDRRECORDID);
@@ -431,7 +431,7 @@ public class XDRFacade extends DatabaseFacade {
             result = this.getConnection().executeQuery(sql.toString());
             if (result.next()) {
                 record = new XDRRecordImpl();
-                record.setXdrRecordID(result.getString(XDRRECORD_XDRRECORDID));
+                record.setXdrRecordDatabaseId(result.getString(XDRRECORD_XDRRECORDID));
                 record.setUsername(result.getString(XDRRECORD_USERNAME));
                 record.setTestCaseNumber(result.getString(XDRRECORD_TESTCASENUMBER));
                 record.setTimestamp(result.getString(XDRRECORD_TIMESTAMP));
@@ -1211,18 +1211,18 @@ System.out.println(sqlDirectFrom.toString());
 
     
     // returns void because I can't think of what should be returned if no exception run
-    public void updateXDRRecord(XDRRecordImpl record) throws DatabaseException {
+    public void updateXDRRecord(XDRRecordInterface record) throws DatabaseException {
 
         // TODO: This should be done as a db roll-back instead of manually like this...
         //get a copy for safekeeping...
-        String recordId = record.getXdrRecordID();
+        String recordId = record.getXdrRecordDatabaseId();
         if(recordId == null) {
             this.addNewXdrRecord(record);
             return;
         }
         XDRRecordImpl original = (XDRRecordImpl) this.getXDRRecordByRecordId(recordId);
         try {
-            this.removeXdrRecord(record.getXdrRecordID());
+            this.removeXdrRecord(record.getXdrRecordDatabaseId());
         } catch (DatabaseException e) {
             // if it doesn't work, put the original back in
             this.addNewXdrRecord(original);
@@ -1321,15 +1321,15 @@ System.out.println(sqlDirectFrom.toString());
             config.setDatabaseName("direct");
 
             XDRFacade facade = new XDRFacade(config);
-            facade.addNewXdrRecord(record);
+         //   facade.addNewXdrRecord(record);
             
             XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectFrom("endpointstandalone", "from@direct.com");
             System.out.println(get.getTimestamp());
-//            facade.updateXDRRecord(record);
-  //          facade.updateXDRRecord(record);
-    //        facade.updateXDRRecord(record);
-      //      facade.updateXDRRecord(record);
-        //    facade.updateXDRRecord(record);
+            facade.updateXDRRecord(record);
+            facade.updateXDRRecord(record);
+            facade.updateXDRRecord(record);
+            facade.updateXDRRecord(record);
+            facade.updateXDRRecord(record);
             //List<XDRRecordInterface> getRecord = facade.getXDRRecordsByDirectFrom("from@direct.com");
             
             //System.out.append(Integer.toString(getRecord.size()));
