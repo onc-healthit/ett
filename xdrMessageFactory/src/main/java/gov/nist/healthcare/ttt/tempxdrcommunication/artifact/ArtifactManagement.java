@@ -66,6 +66,7 @@ public class ArtifactManagement {
                 break;
 
         }
+        
         return payload;
 
     }
@@ -340,7 +341,7 @@ public class ArtifactManagement {
             settings.setDirectTo("directTo");
             settings.setWsaTo("wsaTo");
 
-            String payload = getPayload(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+            String payload = getPayload(Type.XDR_FULL_METADATA, settings);
             System.out.println("here!\n" + payload);
 
             //    URL url = ClassLoader.getSystemResource("DeliveryStatusNotification_success.xml");
