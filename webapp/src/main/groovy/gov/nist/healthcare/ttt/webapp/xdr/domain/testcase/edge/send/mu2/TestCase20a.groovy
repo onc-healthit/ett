@@ -27,12 +27,7 @@ final class TestCase20a extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(id, context.direct_from)
-
-        //Create a new test record.
-        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-
-        executor.db.addNewXdrRecord(record)
+        executor.createRecordForSenderTestCase(context,username,id,sim)
 
         log.info "test case ${id} : successfully configured. Ready to receive messages."
 

@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.tls
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive.tls
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
@@ -38,6 +38,7 @@ final class TestCase8 extends TestCase {
             e.printStackTrace()
             step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
         }
+
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 

@@ -8,6 +8,7 @@ import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
@@ -295,5 +296,15 @@ class TestCaseExecutor {
         }
 
         return new TestCaseEvent(record.criteriaMet, content)
+    }
+
+    def createRecordForSenderTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "CORRELATE_RECORD_WITH_SIMID_AND_DIRECT_FROM_ADDRESS"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        step.xdrSimulator = sim
+        step.directFrom = context.direct_from
+        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+        db.addNewXdrRecord(record)
     }
 }
