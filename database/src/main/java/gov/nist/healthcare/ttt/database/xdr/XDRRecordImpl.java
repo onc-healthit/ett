@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class XDRRecordImpl implements XDRRecordInterface {
 
-    private String xdrRecordID = null;
+    private String xdrRecordDatabaseId = null;
     private String username = null;
     private String testCaseNumber = null;
     private String timestamp = null;
@@ -22,17 +22,17 @@ public class XDRRecordImpl implements XDRRecordInterface {
     }
     
     /**
-     * @return the xdrRecordID
+     * @return the xdrRecordDatabaseId
      */
-    public String getXdrRecordID() {
-        return xdrRecordID;
+    public String getXdrRecordDatabaseId() {
+        return xdrRecordDatabaseId;
     }
 
     /**
-     * @param xdrRecordID the xdrRecordID to set
+     * @param xdrRecordID the xdrRecordDatabaseId to set
      */
-    public void setXdrRecordID(String xdrRecordID) {
-        this.xdrRecordID = xdrRecordID;
+    public void setXdrRecordDatabaseId(String xdrRecordID) {
+        this.xdrRecordDatabaseId = xdrRecordID;
     }
 
     /**

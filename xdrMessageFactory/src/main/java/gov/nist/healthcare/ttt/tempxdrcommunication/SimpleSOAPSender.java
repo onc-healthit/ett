@@ -2,6 +2,8 @@ package gov.nist.healthcare.ttt.tempxdrcommunication;
 
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement.Type;
+import static gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement.getPayload;
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.PayloadManager;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings;
 
 import javax.net.ssl.SSLSocket;
@@ -222,8 +224,8 @@ public class SimpleSOAPSender {
             
            //  String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
             
-            String endpoint = "https://transport-testing.nist.gov:12081/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
-            
+          //  String endpoint = "https://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
+            String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/9fdc17ba-0191-4d0c-be2a-c4ea5294b861/rec/xdrpr";
             
             // String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/ecb4e054-9581-439f-9f12-de2d052a3132/rep/prb";
             // String endpoint = "http://ihexds.nist.gov:12090/tf6/services/xdsregistryb";
@@ -249,10 +251,17 @@ public class SimpleSOAPSender {
            // payload.append("POST /random HTTP/1.1\r\n");
            // payload.append("\r\n");
             
-            String payload = readFile("/home/mccaffrey/src/TempXDRCommunication/src/main/resources/sample_request.txt");
+        //    String payload = readFile("/home/mccaffrey/src/TempXDRCommunication/src/main/resources/sample_request.txt");
             
-            String response = sendSecureMessage(endpoint,payload);
+            //String response = sendSecureMessage(endpoint,payload);
+            String payload = PayloadManager.getPayload(endpoint,Type.XDR_FULL_METADATA, settings);
+            
+             String response = sendMessage(endpoint,payload);
+         //   String response = sendMTOMPackage(endpoint,Type.XDR_FULL_METADATA, settings);
+             System.out.println(payload);
+            System.out.println("------ ABOVE WAS THE REQUEST ----  BELOW IS THE RESPONSE ----");
             System.out.println(response);
+            
             
             
 /*
