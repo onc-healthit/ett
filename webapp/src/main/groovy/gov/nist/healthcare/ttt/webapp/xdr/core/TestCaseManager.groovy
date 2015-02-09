@@ -1,6 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
@@ -44,8 +43,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         //Nothing done here anymore but we leave the hook in case
     }
 
-    public TestCaseEvent runTestCase(String id, Map userInput, String username) {
-
+    TestCaseEvent getTestCaseEndpoint(String id) {
 
         log.info("running test case $id")
 
@@ -58,16 +56,44 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             throw new Exception("test case $id is not yet implemented", e)
         }
 
-        //TODO each time a test case is run for a user, the previous record status should be set to cancelled if it has not return yet
-        testcase.run(id, userInput, username)
+        List<String> endpoints = testcase.getEndpoints()
+        StandardContent content = new StandardContent()
+        content.endpoints = endpoints
+
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+    }
+
+    public TestCaseEvent configureTestCase(String id, Map userInput, String username) {
+        log.info("configure test case $id")
+
+        //Check if we have implemented this test case
+        TestCase testcase
+        try {
+            testcase = findTestCase(id)
+        }
+        catch (Exception e) {
+            throw new Exception("test case $id is not yet implemented", e)
+        }
+
+        //TODO each time a test case is configure for a user, the previous record status should be set to cancelled if it has not return yet
+        testcase.configure(userInput, username)
     }
 
     //TODO implement. For now just return a bogus success message.
-    public TestCaseEvent checkTestCaseStatus(String username, String tcid) {
+    public TestCaseEvent checkTestCaseStatus(String username, String id) {
 
-        log.info("check status for test case $tcid")
+        log.info("check status for test case $id")
 
-        XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username, tcid)
+        //Check if we have implemented this test case
+        TestCase testcase
+        try {
+            testcase = findTestCase(id)
+        }
+        catch (Exception e) {
+            throw new Exception("test case $id is not yet implemented", e)
+        }
+
+        XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username, id)
 
         log.info("number of test steps found : " + record.testSteps.size())
 
@@ -75,26 +101,11 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         record.getTestSteps().each {
             stepLists <<= "$it.name , "
         }
+
         log.info stepLists.substring(0, stepLists.length() - 1)
 
-        def report = null
-        def content = new StandardContent()
+        testcase.getReport(record)
 
-        if (record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
-
-            def step = record.getTestSteps().last()
-
-
-            if (!step.xdrReportItems.empty) {
-                log.info(step.xdrReportItems.size() + " report(s) found.")
-                report = step.xdrReportItems
-                content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST }.report
-                content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE }.report
-                //  content.report = report.find { it.reportType == XDRReportItemInterface.ReportType.VALIDATION_REPORT}.report
-            }
-        }
-
-        return new TestCaseEvent(record.criteriaMet, content)
 
     }
 
@@ -110,6 +121,4 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         return tc
     }
-
-
 }

@@ -75,7 +75,7 @@ class XdrTestCreateEndpointTest extends Specification {
 
     def "user succeeds in creating endpoints"() throws Exception {
 
-        when: "receiving a request to run test case 1"
+        when: "receiving a request to configure test case 1"
         MockHttpServletRequestBuilder getRequest = createEndpointRequest()
 
         then: "we receive back a success message with the http endpoint info"
@@ -86,7 +86,7 @@ class XdrTestCreateEndpointTest extends Specification {
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content.value").exists())
 
-        when: "receiving a request to run test case 6"
+        when: "receiving a request to configure test case 6"
         MockHttpServletRequestBuilder getTLSRequest = createTLSEndpointRequest()
 
         then: "we receive back a success message with the https endpoint info"
@@ -99,7 +99,7 @@ class XdrTestCreateEndpointTest extends Specification {
     }
 
     MockHttpServletRequestBuilder createEndpointRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/1/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/1/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,7 +107,7 @@ class XdrTestCreateEndpointTest extends Specification {
     }
 
     MockHttpServletRequestBuilder createTLSEndpointRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/6/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/6/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)

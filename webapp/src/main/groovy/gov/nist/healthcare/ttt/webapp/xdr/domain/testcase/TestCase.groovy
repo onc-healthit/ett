@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
@@ -15,7 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger
  * TestCaseStrategy defines generic hooks that execute some piece of logic when certain events occur.
  *
  * Possible events are :
- * - user starts a use case (run)
+ * - user starts a use case (configure)
  * - ttt received a notification from Bill's toolkit (notifyXdrReceive)
  * - ttt received a notification from the direct tool (notifyDirectReceive)
  *
@@ -24,18 +25,25 @@ import static org.slf4j.LoggerFactory.getLogger
  * Failure to do so will keep its status to the initial PENDING value.
  *
  * Created by gerardin on 10/27/14.
+ *
+ * TODO get rid of testcase event here
  */
 abstract class TestCase {
+
+    protected XDRSimulatorInterface sim
+
+    protected final String id
 
     protected final TestCaseExecutor executor
 
     public TestCase(TestCaseExecutor executor) {
+        this.id = this.getClass().getSimpleName().split("TestCase")[1]
         this.executor = executor
     }
 
     protected static Logger log = getLogger(TestCase.class)
 
-    public abstract TestCaseEvent run(String tcid, Map context, String username)
+    public abstract TestCaseEvent configure(Map context, String username)
 
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         throw UnsupportedOperationException()
@@ -62,7 +70,16 @@ abstract class TestCase {
         throw UnsupportedOperationException()
     }
 
-    public def registerGlobalEndpoints(String name, Map params){
+    public TestCaseEvent getReport(XDRRecordInterface record){
+        log.warn("no report info available for this test case")
+        return new TestCaseEvent(record.criteriaMet, new StandardContent())
+    }
+
+    public XDRSimulatorInterface registerGlobalEndpoints(String name, Map params){
         executor.configureGlobalEndpoint(name, params)
+    }
+
+    public List<String> getEndpoints() {
+        return [sim.endpoint, sim.endpointTLS]
     }
 }

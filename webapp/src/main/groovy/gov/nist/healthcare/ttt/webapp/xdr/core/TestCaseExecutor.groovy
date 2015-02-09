@@ -1,4 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
@@ -7,7 +8,9 @@ import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.TLSClient
 import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
@@ -20,6 +23,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+
 /**
  * Created by gerardin on 10/28/14.
  */
@@ -60,7 +64,7 @@ class TestCaseExecutor {
 
         def r
         try {
-            r  = sender.sendXdr(config)
+            r = sender.sendXdr(config)
             XDRReportItemInterface request = new XDRReportItemImpl()
             request.setReport(r.request)
             request.setReportType(XDRReportItemInterface.ReportType.REQUEST)
@@ -78,14 +82,14 @@ class TestCaseExecutor {
 
             return step
         }
-        catch (e){
-            throw new Exception(MsgLabel.SEND_XDR_FAILED.msg,e)
+        catch (e) {
+            throw new Exception(MsgLabel.SEND_XDR_FAILED.msg, e)
         }
 
     }
 
 
-    protected XDRTestStepInterface executeSendDirectStep(def context){
+    protected XDRTestStepInterface executeSendDirectStep(def context) {
 
         DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.sutDirectAddress, Integer.parseInt(context.sutDirectPort))
 
@@ -104,12 +108,12 @@ class TestCaseExecutor {
     }
 
 
-    protected XDRTestStepInterface executeCreateEndpointsStep(String tcid, String username, Map userInput){
+    protected XDRTestStepInterface executeCreateEndpointsStep(String tcid, String username, Map userInput) {
 
         try {
 
             //TODO add check. We do not always have to create a brand new endpoint.
-            //if an endpoint already exists, we just want to reuse it for the next run.
+            //if an endpoint already exists, we just want to reuse it for the next configure.
             //we get the endpoint for the last record (we should check it is alive as well)
             //then we add it to the step and create a new record
 
@@ -117,7 +121,7 @@ class TestCaseExecutor {
 
             String endpointId = "${username}_${tcid}_${timestamp}"
 
-            XDRSimulatorInterface sim = createEndpoint(endpointId,userInput)
+            XDRSimulatorInterface sim = createEndpoint(endpointId, userInput)
 
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.name = "CREATE_ENDPOINTS"
@@ -126,30 +130,42 @@ class TestCaseExecutor {
 
             return step
         }
-        catch(e){
+        catch (e) {
             throw new Exception(MsgLabel.CREATE_NEW_ENDPOINTS_FAILED.msg, e)
         }
     }
 
-    protected XDRTestStepInterface executeSendProcessedMDN(TkValidationReport report){
-
-        sendMDN(report, "processed")
+    protected XDRTestStepInterface executeSendProcessedMDN(TkValidationReport report) {
 
         XDRTestStepInterface step = new XDRTestStepImpl()
-        step.name = "DIRECT_PROCESSED_MDN_SENT"
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
 
+        try {
+            sendMDN(report, "processed")
+            step.name = "DIRECT_PROCESSED_MDN_SENT"
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+
+        }
+        catch (Exception e) {
+            step.name = "DIRECT_PROCESSED_MDN_ERROR"
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+        }
         return step
     }
 
-    protected XDRTestStepInterface executeSendFailureMDN(def report){
-
-        sendMDN(report, "failure")
+    protected XDRTestStepInterface executeSendFailureMDN(def report) {
 
         XDRTestStepInterface step = new XDRTestStepImpl()
-        step.name = "DIRECT_FAILURE_MDN_SENT"
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
 
+        try {
+            sendMDN(report, "failure")
+            step.name = "DIRECT_FAILURE_MDN_SENT"
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+
+        }
+        catch (Exception e) {
+            step.name = "DIRECT_FAILURE_MDN_ERROR"
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+        }
         return step
     }
 
@@ -182,22 +198,23 @@ class TestCaseExecutor {
     }
 
 
-    def configureGlobalEndpoint(String name, Map params) {
+    XDRSimulatorInterface configureGlobalEndpoint(String name, Map params) {
 
         XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(name)
 
-        if(sim == null){
+        if (sim == null) {
             log.debug("simulator with id $name does not exists. It will be created now!")
             sim = createEndpoint(name, params)
             String id = db.instance.xdrFacade.addNewSimulator(sim)
             log.debug("new global simulator has been created with the following id : $id")
-        }
-        else{
+        } else {
             log.debug("simulator with id $name already exists.")
         }
+
+        return sim
     }
 
-    private XDRSimulatorInterface createEndpoint(String endpointId, Map params){
+    private XDRSimulatorInterface createEndpoint(String endpointId, Map params) {
 
         EndpointConfig config = new EndpointConfig()
 
@@ -206,7 +223,7 @@ class TestCaseExecutor {
         //For example, no dots are allowed anywhere, thus we need to sanitize username
         //(for example the GUI mandates to use email addresses for username, thus the dots!)
         config.putAll(params)
-        config.name = endpointId.replaceAll(/\./,"_")
+        config.name = endpointId.replaceAll(/\./, "_")
 
 
         log.info("trying to create new endpoints on toolkit... [${config.name}]")
@@ -214,7 +231,7 @@ class TestCaseExecutor {
         return receiver.createEndpoints(config)
     }
 
-   protected XDRTestStepInterface executeStoreXDRReport(TkValidationReport report){
+    protected XDRTestStepInterface executeStoreXDRReport(TkValidationReport report) {
 
         try {
             XDRTestStepInterface step = new XDRTestStepImpl()
@@ -236,7 +253,7 @@ class TestCaseExecutor {
 
             return step
         }
-        catch(e){
+        catch (e) {
             throw new Exception(MsgLabel.STORE_XDR_RECEIVE_FAILED.msg)
         }
     }
@@ -253,12 +270,30 @@ class TestCaseExecutor {
         //TODO handle exception if not found
 
         //TODO have a util method instead
-        String simId = ("xdr.global.endpoint.tc."+tcid).replaceAll(/\./,"_")
+        String simId = ("xdr.global.endpoint.tc." + tcid).replaceAll(/\./, "_")
         XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(simId)
         step.xdrSimulator = sim
         step.directFrom = directFrom
 
         log.debug("$simId found. Correlation with direct address $directFrom performed.")
         return step
+    }
+
+    TestCaseEvent getSimpleSendReport(XDRRecordInterface record) {
+        def content = new StandardContent()
+
+        if (record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
+
+            def step = record.getTestSteps().last()
+
+            if (!step.xdrReportItems.empty) {
+                log.info(step.xdrReportItems.size() + " report(s) found.")
+                def report = step.xdrReportItems
+                content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST }.report
+                content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE }.report
+            }
+        }
+
+        return new TestCaseEvent(record.criteriaMet, content)
     }
 }

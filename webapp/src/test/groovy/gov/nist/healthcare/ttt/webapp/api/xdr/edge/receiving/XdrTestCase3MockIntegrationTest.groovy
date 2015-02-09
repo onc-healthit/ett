@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.api.xdr
+package gov.nist.healthcare.ttt.webapp.api.xdr.edge.receiving
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase9MockIntegrationTest extends Specification {
+class XdrTestCase3MockIntegrationTest extends Specification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
@@ -63,25 +63,26 @@ class XdrTestCase9MockIntegrationTest extends Specification {
 
 
 
-    def "user succeeds in running test case 9"() throws Exception {
+    def "user succeeds in running test case 3"() throws Exception {
 
-        when: "receiving a request to run test case 9"
+        when: "receiving a request to configure test case 3"
         MockHttpServletRequestBuilder getRequest = sendXdrRequest()
 
         then: "we receive back a message with status and report of the transaction"
 
+        //TODO we cannot validate the body because for now we always get error messages!
         mockMvcRunTestCase.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("PASSED"))
+                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
     }
 
 
 
 
     MockHttpServletRequestBuilder sendXdrRequest() {
-        MockMvcRequestBuilders.post("/api/xdr/tc/9/run")
+        MockMvcRequestBuilders.post("/api/xdr/tc/3/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,8 +91,7 @@ class XdrTestCase9MockIntegrationTest extends Specification {
 
     public static String testCaseConfig =
             """{
-    "ip_address": "localhost",
-    "port": 12085
+    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/c8860bc9-6acb-4679-b07d-f6c51e276f1a/reg/rb"
 }"""
 
     def setupDb() {
