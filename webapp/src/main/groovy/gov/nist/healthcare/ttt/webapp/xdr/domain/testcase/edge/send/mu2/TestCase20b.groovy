@@ -42,7 +42,7 @@ final class TestCase20b extends TestCase {
 
         record = new TestCaseBuilder(record).addStep(step).build()
 
-        record.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+        record.criteriaMet = step.criteriaMet
 
         executor.db.updateXDRRecord(record)
         executor.db.updateXDRRecord(record)

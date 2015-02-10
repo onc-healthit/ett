@@ -21,7 +21,6 @@ final class TestCase20a extends TestCase {
     public TestCase20a(TestCaseExecutor ex) {
         super(ex)
         sim = registerGlobalEndpoints(goodEndpoint, new HashMap())
-
     }
 
     @Override
@@ -45,7 +44,7 @@ final class TestCase20a extends TestCase {
 
         record = new TestCaseBuilder(record).addStep(step).build()
 
-        record.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+        record.criteriaMet = step.criteriaMet
 
         executor.db.updateXDRRecord(record)
         executor.db.updateXDRRecord(record)

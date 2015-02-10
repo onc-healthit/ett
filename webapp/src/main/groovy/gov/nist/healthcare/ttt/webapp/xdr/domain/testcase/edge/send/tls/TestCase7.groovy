@@ -1,6 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.tls
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
@@ -9,7 +8,6 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -24,11 +22,9 @@ final class TestCase7 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-         XDRTestStepInterface step = executor.recordSenderAddress(context)
-
-        //Create a new test record.
+        def step = executor.executeCorrelationStep(context, sim)
+        step.name = "BAD_AUTHENTIFICATION_MUST_DISCONNECT"
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-
         executor.db.addNewXdrRecord(record)
 
         String endpoint = executor.tlsReceiver.getEndpoint()
