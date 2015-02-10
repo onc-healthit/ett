@@ -39,6 +39,8 @@ final class TestCase1 extends TestCase {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+
+        //TODO for now it is a manual check
         done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
 
     }

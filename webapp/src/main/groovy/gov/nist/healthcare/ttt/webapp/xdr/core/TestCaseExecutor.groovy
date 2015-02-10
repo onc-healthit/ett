@@ -76,9 +76,12 @@ class TestCaseExecutor {
 
 
             XDRTestStepInterface step = new XDRTestStepImpl()
+            step.name = "XDR_SEND_TO_SUT"
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(request)
             step.xdrReportItems.add(response)
+
+            //TODO for now we only send back MANUAL CHECKS
             step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
 
             return step
