@@ -80,39 +80,26 @@ class ResponseHandler implements IObserver {
         String msgId = report.messageId
         String simId = report.simId
 
-        if (directFrom != null) {
-            rec = db.instance.xdrFacade.getLatestXDRRecordByDirectFrom(directFrom)
+        rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectFrom(simId, directFrom)
 
-            if (rec != null) {
-                log.info("found correlation with existing record using directFrom address : $directFrom")
-            } else {
-                log.warn("could not find report correlated with the following directFrom address : $directFrom")
-            }
+        if (rec != null) {
+            log.info("found correlation with existing record using direct address and simId : $directFrom , $simId")
+        } else {
+            log.warn("could not find report correlated with the following direct address and simId : $directFrom , $simId")
         }
 
-        if(rec == null & msgId != null) {
-            String unescapedMsgId = "<" + msgId + ">"
-            rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
+//        if(rec == null & msgId != null) {
+//            String unescapedMsgId = "<" + msgId + ">"
+//            rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
+//
+//            if (rec != null) {
+//                log.info("found correlation with existing record using messageID : $msgId")
+//            } else {
+//                log.warn("could not find report correlated with the following messageID : $msgId")
+//            }
+//        }
 
-            if (rec != null) {
-                log.info("found correlation with existing record using messageID : $msgId")
-            } else {
-                log.warn("could not find report correlated with the following messageID : $msgId")
-            }
-        }
-
-        if(rec == null & simId != null ) {
-            rec = db.getLatestXDRRecordBySimulatorId(simId)
-
-            if (rec != null) {
-                log.info("found correlation with existing record using simId : $simId")
-            } else {
-                log.error("error : could not correlate report with any existing record")
-                throw new Exception("error : could not correlate report with any existing record")
-            }
-        }
-
-        if(rec == null){
+        if (rec == null) {
             throw new Exception("error : could not correlate report with any existing record")
         }
 

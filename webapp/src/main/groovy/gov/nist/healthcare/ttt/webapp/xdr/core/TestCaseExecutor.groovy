@@ -8,6 +8,7 @@ import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
@@ -75,9 +76,12 @@ class TestCaseExecutor {
 
 
             XDRTestStepInterface step = new XDRTestStepImpl()
+            step.name = "XDR_SEND_TO_SUT"
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(request)
             step.xdrReportItems.add(response)
+
+            //TODO for now we only send back MANUAL CHECKS
             step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
 
             return step
@@ -142,7 +146,7 @@ class TestCaseExecutor {
         try {
             sendMDN(report, "processed")
             step.name = "DIRECT_PROCESSED_MDN_SENT"
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
 
         }
         catch (Exception e) {
@@ -159,7 +163,7 @@ class TestCaseExecutor {
         try {
             sendMDN(report, "failure")
             step.name = "DIRECT_FAILURE_MDN_SENT"
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
 
         }
         catch (Exception e) {
@@ -264,21 +268,6 @@ class TestCaseExecutor {
         return step
     }
 
-    XDRTestStepInterface executeDirectAddressCorrelationStep(String tcid, String directFrom) {
-        XDRTestStepInterface step = new TestStepBuilder("CORRELATE_ENDPOINT_WITH_DIRECTFROM_ADDRESS").build()
-
-        //TODO handle exception if not found
-
-        //TODO have a util method instead
-        String simId = ("xdr.global.endpoint.tc." + tcid).replaceAll(/\./, "_")
-        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(simId)
-        step.xdrSimulator = sim
-        step.directFrom = directFrom
-
-        log.debug("$simId found. Correlation with direct address $directFrom performed.")
-        return step
-    }
-
     TestCaseEvent getSimpleSendReport(XDRRecordInterface record) {
         def content = new StandardContent()
 
@@ -295,5 +284,21 @@ class TestCaseExecutor {
         }
 
         return new TestCaseEvent(record.criteriaMet, content)
+    }
+
+    def createRecordForSenderTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
+        def step = executeCorrelationStep(context, sim)
+        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
+        db.addNewXdrRecord(record)
+    }
+
+    def executeCorrelationStep(Map context, XDRSimulatorInterface sim) {
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "CORRELATE_RECORD_WITH_SIMID_AND_DIRECT_FROM_ADDRESS"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        step.xdrSimulator = sim
+        step.directFrom = context.direct_from
+        step.hostname = context.ip_address
+        return step
     }
 }

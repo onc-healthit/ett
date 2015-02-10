@@ -21,18 +21,12 @@ final class TestCase20a extends TestCase {
     public TestCase20a(TestCaseExecutor ex) {
         super(ex)
         sim = registerGlobalEndpoints(goodEndpoint, new HashMap())
-
     }
 
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        XDRTestStepInterface step = executor.executeDirectAddressCorrelationStep(id, context.direct_from)
-
-        //Create a new test record.
-        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-
-        executor.db.addNewXdrRecord(record)
+        executor.createRecordForSenderTestCase(context,username,id,sim)
 
         log.info "test case ${id} : successfully configured. Ready to receive messages."
 
@@ -50,7 +44,7 @@ final class TestCase20a extends TestCase {
 
         record = new TestCaseBuilder(record).addStep(step).build()
 
-        record.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+        record.criteriaMet = step.criteriaMet
 
         executor.db.updateXDRRecord(record)
         executor.db.updateXDRRecord(record)

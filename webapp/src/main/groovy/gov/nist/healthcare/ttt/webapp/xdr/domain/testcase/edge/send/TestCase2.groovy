@@ -1,6 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
@@ -25,13 +24,8 @@ final class TestCase2 extends TestCase {
 
     @Override
     TestCaseEvent configure(Map context, String username) {
-        XDRTestStepInterface step = new XDRTestStepImpl()
-        step.name = "CORRELATE_RECORD_WITH_SIMID_AND_DIRECT_FROM_ADDRESS"
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
-        step.xdrSimulator = sim
 
-        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-        executor.db.addNewXdrRecord(record)
+        executor.createRecordForSenderTestCase(context,username,id,sim)
 
         def content = new StandardContent()
         content.endpoint = endpoints[0]

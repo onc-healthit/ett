@@ -81,5 +81,63 @@ class XdrTestCase19Test extends XDRSpecification {
                 .andExpect(jsonPath("content.value").exists())
     }
 
+
+
+
+    def "user succeeds in running test case - negative test : message ids are not unique"() throws Exception {
+
+        when : "we looking for the endpoint"
+        MockHttpServletRequestBuilder endpoint = TestUtils.getEndpoints(tcId,userId,testCaseConfig)
+
+        //TODO find a way to test endpoint
+        then: "we receive back a success message with the endpoints info"
+        gui.perform(endpoint)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.value.endpoints").exists())
+                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
+
+        when: "receiving a request to configure test case"
+        MockHttpServletRequestBuilder configure = TestUtils.configure(tcId,userId,testCaseConfig)
+
+        then: "we receive back a success message"
+        gui.perform(configure)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
+
+        when: "receiving xdr report from toolkit."
+        MockHttpServletRequestBuilder toolkitNotification = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,"1",fromAddress,toAddress))
+        toolkit.perform(toolkitNotification)
+                .andDo(print())
+                .andReturn()
+
+        MockHttpServletRequestBuilder toolkitNotification2 = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,"1",fromAddress,toAddress))
+        toolkit.perform(toolkitNotification2)
+                .andDo(print())
+                .andReturn()
+
+        MockHttpServletRequestBuilder toolkitNotification3 = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,"3",fromAddress,toAddress))
+        toolkit.perform(toolkitNotification3)
+                .andDo(print())
+                .andReturn()
+
+        then: "we store the validation in the database"
+        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom(fromAddress)
+        assert rec.testSteps.size() == 4
+
+        when: "we check the status of testcase"
+        MockHttpServletRequestBuilder status = TestUtils.status(tcId,userId)
+
+        then: "we receive back a success message asking for manual validation"
+        gui.perform(status)
+                .andDo(print())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.criteriaMet").value("FAILED"))
+                .andExpect(jsonPath("content.value").exists())
+    }
+
 }
 
