@@ -104,8 +104,8 @@ public class TkListener {
     }
 
     def parseReportFormat(TkValidationReport tkValidationReport,  GPathResult report){
-        tkValidationReport.request = report.request.header.text() + "\n \n" + report.request.body.text()
-        tkValidationReport.response = report.response.header.text() + "\n \n" + report.response.body.text()
+        tkValidationReport.request = report.request.header.text() + "\r\n\r\n" + report.request.body.text()
+        tkValidationReport.response = report.response.header.text() + "\r\n\r\n" + report.response.body.text()
         tkValidationReport.simId = report.@simId.text()
     }
 }
