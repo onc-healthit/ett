@@ -18,6 +18,7 @@ public class SSLContextManager {
 
 
     SSLContextManager(){
+        setupContext()
     }
 
     @PostConstruct
