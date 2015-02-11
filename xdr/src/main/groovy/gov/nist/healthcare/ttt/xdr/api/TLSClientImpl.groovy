@@ -39,7 +39,7 @@ public class TLSClientImpl implements TLSClient {
 
     public void startConnection(SSLSocketFactory f,Map config) throws IOException{
             String ipAddress = config.ip_address
-            def port = config.port
+            def port = Integer.parseInt(config.port)
 
             SSLSocket c = (SSLSocket) f.createSocket(ipAddress, port);
             log.info("Sending a request to the server using socket: \n" + socketInfo(c))
