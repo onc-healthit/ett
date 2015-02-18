@@ -304,6 +304,10 @@
             </rim:Association>
         </rim:RegistryObjectList>
     </lcm:SubmitObjectsRequest>
+    <xdsb:Document id="Document01">
+        <xop:Include href="cid:1.3293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org"
+            xmlns:xop="http://www.w3.org/2004/08/xop/include"/>
+    </xdsb:Document>
 </xdsb:ProvideAndRegisterDocumentSetRequest>
     </soapenv:Body>
 </s:Envelope>

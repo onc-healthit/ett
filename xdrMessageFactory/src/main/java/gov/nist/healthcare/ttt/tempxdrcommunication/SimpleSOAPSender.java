@@ -206,7 +206,7 @@ public class SimpleSOAPSender {
         mtom.append("\r\n");
         mtom.append(attachment);
         mtom.append("\r\n");
-        mtom.append("--MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20--\r\n");
+        mtom.append("--MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20--\r\n");       
 
         return mtom.toString();
 
@@ -239,8 +239,8 @@ public class SimpleSOAPSender {
           //  String endpoint = "http://hit-dev.nist.gov:12090/xdstools2/sim/811fd97a-6ea3-437e-bf42-e0a8a505ba98/rec/xdrpr";
             
             
-            String directTo = "directTo";
-            String directFrom = "directFrom";
+            String directTo = "to@direct.com";
+            String directFrom = "from@direct.com";
             String relatesTo = "relatesTo";
             String recipient = "recipient";
             String wsaTo = endpoint;
