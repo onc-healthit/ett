@@ -1,11 +1,8 @@
 package gov.nist.healthcare.ttt.xdr.ssl
-
 import org.springframework.stereotype.Component
 
-import javax.annotation.PostConstruct
 import javax.net.ssl.*
 import java.security.KeyStore
-
 /**
  * Created by gerardin on 12/12/14.
  */
@@ -21,8 +18,7 @@ public class SSLContextManager {
         setupContext()
     }
 
-    @PostConstruct
-    setupContext(){
+    def setupContext(){
         String relativePath = "badKeystore" + File.separator + "badKeystore";
         InputStream keystoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         InputStream truststoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);

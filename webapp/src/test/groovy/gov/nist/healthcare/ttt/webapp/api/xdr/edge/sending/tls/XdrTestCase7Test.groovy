@@ -56,7 +56,7 @@ class XdrTestCase7Test extends XDRSpecification {
 
         when: "we try to connect to TTT with what we consider a good cert"
         try {
-            client.connectOverGoodTLS([ip_address: hostname, port: tlsPort])
+            client.connectOverGoodTLS([ip_address: hostname, port: tlsPort.toString()])
         }
         catch(Exception e){
             //TODO improve that

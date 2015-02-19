@@ -8,6 +8,7 @@ import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
+import spock.lang.Ignore
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -84,6 +85,7 @@ class XdrTestCase19Test extends XDRSpecification {
 
 
 
+    @Ignore
     def "user succeeds in running test case - negative test : message ids are not unique"() throws Exception {
 
         when : "we looking for the endpoint"

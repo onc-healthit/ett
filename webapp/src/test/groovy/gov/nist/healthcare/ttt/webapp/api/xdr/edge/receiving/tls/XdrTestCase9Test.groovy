@@ -24,7 +24,7 @@ class XdrTestCase9Test extends XDRSpecification {
     public String testCaseConfig =
             """{
     "ip_address": "localhost",
-    "port": 12085
+    "port": "12085"
 }"""
 
     def "user succeeds in running test case"() throws Exception {
