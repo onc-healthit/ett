@@ -4,14 +4,24 @@
     "desc": "Verify that the Edge system can create an XDR message per the specification",
     "sutEdge": true,
     "sutHisp": false,
-    "sutRole": "sender"
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
 }, {
     "name": "XDR test 2",
     "id": 2,
     "desc": "Verify that the Edge system can create an XDR message per the specification",
     "sutEdge": true,
     "sutHisp": false,
-    "sutRole": "sender"
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
 }, {
     "name": "XDR test 3",
     "id": 3,
@@ -20,7 +30,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Endpoint",
+        "name": "Non TLS Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -32,7 +42,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Endpoint",
+        "name": "Non TLS Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -44,7 +54,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Endpoint",
+        "name": "Non TLS Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -54,7 +64,12 @@
     "desc": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data.",
     "sutEdge": true,
     "sutHisp": false,
-    "sutRole": "sender"
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
 }, {
     "name": "XDR test 7",
     "id": 7,
