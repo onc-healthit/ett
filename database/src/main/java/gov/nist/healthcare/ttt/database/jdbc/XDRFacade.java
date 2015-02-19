@@ -832,7 +832,7 @@ public class XDRFacade extends DatabaseFacade {
         
         ResultSet result = null;
         List<String> recordIdsByDirectFrom = new ArrayList<String>();
-System.out.println(sqlDirectFrom.toString());
+
         try {
             result = this.getConnection().executeQuery(sqlDirectFrom.toString());
             while (result.next()) {
