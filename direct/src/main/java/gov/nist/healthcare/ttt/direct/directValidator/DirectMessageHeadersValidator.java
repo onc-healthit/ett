@@ -486,7 +486,7 @@ public class DirectMessageHeadersValidator {
 	
 	// DTS 128, Disposition-Notification-To, Optional
 	public DetailModel validateDispositionNotificationTo(String dispositionNotificationTo, boolean wrapped) {
-		String rfc = "IHE Vol2b: Section 3.32.4.1.3";
+		String rfc = "IHE Vol2b: Section 3.32.4.1.3;http://www.ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_TF_Vol2b.pdf";
 		if(dispositionNotificationTo.equals("")) {
 			return new DetailModel("128", "Disposition-Notification-To", "Not present", "May not be present", rfc, Status.INFO);
 		} else {

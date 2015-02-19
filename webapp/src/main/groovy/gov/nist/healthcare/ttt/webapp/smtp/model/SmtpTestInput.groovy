@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 public class SmtpTestInput {
 
@@ -78,14 +79,7 @@ public class SmtpTestInput {
 		this.useTLS = useTLS
 	}
 
-	public TestInput convert() throws FileNotFoundException {
-		Properties prop = new Properties()
-		String propFileName = "application.properties"
- 
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName)
-		if (inputStream == null) {
-			throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath")
-		}
+	public TestInput convert(String domainName, String smtpHost) throws FileNotFoundException {
 		
 		// Default value
 		if (sutSmtpAddress==null || sutSmtpAddress.equals("")) {
@@ -95,11 +89,11 @@ public class SmtpTestInput {
 			this.sutEmailAddress = "blue@localhost"
 		}
 		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
-			this.tttEmailAddress = "wellformed1@" + prop.getProperty("direct.listener.domainName")
+			this.tttEmailAddress = "wellformed1@" + domainName
 		}
 
 		if (tttSmtpAddress==null || tttSmtpAddress.equals("")) {
-			this.tttSmtpAddress = prop.getProperty("direct.listener.domainName")
+			this.tttSmtpAddress = smtpHost
 		}
 
 		if (sutCommandTimeoutInSeconds==null || sutCommandTimeoutInSeconds.equals("0")) {

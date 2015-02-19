@@ -16,12 +16,14 @@ import org.springframework.stereotype.Component;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 
 public class ListenerProcessor implements Runnable {
 	Socket server;
@@ -35,6 +37,8 @@ public class ListenerProcessor implements Runnable {
 	InputStream certStream = null;
 	BufferedReader inReader = null;
 	BufferedOutputStream outStream = null;
+	
+	String logFilePath = ""
 
 	Collection<String> contactAddr = null;
 	String logHostname = "";
@@ -90,10 +94,20 @@ public class ListenerProcessor implements Runnable {
 		// noaddressfailure9
 		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9']
 		String smtpFrom = directTo?.get(0)
+		logger.info("To " + smtpFrom)
 		smtpFrom = smtpFrom.split("@")[0]
 		if(smtpAddressList.contains(smtpFrom)) {
 			logger.info("MDN address found $smtpFrom sending back appropriate MDN")
 			manageMDNAddresses(smtpFrom, directTo?.get(0), directFrom, messageStream)
+			return
+		} else if(smtpFrom.equals("wellformed1")) {
+			// Get the session variable
+			Properties props = System.getProperties();
+			Session session = Session.getDefaultInstance(props, null);
+			MimeMessage forward = new MimeMessage(session, this.messageStream);
+			DirectMessageSender sender = new DirectMessageSender();
+			logger.info("Forwarding message to unpublishedwellformed1@hit-testing2.nist.gov");
+			sender.sendMessage(25, "hit-testing2.nist.gov", forward, forward.getFrom()[0].toString(), "unpublishedwellformed1@hit-testing2.nist.gov");
 			return
 		}
 		
@@ -186,6 +200,11 @@ public class ListenerProcessor implements Runnable {
 				db.getLogFacade().addNewPart(
 						processor.getLogModel().getMessageId(),
 						processor.getMainPart());
+				if(processor.hasCCDAReport()) {
+					processor.getCcdaReport().each {
+						db.getLogFacade().addNewCCDAValidationReport(processor.getLogModel().getMessageId(), it);					
+				}
+			}
 			} catch (DatabaseException e) {
 				logger.error("Error trying to log in the database "
 						+ e.getMessage());
@@ -208,14 +227,26 @@ public class ListenerProcessor implements Runnable {
 			// Log line for the stats
 			if (directTo != null) {
 				String docType;
-				 if(processor.isMdn()) {
-					 docType = "mdn";
-				 } else {
-					 docType = getCcdaType(directTo.get(0));
-				 }
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
-				String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
-				logger.info(statLog);
+				if(processor.isMdn()) {
+					docType = "mdn";
+				} else {
+					docType = getCcdaType(directTo.get(0));
+				}
+				 
+				try {
+					FileWriter fw = new FileWriter(this.logFilePath, true); //the true will append the new data
+					
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
+					String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
+					logger.info(statLog);
+					
+					// Write in listener log
+					fw.write(statLog +"\n");
+					fw.close();
+					
+				} catch(Exception e) {
+					logger.info(e.getMessage())
+				}
 			}
 
 		} catch (Exception e) {
@@ -226,9 +257,7 @@ public class ListenerProcessor implements Runnable {
 
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
-		String url = """http://${domainName}:${port}${servletName}
-				/direct/#/validationReport/
-				${this.processor.getLogModel().getMessageId()}""".stripMargin()
+		String url = "http://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
 
 		// Generate report template
 		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
@@ -247,7 +276,7 @@ public class ListenerProcessor implements Runnable {
 
 			// Send report
 
-			logger.debug("Sending report from " + emailer.model.getFrom()
+			logger.info("Sending report from " + emailer.model.getFrom()
 					+ "   to " + contactAddr);
 			Iterator<String> it = contactAddr.iterator();
 			while (it.hasNext()) {
@@ -256,9 +285,7 @@ public class ListenerProcessor implements Runnable {
 			}
 
 		} catch (Exception e) {
-			logger.error("Cannot send email (" + e.getClass().getName() + ". "
-					+ e.getMessage());
-		} catch (Throwable e) {
+			e.printStackTrace();
 			logger.error("Cannot send email (" + e.getClass().getName() + ". "
 					+ e.getMessage());
 		}
@@ -277,7 +304,7 @@ public class ListenerProcessor implements Runnable {
 			
 			try {
 				logger.info("Generating MDN for message " + processor.getLogModel().getMessageId());
-				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), this.certStream,
+				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), getSigningPrivateCert(),
 						this.certPassword);
 				DirectMessageSender sender = new DirectMessageSender();
 				logger.info("Sending MDN to " + toMDN);
@@ -639,8 +666,13 @@ public class ListenerProcessor implements Runnable {
 				res = directAddress.split("@")[0];
 				res = res.toLowerCase();
 				if (!res.equals("direct-clinical-summary")
-						&& !res.equals("direct-ambulatory")
-						&& !res.equals("direct-inpatient")
+						&& !res.equals("direct-ambulatory2")
+						&& !res.equals("direct-ambulatory7")
+						&& !res.equals("direct-ambulatory1")
+						&& !res.equals("direct-inpatient2")
+						&& !res.equals("direct-inpatient7")
+						&& !res.equals("direct-inpatient1")
+						&& !res.equals("direct-vdt-inpatient")
 						&& !res.equals("direct-vdt-ambulatory")) {
 					res = "non-specific";
 				}

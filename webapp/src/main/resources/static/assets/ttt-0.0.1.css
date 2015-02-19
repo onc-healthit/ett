@@ -1180,6 +1180,215 @@ pre[class*="language-"] {
 	cursor: help;
 }
 
+$popover-bg-color: #fff !default;
+$popover-border-color: #d2d2d2 !default;
+
+$popover-triangle-size: 11px !default;
+$popover-triangle-color: $popover-bg-color !default;
+$popover-triangle-border-color: $popover-border-color !default;
+
+.ns-popover-list-theme {
+  box-sizing: border-box;
+  border: solid 1px $popover-border-color;
+  border-radius: 3px;
+  z-index: 100;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0.3125rem 0.625rem rgba(0,0,0,0.2);
+     -moz-box-shadow: 0 0.3125rem 0.625rem rgba(0,0,0,0.2);
+          box-shadow: 0 0.3125rem 0.625rem rgba(0,0,0,0.2);
+
+  ul, .list {
+    padding: 0;
+    margin: 0.625rem 0;
+    display: block;
+  }
+
+  li, .list-item {
+    list-style-type: none;
+
+    a {
+      padding: 0.1875rem 0.625rem;
+      display: block;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+}
+
+// @mixins
+//
+// We use this to create equilateral triangles
+// $triangle-size - Used to set border-size. No default, set a px or em size.
+// $triangle-color - Used to set border-color which makes up triangle. No default
+// $triangle-direction - Used to determine which direction triangle points. Options: top, bottom, left, right
+@mixin triangle($triangle-direction,
+  $triangle-size:$popover-triangle-size,
+  $triangle-color:$popover-triangle-color,
+  $triangle-border-color:$popover-triangle-border-color) {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid $triangle-size;
+  border-color: transparent;
+  position: absolute;
+
+  &:after {
+    content: " ";
+    display: block;
+    width:0;
+    height:0;
+    border: solid ($triangle-size - 1px);
+    border-color: transparent;
+    position: absolute;
+  }
+
+  @if ($triangle-direction == top) {
+    border-top-color: $triangle-border-color;
+    left:50%;
+    bottom: -$triangle-size;
+    margin-left: -$triangle-size;
+
+    &:after {
+      border-top-color: $triangle-color;
+      border-bottom-width: 0;
+      bottom: 1px;
+      margin-left: -($triangle-size - 1px);
+    }
+  }
+
+  @if ($triangle-direction == bottom) {
+    border-bottom-color: $triangle-border-color;
+    left:50%;
+    top: -$triangle-size;
+    margin-left: -$triangle-size;
+
+    &:after {
+      border-bottom-color: $triangle-color;
+      border-top-width: 0;
+      top: 1px;
+      margin-left: -($triangle-size - 1px);
+    }
+  }
+
+  @if ($triangle-direction == left) {
+    border-left-color: $triangle-border-color;
+    top:50%;
+    right: -$triangle-size;
+    margin-top: -$triangle-size;
+
+    &:after {
+      border-left-color: $triangle-color;
+      border-right-width: 0;
+      right: 1px;
+      bottom: -($triangle-size - 1px);
+    }
+  }
+
+  @if ($triangle-direction == right) {
+    border-right-color: $triangle-border-color;
+    top:50%;
+    left: -$triangle-size;
+    margin-top: -$triangle-size;
+
+    &:after {
+      border-right-color: $triangle-color;
+      border-left-width: 0;
+      left: 1px;
+      bottom: -($triangle-size - 1px);
+    }
+  }
+}
+
+.ns-popover-tooltip-theme {
+  box-sizing: border-box;
+  z-index: 100;
+  background-color: transparent;
+
+  .ns-popover-tooltip {
+    box-sizing: border-box;
+    border: solid 1px $popover-border-color;
+    border-radius: 3px;
+    z-index: 100;
+    background-color: #fff;
+    padding: 0.5625rem 0.875rem;
+    max-width: 20rem;
+    font-size: 0.875rem;
+    -webkit-box-shadow: 0 0.3125rem 0.625rem rgba(0,0,0,0.2);
+       -moz-box-shadow: 0 0.3125rem 0.625rem rgba(0,0,0,0.2);
+            box-shadow: 0 0.3125rem 0.625rem rgba(0,0,0,0.2);
+    margin: $popover-triangle-size - 1px;
+
+    ul {
+      padding: 0;
+      margin: 0.625rem 0;
+      display: block;
+    }
+
+    li {
+      list-style-type: none;
+
+      a {
+        padding: 0.1875rem 0.625rem;
+        display: block;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+  }
+
+  &.ns-popover-bottom-placement {
+    .triangle {
+      @include triangle("bottom");
+    }
+  }
+
+  &.ns-popover-top-placement {
+    .triangle {
+      @include triangle("top");
+    }
+  }
+
+  &.ns-popover-right-placement {
+    .triangle {
+      @include triangle("right");
+    }
+  }
+
+  &.ns-popover-left-placement {
+    .triangle {
+      @include triangle("left");
+    }
+  }
+
+  &.ns-popover-left-align {
+    .ns-popover-tooltip {
+      margin-left: 0;
+    }
+  }
+
+  &.ns-popover-right-align {
+    .ns-popover-tooltip {
+      margin-right: 0;
+    }
+  }
+
+  &.ns-popover-top-align {
+    .ns-popover-tooltip {
+      margin-top: 0;
+    }
+  }
+
+  &.ns-popover-bottom-align {
+    .ns-popover-tooltip {
+      margin-bottom: 0;
+    }
+  }
+}
 @import url("http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic");
 /**
  * This is the main application stylesheet. It should include or import all
@@ -1533,6 +1742,266 @@ pre[class*="language-"] {
   width: 70%;
   margin: 0px;
 }
+.ns-popover-list-theme {
+  box-sizing: border-box;
+  border: solid 1px #d2d2d2;
+  border-radius: 3px;
+  z-index: 100;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0.3125rem 0.625rem rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0.3125rem 0.625rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.3125rem 0.625rem rgba(0, 0, 0, 0.2);
+}
+/* line 18, ../sass/ns-popover.scss */
+.ns-popover-list-theme ul,
+.ns-popover-list-theme .list {
+  padding: 0;
+  margin: 0.625rem 0;
+  display: block;
+}
+/* line 24, ../sass/ns-popover.scss */
+.ns-popover-list-theme li,
+.ns-popover-list-theme .list-item {
+  list-style-type: none;
+}
+/* line 27, ../sass/ns-popover.scss */
+.ns-popover-list-theme li a,
+.ns-popover-list-theme .list-item a {
+  padding: 0.1875rem 0.625rem;
+  display: block;
+}
+/* line 31, ../sass/ns-popover.scss */
+.ns-popover-list-theme li a:hover,
+.ns-popover-list-theme .list-item a:hover {
+  background-color: #f5f5f5;
+}
+/* line 123, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme {
+  box-sizing: border-box;
+  z-index: 100;
+  background-color: transparent;
+}
+/* line 128, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme .ns-popover-tooltip {
+  box-sizing: border-box;
+  border: solid 1px #d2d2d2;
+  border-radius: 3px;
+  z-index: 100;
+  background-color: #fff;
+  padding: 0.5625rem 0.875rem;
+  max-width: 20rem;
+  font-size: 0.875rem;
+  -webkit-box-shadow: 0 0.3125rem 0.625rem rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0.3125rem 0.625rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.3125rem 0.625rem rgba(0, 0, 0, 0.2);
+  margin: 10px;
+}
+/* line 142, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme .ns-popover-tooltip ul {
+  padding: 0;
+  margin: 0.625rem 0;
+  display: block;
+}
+/* line 148, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme .ns-popover-tooltip li {
+  list-style-type: none;
+}
+/* line 151, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme .ns-popover-tooltip li a {
+  padding: 0.1875rem 0.625rem;
+  display: block;
+}
+/* line 155, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme .ns-popover-tooltip li a:hover {
+  background-color: #f5f5f5;
+}
+/* line 163, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-bottom-placement .triangle {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 11px;
+  border-color: transparent;
+  position: absolute;
+  border-bottom-color: #d2d2d2;
+  left: 50%;
+  top: -11px;
+  margin-left: -11px;
+}
+/* line 56, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-bottom-placement .triangle:after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 10px;
+  border-color: transparent;
+  position: absolute;
+}
+/* line 86, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-bottom-placement .triangle:after {
+  border-bottom-color: white;
+  border-top-width: 0;
+  top: 1px;
+  margin-left: -10px;
+}
+/* line 169, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-top-placement .triangle {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 11px;
+  border-color: transparent;
+  position: absolute;
+  border-top-color: #d2d2d2;
+  left: 50%;
+  bottom: -11px;
+  margin-left: -11px;
+}
+/* line 56, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-top-placement .triangle:after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 10px;
+  border-color: transparent;
+  position: absolute;
+}
+/* line 72, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-top-placement .triangle:after {
+  border-top-color: white;
+  border-bottom-width: 0;
+  bottom: 1px;
+  margin-left: -10px;
+}
+/* line 175, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-right-placement .triangle {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 11px;
+  border-color: transparent;
+  position: absolute;
+  border-right-color: #d2d2d2;
+  top: 50%;
+  left: -11px;
+  margin-top: -11px;
+}
+/* line 56, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-right-placement .triangle:after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 10px;
+  border-color: transparent;
+  position: absolute;
+}
+/* line 114, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-right-placement .triangle:after {
+  border-right-color: white;
+  border-left-width: 0;
+  left: 1px;
+  bottom: -10px;
+}
+/* line 181, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-left-placement .triangle {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 11px;
+  border-color: transparent;
+  position: absolute;
+  border-left-color: #d2d2d2;
+  top: 50%;
+  right: -11px;
+  margin-top: -11px;
+}
+/* line 56, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-left-placement .triangle:after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border: solid 10px;
+  border-color: transparent;
+  position: absolute;
+}
+/* line 100, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-left-placement .triangle:after {
+  border-left-color: white;
+  border-right-width: 0;
+  right: 1px;
+  bottom: -10px;
+}
+/* line 187, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-left-align .ns-popover-tooltip {
+  margin-left: 0;
+}
+/* line 193, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-right-align .ns-popover-tooltip {
+  margin-right: 0;
+}
+/* line 199, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-top-align .ns-popover-tooltip {
+  margin-top: 0;
+}
+/* line 205, ../sass/ns-popover.scss */
+.ns-popover-tooltip-theme.ns-popover-bottom-align .ns-popover-tooltip {
+  margin-bottom: 0;
+}
+.error-notice {
+  /* Making sure to keep some distance from all side */
+}
+.oaerror {
+  width: 100%;
+  /* Configure it fit in your design  */
+  /* Centering Stuff */
+  background-color: #FFFFFF;
+  /* Default background */
+  padding: 10px;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+  margin: 0 auto;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+.danger {
+  border-left-color: #d9534f;
+  /* Left side border color */
+  background-color: rgba(217, 83, 79, 0.1);
+  /* Same color as the left border with reduced alpha to 0.1 */
+}
+.danger strong {
+  color: #d9534f;
+}
+.warning {
+  border-left-color: #f0ad4e;
+  background-color: rgba(240, 173, 78, 0.1);
+}
+.warning strong {
+  color: #f0ad4e;
+}
+.info {
+  border-left-color: #5bc0de;
+  background-color: rgba(91, 192, 222, 0.1);
+}
+.info strong {
+  color: #5bc0de;
+}
+.success {
+  border-left-color: #2b542c;
+  background-color: rgba(43, 84, 44, 0.1);
+}
+.success strong {
+  color: #2b542c;
+}
 /**
  * Typography
  */
@@ -1622,6 +2091,25 @@ pre {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+/**
+For pdf
+*/
+.rotate0 {
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+.rotate90 {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.rotate180 {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.rotate270 {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
 }
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
@@ -1840,23 +2328,39 @@ pre {
   margin-bottom: 15px;
 }
 /* tab color */
-.nav-tabs > li > a {
+.reportTab .nav-tabs > li > a {
   background-color: #333333;
   border-color: #777777;
   color: #fff;
 }
 /* active tab color */
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
+.reportTab .nav-tabs > li.active > a,
+.reportTab .nav-tabs > li.active > a:hover,
+.reportTab .nav-tabs > li.active > a:focus {
   color: #fff;
   background-color: #666;
   border: 1px solid #888888;
 }
 /* hover tab color */
-.nav-tabs > li > a:hover {
+.reportTab .nav-tabs > li > a:hover {
   border-color: #000000;
   background-color: #111111;
+}
+table.fancy td {
+  cursor: pointer;
+}
+table.fancy tr.foobar {
+  color: white;
+  background-color: #428BCA;
+}
+.actualReport > a {
+  border-color: #454644;
+  background-color: #3D003D !important;
+}
+.actualReport > a:hover,
+.actualReport > a:focus {
+  border-color: #454644;
+  background-color: #501950 !important;
 }
 /* Validation report css */
 .carousel-row {

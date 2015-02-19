@@ -1,16 +1,33 @@
 package gov.nist.healthcare.ttt.direct.messageProcessor;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -20,6 +37,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.mail.smime.SMIMESigned;
 import org.bouncycastle.util.Store;
 
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportImpl;
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
 import gov.nist.healthcare.ttt.database.log.DetailInterface.Status;
 import gov.nist.healthcare.ttt.database.log.PartInterface;
 import gov.nist.healthcare.ttt.direct.directValidator.DirectMessageValidator;
@@ -40,20 +59,23 @@ public class PartValidation {
 	private boolean wrapped;
 	private boolean hasError;
 	
+	private String ccdaType;
+	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
+	
 	public PartValidation(boolean wrapped) {
 		this.wrapped = wrapped;
 		this.hasError = false;
 	}
 	
 	public void processMainPart(PartModel part) throws Exception {
-		Part p = part.getContent();
-		
+		Part p = part.getContent();		
 		
 		// MIME Entity Validation
 		detailedpartValidation.validateMimeEntity(part);
 		
 		// If this is a message part (outer envelope or message/rfc822)
 		if(p instanceof MimeMessage) {
+			this.ccdaType = getCCDAType(((Message) p).getRecipients(Message.RecipientType.TO).toString());
 			this.processEnvelope(part, this.wrapped);
 		}
 		
@@ -79,7 +101,7 @@ public class PartValidation {
 		if(!part.isStatus()) {
 			this.hasError = true;
 		}
-		
+
 		if(part.hasChild()) {
 			Iterator<PartInterface> it = part.getChildren().iterator();
 			while(it.hasNext()) {
@@ -161,8 +183,58 @@ public class PartValidation {
 		this.verifySignature(part, s, micalg);
 	}
 	
-	public void processLeafPart(PartModel part) {
+	public void processLeafPart(PartModel part) throws Exception {
+		Part p = part.getContent();
 		
+		// Validate CCDA
+		if(p.isMimeType("text/xml") || p.isMimeType("application/xml")) {
+			validateCCDAwithMDHT(part);
+		}
+	}
+	
+	public String validateCCDAwithMDHT(PartModel part) throws Exception {
+		Part p = part.getContent();
+		String ccdaFilename = "";
+		File ccdaFile = null;
+		if(p.getFileName() != null) {
+			ccdaFilename = p.getFileName();
+			ccdaFile = getCCDAFile(p.getInputStream(), p.getFileName());
+		}
+		
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
+		FileBody fileBody = new FileBody(ccdaFile);
+		//
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		builder.addPart("file", fileBody);
+		builder.addTextBody("type_val", this.ccdaType);
+		HttpEntity entity = builder.build();
+		//
+		post.setEntity(entity);
+		try {
+			HttpResponse response = client.execute(post);
+			// CONVERT RESPONSE TO STRING
+			String result = EntityUtils.toString(response.getEntity());
+			
+//			File bite = new File("ccda.txt");
+//			FileWriter fw = new FileWriter(bite.getAbsoluteFile());
+//			BufferedWriter bw = new BufferedWriter(fw);
+//			bw.write(result);
+//			bw.close();
+			
+			CCDAValidationReportImpl report = new CCDAValidationReportImpl();
+			report.setFilename(ccdaFilename);
+			report.setValidationReport(result);
+			
+			ccdaReport.add(report);
+			
+			return result;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
 	}
 	
 	/**
@@ -283,6 +355,84 @@ public class PartValidation {
 
 	public void setHasError(boolean hasError) {
 		this.hasError = hasError;
+	}
+	
+	public File getCCDAFile(InputStream stream, String filename) {
+		
+		String tDir = System.getProperty("java.io.tmpdir");
+		OutputStream outputStream = null;
+		
+		File temp;
+		if(filename != null) {
+			temp = new File(tDir + File.separator + filename);
+		} else {
+			temp = new File(tDir + File.separator + "tempCCDA.xml");
+		}
+	 
+		try {
+	 
+			// write the inputStream to a FileOutputStream
+			outputStream = new FileOutputStream(temp);
+	 
+			int read = 0;
+			byte[] bytes = new byte[1024];
+	 
+			while ((read = stream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+	 
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (outputStream != null) {
+				try {
+					// outputStream.flush();
+					outputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	 
+			}
+		}
+		
+		return temp;
+	}
+	
+	public String getCCDAType(String to) {
+		String trimmedTo = to.split("@")[0];
+		
+		HashMap<String, String> types = new HashMap<String, String>();
+		types.put("direct-clinical-summary", "ClinicalOfficeVisitSummary");
+		types.put("direct-ambulatory2", "TransitionsOfCareAmbulatorySummaryb2");
+		types.put("direct-ambulatory7", "TransitionsOfCareAmbulatorySummaryb7");
+		types.put("direct-ambulatory1", "TransitionsOfCareAmbulatorySummaryb1");
+		types.put("direct-inpatient2", "TransitionsOfCareInpatientSummaryb2");
+		types.put("direct-inpatient7", "TransitionsOfCareInpatientSummaryb7");
+		types.put("direct-inpatient1", "TransitionsOfCareInpatientSummaryb1");
+		types.put("direct-vdt-ambulatory", "VDTAmbulatorySummary");
+		types.put("direct-vdt-inpatient", "VDTInpatientSummary");
+		types.put("ccda", "NonSpecificCCDA");
+		
+		if(types.containsKey(trimmedTo)) {
+			return types.get(trimmedTo);
+		} else {
+			return "NonSpecificCCDA";
+		}
+	}
+
+	public List<CCDAValidationReportInterface> getCcdaReport() {
+		return ccdaReport;
+	}
+
+	public void setCcdaReport(List<CCDAValidationReportInterface> ccdaReport) {
+		this.ccdaReport = ccdaReport;
 	}
 
 }

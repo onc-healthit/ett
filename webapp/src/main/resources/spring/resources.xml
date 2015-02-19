@@ -18,6 +18,17 @@
     </bean>
 
     <bean id="DatabaseInstance" class="gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance"/>
+    
+    <bean id="Emailer" class="gov.nist.healthcare.ttt.webapp.direct.listener.EmailerModel">
+        <property name="smtpUser" value="${direct.listener.email.username}"/>
+        <property name="smtpPassword" value="${direct.listener.email.password}"/>
+        <property name="from" value="${direct.listener.email.from}"/>
+        <property name="host" value="${direct.listener.email.host}"/>
+        <property name="smtpPort" value="${direct.listener.email.port}"/>
+        <property name="smtpAuth" value="${direct.listener.email.auth}"/>
+        <property name="starttls" value="${direct.listener.email.starttls}"/>
+        <property name="gmailStyle" value="${direct.listener.email.gmailStyle}"/>
+    </bean>
 
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

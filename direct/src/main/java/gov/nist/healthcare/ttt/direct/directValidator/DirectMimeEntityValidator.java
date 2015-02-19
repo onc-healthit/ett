@@ -78,9 +78,13 @@ public class DirectMimeEntityValidator {
 	// DTS 191, Content-Type Subtype, Required
 	public DetailModel validateContentTypeSubtype(String subtype) {
 		String rfc = "RFC 2045: Section 1;http://tools.ietf.org/html/rfc2045#section-1";
-		String[] typeAndSubtype = subtype.split("/"); // first one is the type (ex. "text"), second one is the subtype (ex. "plain").
-		if (typeAndSubtype[1] != "") {
-			return new DetailModel("191", "Content-Type Subtype", subtype, "Content Type Subtype must be present", rfc, Status.SUCCESS);
+		if(subtype.contains("/")) {
+			String[] typeAndSubtype = subtype.split("/"); // first one is the type (ex. "text"), second one is the subtype (ex. "plain").
+			if (typeAndSubtype[1] != "") {
+				return new DetailModel("191", "Content-Type Subtype", subtype, "Content Type Subtype must be present", rfc, Status.SUCCESS);
+			} else {
+				return new DetailModel("191", "Content-Type Subtype", "Not present", "Content Type Subtype must be present", rfc, Status.ERROR);
+			}
 		} else {
 			return new DetailModel("191", "Content-Type Subtype", "Not present", "Content Type Subtype must be present", rfc, Status.ERROR);
 		}

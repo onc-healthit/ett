@@ -1011,7 +1011,7 @@ System.out.println(sqlDirectFrom.toString());
 
     // MessageID in the database has a unique constraint.
     //returns null if none
-    public XDRRecordInterface getXDRRecordByMessageId(String messageId) throws DatabaseException {
+    private XDRRecordInterface getXDRRecordByMessageId(String messageId) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
 

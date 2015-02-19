@@ -53,12 +53,17 @@ private static Logger logger = Logger.getLogger(DirectMessageValidatorController
 		logger.info("Validating message" + processor.getLogModel().getMessageId() + " done");
 		
 		try {
-		db.getLogFacade().addNewLog(processor.getLogModel());
+			db.getLogFacade().addNewLog(processor.getLogModel());
+			db.getLogFacade().addNewPart(processor.getLogModel().getMessageId(), processor.getMainPart());
+			if(processor.hasCCDAReport()) {
+				processor.getCcdaReport().each {
+					db.getLogFacade().addNewCCDAValidationReport(processor.getLogModel().getMessageId(), it);					
+				}
+			}
 		} catch(DatabaseException e) {
 			e.printStackTrace();
 			return processor.getLogModel();
 		}
-		db.getLogFacade().addNewPart(processor.getLogModel().getMessageId(), processor.getMainPart());
 		
 		return processor.getLogModel();
 	}

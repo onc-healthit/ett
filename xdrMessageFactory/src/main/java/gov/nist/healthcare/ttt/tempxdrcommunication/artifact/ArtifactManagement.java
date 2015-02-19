@@ -49,6 +49,31 @@ public class ArtifactManagement {
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS = "DeliveryStatusNotification_success.xml";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE = "DeliveryStatusNotification_failure.xml";
 
+    
+    // TODO: If a schema for the Direct Headers becomes available, replace this
+    // string manipulation with XML objects.
+    public static String getAdditionalSOAPHeaders(boolean minimal, String directFrom, String directTo) {
+        String metadata = null;
+        if (minimal) {
+            metadata = "minimal";
+        } else {
+            metadata = "XDS";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">" + metadata + "</direct:metadata-level>");
+        sb.append("<direct:addressBlock xmlns:direct=\"urn:direct:addressing\" xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\" ");
+        sb.append("soapenv:role=\"urn:direct:addressing:destination\" soapenv:relay=\"true\">");
+        sb.append("<direct:from>" + directFrom + "</direct:from>");
+        sb.append("<direct:to>" + directTo + "</direct:to>");
+        sb.append("</direct:addressBlock>");
+        return sb.toString();
+    }
+/*
+    public static String getMetadata(boolean minimal) {
+        
+    }
+  */  
     public static String getPayload(Type type, Settings settings) throws IOException {
         makeSettingsSafe(settings);
         String payload = null;
@@ -66,11 +91,9 @@ public class ArtifactManagement {
                 break;
 
         }
-        
         return payload;
-
-    }
-
+    }   
+    
     public static String getMtomSoap(Type type, Settings settings) {
         makeSettingsSafe(settings);
         String payload = null;
@@ -208,7 +231,7 @@ public class ArtifactManagement {
         return message;
     }
 
-    public static String getXdrMissingMetadataElements2(Settings settings)  {
+    public static String getXdrMissingMetadataElements2(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS2);
         message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
@@ -264,11 +287,11 @@ public class ArtifactManagement {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder out = new StringBuilder();
         try {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            out.append(line + "\r\n");
-        }
-        reader.close();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                out.append(line + "\r\n");
+            }
+            reader.close();
         } catch (IOException ioe) {
             //TODO
             System.err.println("RESOURCE NOT FOUND: " + resourceName);
@@ -337,13 +360,17 @@ public class ArtifactManagement {
         try {
 
             Settings settings = new Settings();
-            settings.setDirectFrom("directFrom");
-            settings.setDirectTo("directTo");
-            settings.setWsaTo("wsaTo");
+            settings.setDirectFrom("from@direct.com");
+            settings.setDirectTo("to@direct.com");
+            settings.setWsaTo("fakeWsaHere");
 
-            String payload = getPayload(Type.XDR_FULL_METADATA, settings);
+          //  String payload = getPayload(Type.XDR_FULL_METADATA, settings);
+            
+            String payload = ArtifactManagement.getMtomSoap(Type.XDR_FULL_METADATA, settings);
             System.out.println("here!\n" + payload);
 
+          //  System.out.println(ArtifactManagement.getAdditionalSOAPHeaders(true, "from@direct.net","to@direct.net"));
+            
             //    URL url = ClassLoader.getSystemResource("DeliveryStatusNotification_success.xml");
             //  System.out.println(url.getPath());
         /*    
