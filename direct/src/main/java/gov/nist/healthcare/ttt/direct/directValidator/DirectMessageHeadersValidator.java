@@ -72,17 +72,20 @@ public class DirectMessageHeadersValidator {
 	// DTS 104-106, Received, Conditional
 	public DetailModel validateReceived(String received, boolean wrapped) {
 	
+		// Remove break lines
+		String noLineBreakReceived = received.replace("\r\n", "");
+		
 		// String part variable
-		String fromText = ValidationUtils.getReceivedPart(received, "from ");
-		String byText = ValidationUtils.getReceivedPart(received, " by ");
-		String viaText = ValidationUtils.getReceivedPart(received, " via ");
-		String withText = ValidationUtils.getReceivedPart(received, " with ");
-		String idText = ValidationUtils.getReceivedPart(received, " id ");
-		String forText = ValidationUtils.getReceivedPart(received, " for ");
+		String fromText = ValidationUtils.getReceivedPart(noLineBreakReceived, "from ");
+		String byText = ValidationUtils.getReceivedPart(noLineBreakReceived, " by ");
+		String viaText = ValidationUtils.getReceivedPart(noLineBreakReceived, " via ");
+		String withText = ValidationUtils.getReceivedPart(noLineBreakReceived, " with ");
+		String idText = ValidationUtils.getReceivedPart(noLineBreakReceived, " id ");
+		String forText = ValidationUtils.getReceivedPart(noLineBreakReceived, " for ");
 		String dateText = "";
 		
 		if(received.contains(";")) {
-			dateText = received.split(";", 2)[1];
+			dateText = noLineBreakReceived.split(";", 2)[1];
 			dateText = dateText.replaceAll("\\r", "");
 			dateText = dateText.replaceAll("\\n", "");
 			while(dateText.startsWith(" ")) {
@@ -99,10 +102,14 @@ public class DirectMessageHeadersValidator {
 		boolean checkFor = true;
 		boolean checkDate = false;
 		
-		final String from = "[0-9a-zA-Z]+([_, \\., \\-][0-9a-zA-Z]+)*" + "\\(\\[" + "(?:[0-9]{1,3}\\.){3}[0-9]{1,3}" + "\\]\\)";
-		final String by = "[0-9a-zA-Z]+([_, \\., \\-][0-9a-zA-Z]+)*(\\([0-9,a-z,A-Z,\\s]*\\))?";
+		final String ipv6 = "((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?";
+		final String ipv4 = "(?:[0-9]{1,3}\\.){3}[0-9]{1,3}";
+		final String ip = "(" + ipv6 + "|" + ipv4 + ")";
+		final String domain = "([0-9a-zA-Z]+([_, \\., \\-][0-9a-zA-Z]+)*)";
+		final String from = domain + "\\(" + domain + "?\\[?" + ip + "\\]?\\)*";
+		final String by = from;
 		final String via = "[0-9a-zA-Z]*";
-		final String with = "[a-zA-Z0-9]*";
+		final String with = "SMTP|ESMTP|ESMTPA|ESMTPS|ESMTPSA|LMTP|LMTPA|LMTPS|LMTPSA|MMS|UTF8SMTP|UTF8SMTPA|UTF8SMTPS|UTF8SMTPSA|UTF8LMTP|UTF8LMTPA|UTF8LMTPS|UTF8LMTPSA";
 		final String id = "[0-9a-zA-Z]+([_, \\., \\-][0-9a-zA-Z]+)*";
 		final String fore =  "<" + "[0-9,a-z,_,\\-,.]+" + "@" + "[0-9,a-z,_,\\-,.]+" + ">;";
 		
@@ -136,6 +143,18 @@ public class DirectMessageHeadersValidator {
 		String rfc = "RFC 5321: Section 4.4;http://tools.ietf.org/html/rfc5321.html#section-4.4;RFC 5322: Section 3.3;http://tools.ietf.org/html/rfc5322#section-3.3";
 		if(checkFrom && checkBy && checkVia && checkWith && checkId && checkFor && checkDate) {
 			return new DetailModel("104-106", "Received", received, "from clause by clause for clause; date", rfc, Status.SUCCESS);
+		} else if(!checkFrom) {
+			return new DetailModel("104-106", "Received", received, "From clause not formated correctly", rfc, Status.WARNING);
+		} else if(!checkBy) {
+			return new DetailModel("104-106", "Received", received, "By clause not formated correctly", rfc, Status.WARNING);
+		} else if(!checkVia) {
+			return new DetailModel("104-106", "Received", received, "Via clause value should be TCP or other allowed values", rfc, Status.WARNING);
+		} else if(!checkWith) {
+			return new DetailModel("104-106", "Received", received, "With clause should be either SMTP or ESMTP or another allowed value", rfc, Status.WARNING);
+		} else if(!checkId) {
+			return new DetailModel("104-106", "Received", received, "ID clause not formated correctly", rfc, Status.WARNING);
+		} else if(!checkDate) {
+			return new DetailModel("104-106", "Received", received, "Date clause not formated correctly", rfc, Status.WARNING);
 		} else {
 			return new DetailModel("104-106", "Received", received, "from clause by clause for clause; date", rfc, Status.ERROR);
 		}

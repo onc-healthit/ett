@@ -175,7 +175,7 @@ public class DirectMimeEntityValidator {
 		} else if(content.equals("")) {
 			return new DetailModel("161-194", "Content-Disposition filename", "Not present", "Content Type Disposition filename SHOULD be present", rfc, Status.WARNING);
 		} else {
-			return new DetailModel("161-194", "Content-Disposition filename", content, "Content Type Disposition filename SHOULD have an extension in .p7c, .p7z or .p7s", rfc, Status.WARNING);
+			return new DetailModel("161-194", "Content-Disposition filename", content, "Content Type Disposition filename SHOULD have an extension in .p7m, .p7c, .p7z or .p7s", rfc, Status.WARNING);
 		}
 		
 	}

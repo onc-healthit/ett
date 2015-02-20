@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -197,8 +198,10 @@ public class PartValidation {
 		String ccdaFilename = "";
 		File ccdaFile = null;
 		if(p.getFileName() != null) {
-			ccdaFilename = p.getFileName();
+			ccdaFilename = getGoodFilename(p.getFileName());
 			ccdaFile = getCCDAFile(p.getInputStream(), p.getFileName());
+		} else {
+			ccdaFilename = UUID.randomUUID().toString();
 		}
 		
 		CloseableHttpClient client = HttpClients.createDefault();
@@ -345,6 +348,7 @@ public class PartValidation {
 		if(contentDisposition.contains("filename=")) {
 			res = contentDisposition.split("filename=")[1];
 			res = res.split(";")[0];
+			res = res.replace("\"", "");
 		}
 		return res;
 	}
@@ -433,6 +437,19 @@ public class PartValidation {
 
 	public void setCcdaReport(List<CCDAValidationReportInterface> ccdaReport) {
 		this.ccdaReport = ccdaReport;
+	}
+	
+	public String getGoodFilename(String filename) {
+		filename = filename.replace("\\", "");
+		filename = filename.replace("/", "");
+		filename = filename.replace(":", "");
+		filename = filename.replace("*", "");
+		filename = filename.replace("?", "");
+		filename = filename.replace("\"", "");
+		filename = filename.replace("<", "");
+		filename = filename.replace(">", "");
+		filename = filename.replace("|", "");
+		return filename;
 	}
 
 }

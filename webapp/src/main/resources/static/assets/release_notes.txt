@@ -1,0 +1,9 @@
+==Version 0.0.1#07/09/2014
+	*ETT
+		-Initial add of the release notes
+	*Direct
+		-Initial add of DIRECT from TTT code
+	*SMTP
+		-Initial add of SMTP module
+	*XDR
+		-Initial add of XDR module
