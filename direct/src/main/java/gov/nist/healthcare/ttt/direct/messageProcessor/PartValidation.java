@@ -199,7 +199,11 @@ public class PartValidation {
 		File ccdaFile = null;
 		if(p.getFileName() != null) {
 			ccdaFilename = getGoodFilename(p.getFileName());
-			ccdaFile = getCCDAFile(p.getInputStream(), p.getFileName());
+			if(part.isQuotedPrintable()) {
+				ccdaFile = getCCDAFile(DirectMessageProcessor.decodeQPStream(p.getInputStream()), p.getFileName());
+			} else {
+				ccdaFile = getCCDAFile(p.getInputStream(), p.getFileName());
+			}
 		} else {
 			ccdaFilename = UUID.randomUUID().toString();
 		}

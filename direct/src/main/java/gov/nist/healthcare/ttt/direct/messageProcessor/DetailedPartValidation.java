@@ -60,8 +60,16 @@ public class DetailedPartValidation {
 			contentTypeDisposition = m.getContentDisposition();
 		}
 		
+		// DTS 136-148-157, Content-Transfer-Encoding, Optional
+		m.addNewDetailLine(mimeEntityValidator.validateContentTransferEncodingOptional(m.getContentTransferEncoding(), m.getContentType()));
+		
 		// DTS 156 Validate Content Type Disposition
 		m.addNewDetailLine(mimeEntityValidator.validateContentTypeDisposition(contentTypeDisposition, m.getContentType()));
+		
+		// DTS 195, Body, Required
+		if(m.getContent().getContent() instanceof String) {
+			m.addNewDetailLine(mimeEntityValidator.validateBody(m.getContent(), (String) m.getContent().getContent()));
+		}
 		
 		// DTS 190, All Mime Header Fields, Required
 		m.addNewDetailLine(mimeEntityValidator.validateAllMimeHeaderFields(contentTypeDisposition));
@@ -232,14 +240,13 @@ public class DetailedPartValidation {
 		m.addNewDetailLine(directMessageValidator.validateContentTypeProtocol(contentTypeProtocol));
 		
 		// DTS ??? - Mime Entity body - Required
-		if(m.getContent() instanceof MimeMultipart) {
-			MimeMultipart mimeEntityBody = (MimeMultipart) m.getContent();
+		if(m.getContent().getContent() instanceof MimeMultipart) {
+			MimeMultipart mimeEntityBody = (MimeMultipart) m.getContent().getContent();
 			m.addNewDetailLine(directMessageValidator.validateMIMEEntityBody(mimeEntityBody.getCount()));
 		}
         
         // DTS 204, MIME Entity
-		this.validateMimeEntity(m);
-		m.addNewDetailLine(directMessageValidator.validateMIMEEntity2(true));
+		m.addNewDetailLine(directMessageValidator.validateMIMEEntity2(m.isStatus()));
 		
 	}
 	

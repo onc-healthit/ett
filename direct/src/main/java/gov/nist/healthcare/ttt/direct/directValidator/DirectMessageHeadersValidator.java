@@ -454,7 +454,7 @@ public class DirectMessageHeadersValidator {
 	public DetailModel validateSubject(String subject, String filename, boolean wrapped) {
 		String rfc = "RFC 5322: Section 3.6.5;http://tools.ietf.org/html/rfc5322#section-3.6.5";
 		if(subject == null && wrapped) {
-			return new DetailModel("124", "Subject", "Not present", "Wrapped Message: Subject is not present on the outer (encrypted) message", rfc, Status.WARNING);
+			return new DetailModel("124", "Subject", "Not present", "Wrapped Message: Subject is not present on the outer (encrypted) message", rfc, Status.INFO);
 		} else if(subject == null && !wrapped) {
 			return new DetailModel("124", "Subject", "Not present", "Unwrapped Message: Subject must be present", rfc, Status.ERROR);
 		}

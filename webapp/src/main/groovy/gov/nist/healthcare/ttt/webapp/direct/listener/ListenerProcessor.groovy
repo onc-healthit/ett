@@ -250,6 +250,7 @@ public class ListenerProcessor implements Runnable {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("Message Validation Error: " + e.getMessage());
 		}
 
@@ -395,8 +396,9 @@ public class ListenerProcessor implements Runnable {
 			logger.trace("MESSAGE: \n" + buf);
 
 		} catch (RSETException e) {
-			send("250 OK");
-			return "";
+			// Reset all buffers
+			resetAllBuff();
+			buf = rcvStateMachine();
 		} catch (IOException e) {
 			return "";
 		} finally {
@@ -422,6 +424,7 @@ public class ListenerProcessor implements Runnable {
 			RSETException, Exception {
 		StringBuffer buf = new StringBuffer();
 		String msg;
+		boolean isFirstMessage = true;
 		while (true) {
 			msg = rcv().trim();
 			msg = msg.toLowerCase();
@@ -438,8 +441,10 @@ public class ListenerProcessor implements Runnable {
 				logInputs = false;
 				while (true) {
 					msg = rcv();
-					if (".".equals(msg.trim()))
+					if (".".equals(msg.trim())) {
+						isFirstMessage = false;
 						break;
+					}
 					buf.append(msg).append(CRLF);
 				}
 				logInputs = true;
@@ -461,15 +466,25 @@ public class ListenerProcessor implements Runnable {
 				continue;
 			}
 			if (msg.startsWith("rset")) {
-				send("250 OK");
-				throw new RSETException();
+				if(!isFirstMessage) {
+					send("421 Ony one message per connection allowed");
+					return buf.toString();
+				} else {
+					send("250 OK");
+					throw new RSETException();
+				}
 			}
 			if (msg.startsWith("vrfy")) {
 				send("250 OK");
 				continue;
 			}
 			if (msg.startsWith("noop")) {
-				send("250 OK");
+				if(!isFirstMessage) {
+					send("421 Ony one message per connection allowed");
+					return buf.toString();
+				} else {
+					send("250 OK");
+				}
 				continue;
 			}
 			if (msg.startsWith("quit")) {
@@ -499,6 +514,11 @@ public class ListenerProcessor implements Runnable {
 		if (logInputs)
 			logger.debug("SMTP RCV: " + msg);
 		return (msg == null) ? "" : msg;
+	}
+	
+	void resetAllBuff() {
+		this.directFrom = null;
+		this.directTo = new ArrayList<String>();
 	}
 
 	String ccdaValidationType(String toAddr) {

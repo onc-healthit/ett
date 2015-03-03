@@ -103,14 +103,6 @@ public class DirectMessageProcessor {
 			return null;
 		}
 
-		// Decode if quoted printable
-		String encoding = "";
-		encoding = ValidationUtils.getSingleHeader(p,
-				"content-transfer-encoding");
-		if (encoding.equals("quoted-printable")) {
-			p = decodeQP(p.getInputStream());
-		}
-
 		// Add the child except if it is the first Part
 		PartModel currentlyProcessedPart = fillPartModel(p, parent);
 		if (parent != null) {
@@ -249,6 +241,7 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 			throw e1;
 		} catch (Exception e1) {
 			logger.error("Encryption certificate was probably wrong file " + e1.getMessage());
+			e1.printStackTrace();
 			throw new Exception("Encryption certificate was probably wrong file " + e1.getMessage());
 		}
 
@@ -280,15 +273,25 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 			partModel.setContentType(p.getContentType());
 			partModel.setStatus(true);
 			partModel.setParent(parent);
+			// Set boolean if quoted printable
+			String encoding = "";
+			encoding = ValidationUtils.getSingleHeader(p,
+					"content-transfer-encoding");
+			if (encoding.equals("quoted-printable")) {
+				partModel.setQuotedPrintable(true);
+			}
 		} catch(Exception e) {
 			partModel.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", e.getMessage(), "", "-", gov.nist.healthcare.ttt.database.log.DetailInterface.Status.ERROR));
 		}
 		return partModel;
 	}
 	
-	public MimeBodyPart decodeQP(InputStream encodedQP) throws MessagingException {
-		InputStream res = MimeUtility.decode(encodedQP, "quoted-printable");
-		return new MimeBodyPart(res);
+	public static MimeBodyPart decodeQP(InputStream encodedQP) throws MessagingException {
+		return new MimeBodyPart(decodeQPStream(encodedQP));
+	}
+	
+	public static InputStream decodeQPStream(InputStream encodedQP) throws MessagingException {
+		return MimeUtility.decode(encodedQP, "quoted-printable");
 	}
 
 	public LogModel getLogModel() {

@@ -61,7 +61,7 @@
 }, {
     "name": "XDR test 6",
     "id": 6,
-    "desc": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data.",
+    "desc": "Verify that Mutual TLS session is established between the Sender and the Receiver before transmitting data.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",

@@ -4,6 +4,8 @@ import gov.nist.healthcare.ttt.database.log.PartInterface;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException;
 import gov.nist.healthcare.ttt.webapp.direct.model.messageValidator.DirectMessageAttachments;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.internet.MimeBodyPart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -71,7 +75,15 @@ public class ValidationReportController {
 		try {
 			PartInterface partRes = db.getLogFacade().getPart(partId);
 			String rawContent = partRes.getRawMessage();
-			InputStream contentStream = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
+			InputStream contentStream;
+			
+			if(partRes.getContentType().contains("application/zip")) {
+				InputStream tmpZip = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
+				MimeBodyPart zipPart = new MimeBodyPart(tmpZip);
+				contentStream = zipPart.getInputStream();
+			} else {
+				contentStream = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
+			}
 
 			// Create response
 			response.setContentType(partRes.getContentType());
@@ -84,21 +96,15 @@ public class ValidationReportController {
 			response.setHeader(headerKey, headerValue);
 
 			// writes the file to the client
-			OutputStream outStream = response.getOutputStream();
-
-			byte[] buffer = new byte[4096];
-			int bytesRead = -1;
-
-			while ((bytesRead = contentStream.read(buffer)) != -1) {
-				outStream.write(buffer, 0, bytesRead);
-			}
+			IOUtils.copy(contentStream, response.getOutputStream());
 
 			contentStream.close();
-			outStream.close();
+			response.flushBuffer();
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			response.getWriter().print("Error: " + ex.getMessage());
-		} 
+		}
 	}
 	
 	public Collection<DirectMessageAttachments> getPartContentTable(Collection<DirectMessageAttachments> res, PartInterface part) {
