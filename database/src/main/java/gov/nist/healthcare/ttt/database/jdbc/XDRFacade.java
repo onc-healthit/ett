@@ -59,6 +59,8 @@ public class XDRFacade extends DatabaseFacade {
     public final static String XDRREPORTITEM_REPORT = "Report";
     public final static String XDRREPORTITEM_REPORTTYPE = "ReportType";
 
+    // Placeholder for creation of validation report.
+    
     public XDRFacade(Configuration config) throws DatabaseException {
         super(config);
     }
