@@ -45,6 +45,8 @@ class  RealTkClientSpecTest extends Specification {
     @Value('${toolkit.request.timeout}')
     private int timeout
 
+    private String username = "ett"
+
     @Autowired
     GroovyRestClient client
 
@@ -92,7 +94,7 @@ class  RealTkClientSpecTest extends Specification {
             }
         }
 
-        def url = "$createSimUrl/$id"
+        def url = "$createSimUrl/$username/$id"
 
         when:
         //we post an endpoint creation request
@@ -101,7 +103,7 @@ class  RealTkClientSpecTest extends Specification {
         and :
         //we get the config result through a get request
         //TODO : ask if Bill now returns it in the response. This would simplify the workflow.
-        def getConfigUrl = "$getSimConfigUrl/$id"
+        def getConfigUrl = "$getSimConfigUrl/$username/$id"
         GPathResult resp2 = client.getXml(getConfigUrl, timeout)
 
         then:

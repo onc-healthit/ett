@@ -18,7 +18,7 @@ class ReportParsingTest extends Specification {
 
         given:
 
-        def file = this.getClass().getClassLoader().getResourceAsStream("xdr_full_metadata_report.xml")
+        def file = this.getClass().getClassLoader().getResourceAsStream("xdr_full_metadata_report.txt")
         XmlSlurper s = new XmlSlurper()
         s.setKeepIgnorableWhitespace(false)
         def report = s.parse(file)
@@ -100,7 +100,7 @@ class ReportParsingTest extends Specification {
 
         given:
 
-        def file = this.getClass().getClassLoader().getResourceAsStream("xdr_full_metadata_report.xml")
+        def file = this.getClass().getClassLoader().getResourceAsStream("xdr_full_metadata_report.txt")
         XmlSlurper s = new XmlSlurper()
         s.setKeepIgnorableWhitespace(true)
         def report = s.parse(file)
