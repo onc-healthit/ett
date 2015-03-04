@@ -343,7 +343,13 @@ public class DatabaseFacade {
 
     }
 
-    public synchronized boolean doesUsernameDirectMappingExist(String username, String directEmailId) throws DatabaseException {
+    public synchronized boolean doesUsernameDirectMappingExist(String username, String directEmail) throws DatabaseException {    
+        String directID = this.getIdOfDirect(directEmail);
+        return this.doesUsernameDirectIdMappingExist(username, directID);
+    }
+    
+    
+    private synchronized boolean doesUsernameDirectIdMappingExist(String username, String directEmailId) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ");
@@ -527,7 +533,7 @@ public class DatabaseFacade {
             return false;
         }
         String directEmailId = this.getIdOfDirect(directEmail);
-        if (this.doesUsernameDirectMappingExist(username, directEmailId)) {
+        if (this.doesUsernameDirectIdMappingExist(username, directEmailId)) {
             return true;
         }
         String directId = this.getIdOfDirect(directEmail);
@@ -843,20 +849,30 @@ public class DatabaseFacade {
         contacts.add("contact1@nist.gov");
         contacts.add("contact2@nist.gov");
 
+        
+        
+        
         try {
             DatabaseFacade df;
             df = new DatabaseFacade(config); // .getInstance(config);
-
+            //df.addNewDirectEmail("guy@example.com");
+            //df.addUsernamePassword("guy", "dontcare");
+            //df.addUsernameToDirectMapping("guy", "guy@example.com");
+            
+            
+            System.out.println(df.doesUsernameDirectMappingExist("guy","guy@example.com"));
+/*
             System.out.println(Calendar.getInstance().getTime().toString());
             for(int i = 0; i < 100; i++) {
                 
                 df.addNewDirectAndContactEmail("1direct" + i + "@fake.com", "1contact" + i + "@gmail.com");
             }
             System.out.println(Calendar.getInstance().getTime().toString());
-            
+  */          
         } catch (Exception ex) {
           //  Logger.getLogger(DatabaseFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
     }
 }
 
