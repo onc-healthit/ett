@@ -45,7 +45,13 @@ public class DirectMessageProcessorTest {
 			e.printStackTrace();
 		}
 		
-		DirectMessageProcessor processor = new DirectMessageProcessor(messageStream, privateCertStream, password);
+		DirectMessageProcessor processor = null;
+		try {
+			processor = new DirectMessageProcessor(messageStream, privateCertStream, password);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			processor.processDirectMessage();
 		} catch (MessagingException e) {

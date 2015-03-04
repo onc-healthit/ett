@@ -45,6 +45,7 @@ public class DirectMessageProcessor {
 	private InputStream directMessage;
 	private InputStream certificate;
 	private String certificatePassword;
+	private PrivateCertificateLoader certLoader = null;
 	// Log object to fill with message validation
 	private LogModel logModel;
 	private PartModel mainPart;
@@ -61,10 +62,32 @@ public class DirectMessageProcessor {
 		this.mainPart = new PartModel();
 	}
 	
-	public DirectMessageProcessor(InputStream directMessage, InputStream certificate, String certificatePassword) {
+	public DirectMessageProcessor(InputStream directMessage, InputStream certificate, String certificatePassword) throws Exception {
 		this.directMessage = directMessage;
 		this.certificate = certificate;
 		this.certificatePassword = certificatePassword;
+		// Load certificate
+		try {
+			this.certLoader = new PrivateCertificateLoader(certificate, certificatePassword);
+		} catch (KeyStoreException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (NoSuchProviderException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (NoSuchAlgorithmException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (CertificateException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (IOException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (Exception e1) {
+			logger.error("Probably wrong format file or wrong certificate " + e1.getMessage());
+			throw new Exception("Probably wrong format file or wrong certificate " + e1.getMessage());
+		}
 		this.wrapped = false;
 		this.isMdn = false;
 		this.logModel = new LogModel();
@@ -189,27 +212,10 @@ public class DirectMessageProcessor {
 	
 public Part processSMIMEEnvelope(Part p, InputStream certificate, String password) throws Exception {
 		
-		PrivateCertificateLoader certLoader = null;
 		RecipientId     recId = null;		
 		
 		try {
-			certLoader = new PrivateCertificateLoader(certificate, password);
-			recId = new JceKeyTransRecipientId(certLoader.getX509Certificate());
-		} catch (KeyStoreException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (NoSuchProviderException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (NoSuchAlgorithmException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (CertificateException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (IOException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
+			recId = new JceKeyTransRecipientId(this.certLoader.getX509Certificate());
 		} catch (Exception e1) {
 			logger.error("Probably wrong format file or wrong certificate " + e1.getMessage());
 			throw new Exception("Probably wrong format file or wrong certificate " + e1.getMessage());
