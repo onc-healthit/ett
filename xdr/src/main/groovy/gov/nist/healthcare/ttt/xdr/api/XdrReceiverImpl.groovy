@@ -58,7 +58,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     def buildUrls(){
         tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
         notificationUrl = notificationUrl.replaceAll('/$', "")
-        fullNotificationUrl = "http://"+hostname+":"+port+contextPath+notificationUrl
+        fullNotificationUrl = "https://"+hostname+":"+port+contextPath+notificationUrl
 
         log.debug("notification url is :" + fullNotificationUrl)
     }

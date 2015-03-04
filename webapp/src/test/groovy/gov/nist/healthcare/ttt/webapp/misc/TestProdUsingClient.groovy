@@ -63,7 +63,7 @@ def setup(){
         when :
         def manager = new SSLContextManager()
         def TLSclient = new TLSClientImpl(manager)
-        TLSclient.connectOverGoodTLS([ip_address: "hit-dev.nist.gov", port: 12084])
+        TLSclient.connectOverGoodTLS([ip_address: "hit-dev.nist.gov", port: "12084"])
 
         then :
 
