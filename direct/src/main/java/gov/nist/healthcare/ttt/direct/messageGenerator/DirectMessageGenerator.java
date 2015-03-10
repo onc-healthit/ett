@@ -3,6 +3,7 @@ package gov.nist.healthcare.ttt.direct.messageGenerator;
 import gov.nist.healthcare.ttt.direct.certificates.PrivateCertificateLoader;
 import gov.nist.healthcare.ttt.direct.certificates.PublicCertLoader;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
+import gov.nist.healthcare.ttt.direct.sender.LdapDnslookUp;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -265,8 +266,19 @@ public class DirectMessageGenerator {
 	public InputStream getEncryptionCertByDnsLookup(String targetedTo) throws TextParseException, Exception {
 		
 		// Certificate was not uploaded. Try fetching from DNS.
-		
 		DnsLookup dl = new DnsLookup();
+		LdapDnslookUp ldapDl = new LdapDnslookUp();
+		
+		// 1st try Ldap address bound cert
+		InputStream certStream = ldapDl.getLdapCert(targetedTo);
+		if(certStream != null) {
+			logger.info("Address bound encryption certificate pulled from LDAP");
+			return certStream;
+		} else {
+			logger.warn("Cannot pull address bound encryption certificate from LDAP");
+		}
+		
+		// 2nd try DNS address bound cert
 		String encCertAddressString = dl.getCertRecord(this.getAddressBoundDomain(targetedTo));
 		if (encCertAddressString != null) {
 			logger.info("Address bound encryption certificate pulled from DNS");
@@ -275,6 +287,16 @@ public class DirectMessageGenerator {
 			logger.warn("Cannot pull address bound encryption certificate from DNS");
 		}
 		
+		// 3rd try LDAP domain bound cert
+		InputStream certStream2 = ldapDl.getLdapCert(getTargetDomain(targetedTo));
+		if(certStream2 != null) {
+			logger.info("Domain bound encryption certificate pulled from LDAP");
+			return certStream2;
+		} else {
+			logger.warn("Cannot pull domain bound encryption certificate from LDAP");
+		}
+		
+		// 4th try DNS domain bound cert
 		String encCertDomainString = dl.getCertRecord(this.getTargetDomain(targetedTo));
 		if (encCertDomainString != null) {
 			logger.info("Domain bound encryption certificate pulled from DNS");
