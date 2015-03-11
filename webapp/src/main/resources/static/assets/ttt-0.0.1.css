@@ -1496,7 +1496,7 @@ $popover-triangle-border-color: $popover-border-color !default;
   padding: 0px;
   margin: 0px 0px 20px;
 }
-.event-list > li > time {
+.event-list > li > .leftButton > time {
   display: inline-block;
   width: 100%;
   color: #ffffff;
@@ -1506,52 +1506,67 @@ $popover-triangle-border-color: $popover-border-color !default;
   text-transform: uppercase;
   cursor: pointer;
 }
-.event-list > li > time:hover {
+.event-list > li > .leftButton > time:hover {
   color: #ffffff;
   background-color: #FFBF00;
 }
 .event-list > li:nth-child(even) > time {
   /*background-color: rgb(165, 82, 167);*/
 }
-.event-list > li > time > span {
+.event-list > li > .leftButton > .cancel {
+  display: inline-block;
+  width: 100%;
+  border-top: 1px solid grey;
+  color: #ffffff;
+  background-color: #990000;
+  padding: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.event-list > li > .leftButton > .cancel:hover {
+  color: #ffffff;
+  background-color: #FFBF00;
+}
+.event-list > li > .leftButton > time > span {
   display: none;
 }
-.event-list > li > time > .day {
+.event-list > li > .leftButton > time > .day {
   display: block;
   font-size: 56pt;
   font-weight: 100;
   line-height: 1;
   margin-top: 20px;
 }
-.event-list > li > time > .fail {
+.event-list > li > .leftButton > time > .fail {
   display: block;
   font-size: 50pt;
   font-weight: 100;
   line-height: 1;
   margin-top: 10px;
 }
-.event-list > li > time > .retry {
+.event-list > li > .leftButton > time > .retry {
   display: block;
   font-size: 20pt;
   font-weight: 500;
   line-height: 1;
   /*margin-top: 20px;*/
 }
-.event-list > li > time > .refresh {
+.event-list > li > .leftButton > time > .refresh {
   display: block;
   font-size: 14pt;
   font-weight: 500;
   line-height: 1;
   /*margin-top: 20px;*/
 }
-.event-list > li time > .month {
+.event-list > li > .leftButton > time > .month {
   display: block;
   font-size: 24pt;
   font-weight: 900;
   line-height: 1;
   margin-top: 43px;
 }
-.event-list > li time > .pending {
+.event-list > li > .leftButton > time > .pending {
   display: block;
   font-size: 16pt;
   font-weight: 900;
@@ -1654,26 +1669,27 @@ $popover-triangle-border-color: $popover-border-color !default;
     height: 100%;
     padding: 0px;
   }
-  .event-list > li > time,
-  .event-list > li > img {
-    display: inline-block;
+  .event-list > li > .leftButton {
     position: relative !important;
-  }
-  .event-list > li > time,
-  .event-list > li > img {
-    width: 120px;
     float: right;
+    width: 120px;
+    display: inline-block;
   }
   .event-list > li > .info {
     background-color: #f5f5f5;
     overflow: hidden;
   }
-  .event-list > li > time,
+  .event-list > li > .leftButton > time,
   .event-list > li > img {
+    position: relative !important;
     width: 120px;
     height: 120px;
     padding: 0px;
     margin: 0px;
+  }
+  .event-list > li > .leftButton > .cancel {
+    width: 120px;
+    height: 30px;
   }
   .event-list > li > .info {
     position: relative;
@@ -1681,6 +1697,9 @@ $popover-triangle-border-color: $popover-border-color !default;
     min-height: 120px;
     text-align: left;
     padding-right: 100px;
+  }
+  .event-list > li > .infoXdr {
+    min-height: 150px;
   }
   .event-list > li > .info > .title,
   .event-list > li > .info > .desc {

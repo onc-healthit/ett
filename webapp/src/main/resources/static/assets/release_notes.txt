@@ -1,3 +1,10 @@
+==Version 0.0.3#03/10/2015
+	* Direct
+		-Added DNS lookup for address bound encryption certificates.
+		-Added LDAP lookup for address and domain bound encryption certificates.
+	* XDR
+		-Added Cancel button to XDR tests.
+
 ==Version 0.0.2#03/03/2015
 	* Direct
 		-Changed subject validation from Warning to Info when message is wrapped
