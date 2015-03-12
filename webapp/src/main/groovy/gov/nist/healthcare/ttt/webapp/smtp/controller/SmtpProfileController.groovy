@@ -70,7 +70,7 @@ class SmtpProfileController {
 	@ResponseBody
 	boolean deleteProfile(@PathVariable String profile, Principal principal) throws Exception {
 		if (principal == null) {
-			throw new TTTCustomException("0x0035", "You must be logged in to save profile")
+			throw new TTTCustomException("0x0035", "You must be logged in to delete a profile")
 		} else {
 			String username = principal.getName()
 			if(db.getSmtpEdgeLogFacade().removeSmtpProfile(username, profile)) {
