@@ -4,6 +4,9 @@
 		-Added LDAP lookup for address and domain bound encryption certificates.
 	* XDR
 		-Added Cancel button to XDR tests.
+	* SMTP
+		-Fixed few minor bugs.
+		-Added Cancel button to XDR tests.
 
 ==Version 0.0.2#03/03/2015
 	* Direct
