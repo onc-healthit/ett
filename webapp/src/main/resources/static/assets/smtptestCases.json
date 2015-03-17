@@ -85,6 +85,14 @@
         "sutHisp": true,
         "sutEdge": true
     }, {
+        "name": "SMTP MU2 Test 47",
+        "id": 147,
+        "protocol": "smtp",
+        "desc": "Tests the ability of the Vendor to accept failure messages for some of the recipients. The vendor sends email to a valid and invalid(noaddress@hit-tesitng2.nist.gov) recipients. The vendor needs to check the failure message for invalid recipients.",
+        "sutRole": "sender",
+        "sutHisp": true,
+        "sutEdge": true
+    }, {
         "name": "SMTP Test 22",
         "id": 22,
         "protocol": "smtp",

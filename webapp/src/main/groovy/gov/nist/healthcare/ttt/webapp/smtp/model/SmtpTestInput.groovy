@@ -83,10 +83,10 @@ public class SmtpTestInput {
 		
 		// Default value
 		if (sutSmtpAddress==null || sutSmtpAddress.equals("")) {
-			this.sutSmtpAddress = ""
+			this.sutSmtpAddress = " "
 		}
 		if (sutEmailAddress==null || sutEmailAddress.equals("")) {
-			this.sutEmailAddress = ""
+			this.sutEmailAddress = " "
 		}
 		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
 			this.tttEmailAddress = "wellformed1@" + domainName

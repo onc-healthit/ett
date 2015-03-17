@@ -237,7 +237,7 @@ public class ListenerProcessor implements Runnable {
 					FileWriter fw = new FileWriter(this.logFilePath, true); //the true will append the new data
 					
 					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
-					String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
+					String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())}] \"POST /ttt/listener/${docType} HTTP/1.1\" 200 75"
 					logger.info(statLog);
 					
 					// Write in listener log
