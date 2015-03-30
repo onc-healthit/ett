@@ -22,7 +22,7 @@ public class DatabaseLoadTesting implements Runnable {
             
             String salt = UUID.randomUUID().toString();
             
-            for(int i = 0; i < 1000; i++) {                
+            for(int i = 0; i < 100; i++) {                
                 df.addNewDirectAndContactEmail(i + "-" + salt + "@fakedirect.com",  i + "-" + salt + "@fakecontact.com");                
             }
                         
@@ -36,7 +36,7 @@ public class DatabaseLoadTesting implements Runnable {
     public static void main(String[] args) {
         
         (new Thread(new DatabaseLoadTesting())).start();
-        (new Thread(new DatabaseLoadTesting())).start();
+      //  (new Thread(new DatabaseLoadTesting())).start();
         
         
     }
