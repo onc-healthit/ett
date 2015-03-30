@@ -22,7 +22,7 @@ public class DatabaseFacade {
 
     public static final int MAX_CALLS = 100;
 
-    private DatabaseConnection connection = null;
+    // private DatabaseConnection connection = null;
     private static int currentNumberOfCalls = 0;
     private Configuration config = null;
     protected static DatabaseFacade instance = null;
@@ -73,7 +73,7 @@ public class DatabaseFacade {
      */
     public DatabaseFacade(Configuration config) throws DatabaseException {
         this.setConfig(config);
-        this.setConnection(new DatabaseConnection(config));
+     //   this.setConnection(new DatabaseConnection(config));
     }
 
     /**
@@ -241,15 +241,19 @@ public class DatabaseFacade {
 
         ResultSet result = null;
         String id = null;
+        
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            
+            DatabaseConnection connection = this.getConnection(); 
+            result = connection.executeQuery(sql.toString());
+            
             if (result.next()) {
                 id = result.getString(DatabaseFacade.DIRECT_EMAIL_ID_COLUMN);
             }
-
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException(e.getMessage());            
         }
         return id;
     }
@@ -369,6 +373,25 @@ public class DatabaseFacade {
             throw new DatabaseException(e.getMessage());
         }
         return false;
+    }
+    
+    private synchronized boolean deleteUsernameDirectIdMapping(String username, String directEmailId) throws DatabaseException {
+        
+        StringBuilder sql = new StringBuilder();
+        sql.append("DELETE ");
+        sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
+        sql.append("AND " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = '" + directEmailId + "';");
+
+        try {
+            this.getConnection().executeUpdate(sql.toString());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getMessage());
+        }
+        return true;
+
+        
     }
 
     public synchronized boolean isDirectMappedToAUsername(String directEmail) throws DatabaseException {
@@ -608,17 +631,18 @@ public class DatabaseFacade {
      * @param directEmail The direct email to remove.
      * @return 'true' if success; 'false' if failure.
      */
-    public synchronized boolean deleteDirectEmail(String directEmail) throws DatabaseException {
+    public synchronized boolean deleteDirectEmail(String directEmail, String username) throws DatabaseException {
 
         String directId = this.getIdOfDirect(directEmail);
         if (directId == null) {
             return true;
-        }
+        }        
         boolean successfulDeleteContact = this.deleteContactEmailByDirectId(directId);
         if (successfulDeleteContact == false) {
             return false;
         }
-
+        this.deleteUsernameDirectIdMapping(username, directId);
+        
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM " + DatabaseFacade.DIRECT_EMAIL_TABLE + " ");
         sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(directEmail) + "';");
@@ -745,8 +769,11 @@ public class DatabaseFacade {
      *
      * @return Value of property this.getConnection().
      */
-    public DatabaseConnection getConnection() throws DatabaseException {
-                                
+    public synchronized DatabaseConnection getConnection() throws DatabaseException {
+        
+        return new DatabaseConnection(config);
+        
+                    /*            
         if (connection == null) {
             connection = new DatabaseConnection(config);
             
@@ -761,6 +788,7 @@ public class DatabaseFacade {
         } catch (SQLException sqle) {
             connection = new DatabaseConnection(config);
         }
+        */
         /*
         currentNumberOfCalls++;
         if (currentNumberOfCalls >= MAX_CALLS) {
@@ -773,7 +801,7 @@ public class DatabaseFacade {
             currentNumberOfCalls = 0;
         }
         */
-        return connection;
+      //  return connection;
         
     }
     /*
@@ -794,10 +822,11 @@ public class DatabaseFacade {
      *
      * @param connection
      */
+    /*
     public void setConnection(DatabaseConnection connection) {
-        this.connection = connection;
+      //  this.connection = connection;
     }
-
+*/
     /**
      * Get the configuration information stored in this object.
      *
@@ -860,7 +889,7 @@ public class DatabaseFacade {
             //df.addUsernameToDirectMapping("guy", "guy@example.com");
             
             
-            System.out.println(df.doesUsernameDirectMappingExist("guy","guy@example.com"));
+         //   System.out.println(df.doesUsernameDirectMappingExist("guy","guy@example.com"));
 /*
             System.out.println(Calendar.getInstance().getTime().toString());
             for(int i = 0; i < 100; i++) {
@@ -868,7 +897,10 @@ public class DatabaseFacade {
                 df.addNewDirectAndContactEmail("1direct" + i + "@fake.com", "1contact" + i + "@gmail.com");
             }
             System.out.println(Calendar.getInstance().getTime().toString());
-  */          
+  */         
+            
+         //   df.deleteDirectEmail("direct32@fake.com");
+            
         } catch (Exception ex) {
           //  Logger.getLogger(DatabaseFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
