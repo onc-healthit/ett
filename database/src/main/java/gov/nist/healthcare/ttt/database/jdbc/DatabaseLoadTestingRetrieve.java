@@ -12,7 +12,7 @@ import java.util.UUID;
  *
  * @author mccaffrey
  */
-public class DatabaseLoadTestingRetrieve implements Runnable {
+public class DatabaseLoadTestingRetrieve implements Runnable  {
 
     @Override
     public void run() {

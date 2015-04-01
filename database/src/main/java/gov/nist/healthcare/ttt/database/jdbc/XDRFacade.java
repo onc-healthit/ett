@@ -1316,7 +1316,7 @@ public class XDRFacade extends DatabaseFacade {
 
             List<XDRTestStepInterface> steps = new ArrayList<XDRTestStepInterface>();
             steps.add(testStep);
-            record.setTestSteps(steps);
+            
 
             Configuration config = new Configuration();
             config.setDatabaseHostname("localhost");
@@ -1328,6 +1328,7 @@ public class XDRFacade extends DatabaseFacade {
             XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectFrom("endpointstandalone", "from@direct.com");
             System.out.println(get.getTimestamp());
             facade.updateXDRRecord(record);
+            record.setTestSteps(steps);
             facade.updateXDRRecord(record);
             facade.updateXDRRecord(record);
             facade.updateXDRRecord(record);
