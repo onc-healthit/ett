@@ -59,6 +59,8 @@ public class XDRFacade extends DatabaseFacade {
     public final static String XDRREPORTITEM_REPORT = "Report";
     public final static String XDRREPORTITEM_REPORTTYPE = "ReportType";
 
+    // Placeholder for creation of validation report.
+    
     public XDRFacade(Configuration config) throws DatabaseException {
         super(config);
     }
@@ -832,7 +834,7 @@ public class XDRFacade extends DatabaseFacade {
         
         ResultSet result = null;
         List<String> recordIdsByDirectFrom = new ArrayList<String>();
-System.out.println(sqlDirectFrom.toString());
+
         try {
             result = this.getConnection().executeQuery(sqlDirectFrom.toString());
             while (result.next()) {

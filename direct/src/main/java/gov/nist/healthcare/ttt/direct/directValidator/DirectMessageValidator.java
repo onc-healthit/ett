@@ -94,6 +94,7 @@ public class DirectMessageValidator {
 		if(contentTypeName.contains("name")) {
 			contentTypeName = contentTypeName.split("name=")[1];
 			contentTypeName = contentTypeName.split(";")[0];
+			contentTypeName = contentTypeName.replace("\"", "");
 			if (contentTypeName.equals("smime.p7m")) {
 				return new DetailModel("201", "Content-Type Name", contentTypeName, "Should be smime.p7m", rfc, Status.SUCCESS);
 			} else {
@@ -110,14 +111,17 @@ public class DirectMessageValidator {
 		String rfc = "RFC 5751: 3.2;http://tools.ietf.org/html/rfc5751#section-3.2;RFC 5751: 3.3;http://tools.ietf.org/html/rfc5751#section-3.3";
 		if(contentTypeSMIME.contains("smime-type")) {
 			contentTypeSMIME = contentTypeSMIME.split("smime-type=")[1];
-		}
-		if(contentTypeSMIME.contains(";")) {
-			contentTypeSMIME = contentTypeSMIME.split(";")[0];
-		}
-		if (contentTypeSMIME.equals("enveloped-data")) {
-			return new DetailModel("201", "Content-Type S/MIME Type", contentTypeSMIME, "Should be enveloped-data", rfc, Status.SUCCESS);
+			if(contentTypeSMIME.contains(";")) {
+				contentTypeSMIME = contentTypeSMIME.split(";")[0];
+			}
+			contentTypeSMIME = contentTypeSMIME.replace("\"", "");
+			if (contentTypeSMIME.equals("enveloped-data")) {
+				return new DetailModel("202", "Content-Type S/MIME Type", contentTypeSMIME, "Should be enveloped-data", rfc, Status.SUCCESS);
+			} else {
+				return new DetailModel("202", "Content-Type S/MIME Type", contentTypeSMIME, "Should be enveloped-data", rfc, Status.ERROR);
+			}
 		} else {
-			return new DetailModel("201", "Content-Type S/MIME Type", contentTypeSMIME, "Should be enveloped-data", rfc, Status.ERROR);
+			return new DetailModel("202", "Content-Type S/MIME Type", "Not present: " + contentTypeSMIME, "Should be enveloped-data", rfc, Status.WARNING);
 		}
 
 	}

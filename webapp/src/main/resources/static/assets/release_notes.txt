@@ -1,0 +1,32 @@
+==Version 0.0.3#03/10/2015
+	* Direct
+		-Added DNS lookup for address bound encryption certificates.
+		-Added LDAP lookup for address and domain bound encryption certificates.
+	* XDR
+		-Added Cancel button to XDR tests.
+	* SMTP
+		-Fixed few minor bugs.
+		-Added Cancel button to XDR tests.
+
+==Version 0.0.2#03/03/2015
+	* Direct
+		-Changed subject validation from Warning to Info when message is wrapped
+		-Added validation Content-transfer-encoding (DTS 136-148-157) and Body (DTS 195) which were missing
+		-Fixed bug where XDM zip attachment could not be downloaded
+		-Fixed bug with quoted-printable encoding, part was recognized as plain text
+	* Direct listener
+		-Fixed bug when sending two messages through the same connection. The listener now returns an error 421 and close the connection if the system tries to send more than one message.
+	* XDR
+		-ETT is now using fixed endpoints when ETT is receiving XDR and users need to provide Direct from address to corelate the XDR message.
+	* Misc. ETT
+		-Added favicon
+
+==Version 0.0.1#07/09/2014
+	*ETT
+		-Initial add of the release notes
+	*Direct
+		-Initial add of DIRECT from TTT code
+	*SMTP
+		-Initial add of SMTP module
+	*XDR
+		-Initial add of XDR module

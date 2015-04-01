@@ -98,7 +98,7 @@ public class DirectRegistrationController {
 				String username = principal.getName();
 
 				if(db.getDf().doesUsernameDirectMappingExist(username, direct)) {
-					res = db.getDf().deleteDirectEmail(direct);
+					res = db.getDf().deleteDirectEmail(direct, username);
 				} else {
 					throw new TTTCustomException("0x0012", "You cannot delete a Direct address that you did not create");
 				}

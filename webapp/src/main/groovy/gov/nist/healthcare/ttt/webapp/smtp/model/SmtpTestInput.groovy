@@ -83,10 +83,10 @@ public class SmtpTestInput {
 		
 		// Default value
 		if (sutSmtpAddress==null || sutSmtpAddress.equals("")) {
-			this.sutSmtpAddress = "localhost"
+			this.sutSmtpAddress = " "
 		}
 		if (sutEmailAddress==null || sutEmailAddress.equals("")) {
-			this.sutEmailAddress = "blue@localhost"
+			this.sutEmailAddress = " "
 		}
 		if (tttEmailAddress==null || tttEmailAddress.equals("")) {
 			this.tttEmailAddress = "wellformed1@" + domainName
@@ -96,7 +96,7 @@ public class SmtpTestInput {
 			this.tttSmtpAddress = smtpHost
 		}
 
-		if (sutCommandTimeoutInSeconds==null || sutCommandTimeoutInSeconds.equals("0")) {
+		if (sutCommandTimeoutInSeconds==null || sutCommandTimeoutInSeconds.equals("0") || sutCommandTimeoutInSeconds.equals("")) {
 			this.sutCommandTimeoutInSeconds = "600"
 		}
 

@@ -20,9 +20,9 @@ import java.util.UUID;
  */
 public class DatabaseFacade {
 
-    public static final int MAX_CALLS = 10;
+    public static final int MAX_CALLS = 100;
 
-    private DatabaseConnection connection = null;
+    // private DatabaseConnection connection = null;
     private static int currentNumberOfCalls = 0;
     private Configuration config = null;
     protected static DatabaseFacade instance = null;
@@ -73,7 +73,7 @@ public class DatabaseFacade {
      */
     public DatabaseFacade(Configuration config) throws DatabaseException {
         this.setConfig(config);
-        this.setConnection(new DatabaseConnection(config));
+     //   this.setConnection(new DatabaseConnection(config));
     }
 
     /**
@@ -118,7 +118,7 @@ public class DatabaseFacade {
      * an empty Collection if none found. Returns null if an SQL/DB problem is
      * encountered.
      */
-    public Collection<String> getDirectAddresses(String contactEmail) throws DatabaseException {
+    public synchronized Collection<String> getDirectAddresses(String contactEmail) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " ");
@@ -151,7 +151,7 @@ public class DatabaseFacade {
      * Returns an empty Collection if none found. Returns null if an SQL/DB
      * problem is encountered.
      */
-    public Collection<String> getContactAddresses(String directEmail) throws DatabaseException {
+    public synchronized Collection<String> getContactAddresses(String directEmail) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ce." + DatabaseFacade.CONTACT_EMAIL_COLUMN + " ");
@@ -179,7 +179,7 @@ public class DatabaseFacade {
      *
      * @return A collection of strings of all contact addresses in the database.
      */
-    public Collection<String> getAllContactAddresses() throws DatabaseException {
+    public synchronized Collection<String> getAllContactAddresses() throws DatabaseException {
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT DISTINCT " + DatabaseFacade.CONTACT_EMAIL_COLUMN + " ");
@@ -205,7 +205,7 @@ public class DatabaseFacade {
      *
      * @return A collection of strings of all direct addresses in the database.
      */
-    public Collection<String> getAllDirectAddresses() throws DatabaseException {
+    public synchronized Collection<String> getAllDirectAddresses() throws DatabaseException {
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT DISTINCT " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " ");
@@ -233,7 +233,7 @@ public class DatabaseFacade {
      * @param directEmail The direct address to search on.
      * @return
      */
-    private String getIdOfDirect(String directEmail) throws DatabaseException {
+    private synchronized String getIdOfDirect(String directEmail) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " ");
         sql.append("FROM " + DatabaseFacade.DIRECT_EMAIL_TABLE + " ");
@@ -241,15 +241,19 @@ public class DatabaseFacade {
 
         ResultSet result = null;
         String id = null;
+        
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            
+            DatabaseConnection connection = this.getConnection(); 
+            result = connection.executeQuery(sql.toString());
+            
             if (result.next()) {
                 id = result.getString(DatabaseFacade.DIRECT_EMAIL_ID_COLUMN);
             }
-
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException(e.getMessage());            
         }
         return id;
     }
@@ -262,7 +266,7 @@ public class DatabaseFacade {
      * @param directEmail
      * @return
      */
-    public String addNewDirectEmail(String directEmail) throws DatabaseException {
+    public synchronized String addNewDirectEmail(String directEmail) throws DatabaseException {
         // check if it already exists
         String directEmailId = this.getIdOfDirect(directEmail);
 
@@ -296,7 +300,7 @@ public class DatabaseFacade {
         return directEmailId;
     }
 
-    public boolean doesDirectExist(String directEmail) throws DatabaseException {
+    public synchronized boolean doesDirectExist(String directEmail) throws DatabaseException {
 
         String directEmailId = this.getIdOfDirect(directEmail);
         if (directEmailId == null) {
@@ -313,7 +317,7 @@ public class DatabaseFacade {
      * @param contactEmail The contact half of the pair to check.
      * @return 'true' if pair exists; 'false' if it does not.
      */
-    public boolean doesDirectAndContactExist(String directEmail, String contactEmail) throws DatabaseException {
+    public synchronized boolean doesDirectAndContactExist(String directEmail, String contactEmail) throws DatabaseException {
 
         String directEmailId = this.getIdOfDirect(directEmail);
         if (directEmailId == null) {
@@ -343,7 +347,13 @@ public class DatabaseFacade {
 
     }
 
-    public boolean doesUsernameDirectMappingExist(String username, String directEmailId) throws DatabaseException {
+    public synchronized boolean doesUsernameDirectMappingExist(String username, String directEmail) throws DatabaseException {    
+        String directID = this.getIdOfDirect(directEmail);
+        return this.doesUsernameDirectIdMappingExist(username, directID);
+    }
+    
+    
+    private synchronized boolean doesUsernameDirectIdMappingExist(String username, String directEmailId) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ");
@@ -364,8 +374,27 @@ public class DatabaseFacade {
         }
         return false;
     }
+    
+    private synchronized boolean deleteUsernameDirectIdMapping(String username, String directEmailId) throws DatabaseException {
+        
+        StringBuilder sql = new StringBuilder();
+        sql.append("DELETE ");
+        sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
+        sql.append("AND " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = '" + directEmailId + "';");
 
-    public boolean isDirectMappedToAUsername(String directEmail) throws DatabaseException {
+        try {
+            this.getConnection().executeUpdate(sql.toString());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getMessage());
+        }
+        return true;
+
+        
+    }
+
+    public synchronized boolean isDirectMappedToAUsername(String directEmail) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
@@ -389,7 +418,7 @@ public class DatabaseFacade {
 
     }
 
-    public boolean doesUsernameExist(String username) throws DatabaseException {
+    public synchronized boolean doesUsernameExist(String username) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT username ");
@@ -412,7 +441,7 @@ public class DatabaseFacade {
 
     }
 
-    public boolean addUsernamePassword(String username, String password) throws DatabaseException {
+    public synchronized boolean addUsernamePassword(String username, String password) throws DatabaseException {
         if (doesUsernameExist(username)) {
             return false;
         }
@@ -432,7 +461,7 @@ public class DatabaseFacade {
         return true;
     }
 
-    public boolean isValidUsernamePassword(String username, String password) throws DatabaseException {
+    public synchronized boolean isValidUsernamePassword(String username, String password) throws DatabaseException {
         if (!doesUsernameExist(username)) {
             return false;
         }
@@ -458,7 +487,7 @@ public class DatabaseFacade {
 
     }
 
-    public String getPasswordForUsername(String username) throws DatabaseException {
+    public synchronized String getPasswordForUsername(String username) throws DatabaseException {
         if (!doesUsernameExist(username)) {
             return null;
         }
@@ -484,7 +513,7 @@ public class DatabaseFacade {
         return null;
     }
 
-    public boolean changePassword(String username, String newPassword) throws DatabaseException {
+    public synchronized boolean changePassword(String username, String newPassword) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE " + DatabaseFacade.USERS_TABLE + " ");
         sql.append("SET " + DatabaseFacade.USERS_PASSWORD + " = '" + DatabaseConnection.makeSafe(newPassword) + "' ");
@@ -499,7 +528,7 @@ public class DatabaseFacade {
         return true;
     }
 
-    public Collection<String> getDirectEmailsForUser(String username) throws DatabaseException {
+    public synchronized Collection<String> getDirectEmailsForUser(String username) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " ");
         sql.append("FROM " + DatabaseFacade.DIRECT_EMAIL_TABLE + " de, " + DatabaseFacade.USER_DIRECT_TABLE + " ud ");
@@ -521,13 +550,13 @@ public class DatabaseFacade {
         return directAddresses;
     }
 
-    public boolean addUsernameToDirectMapping(String username, String directEmail) throws DatabaseException {
+    public synchronized boolean addUsernameToDirectMapping(String username, String directEmail) throws DatabaseException {
 
         if (!this.doesUsernameExist(username)) {
             return false;
         }
         String directEmailId = this.getIdOfDirect(directEmail);
-        if (this.doesUsernameDirectMappingExist(username, directEmailId)) {
+        if (this.doesUsernameDirectIdMappingExist(username, directEmailId)) {
             return true;
         }
         String directId = this.getIdOfDirect(directEmail);
@@ -558,7 +587,7 @@ public class DatabaseFacade {
      * @param contactEmail The contact address to add.
      * @return The ID of the direct record.
      */
-    public String addNewDirectAndContactEmail(String directEmail, String contactEmail) throws DatabaseException {
+    public synchronized String addNewDirectAndContactEmail(String directEmail, String contactEmail) throws DatabaseException {
         String directEmailId = this.addNewDirectEmail(directEmail);
 
         String contactEmailId = UUID.randomUUID().toString();
@@ -602,17 +631,18 @@ public class DatabaseFacade {
      * @param directEmail The direct email to remove.
      * @return 'true' if success; 'false' if failure.
      */
-    public boolean deleteDirectEmail(String directEmail) throws DatabaseException {
+    public synchronized boolean deleteDirectEmail(String directEmail, String username) throws DatabaseException {
 
         String directId = this.getIdOfDirect(directEmail);
         if (directId == null) {
             return true;
-        }
+        }        
         boolean successfulDeleteContact = this.deleteContactEmailByDirectId(directId);
         if (successfulDeleteContact == false) {
             return false;
         }
-
+        this.deleteUsernameDirectIdMapping(username, directId);
+        
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM " + DatabaseFacade.DIRECT_EMAIL_TABLE + " ");
         sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(directEmail) + "';");
@@ -635,7 +665,7 @@ public class DatabaseFacade {
      * @param contactEmail The contact half of the pairing.
      * @return 'true' if success; 'false' if failure.
      */
-    public boolean deleteSpecificContactEmail(String directEmail, String contactEmail) throws DatabaseException {
+    public synchronized boolean deleteSpecificContactEmail(String directEmail, String contactEmail) throws DatabaseException {
 
         String directId = this.getIdOfDirect(directEmail);
         if (directId == null) {
@@ -664,7 +694,7 @@ public class DatabaseFacade {
      * @param directId The direct ID to use to remove contact addresses.
      * @return 'true' if success; 'false' if failure.
      */
-    public boolean deleteContactEmailByDirectId(String directId) throws DatabaseException {
+    public synchronized boolean deleteContactEmailByDirectId(String directId) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ");
@@ -687,7 +717,7 @@ public class DatabaseFacade {
      * @param contactEmail The contact email to remove.
      * @return 'true' if success; 'false' if failure.
      */
-    public boolean deleteContactEmail(String contactEmail) throws DatabaseException {
+    public synchronized boolean deleteContactEmail(String contactEmail) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ");
@@ -739,13 +769,27 @@ public class DatabaseFacade {
      *
      * @return Value of property this.getConnection().
      */
-    public DatabaseConnection getConnection() throws DatabaseException {
-
+    public synchronized DatabaseConnection getConnection() throws DatabaseException {
+        
+        return new DatabaseConnection(config);
+        
+                    /*            
         if (connection == null) {
             connection = new DatabaseConnection(config);
-            currentNumberOfCalls = 0;
+            
+//            currentNumberOfCalls = 0;
             return connection;
         }
+        try {
+        if(!connection.isAlive()) {
+            connection.close();
+            connection = new DatabaseConnection(config);
+        }
+        } catch (SQLException sqle) {
+            connection = new DatabaseConnection(config);
+        }
+        */
+        /*
         currentNumberOfCalls++;
         if (currentNumberOfCalls >= MAX_CALLS) {
             try {
@@ -756,7 +800,9 @@ public class DatabaseFacade {
             connection = new DatabaseConnection(config);
             currentNumberOfCalls = 0;
         }
-        return connection;
+        */
+      //  return connection;
+        
     }
     /*
      public DatabaseConnection getResetConnection() throws DatabaseException {
@@ -776,10 +822,11 @@ public class DatabaseFacade {
      *
      * @param connection
      */
+    /*
     public void setConnection(DatabaseConnection connection) {
-        this.connection = connection;
+      //  this.connection = connection;
     }
-
+*/
     /**
      * Get the configuration information stored in this object.
      *
@@ -831,15 +878,33 @@ public class DatabaseFacade {
         contacts.add("contact1@nist.gov");
         contacts.add("contact2@nist.gov");
 
+        
+        
+        
         try {
             DatabaseFacade df;
             df = new DatabaseFacade(config); // .getInstance(config);
-
+            //df.addNewDirectEmail("guy@example.com");
+            //df.addUsernamePassword("guy", "dontcare");
+            //df.addUsernameToDirectMapping("guy", "guy@example.com");
             
+            
+         //   System.out.println(df.doesUsernameDirectMappingExist("guy","guy@example.com"));
+/*
+            System.out.println(Calendar.getInstance().getTime().toString());
+            for(int i = 0; i < 100; i++) {
+                
+                df.addNewDirectAndContactEmail("1direct" + i + "@fake.com", "1contact" + i + "@gmail.com");
+            }
+            System.out.println(Calendar.getInstance().getTime().toString());
+  */         
+            
+         //   df.deleteDirectEmail("direct32@fake.com");
             
         } catch (Exception ex) {
           //  Logger.getLogger(DatabaseFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
     }
 }
 
