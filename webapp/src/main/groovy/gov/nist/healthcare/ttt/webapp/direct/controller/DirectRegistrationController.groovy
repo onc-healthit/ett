@@ -32,17 +32,17 @@ public class DirectRegistrationController {
 	 */
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/direct", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<ObjWrapper<String>> directList(HttpServletRequest request) throws TTTCustomException, DatabaseException {
+	public @ResponseBody List<String> directList(HttpServletRequest request) throws TTTCustomException, DatabaseException {
 
 		Principal principal = request.getUserPrincipal();
 		if (principal != null) {
 			String username = principal.getName();
 			
-			List<ObjWrapper<String>> listRes = new ArrayList<ObjWrapper<String>>();
+			List<String> listRes = new ArrayList<String>();
 			Collection<String> result = db.getDf().getDirectEmailsForUser(username);
 			Iterator<String> it = result.iterator();
 			while(it.hasNext()) {
-				listRes.add(new ObjWrapper<String>(it.next()));
+				listRes.add(it.next());
 			}
 			return listRes;
 		}
@@ -98,7 +98,7 @@ public class DirectRegistrationController {
 				String username = principal.getName();
 
 				if(db.getDf().doesUsernameDirectMappingExist(username, direct)) {
-					res = db.getDf().deleteDirectEmail(direct, username);
+					res = db.getDf().deleteDirectEmail(direct);
 				} else {
 					throw new TTTCustomException("0x0012", "You cannot delete a Direct address that you did not create");
 				}
