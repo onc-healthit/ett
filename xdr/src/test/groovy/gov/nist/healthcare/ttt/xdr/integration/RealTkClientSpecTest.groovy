@@ -94,7 +94,7 @@ class  RealTkClientSpecTest extends Specification {
             }
         }
 
-        def url = "$createSimUrl/$username/$id"
+        def url = "$createSimUrl/$id"
 
         when:
         //we post an endpoint creation request
@@ -103,7 +103,7 @@ class  RealTkClientSpecTest extends Specification {
         and :
         //we get the config result through a get request
         //TODO : ask if Bill now returns it in the response. This would simplify the workflow.
-        def getConfigUrl = "$getSimConfigUrl/$username/$id"
+        def getConfigUrl = "$getSimConfigUrl/$id"
         GPathResult resp2 = client.getXml(getConfigUrl, timeout)
 
         then:
