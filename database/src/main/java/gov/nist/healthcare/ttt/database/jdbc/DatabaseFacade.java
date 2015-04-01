@@ -785,6 +785,7 @@ public class DatabaseFacade {
             }
         } catch (SQLException sqle) {
             // Don't throw exception.  Try to restart connection gracefully.
+            sqle.printStackTrace();
             connection = new DatabaseConnection(config);
             currentNumberOfCalls = 0;
             return connection;
@@ -796,6 +797,7 @@ public class DatabaseFacade {
                 connection.close();
             } catch (SQLException sqle) {
                 // Don't throw exception.  Try to restart connection gracefully.
+                sqle.printStackTrace();
             }
             connection = new DatabaseConnection(config);
             currentNumberOfCalls = 0;
