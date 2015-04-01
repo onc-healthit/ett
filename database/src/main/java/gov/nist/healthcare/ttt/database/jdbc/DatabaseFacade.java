@@ -250,7 +250,7 @@ public class DatabaseFacade {
             if (result.next()) {
                 id = result.getString(DatabaseFacade.DIRECT_EMAIL_ID_COLUMN);
             }
-            connection.close();
+            //connection.close();
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
@@ -770,35 +770,37 @@ public class DatabaseFacade {
     public DatabaseConnection getConnection() throws DatabaseException {
 
 //        return new DatabaseConnection(config);
+        if (connection == null) {
+            connection = new DatabaseConnection(config);
 
-                    
-         if (connection == null) {
-         connection = new DatabaseConnection(config);
-            
-         //            currentNumberOfCalls = 0;
-         return connection;
-         }
-         try {
-         if(!connection.isAlive()) {
-         connection.close();
-         connection = new DatabaseConnection(config);
-         }
-         } catch (SQLException sqle) {
-         connection = new DatabaseConnection(config);
-         }
-         
-        /*
-         currentNumberOfCalls++;
-         if (currentNumberOfCalls >= MAX_CALLS) {
-         try {
-         connection.close();
-         } catch (SQLException sqle) {
-         // Don't throw exception.  Try to restart connection gracefully.
-         }
-         connection = new DatabaseConnection(config);
-         currentNumberOfCalls = 0;
-         }
-         */
+            currentNumberOfCalls = 0;
+            return connection;
+        }
+
+        try {
+            if (!connection.isAlive()) {
+                connection.close();
+                connection = new DatabaseConnection(config);
+                currentNumberOfCalls = 0;
+            }
+        } catch (SQLException sqle) {
+            // Don't throw exception.  Try to restart connection gracefully.
+            connection = new DatabaseConnection(config);
+            currentNumberOfCalls = 0;
+            return connection;
+        }
+
+        currentNumberOfCalls++;
+        if (currentNumberOfCalls >= MAX_CALLS) {
+            try {
+                connection.close();
+            } catch (SQLException sqle) {
+                // Don't throw exception.  Try to restart connection gracefully.
+            }
+            connection = new DatabaseConnection(config);
+            currentNumberOfCalls = 0;
+        }
+
         return connection;
     }
     /*
@@ -878,7 +880,7 @@ public class DatabaseFacade {
         try {
             DatabaseFacade df;
             df = new DatabaseFacade(config); // .getInstance(config);
-              df.addNewDirectEmail("guy@example.com");
+            df.addNewDirectEmail("guy@example.com");
             df.addUsernamePassword("guy", "dontcare");
             df.addUsernameToDirectMapping("guy", "guy@example.com");
 
@@ -893,7 +895,7 @@ public class DatabaseFacade {
              System.out.println(Calendar.getInstance().getTime().toString());
              */
 
-         //   df.deleteDirectEmail("direct32@fake.com");
+            //   df.deleteDirectEmail("direct32@fake.com");
         } catch (Exception ex) {
             //  Logger.getLogger(DatabaseFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
