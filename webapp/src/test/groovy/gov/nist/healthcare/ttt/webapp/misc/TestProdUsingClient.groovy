@@ -28,8 +28,8 @@ def setup(){
         def context = [:]
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
-        context.wsaTo = "hit-dev.nist.gov:11080/xdstools3/sim/1/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/1/docrec/prb"
+        context.wsaTo = "hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
+        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def CannedXdrSenderImpl client = new CannedXdrSenderImpl().sendXdr(context)
 
