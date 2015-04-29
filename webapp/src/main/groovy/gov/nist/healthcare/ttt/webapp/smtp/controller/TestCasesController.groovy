@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import gov.nist.healthcare.ttt.smtp.ISMTPTestRunner;
 import gov.nist.healthcare.ttt.smtp.ITestResult;
 import gov.nist.healthcare.ttt.smtp.SMTPTestRunner;
+import gov.nist.healthcare.ttt.smtp.testcases.MU2ReceiverTests;
 import gov.nist.healthcare.ttt.webapp.smtp.model.SmtpTestInput;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +30,14 @@ class TestCasesController {
 	@ResponseBody
     ArrayList<ITestResult> startTestCases(@RequestBody SmtpTestInput ti) throws Exception {
 		ISMTPTestRunner smtpTestRunner = new SMTPTestRunner()
+		MU2ReceiverTests fetchMail = new MU2ReceiverTests()
 		ArrayList<ITestResult> res = new ArrayList<ITestResult>()
-		def trs = smtpTestRunner.runTestCase(ti.getTestCaseNumber().toInteger(), ti.convert(domainName, smtpHost))
+		def trs;
+		if(ti.status.toLowerCase().equals("fetching")) {
+			trs = fetchMail.fetchMail(ti.convert(domainName, smtpHost))
+		} else {
+			trs = smtpTestRunner.runTestCase(ti.getTestCaseNumber().toInteger(), ti.convert(domainName, smtpHost))
+		}
 		trs.each { res << it }
 		
 		res

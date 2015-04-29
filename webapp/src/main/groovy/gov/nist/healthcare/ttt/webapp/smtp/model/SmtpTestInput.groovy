@@ -39,6 +39,8 @@ public class SmtpTestInput {
 	String tttSmtpAddress
 
 	String startTlsPort
+	
+	String status
 
 	public SmtpTestInput() {
 
@@ -49,7 +51,7 @@ public class SmtpTestInput {
 			String tttEmailAddress, String useTLS,
 			String sutCommandTimeoutInSeconds, String sutUserName,
 			String sutPassword, String tttUserName, String tttPassword,
-			String tttSmtpAddress, String startTlsPort) {
+			String tttSmtpAddress, String startTlsPort, String status) {
 		super()
 		this.testCaseNumber = testCaseNumber
 		this.sutSmtpAddress = sutSmtpAddress
@@ -65,11 +67,12 @@ public class SmtpTestInput {
 		this.tttPassword = tttPassword
 		this.tttSmtpAddress = tttSmtpAddress
 		this.startTlsPort = startTlsPort
+		this.status = status
 	}
 
 	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress,
 			String sutSmtpPort, String sutEmailAddress, String tttEmailAddress,
-			String useTLS) {
+			String useTLS, String status) {
 		super()
 		this.testCaseNumber = testCaseNumber
 		this.sutSmtpAddress = sutSmtpAddress
@@ -77,6 +80,7 @@ public class SmtpTestInput {
 		this.sutEmailAddress = sutEmailAddress
 		this.tttEmailAddress = tttEmailAddress
 		this.useTLS = useTLS
+		this.status = status
 	}
 
 	public TestInput convert(String domainName, String smtpHost) throws FileNotFoundException {
