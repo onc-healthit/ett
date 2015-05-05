@@ -36,26 +36,26 @@ public class SocketSMTPSender extends AbstractSMTPSender {
 	@Override
 	protected void connect() throws UnknownHostException, IOException {
 		//try {
-			// Open port to server
-			// not explicitly setting this IPv4 preference seems to create
-			// connection issues in some systems.
-			// http://tinyurl.com/pr8qn6n
-			System.setProperty("java.net.preferIPv4Stack", "true");
-			smtpSocket = new Socket(smtphostname, smtpport);
-			smtpSocket.setSoTimeout(serverTimeOut * 1000); // temporarily to
-															// solve the last
-															// read
-			// that is blocking
-			os = new DataOutputStream(smtpSocket.getOutputStream());
-			is = new BufferedReader(new InputStreamReader(
-					smtpSocket.getInputStream()));
+		// Open port to server
+		// not explicitly setting this IPv4 preference seems to create
+		// connection issues in some systems.
+		// http://tinyurl.com/pr8qn6n
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		smtpSocket = new Socket(smtphostname, smtpport);
+		smtpSocket.setSoTimeout(serverTimeOut * 1000); // temporarily to
+		// solve the last
+		// read
+		// that is blocking
+		os = new DataOutputStream(smtpSocket.getOutputStream());
+		is = new BufferedReader(new InputStreamReader(
+				smtpSocket.getInputStream()));
 
-			if (smtpSocket != null && os != null && is != null) {
-				log.info("Successfully setup the server. "
-						+ getResponseForRequest("")); // empty the greetings
-			} else {
+		if (smtpSocket != null && os != null && is != null) {
+			log.info("Successfully setup the server. "
+					+ getResponseForRequest("")); // empty the greetings
+		} else {
 
-			}
+		}
 
 		/*} catch (Exception e) {
 			log.error("Host " + smtphostname + ":" + smtpport + " has problem: "
@@ -117,7 +117,7 @@ public class SocketSMTPSender extends AbstractSMTPSender {
 		} catch (SocketTimeoutException e) {
 
 			if (result == "") { // if we have partial output we ignore the
-								// timeout
+				// timeout
 				log.error("getResponseForRequest SocketTimeoutException: Host "
 						+ smtphostname + " has problems connecting;"
 						+ e.getLocalizedMessage());
@@ -126,7 +126,7 @@ public class SocketSMTPSender extends AbstractSMTPSender {
 		} catch (ServerSocketNullException e) {
 
 			if (result == "") { // if we have partial output we ignore the
-								// timeout
+				// timeout
 				log.error("getResponseForRequest ServerSocketNullException: Host "
 						+ smtphostname
 						+ " has problems connecting;"
@@ -216,19 +216,23 @@ public class SocketSMTPSender extends AbstractSMTPSender {
 	}
 
 
-	public void AUTHLOGIN(String user, String password) {
-		try {
-			ReqRes r = sndAUTHLOGIN();
-			if (r.response.contains("334 ")) {
-				r = sndTxt(new String(Base64.encodeBase64(user.getBytes())));
-				if (r.response.contains("334 "))
-					r = sndTxt(new String(Base64.encodeBase64(password.getBytes())));
-				if (!r.response.contains("235 "))
-					throw new Exception("Authentication failed with : " + r.response);
-			}
-		}
-		catch (Exception e) {
-			log.error("AUTHENTICATION failed with " + e.getLocalizedMessage());
-	}	}
+	public void AUTHLOGIN(String user, String password) throws Exception {
+		ReqRes r = sndAUTHLOGIN();
+		if (r.response.contains("334 ")) {
+			r = sndTxt(new String(Base64.encodeBase64(user.getBytes())));
+			if (r.response.contains("334 "))
+				r = sndTxt(new String(Base64.encodeBase64(password.getBytes())));
+			if (!r.response.contains("235 "))
+				throw new Exception("Authentication failed with : " + r.response);
 
+		}
+	}
+
+	public void AUTHPLAIN(String user, String password) throws Exception {
+		String userpass = new String(Base64.encodeBase64(("\0" + user + "\0" + password).getBytes()));
+		ReqRes r = sndAUTHPLAIN(userpass);
+		if (!r.response.contains("235 "))
+			throw new Exception("Authentication failed with : " + r.response);
+
+	}
 }

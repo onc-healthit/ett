@@ -64,7 +64,7 @@ public class MU2ReceiverTests {
 					while (headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
 					//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
-						result.put(h.getName(), h.getValue());
+						result.put("\n"+h.getName(), h.getValue()+"\n");
 
 
 
@@ -86,7 +86,7 @@ public class MU2ReceiverTests {
 			}
 
 			if (result.size() == 0) {
-				tr.setCriteriamet(CriteriaStatus.FALSE);
+				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("ERROR","No messages found! Send a message and try again.");
 			}
 			else {
@@ -96,7 +96,7 @@ public class MU2ReceiverTests {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			e.printStackTrace();
 			log.info("Error fetching email " + e.getLocalizedMessage());
-			tr.getTestRequestResponses().put("1","Error fetching email " + e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("1","Error fetching email :" + e.getLocalizedMessage());
 		}
 
 		return tr;

@@ -102,7 +102,7 @@ public class TTTReceiverTests {
 					while (headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
 						//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
-						result.put(h.getName(), h.getValue());
+						result.put("\n"+h.getName(), h.getValue()+"\n");
 
 					}
 
@@ -127,7 +127,7 @@ public class TTTReceiverTests {
 			}
 
 			if (result.size() == 0) {
-				tr.setCriteriamet(CriteriaStatus.FALSE);;
+				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses().put("\nERROR","No messages found! Send a message and try again.\nPlease make sure that the Vendor Email Address is entered and matches the email address from which the email is being sent.\nWait for atleast 30 seconds after sending the email to ensure successful delivery to the ETT.");
 			}
 			else {
@@ -308,6 +308,7 @@ public class TTTReceiverTests {
 	public TestResult fetchDispositionNotificaton(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
+		tr.setCriteriamet(CriteriaStatus.FALSE);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = System.getProperties();
@@ -339,8 +340,10 @@ public class TTTReceiverTests {
 						Header h = (Header) headers.nextElement();
 						String dispositionOptions = h.getName();
 						if(dispositionOptions.contains("Disposition-Notification-Options")){
-							result.put("Disposition-Notification-Options ", h.getValue());
+						//	result.put("Disposition-Notification-Options ", h.getValue());
+							tr.setCriteriamet(CriteriaStatus.TRUE);
 						}
+						result.put("\n"+h.getName(), h.getValue()+"\n");
 					}
 					inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
 					break;
@@ -348,13 +351,10 @@ public class TTTReceiverTests {
 			}
 
 			if (result.size() == 0) {
-				tr.setCriteriamet(CriteriaStatus.FALSE);;
+				tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put("\nERROR","No messages found! Send a message and try again.\nPlease make sure that the Vendor Email Address is entered and matches the email address from which the email is being sent.");
 			}
-			else{
-				tr.setCriteriamet(CriteriaStatus.TRUE);
-			}
-
+			
 		} catch (MessagingException e) {
 			tr.setCriteriamet(CriteriaStatus.FALSE);;
 			e.printStackTrace();
@@ -393,15 +393,16 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		Properties props = System.getProperties();
-		props.put("mail.imap.starttls.enable","true");
-		props.put("mail.imap.starttls.required", "true");
-		//	props.put("mail.imap.ssl.ciphersuites", "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA");
+		props.put("mail.imap.starttls.enable",true);
+		props.put("mail.imap.starttls.required", true);
+	//	props.put("mail.imap.ssl.ciphersuites", "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA");
 		props.put("mail.imap.sasl.enable", true);
 		props.put("mail.imap.sasl.mechanisms", "PLAIN");
+		props.put("mail.imap.ssl.trust", "*");
 
 		try {
 			Session session = Session.getDefaultInstance(props, null);
-			Store store = session.getStore("imaps");
+			Store store = session.getStore("imap");
 			//	store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);
 			store.connect(ti.sutSmtpAddress,993,ti.sutUserName,ti.sutPassword);
 
@@ -1077,11 +1078,13 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		ArrayList<String> response = new ArrayList<String>();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
-		SSLSocket socket = null;  
+		SSLSocket socket1 = null;  
+		Socket socket = null;
 		PrintWriter output = null;
 		DataInputStream is = null;
 		try {
-			socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory.getDefault()).createSocket(InetAddress.getByName(ti.sutSmtpAddress), 993);
+			socket1 = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory.getDefault()).createSocket(InetAddress.getByName(ti.sutSmtpAddress), 993);
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 993);
 			output = new PrintWriter(socket.getOutputStream(),true);
 			is = new DataInputStream(socket.getInputStream());
 		} catch (UnknownHostException e1) {
@@ -1098,6 +1101,8 @@ public class TTTReceiverTests {
 				output.print("a1 STARTTLS\r\n"); 
 				output.flush();
 				output.print("a2 LOGOUT\r\n");
+				output.flush();
+				output.print("a3 EXIT\r\n");
 				output.flush();
 
 				String responseLine;

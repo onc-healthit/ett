@@ -118,8 +118,8 @@ public class TTTSenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 

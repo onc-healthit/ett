@@ -11,6 +11,7 @@ import gov.nist.healthcare.ttt.smtp.ITestResult;
 import gov.nist.healthcare.ttt.smtp.NTestResult;
 import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
+import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 import gov.nist.healthcare.ttt.smtp.server.AbstractSMTPSender;
 import gov.nist.healthcare.ttt.smtp.server.SocketSMTPSender;
 import gov.nist.healthcare.ttt.smtp.util.ReqRes;
@@ -44,7 +45,7 @@ public class TTTSenderNegativeTests {
 		config = _config;
 	}
 
-	public void testInit(TestInput ti) throws UnknownHostException, IOException {
+	public void testInit(TestInput ti) throws Exception {
 		smtpSender.close(); // just in case, close the previous connection
 		smtpSender.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
 				: ti.sutSmtpPort);
@@ -54,7 +55,8 @@ public class TTTSenderNegativeTests {
 			smtpSender.startTLS();
 		//Utils.pause();
 		if (!ti.sutUserName.isEmpty())
-			smtpSender.AUTHLOGIN(ti.sutUserName, ti.sutPassword);
+		//	smtpSender.AUTHLOGIN(ti.sutUserName, ti.sutPassword);
+		    smtpSender.AUTHPLAIN(ti.sutUserName, ti.sutPassword);
 		//Utils.pause();
 	}
 
@@ -105,20 +107,28 @@ public class TTTSenderNegativeTests {
 	 */
 	public TestResult testBadData(TestInput ti) {
 		NTestResult res = new NTestResult();
+		res.setTestCaseDesc("TestBadData:" + config.getProperty("desc10"));
+		res.setTestCaseId(10);
 		int m = 0;
 		try {
 			testInit(ti);
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
 			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
 			
 		}
 
 		smtpSender.setTimeOut(30); // we wait for 30 seconds
 		res.expectedResult.add(-2);
-		res.setTestCaseDesc("TestBadData:" + config.getProperty("desc10"));
-		res.setTestCaseId(10);
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
 		res.add(smtpSender.sndMsgMAILFROM(VALID_FROM));
 		res.add(smtpSender.sndMsgRCPTTO(VALID_TO));
@@ -152,18 +162,26 @@ public class TTTSenderNegativeTests {
 
 	public TestResult testInvalidSMTP1(TestInput ti) {
 		NTestResult res = new NTestResult();
+		res.setTestCaseDesc("TestInvalidSMTP1: " + config.getProperty("desc11"));
+		res.setTestCaseId(11);
 		int m = 0;
 		try {
 			testInit(ti);
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
 			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
 			
 		}
-		
-		res.setTestCaseDesc("TestInvalidSMTP1: " + config.getProperty("desc11"));
-		res.setTestCaseId(11);
+
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
 		res.add(smtpSender.sndMsgRCPTTO(TestData.VALID_TO), true);
 		
@@ -183,18 +201,27 @@ public class TTTSenderNegativeTests {
 	 */
 	public TestResult testInvalidSMTP2(TestInput ti) {
 		NTestResult res = new NTestResult();
+		res.setTestCaseDesc("TestInvalidSMTP2: " + config.getProperty("desc11"));
+		res.setTestCaseId(11);
 		int m = 0;
 		try {
 			testInit(ti);
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
 			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
 			
 		}
 		
-		res.setTestCaseDesc("TestInvalidSMTP2: " + config.getProperty("desc11"));
-		res.setTestCaseId(11);
+		
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
 		res.add(smtpSender.sndMsgDATA("Message: DATA before MAIL"), true);
 		
@@ -214,18 +241,26 @@ public class TTTSenderNegativeTests {
 	 */
 	public TestResult testInvalidSMTP3(TestInput ti) {
 		NTestResult res = new NTestResult();
+		res.setTestCaseDesc("TestInvalidSMTP2: " + config.getProperty("desc11"));
+		res.setTestCaseId(11);
 		int m = 0;
 		try {
 			testInit(ti);
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
 			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
 			
 		}
 		
-		res.setTestCaseDesc("TestInvalidSMTP2: " + config.getProperty("desc11"));
-		res.setTestCaseId(11);
 		res.add(smtpSender.sndMsgDATA("Message: DATA before HELO and MAIL"), true);
 		
 		if (m < 1) {
@@ -242,18 +277,25 @@ public class TTTSenderNegativeTests {
 	 */
 	public TestResult testBigData(TestInput ti) {
 		NTestResult res = new NTestResult();
+		res.setTestCaseDesc("testBigData: " + config.getProperty("desc12"));
+		res.setTestCaseId(12);
 		int m = 0;
 		try {
 			testInit(ti);
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
 			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
 			
 		}
-		
-		res.setTestCaseDesc("testBigData: " + config.getProperty("desc12"));
-		res.setTestCaseId(12);
 		res.add(smtpSender.sndMsgEHLO(TestData.VALID_DOMAIN));
 		res.add(smtpSender.sndMsgMAILFROM(LONG_FROM));
 		for (int i = 0; i < 2; i++)
@@ -277,20 +319,27 @@ public class TTTSenderNegativeTests {
 
 	public TestResult testTimeout1(TestInput ti) {
 		NTestResult res = new NTestResult();
+		res.setTestCaseDesc("Testing Timeouts: " + config.getProperty("desc13"));
+		res.setTestCaseId(13);
 		int m = 0;
 		try {
 			testInit(ti);
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
 			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
 			
 		}
 		
 		int timeout = ti.sutCommandTimeoutInSeconds > 0 ? ti.sutCommandTimeoutInSeconds : 30;
-		
-		res.setTestCaseDesc("Testing Timeouts: " + config.getProperty("desc13"));
-		res.setTestCaseId(13);
 		log.info("Setting timeout for " + (timeout) + " seconds!");
 		smtpSender.setTimeOut(timeout); // we wait for
 																	// twice the
@@ -313,13 +362,23 @@ public class TTTSenderNegativeTests {
 
 	public TestResult testTimeout2(TestInput ti) {
 		NTestResult res = new NTestResult();
+		res.setTestCaseDesc("Testing Timeouts: " + config.getProperty("desc13"));
+		res.setTestCaseId(13);
 		int m = 0;
 		try {
 			testInit(ti);
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
 			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
 			
 		}
 		
@@ -328,8 +387,6 @@ public class TTTSenderNegativeTests {
 		smtpSender.setTimeOut(timeout); // we wait for
 																	// twice the
 																	// time
-		res.setTestCaseDesc("Testing Timeouts: " + config.getProperty("desc13"));
-		res.setTestCaseId(13);
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
 		res.add(smtpSender.sndMsgMAILFROM(VALID_FROM));
 		res.add(smtpSender.sndMsgRCPTTO(VALID_TO), true);
@@ -354,21 +411,27 @@ public class TTTSenderNegativeTests {
 
 	public TestResult testInvalidStartTLS(TestInput ti) {
 		NTestResult res = new NTestResult();
-		int m =0;
-		smtpSender.close(); // just in case, close the previous connection
-		try {
-	    smtpSender.connect(ti.sutSmtpAddress, ti.startTlsPort);
-	    
-		} catch (Exception e) {
-			ReqRes r = new ReqRes("ERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
-			res.add(r);
-			m++;
-			
-		}
-		
 		res.setTestCaseDesc("Testing Invalid StartTLS: "
 				+ config.getProperty("desc17"));
 		res.setTestCaseId(17);
+		int m = 0;
+		try {
+			testInit(ti);
+		}catch (UnknownHostException e) {
+			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+			
+		} catch (Exception e) {
+			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			m++;
+			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			return res;
+			
+		}
+		
 
 		// no STARTTLS
 		res.add(smtpSender.sndMsgHELO("testing.com"));

@@ -281,7 +281,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 104 *******************************");
 			ti.useTLS = true;
 			TestResult tr104;
-			tr104 = mu2senderTests.testMu2Three(ti);
+			tr104 = mu2senderTests.testMu2Four(ti);
 			tr104.id = 104;
 			res.add(tr104);
 			

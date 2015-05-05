@@ -33,6 +33,7 @@ public abstract class AbstractSMTPSender {
 	public static final String EXPN = "EXPN %s\r\n";
 	public static final String STARTTLS = "STARTTLS\r\n";
 	public static final String AUTHLOGIN = "AUTH LOGIN\r\n";
+	public static final String AUTHPLAIN = "AUTH PLAIN %s\r\n";
 
 	// Invalid commands
 	public static final String DATA_LFCR = "DATA \f\r%s\f\r.\f\r";
@@ -186,6 +187,14 @@ public abstract class AbstractSMTPSender {
 	public ReqRes sndAUTHLOGIN() {
 		return getResponseForRequest(AUTHLOGIN);
 	}
+	
+	public ReqRes sndAUTHPLAIN() {
+		return getResponseForRequest(AUTHPLAIN);
+	}
+	
+	public ReqRes sndAUTHPLAIN(String userpass) {
+		return getResponseForRequest(String.format(AUTHPLAIN, userpass));
+	}
 
 	/**
 	 * @return
@@ -194,7 +203,9 @@ public abstract class AbstractSMTPSender {
 		return getResponseForRequest(txt + "\r\n");
 	}
 	
-	public abstract void AUTHLOGIN(String user, String password);
+	public abstract void AUTHLOGIN(String user, String password) throws Exception;
+	
+	public abstract void AUTHPLAIN(String user, String password) throws Exception;
 	
 	public abstract void setTimeOut(int nInSeconds);
 
@@ -233,5 +244,6 @@ public abstract class AbstractSMTPSender {
 		}
 		return false;		
 	}
+
 
 }

@@ -48,12 +48,18 @@ public class NTestResult extends TestResult {
 	public ArrayList<Integer> expectedResult = new ArrayList<Integer>();
 	protected boolean commandBeforeLastFailed = false;
 	static Logger log = Logger.getLogger(NTestResult.class);
+	public CriteriaStatus forcedCriteriaStatus = null;
 	
+	public void setForcedCriteriaStatus(CriteriaStatus forcedCriteriaStatus) {
+		this.forcedCriteriaStatus = forcedCriteriaStatus;
+	}
+
 	@Override
 	public CriteriaStatus getCriteriaMet() {
-		return (!commandBeforeLastFailed &&  // none of the earlier commands failed AND
+		return (forcedCriteriaStatus != null ? forcedCriteriaStatus :
+				(!commandBeforeLastFailed &&  // none of the earlier commands failed AND
 				(expectedResult.contains(getLastTestResultStatus())) || //the last command had expected result OR																	
-				(!isTestSuccess() && !getLastTestResponse().isEmpty() && getLastTestResultStatus() != -2)) ? CriteriaStatus.TRUE : CriteriaStatus.FALSE; // default success
+				(!isTestSuccess() && !getLastTestResponse().isEmpty() && getLastTestResultStatus() != -2)) ? CriteriaStatus.TRUE : CriteriaStatus.FALSE); // default success
 	}
 
 	public boolean isTestSuccess() {

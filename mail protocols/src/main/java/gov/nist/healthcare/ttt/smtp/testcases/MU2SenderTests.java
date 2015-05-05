@@ -31,14 +31,14 @@ public class MU2SenderTests {
 	public TestResult testBadAddress(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.TRUE);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		//	String dsn = "SUCCESS,FAILURE,DELAY,ORCPT=rfc1891";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required",true);
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
@@ -65,13 +65,16 @@ public class MU2SenderTests {
 			Transport transport = session.getTransport("smtp");
 			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
 					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			message.saveChanges();
+			System.out.println(message.getHeader("Message-ID")[0]);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL TO BAD ADDRESS ");
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 
 		} catch (MessagingException e) {
@@ -89,7 +92,7 @@ public class MU2SenderTests {
 	public TestResult testMu2Two(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.TRUE);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -108,8 +111,8 @@ public class MU2SenderTests {
 			message.setFrom(new InternetAddress(ti.tttEmailAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
-			//		message.setSubject("Testing sending mail to BadAddress (Test Case MU2-2)!");
-			//		message.setText("This is a message to a badAddress!");
+				message.setSubject("Testing sending mail to BadAddress (Test Case MU2-2)!");
+				message.setText("This is a message to a badAddress!");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -126,8 +129,9 @@ public class MU2SenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL TO BAD ADDRESS " + ti.sutEmailAddress);
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
 			log.info("Error in MU2 - 2");
@@ -143,7 +147,7 @@ public class MU2SenderTests {
 	public TestResult testMu2Three(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.TRUE);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -180,8 +184,9 @@ public class MU2SenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL TO BAD ADDRESS "+ ti.sutEmailAddress);
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
 			log.info("Error in MU2 -3");
@@ -197,7 +202,7 @@ public class MU2SenderTests {
 	public TestResult testMu2Four(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.TRUE);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -233,8 +238,9 @@ public class MU2SenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL TO BAD ADDRESS "+ ti.sutEmailAddress);
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
 			log.info("Error in MU2-4");
@@ -289,8 +295,9 @@ public class MU2SenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL TO  "+ Address);
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL TO  "+ Address + "\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
 			log.info("Error in MU2 -27");
@@ -349,8 +356,9 @@ public class MU2SenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL WITH MESSAGE DISPOSITION NOTIFICATION HEADER");
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL WITH MESSAGE DISPOSITION NOTIFICATION HEADER\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
 			log.info("Error in testBadAddress");
@@ -398,8 +406,9 @@ public class MU2SenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL WITH BAD DISPOSITION NOTIFICATION HEADER");
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL WITH BAD DISPOSITION NOTIFICATION HEADER\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
 			log.info("Error in testBadAddress");
@@ -454,8 +463,9 @@ public class MU2SenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL TO ADDRESS  " + ti.sutEmailAddress);
-			result.put("2","Email sent Successfully");
+			result.put("1","SENDING EMAIL TO ADDRESS  " + ti.sutEmailAddress + "\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
 			log.info("Error in testBadAddress");
