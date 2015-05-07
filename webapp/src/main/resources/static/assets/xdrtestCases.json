@@ -184,4 +184,40 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver"
+}, {
+    "name": "XDR test 19",
+    "id": 19,
+    "desc": "Test to validate that the Edge system is able to create messages with unique message id for XDR profile. Edge system sends 3 messages to the Test Tool with unique message ids.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR test 20a",
+    "id": "20a",
+    "desc": "The SUT must send an XDR message to ETT. ETT will respond with a process MDN. The test lab will inspect the logs to affirm that the SUT handles this case appropriately.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR test 20b",
+    "id": "20b",
+    "desc": "The SUT must send an XDR message to ETT. ETT will respond with a failure MDN. The test lab will inspect the logs to affirm that the SUT handles this case appropriately.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
 }]
