@@ -204,6 +204,8 @@ class TestCaseExecutor {
             hostname = toAddress.split("@")[1]
         }
 
+        log.debug("MDN send. Hostname to lookup : ${hostname}")
+
         new DirectMessageSender().send(senderPort, hostname, mdn, "from@transport-testing.nist.gov", toAddress)
     }
 
