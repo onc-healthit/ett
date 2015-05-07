@@ -51,9 +51,15 @@ final class TestCase19 extends TestCase {
                  it.name == "XDR_RECEIVE"
             }
 
-            boolean one = steps[0].messageId != steps[1].messageId
-            boolean two = steps[0].messageId != steps[2].messageId
-            boolean three = steps[1].messageId != steps[2].messageId
+            def messageId1 = steps[0].messageId
+            def messageId2 = steps[1].messageId
+            def messageId3 = steps[2].messageId
+
+            log.info(" comparing ${messageId1}, ${messageId2}, ${messageId3}")
+
+            boolean one = messageId1 != messageId2
+            boolean two = messageId1 != messageId3
+            boolean three = messageId2 != messageId3
             if(one & two & three) {
                 done(XDRRecordInterface.CriteriaMet.PASSED, updatedRecord)
             }

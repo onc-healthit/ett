@@ -28,13 +28,14 @@ def setup(){
         def context = [:]
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
-        context.wsaTo = "hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
+        context.wsaTo = "http://edge.nist.gov:11080/xdstools3/sim/1/docrec/prb"
+        context.targetEndpoint = "http://edge.nist.gov:11080/xdstools3/sim/1/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
-        def CannedXdrSenderImpl client = new CannedXdrSenderImpl().sendXdr(context)
+        def response = new CannedXdrSenderImpl().sendXdr(context)
 
         then :
 
+        println response
         assert true
     }
 
@@ -49,7 +50,7 @@ def setup(){
         context.wsaTo = "hit-dev.nist.gov:11080/xdstools3/sim/2/docrec/prb"
         context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/2/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
-        def CannedXdrSenderImpl client = new CannedXdrSenderImpl().sendXdr(context)
+        def response = new CannedXdrSenderImpl().sendXdr(context)
 
         then :
 
@@ -69,5 +70,52 @@ def setup(){
 
         assert true
     }
+
+
+    @Test
+    def test19(){
+
+        when :
+        def manager = new SSLContextManager()
+        def TLSclient = new TLSClientImpl(manager)
+        def context = [:]
+        context.directTo = "test@test.com"
+        context.directFrom = "test@test.com"
+        context.wsaTo = "http://edge.nist.gov:11080/xdstools3/sim/19/docrec/prb"
+        context.targetEndpoint = "http://edge.nist.gov:11080/xdstools3/sim/19/docrec/prb"
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        println "first message..."
+        def response = new CannedXdrSenderImpl().sendXdr(context)
+        println "second message..."
+        def response2 = new CannedXdrSenderImpl().sendXdr(context)
+        println "third message..."
+        def response3 = new CannedXdrSenderImpl().sendXdr(context)
+
+        then :
+
+        println response3
+        assert true
+    }
+
+    @Test
+    def test20a(){
+
+        when :
+        def manager = new SSLContextManager()
+        def TLSclient = new TLSClientImpl(manager)
+        def context = [:]
+        context.directTo = "test@test.com"
+        context.directFrom = "julien@transport-testing.nist.gov"
+        context.wsaTo = "http://edge.nist.gov:11080/xdstools3/sim/20a/docrec/prb"
+        context.targetEndpoint = "http://edge.nist.gov:11080/xdstools3/sim/20a/docrec/prb"
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        def response = new CannedXdrSenderImpl().sendXdr(context)
+
+        then :
+
+        println response
+        assert true
+    }
+
 
 }
