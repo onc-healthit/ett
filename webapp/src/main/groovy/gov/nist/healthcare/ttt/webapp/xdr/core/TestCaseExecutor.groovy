@@ -198,7 +198,11 @@ class TestCaseExecutor {
 
         def mdn = generator.generateMDN()
 
-        def hostname = toAddress.split("@")[1]
+        def hostname = toAddress
+
+        if(toAddress.contains("@")) {
+            hostname = toAddress.split("@")[1]
+        }
 
         new DirectMessageSender().send(senderPort, hostname, mdn, "from@transport-testing.nist.gov", toAddress)
     }
