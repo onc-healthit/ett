@@ -197,6 +197,8 @@ public class TTTSenderTests {
 	 * Implements Testcase #20 and #22. Authenticates with SUT(good/bad password) and sends a mail from SUT Server to a user on SUT.
 	 * 
 	 * @return
+	 * @throws MessagingException, NullPointerException 
+	 * @throws AddressException 
 	 */
 	public TestResult testPlainSasl(TestInput ti, boolean useBadPassWord) {
 
@@ -212,7 +214,8 @@ public class TTTSenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 
 		Session session = Session.getInstance(props, null);
-
+		Transport transport = null;
+		
 		try {
 
 			Message message = new MimeMessage(session);
@@ -240,13 +243,12 @@ public class TTTSenderTests {
 			}
 
 			log.info("Authenticating....");
-			Transport transport = session.getTransport("smtp");
+			transport = session.getTransport("smtp");
 
 			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
 					: ti.sutSmtpPort, ti.sutUserName,
 					useBadPassWord ? "badpassword" : ti.sutPassword);
 			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();
 			log.info("Authenticated Succefully");
 			result.put("\n1","SENDING STARTTLS EMAIL TO " + ti.sutEmailAddress);
 			result.put("\n2","Email sent Successfully");
@@ -269,8 +271,21 @@ public class TTTSenderTests {
 				log.info("error in PLAIN SASL");
 				result.put("ERROR", e.getLocalizedMessage());
 			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			log.info("error in PLAIN SASL");
+			result.put("ERROR", e.getLocalizedMessage());
 		}
-
+		finally {
+				if (transport != null)
+					try {
+						transport.close();
+					} catch (MessagingException e) {
+						log.error("Error when closing transport");
+						e.printStackTrace();
+					}
+		}
 
 		return tr;
 	}
