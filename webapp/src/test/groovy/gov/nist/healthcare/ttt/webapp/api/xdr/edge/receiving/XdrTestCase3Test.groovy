@@ -19,7 +19,7 @@ class XdrTestCase3Test extends XDRSpecification {
 
     String simId = "3"
     String tcId = "3"
-    String simEndpoint = TestUtils.simEndpoint(simId)
+    String simEndpoint = TestUtils.simEndpoint(simId, system)
 
     public String testCaseConfig =
             """{

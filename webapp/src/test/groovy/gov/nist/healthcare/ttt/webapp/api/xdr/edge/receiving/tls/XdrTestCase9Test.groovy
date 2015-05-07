@@ -20,7 +20,7 @@ class XdrTestCase9Test extends XDRSpecification {
 
     String simId = "9"
     String tcId = "9"
-    String simEndpoint = TestUtils.simEndpoint(simId)
+    String simEndpoint = TestUtils.simEndpoint(simId, system)
     public String testCaseConfig =
             """{
     "ip_address": "localhost",

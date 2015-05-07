@@ -99,8 +99,8 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                         "boolean"(name:'codingCheck' , value:'false')
                         "boolean"(name:'soapCheck' , value:'true')
                         text(name : 'msgCallback', value: fullNotificationUrl)
-                        webservices( value :'prb')
                     }
+                    webservices( value :'prb')
                 }
             }
         }
