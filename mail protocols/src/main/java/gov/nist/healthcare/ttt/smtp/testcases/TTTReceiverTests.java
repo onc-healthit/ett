@@ -117,8 +117,12 @@ public class TTTReceiverTests {
 						byte[] targetArray = IOUtils.toByteArray(stream);
 						System.out.println(new String(targetArray));
 						int m = i+1;
-						//	result.put("bodyPart" + " " + "[" +j +"]",new String(targetArray));
-						bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+						if(bodyPart.getFileName() != null){
+						bodyparts.put(bodyPart.getFileName(), new String(targetArray));
+						}
+						else {
+							bodyparts.put("Message Content" + " " + m , new String(targetArray));
+						}
 
 					}
 				}
