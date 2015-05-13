@@ -10,15 +10,14 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase4 extends TestCase {
+final class TestCase4c extends TestCase {
 
     @Autowired
-    public TestCase4(TestCaseExecutor executor) {
+    public TestCase4c(TestCaseExecutor executor) {
         super(executor)
     }
 
@@ -26,10 +25,10 @@ final class TestCase4 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        context.directTo = "testcase4@nist.gov"
-        context.directFrom = "testcase4@nist.gov"
+        context.directTo = "testcase4b@nist.gov"
+        context.directFrom = "testcase4b@nist.gov"
         context.wsaTo = context.targetEndpoint
-        context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
+        context.messageType = ArtifactManagement.Type.NEGATIVE_MISSING_DIRECT_BLOCK
 
         XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
