@@ -30,10 +30,6 @@ public class TestInput {
 	public String tttSmtpAddress;
 	
 	public int startTlsPort;
-	
-	public enum attachmentOptions {CCDA, C32, CCR}
-	
-	public attachmentOptions attachmentoptions;
 
 	public LinkedHashMap<String, byte[]> attachments = new LinkedHashMap<String, byte[]>();
 	
@@ -41,7 +37,7 @@ public class TestInput {
 			String _sutEmailAddress, String _tttEmailAddress, boolean _useTLS,
 			String _sutUserName, String _sutPassword,String _tttUserName, String _tttPassword, int _starTtlsPort,
 			int _sutCommandTimeoutInSeconds, 
-			LinkedHashMap<String, byte[]> _attachments,attachmentOptions _attachmentoptions) {
+			LinkedHashMap<String, byte[]> _attachments) {
 		sutSmtpAddress = _sutSmtpAddress;
 		tttSmtpAddress = _tttSmtpAddress;
 		sutSmtpPort = _sutSmtpPort;
@@ -56,7 +52,6 @@ public class TestInput {
 		startTlsPort = _starTtlsPort;
 		sutCommandTimeoutInSeconds = _sutCommandTimeoutInSeconds;
 		attachments = _attachments;
-		attachmentoptions = _attachmentoptions;
 	}
 
 	public TestInput(String _sutSmtpAddress, int _sutSmtpPort,
@@ -162,13 +157,5 @@ public class TestInput {
 
 	public void setTttSmtpAddress(String tttSmtpAddress) {
 		this.tttSmtpAddress = tttSmtpAddress;
-	}
-	
-	public attachmentOptions getAttachmentoptions() {
-		return attachmentoptions;
-	}
-
-	public void setAttachmentoptions(attachmentOptions attachmentoptions) {
-		this.attachmentoptions = attachmentoptions;
 	}
 }
