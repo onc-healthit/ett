@@ -1,3 +1,7 @@
+==Version 0.0.5#05/11/2015
+	* SMTP
+		-Added download link for SMTP attachments in the log.
+
 ==Version 0.0.4#05/05/2015
 	* SMTP
 		-Updated test cases 46.
