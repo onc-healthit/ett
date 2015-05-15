@@ -166,6 +166,12 @@ public class SimpleSOAPSender {
             case NEGATIVE_MISSING_METADATA_ELEMENTS5:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
+            case XDR_CCR:
+                metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
+            case XDR_C32:
+                metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
             case NEGATIVE_MISSING_ASSOCIATION:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
@@ -206,7 +212,7 @@ public class SimpleSOAPSender {
         mtom.append("\r\n");
         mtom.append(attachment);
         mtom.append("\r\n");
-        mtom.append("--MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20--\r\n");       
+        mtom.append("--MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20--\r\n");
 
         return mtom.toString();
 
@@ -230,8 +236,8 @@ public class SimpleSOAPSender {
            //  String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
             
           //  String endpoint = "https://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
-          //  String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/9fdc17ba-0191-4d0c-be2a-c4ea5294b861/rec/xdrpr";
-            String endpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/1/docrec/prb";
+            String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/9fdc17ba-0191-4d0c-be2a-c4ea5294b861/rec/xdrpr";
+            
             // String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/ecb4e054-9581-439f-9f12-de2d052a3132/rep/prb";
             // String endpoint = "http://ihexds.nist.gov:12090/tf6/services/xdsregistryb";
             
@@ -239,8 +245,8 @@ public class SimpleSOAPSender {
           //  String endpoint = "http://hit-dev.nist.gov:12090/xdstools2/sim/811fd97a-6ea3-437e-bf42-e0a8a505ba98/rec/xdrpr";
             
             
-            String directTo = "to@direct.com";
-            String directFrom = "from@direct.com";
+            String directTo = "directTo";
+            String directFrom = "directFrom";
             String relatesTo = "relatesTo";
             String recipient = "recipient";
             String wsaTo = endpoint;
@@ -259,7 +265,8 @@ public class SimpleSOAPSender {
         //    String payload = readFile("/home/mccaffrey/src/TempXDRCommunication/src/main/resources/sample_request.txt");
             
             //String response = sendSecureMessage(endpoint,payload);
-            String payload = PayloadManager.getPayload(endpoint,Type.XDR_FULL_METADATA, settings);
+           // String payload = PayloadManager.getPayload(endpoint,Type.XDR_FULL_METADATA, settings);
+              String payload = PayloadManager.getPayload(endpoint,Type.XDR_C32, settings);
             
              String response = sendMessage(endpoint,payload);
          //   String response = sendMTOMPackage(endpoint,Type.XDR_FULL_METADATA, settings);
