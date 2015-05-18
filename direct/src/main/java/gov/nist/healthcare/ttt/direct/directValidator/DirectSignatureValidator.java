@@ -81,7 +81,11 @@ public class DirectSignatureValidator {
 		//System.out.println(ExtensionSubjectAltName);
 		if(ExtensionSubjectAltName != null) {
 			if (!ExtensionSubjectAltName.isEmpty()){
-				return new DetailModel("240", "Extensions.subjectAltName", ExtensionSubjectAltName.toString(),  "Must be present", rfc, Status.SUCCESS);
+				if(ExtensionSubjectAltName.size() > 1) {
+					return new DetailModel("240", "Extensions.subjectAltName", ExtensionSubjectAltName.toString(),  "Should be a single value", rfc, Status.WARNING);
+				} else {
+					return new DetailModel("240", "Extensions.subjectAltName", ExtensionSubjectAltName.toString(),  "Must be present", rfc, Status.SUCCESS);
+				}
 			} else {
 				return new DetailModel("240", "Extensions.subjectAltName", "Not present",  "Must be present", rfc, Status.ERROR);
 			}
