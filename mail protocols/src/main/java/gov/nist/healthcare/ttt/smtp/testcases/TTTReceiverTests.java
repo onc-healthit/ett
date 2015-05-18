@@ -103,7 +103,6 @@ public class TTTReceiverTests {
 						Header h = (Header) headers.nextElement();
 						//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 						result.put("\n"+h.getName(), h.getValue()+"\n");
-
 					}
 
 					result.put("Delivered-To", "********");
@@ -266,8 +265,6 @@ public class TTTReceiverTests {
 							hash.add(h.getValue());
 							j++;
 						}
-
-
 					}
  
 					inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);

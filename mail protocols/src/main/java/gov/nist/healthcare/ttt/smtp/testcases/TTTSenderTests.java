@@ -110,7 +110,7 @@ public class TTTSenderTests {
 	 */
 
 	public TestResult testStarttls(TestInput ti) {
-
+		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
@@ -141,6 +141,8 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart();
+			
+			// Adding attachments
 			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
 
 				DataSource source = new ByteArrayDataSource(e.getValue(),
@@ -207,7 +209,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.TRUE);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		Properties props = new Properties();
-
+		System.setProperty("java.net.preferIPv4Stack", "true");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", ti.useTLS ? "true" : "false");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
