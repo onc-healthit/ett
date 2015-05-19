@@ -23,7 +23,7 @@ class XdrTestCase20bTest extends XDRSpecification {
 
     String simId = "20b"
     String tcId = "20b"
-    String simEndpoint = TestUtils.simEndpoint(simId)
+    String simEndpoint = TestUtils.simEndpoint(simId, system)
 
     String fromAddress = "from@hit-dev.nist.gov"
     String toAddress = "to@hit-dev.nist.gov"

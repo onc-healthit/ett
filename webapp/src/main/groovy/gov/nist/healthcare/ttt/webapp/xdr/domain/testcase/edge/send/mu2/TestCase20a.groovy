@@ -47,8 +47,6 @@ final class TestCase20a extends TestCase {
         record.criteriaMet = step.criteriaMet
 
         executor.db.updateXDRRecord(record)
-        executor.db.updateXDRRecord(record)
-        executor.db.updateXDRRecord(record)
 
         done(XDRRecordInterface.CriteriaMet.MANUAL, record)
 

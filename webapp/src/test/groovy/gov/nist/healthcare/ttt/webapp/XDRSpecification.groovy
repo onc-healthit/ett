@@ -40,6 +40,8 @@ class XDRSpecification extends Specification{
     String toAddress = "from@edge.nist.gov"
     String fromAddress = "to@edge.nist.gov"
 
+    String system = "ett"
+
     @Before
     public setup() {
 

@@ -1,3 +1,13 @@
+==Version 0.0.5#05/11/2015
+	* SMTP
+		-Added download link for SMTP attachments in the log.
+
+==Version 0.0.4#05/05/2015
+	* SMTP
+		-Updated test cases 46.
+		-Fixed the exception error for test case 13.
+		-Better logs for negative test cases (10,11,13,17).
+
 ==Version 0.0.3#03/10/2015
 	* Direct
 		-Added DNS lookup for address bound encryption certificates.
