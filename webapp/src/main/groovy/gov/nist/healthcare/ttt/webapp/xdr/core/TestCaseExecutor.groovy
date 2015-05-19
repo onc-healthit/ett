@@ -173,7 +173,7 @@ class TestCaseExecutor {
         return step
     }
 
-    private def sendMDN(TkValidationReport report, String state) {
+    private def  sendMDN(TkValidationReport report, String state) {
 
         String toAddress = report.directFrom
         def generator = new MDNGenerator();
@@ -198,7 +198,15 @@ class TestCaseExecutor {
 
         def mdn = generator.generateMDN()
 
-        new DirectMessageSender().send(senderPort, toAddress, mdn, "from@transport-testing.nist.gov", toAddress)
+        def hostname = toAddress
+
+        if(toAddress.contains("@")) {
+            hostname = toAddress.split("@")[1]
+        }
+
+        log.debug("MDN send. Hostname to lookup : ${hostname}")
+
+        new DirectMessageSender().send(senderPort, hostname, mdn, "from@transport-testing.nist.gov", toAddress)
     }
 
 

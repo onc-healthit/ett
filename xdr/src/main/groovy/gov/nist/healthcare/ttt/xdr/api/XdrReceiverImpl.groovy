@@ -36,6 +36,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${xdr.notification}')
     private String notificationUrl
 
+    @Value('${xdr.notification.prefix}')
+    private String prefix
+
     @Value('${toolkit.createSim.url}')
     private String tkSimCreationUrl
 
@@ -58,7 +61,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     def buildUrls(){
         tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
         notificationUrl = notificationUrl.replaceAll('/$', "")
-        fullNotificationUrl = "http://"+hostname+":"+port+contextPath+notificationUrl
+        fullNotificationUrl = prefix+"://"+hostname+":"+port+contextPath+notificationUrl
 
         log.debug("notification url is :" + fullNotificationUrl)
     }
@@ -99,8 +102,8 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                         "boolean"(name:'codingCheck' , value:'false')
                         "boolean"(name:'soapCheck' , value:'true')
                         text(name : 'msgCallback', value: fullNotificationUrl)
-                        webservices( value :'prb')
                     }
+                    webservices( value :'prb')
                 }
             }
         }
