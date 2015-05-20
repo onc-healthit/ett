@@ -220,4 +220,52 @@
         "key": "direct_from",
         "type": "string"
     }]
+}, {
+    "name": "XDR test 48",
+    "id": 48,
+    "desc": "Test script will ask the Edge system to generate a series of messages (# TBD) and send to a specific address using the Test Tool. (Messages will be asked to be sent as part of multiple sessions) Edge system will have to create message id's unique to each message and include it in the WS-Addressing header.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR test 49",
+    "id": 49,
+    "desc": "Test script will validate the direct address block per the section 4.0 XDR and XDM Messaging for Direct v1.0 and per section 1.3 of the \"Implementation Guide for Delivery Notification for Direct v1.0\".",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR test 50a",
+    "id": "50a",
+    "desc": "Test script will ask the Edge system to send a message including valid recipients.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR test 50b",
+    "id": "50b",
+    "desc": "Test script will ask the Edge system to send a message including invalid recipients.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
 }]
