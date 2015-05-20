@@ -31,7 +31,8 @@ final class TestCase50a extends TestCase {
         log.info "test case ${id} : successfully configured. Ready to receive messages."
 
         def content = new StandardContent()
-
+        content.endpoint = endpoints[0]
+        content.endpointTLS = endpoints[1]
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.MANUAL, content)
     }
 

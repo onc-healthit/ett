@@ -29,7 +29,8 @@ final class TestCase50b extends TestCase {
         executor.createRecordForSenderTestCase(context,username,id,sim)
 
         def content = new StandardContent()
-
+        content.endpoint = endpoints[0]
+        content.endpointTLS = endpoints[1]
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.MANUAL, content)
     }
 
