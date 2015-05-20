@@ -15,7 +15,7 @@ class RandomIntegerGenerator {
     }
 
 
-    public static void main(String[] args){
-        println generate(5)
-    }
+//    public static void main(String[] args){
+//        println generate(5)
+//    }
 }
