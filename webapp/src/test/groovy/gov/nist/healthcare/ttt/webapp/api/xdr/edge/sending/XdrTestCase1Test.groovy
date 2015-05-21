@@ -35,7 +35,6 @@ class XdrTestCase1Test extends XDRSpecification {
         gui.perform(configure)
                 .andDo(print())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.value.endpoint").value(simEndpoint))
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 
