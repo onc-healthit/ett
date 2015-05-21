@@ -3,11 +3,13 @@ package gov.nist.healthcare.ttt.smtp.testcases;
 import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -66,6 +68,7 @@ public class TTTReceiverTests {
 	 * fetched.
 	 */
 	public TestResult fetchMail(TestInput ti) throws IOException {
+
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
@@ -74,12 +77,17 @@ public class TTTReceiverTests {
 		Properties props = System.getProperties();
 
 		try {
+
+			Properties prop = new Properties();
+			InputStream inputStream = getClass().getClassLoader()
+					.getResourceAsStream("config.properties");
+			prop.load(inputStream);
+
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 110,
-					"unpublishedwellformed1@hit-testing2.nist.gov",
-					"smtptesting123");
-
+			store.connect(ti.tttSmtpAddress, 993,
+					prop.getProperty("ett.starttls.address"),
+					prop.getProperty("ett.password"));
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
 
@@ -133,8 +141,8 @@ public class TTTReceiverTests {
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses()
-						.put("\nERROR",
-								"No messages found! Send a message and try again.\nPlease make sure that the Vendor Email Address is entered and matches the email address from which the email is being sent.\nWait for atleast 30 seconds after sending the email to ensure successful delivery to the ETT.");
+				.put("\nERROR",
+						"No messages found! Send a message and try again.\nPlease make sure that the Vendor Email Address is entered and matches the email address from which the email is being sent.\nWait for atleast 30 seconds after sending the email to ensure successful delivery to the ETT.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 			}
@@ -166,10 +174,16 @@ public class TTTReceiverTests {
 		Properties props = System.getProperties();
 
 		try {
+			Properties prop = new Properties();
+			InputStream inputStream = getClass().getClassLoader()
+					.getResourceAsStream("config.properties");
+			prop.load(inputStream);
+			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 110,
-					"wellformed14@hit-testing2.nist.gov", "smtptesting123");
+			store.connect(ti.tttSmtpAddress, 993,
+					prop.getProperty("ett.other.address"),
+					prop.getProperty("ett.password"));
 
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
@@ -249,10 +263,16 @@ public class TTTReceiverTests {
 		Properties props = System.getProperties();
 
 		try {
+			Properties prop = new Properties();
+			InputStream inputStream = getClass().getClassLoader()
+					.getResourceAsStream("config.properties");
+			prop.load(inputStream);
+			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 110,
-					"wellformed14@hit-testing2.nist.gov", "smtptesting123");
+			store.connect(ti.tttSmtpAddress, 993,
+					prop.getProperty("ett.other.address"),
+					prop.getProperty("ett.password"));
 
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
@@ -318,8 +338,8 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 
 		tr.getTestRequestResponses()
-				.put("\nAwating confirmation from proctor",
-						"Proctor needs to verify the failure message from invalid recipient.");
+		.put("\nAwating confirmation from proctor",
+				"Proctor needs to verify the failure message from invalid recipient.");
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 
 		return tr;
@@ -709,7 +729,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL); // proctored are true unless
-													// exception happens
+		// exception happens
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		// Create a mail session
@@ -757,8 +777,8 @@ public class TTTReceiverTests {
 			log.info("SENDING FIRST EMAIL");
 
 			tr.getTestRequestResponses()
-					.put("\nAwating confirmation from proctor",
-							"Proctor needs to verify the Edge system for updates from the server.");
+			.put("\nAwating confirmation from proctor",
+					"Proctor needs to verify the Edge system for updates from the server.");
 			System.out.println("Email sent successfully");
 
 		} catch (MessagingException e) {
@@ -785,7 +805,7 @@ public class TTTReceiverTests {
 
 	@SuppressWarnings("deprecation")
 	public TestResult SocketImap(TestInput ti) throws NoSuchAlgorithmException,
-			KeyManagementException {
+	KeyManagementException {
 		TestResult tr = new TestResult();
 		ArrayList<String> response = new ArrayList<String>();
 		HashMap<String, String> result = tr.getTestRequestResponses();
@@ -801,7 +821,7 @@ public class TTTReceiverTests {
 			System.setProperty("java.net.preferIPv4Stack", "true");
 			socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 					.getDefault()).createSocket(
-					InetAddress.getByName(ti.sutSmtpAddress), 993);
+							InetAddress.getByName(ti.sutSmtpAddress), 993);
 
 			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					socket.getOutputStream(), "Windows-1252")), true);
@@ -816,7 +836,7 @@ public class TTTReceiverTests {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (IOException e) {
 			System.err
-					.println("Couldn't get I/O for the connection to: hostname");
+			.println("Couldn't get I/O for the connection to: hostname");
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			result.put("ERROR", "Couldn't get I/O for the connection to "
 					+ ti.sutSmtpAddress + e.getLocalizedMessage());
@@ -896,7 +916,7 @@ public class TTTReceiverTests {
 		try {
 			socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 					.getDefault()).createSocket(
-					InetAddress.getByName(ti.sutSmtpAddress), 993);
+							InetAddress.getByName(ti.sutSmtpAddress), 993);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new DataInputStream(socket.getInputStream());
 		} catch (UnknownHostException e1) {
@@ -905,7 +925,7 @@ public class TTTReceiverTests {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (IOException e) {
 			System.err
-					.println("Couldn't get I/O for the connection to: hostname");
+			.println("Couldn't get I/O for the connection to: hostname");
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			result.put("ERROR", "No route to host " + e.getLocalizedMessage());
 		}
@@ -976,7 +996,7 @@ public class TTTReceiverTests {
 		try {
 			socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 					.getDefault()).createSocket(
-					InetAddress.getByName(ti.sutSmtpAddress), 993);
+							InetAddress.getByName(ti.sutSmtpAddress), 993);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new DataInputStream(socket.getInputStream());
 		} catch (UnknownHostException e1) {
@@ -985,7 +1005,7 @@ public class TTTReceiverTests {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (IOException e) {
 			System.err
-					.println("Couldn't get I/O for the connection to: hostname");
+			.println("Couldn't get I/O for the connection to: hostname");
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			result.put("ERROR", "No route to host " + e.getLocalizedMessage());
 		}
@@ -1049,7 +1069,7 @@ public class TTTReceiverTests {
 		try {
 			socket1 = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 					.getDefault()).createSocket(
-					InetAddress.getByName(ti.sutSmtpAddress), 993);
+							InetAddress.getByName(ti.sutSmtpAddress), 993);
 			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 993);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new DataInputStream(socket.getInputStream());
@@ -1059,7 +1079,7 @@ public class TTTReceiverTests {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (IOException e) {
 			System.err
-					.println("Couldn't get I/O for the connection to: hostname");
+			.println("Couldn't get I/O for the connection to: hostname");
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			result.put("ERROR", "No route to host " + e.getLocalizedMessage());
 		}
@@ -1118,8 +1138,8 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 
 		tr.getTestRequestResponses()
-				.put("\nAwating confirmation from proctor",
-						"Proctor needs to verify the messages retrieved from Edge Test Tool.");
+		.put("\nAwating confirmation from proctor",
+				"Proctor needs to verify the messages retrieved from Edge Test Tool.");
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		return tr;
 	}
@@ -1129,8 +1149,8 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 
 		tr.getTestRequestResponses()
-				.put("\nAwating confirmation from proctor",
-						"Proctor needs to verify the messages retrieved from Edge Test Tool.");
+		.put("\nAwating confirmation from proctor",
+				"Proctor needs to verify the messages retrieved from Edge Test Tool.");
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		return tr;
 	}
