@@ -85,7 +85,7 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 993,
+			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.starttls.address"),
 					prop.getProperty("ett.password"));
 			Folder inbox = store.getFolder("Inbox");
@@ -181,7 +181,7 @@ public class TTTReceiverTests {
 			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 993,
+			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
@@ -270,7 +270,7 @@ public class TTTReceiverTests {
 			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 993,
+			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
