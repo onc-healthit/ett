@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,9 +80,10 @@ public class TTTReceiverTests {
 		try {
 
 			Properties prop = new Properties();
-			InputStream inputStream = getClass().getClassLoader()
-					.getResourceAsStream("config.properties");
-			prop.load(inputStream);
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
@@ -175,9 +177,10 @@ public class TTTReceiverTests {
 
 		try {
 			Properties prop = new Properties();
-			InputStream inputStream = getClass().getClassLoader()
-					.getResourceAsStream("config.properties");
-			prop.load(inputStream);
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
@@ -264,9 +267,10 @@ public class TTTReceiverTests {
 
 		try {
 			Properties prop = new Properties();
-			InputStream inputStream = getClass().getClassLoader()
-					.getResourceAsStream("config.properties");
-			prop.load(inputStream);
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
