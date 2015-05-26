@@ -1,5 +1,5 @@
 <S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope">
-    <S:Header>
+    <S:Header> 
         <wsa:Action xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:s="http://www.w3.org/2003/05/soap-envelope" s:mustUnderstand="1">urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-bResponse</wsa:Action>
         <wsa:RelatesTo xmlns:wsa="http://www.w3.org/2005/08/addressing">8e024081-513b-4107-acc7-2f4b665a2c1e</wsa:RelatesTo>
     </S:Header>

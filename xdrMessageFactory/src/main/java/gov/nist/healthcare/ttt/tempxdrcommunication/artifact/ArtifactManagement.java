@@ -25,6 +25,8 @@ public class ArtifactManagement {
         NEGATIVE_MISSING_METADATA_ELEMENTS3,
         NEGATIVE_MISSING_METADATA_ELEMENTS4,
         NEGATIVE_MISSING_METADATA_ELEMENTS5,
+        XDR_CCR,
+        XDR_C32,
         NEGATIVE_MISSING_ASSOCIATION,
         DELIVERY_STATUS_NOTIFICATION_SUCCESS,
         DELIVERY_STATUS_NOTIFICATION_FAILURE
@@ -34,91 +36,22 @@ public class ArtifactManagement {
 
     private static final String FILENAME_XDR_FULL_METADATA = "Xdr_full_metadata.xml";
     private static final String FILENAME_XDR_FULL_METADATA_ONLY = "Xdr_full_metadata_only.xml";
-    private static final String FILENAME_XDR_FULL_METADATA_NO_SOAP_NO_XOP = "Xdr_full_metadata_no_soap_no_xop.xml";
     private static final String FILENAME_BAD_SOAP = "negative_bad_soap.xml";
     private static final String FILENAME_BAD_SOAP_BODY = "negative_bad_soap_body.xml";
     private static final String FILENAME_MISSING_DIRECT_BLOCK = "negative_missing_direct_block.xml";
     private static final String FILENAME_MISSING_METADATA_ELEMENTS1 = "negative_missing_metadata_elements1.xml";
-    private static final String FILENAME_MISSING_METADATA_ELEMENTS1_NO_SOAP_NO_XOP = "negative_missing_metadata_elements1_no_soap_no_xop.xml";                                
     private static final String FILENAME_MISSING_METADATA_ELEMENTS2 = "negative_missing_metadata_elements2.xml";
-    private static final String FILENAME_MISSING_METADATA_ELEMENTS2_NO_SOAP_NO_XOP = "negative_missing_metadata_elements2_no_soap_no_xop.xml";
     private static final String FILENAME_MISSING_METADATA_ELEMENTS3 = "negative_missing_metadata_elements3.xml";
-    private static final String FILENAME_MISSING_METADATA_ELEMENTS3_NO_SOAP_NO_XOP = "negative_missing_metadata_elements3_no_soap_no_xop.xml";
     private static final String FILENAME_MISSING_METADATA_ELEMENTS4 = "negative_missing_metadata_elements4.xml";
-    private static final String FILENAME_MISSING_METADATA_ELEMENTS4_NO_SOAP_NO_XOP = "negative_missing_metadata_elements4_no_soap_no_xop.xml";
     private static final String FILENAME_MISSING_METADATA_ELEMENTS5 = "negative_missing_metadata_elements5.xml";
-    private static final String FILENAME_MISSING_METADATA_ELEMENTS5_NO_SOAP_NO_XOP = "negative_missing_metadata_elements5_no_soap_no_xop.xml";
+    private static final String FILENAME_XDR_CCR = "Xdr_Ccr.xml";
+    private static final String FILENAME_XDR_C32 = "Xdr_C32.xml";
     private static final String FILENAME_MISSING_ASSOCIATION = "negative_missing_association.xml";
-    private static final String FILENAME_MISSING_ASSOCIATION_NO_SOAP_NO_XOP = "negative_missing_association_no_soap_no_xop.xml";    
     private static final String FILENAME_XDR_MINIMAL_METADATA = "Xdr_minimal_metadata.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY = "Xdr_minimal_metadata_only.xml";
-    private static final String FILENAME_XDR_MINIMAL_METADATA_NO_SOAP_NO_XOP = "Xdr_minimal_metadata_no_soap_no_xop.xml";
     private static final String FILENAME_ENCODED_CCDA = "encodedCCDA.txt";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS = "DeliveryStatusNotification_success.xml";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE = "DeliveryStatusNotification_failure.xml";
-
-    // TODO: If a schema for the Direct Headers becomes available, replace this
-    // string manipulation with XML objects.
-    public static String getAdditionalSOAPHeaders(Type type, Settings settings) {
-        String metadata = null;
-        if (type.equals(Type.XDR_FULL_METADATA)) {
-            metadata = "XDS";
-        } else {
-            metadata = "minimal";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">" + metadata + "</direct:metadata-level>");
-        if (!type.equals(Type.NEGATIVE_MISSING_DIRECT_BLOCK)) {
-            sb.append("<direct:addressBlock xmlns:direct=\"urn:direct:addressing\" xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\" ");
-            sb.append("soapenv:role=\"urn:direct:addressing:destination\" soapenv:relay=\"true\">");
-            sb.append("<direct:from>" + settings.getDirectFrom() + "</direct:from>");
-            sb.append("<direct:to>" + settings.getDirectTo() + "</direct:to>");
-            sb.append("</direct:addressBlock>");
-        }
-        return sb.toString();
-    }
-
-    public static String getMetadata(Type type, Settings settings) {
-
-        String metadata = null;
-        switch (type) {
-            case XDR_FULL_METADATA:
-                metadata = getTemplate(FILENAME_XDR_FULL_METADATA_NO_SOAP_NO_XOP);
-                break;
-            case XDR_MINIMAL_METADATA:
-                metadata = getTemplate(FILENAME_XDR_FULL_METADATA_NO_SOAP_NO_XOP);
-                break;
-
-            case NEGATIVE_MISSING_METADATA_ELEMENTS1:
-                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS1_NO_SOAP_NO_XOP);
-                break;
-            case NEGATIVE_MISSING_METADATA_ELEMENTS2:
-                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS2_NO_SOAP_NO_XOP);
-                break;
-            case NEGATIVE_MISSING_METADATA_ELEMENTS3:
-                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS3_NO_SOAP_NO_XOP);
-                break;
-            case NEGATIVE_MISSING_METADATA_ELEMENTS4:
-                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS4_NO_SOAP_NO_XOP);
-                break;
-            case NEGATIVE_MISSING_METADATA_ELEMENTS5:
-                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS5_NO_SOAP_NO_XOP);
-                break;
-            case NEGATIVE_MISSING_ASSOCIATION:
-                metadata = getTemplate(FILENAME_MISSING_ASSOCIATION_NO_SOAP_NO_XOP);
-                break;
-
-            default:
-                break;
-        }
-
-        // metadata = setDirectAddressBlock(metadata, settings.getDirectTo(), settings.getDirectFrom());
-        //metadata = setSOAPHeaders(metadata, settings.getWsaTo());
-        metadata = setIds(metadata, settings.getMessageId());
-
-        return metadata;
-
-    }
 
     public static String getPayload(Type type, Settings settings) throws IOException {
         makeSettingsSafe(settings);
@@ -137,7 +70,9 @@ public class ArtifactManagement {
                 break;
 
         }
+        
         return payload;
+
     }
 
     public static String getMtomSoap(Type type, Settings settings) {
@@ -174,6 +109,12 @@ public class ArtifactManagement {
 
             case NEGATIVE_MISSING_METADATA_ELEMENTS5:
                 payload = getXdrMissingMetadataElements5(settings);
+                break;
+            case XDR_CCR:
+                payload = getXdrCcr(settings);
+                break;
+            case XDR_C32:
+                payload = getXdrC32(settings);
                 break;
             case NEGATIVE_MISSING_ASSOCIATION:
                 payload = getXdrMissingAssociation(settings);
@@ -277,7 +218,7 @@ public class ArtifactManagement {
         return message;
     }
 
-    public static String getXdrMissingMetadataElements2(Settings settings) {
+    public static String getXdrMissingMetadataElements2(Settings settings)  {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS2);
         message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
@@ -317,6 +258,27 @@ public class ArtifactManagement {
         return message;
     }
 
+    
+    public static String getXdrCcr(Settings settings) {
+        makeSettingsSafe(settings);
+        String message = getTemplate(FILENAME_XDR_CCR);
+        message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
+        message = setSOAPHeaders(message, settings.getWsaTo());
+        message = setIds(message, settings.getMessageId());
+
+        return message;
+    }
+    
+    public static String getXdrC32(Settings settings) {
+        makeSettingsSafe(settings);
+        String message = getTemplate(FILENAME_XDR_C32);
+        message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
+        message = setSOAPHeaders(message, settings.getWsaTo());
+        message = setIds(message, settings.getMessageId());
+
+        return message;
+    }
+    
     public static String getXdrMissingAssociation(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_MISSING_ASSOCIATION);
@@ -333,11 +295,11 @@ public class ArtifactManagement {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder out = new StringBuilder();
         try {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                out.append(line + "\r\n");
-            }
-            reader.close();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            out.append(line + "\r\n");
+        }
+        reader.close();
         } catch (IOException ioe) {
             //TODO
             System.err.println("RESOURCE NOT FOUND: " + resourceName);
@@ -406,17 +368,12 @@ public class ArtifactManagement {
         try {
 
             Settings settings = new Settings();
-            settings.setDirectFrom("from@direct.com");
-            settings.setDirectTo("to@direct.com");
-            settings.setWsaTo("fakeWsaHere");
+            settings.setDirectFrom("directFrom");
+            settings.setDirectTo("directTo");
+            settings.setWsaTo("wsaTo");
 
-            //  String payload = getPayload(Type.XDR_FULL_METADATA, settings);
-            String payload = ArtifactManagement.getMtomSoap(Type.XDR_FULL_METADATA, settings);
-            //      System.out.println("here!\n" + payload);
-
-//            System.out.println(ArtifactManagement.getAdditionalSOAPHeaders(Type.XDR_FULL_METADATA, settings));
-
-            System.out.println(ArtifactManagement.getMetadata(Type.NEGATIVE_MISSING_ASSOCIATION, settings));
+            String payload = getPayload(Type.XDR_FULL_METADATA, settings);
+            System.out.println("here!\n" + payload);
 
             //    URL url = ClassLoader.getSystemResource("DeliveryStatusNotification_success.xml");
             //  System.out.println(url.getPath());

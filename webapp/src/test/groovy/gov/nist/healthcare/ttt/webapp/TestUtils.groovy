@@ -140,11 +140,7 @@ class TestUtils {
     """
     }
 
-//    static String simEndpoint(String simId, String system) {
-//        "http://hit-dev.nist.gov:11080/xdstools3/sim/$system/$simId/docrec/prb"
-//    }
-
     static String simEndpoint(String simId, String system) {
-        "http://hit-dev.nist.gov:11080/xdstools3/sim/$simId/docrec/prb"
+        "http://hit-dev.nist.gov:11080/xdstools3/sim/$system/$simId/docrec/prb"
     }
 }

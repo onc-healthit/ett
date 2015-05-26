@@ -81,8 +81,8 @@ def setup(){
         def context = [:]
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
-        context.wsaTo = "http://edge.nist.gov:11080/xdstools3/sim/19/docrec/prb"
-        context.targetEndpoint = "http://edge.nist.gov:11080/xdstools3/sim/19/docrec/prb"
+        context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/19/docrec/prb"
+        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/19/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         println "first message..."
         def response = new CannedXdrSenderImpl().sendXdr(context)
@@ -106,8 +106,8 @@ def setup(){
         def context = [:]
         context.directTo = "test@test.com"
         context.directFrom = "julien@hit-dev.nist.gov"
-        context.wsaTo = "http://edge.nist.gov:11080/xdstools3/sim/20a/docrec/prb"
-        context.targetEndpoint = "http://edge.nist.gov:11080/xdstools3/sim/20a/docrec/prb"
+        context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20a/docrec/prb"
+        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20a/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl().sendXdr(context)
 
@@ -127,8 +127,8 @@ def setup(){
         def context = [:]
         context.directTo = "test@test.com"
         context.directFrom = "julien@hit-dev.nist.gov"
-        context.wsaTo = "http://edge.nist.gov:11080/xdstools3/sim/20a/docrec/prb"
-        context.targetEndpoint = "http://edge.nist.gov:11080/xdstools3/sim/20b/docrec/prb"
+        context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20b/docrec/prb"
+        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20b/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl().sendXdr(context)
 
