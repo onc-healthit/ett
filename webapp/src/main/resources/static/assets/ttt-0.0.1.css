@@ -2252,6 +2252,10 @@ For pdf
   -webkit-transform: rotate(270deg);
   transform: rotate(270deg);
 }
+.doc-title {
+  color: CornflowerBlue;
+  text-decoration: underline;
+}
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
  * all the submodules and components we are using. 
