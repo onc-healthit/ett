@@ -121,15 +121,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			}
 			log.info("*****************   END  Testcase 1 *******************************");
 			break;
-		case 9:
-			
-			log.info("*****************   BEGIN  Testcase 9 *******************************");
-			ti.useTLS = false;
-			TestResult tr9 = sTest.testSendMail(ti);
-			tr9.id = 9;
-			res.add(tr9);
-			log.info("*****************   END  Testcase 9 *******************************");
-			break;
 
 		case 10:
 			res.add(nTest.testBadData(ti));
@@ -145,21 +136,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 		case 13:
 			res.addAll(nTest.testTimeout(ti));
-			break;
-			
-		case 14:
-			log.info("*****************   BEGIN  Testcase 14 *******************************");
-
-			TestResult tr14;
-			try {
-				tr14 = tTest.fetchMail2(ti);
-				tr14.id = 14;
-				res.add(tr14);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 14 *******************************");
 			break;
 
 		case 15:

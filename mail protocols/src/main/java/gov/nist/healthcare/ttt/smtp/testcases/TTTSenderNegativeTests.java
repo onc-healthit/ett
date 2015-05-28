@@ -68,6 +68,7 @@ public class TTTSenderNegativeTests {
 		} catch (Exception e) {
 			ReqRes r = new ReqRes("ERROR", e.getLocalizedMessage() + "\n");
 			res.add(r);
+			
 		}
 		
 		res.setTestCaseDesc("TestValidData");
@@ -123,6 +124,7 @@ public class TTTSenderNegativeTests {
 			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
 			m++;
 			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			smtpSender.close();
 			return res;
 			
 		}
@@ -136,7 +138,7 @@ public class TTTSenderNegativeTests {
 				.format(AbstractSMTPSender.DATA_LFCR, VALID_DATA);
 		res.add(smtpSender.getResponseForRequest(badData), true);
 		
-		if (m < 1) {
+		if (m < 1 && res.getCriteriaMet() == CriteriaStatus.TRUE) {
 			ReqRes r1 = new ReqRes("\nSUCCESS", "System rejects invalid data as part of DATA command.\n");
 			res.add(r1);
 		}
@@ -178,6 +180,7 @@ public class TTTSenderNegativeTests {
 			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
 			m++;
 			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			smtpSender.close();
 			return res;
 			
 		}
@@ -185,7 +188,7 @@ public class TTTSenderNegativeTests {
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
 		res.add(smtpSender.sndMsgRCPTTO(TestData.VALID_TO), true);
 		
-		if (m < 1) {
+		if (m < 1 && res.getCriteriaMet() == CriteriaStatus.TRUE) {
 			ReqRes r1 = new ReqRes("\nSUCCESS", "System rejects bad SMTP commands.\n");
 			res.add(r1);
 		}
@@ -217,6 +220,7 @@ public class TTTSenderNegativeTests {
 			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
 			m++;
 			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			smtpSender.close();
 			return res;
 			
 		}
@@ -225,7 +229,7 @@ public class TTTSenderNegativeTests {
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
 		res.add(smtpSender.sndMsgDATA("Message: DATA before MAIL"), true);
 		
-		if (m < 1) {
+		if (m < 1 && res.getCriteriaMet() == CriteriaStatus.TRUE) {
 			ReqRes r1 = new ReqRes("\nSUCCESS", "System rejects bad SMTP commands.\n");
 			res.add(r1);
 		}
@@ -257,13 +261,14 @@ public class TTTSenderNegativeTests {
 			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
 			m++;
 			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			smtpSender.close();
 			return res;
 			
 		}
 		
 		res.add(smtpSender.sndMsgDATA("Message: DATA before HELO and MAIL"), true);
 		
-		if (m < 1) {
+		if (m < 1 && res.getCriteriaMet() == CriteriaStatus.TRUE) {
 			ReqRes r1 = new ReqRes("\nSUCCESS", "System rejects bad SMTP commands.\n");
 			res.add(r1);
 		}
@@ -293,6 +298,7 @@ public class TTTSenderNegativeTests {
 			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
 			m++;
 			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			smtpSender.close();
 			return res;
 			
 		}
@@ -335,6 +341,7 @@ public class TTTSenderNegativeTests {
 			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
 			m++;
 			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			smtpSender.close();
 			return res;
 			
 		}
@@ -353,7 +360,7 @@ public class TTTSenderNegativeTests {
 		res.expectedResult.add(-3);
 		smtpSender.restoreTimeOut();
 		
-		if (m < 1) {
+		if (m < 1 && res.getCriteriaMet() == CriteriaStatus.TRUE) {
 			ReqRes r1 = new ReqRes("\nSUCCESS", "System correctly timeouts for various SMTP commands.\n");
 			res.add(r1);
 		}
@@ -378,6 +385,7 @@ public class TTTSenderNegativeTests {
 			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
 			m++;
 			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
+			smtpSender.close();
 			return res;
 			
 		}
@@ -396,7 +404,7 @@ public class TTTSenderNegativeTests {
 				+ " ~~~~~~~~~~~~~~   " + timeout);
 
 		smtpSender.restoreTimeOut();
-		if (m < 1) {
+		if (m < 1 && res.getCriteriaMet() == CriteriaStatus.TRUE) {
 			ReqRes r1 = new ReqRes("\nSUCCESS", "System correctly timeouts for various SMTP commands.\n");
 			res.add(r1);
 		}
@@ -408,36 +416,30 @@ public class TTTSenderNegativeTests {
 	 * 
 	 * @return TestResult
 	 */
-
+	
 	public TestResult testInvalidStartTLS(TestInput ti) {
 		NTestResult res = new NTestResult();
-		res.setTestCaseDesc("Testing Invalid StartTLS: "
-				+ config.getProperty("desc17"));
-		res.setTestCaseId(17);
-		int m = 0;
+		int m =0;
+		smtpSender.close(); // just in case, close the previous connection
 		try {
-			testInit(ti);
-		}catch (UnknownHostException e) {
-			res.add(new ReqRes("\nERROR", "Unknown Host " + e.getLocalizedMessage() + "\n"));
-			m++;
-			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
-			return res;
-			
-			
+	    smtpSender.connect(ti.sutSmtpAddress, ti.startTlsPort);
+	    
 		} catch (Exception e) {
-			res.add(new ReqRes("\nERROR ", e.getLocalizedMessage() + "\n"));
+			ReqRes r = new ReqRes("ERROR", "Unknown Host " + e.getLocalizedMessage() + "\n");
+			res.add(r);
 			m++;
-			res.setForcedCriteriaStatus(CriteriaStatus.FALSE);
-			return res;
 			
 		}
 		
+		res.setTestCaseDesc("Testing Invalid StartTLS: "
+				+ config.getProperty("desc17"));
+		res.setTestCaseId(17);
 
 		// no STARTTLS
 		res.add(smtpSender.sndMsgHELO("testing.com"));
 		res.add(smtpSender.sndMsgSTARTTLS_PARAM(), true);
 		
-		if (m < 1) {
+		if (m < 1 && res.getCriteriaMet() == CriteriaStatus.TRUE) {
 			ReqRes r1 = new ReqRes("\nSUCCESS", "System rejects invalid STARTTLS command\n");
 			res.add(r1);
 		}
@@ -447,4 +449,6 @@ public class TTTSenderNegativeTests {
 		return res;
 	}
 
+	
+	
 }

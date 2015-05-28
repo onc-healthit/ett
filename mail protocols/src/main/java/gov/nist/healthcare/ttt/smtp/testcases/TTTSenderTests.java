@@ -4,7 +4,6 @@ import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -30,87 +29,18 @@ import org.apache.log4j.Logger;
 
 public class TTTSenderTests {
 
-	public static Logger log = Logger.getLogger("TTTSenderTests");
+	public static Logger log = Logger.getLogger(TTTSenderTests.class);
 	Properties config;
 
 	/**
-	 * Implements Testcase #9. Sends a mail from TTT James to SUT.
-	 * 
-	 * @return
-	 */
-
-	public TestResult testSendMail(TestInput ti) {
-
-		TestResult tr = new TestResult();
-		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.TRUE); // proctored are true unless exception happens
-		HashMap<String, String> result = tr.getTestRequestResponses();
-
-
-		// Create a mail session
-		Properties properties = new Properties();
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.starttls.enable", ti.useTLS ? "true" : "false");
-		properties.put("mail.smtp.quitwait", "false");
-		properties.put("mail.smtp.userset", "true");
-		properties.put("mail.smtp.ssl.trust", "*");
-		try {
-			Session session = Session.getInstance(properties, null);
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(ti.sutEmailAddress));
-
-			message.setSubject("Email from TTT (Test Case 9)");
-			message.setText("This is a mail from JAMES Server");
-
-			BodyPart messageBodyPart = new MimeBodyPart();
-
-			messageBodyPart.setText("This is message body");
-
-			Multipart multipart = new MimeMultipart();
-			String aName = "";
-			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
-
-				DataSource source = new ByteArrayDataSource(e.getValue(),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName(e.getKey());
-				aName += e.getKey();
-				multipart.addBodyPart(messageBodyPart);
-
-				// Send the complete message parts
-				message.setContent(multipart);
-			}
-			Transport transport = session.getTransport("smtp");
-			transport.connect (ti.tttSmtpAddress, ti.useTLS ? ti.startTlsPort : ti.tttSmtpPort, ti.tttUserName, ti.tttPassword);
-			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();
-
-			log.info("SENDING FIRST EMAIL");
-			result.put("1","SENDING FIRST EMAIL TO " + ti.sutEmailAddress + " FROM " + ti.tttEmailAddress + " WITH ATTACHMENT " + aName);
-			result.put("2","Email sent Successfully");
-			System.out.println("Email sent successfully");
-
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			log.info("Error in Testcase 9" );
-			result.put("1", "Error Sending Email " +  e.getLocalizedMessage() + new String(e.getMessage()));
-			tr.setCriteriamet(CriteriaStatus.FALSE);
-		}
-
-		return tr;
-	}
-
-	/**
-	 * Implements Testcase #16. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
+	 * Implements Testcase #16. Authenticates with SUT and sends a mail from SUT
+	 * Server to a user on SUT using STARTTLS.
 	 * 
 	 * @return
 	 */
 
 	public TestResult testStarttls(TestInput ti) {
-
+		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
@@ -118,11 +48,10 @@ public class TTTSenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.enable", true);
 		props.put("mail.smtp.starttls.required", true);
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
-
 
 		Session session = Session.getInstance(props, null);
 
@@ -141,6 +70,8 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart();
+
+			// Adding attachments
 			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
 
 				DataSource source = new ByteArrayDataSource(e.getValue(),
@@ -155,7 +86,6 @@ public class TTTSenderTests {
 			}
 
 			log.info("Sending Message");
-			System.setProperty("java.net.preferIPv4Stack", "true");
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
@@ -165,24 +95,31 @@ public class TTTSenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("\n1","SENDING STARTTLS & PLAIN SASL AUTHENTICATION EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + aName);
-			result.put("\n2","Email sent Successfully");
+			result.put("\n1",
+					"SENDING STARTTLS & PLAIN SASL AUTHENTICATION EMAIL TO "
+							+ ti.sutEmailAddress + " WITH ATTACHMENT " + aName);
+			result.put("\n2", "Email sent Successfully");
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put(
+					"\nERROR ",
+					e.getLocalizedMessage()
+					+ "\nUnable to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put(
+					"\nERROR ",
+					e.getLocalizedMessage()
+					+ "\nUnable to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-		}
-		catch (MessagingException e) {
+		} catch (MessagingException e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -194,12 +131,16 @@ public class TTTSenderTests {
 	}
 
 	/**
-	 * Implements Testcase #20 and #22. Authenticates with SUT(good/bad password) and sends a mail from SUT Server to a user on SUT.
+	 * Implements Testcase #22. Authenticates with SUT(bad password) and sends a
+	 * mail from SUT Server to a user on SUT.
 	 * 
 	 * @return
-	 * @throws MessagingException, NullPointerException 
-	 * @throws AddressException 
+	 * @throws MessagingException
+	 *             , NullPointerException
+	 * @throws AddressException
 	 */
+
+	// Same as the above test case, but uses a bad password.
 	public TestResult testPlainSasl(TestInput ti, boolean useBadPassWord) {
 
 		TestResult tr = new TestResult();
@@ -207,7 +148,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.TRUE);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		Properties props = new Properties();
-
+		System.setProperty("java.net.preferIPv4Stack", "true");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", ti.useTLS ? "true" : "false");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
@@ -215,7 +156,7 @@ public class TTTSenderTests {
 
 		Session session = Session.getInstance(props, null);
 		Transport transport = null;
-		
+
 		try {
 
 			Message message = new MimeMessage(session);
@@ -250,19 +191,20 @@ public class TTTSenderTests {
 					useBadPassWord ? "badpassword" : ti.sutPassword);
 			transport.sendMessage(message, message.getAllRecipients());
 			log.info("Authenticated Succefully");
-			result.put("\n1","SENDING STARTTLS EMAIL TO " + ti.sutEmailAddress);
-			result.put("\n2","Email sent Successfully");
+			result.put("\n1", "SENDING STARTTLS EMAIL TO " + ti.sutEmailAddress);
+			result.put("\n2", "Email sent Successfully");
 
 			System.out.println("Email Sent.");
 
 		} catch (MessagingException e) {
 			if (e instanceof AuthenticationFailedException) {
 				log.info("Authentication Failed. SUT rejects user/pass");
-				result.put("SUCCESS", "Vendor rejects bad Username/Password combination :" + e.getLocalizedMessage());
-				if(useBadPassWord){
+				result.put("SUCCESS",
+						"Vendor rejects bad Username/Password combination :"
+								+ e.getLocalizedMessage());
+				if (useBadPassWord) {
 					tr.setCriteriamet(CriteriaStatus.TRUE);
-				}
-				else {
+				} else {
 					tr.setCriteriamet(CriteriaStatus.FALSE);
 				}
 			} else {
@@ -271,25 +213,30 @@ public class TTTSenderTests {
 				log.info("error in PLAIN SASL");
 				result.put("ERROR", e.getLocalizedMessage());
 			}
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			log.info("error in PLAIN SASL");
 			result.put("ERROR", e.getLocalizedMessage());
-		}
-		finally {
-				if (transport != null)
-					try {
-						transport.close();
-					} catch (MessagingException e) {
-						log.error("Error when closing transport");
-						e.printStackTrace();
-					}
+		} finally {
+			if (transport != null)
+				try {
+					transport.close();
+				} catch (MessagingException e) {
+					log.error("Error when closing transport");
+					e.printStackTrace();
+				}
 		}
 
 		return tr;
 	}
 
+	/**
+	 * Implements Testcase in which the tool authenticates with SUT using
+	 * DIGEST-MD5
+	 * 
+	 * @return
+	 * @throws MessagingException
+	 */
 	public void testDigestMd5(TestInput ti) {
 
 		Properties props = new Properties();
@@ -324,6 +271,5 @@ public class TTTSenderTests {
 			throw new RuntimeException(e);
 		}
 	}
-
 
 }

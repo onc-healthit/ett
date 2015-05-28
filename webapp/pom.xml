@@ -68,7 +68,7 @@
 		</dependency>
 		<dependency>
 			<groupId>gov.nist.healthcare.ttt</groupId>
-			<artifactId>smtp</artifactId>
+			<artifactId>mailprotocols</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

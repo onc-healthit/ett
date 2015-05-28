@@ -77,7 +77,17 @@ public class MU2SenderTests {
 			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 
-		} catch (MessagingException e) {
+		} 
+		
+		catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR :", "Address cannot be null");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		
+		catch (Exception e) {
 			log.info("Error in testBadAddress");
 			result.put("1", "Error in TEST BAD ADDRESS: " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
