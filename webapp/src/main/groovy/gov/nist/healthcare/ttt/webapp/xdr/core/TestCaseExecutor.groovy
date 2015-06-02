@@ -173,7 +173,7 @@ class TestCaseExecutor {
         return step
     }
 
-    private def  sendMDN(TkValidationReport report, String state) {
+    private def sendMDN(TkValidationReport report, String state) {
 
         String toAddress = report.directFrom
         def generator = new MDNGenerator();
@@ -200,7 +200,7 @@ class TestCaseExecutor {
 
         def hostname = toAddress
 
-        if(toAddress.contains("@")) {
+        if (toAddress.contains("@")) {
             hostname = toAddress.split("@")[1]
         }
 
@@ -212,16 +212,9 @@ class TestCaseExecutor {
 
     XDRSimulatorInterface configureGlobalEndpoint(String name, Map params) {
 
-        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(name)
-
-        if (sim == null) {
-            log.debug("simulator with id $name does not exists. It will be created now!")
-            sim = createEndpoint(name, params)
-            String id = db.instance.xdrFacade.addNewSimulator(sim)
-            log.debug("new global simulator has been created with the following id : $id")
-        } else {
-            log.debug("simulator with id $name already exists.")
-        }
+        def sim = createEndpoint(name, params)
+        String id = db.instance.xdrFacade.addNewSimulator(sim)
+        log.debug("new global simulator has been created with the following id : $id")
 
         return sim
     }
