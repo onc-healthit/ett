@@ -75,8 +75,8 @@ abstract class TestCase {
         return new TestCaseEvent(record.criteriaMet, new StandardContent())
     }
 
-    public XDRSimulatorInterface registerGlobalEndpoints(String name, Map params){
-        executor.configureGlobalEndpoint(name, params)
+    public XDRSimulatorInterface registerEndpoint(String name, Map params){
+        executor.configureEndpoint(name, params)
     }
 
     public List<String> getEndpoints() {

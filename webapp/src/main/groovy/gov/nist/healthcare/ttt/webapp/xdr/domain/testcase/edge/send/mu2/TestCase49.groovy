@@ -19,7 +19,6 @@ final class TestCase49 extends TestCase {
     @Autowired
     public TestCase49(TestCaseExecutor ex) {
         super(ex)
-        sim = registerGlobalEndpoints(id, new HashMap())
     }
 
     @Override

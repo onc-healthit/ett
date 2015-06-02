@@ -26,6 +26,11 @@ final class TestCase3 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
+        def config = new HashMap()
+        config.type = 'docsrc'
+        config.endpoint = context.targetEndpoint
+        sim = registerEndpoint(id, config)
+
         context.directTo = "testcase3@nist.gov"
         context.directFrom = "testcase3@nist.gov"
         context.wsaTo = context.targetEndpoint

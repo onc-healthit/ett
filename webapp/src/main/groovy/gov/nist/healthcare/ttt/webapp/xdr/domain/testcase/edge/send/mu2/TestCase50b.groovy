@@ -20,7 +20,6 @@ final class TestCase50b extends TestCase {
     @Autowired
     public TestCase50b(TestCaseExecutor ex) {
         super(ex)
-        sim = registerGlobalEndpoints(badEndpoint, new HashMap())
     }
 
     @Override

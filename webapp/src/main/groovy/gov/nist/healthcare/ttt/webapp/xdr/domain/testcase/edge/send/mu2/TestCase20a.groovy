@@ -15,12 +15,9 @@ import org.springframework.stereotype.Component
 @Component
 final class TestCase20a extends TestCase {
 
-    final public String goodEndpoint = id
-
     @Autowired
     public TestCase20a(TestCaseExecutor ex) {
         super(ex)
-        sim = registerGlobalEndpoints(goodEndpoint, new HashMap())
     }
 
     @Override

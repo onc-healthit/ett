@@ -210,11 +210,9 @@ class TestCaseExecutor {
     }
 
 
-    XDRSimulatorInterface configureGlobalEndpoint(String name, Map params) {
-
+    XDRSimulatorInterface configureEndpoint(String name, Map params) {
         def sim = createEndpoint(name, params)
-        String id = db.instance.xdrFacade.addNewSimulator(sim)
-        log.debug("new global simulator has been created with the following id : $id")
+        log.debug("new simulator has been created with the following id : $name")
 
         return sim
     }

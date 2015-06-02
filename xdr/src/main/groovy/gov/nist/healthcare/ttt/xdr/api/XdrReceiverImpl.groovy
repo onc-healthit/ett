@@ -93,9 +93,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
     private def buildCreateEndpointRequest(EndpointConfig config) {
         return {
-            actor(type:'docrec') {
+            actor(type:config.type) {
                 transaction(name: 'prb'){
-                    endpoint(value : 'NOT_USED')
+                    endpoint(value : config.endpoint)
                     settings {
                         "boolean"(name:'schemaCheck' , value:'false')
                         "boolean"(name:'modelCheck' , value:'false')
@@ -115,7 +115,11 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         XDRSimulatorInterface sim = new XDRSimulatorImpl()
         sim.simulatorId = simId
         sim.endpoint = transactions[0].@value.text()
-        sim.endpointTLS = transactions[1].@value.text()
+
+        //TODO refactor : this exists only if we retrieve a docrec. Test beforehand.
+        if(transactions[1]!= null) {
+            sim.endpointTLS = transactions[1].@value.text()
+        }
         return sim
     }
 
