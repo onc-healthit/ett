@@ -1,15 +1,17 @@
 {
-	"testingMode": "false",
-	"tests": [{
-		"name": "SMTP Test 1-8, 14, 18",
-		"id": 1,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS and PLAIN SASL Authentication. The Vendor will send an email to wellformed1@edge.nist.gov. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@edge.nist.gov from the email address entered in Profile window.",
-		"longDesc": "The credentials for SASL authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123 ",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
+    "testingMode": false,
+    "tests": [
+        {
+            "name": "SMTP Test 1-8, 14, 18",
+            "id": 1,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS and PLAIN SASL Authentication. The Vendor will send an email to wellformed1@edge.nist.gov. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@edge.nist.gov from the email address entered in Profile window.",
+            "longDesc": "The credentials for SASL authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123 ",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
 		"name": "SMTP Test 9, 16, 20",
 		"id": 16,
 		"protocol": "smtp",
@@ -26,121 +28,380 @@
 			"readOnly": "false",
 			"display": "true"
 		}]
-	}, {
-		"name": "SMTP Test 10",
-		"id": 10,
-		"protocol": "smtp",
-		"desc": "Negative Test: Verifies the ability of the receiving system to REJECT invalid data as part of DATA command. Hitting 'Run' will cause ETT to begin an SMTP transaction to the Vendor SMTP Hostname/IP entered into Profile window. A correct REJECTION will cause the SMTP session to end before the email from wellformed3@hit-testing2.nist.gov is delivered.",
-		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects data sent from a HISP (e.g., ETT), acting as the sender, as a component of a successfully established and active session. Successful establishment of an end-point to end-point connection between the SUT and ETT is a necessary function for SMTP Test Case 10 execution.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT and attempt to send an invalid data via the DATA command (e.g., bad line feeds).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 10 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet.",
-		"sutRole": "receiver",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "SMTP Test 11",
-		"id": 11,
-		"protocol": "smtp",
-		"desc": "Negative Tests: Verifies the ability of the receiving system to REJECT bad SMTP commands. ETT will send invalid SMTP commands following exception paths identified in Section 4.1.1 and 4.1.4 of RFC 2821. Hitting 'Run' will cause ETT to begin the invalid transactions.",
-		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects as invalid the commands sent from a HISP (e.g., ETT), acting as the sender./n The details for conformance testing flow are as follows: The ETT attempts to initiate a session with the SUT by sending an invalid SMTP command following identified exception paths. The test attempts to determine if the SUT rejects the command sent by the Edge Testing Tool as invalid and responds using the appropriate mechanisms. This is conducted in accordance with RFC 2811, Section 4.1.1 and 4.1.4 (e.g., closing the session abruptly).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \nThe test correlates to Test ID 11 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
-		"sutRole": "receiver",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "SMTP Test 13",
-		"id": 13,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the receiving system to correctly timeouts for various SMTP commands. The tool will keep the transaction open until a timeout is noted. As there are no required time limits in RFC 2821 section 4.5.3.2, this test is configurable. Hitting 'Run' will begin the ETT's timer based on the value entered below.",
-		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, can successfully establish an active session with a HISP (e.g., ETT), acting as the sender, and conform to the specific timeout requirements within the RFC and SMTP command.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT. The SUT will attempt to keep a transaction open with the ETT for beyond the specified time constraints found within RFC 2821, Section 4.5.3.2. \nThis is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 13 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
-		"sutRole": "receiver",
-		"sutHisp": true,
-		"sutEdge": true,
-		"fields": [{
-			"label": "Command timeout in seconds",
-			"name": "sutCommandTimeoutInSeconds",
-			"datatype": "String",
-			"value": "sutCommandTimeoutInSeconds",
-			"readOnly": "false",
-			"display": "true"
-		}]
-	}, {
-		"name": "SMTP Test 17",
-		"id": 17,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the receiving system to reject invalid STARTTLS commands.Hitting 'Run' will cause ETT to begin an invalid STARTTLS session. This session SHALL end before a message can be sent.",
-		"sutRole": "receiver",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "SMTP MU2 Test 17",
-		"id": 117,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@hit-testing2.nist.gov. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Processed MDN').",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "SMTP MU2 Test 45",
-		"id": 145,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@hit-testing2.nist.gov. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Implementation Guide for Delivery Notification').",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "SMTP MU2 Test 46",
-		"id": 146,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the sending system to send messages with a correct Disposition Notification Options Header. The sending system will send a message to wellformed14@hit-testing2.nist.gov with the required header. Hitting 'Run' will cause ETT to check for this header.",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "SMTP MU2 Test 47",
-		"id": 147,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones and an invalid address (noaddress@hit-testing2.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "SMTP Test 22",
-		"id": 22,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the receiving to reject a PLAIN SASL connection. Hitting 'Run' will cause ETT to use an invalid username/password to authenticate to the system entered into Vendor SMTP Hostname/IP in the profile window.",
-		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, will reject and fail to authenticate an invalid PLAIN SASL request sent from a HISP (e.g., ETT), acting as the sender.\nThe details for conformance testing flow are as follows: The ETT will send an invalid PLAIN SASL username/password authentication scheme to the SUT. The SUT will receive the invalid PLAIN SASL username/password, reject the credentials, and fail to established authentication to the ETT. The PLAIN SASL connection mechanisms will conform to the specified requirements within RFC 4616, Section 2.\n This is conditional test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.4 of the ‘Implementation Guide for Direct Edge Protocols’ document.\n The test correlates to Test ID 22 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
-		"sutRole": "receiver",
-		"sutHisp": true,
-		"sutEdge": true
-	}, {
-		"name": "IMAP Test 4-8, 11, 15",
-		"id": 204,
-		"protocol": "imap",
-		"desc": "Tests the ability of the Vendor HISP to implement imap commands.",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": "false"
-	}, {
-		"name": "IMAP Test 13",
-		"id": 213,
-		"protocol": "imap",
-		"desc": "Tests the ability of the Vendor HISP to support STARTTLS with TLS_RSA_WITH_RC4_128_MD5 cipher suite.",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": "false"
-	}, {
-		"name": "IMAP Test 14",
-		"id": 214,
-		"protocol": "imap",
-		"desc": "Tests the ability of the Vendor HISP to support STARTTLS with TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA cipher suite.",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": "false"
-	}, {
-		"name": "IMAP Test 17",
-		"id": 217,
-		"protocol": "imap",
-		"desc": "Tests the ability of the Vendor HISP to reject incorrect username/password.",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"sutEdge": "false"
-	}]
+	},
+        {
+            "name": "SMTP Test 10",
+            "id": 10,
+            "protocol": "smtp",
+            "desc": "Negative Test: Verifies the ability of the receiving system to REJECT invalid data as part of DATA command. Hitting 'Run' will cause ETT to begin an SMTP transaction to the Vendor SMTP Hostname/IP entered into Profile window. A correct REJECTION will cause the SMTP session to end before the email from wellformed3@hit-testing2.nist.gov is delivered.",
+            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects data sent from a HISP (e.g., ETT), acting as the sender, as a component of a successfully established and active session. Successful establishment of an end-point to end-point connection between the SUT and ETT is a necessary function for SMTP Test Case 10 execution.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT and attempt to send an invalid data via the DATA command (e.g., bad line feeds).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 10 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet.",
+            "sutRole": "receiver",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP MU2 test 21",
+            "id": 121,
+            "protocol":"mu2",
+            "desc": "Sends a message with Disposition-Notification-Options Header.",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP Test 11",
+            "id": 11,
+            "protocol": "smtp",
+            "desc": "Negative Tests: Verifies the ability of the receiving system to REJECT bad SMTP commands. ETT will send invalid SMTP commands following exception paths identified in Section 4.1.1 and 4.1.4 of RFC 2821. Hitting 'Run' will cause ETT to begin the invalid transactions.",
+            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects as invalid the commands sent from a HISP (e.g., ETT), acting as the sender./n The details for conformance testing flow are as follows: The ETT attempts to initiate a session with the SUT by sending an invalid SMTP command following identified exception paths. The test attempts to determine if the SUT rejects the command sent by the Edge Testing Tool as invalid and responds using the appropriate mechanisms. This is conducted in accordance with RFC 2811, Section 4.1.1 and 4.1.4 (e.g., closing the session abruptly).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \nThe test correlates to Test ID 11 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
+            "sutRole": "receiver",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP Test 13",
+            "id": 13,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the receiving system to correctly timeouts for various SMTP commands. The tool will keep the transaction open until a timeout is noted. As there are no required time limits in RFC 2821 section 4.5.3.2, this test is configurable. Hitting 'Run' will begin the ETT's timer based on the value entered below.",
+            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, can successfully establish an active session with a HISP (e.g., ETT), acting as the sender, and conform to the specific timeout requirements within the RFC and SMTP command.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT. The SUT will attempt to keep a transaction open with the ETT for beyond the specified time constraints found within RFC 2821, Section 4.5.3.2. \nThis is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 13 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
+            "sutRole": "receiver",
+            "sutHisp": true,
+            "sutEdge": true,
+            "fields": [
+                {
+                    "label": "Command timeout in seconds",
+                    "name": "sutCommandTimeoutInSeconds",
+                    "datatype": "String",
+                    "value": "sutCommandTimeoutInSeconds",
+                    "readOnly": false,
+                    "display": true
+                }
+            ]
+        },
+        {
+            "name": "SMTP Test 17",
+            "id": 17,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the receiving system to reject invalid STARTTLS commands.Hitting 'Run' will cause ETT to begin an invalid STARTTLS session. This session SHALL end before a message can be sent.",
+            "sutRole": "receiver",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP MU2 Test 17",
+            "id": 117,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@hit-testing2.nist.gov. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Processed MDN').",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP MU2 Test 45",
+            "id": 145,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@hit-testing2.nist.gov. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Implementation Guide for Delivery Notification').",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP MU2 Test 46",
+            "id": 146,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the sending system to send messages with a correct Disposition Notification Options Header. The sending system will send a message to wellformed14@hit-testing2.nist.gov with the required header. Hitting 'Run' will cause ETT to check for this header.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP MU2 Test 47",
+            "id": 147,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones and an invalid address (noaddress@hit-testing2.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP Test 22",
+            "id": 22,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the receiving to reject a PLAIN SASL connection. Hitting 'Run' will cause ETT to use an invalid username/password to authenticate to the system entered into Vendor SMTP Hostname/IP in the profile window.",
+            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, will reject and fail to authenticate an invalid PLAIN SASL request sent from a HISP (e.g., ETT), acting as the sender.\nThe details for conformance testing flow are as follows: The ETT will send an invalid PLAIN SASL username/password authentication scheme to the SUT. The SUT will receive the invalid PLAIN SASL username/password, reject the credentials, and fail to established authentication to the ETT. The PLAIN SASL connection mechanisms will conform to the specified requirements within RFC 4616, Section 2.\n This is conditional test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.4 of the ‘Implementation Guide for Direct Edge Protocols’ document.\n The test correlates to Test ID 22 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
+            "sutRole": "receiver",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
+            "name": "SMTP MU2 test 1",
+            "id": 101,
+            "desc": "Sends bad messages.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 2",
+            "id": 102,
+            "desc": "Sends bad messages.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 3",
+            "id": 103,
+            "desc": "Sends bad messages.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 4",
+            "id": 104,
+            "desc": "Sends bad messages.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 Test Helper",
+            "id": 1012,
+            "desc": "Fetches failure messages from failure15@hit-testing2.nist.gov.",
+            "protocol":"smtp",
+            "sutRole": "sender",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 21",
+            "id": 121,
+            "desc": "Sends a message with Disposition-Notification-Options Header.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 22",
+            "id": 122,
+            "desc": "Sends a message with bad Disposition-Notification-Options Header.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 27",
+            "id": 127,
+            "desc": "Sends bad messages.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 28",
+            "id": 128,
+            "desc": "Sends bad messages.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 29",
+            "id": 129,
+            "desc": "Sends a message requesting Positive Delivery Notification.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge":"false"
+        },
+        {
+            "name": "SMTP MU2 test 39",
+            "id": 139,
+            "desc": "Sends a message with Disposition-Notification-Options Header.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 40",
+            "id": 140,
+            "desc": "Sends a message with bad Disposition-Notification-Options Header.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "SMTP MU2 test 41",
+            "id": 141,
+            "desc": "Sends bad messages.",
+            "protocol":"smtp",
+            "sutRole": "receiver",
+            "sutHisp": "true",
+            "sutEdge": "false"
+        },
+        {
+            "name": "IMAP Test 1, 2, 3",
+            "id": 201,
+            "protocol": "imap",
+            "desc": "Tests to validate IMAP4 CAPABILITY, NOOP and LOGOUT commands are implemented.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "POP Test 1",
+            "id": 301,
+            "protocol": "imap",
+            "desc": "Tests to validate POP3 CAPA, NOOP and QUIT commands are implemented.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "POP Test 2",
+            "id": 309,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP(POP Server) to reject a command when a command with bad syntax is sent.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "POP Test 3",
+            "id": 310,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP(POP Server) to reject a command in bad state.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "POP Test 4",
+            "id": 303,
+            "protocol": "imap",
+            "desc": "Tests to validate POP3 RETR, DEL and QUIT commands are implemented",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "POP Test 5",
+            "id": 305,
+            "protocol": "imap",
+            "desc": "Tests to validate POP3 STAT, LIST, and QUIT commands are implemented",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 4-8, 11, 15",
+            "id": 205,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP to implement imap commands.(AUTHENTICATE, STARTTLS, LOGIN, SELECT, FETCH)",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 9",
+            "id": 209,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP to reject a command when a command with bad syntax is sent.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 10",
+            "id": 210,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP to reject commands with right syntax based on the specific state of the connection.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 12",
+            "id": 212,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP to generate Unique Identifiers(UIDs) for each message.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 13",
+            "id": 213,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP to support STARTTLS with TLS_RSA_WITH_RC4_128_MD5 cipher suite.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 14",
+            "id": 214,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP to support STARTTLS with TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA cipher suite.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 17",
+            "id": 217,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Vendor HISP to reject incorrect username/password.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 19, 20, 24",
+            "id": 219,
+            "protocol": "imap",
+            "desc": "Tests the ability of the Edge system to initiate a IMAP session with STARTTLS and PLAIN SASL AUTHENTICATION",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "IMAP Test 21",
+            "id": 221,
+            "protocol": "imap",
+            "desc": "Test the ability of the edge to use either the uppercase, lowercase or mixed case mailbox names and access data",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "IMAP Test 22",
+            "id": 221,
+            "protocol": "imap",
+            "desc": "Test the ability of the edge system to deal with exceptions for different commands. The proctor need to send bad commands to the ETT.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "IMAP Test 25",
+            "id": 225,
+            "protocol": "imap",
+            "desc": "Tests the ability of the edge to receive status and size updates from the IMAP4 server",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        }
+    ]
 }
