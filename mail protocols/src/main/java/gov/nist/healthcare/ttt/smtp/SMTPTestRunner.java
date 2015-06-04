@@ -523,6 +523,21 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 204 *******************************");
 			break;
 			
+		case 205:
+			log.info("*****************   BEGIN  Testcase 205 *******************************");
+
+			TestResult tr205;
+			try {
+				tr205 = tTest.imapFetch(ti);
+				tr205.id = 205;
+				res.add(tr205);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 205 *******************************");
+			break;
+			
 		case 209:
 			log.info("*****************   BEGIN  Testcase 209 *******************************");
 
@@ -545,6 +560,51 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				res.add(tr210);
 			
 			log.info("*****************   END  Testcase 210 *******************************");
+			break;
+			
+		case 212:
+			log.info("*****************   BEGIN  Testcase 212 *******************************");
+
+			TestResult tr212;
+			try {
+				tr212 = tTest.imapFetchUid(ti);
+				tr212.id = 212;
+				res.add(tr212);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 212 *******************************");
+			break;
+			
+		case 213:
+			log.info("*****************   BEGIN  Testcase 213 *******************************");
+
+			TestResult tr213;
+			try {
+				tr213 = tTest.imapFetch13(ti);
+				tr213.id = 213;
+				res.add(tr213);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 213 *******************************");
+			break;
+			
+		case 214:
+			log.info("*****************   BEGIN  Testcase 214 *******************************");
+
+			TestResult tr214;
+			try {
+				tr214 = tTest.imapFetch14(ti);
+				tr214.id = 214;
+				res.add(tr214);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 214 *******************************");
 			break;
 
 			
@@ -593,66 +653,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 221 *******************************");
 			break;
 			
-		case 205:
-			log.info("*****************   BEGIN  Testcase 205 *******************************");
-
-			TestResult tr205;
-			try {
-				tr205 = tTest.imapFetch(ti);
-				tr205.id = 205;
-				res.add(tr205);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 205 *******************************");
-			break;
-			
-		case 212:
-			log.info("*****************   BEGIN  Testcase 212 *******************************");
-
-			TestResult tr212;
-			try {
-				tr212 = tTest.imapFetchUid(ti);
-				tr212.id = 212;
-				res.add(tr212);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 212 *******************************");
-			break;
-		
-		case 213:
-			log.info("*****************   BEGIN  Testcase 213 *******************************");
-
-			TestResult tr213;
-			try {
-				tr213 = tTest.imapFetch13(ti);
-				tr213.id = 213;
-				res.add(tr213);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 213 *******************************");
-			break;
-			
-		case 214:
-			log.info("*****************   BEGIN  Testcase 214 *******************************");
-
-			TestResult tr214;
-			try {
-				tr214 = tTest.imapFetch14(ti);
-				tr214.id = 214;
-				res.add(tr214);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 214 *******************************");
-			break;
-			
 		case 225:
 			log.info("*****************   BEGIN  Testcase 225 *******************************");
 
@@ -663,6 +663,103 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				res.add(tr225);
 			
 			log.info("*****************   END  Testcase 225 *******************************");
+			break;
+			
+		case 301:
+			log.info("*****************   BEGIN  Testcase 301 *******************************");
+
+			TestResult tr301;
+			
+			try {
+				tr301 = tTest.SocketPop(ti);
+				tr301.id = 301;
+				res.add(tr301);
+			} catch (KeyManagementException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			
+			log.info("*****************   END  Testcase 301 *******************************");
+			break;
+			
+		case 303:
+			log.info("*****************   BEGIN  Testcase 303 *******************************");
+
+			TestResult tr303;
+			try {
+				tr303 = tTest.fetchMailPop(ti);
+				tr303.id = 303;
+				res.add(tr303);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			log.info("*****************   END  Testcase 303 *******************************");
+			break;
+			
+		case 305:
+			log.info("*****************   BEGIN  Testcase 305 *******************************");
+
+			TestResult tr305;
+			try {
+				tr305 = tTest.SocketPopStat(ti);
+				tr305.id = 305;
+				res.add(tr305);
+			} catch (KeyManagementException | NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+				
+			
+			log.info("*****************   END  Testcase 305 *******************************");
+			break;
+			
+		case 309:
+			log.info("*****************   BEGIN  Testcase 309 *******************************");
+
+			TestResult tr309;
+			
+			try {
+				tr309 = tTest.SocketPopBadSyntax(ti);
+				tr309.id = 309;
+				res.add(tr309);
+			} catch (KeyManagementException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			
+			log.info("*****************   END  Testcase 309 *******************************");
+			break;
+			
+		case 310:
+			log.info("*****************   BEGIN  Testcase 310 *******************************");
+
+			TestResult tr310;
+			
+			try {
+				tr310 = tTest.SocketPopBadState(ti);
+				tr310.id = 310;
+				res.add(tr310);
+			} catch (KeyManagementException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			
+			log.info("*****************   END  Testcase 310 *******************************");
 			break;
 
 		default:
