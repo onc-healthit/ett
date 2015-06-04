@@ -36,6 +36,7 @@ public class ArtifactManagement {
 
     private static final String FILENAME_XDR_FULL_METADATA = "Xdr_full_metadata.xml";
     private static final String FILENAME_XDR_FULL_METADATA_ONLY = "Xdr_full_metadata_only.xml";
+    private static final String FILENAME_XDR_FULL_METADATA_ONLY_NO_SOAP = "Xdr_full_metadata_only_no_soap.xml";
     private static final String FILENAME_BAD_SOAP = "negative_bad_soap.xml";
     private static final String FILENAME_BAD_SOAP_BODY = "negative_bad_soap_body.xml";
     private static final String FILENAME_MISSING_DIRECT_BLOCK = "negative_missing_direct_block.xml";
@@ -312,6 +313,20 @@ public class ArtifactManagement {
         return getTemplate(FILENAME_ENCODED_CCDA);
     }
 
+        private static String setIds(String metadata,String messageId,String documentId) {
+              
+        metadata = metadata.replaceAll("#MESSAGE_ID#", messageId);
+        String entryUuid = UUID.randomUUID().toString();
+        metadata = metadata.replaceAll("#ENTRY_UUID#", entryUuid);        
+        metadata = metadata.replaceAll("#DOCUMENT_ID#", documentId);
+        long timestamp = Calendar.getInstance().getTimeInMillis();
+        String uniqueId = NIST_OID_PREFIX + "." + timestamp;
+        metadata = metadata.replaceAll("#UNIQUE_ID_SS#", uniqueId);
+        
+        return metadata;
+        
+    }
+    
     private static String setIds(
             String message,
             String messageId) {
@@ -363,6 +378,66 @@ public class ArtifactManagement {
 
     }
 
+    
+    // TODO: This is -- of course -- terrible.  Re-do this if we ever get some time.
+    public static String generateDirectMessageBlock(Settings settings) {
+
+        StringBuilder directBlock = new StringBuilder();
+        directBlock.append("<direct:addressBlock xmlns:direct=\"urn:direct:addressing\" xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\" ");
+        directBlock.append("soapenv:role=\"urn:direct:addressing:destination\" ");
+        directBlock.append("soapenv:relay=\"true\"> ");
+        directBlock.append("<direct:from>" + settings.getDirectFrom() + "</direct:from> ");
+        directBlock.append("<direct:to>" + settings.getDirectTo() + "</direct:to> ");
+        directBlock.append("</direct:addressBlock>");
+
+        return directBlock.toString();
+
+    }
+
+    public static String generateExtraHeaders(Settings settings, boolean full) {
+        
+        StringBuilder headers = new StringBuilder();
+        if(full) 
+            headers.append("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">XDS</direct:metadata-level>");
+        else
+            headers.append("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">minimal</direct:metadata-level>");
+        headers.append(generateDirectMessageBlock(settings));
+        return headers.toString();
+        
+    }
+    
+    public static Artifacts generateArtifacts(Type type, Settings settings) {
+
+        Artifacts artifacts = new Artifacts();
+        artifacts.setDocumentId("id_extrinsicobject"); //TODO
+        artifacts.setDocument(getBaseEncodedCCDA());
+        if (settings.getMessageId() != null && !settings.getMessageId().isEmpty()) {
+            artifacts.setMessageId(settings.getMessageId());
+        } else {
+            String messageId = UUID.randomUUID().toString();
+            settings.setMessageId(messageId);
+            artifacts.setMessageId(messageId);
+        }
+        artifacts.setMimeType("text/xml"); // TODO: make this configurable
+        String metadata = null;
+        
+        switch (type) {
+            case XDR_FULL_METADATA:
+                artifacts.setExtraHeaders(generateExtraHeaders(settings,true));
+                metadata = getTemplate(FILENAME_XDR_FULL_METADATA_ONLY_NO_SOAP);
+                //getXdrFullMetadataOnly(settings);
+                break;
+
+        }
+        
+        metadata = setIds(metadata,artifacts.getMessageId(),artifacts.getDocumentId());
+        artifacts.setMetadata(metadata);
+        
+        
+        return artifacts;
+    }
+
+    
     public final static void main(String args[]) {
 
         try {
@@ -373,7 +448,7 @@ public class ArtifactManagement {
             settings.setWsaTo("wsaTo");
 
             String payload = getPayload(Type.XDR_FULL_METADATA, settings);
-            System.out.println("here!\n" + payload);
+           // System.out.println("here!\n" + payload);
 
             //    URL url = ClassLoader.getSystemResource("DeliveryStatusNotification_success.xml");
             //  System.out.println(url.getPath());
@@ -386,6 +461,20 @@ public class ArtifactManagement {
              "wsaTo",
              null));
              */
+            
+              
+            Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
+            
+            System.out.println("docId = " + art.getDocumentId());
+            System.out.println("headers = " + art.getExtraHeaders());
+            System.out.println("messageId = " + art.getMessageId());
+            System.out.println("metadata = " + art.getMetadata());
+            System.out.println("mimetype = " + art.getMimeType());
+            System.out.println("document = " + art.getDocument());
+            
+            
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
