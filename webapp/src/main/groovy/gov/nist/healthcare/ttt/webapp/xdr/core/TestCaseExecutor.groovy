@@ -61,6 +61,10 @@ class TestCaseExecutor {
         this.clock = clock
     }
 
+    protected XDRTestStepInterface executeSendXDRStep2(Map config) {
+        receiver.sendXdr(config)
+    }
+
     protected XDRTestStepInterface executeSendXDRStep(Map config) {
 
         def r
@@ -285,7 +289,7 @@ class TestCaseExecutor {
         return new TestCaseEvent(record.criteriaMet, content)
     }
 
-    def createRecordForSenderTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
+    def createRecordForTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
         def step = executeCorrelationStep(context, sim)
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
         db.addNewXdrRecord(record)

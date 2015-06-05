@@ -24,7 +24,7 @@ final class TestCase49 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        executor.createRecordForSenderTestCase(context,username,id,sim)
+        executor.createRecordForTestCase(context,username,id,sim)
 
         def content = new StandardContent()
         content.endpoint = endpoints[0]

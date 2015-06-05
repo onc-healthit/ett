@@ -25,7 +25,7 @@ final class TestCase50a extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        executor.createRecordForSenderTestCase(context,username,id,sim)
+        executor.createRecordForTestCase(context,username,id,sim)
 
         log.info "test case ${id} : successfully configured. Ready to receive messages."
 

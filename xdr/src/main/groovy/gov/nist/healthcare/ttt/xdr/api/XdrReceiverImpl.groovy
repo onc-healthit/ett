@@ -45,6 +45,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${toolkit.getSimConfig.url}')
     private String tkSimInfo
 
+    @Value('${toolkit.sendXdr.url}')
+    private String xdrSendUrl
+
     @Value('${server.contextPath}')
     private String contextPath
 
@@ -109,6 +112,49 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         }
     }
 
+//    <sendRequest>
+//    <simReference>userName/simid</simReference>
+//    <transactionName>prb</transactionName>
+//    <tls value="false"/>
+//    <messageId>MyMessageId</messageId>
+//    <metadata>${metadata}</metadata>
+//    <extraHeaders><foo/><bar/></extraHeaders>
+//    <document id="Document01" mimeType="text/plain">doc content</document>
+//    </sendRequest>
+    public def sendXdr(Map config) {
+
+
+
+        def req = {
+            sendRequest {
+                simReference("ett/$config.simId")
+                transactionName("prb")
+                tls(value: config.tls)
+                messageId("MyMessageId")
+                metadata()
+                extraHeaders()
+                document(id: "Document01", mimeType: "text/plain", "yo")
+            }
+        }
+
+
+
+        try {
+            GPathResult r = restClient.postXml(req, xdrSendUrl +"/$config.simId", timeout)
+            parseSendXdrResponse(r)
+
+        }
+        catch (groovyx.net.http.HttpResponseException e) {
+            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
+        }
+        catch (java.net.SocketTimeoutException e) {
+            throw new RuntimeException("connection timeout when calling toolkit.",e)
+        }
+        catch(groovyx.net.http.ResponseParseException e){
+            throw new RuntimeException("could not understand response from toolkit.",e)
+        }
+    }
+
     //TODO improve that, make it its own parser
     private XDRSimulatorInterface buildSimulatorFromResponse(def r, String simId) {
         def transactions = r.depthFirst().findAll{it.name() == "endpoint"}
@@ -123,6 +169,10 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         return sim
     }
 
+    private def parseSendXdrResponse(GPathResult r){
+        //we need to parse the response maybe
+        return r
+    }
 
     @Override
     def notifyObserver(Message m) {
