@@ -495,7 +495,7 @@ public class ArtifactManagement {
             case NEGATIVE_MISSING_METADATA_ELEMENTS5:
                 artifacts.setExtraHeaders(generateExtraHeaders(settings, true));
                 artifacts.setDocument(getBaseEncodedCCDA());
-                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS1_NO_SOAP);
+                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS5_NO_SOAP);
                 break;
                 
             default:
