@@ -20,11 +20,11 @@ public class ArtifactManagement {
         NEGATIVE_BAD_SOAP_HEADER,
         NEGATIVE_BAD_SOAP_BODY,
         NEGATIVE_MISSING_DIRECT_BLOCK, // DONE
-        NEGATIVE_MISSING_METADATA_ELEMENTS1,
-        NEGATIVE_MISSING_METADATA_ELEMENTS2,
-        NEGATIVE_MISSING_METADATA_ELEMENTS3,
-        NEGATIVE_MISSING_METADATA_ELEMENTS4,
-        NEGATIVE_MISSING_METADATA_ELEMENTS5,
+        NEGATIVE_MISSING_METADATA_ELEMENTS1, // DONE
+        NEGATIVE_MISSING_METADATA_ELEMENTS2, // DONE
+        NEGATIVE_MISSING_METADATA_ELEMENTS3, // DONE
+        NEGATIVE_MISSING_METADATA_ELEMENTS4, // DONE
+        NEGATIVE_MISSING_METADATA_ELEMENTS5, // DONE
         XDR_CCR, // DONE
         XDR_C32, // DONE
         NEGATIVE_MISSING_ASSOCIATION, // DONE
@@ -469,6 +469,35 @@ public class ArtifactManagement {
                 artifacts.setDocument(getBaseEncodedCCDA());
                 metadata = getTemplate(FILENAME_MISSING_ASSOCIATION_NO_SOAP);
                 break;
+                
+            case NEGATIVE_MISSING_METADATA_ELEMENTS1:
+                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                artifacts.setDocument(getBaseEncodedCCDA());
+                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS1_NO_SOAP);
+                break;
+                
+            case NEGATIVE_MISSING_METADATA_ELEMENTS2:
+                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                artifacts.setDocument(getBaseEncodedCCDA());
+                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS2_NO_SOAP);
+                break;
+            case NEGATIVE_MISSING_METADATA_ELEMENTS3:
+                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                artifacts.setDocument(getBaseEncodedCCDA());
+                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS3_NO_SOAP);
+                break;
+            case NEGATIVE_MISSING_METADATA_ELEMENTS4:
+                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                artifacts.setDocument(getBaseEncodedCCDA());
+                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS4_NO_SOAP);
+                break;
+                // CASE 5 uses full XDS metadata!
+            case NEGATIVE_MISSING_METADATA_ELEMENTS5:
+                artifacts.setExtraHeaders(generateExtraHeaders(settings, true));
+                artifacts.setDocument(getBaseEncodedCCDA());
+                metadata = getTemplate(FILENAME_MISSING_METADATA_ELEMENTS1_NO_SOAP);
+                break;
+                
             default:
                 throw new UnsupportedOperationException("not yet guys");
         }
@@ -501,7 +530,7 @@ public class ArtifactManagement {
              "wsaTo",
              null));
              */
-            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
+            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_METADATA_ELEMENTS5, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
