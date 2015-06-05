@@ -1,10 +1,13 @@
 package gov.nist.healthcare.ttt.xdr.api
 
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.commons.notification.IObservable
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
@@ -123,17 +126,22 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 //    </sendRequest>
     public def sendXdr(Map config) {
 
+        Settings settings = new Settings()
+        settings.setDirectFrom(config.directFrom)
+        settings.setDirectTo(config.directTo)
+        settings.setWsaTo(config.targetEndpoint)
 
+        Artifacts art = ArtifactManagement.generateArtifacts(ArtifactManagement.Type.XDR_FULL_METADATA, settings);
 
         def req = {
             sendRequest {
                 simReference("ett/$config.simId")
                 transactionName("prb")
                 tls(value: config.tls)
-                messageId("MyMessageId")
-                metadata()
-                extraHeaders()
-                document(id: "Document01", mimeType: "text/plain", "yo")
+                messageId(art.messageId)
+                metadata(art.metadata)
+                extraHeaders(art.extraHeaders)
+                document(id: art.documentId, mimeType: art.mimeType, art.document)
             }
         }
 
