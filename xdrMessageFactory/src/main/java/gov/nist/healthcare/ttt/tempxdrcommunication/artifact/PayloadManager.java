@@ -47,6 +47,12 @@ public class PayloadManager {
             case NEGATIVE_MISSING_METADATA_ELEMENTS5:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
+            case XDR_CCR:
+                metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
+            case XDR_C32:
+                metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
             case NEGATIVE_MISSING_ASSOCIATION:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
