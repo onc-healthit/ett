@@ -15,18 +15,15 @@ import org.springframework.stereotype.Component
 @Component
 final class TestCase20b extends TestCase {
 
-    final public String badEndpoint = id
-
     @Autowired
     public TestCase20b(TestCaseExecutor ex) {
         super(ex)
-        sim = registerGlobalEndpoints(badEndpoint, new HashMap())
     }
 
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        executor.createRecordForSenderTestCase(context,username,id,sim)
+        executor.createRecordForTestCase(context,username,id,sim)
 
         def content = new StandardContent()
         content.endpoint = endpoints[0]

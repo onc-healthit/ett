@@ -15,18 +15,15 @@ import org.springframework.stereotype.Component
 @Component
 final class TestCase20a extends TestCase {
 
-    final public String goodEndpoint = id
-
     @Autowired
     public TestCase20a(TestCaseExecutor ex) {
         super(ex)
-        sim = registerGlobalEndpoints(goodEndpoint, new HashMap())
     }
 
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        executor.createRecordForSenderTestCase(context,username,id,sim)
+        executor.createRecordForTestCase(context,username,id,sim)
 
         log.info "test case ${id} : successfully configured. Ready to receive messages."
 

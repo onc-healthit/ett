@@ -1,10 +1,13 @@
 package gov.nist.healthcare.ttt.xdr.api
 
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.commons.notification.IObservable
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
@@ -44,6 +47,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
     @Value('${toolkit.getSimConfig.url}')
     private String tkSimInfo
+
+    @Value('${toolkit.sendXdr.url}')
+    private String xdrSendUrl
 
     @Value('${server.contextPath}')
     private String contextPath
@@ -93,9 +99,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
     private def buildCreateEndpointRequest(EndpointConfig config) {
         return {
-            actor(type:'docrec') {
+            actor(type:config.type) {
                 transaction(name: 'prb'){
-                    endpoint(value : 'NOT_USED')
+                    endpoint(value : config.endpoint)
                     settings {
                         "boolean"(name:'schemaCheck' , value:'false')
                         "boolean"(name:'modelCheck' , value:'false')
@@ -109,16 +115,72 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         }
     }
 
+//    <sendRequest>
+//    <simReference>userName/simid</simReference>
+//    <transactionName>prb</transactionName>
+//    <tls value="false"/>
+//    <messageId>MyMessageId</messageId>
+//    <metadata>${metadata}</metadata>
+//    <extraHeaders><foo/><bar/></extraHeaders>
+//    <document id="Document01" mimeType="text/plain">doc content</document>
+//    </sendRequest>
+    public def sendXdr(Map config) {
+
+        Settings settings = new Settings()
+        settings.setDirectFrom(config.directFrom)
+        settings.setDirectTo(config.directTo)
+        settings.setWsaTo(config.targetEndpoint)
+
+        Artifacts art = ArtifactManagement.generateArtifacts(ArtifactManagement.Type.XDR_FULL_METADATA, settings);
+
+        def req = {
+            sendRequest {
+                simReference("ett/$config.simId")
+                transactionName("prb")
+                tls(value: config.tls)
+                messageId(art.messageId)
+                metadata(art.metadata)
+                extraHeaders(art.extraHeaders)
+                document(id: art.documentId, mimeType: art.mimeType, art.document)
+            }
+        }
+
+
+
+        try {
+            GPathResult r = restClient.postXml(req, xdrSendUrl +"/$config.simId", timeout)
+            parseSendXdrResponse(r)
+
+        }
+        catch (groovyx.net.http.HttpResponseException e) {
+            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
+        }
+        catch (java.net.SocketTimeoutException e) {
+            throw new RuntimeException("connection timeout when calling toolkit.",e)
+        }
+        catch(groovyx.net.http.ResponseParseException e){
+            throw new RuntimeException("could not understand response from toolkit.",e)
+        }
+    }
+
     //TODO improve that, make it its own parser
     private XDRSimulatorInterface buildSimulatorFromResponse(def r, String simId) {
         def transactions = r.depthFirst().findAll{it.name() == "endpoint"}
         XDRSimulatorInterface sim = new XDRSimulatorImpl()
         sim.simulatorId = simId
         sim.endpoint = transactions[0].@value.text()
-        sim.endpointTLS = transactions[1].@value.text()
+
+        //TODO refactor : this exists only if we retrieve a docrec. Test beforehand.
+        if(transactions[1]!= null) {
+            sim.endpointTLS = transactions[1].@value.text()
+        }
         return sim
     }
 
+    private def parseSendXdrResponse(GPathResult r){
+        //we need to parse the response maybe
+        return r
+    }
 
     @Override
     def notifyObserver(Message m) {

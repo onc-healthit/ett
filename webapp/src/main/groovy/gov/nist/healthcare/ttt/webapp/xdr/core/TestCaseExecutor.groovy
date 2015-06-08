@@ -61,6 +61,10 @@ class TestCaseExecutor {
         this.clock = clock
     }
 
+    protected XDRTestStepInterface executeSendXDRStep2(Map config) {
+        receiver.sendXdr(config)
+    }
+
     protected XDRTestStepInterface executeSendXDRStep(Map config) {
 
         def r
@@ -173,7 +177,7 @@ class TestCaseExecutor {
         return step
     }
 
-    private def  sendMDN(TkValidationReport report, String state) {
+    private def sendMDN(TkValidationReport report, String state) {
 
         String toAddress = report.directFrom
         def generator = new MDNGenerator();
@@ -200,7 +204,7 @@ class TestCaseExecutor {
 
         def hostname = toAddress
 
-        if(toAddress.contains("@")) {
+        if (toAddress.contains("@")) {
             hostname = toAddress.split("@")[1]
         }
 
@@ -210,18 +214,9 @@ class TestCaseExecutor {
     }
 
 
-    XDRSimulatorInterface configureGlobalEndpoint(String name, Map params) {
-
-        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(name)
-
-        if (sim == null) {
-            log.debug("simulator with id $name does not exists. It will be created now!")
-            sim = createEndpoint(name, params)
-            String id = db.instance.xdrFacade.addNewSimulator(sim)
-            log.debug("new global simulator has been created with the following id : $id")
-        } else {
-            log.debug("simulator with id $name already exists.")
-        }
+    XDRSimulatorInterface configureEndpoint(String name, Map params) {
+        def sim = createEndpoint(name, params)
+        log.debug("new simulator has been created with the following id : $name")
 
         return sim
     }
@@ -294,7 +289,7 @@ class TestCaseExecutor {
         return new TestCaseEvent(record.criteriaMet, content)
     }
 
-    def createRecordForSenderTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
+    def createRecordForTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
         def step = executeCorrelationStep(context, sim)
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
         db.addNewXdrRecord(record)

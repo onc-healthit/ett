@@ -20,13 +20,12 @@ final class TestCase50a extends TestCase {
     @Autowired
     public TestCase50a(TestCaseExecutor ex) {
         super(ex)
-        sim = registerGlobalEndpoints(goodEndpoint, new HashMap())
     }
 
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        executor.createRecordForSenderTestCase(context,username,id,sim)
+        executor.createRecordForTestCase(context,username,id,sim)
 
         log.info "test case ${id} : successfully configured. Ready to receive messages."
 
