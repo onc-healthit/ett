@@ -19,6 +19,7 @@ import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.api.XdrSender
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+import groovy.util.slurpersupport.GPathResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -62,7 +63,21 @@ class TestCaseExecutor {
     }
 
     protected XDRTestStepInterface executeSendXDRStep2(Map config) {
-        receiver.sendXdr(config)
+        try {
+            GPathResult resp = receiver.sendXdr(config)
+            XDRReportItemInterface request = new XDRReportItemImpl()
+            request.report = resp.toString()
+            XDRTestStepInterface step = new XDRTestStepImpl()
+            step.name = "XDR_SEND_TO_SUT"
+            step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
+            step.xdrReportItems.add(request)
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+            return step
+        }
+        catch (e) {
+            throw new Exception(MsgLabel.SEND_XDR_FAILED.msg, e)
+        }
+
     }
 
     protected XDRTestStepInterface executeSendXDRStep(Map config) {

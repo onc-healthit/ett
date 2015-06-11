@@ -23,7 +23,13 @@ class XdrTestCase3Test extends XDRSpecification {
 
     public String testCaseConfig =
             """{
-    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/c8860bc9-6acb-4679-b07d-f6c51e276f1a/reg/rb"
+    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
+}"""
+
+    public String testCaseConfigTLS =
+            """{
+    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr",
+    "targetEndpointTLS": "https://transport-testing.nist.gov:12081/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
 }"""
 
 
@@ -31,6 +37,21 @@ class XdrTestCase3Test extends XDRSpecification {
 
         when: "receiving a request to configure test case"
         MockHttpServletRequestBuilder getRequest = TestUtils.configure(tcId,userId,testCaseConfig)
+
+        then: "we receive back a message with status and report of the transaction"
+
+        //TODO we cannot validate the body because for now we always get error messages!
+        gui.perform(getRequest)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("SUCCESS"))
+                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
+    }
+
+    def "user succeeds in running test case with a tls endpoint"() throws Exception {
+
+        when: "receiving a request to configure test case"
+        MockHttpServletRequestBuilder getRequest = TestUtils.configure(tcId,userId,testCaseConfigTLS)
 
         then: "we receive back a message with status and report of the transaction"
 

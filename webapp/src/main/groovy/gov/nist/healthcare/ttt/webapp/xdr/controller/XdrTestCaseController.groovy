@@ -73,6 +73,7 @@ class XdrTestCaseController {
             return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id has been configured successfully", event)
         }
         catch(Exception e){
+            e.printStackTrace()
             return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), null)
         }
 

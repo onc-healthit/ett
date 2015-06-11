@@ -72,19 +72,17 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         log.debug("notification url is :" + fullNotificationUrl)
     }
 
-    /*
-    Synchronous call to the toolkit. Create a simulator in Bill's terminology.
-     */
+
     public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
 
-        def createEndpointTkMsg = buildCreateEndpointRequest(config)
+        def createEndpointTkMsg =buildCreateEndpointRequest(config)
         try {
             GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl+"/"+config.name, timeout)
 
             //TODO check if success first
             GPathResult r2 = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
             def sim = buildSimulatorFromResponse(r2, config.name)
-                return sim
+            return sim
         }
         catch (groovyx.net.http.HttpResponseException e) {
             throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
@@ -96,6 +94,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
             throw new RuntimeException("could not understand response from toolkit.",e)
         }
     }
+
 
     private def buildCreateEndpointRequest(EndpointConfig config) {
         return {
@@ -111,19 +110,23 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                     }
                     webservices( value :'prb')
                 }
+                transaction(name: 'prb'){
+                    endpoint(value : config.endpointTLS)
+                    settings {
+                        "boolean"(name:'schemaCheck' , value:'false')
+                        "boolean"(name:'modelCheck' , value:'false')
+                        "boolean"(name:'codingCheck' , value:'false')
+                        "boolean"(name:'soapCheck' , value:'true')
+                        text(name : 'msgCallback', value: fullNotificationUrl)
+                    }
+                    webservices( value :'prb_TLS')
+                }
             }
         }
     }
 
-//    <sendRequest>
-//    <simReference>userName/simid</simReference>
-//    <transactionName>prb</transactionName>
-//    <tls value="false"/>
-//    <messageId>MyMessageId</messageId>
-//    <metadata>${metadata}</metadata>
-//    <extraHeaders><foo/><bar/></extraHeaders>
-//    <document id="Document01" mimeType="text/plain">doc content</document>
-//    </sendRequest>
+
+
     public def sendXdr(Map config) {
 
         Settings settings = new Settings()
@@ -133,21 +136,20 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
         Artifacts art = ArtifactManagement.generateArtifacts(ArtifactManagement.Type.XDR_FULL_METADATA, settings);
 
-        def req = {
-            sendRequest {
-                simReference("ett/$config.simId")
-                transactionName("prb")
-                tls(value: config.tls)
-                messageId(art.messageId)
-                metadata(art.metadata)
-                extraHeaders(art.extraHeaders)
-                document(id: art.documentId, mimeType: art.mimeType, art.document)
-            }
-        }
-
-
+        def req = """
+            <sendRequest>
+                <simReference>ett/$config.simId</simReference>
+                <transactionName>prb</transactionName>
+                <tls value="$config.tls"/>
+                <messageId>$art.messageId</messageId>
+                <metadata>$art.metadata</metadata>
+                <extraHeaders>$art.extraHeaders</extraHeaders>
+                <document id="$art.documentId" mimeType="$art.mimeType">$art.document</document>
+            </sendRequest>
+        """
 
         try {
+            log.debug("xdr send request :" + req.toString())
             GPathResult r = restClient.postXml(req, xdrSendUrl +"/$config.simId", timeout)
             parseSendXdrResponse(r)
 
