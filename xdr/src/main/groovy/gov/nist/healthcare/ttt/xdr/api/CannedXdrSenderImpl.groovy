@@ -36,13 +36,15 @@ class CannedXdrSenderImpl implements XdrSender {
         try {
             Settings settings = prepareMessage(config)
 
-            log.info("contacting remote endpoint...")
+
 
             SSLContext sslContext = null
             if(URLParser.isTLS(config.targetEndpoint)){
-                "Using $config.targetEndpoint. TLS is turned on"
+                log.debug "Using $config.targetEndpoint. TLS is turned on"
                 sslContext = sslContextManager.goodSSLContext
             }
+
+            log.info("contacting remote endpoint : $config.targetEndpoint ...")
 
             RequestResponse rr = SimpleSOAPSender.sendMTOMPackage(config.targetEndpoint, config.messageType, settings, sslContext);
 
