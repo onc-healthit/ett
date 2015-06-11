@@ -29,6 +29,7 @@ final class TestCase3 extends TestCase {
         def config = new HashMap()
         config.type = 'docsrc'
         config.endpoint = context.targetEndpoint
+        config.endpointTLS = context.targetEndpointTLS
         sim = registerEndpoint(id, config)
 
         executor.createRecordForTestCase(context,username,id,sim)
@@ -40,14 +41,12 @@ final class TestCase3 extends TestCase {
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
 
         context.simId = sim.simulatorId
-        //This has no sense
-        context.tls = "false"
-        context.endpoint = sim.endpoint
-
+        context.tls = "true"
+        context.endpoint = sim.endpointTLS
 
         XDRTestStepInterface step = executor.executeSendXDRStep2(context)
 
-        //Create a new test record.
+        //Create a new test record
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
@@ -59,7 +58,7 @@ final class TestCase3 extends TestCase {
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
         def content = new StandardContent()
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        return new TestCaseEvent(testStatus, content)
     }
 
     @Override
