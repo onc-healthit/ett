@@ -13,10 +13,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
-import gov.nist.healthcare.ttt.xdr.api.TLSClient
-import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
-import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
-import gov.nist.healthcare.ttt.xdr.api.XdrSender
+import gov.nist.healthcare.ttt.xdr.api.*
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import groovy.util.slurpersupport.GPathResult
@@ -44,6 +41,7 @@ class TestCaseExecutor {
     public final DatabaseProxy db
     private final XdrReceiver receiver
     private final XdrSender sender
+    private final BadXdrSender badSender
     private final Clock clock
     public final TLSReceiver tlsReceiver
     public final TLSClient tlsClient
@@ -53,10 +51,11 @@ class TestCaseExecutor {
     private static Logger log = LoggerFactory.getLogger(TestCaseExecutor.class)
 
     @Autowired
-    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, TLSReceiver tlsReceiver, TLSClient tlsClient, Clock clock) {
+    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, BadXdrSender badSender, TLSReceiver  tlsReceiver, TLSClient tlsClient, Clock clock) {
         this.db = db
         this.receiver = receiver
         this.sender = sender
+        this.badSender = badSender
         this.tlsReceiver = tlsReceiver
         this.tlsClient = tlsClient
         this.clock = clock
@@ -64,7 +63,7 @@ class TestCaseExecutor {
 
     protected XDRTestStepInterface executeSendXDRStep2(Map config) {
         try {
-            GPathResult resp = receiver.sendXdr(config)
+            GPathResult resp = sender.sendXdr(config)
             XDRReportItemInterface request = new XDRReportItemImpl()
             request.report = resp.toString()
             XDRTestStepInterface step = new XDRTestStepImpl()
@@ -84,7 +83,7 @@ class TestCaseExecutor {
 
         def r
         try {
-            r = sender.sendXdr(config)
+            r = badSender.sendXdr(config)
             XDRReportItemInterface request = new XDRReportItemImpl()
             request.setReport(r.request)
             request.setReportType(XDRReportItemInterface.ReportType.REQUEST)
