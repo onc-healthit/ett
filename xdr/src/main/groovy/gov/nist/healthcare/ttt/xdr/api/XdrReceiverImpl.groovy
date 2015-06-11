@@ -99,6 +99,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     private def buildCreateEndpointRequest(EndpointConfig config) {
         return {
             actor(type:config.type) {
+                environment(name:"NA2015")
                 transaction(name: 'prb'){
                     endpoint(value : config.endpoint)
                     settings {
@@ -108,7 +109,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                         "boolean"(name:'soapCheck' , value:'true')
                         text(name : 'msgCallback', value: fullNotificationUrl)
                     }
-                    webservices( value :'prb')
+                    webService(value :'prb')
                 }
                 transaction(name: 'prb'){
                     endpoint(value : config.endpointTLS)
@@ -119,7 +120,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
                         "boolean"(name:'soapCheck' , value:'true')
                         text(name : 'msgCallback', value: fullNotificationUrl)
                     }
-                    webservices( value :'prb_TLS')
+                    webService(value :'prb_TLS')
                 }
             }
         }

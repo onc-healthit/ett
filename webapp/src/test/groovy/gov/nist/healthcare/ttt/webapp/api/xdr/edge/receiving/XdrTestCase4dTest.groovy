@@ -23,11 +23,11 @@ class XdrTestCase4dTest extends XDRSpecification {
 
     public String testCaseConfig =
             """{
-    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/c8860bc9-6acb-4679-b07d-f6c51e276f1a/reg/rb"
+    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
 }"""
 
 
-    def "user succeeds in running test case"() throws Exception {
+    def "user succeeds in running test case 4d"() throws Exception {
 
         when: "receiving a request to configure test case"
         MockHttpServletRequestBuilder getRequest = TestUtils.configure(tcId,userId,testCaseConfig)
