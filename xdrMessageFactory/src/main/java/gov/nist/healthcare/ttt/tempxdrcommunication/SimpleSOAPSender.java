@@ -2,7 +2,6 @@ package gov.nist.healthcare.ttt.tempxdrcommunication;
 
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement.Type;
-import static gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement.getPayload;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.PayloadManager;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings;
 
@@ -12,6 +11,9 @@ import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  *
@@ -31,12 +33,12 @@ public class SimpleSOAPSender {
         String path = url.getPath();
 
         System.out.println("truststore = " + System.getProperty("javax.net.ssl.trustStore"));
-        
-        System.setProperty("javax.net.ssl.trustStore","/home/mccaffrey/xdr/keystore");
-        
+
+        System.setProperty("javax.net.ssl.trustStore", "/home/mccaffrey/xdr/keystore");
+
         InetAddress addr = InetAddress.getByName(hostname);
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-        SSLSocket sslSock = (SSLSocket) factory.createSocket(addr,port);
+        SSLSocket sslSock = (SSLSocket) factory.createSocket(addr, port);
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(sslSock.getOutputStream(), "UTF-8"));
         bufferedWriter.write(payload);
         bufferedWriter.flush();
@@ -47,6 +49,10 @@ public class SimpleSOAPSender {
     }
 
     private static String sendMessage(String endpoint, String payload) throws MalformedURLException, UnknownHostException, IOException {
+        return sendMessage(endpoint, payload, null);
+    }
+
+    private static String sendMessage(String endpoint, String payload, SSLContext sc) throws MalformedURLException, UnknownHostException, IOException {
 
         URL url = new URL(endpoint);
 
@@ -58,11 +64,16 @@ public class SimpleSOAPSender {
         String path = url.getPath();
 
         InetAddress addr = InetAddress.getByName(hostname);
-        
+
        // SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-       // SSLSocket socket = (SSLSocket) factory.createSocket(addr,port);
-        
-        Socket socket = new Socket(addr, port);
+        // SSLSocket socket = (SSLSocket) factory.createSocket(addr,port);
+        Socket socket = null;
+        if (sc != null) {
+            SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
+            socket = (SSLSocket) f.createSocket(addr, port);
+        } else {
+            socket = new Socket(addr, port);
+        }
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
 
         //   String fullPayload = SimpleSOAPSender.addHttpHeaders(path, payload);
@@ -106,10 +117,10 @@ public class SimpleSOAPSender {
         StringBuilder httpHeaders = new StringBuilder();
 
         URL url = new URL(endpoint);
-        String path  =url.getPath();
-       // httpHeaders.append("POST " + endpoint + " HTTP/1.1\r\n");
+        String path = url.getPath();
+        // httpHeaders.append("POST " + endpoint + " HTTP/1.1\r\n");
         httpHeaders.append("POST " + path + " HTTP/1.1\r\n");
-        
+
         httpHeaders.append("Content-Type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"<0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"\r\n");
 
         httpHeaders.append("User-Agent: TempXDRSender\r\n");
@@ -124,6 +135,10 @@ public class SimpleSOAPSender {
     }
 
     public static RequestResponse sendMTOMPackage(String endpoint, Type type, Settings settings) throws IOException {
+        return sendMTOMPackage(endpoint, type, settings, null);
+    }
+
+    public static RequestResponse sendMTOMPackage(String endpoint, Type type, Settings settings, SSLContext sc) throws IOException {
 
         String metadata = null;
 
@@ -169,7 +184,7 @@ public class SimpleSOAPSender {
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
             default:
-                // throw new UnsupportedOperationException();  // TODO
+            // throw new UnsupportedOperationException();  // TODO
 
         }
 
@@ -180,7 +195,7 @@ public class SimpleSOAPSender {
         System.out.println(fullWithHttpHeaders);
 
 //        String toSend = readFile("/home/mccaffrey/xdr/captured/received_mod.txt");
-        String response = sendMessage(endpoint, fullWithHttpHeaders);
+        String response = sendMessage(endpoint, fullWithHttpHeaders, sc);
         //  String response = sendMessage(endpoint, toSend);
 
         RequestResponse rr = new RequestResponse(fullWithHttpHeaders, response);
@@ -225,21 +240,13 @@ public class SimpleSOAPSender {
 
             //  String endpoint = "http://hit-dev.nist.gov:8080/hello";
             //String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/f8488a75-fc7d-4d70-992b-e5b2c852b412/rep/prb";
-            
-            
-            
            //  String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
-            
-          //  String endpoint = "https://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
+            //  String endpoint = "https://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
             String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/9fdc17ba-0191-4d0c-be2a-c4ea5294b861/rec/xdrpr";
-            
+
             // String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/ecb4e054-9581-439f-9f12-de2d052a3132/rep/prb";
             // String endpoint = "http://ihexds.nist.gov:12090/tf6/services/xdsregistryb";
-            
-            
           //  String endpoint = "http://hit-dev.nist.gov:12090/xdstools2/sim/811fd97a-6ea3-437e-bf42-e0a8a505ba98/rec/xdrpr";
-            
-            
             String directTo = "directTo";
             String directFrom = "directFrom";
             String relatesTo = "relatesTo";
@@ -252,35 +259,31 @@ public class SimpleSOAPSender {
             settings.setWsaTo(wsaTo);
 
             System.out.println("sending to... " + endpoint);
-            
+
            // StringBuilder payload = new StringBuilder();
-           // payload.append("POST /random HTTP/1.1\r\n");
-           // payload.append("\r\n");
-            
+            // payload.append("POST /random HTTP/1.1\r\n");
+            // payload.append("\r\n");
         //    String payload = readFile("/home/mccaffrey/src/TempXDRCommunication/src/main/resources/sample_request.txt");
-            
             //String response = sendSecureMessage(endpoint,payload);
-           // String payload = PayloadManager.getPayload(endpoint,Type.XDR_FULL_METADATA, settings);
-              String payload = PayloadManager.getPayload(endpoint,Type.XDR_C32, settings);
-            
-             String response = sendMessage(endpoint,payload);
-         //   String response = sendMTOMPackage(endpoint,Type.XDR_FULL_METADATA, settings);
-             System.out.println(payload);
+            // String payload = PayloadManager.getPayload(endpoint,Type.XDR_FULL_METADATA, settings);
+/*
+            String payload = PayloadManager.getPayload(endpoint, Type.XDR_C32, settings);
+            String response = sendMessage(endpoint, payload);
+            //   String response = sendMTOMPackage(endpoint,Type.XDR_FULL_METADATA, settings);
+            System.out.println(payload);
             System.out.println("------ ABOVE WAS THE REQUEST ----  BELOW IS THE RESPONSE ----");
             System.out.println(response);
-            
-            
-            
-/*
-            // RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_BAD_SOAP_HEADER, settings);
-            //   RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
-            // RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
-            RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_MISSING_METADATA_ELEMENTS5, settings);
-
-            System.out.println(rr.getRequest());
-            System.out.println("--------------\n");
-            System.out.println(rr.getResponse());
 */
+            
+             // RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+             //   RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
+              RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
+           //  RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_MISSING_METADATA_ELEMENTS5, settings);
+
+             System.out.println(rr.getRequest());
+             System.out.println("--------------\n");
+             System.out.println(rr.getResponse());
+             
         } catch (Exception e) {
             e.printStackTrace();
         }
