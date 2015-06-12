@@ -256,39 +256,44 @@ public class DirectMimeEntityValidator {
 			bodyTxt = StringEscapeUtils.escapeHtml4(body.substring(0, 50) + "...");
 		}
 		
-		if(ValidationUtils.isAscii(body) && ValidationUtils.isOnlyCRLF(body)) {
-			String[] tab = {"Content-Transfer-Encoding"};
-			String head = "";
-			Enumeration e = null;
-			try {
-				e = p.getMatchingHeaders(tab);
-			} catch (MessagingException e1) {
-				e1.printStackTrace();
-			}
-			while (e.hasMoreElements()) {
-				Header hed = (Header)e.nextElement();
-				head = hed.getValue();
-			}
+		if(ValidationUtils.isAscii(body)) {
 
-			// Check if Content-Transfer-Encoding="quoted-printable"
-			if(head.contains("quoted-printable")) {
-				// Check only CRLF and TAB control char
-				if(ValidationUtils.controlCharAreOnlyCRLFAndTAB(body)) {
-					return new DetailModel("195", "Body", bodyTxt, "Body does not contain illegal character", rfc, Status.SUCCESS);
-				} else {
-					return new DetailModel("195", "Body", bodyTxt, "Content-Transfer-Encoding = \"quoted-printable\", control characters other than TAB, or CR and LF as parts of CRLF pairs, MUST NOT appear", rfc, Status.ERROR);
+			if(ValidationUtils.isOnlyCRLF(body)) {
+				String[] tab = {"Content-Transfer-Encoding"};
+				String head = "";
+				Enumeration e = null;
+				try {
+					e = p.getMatchingHeaders(tab);
+				} catch (MessagingException e1) {
+					e1.printStackTrace();
 				}
-			} else if(head.contains("base64")) {
-				if(ValidationUtils.isOnlyCRLF(body)) {
-					return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.SUCCESS);
+				while (e.hasMoreElements()) {
+					Header hed = (Header)e.nextElement();
+					head = hed.getValue();
+				}
+
+				// Check if Content-Transfer-Encoding="quoted-printable"
+				if(head.contains("quoted-printable")) {
+					// Check only CRLF and TAB control char
+					if(ValidationUtils.controlCharAreOnlyCRLFAndTAB(body)) {
+						return new DetailModel("195", "Body", bodyTxt, "Body does not contain illegal character", rfc, Status.SUCCESS);
+					} else {
+						return new DetailModel("195", "Body", bodyTxt, "Content-Transfer-Encoding = \"quoted-printable\", control characters other than TAB, or CR and LF as parts of CRLF pairs, MUST NOT appear", rfc, Status.ERROR);
+					}
+				} else if(head.contains("base64")) {
+					if(ValidationUtils.isOnlyCRLF(body)) {
+						return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.SUCCESS);
+					} else {
+						return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
+					}
 				} else {
-					return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
+					return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.SUCCESS);
 				}
 			} else {
-				return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.SUCCESS);
+				return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
 			}
 		} else {
-			return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
+			return new DetailModel("195", "Body", bodyTxt, "Document must only contain ASCII characters", rfc, Status.ERROR);
 		}
 		
 	}
