@@ -8,9 +8,11 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
-import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
+import java.text.SimpleDateFormat
+
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -30,7 +32,11 @@ final class TestCase3 extends TestCase {
         config.type = 'docsrc'
         config.endpoint = context.targetEndpoint
         config.endpointTLS = context.targetEndpointTLS
-        sim = registerEndpoint(id, config)
+
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        //because Bill does not update existing simulator, we have to generate unique ids each time
+        def simId = id+"_"+username+"_"+timeStamp
+        sim = registerEndpoint(simId, config)
 
         executor.createRecordForTestCase(context,username,id,sim)
 
@@ -41,7 +47,6 @@ final class TestCase3 extends TestCase {
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
 
         context.simId = sim.simulatorId
-        context.tls = "true"
         context.endpoint = sim.endpointTLS
 
         XDRTestStepInterface step = executor.executeSendXDRStep2(context)
@@ -59,17 +64,6 @@ final class TestCase3 extends TestCase {
 
         def content = new StandardContent()
         return new TestCaseEvent(testStatus, content)
-    }
-
-    @Override
-    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
-
-        XDRTestStepInterface step = executor.executeStoreXDRReport(report)
-        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-
-        //TODO for now it is a manual check
-        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
-
     }
 
 

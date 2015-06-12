@@ -10,8 +10,6 @@ public interface XdrReceiver extends IObservable {
 
     public XDRSimulatorInterface createEndpoints(EndpointConfig config)
 
-    public def sendXdr(Map config)
-
 
 
 }

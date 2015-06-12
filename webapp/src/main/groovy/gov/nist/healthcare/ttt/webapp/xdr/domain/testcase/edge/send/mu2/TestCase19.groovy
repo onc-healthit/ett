@@ -1,4 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.mu2
+
+import gov.nist.healthcare.ttt.database.jdbc.DatabaseException
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
@@ -45,7 +47,15 @@ final class TestCase19 extends TestCaseSender {
         //TODO cleaner implementation : choose relevant steps + better way to compare message ids.
 
         if(record.testSteps.size() != 4) {
-            executor.db.updateXDRRecord(record)
+            try {
+                executor.db.updateXDRRecord(record)
+            }
+            catch(Exception e){
+                if(e.getCause() instanceof DatabaseException) {
+                    log.debug "2 messages have the same ids : $e"
+                    done(XDRRecordInterface.CriteriaMet.FAILED, record)
+                }
+            }
         }
         else {
 

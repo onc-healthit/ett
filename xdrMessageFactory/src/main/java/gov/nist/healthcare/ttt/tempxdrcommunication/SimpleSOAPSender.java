@@ -4,13 +4,21 @@ import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement.Type;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.PayloadManager;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings;
-
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -191,8 +199,6 @@ public class SimpleSOAPSender {
         String attachment = ArtifactManagement.getBaseEncodedCCDA();
         String mtom = buildMTOMPackage(metadata, attachment);
         String fullWithHttpHeaders = addHttpHeadersMtom(endpoint, mtom);
-
-        System.out.println(fullWithHttpHeaders);
 
 //        String toSend = readFile("/home/mccaffrey/xdr/captured/received_mod.txt");
         String response = sendMessage(endpoint, fullWithHttpHeaders, sc);
