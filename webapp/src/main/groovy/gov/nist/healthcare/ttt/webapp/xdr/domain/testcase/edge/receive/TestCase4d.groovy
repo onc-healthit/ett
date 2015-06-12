@@ -7,7 +7,6 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.RandomIntegerGenerator
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -44,8 +43,7 @@ final class TestCase4d extends TestCase {
         //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
-        def content = new StandardContent()
-        content.response = step.xdrReportItems.last().report
+        def content = executor.buildSendXDRContent(step)
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 

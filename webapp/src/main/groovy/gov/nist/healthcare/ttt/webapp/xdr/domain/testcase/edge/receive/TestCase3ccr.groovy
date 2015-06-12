@@ -6,13 +6,11 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import java.text.SimpleDateFormat
-
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -62,7 +60,8 @@ final class TestCase3ccr extends TestCase {
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
-        def content = new StandardContent()
+        def content = executor.buildSendXDRContent(step)
+
         return new TestCaseEvent(testStatus, content)
     }
 
