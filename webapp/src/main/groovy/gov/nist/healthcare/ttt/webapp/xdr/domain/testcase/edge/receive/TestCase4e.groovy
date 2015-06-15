@@ -10,17 +10,14 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
-import java.text.SimpleDateFormat
-
 /**
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase5 extends TestCase {
+final class TestCase4e extends TestCase {
 
     @Autowired
-    public TestCase5(TestCaseExecutor executor) {
+    public TestCase4e(TestCaseExecutor executor) {
         super(executor)
     }
 
@@ -28,30 +25,14 @@ final class TestCase5 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        def config = new HashMap()
-        config.type = 'docsrc'
-        config.endpoint = context.targetEndpoint
-        config.endpointTLS = context.targetEndpointTLS
-
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        //because Bill does not update existing simulator, we have to generate unique ids each time
-        def simId = id+"_"+username+"_"+timeStamp
-        sim = registerEndpoint(simId, config)
-
-        executor.createRecordForTestCase(context,username,id,sim)
-
-
-        context.directTo = "testcase5@nist.gov"
-        context.directFrom = "testcase5@nist.gov"
+        context.directTo = "testcase4b@nist.gov"
+        context.directFrom = "testcase4b@nist.gov"
         context.wsaTo = context.targetEndpoint
-        context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
+        context.messageType = ArtifactManagement.Type.NEGATIVE_MISSING_ASSOCIATION
 
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
+        XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
-        XDRTestStepInterface step = executor.executeSendXDRStep2(context)
-
-        //Create a new test record
+        //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
@@ -59,12 +40,11 @@ final class TestCase5 extends TestCase {
         //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
+        def content = new StandardContent()
+        content.response = step.xdrReportItems.last().report
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
-        def content = new StandardContent()
-        return new TestCaseEvent(testStatus, content)
+        new TestCaseEvent(testStatus,content)
     }
-
-
 }

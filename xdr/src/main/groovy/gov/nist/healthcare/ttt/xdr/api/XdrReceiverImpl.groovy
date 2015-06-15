@@ -1,10 +1,9 @@
 package gov.nist.healthcare.ttt.xdr.api
-
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl
-import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.commons.notification.IObservable
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
+import gov.nist.healthcare.ttt.xdr.domain.CreateEndpointResponseParser
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
-
 /**
  * Created by gerardin on 10/6/14.
  */
@@ -66,19 +64,15 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         log.debug("notification url is :" + fullNotificationUrl)
     }
 
-    /*
-    Synchronous call to the toolkit. Create a simulator in Bill's terminology.
-     */
     public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
 
-        def createEndpointTkMsg = buildCreateEndpointRequest(config)
+        def createEndpointTkMsg =buildCreateEndpointRequest(config)
         try {
-            GPathResult r = restClient.postXml(createEndpointTkMsg, tkSimCreationUrl+"/"+config.name, timeout)
-
-            //TODO check if success first
-            GPathResult r2 = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
-            def sim = buildSimulatorFromResponse(r2, config.name)
-                return sim
+            //For some reason, there response is empty and we need to do a get to retrieve the config!
+            restClient.postXml(createEndpointTkMsg, tkSimCreationUrl+"/"+config.name, timeout)
+            GPathResult response = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
+            def sim = CreateEndpointResponseParser.parse(response, config.name)
+            return sim
         }
         catch (groovyx.net.http.HttpResponseException e) {
             throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
@@ -91,42 +85,53 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         }
     }
 
+    @Override
+    public def notifyObserver(Message m) {
+        observer.getNotification(m)
+    }
+
+    @Override
+    public def registerObserver(IObserver o) {
+        observer = o
+    }
+
+
     private def buildCreateEndpointRequest(EndpointConfig config) {
+
+        def notificationUrl = ""
+
+        if(config.type == "docrec"){
+            notificationUrl = fullNotificationUrl
+        }
+
         return {
-            actor(type:'docrec') {
+            actor(type:config.type) {
+                environment(name:"NA2015")
                 transaction(name: 'prb'){
-                    endpoint(value : 'NOT_USED')
+                    endpoint(value : config.endpoint)
                     settings {
                         "boolean"(name:'schemaCheck' , value:'false')
                         "boolean"(name:'modelCheck' , value:'false')
                         "boolean"(name:'codingCheck' , value:'false')
                         "boolean"(name:'soapCheck' , value:'true')
-                        text(name : 'msgCallback', value: fullNotificationUrl)
+                        text(name : 'msgCallback', value: notificationUrl)
                     }
-                    webservices( value :'prb')
+                    webService(value :'prb')
+                }
+                transaction(name: 'prb'){
+                    endpoint(value : config.endpointTLS)
+                    settings {
+                        "boolean"(name:'schemaCheck' , value:'false')
+                        "boolean"(name:'modelCheck' , value:'false')
+                        "boolean"(name:'codingCheck' , value:'false')
+                        "boolean"(name:'soapCheck' , value:'true')
+                        text(name : 'msgCallback', value: notificationUrl)
+                    }
+                    webService(value :'prb_TLS')
                 }
             }
         }
     }
 
-    //TODO improve that, make it its own parser
-    private XDRSimulatorInterface buildSimulatorFromResponse(def r, String simId) {
-        def transactions = r.depthFirst().findAll{it.name() == "endpoint"}
-        XDRSimulatorInterface sim = new XDRSimulatorImpl()
-        sim.simulatorId = simId
-        sim.endpoint = transactions[0].@value.text()
-        sim.endpointTLS = transactions[1].@value.text()
-        return sim
-    }
 
-
-    @Override
-    def notifyObserver(Message m) {
-        observer.getNotification(m)
-    }
-
-    @Override
-    def registerObserver(IObserver o) {
-        observer = o
-    }
 }

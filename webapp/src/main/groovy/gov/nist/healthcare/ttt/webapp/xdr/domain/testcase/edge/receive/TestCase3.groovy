@@ -11,6 +11,8 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+import java.text.SimpleDateFormat
+
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -26,14 +28,30 @@ final class TestCase3 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
+        def config = new HashMap()
+        config.type = 'docsrc'
+        config.endpoint = context.targetEndpoint
+        config.endpointTLS = context.targetEndpointTLS
+
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        //because Bill does not update existing simulator, we have to generate unique ids each time
+        def simId = id+"_"+username+"_"+timeStamp
+        sim = registerEndpoint(simId, config)
+
+        executor.createRecordForTestCase(context,username,id,sim)
+
+
         context.directTo = "testcase3@nist.gov"
         context.directFrom = "testcase3@nist.gov"
         context.wsaTo = context.targetEndpoint
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
 
-        XDRTestStepInterface step = executor.executeSendXDRStep(context)
+        context.simId = sim.simulatorId
+        context.endpoint = sim.endpointTLS
 
-        //Create a new test record.
+        XDRTestStepInterface step = executor.executeSendXDRStep2(context)
+
+        //Create a new test record
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
@@ -41,12 +59,11 @@ final class TestCase3 extends TestCase {
         //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
-        def content = new StandardContent()
-        content.response = step.xdrReportItems.last().report
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
-        new TestCaseEvent(testStatus,content)
+        def content = new StandardContent()
+        return new TestCaseEvent(testStatus, content)
     }
 
 

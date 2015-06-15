@@ -68,7 +68,8 @@ public class DetailedPartValidation {
 		
 		// DTS 195, Body, Required
 		if(m.getContent().getContent() instanceof String) {
-			m.addNewDetailLine(mimeEntityValidator.validateBody(m.getContent(), (String) m.getContent().getContent()));
+			String encoding = ValidationUtils.getSingleHeader(m.getContent(), "content-transfer-encoding");
+			m.addNewDetailLine(mimeEntityValidator.validateBody(m.getContent(), (String) m.getContent().getContent(), encoding));
 		}
 		
 		// DTS 190, All Mime Header Fields, Required

@@ -1,6 +1,8 @@
 package gov.nist.healthcare.ttt.xdr.api
 
-import gov.nist.healthcare.ttt.xdr.domain.TkSendReport
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
 import org.slf4j.Logger
@@ -28,76 +30,47 @@ class XdrSenderImpl implements XdrSender{
     @Value('${toolkit.testName}')
     private String testName
 
-
-    /*
-    <TestClientRequest>
-
-<!-- Identifies a test pre-installed in toolkit - required-->
-
-<TestName>11696</TestName>
-
-<!-- Either TargetEndpoint or Site must be specified, not both -->
-
-<TargetEndpoint>https://example.com/xdr</TargetEndpoint>
-
-<Site>siteName</Site>
-
-<DirectAddressBlock>
-
-<!-- To be stuffed into the correct place - optional -->
-
-</DirectAddressBlock>
-
-<!-- Message ID to be inserted into SOAP Header - optional -->
-
-<MessageId>xxxx</MessageId>
-
-</TestClientRequest>
-
-
-     */
     @Override
-    TkSendReport sendXdr(Map config) {
+    public def sendXdr(Map config) {
 
-        log.debug("try to send xdr with config : $config")
+        Settings settings = new Settings()
+        settings.setDirectFrom(config.directFrom)
+        settings.setDirectTo(config.directTo)
+        settings.setWsaTo(config.targetEndpoint)
 
-        def sendXdrMessage = sendXdrMessage(config)
+        Artifacts art = ArtifactManagement.generateArtifacts(ArtifactManagement.Type.XDR_FULL_METADATA, settings);
+
+        def req = """
+            <sendRequest>
+                <simReference>ett/$config.simId</simReference>
+                <transactionName>prb</transactionName>
+                <tls value="$config.tls"/>
+                <messageId>$art.messageId</messageId>
+                <metadata>$art.metadata</metadata>
+                <extraHeaders>$art.extraHeaders</extraHeaders>
+                <document id="$art.documentId" mimeType="$art.mimeType">$art.document</document>
+            </sendRequest>
+        """
+
         try {
-             GPathResult r = restClient.postXml(sendXdrMessage, tkSendXdrUrl, timeout)
-            def report = parseReport(r)
-            return report
+            log.debug("xdr send request :" + req.toString())
+            GPathResult r = restClient.postXml(req, tkSendXdrUrl +"/$config.simId", timeout)
+            parseSendXdrResponse(r)
+
         }
         catch (groovyx.net.http.HttpResponseException e) {
-            e.printStackTrace()
-            throw new RuntimeException("could not reach the toolkit at url $tkSendXdrUrl",e)
+            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
         }
         catch (java.net.SocketTimeoutException e) {
-            e.printStackTrace()
             throw new RuntimeException("connection timeout when calling toolkit.",e)
         }
         catch(groovyx.net.http.ResponseParseException e){
-            e.printStackTrace()
             throw new RuntimeException("could not understand response from toolkit.",e)
         }
     }
 
-    def parseReport(GPathResult response) {
-        TkSendReport report = new TkSendReport()
-        report.test = response.Test.text()
-        report.status = response.Status.text()
-        report.result = response.Result.text()
-        report.inHeader = response.InHeader.text()
-        return report
-    }
-
-    private def sendXdrMessage(Object config) {
-        return {
-            TestClientRequest {
-                TestName(testName)
-                TargetEndpoint(config.targetEndpoint)
-                DirectAddressBlock(config.addressBlock)
-                MessageId(config.messageId)
-            }
-        }
+    private def parseSendXdrResponse(GPathResult r){
+        //we need to parse the response maybe
+        return r
     }
 }

@@ -47,7 +47,6 @@ public class GroovyRestClient {
                     logger.debug("received xml response :" + XmlUtil.serialize(xml))
                     return xml
                 }
-
             }
             return resp
         }

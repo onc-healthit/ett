@@ -5,7 +5,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -13,18 +13,17 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase48 extends TestCase {
+final class TestCase48 extends TestCaseSender {
 
     @Autowired
     public TestCase48(TestCaseExecutor ex) {
         super(ex)
-        sim = registerGlobalEndpoints(id,new HashMap())
     }
 
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        executor.createRecordForSenderTestCase(context,username,id,sim)
+        executor.createRecordForTestCase(context,username,id,sim)
 
         log.info  "test case ${id} : successfully configured. Ready to receive messages."
 

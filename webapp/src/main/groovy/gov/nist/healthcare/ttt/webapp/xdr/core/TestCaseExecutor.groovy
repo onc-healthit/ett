@@ -13,12 +13,10 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
-import gov.nist.healthcare.ttt.xdr.api.TLSClient
-import gov.nist.healthcare.ttt.xdr.api.TLSReceiver
-import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
-import gov.nist.healthcare.ttt.xdr.api.XdrSender
+import gov.nist.healthcare.ttt.xdr.api.*
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+import groovy.util.slurpersupport.GPathResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,6 +41,7 @@ class TestCaseExecutor {
     public final DatabaseProxy db
     private final XdrReceiver receiver
     private final XdrSender sender
+    private final BadXdrSender badSender
     private final Clock clock
     public final TLSReceiver tlsReceiver
     public final TLSClient tlsClient
@@ -52,20 +51,39 @@ class TestCaseExecutor {
     private static Logger log = LoggerFactory.getLogger(TestCaseExecutor.class)
 
     @Autowired
-    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, TLSReceiver tlsReceiver, TLSClient tlsClient, Clock clock) {
+    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, BadXdrSender badSender, TLSReceiver  tlsReceiver, TLSClient tlsClient, Clock clock) {
         this.db = db
         this.receiver = receiver
         this.sender = sender
+        this.badSender = badSender
         this.tlsReceiver = tlsReceiver
         this.tlsClient = tlsClient
         this.clock = clock
+    }
+
+    protected XDRTestStepInterface executeSendXDRStep2(Map config) {
+        try {
+            GPathResult resp = sender.sendXdr(config)
+            XDRReportItemInterface request = new XDRReportItemImpl()
+            request.report = resp.toString()
+            XDRTestStepInterface step = new XDRTestStepImpl()
+            step.name = "XDR_SEND_TO_SUT"
+            step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
+            step.xdrReportItems.add(request)
+            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+            return step
+        }
+        catch (e) {
+            throw new Exception(MsgLabel.SEND_XDR_FAILED.msg, e)
+        }
+
     }
 
     protected XDRTestStepInterface executeSendXDRStep(Map config) {
 
         def r
         try {
-            r = sender.sendXdr(config)
+            r = badSender.sendXdr(config)
             XDRReportItemInterface request = new XDRReportItemImpl()
             request.setReport(r.request)
             request.setReportType(XDRReportItemInterface.ReportType.REQUEST)
@@ -173,7 +191,7 @@ class TestCaseExecutor {
         return step
     }
 
-    private def  sendMDN(TkValidationReport report, String state) {
+    private def sendMDN(TkValidationReport report, String state) {
 
         String toAddress = report.directFrom
         def generator = new MDNGenerator();
@@ -200,7 +218,7 @@ class TestCaseExecutor {
 
         def hostname = toAddress
 
-        if(toAddress.contains("@")) {
+        if (toAddress.contains("@")) {
             hostname = toAddress.split("@")[1]
         }
 
@@ -210,18 +228,9 @@ class TestCaseExecutor {
     }
 
 
-    XDRSimulatorInterface configureGlobalEndpoint(String name, Map params) {
-
-        XDRSimulatorInterface sim = db.instance.xdrFacade.getSimulatorBySimulatorId(name)
-
-        if (sim == null) {
-            log.debug("simulator with id $name does not exists. It will be created now!")
-            sim = createEndpoint(name, params)
-            String id = db.instance.xdrFacade.addNewSimulator(sim)
-            log.debug("new global simulator has been created with the following id : $id")
-        } else {
-            log.debug("simulator with id $name already exists.")
-        }
+    XDRSimulatorInterface configureEndpoint(String name, Map params) {
+        def sim = createEndpoint(name, params)
+        log.debug("new simulator has been created with the following id : $name")
 
         return sim
     }
@@ -294,7 +303,7 @@ class TestCaseExecutor {
         return new TestCaseEvent(record.criteriaMet, content)
     }
 
-    def createRecordForSenderTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
+    def createRecordForTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
         def step = executeCorrelationStep(context, sim)
         XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
         db.addNewXdrRecord(record)

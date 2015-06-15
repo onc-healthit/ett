@@ -30,7 +30,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -42,7 +42,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -54,7 +54,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -66,7 +66,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -78,7 +78,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -90,7 +90,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -102,7 +102,19 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
+        "key": "targetEndpoint",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 4e",
+    "id": "4e",
+    "desc": "The Tester shall return an error when an incorrect XDR message, such as missing associations between ebRIM constructs, is received from the ETT (HISP)",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
@@ -114,7 +126,7 @@
     "sutHisp": false,
     "sutRole": "receiver",
     "inputs": [{
-        "name": "Non TLS Endpoint",
+        "name": "Endpoint",
         "key": "targetEndpoint",
         "type": "string"
     }]
