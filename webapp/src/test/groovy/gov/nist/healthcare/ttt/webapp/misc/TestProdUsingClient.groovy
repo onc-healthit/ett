@@ -47,8 +47,8 @@ def setup(){
         def context = [:]
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
-        context.wsaTo = "hit-dev.nist.gov:11080/xdstools3/sim/2/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/2/docrec/prb"
+        context.wsaTo = "hit-dev.nist.gov:11080/xdstools3/sim/ett/2/docrec/prb"
+        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/2/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
         def response = new CannedXdrSenderImpl().sendXdr(context)
 
@@ -59,7 +59,7 @@ def setup(){
 
 
     @Test
-    def test7(){
+    def test6(){
 
         when :
         def manager = new SSLContextManager()
@@ -71,6 +71,19 @@ def setup(){
         assert true
     }
 
+	
+	@Test
+	def test7(){
+
+		when :
+		def manager = new SSLContextManager()
+		def TLSclient = new TLSClientImpl(manager)
+		TLSclient.connectOverBadTLS([ip_address: "hit-dev.nist.gov", port: "12084"])
+
+		then :
+
+		assert true
+	}
 
     @Test
     def test19(){
