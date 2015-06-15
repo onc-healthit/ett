@@ -18,7 +18,12 @@ import javax.net.ssl.SSLContext
 @Component
 class CannedXdrSenderImpl implements BadXdrSender {
 
-    @Autowired SSLContextManager sslContextManager
+    SSLContextManager sslContextManager
+
+    @Autowired
+    public CannedXdrSenderImpl(SSLContextManager sslContextManager){
+        this.sslContextManager = sslContextManager
+    }
 
     Logger log = LoggerFactory.getLogger(XdrSender.class)
 
