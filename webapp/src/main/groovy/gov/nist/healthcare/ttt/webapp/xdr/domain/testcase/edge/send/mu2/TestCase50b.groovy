@@ -28,7 +28,7 @@ final class TestCase50b extends TestCaseSender {
         def content = new StandardContent()
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.MANUAL, content)
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
     }
 
     @Override

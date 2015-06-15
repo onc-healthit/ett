@@ -1,5 +1,4 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
@@ -16,13 +15,11 @@ import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.*
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
-import groovy.util.slurpersupport.GPathResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-
 /**
  * Created by gerardin on 10/28/14.
  */
@@ -63,14 +60,26 @@ class TestCaseExecutor {
 
     protected XDRTestStepInterface executeSendXDRStep2(Map config) {
         try {
-            GPathResult resp = sender.sendXdr(config)
+            def r = sender.sendXdr(config)
+
             XDRReportItemInterface request = new XDRReportItemImpl()
-            request.report = resp.toString()
+            request.setReport(r.request)
+            request.setReportType(XDRReportItemInterface.ReportType.REQUEST)
+
+            XDRReportItemInterface response = new XDRReportItemImpl()
+            response.setReport(r.response)
+            response.setReportType(XDRReportItemInterface.ReportType.RESPONSE)
+
+
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.name = "XDR_SEND_TO_SUT"
             step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
             step.xdrReportItems.add(request)
+            step.xdrReportItems.add(response)
+
+            //TODO for now we only send back MANUAL CHECKS
             step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+
             return step
         }
         catch (e) {
@@ -107,7 +116,6 @@ class TestCaseExecutor {
         catch (e) {
             throw new Exception(MsgLabel.SEND_XDR_FAILED.msg, e)
         }
-
     }
 
 
@@ -317,5 +325,20 @@ class TestCaseExecutor {
         step.directFrom = context.direct_from
         step.hostname = context.ip_address
         return step
+    }
+
+    def buildSendXDRContent(XDRTestStepInterface step) {
+        StandardContent content = new StandardContent()
+
+        step.xdrReportItems.each {
+            if(it.reportType == XDRReportItemInterface.ReportType.REQUEST){
+                content.request = it.report
+            }
+            else if(it.reportType == XDRReportItemInterface.ReportType.RESPONSE){
+                content.response = it.report
+            }
+        }
+
+        return content
     }
 }

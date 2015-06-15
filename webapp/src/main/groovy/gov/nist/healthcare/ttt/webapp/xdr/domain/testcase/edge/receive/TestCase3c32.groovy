@@ -62,7 +62,8 @@ final class TestCase3c32 extends TestCase {
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
-        def content = new StandardContent()
+        def content = executor.buildSendXDRContent(step)
+
         return new TestCaseEvent(testStatus, content)
     }
 

@@ -1,15 +1,19 @@
 package gov.nist.healthcare.ttt.xdr.api
-
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
+import groovy.xml.XmlUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 /**
  * Created by gerardin on 10/21/14.
  */
@@ -70,7 +74,19 @@ class XdrSenderImpl implements XdrSender{
     }
 
     private def parseSendXdrResponse(GPathResult r){
-        //we need to parse the response maybe
-        return r
+        def report = [:]
+        def xml = XmlUtil.serialize(r)
+        report['request'] = extractXmlElement(xml,"Request")
+        report['response'] = extractXmlElement(xml,"Response")
+
+        return report
+    }
+
+    public def extractXmlElement(String xml, String element) {
+        Pattern regex = Pattern.compile("<$element>(.*?)</$element>", Pattern.DOTALL);
+        Matcher matcher = regex.matcher(xml);
+        if (matcher.find()) {
+            matcher.group(1);
+        }
     }
 }
