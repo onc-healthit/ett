@@ -445,9 +445,6 @@ public class ValidationUtils {
 							isOnlyCRLF = false;
 					}
 				}
-				else if(str.charAt(i)!=9) {
-					isOnlyCRLF = false;	
-				}
 			}
 		}
 		return isOnlyCRLF;

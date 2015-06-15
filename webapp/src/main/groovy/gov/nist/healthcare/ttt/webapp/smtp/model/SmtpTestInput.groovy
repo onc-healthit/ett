@@ -41,6 +41,8 @@ public class SmtpTestInput {
 	String startTlsPort
 	
 	String status
+	
+	String attachmentType
 
 	public SmtpTestInput() {
 
@@ -115,8 +117,25 @@ public class SmtpTestInput {
 
 		// Generate attachment
 		LinkedHashMap<String, byte[]> attachment = new LinkedHashMap<String, byte[]>()
-		InputStream ccdaAttachment = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")
-		attachment.put("CCDA_Ambulatory.xml", IOUtils.toByteArray(ccdaAttachment))
+		// Decide which attachment should be used
+		InputStream ccdaAttachment = null
+		String attachmentName = ""
+		if(this.attachmentType != null) {
+			if(this.attachmentType.equals("CCR")) {
+				ccdaAttachment = getClass().getResourceAsStream("/cda-samples/CCR_Sample1.xml")
+				attachmentName = "CCR_Sample1.xml"
+			} else if(this.attachmentType.equals("C32")) {
+				ccdaAttachment = getClass().getResourceAsStream("/cda-samples/C32_Sample1.xml")
+				attachmentName = "C32_Sample1.xml"
+			} else {
+				ccdaAttachment = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")
+				attachmentName = "CCDA_Ambulatory.xml.xml"
+			}
+		} else {
+			ccdaAttachment = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")
+			attachmentName = "CCDA_Ambulatory.xml"
+		}
+		attachment.put(attachmentName, IOUtils.toByteArray(ccdaAttachment))
 
 		TestInput res = new TestInput(this.sutSmtpAddress, this.tttSmtpAddress,
 				Integer.parseInt(this.sutSmtpPort),

@@ -1,3 +1,18 @@
+==Version 0.0.7#06/12/2015
+	* Direct
+		-Improved error reporting for DTS 195 when Body contains non ASCII characters.
+	* XDR
+		-Added test case 4e
+
+==Version 0.0.6#05/27/2015
+	* XDR
+		-Added XDR MU2 tests.
+		-Updated descriptions for the XDR test cases.
+
+==Version 0.0.5#05/11/2015
+	* SMTP
+		-Added download link for SMTP attachments in the log.
+
 ==Version 0.0.4#05/05/2015
 	* SMTP
 		-Updated test cases 46.

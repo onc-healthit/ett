@@ -22,12 +22,13 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -208,18 +209,25 @@ public class PartValidation {
 			ccdaFilename = UUID.randomUUID().toString();
 		}
 		
-		CloseableHttpClient client = HttpClients.createDefault();
-		HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
-		FileBody fileBody = new FileBody(ccdaFile);
-		//
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-		builder.addPart("file", fileBody);
-		builder.addTextBody("type_val", this.ccdaType);
-		HttpEntity entity = builder.build();
-		//
-		post.setEntity(entity);
 		try {
+			int timeout = 5;
+			int sotimeout = 10;
+			RequestConfig config = RequestConfig.custom()
+					.setConnectTimeout(timeout * 1000)
+					.setConnectionRequestTimeout(timeout * 1000)
+					.setSocketTimeout(sotimeout * 1000).build();
+			CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+			
+			HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
+			FileBody fileBody = new FileBody(ccdaFile);
+			
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+			builder.addPart("file", fileBody);
+			builder.addTextBody("type_val", this.ccdaType);
+			HttpEntity entity = builder.build();
+			
+			post.setEntity(entity);
 			HttpResponse response = client.execute(post);
 			// CONVERT RESPONSE TO STRING
 			String result = EntityUtils.toString(response.getEntity());
@@ -240,8 +248,8 @@ public class PartValidation {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw e;
 		}
+		return null;
 	}
 	
 	/**

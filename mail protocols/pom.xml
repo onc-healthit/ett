@@ -2,10 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>gov.nist.healthcare.ttt</groupId>
-	<artifactId>smtp</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
-	<name>smtptests</name>
+	<artifactId>mailprotocols</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>mailprotocols</name>
 	<description>Tests the SUT's SMTP capabilities by positive and negative cases [both sender/receiver]</description>
 	<properties>
 		<project.build.javaVersion>1.7</project.build.javaVersion>
@@ -132,4 +131,10 @@
 		<connection>scm:svn:https://svn.code.sf.net/p/smptests/svn/trunk</connection>
 		<developerConnection>scm:svn:https://svn.code.sf.net/p/smptests/svn/trunk</developerConnection>
 	</scm>
+	<parent>
+		<groupId>gov.nist.healthcare.ttt</groupId>
+		<artifactId>ttt</artifactId>
+		<version>1.0</version>
+		<relativePath>..</relativePath>
+	</parent>
 </project>

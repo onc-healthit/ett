@@ -30,7 +30,7 @@ public class TestInput {
 	public String tttSmtpAddress;
 	
 	public int startTlsPort;
-
+	
 	public LinkedHashMap<String, byte[]> attachments = new LinkedHashMap<String, byte[]>();
 	
 	public TestInput(String _sutSmtpAddress,String _tttSmtpAddress,int _sutSmtpPort, int _tttSmtpPort,
@@ -158,4 +158,5 @@ public class TestInput {
 	public void setTttSmtpAddress(String tttSmtpAddress) {
 		this.tttSmtpAddress = tttSmtpAddress;
 	}
+	
 }
