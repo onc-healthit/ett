@@ -271,7 +271,7 @@
 }, {
     "name": "XDR Test MU2 20a",
     "id": "20a",
-    "desc": "Verifies the ability of the sending system initiate an XDR transaction to ETT and to recieve a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -279,11 +279,12 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
-    }]
+    }],
+    "expectedMDN": true
 }, {
     "name": "XDR MU2 Test 20b",
     "id": "20b",
-    "desc": "Verifies the ability of the sending system initiate an XDR transaction to ETT and to recieve a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -291,7 +292,8 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
-    }]
+    }],
+    "expectedMDN": true
 }, {
     "name": "XDR MU2 Test 48",
     "id": 48,
@@ -327,7 +329,8 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
-    }]
+    }],
+    "expectedMDN": true
 }, {
     "name": "XDR MU2 Test 50b",
     "id": "50b",
@@ -339,5 +342,6 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
-    }]
+    }],
+    "expectedMDN": true
 }]
