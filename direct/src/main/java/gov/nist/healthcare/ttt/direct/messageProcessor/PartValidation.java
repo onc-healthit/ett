@@ -176,9 +176,12 @@ public class PartValidation {
 		SMIMESigned s = new SMIMESigned((MimeMultipart)p.getContent());
 
 		// Find micalg
-		String micalg = p.getContentType().split("micalg=")[1];
-		if(micalg.contains(";")) {
-			micalg = micalg.split(";")[0];
+		String micalg = "";
+		if(p.getContentType().contains("micalg=")) {
+			micalg = p.getContentType().split("micalg=")[1];
+			if(micalg.contains(";")) {
+				micalg = micalg.split(";")[0];
+			}
 		}
 
 		// verify signature

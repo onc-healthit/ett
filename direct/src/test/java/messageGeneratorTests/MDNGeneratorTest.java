@@ -41,6 +41,14 @@ public class MDNGeneratorTest {
 		MimeMessage msg = generator.generateEncryptedMessage(signed);
 		msg.writeTo(new FileOutputStream(new File("e_mdn.txt")));
 		
+		generator.setEncryptionCert(new FileInputStream(new File(publicCertPath)));
+		MimeMessage msg2 = generator.generateEncryptedMessageWithNullSender(signed, true, false);
+		msg2.writeTo(new FileOutputStream(new File("mdnnullsender.txt")));
+		
+		generator.setEncryptionCert(new FileInputStream(new File(publicCertPath)));
+		MimeMessage msg3 = generator.generateEncryptedMessageWithNullSender(signed, false, true);
+		msg3.writeTo(new FileOutputStream(new File("mdndifferentsender.txt")));
+		
 	}
 
 }

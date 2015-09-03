@@ -10,14 +10,14 @@ import com.sun.mail.dsn.MultipartReport;
 
 public class MDNGenerator extends DirectMessageGenerator {
 
-	private String reporting_UA_name;
-	private String reporting_UA_product;
-	private String original_recipient;
-	private String final_recipient;
-	private String original_message_id;
-	private String disposition;
-	private String failure;
-	private String text;
+	protected String reporting_UA_name;
+	protected String reporting_UA_product;
+	protected String original_recipient;
+	protected String final_recipient;
+	protected String original_message_id;
+	protected String disposition;
+	protected String failure;
+	protected String text;
 
 	public MDNGenerator() {
 		this.reporting_UA_name = "";
@@ -95,6 +95,22 @@ public class MDNGenerator extends DirectMessageGenerator {
 	
 	public MimeMessage generateMDN() throws MessagingException, Exception {
 		return encryptMDN(signMDN(generateBodyReport()));
+	}
+	
+	/**
+	 * 
+	 * Faulty MDN generation
+	 * 
+	 */
+	
+	// Null Envelope Sender
+	public MimeMessage generateNullEnvelopeSenderMDN() throws MessagingException, Exception {
+		return generateEncryptedMessageWithNullSender(signMDN(generateBodyReport()), true, false);
+	}
+	
+	// Different Sender
+	public MimeMessage generateDifferentSenderMDN() throws MessagingException, Exception {
+		return generateEncryptedMessageWithNullSender(signMDN(generateBodyReport()), false, true);
 	}
 	
 	public boolean isNullorEmpty(String value) {

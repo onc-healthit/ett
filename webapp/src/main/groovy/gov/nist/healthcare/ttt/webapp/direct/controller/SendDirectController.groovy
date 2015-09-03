@@ -81,7 +81,12 @@ public class SendDirectController {
 			
 			messageGenerator.setEncryptionCert(encryptionCert);
 
-			MimeMessage msg = messageGenerator.generateMessage();
+			// Check if we want invalid digest
+			if(messageInfo.invalidDigest) {
+				MimeMessage msg = messageGenerator.generateAlteredDirectMessage()
+			} else {
+				MimeMessage msg = messageGenerator.generateMessage();
+			}
 			
 			// Log the outgoing message in the database
 			LogModel outgoingMessage = new LogModel(msg);

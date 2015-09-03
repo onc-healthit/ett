@@ -748,19 +748,19 @@ public class ListenerProcessor implements Runnable {
 	public void manageMDNAddresses(String smtpFrom, String from, String to, InputStream message) {
 		switch(smtpFrom) {
 			case 'processedonly5':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			case 'processeddispatched6':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			case 'processdelayeddispatch7':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
 				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
 				this.sleep(3900000);
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			case 'nomdn8':
@@ -768,7 +768,7 @@ public class ListenerProcessor implements Runnable {
 				break
 				
 			case 'noaddressfailure9':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			default:

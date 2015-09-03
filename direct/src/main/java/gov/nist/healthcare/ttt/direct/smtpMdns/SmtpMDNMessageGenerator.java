@@ -1,21 +1,17 @@
 package gov.nist.healthcare.ttt.direct.smtpMdns;
 
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 
-import javax.mail.Message;
 import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
-import gov.nist.healthcare.ttt.direct.messageGenerator.SMTPAddress;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 
 public class SmtpMDNMessageGenerator {
 
-	public static void sendSmtpMDN(InputStream originalMessage, String from, String to, String type, String failure) throws Exception {
+	public static void sendSmtpMDN(InputStream originalMessage, String from, String to, String type, String failure, InputStream signingCert, String signingCertPassword) throws Exception {
 
 		// Get the session variable
 		Properties props = System.getProperties();
@@ -36,14 +32,12 @@ public class SmtpMDNMessageGenerator {
 		generator.setText("Your message was successfully processed.");
 		generator.setToAddress(to);
 		generator.setFailure(failure);
+		// Certificates 
+		generator.setSigningCert(signingCert);
+		generator.setSigningCertPassword(signingCertPassword);
+		generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup(to));
 		
-		MimeMessage mdnToSend = new MimeMessage(session);
-		mdnToSend.setFrom(new InternetAddress(new SMTPAddress().properEmailAddr(from)));
-		mdnToSend.setRecipient(Message.RecipientType.TO, new InternetAddress(new SMTPAddress().properEmailAddr(to)));
-		mdnToSend.setSentDate(new Date());
-		mdnToSend.setContent(generator.create());
-		mdnToSend.setSubject("Automatic MDN");
-		mdnToSend.saveChanges();
+		MimeMessage mdnToSend = generator.generateMDN();
 		
 		DirectMessageSender sender = new DirectMessageSender();
 		
