@@ -5,7 +5,14 @@ import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
 
+
+
+
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -26,6 +33,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 public class TTTSenderTests {
@@ -102,6 +110,7 @@ public class TTTSenderTests {
 
 		return tr;
 	}
+	
 
 	/**
 	 * Implements Testcase #16. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
@@ -194,7 +203,601 @@ public class TTTSenderTests {
 
 		return tr;
 	}
+	
+	/**
+	 * Implements Testcase to send Text and CCDA. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
 
+	public TestResult testStarttlsCCDAandText(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing CCDA and Text!");
+			message.setText("This is a message to test Text+CCDA!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("CCDA_Ambulatory.xml");
+				multipart.addBodyPart(messageBodyPart);
+				
+				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+						"text/xml");
+				messageBodyPart1.setDataHandler(new DataHandler(source1));
+				messageBodyPart1.setFileName("Text.txt");
+				multipart.addBodyPart(messageBodyPart1);
+				
+
+			
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Text.txt and CCDA_Ambulatory.xml");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+
+	/**
+	 * Implements Testcase to send Pdf and CCDA. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
+
+	public TestResult testStarttlsCCDAandPdf(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing CCDA and Pdf!");
+			message.setText("This is a message to test Pdf+CCDA!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+						"application/xml");
+				messageBodyPart1.setDataHandler(new DataHandler(source1));
+				messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
+				multipart.addBodyPart(messageBodyPart1);
+				
+				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("Sample.pdf");
+				multipart.addBodyPart(messageBodyPart);
+
+			
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Sample.pdf and CCDA_Ambulatory.xml ");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	
+	/**
+	 * Implements Testcase to send Text and XDM. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
+
+	public TestResult testStarttlsXDMandText(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing XDM and Text!");
+			message.setText("This is a message to test Text+XDM!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
+						"text/html");
+				messageBodyPart1.setDataHandler(new DataHandler(source1));
+				messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
+				multipart.addBodyPart(messageBodyPart1);
+				
+				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("Text.txt");
+				multipart.addBodyPart(messageBodyPart);
+				
+				
+
+			
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_Ambulatory_in_XDM.zip and Text.txt");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	
+	
+	/**
+	 * Implements Testcase to send Text and CCDA. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
+
+	public TestResult testStarttlsTextandCCDA(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing Text and CCDA!");
+			message.setText("This is a message to test Text+CCDA!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("Text.txt");
+				multipart.addBodyPart(messageBodyPart);
+				
+				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+						"text/xml");
+				messageBodyPart1.setDataHandler(new DataHandler(source1));
+				messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
+				multipart.addBodyPart(messageBodyPart1);
+				
+
+			
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_Ambulatory.xml and Text.txt");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+
+	/**
+	 * Implements Testcase to send Pdf and CCDA. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
+
+	public TestResult testStarttlsPdfandCCDA(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing Pdf and CCDA!");
+			message.setText("This is a message to test Pdf+CCDA!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("Sample.pdf");
+				multipart.addBodyPart(messageBodyPart);
+				
+				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+						"application/xml");
+				messageBodyPart1.setDataHandler(new DataHandler(source1));
+				messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
+				multipart.addBodyPart(messageBodyPart1);
+				
+
+			
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_Ambulatory.xml and Sample.pdf");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	
+	/**
+	 * Implements Testcase to send Text and XDM. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
+
+	public TestResult testStarttlsTextandXDM(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing Text and XDM!");
+			message.setText("This is a message to test Text+XDM!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("Text.txt");
+				multipart.addBodyPart(messageBodyPart);
+				
+				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
+						"text/html");
+				messageBodyPart1.setDataHandler(new DataHandler(source1));
+				messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
+				multipart.addBodyPart(messageBodyPart1);
+				
+
+			
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Text.txt and CCDA_Ambulatory_in_XDM.zip");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
 	/**
 	 * Implements Testcase #20 and #22. Authenticates with SUT(good/bad password) and sends a mail from SUT Server to a user on SUT.
 	 * 
@@ -243,7 +846,7 @@ public class TTTSenderTests {
 				// Send the complete message parts
 				message.setContent(multipart);
 			}
-
+			
 			log.info("Authenticating....");
 			transport = session.getTransport("smtp");
 
@@ -292,6 +895,88 @@ public class TTTSenderTests {
 		return tr;
 	}
 
+	public TestResult testSendBadCCDA(TestInput ti, String filename) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing bad CCDA!");
+			message.setText("This is a message to test Text+XDM!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("ToC_Ambulatory.xml");
+				multipart.addBodyPart(messageBodyPart);
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "ToC_Ambulatory.xml");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
 	public void testDigestMd5(TestInput ti) {
 
 		Properties props = new Properties();

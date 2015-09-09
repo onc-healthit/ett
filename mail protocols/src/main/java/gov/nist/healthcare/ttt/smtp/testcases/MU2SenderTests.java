@@ -37,21 +37,21 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required",true);
+		//	props.put("mail.smtp.starttls.enable",true);
+		//	props.put("mail.smtp.starttls.required",true);
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
-		props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 
 		Session session = Session.getInstance(props, null);
 
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.tttEmailAddress));
+			message.setFrom(new InternetAddress(ti.sutUserName+"@"+ti.sutSmtpAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(ti.sutEmailAddress));
+					InternetAddress.parse("badaddress@gmffail.com"));
 			message.setSubject("Testing sending mail to BadAddress (Test Case MU2-1)!");
 			message.setText("This is a message to a badAddress!");
 
@@ -78,7 +78,7 @@ public class MU2SenderTests {
 
 
 		} 
-		
+
 		catch (NullPointerException e) {
 			log.info("Error in testBadAddress");
 			result.put("ERROR :", "Address cannot be null");
@@ -86,7 +86,7 @@ public class MU2SenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		
+
 		catch (Exception e) {
 			log.info("Error in testBadAddress");
 			result.put("1", "Error in TEST BAD ADDRESS: " + e.getLocalizedMessage());
@@ -98,7 +98,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	
+
 	public TestResult testMu2Two(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
@@ -107,10 +107,10 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		//	props.put("mail.smtp.starttls.enable","true");
+		//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-		props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 
 
 		Session session = Session.getInstance(props, null);
@@ -121,8 +121,8 @@ public class MU2SenderTests {
 			message.setFrom(new InternetAddress(ti.tttEmailAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
-				message.setSubject("Testing sending mail to BadAddress (Test Case MU2-2)!");
-				message.setText("This is a message to a badAddress!");
+			message.setSubject("Testing sending mail to BadAddress (Test Case MU2-2)!");
+			message.setText("This is a message to a badAddress!");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -143,14 +143,24 @@ public class MU2SenderTests {
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
-		} catch (MessagingException e) {
-			log.info("Error in MU2 - 2");
-			result.put("1", "Error in TEST MU2 - 2: " + e.getLocalizedMessage());
+
+		} 
+
+		catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR :", "Address cannot be null");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
 
+		catch (Exception e) {
+			log.info("Error in testBadAddress");
+			result.put("1", "Error in TEST BAD ADDRESS: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
 		return tr;
 	}
 
@@ -162,8 +172,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		//	props.put("mail.smtp.starttls.enable","true");
+		//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 
@@ -197,15 +207,23 @@ public class MU2SenderTests {
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
+		} 
 
-		} catch (MessagingException e) {
-			log.info("Error in MU2 -3");
-			result.put("1", "Error in TEST MU2 - 3: " + e.getLocalizedMessage());
+		catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR :", "Address cannot be null");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
 
+		catch (Exception e) {
+			log.info("Error in testBadAddress");
+			result.put("1", "Error in TEST BAD ADDRESS: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
 		return tr;
 	}
 
@@ -217,8 +235,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		//	props.put("mail.smtp.starttls.enable","true");
+		//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 
@@ -252,9 +270,19 @@ public class MU2SenderTests {
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
-		} catch (MessagingException e) {
-			log.info("Error in MU2-4");
-			result.put("1", "Error in TEST MU2 - 4: " + e.getLocalizedMessage());
+		} 
+
+		catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR :", "Address cannot be null");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		catch (Exception e) {
+			log.info("Error in testBadAddress");
+			result.put("1", "Error in TEST BAD ADDRESS: " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -274,8 +302,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		//	props.put("mail.smtp.starttls.enable","true");
+		//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 
@@ -284,11 +312,11 @@ public class MU2SenderTests {
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.tttEmailAddress));
+			message.setFrom(new InternetAddress(ti.sutUserName+"@"+ti.sutSmtpAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(Address));
-			//	message.setSubject("Testing sending mail to BadAddress (Test Case MU2-28)!");
-			//	message.setText("This is a message to a badAddress!");
+			message.setSubject("Testing sending mail to " + Address);
+			message.setText("This is a message to "+ Address);
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -310,7 +338,7 @@ public class MU2SenderTests {
 			result.put("3", "Message-ID of the email sent: " + message.getHeader("Message-ID")[0]);
 
 		} catch (MessagingException e) {
-			log.info("Error in MU2 -27");
+			log.info("Error in MU2 -27/28");
 			result.put("ERROR", "Cannot send message to " + Address + ": " +  e.getLocalizedMessage());
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -338,18 +366,19 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		//	props.put("mail.smtp.starttls.enable","true");
+		//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
+		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 
 		Session session = Session.getInstance(props, null);
 
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.tttEmailAddress));
+			message.setFrom(new InternetAddress(ti.sutUserName+"@"+ti.sutSmtpAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(ti.sutEmailAddress));
+					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
@@ -389,8 +418,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		//	props.put("mail.smtp.starttls.enable","true");
+		//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 
 		Session session = Session.getInstance(props, null);
@@ -398,9 +427,9 @@ public class MU2SenderTests {
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.tttEmailAddress));
+			message.setFrom(new InternetAddress(ti.sutUserName+"@"+ti.sutSmtpAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(ti.sutEmailAddress));
+					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
@@ -436,27 +465,25 @@ public class MU2SenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.TRUE);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		String dsn = "SUCCESS,FAILURE,DELAY,ORCPT=rfc1891";
-
+		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
+		//	props.put("mail.smtp.starttls.enable","true");
+		//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-		props.put("mail.smtp.dsn.ret", "HDRS");
-		props.put("mail.smtp.notify", dsn);
-
+		//	props.put("mail.smtp.dsn.ret", "HDRS");
+		//	props.put("mail.smtp.notify", dsn);
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.tttEmailAddress));
+			message.setFrom(new InternetAddress(ti.sutUserName+"@"+ti.sutSmtpAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(ti.sutEmailAddress));
+					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
-			message.addHeader("Disposition-Notification-To", "failure15@hit-testing2.nist.gov");
+			//	message.addHeader("Disposition-Notification-To", "failure15@hit-testing2.nist.gov");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 

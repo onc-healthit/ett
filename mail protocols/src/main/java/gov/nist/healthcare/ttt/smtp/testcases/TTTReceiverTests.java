@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -68,6 +69,7 @@ public class TTTReceiverTests {
 	 * fetched.
 	 */
 	public TestResult fetchMail(TestInput ti) throws IOException {
+
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
@@ -76,12 +78,20 @@ public class TTTReceiverTests {
 		Properties props = System.getProperties();
 
 		try {
-			Session session = Session.getDefaultInstance(props, null);
-			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 110,
-					"unpublishedwellformed1@hit-testing2.nist.gov",
-					"smtptesting123");
 
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+
+		//	Session session = Session.getDefaultInstance(props, null);
+			Session session = Session.getInstance(props, null);
+			Store store = session.getStore("imap");
+			store.close();
+			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+					prop.getProperty("ett.starttls.address"),
+					prop.getProperty("ett.password"));
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
 
@@ -106,7 +116,7 @@ public class TTTReceiverTests {
 						// h.getValue());
 						result.put("\n" + h.getName(), h.getValue() + "\n");
 					}
-
+				
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
@@ -156,82 +166,6 @@ public class TTTReceiverTests {
 	}
 
 	/*
-	 * 
-	 * 
-	 */
-	public TestResult fetchMail2(TestInput ti) throws IOException {
-		System.setProperty("java.net.preferIPv4Stack", "true");
-		TestResult tr = new TestResult();
-		HashMap<String, String> result = tr.getTestRequestResponses();
-		int j = 0;
-		Properties props = System.getProperties();
-		try {
-			Session session = Session.getDefaultInstance(props, null);
-			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 995,
-					"wellformed2@hit-testing2.nist.gov", "smtptesting123");
-
-			Folder inbox = store.getFolder("Inbox");
-			inbox.open(Folder.READ_WRITE);
-
-			Flags seen = new Flags(Flags.Flag.SEEN);
-			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
-			Message messages[] = inbox.search(unseenFlagTerm);
-
-			for (Message message : messages) {
-
-				Address[] froms = message.getFrom();
-				String sender_ = froms == null ? null
-						: ((InternetAddress) froms[0]).getAddress();
-
-				String sender = ti.sutEmailAddress;
-				if (sender_.equals(sender)) {
-					j++;
-					// Store all the headers in a map
-					Enumeration headers = message.getAllHeaders();
-					while (headers.hasMoreElements()) {
-						Header h = (Header) headers.nextElement();
-						result.put(h.getName() + " " + j, h.getValue());
-
-						// Storing the Message Body Parts
-						/*
-						 * Multipart multipart = (Multipart)
-						 * message.getContent(); for (int i = 0; i <
-						 * multipart.getCount(); i++) { BodyPart bodyPart =
-						 * multipart.getBodyPart(i); InputStream stream =
-						 * bodyPart.getInputStream();
-						 * 
-						 * byte[] targetArray = IOUtils.toByteArray(stream);
-						 * 
-						 * }
-						 */
-
-					}
-				}
-				inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
-
-			}
-
-			if (result.size() == 0) {
-				tr.setCriteriamet(CriteriaStatus.FALSE);
-				;
-				result.put("ERROR", "No messages found!");
-			} else {
-				tr.setCriteriamet(CriteriaStatus.TRUE);
-			}
-		} catch (MessagingException e) {
-			tr.setCriteriamet(CriteriaStatus.FALSE);
-			;
-			e.printStackTrace();
-			log.info("Error fetching email  " + e.getLocalizedMessage());
-			tr.getTestRequestResponses().put("\nERROR",
-					"Cannot fetch mail :" + e.getLocalizedMessage());
-		}
-
-		return tr;
-	}
-
-	/*
 	 * Fetches message-ids for each unread message in the inbox.
 	 */
 	public TestResult fetchUniqueId(TestInput ti) throws IOException {
@@ -244,10 +178,17 @@ public class TTTReceiverTests {
 		Properties props = System.getProperties();
 
 		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 110,
-					"wellformed14@hit-testing2.nist.gov", "smtptesting123");
+			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+					prop.getProperty("ett.other.address"),
+					prop.getProperty("ett.password"));
 
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
@@ -327,10 +268,17 @@ public class TTTReceiverTests {
 		Properties props = System.getProperties();
 
 		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, 110,
-					"wellformed14@hit-testing2.nist.gov", "smtptesting123");
+			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+					prop.getProperty("ett.other.address"),
+					prop.getProperty("ett.password"));
 
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
@@ -338,7 +286,6 @@ public class TTTReceiverTests {
 			Flags seen = new Flags(Flags.Flag.SEEN);
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
 			Message messages[] = inbox.search(unseenFlagTerm);
-
 			for (Message message : messages) {
 
 				Address[] froms = message.getFrom();
@@ -377,12 +324,12 @@ public class TTTReceiverTests {
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put("\nERROR",
 					"Error fetching email  - " + e.getLocalizedMessage());
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			e.printStackTrace();
-			log.info("Header not found " + e.getLocalizedMessage());
+			log.info("Error" + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put("\nERROR",
-					"Header not found  " + e.getLocalizedMessage());
+					"Error  " + e.getLocalizedMessage());
 		}
 
 		return tr;
@@ -419,7 +366,7 @@ public class TTTReceiverTests {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
 			// store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);
-			store.connect(ti.sutSmtpAddress, 993, ti.sutUserName,
+			store.connect(ti.sutSmtpAddress, 143, ti.sutUserName,
 					ti.sutPassword);
 
 			IMAPFolder inbox = (IMAPFolder) store.getFolder("Inbox");
@@ -504,7 +451,7 @@ public class TTTReceiverTests {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
 			// store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);
-			store.connect(ti.sutSmtpAddress, 993, ti.sutUserName,
+			store.connect(ti.sutSmtpAddress, 143, ti.sutUserName,
 					ti.sutPassword);
 
 			IMAPFolder inbox = (IMAPFolder) store.getFolder("Inbox");
@@ -546,6 +493,7 @@ public class TTTReceiverTests {
 							targetArray));
 
 				}
+				store.close();
 
 			}
 			if (bodyparts.isEmpty()) {
@@ -589,7 +537,7 @@ public class TTTReceiverTests {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
 			// store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);
-			store.connect(ti.sutSmtpAddress, 993, ti.sutUserName,
+			store.connect(ti.sutSmtpAddress, 143, ti.sutUserName,
 					ti.sutPassword);
 
 			IMAPFolder inbox = (IMAPFolder) store.getFolder("Inbox");
@@ -631,6 +579,7 @@ public class TTTReceiverTests {
 							targetArray) + "\n");
 
 				}
+				store.close();
 
 			}
 			if (bodyparts.isEmpty()) {
@@ -669,7 +618,7 @@ public class TTTReceiverTests {
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.sutSmtpAddress, 993, ti.sutUserName, "badPassword");
+			store.connect(ti.sutSmtpAddress, 143, ti.sutUserName, "badPassword");
 
 			IMAPFolder inbox = (IMAPFolder) store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
@@ -715,7 +664,7 @@ public class TTTReceiverTests {
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.sutSmtpAddress, 993, ti.sutUserName,
+			store.connect(ti.sutSmtpAddress, 143, ti.sutUserName,
 					ti.sutPassword);
 
 			IMAPFolder inbox = (IMAPFolder) store.getFolder("Inbox");
@@ -885,7 +834,7 @@ public class TTTReceiverTests {
 					.getDefault()).createSocket(
 							InetAddress.getByName(ti.sutSmtpAddress), 993);*/
 
-			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 993);
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 143);
 			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					socket.getOutputStream(), "Windows-1252")), true);
 			// output = new DataOutputStream(socket.getOutputStream());
@@ -987,7 +936,7 @@ public class TTTReceiverTests {
 						.getDefault()).createSocket(
 								InetAddress.getByName(ti.sutSmtpAddress), 993);*/
 
-				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 993);
+				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 143);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new BufferedReader(new InputStreamReader(
 					socket.getInputStream(), "Windows-1252"));
@@ -1076,7 +1025,7 @@ public class TTTReceiverTests {
 						.getDefault()).createSocket(
 								InetAddress.getByName(ti.sutSmtpAddress), 993);*/
 
-				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 993);
+				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 143);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new BufferedReader(new InputStreamReader(
 					socket.getInputStream(), "Windows-1252"));
@@ -1150,7 +1099,7 @@ public class TTTReceiverTests {
 		try {
 			socket1 = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 					.getDefault()).createSocket(
-							InetAddress.getByName(ti.sutSmtpAddress), 993);
+							InetAddress.getByName(ti.sutSmtpAddress), 143);
 			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 993);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new DataInputStream(socket.getInputStream());
@@ -1293,7 +1242,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 			}
 		}
-
+		
 		for (String s : response) {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -1651,7 +1600,7 @@ public class TTTReceiverTests {
 				Address[] froms = message.getFrom();
 				String sender_ = froms == null ? ""
 						: ((InternetAddress) froms[0]).getAddress();
-
+				// Sender's Address
 				String sender = ti.sutEmailAddress;
 				if (sender_.equals(sender)) {
 					// j++;
@@ -1673,7 +1622,7 @@ public class TTTReceiverTests {
 						byte[] targetArray = IOUtils.toByteArray(stream);
 						System.out.println(new String(targetArray));
 						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
+						if (bodyPart.getFileName() != null) { 
 							bodyparts.put(bodyPart.getFileName(), new String(
 									targetArray));
 						} else {
@@ -1702,7 +1651,7 @@ public class TTTReceiverTests {
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put(
 					"\nERROR",
-					"Cannot fetch email from " + ti.tttSmtpAddress + " :"
+					"Cannot fetch email from " + ti.sutSmtpAddress + " :"
 							+ e.getLocalizedMessage());
 		}
 

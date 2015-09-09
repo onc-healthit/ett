@@ -130,6 +130,134 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			res.add(tr9);
 			log.info("*****************   END  Testcase 9 *******************************");
 			break;
+			
+		case 91:
+			
+			log.info("*****************   BEGIN  Testcase 91 *******************************");
+			ti.useTLS = false;
+			TestResult tr91;
+			try {
+				tr91 = sTest.testStarttlsTextandCCDA(ti);
+				tr91.id = 91;
+				res.add(tr91);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 91 *******************************");
+			break;
+			
+		case 92:
+			
+			log.info("*****************   BEGIN  Testcase 92 *******************************");
+			ti.useTLS = false;
+			TestResult tr92;
+			try {
+				tr92 = sTest.testStarttlsPdfandCCDA(ti);
+				tr92.id = 92;
+				res.add(tr92);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 92 *******************************");
+			break;	
+			
+		case 93:
+			
+			log.info("*****************   BEGIN  Testcase 93 *******************************");
+			ti.useTLS = false;
+			TestResult tr93;
+			try {
+				tr93 = sTest.testStarttlsTextandXDM(ti);
+				tr93.id = 93;
+				res.add(tr93);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 93 *******************************");
+			break;	
+			
+		case 94:
+			
+			log.info("*****************   BEGIN  Testcase 94 *******************************");
+			ti.useTLS = false;
+			TestResult tr94;
+			try {
+				tr94 = sTest.testStarttlsCCDAandText(ti);
+				tr94.id = 94;
+				res.add(tr94);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 94 *******************************");
+			break;
+			
+		case 95:
+			
+			log.info("*****************   BEGIN  Testcase 95 *******************************");
+			ti.useTLS = false;
+			TestResult tr95;
+			try {
+				tr95 = sTest.testStarttlsCCDAandPdf(ti);
+				tr95.id = 95;
+				res.add(tr95);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 95 *******************************");
+			break;	
+			
+		case 96:
+			
+			log.info("*****************   BEGIN  Testcase 96 *******************************");
+			ti.useTLS = false;
+			TestResult tr96;
+			try {
+				tr96 = sTest.testStarttlsXDMandText(ti);
+				tr96.id = 96;
+				res.add(tr96);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 96 *******************************");
+			break;	
+			
+		case 97:
+			
+			log.info("*****************   BEGIN  Testcase 97 *******************************");
+			ti.useTLS = false;
+			TestResult tr97;
+			try {
+				tr97 = sTest.testSendBadCCDA(ti, "/cda-samples/ToC_Ambulatory_No_Stylesheet.xml");
+				tr97.id = 97;
+				res.add(tr97);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 97 *******************************");
+			break;	
+			
+		case 98:
+			
+			log.info("*****************   BEGIN  Testcase 98 *******************************");
+			ti.useTLS = false;
+			TestResult tr98;
+			try {
+				tr98 = sTest.testSendBadCCDA(ti, "/cda-samples/ToC_Ambulatory_Bad_Stylesheet.xml");
+				tr98.id = 98;
+				res.add(tr98);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 98 *******************************");
+			break;	
 
 		case 10:
 			res.add(nTest.testBadData(ti));
@@ -145,21 +273,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 		case 13:
 			res.addAll(nTest.testTimeout(ti));
-			break;
-			
-		case 14:
-			log.info("*****************   BEGIN  Testcase 14 *******************************");
-
-			TestResult tr14;
-			try {
-				tr14 = tTest.fetchMail2(ti);
-				tr14.id = 14;
-				res.add(tr14);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 14 *******************************");
 			break;
 
 		case 15:
@@ -227,6 +340,8 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 					+ " not tested!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			sTest.testDigestMd5(ti); // take another param useBadPass
 			return null;
+			
+			
 
 		case 101:
 			log.info("*****************   BEGIN  Testcase 101 *******************************");
@@ -289,8 +404,14 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			break;
 			
 		case 105:
-			log.info("*****************   BEGIN  Testcase 101 *******************************");
-			log.info("*****************   END  Testcase 101 *******************************");
+			log.info("*****************   BEGIN  Testcase 105 *******************************");
+			ti.useTLS = true;
+			TestResult tr105;
+			tr105 = mu2senderTests.testBadAddress(ti);
+			tr105.id = 105;
+			res.add(tr105);
+			
+			log.info("*****************   END  Testcase 105 *******************************");
 			break;
 			
 		case 106:
@@ -384,7 +505,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 126 *******************************");
 			ti.useTLS = true;
 			TestResult tr126;
-			tr126 = mu2senderTests.testMu2Four(ti);
+			tr126 = mu2senderTests.testMu2TwoEight(ti,"nomdn8@hit-dev.nist.gov");
 			tr126.id = 126;
 			res.add(tr126);
 			
@@ -506,7 +627,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-				
+			// This 
 			
 			log.info("*****************   END  Testcase 201 *******************************");
 			break;

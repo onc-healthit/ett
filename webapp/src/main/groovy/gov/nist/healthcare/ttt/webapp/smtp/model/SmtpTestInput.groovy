@@ -136,6 +136,7 @@ public class SmtpTestInput {
 			attachmentName = "CCDA_Ambulatory.xml"
 		}
 		attachment.put(attachmentName, IOUtils.toByteArray(ccdaAttachment))
+	//	attachment.put("blah.xml", IOUtils.toByteArray(ccdaAttachment))
 
 		TestInput res = new TestInput(this.sutSmtpAddress, this.tttSmtpAddress,
 				Integer.parseInt(this.sutSmtpPort),

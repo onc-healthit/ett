@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 public class MU2ReceiverTests {
 	public static Logger log = Logger.getLogger("MU2ReceiverTests");
 
-	public TestResult fetchMail(TestInput ti) throws IOException {
+	public TestResult fetchMail1(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
@@ -40,7 +40,7 @@ public class MU2ReceiverTests {
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress,110,"failure15@hit-testing2.nist.gov","smtptesting123");
+			store.connect(ti.tttSmtpAddress,993,"failure15@hit-testing2.nist.gov","smtptesting123");
 
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
@@ -101,5 +101,79 @@ public class MU2ReceiverTests {
 
 		return tr;
 	}
+	
+	public TestResult fetchMail(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		HashMap<String, String> bodyparts = tr.getAttachments();
+		//int j = 0;
+		Properties props = System.getProperties();
+
+		try {
+			Session session = Session.getDefaultInstance(props, null);
+			Store store = session.getStore("pop3");
+			store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);
+
+			Folder inbox = store.getFolder("Inbox");
+			inbox.open(Folder.READ_WRITE);
+
+
+			Flags seen = new Flags(Flags.Flag.SEEN);
+			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+			Message messages[] = inbox.search(unseenFlagTerm);
+
+			for (Message message : messages) {
+
+				Address[] froms = message.getFrom();
+				String sender_ = froms == null ? ""
+						: ((InternetAddress) froms[0]).getAddress();
+
+				String sender = ti.sutEmailAddress;
+				if (sender_.equals(sender)) {
+					//j++;
+					// Store all the headers in a map
+					Enumeration headers = message.getAllHeaders();
+					while (headers.hasMoreElements()) {
+						Header h = (Header) headers.nextElement();
+					//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+						result.put("\n"+h.getName(), h.getValue()+"\n");
+
+
+
+
+					}
+					Multipart multipart = (Multipart) message.getContent();
+					for (int i = 0; i < multipart.getCount(); i++) {
+						BodyPart bodyPart = multipart.getBodyPart(i);
+						InputStream stream = bodyPart.getInputStream();
+
+						byte[] targetArray = IOUtils.toByteArray(stream);
+						System.out.println(new String(targetArray));
+						int m = i+1;
+						 bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+
+					}
+				}
+
+			}
+
+			if (result.size() == 0) {
+				tr.setCriteriamet(CriteriaStatus.STEP2);
+				tr.getTestRequestResponses().put("ERROR","No messages found! Send a message and try again.");
+			}
+			else {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+		} catch (MessagingException e) {
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			log.info("Error fetching email " + e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("1","Error fetching email :" + e.getLocalizedMessage());
+		}
+
+		return tr;
+	}
+	
 
 }
