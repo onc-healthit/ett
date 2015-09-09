@@ -106,6 +106,13 @@
 			<version>4.3.6</version>
 		</dependency>
 
+		<dependency>
+	        <groupId>mdht</groupId>
+	        <artifactId>mdht</artifactId>
+	        <version>1.0</version>
+	        <scope>system</scope>
+	        <systemPath>${project.basedir}/src/main/resources/libs/RefereneCCDA.jar</systemPath>
+    	</dependency>
 
 	</dependencies>
 

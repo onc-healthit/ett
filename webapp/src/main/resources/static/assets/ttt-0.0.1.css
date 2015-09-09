@@ -2143,6 +2143,9 @@ $popover-triangle-border-color: $popover-border-color !default;
 .success strong {
   color: #2b542c;
 }
+.cdatType-select-choices {
+  width: auto !important;
+}
 /**
  * Typography
  */
