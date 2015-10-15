@@ -26,7 +26,7 @@ import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomExcept
 @RequestMapping("/api/ccdar2")
 public class CCDAR2ValidatorController {
 	
-	@Value("${ett.mdht.url}")
+	@Value("${ett.mdht.r2.url}")
 	String mdhtUrl;
 	
 	private static Logger logger = Logger.getLogger(CCDAR2ValidatorController.class.getName());

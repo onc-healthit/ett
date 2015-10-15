@@ -14,12 +14,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -29,6 +31,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -46,6 +49,7 @@ import gov.nist.healthcare.ttt.database.log.PartInterface;
 import gov.nist.healthcare.ttt.direct.directValidator.DirectMessageValidator;
 import gov.nist.healthcare.ttt.direct.directValidator.DirectMimeEntityValidator;
 import gov.nist.healthcare.ttt.direct.directValidator.DirectSignatureValidator;
+import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
 import gov.nist.healthcare.ttt.model.logging.DetailModel;
 import gov.nist.healthcare.ttt.model.logging.PartModel;
 
@@ -61,12 +65,20 @@ public class PartValidation {
 	private boolean wrapped;
 	private boolean hasError;
 	
+	// MDHT Endpoint
+	private String mdhtR1Endpoint;
+	private String mdhtR2Endpoint;
+	
 	private String ccdaType;
+	private String ccdaR2Type;
+	private String ccdaR2ReferenceFilename;
 	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
 	
-	public PartValidation(boolean wrapped) {
+	public PartValidation(boolean wrapped, String mdhtR1Endpoint, String mdhtR2Endpoint) {
 		this.wrapped = wrapped;
 		this.hasError = false;
+		this.mdhtR1Endpoint = mdhtR1Endpoint;
+		this.mdhtR2Endpoint = mdhtR2Endpoint;
 	}
 	
 	public void processMainPart(PartModel part) throws Exception {
@@ -77,7 +89,14 @@ public class PartValidation {
 		
 		// If this is a message part (outer envelope or message/rfc822)
 		if(p instanceof MimeMessage) {
-			this.ccdaType = getCCDAType(((Message) p).getRecipients(Message.RecipientType.TO).toString());
+			try {
+				Address[] toAddr = ((Message) p).getRecipients(Message.RecipientType.TO);
+				if(toAddr != null) {
+					this.ccdaType = getCCDAType(ValidationUtils.fillArrayLog(toAddr).get(0));
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 			this.processEnvelope(part, this.wrapped);
 		}
 		
@@ -212,47 +231,11 @@ public class PartValidation {
 			ccdaFilename = UUID.randomUUID().toString();
 		}
 		
-		try {
-			int timeout = 5;
-			int sotimeout = 10;
-			RequestConfig config = RequestConfig.custom()
-					.setConnectTimeout(timeout * 1000)
-					.setConnectionRequestTimeout(timeout * 1000)
-					.setSocketTimeout(sotimeout * 1000).build();
-			CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-			
-			HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
-			FileBody fileBody = new FileBody(ccdaFile);
-			
-			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-			builder.addPart("file", fileBody);
-			builder.addTextBody("type_val", this.ccdaType);
-			HttpEntity entity = builder.build();
-			
-			post.setEntity(entity);
-			HttpResponse response = client.execute(post);
-			// CONVERT RESPONSE TO STRING
-			String result = EntityUtils.toString(response.getEntity());
-			
-//			File bite = new File("ccda.txt");
-//			FileWriter fw = new FileWriter(bite.getAbsoluteFile());
-//			BufferedWriter bw = new BufferedWriter(fw);
-//			bw.write(result);
-//			bw.close();
-			
-			CCDAValidationReportImpl report = new CCDAValidationReportImpl();
-			report.setFilename(ccdaFilename);
-			report.setValidationReport(result);
-			
-			ccdaReport.add(report);
-			
-			return result;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(this.ccdaType.equals("r2")) {
+			return validateCCDA_R2(ccdaFile, ccdaFilename);
+		} else {
+			return validateCCDA_R1(ccdaFile, ccdaFilename);
 		}
-		return null;
 	}
 	
 	/**
@@ -440,10 +423,36 @@ public class PartValidation {
 		types.put("ccda", "NonSpecificCCDA");
 		
 		if(types.containsKey(trimmedTo)) {
+			logger.info("CCDA R1 type: " + types.get(trimmedTo));
 			return types.get(trimmedTo);
+		} else if(to.startsWith("r2_")) {
+			logger.info("To address start with r2_ this should contain R2 CCDA");
+			// Get ccdar2 types
+			getCCDAR2Type(to);
+			return "r2";
 		} else {
 			return "NonSpecificCCDA";
 		}
+	}
+	
+	public void getCCDAR2Type(String to) {
+		// Initialize ccda r2 type variables
+		this.ccdaR2Type = "";
+		this.ccdaR2ReferenceFilename = "";
+		
+		// Count underscore to check if email is valid
+		if(StringUtils.countMatches(to, "_") == 5) {
+			if(to.contains("@")) {
+				// Remove address domain
+				String trimmedTo = to.split("@", 2)[0];
+				String[] params = trimmedTo.split("_", 6);
+				if(params[2].length() == 2) {
+					this.ccdaR2Type = params[1] + " (" + params[2].charAt(0) + ")" + "(" + params[2].charAt(1) + ")";
+				}
+				this.ccdaR2ReferenceFilename = params[3] + "_sample" + params[5] + ".pdf";
+			}
+		}
+		logger.info("CCDA R2 validation params: Type " + this.ccdaR2Type + " Ref filename " + this.ccdaR2ReferenceFilename);
 	}
 
 	public List<CCDAValidationReportInterface> getCcdaReport() {
@@ -465,6 +474,84 @@ public class PartValidation {
 		filename = filename.replace(">", "");
 		filename = filename.replace("|", "");
 		return filename;
+	}
+	
+	public String validateCCDA_R1(File ccdaFile, String ccdaFilename) {
+		try {
+			logger.info("Trying CCDA validation at: " + this.mdhtR1Endpoint);
+			int timeout = 5;
+			int sotimeout = 10;
+			RequestConfig config = RequestConfig.custom()
+					.setConnectTimeout(timeout * 1000)
+					.setConnectionRequestTimeout(timeout * 1000)
+					.setSocketTimeout(sotimeout * 1000).build();
+			CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+			
+			HttpPost post = new HttpPost(this.mdhtR1Endpoint);
+			FileBody fileBody = new FileBody(ccdaFile);
+			
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+			builder.addPart("file", fileBody);
+			builder.addTextBody("type_val", this.ccdaType);
+			HttpEntity entity = builder.build();
+			
+			post.setEntity(entity);
+			HttpResponse response = client.execute(post);
+			// CONVERT RESPONSE TO STRING
+			String result = EntityUtils.toString(response.getEntity());
+			
+			CCDAValidationReportImpl report = new CCDAValidationReportImpl();
+			report.setFilename(ccdaFilename);
+			report.setValidationReport(result);
+			
+			this.ccdaReport.add(report);
+			
+			return result;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	public String validateCCDA_R2(File ccdaFile, String ccdaFilename) {
+		logger.info("Validating CCDA " + ccdaFilename + " with validation objective " + this.ccdaR2Type + " and reference filename " + this.ccdaR2ReferenceFilename);
+		
+		// Query MDHT war endpoint
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost post = new HttpPost(this.mdhtR2Endpoint);
+		FileBody fileBody = new FileBody(ccdaFile);
+		//
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		builder.addTextBody("validationObjective", this.ccdaR2Type);
+		builder.addTextBody("referenceFileName", this.ccdaR2ReferenceFilename);
+		builder.addPart("ccdaFile", fileBody);
+		HttpEntity entity = builder.build();
+		//
+		post.setEntity(entity);
+		String result = "";
+		try {
+			HttpResponse response = client.execute(post);
+			// CONVERT RESPONSE TO STRING
+			result = EntityUtils.toString(response.getEntity());
+		} catch(Exception e) {
+			logger.error("Error validation CCDA " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		CCDAValidationReportImpl report = new CCDAValidationReportImpl();
+		report.setFilename(ccdaFilename);
+		report.setValidationReport(result);
+		
+		ccdaReport.add(report);
+			
+		return result;
+		
+		
+		
+		
 	}
 
 }

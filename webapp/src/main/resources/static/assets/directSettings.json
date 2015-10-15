@@ -31,6 +31,38 @@
         "description": "Non-specific CCDA"
     }],
 
+    "ccdar2": [{
+        "email": "170.315_b1_toc_amb_1",
+        "description": "Sample 1 of ambulatory"
+    }, {
+        "email": "170.315_b1_toc_amb_2",
+        "description": "Sample 2 of ambulatory"
+    }, {
+        "email": "170.315_b1_toc_amb_3",
+        "description": "Sample 3 of ambulatory"
+    }, {
+        "email": "170.315_b1_toc_amb_4",
+        "description": "Sample 4 of ambulatory"
+    }, {
+        "email": "170.315_b1_toc_amb_5",
+        "description": "Sample 5 of ambulatory"
+    }, {
+        "email": "170.315_b1_toc_inp_1",
+        "description": "Sample 1 of inpatient"
+    }, {
+        "email": "170.315_b1_toc_inp_2",
+        "description": "Sample 2 of inpatient"
+    }, {
+        "email": "170.315_b1_toc_inp_3",
+        "description": "Sample 3 of inpatient"
+    }, {
+        "email": "170.315_b1_toc_inp_4",
+        "description": "Sample 4 of inpatient"
+    }, {
+        "email": "170.315_b1_toc_inp_5",
+        "description": "Sample 5 of inpatient"
+    }],
+
     "certificates": [{
         "description": "TTT Public Cert",
         "icon": "key",

@@ -17,6 +17,7 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -54,6 +55,10 @@ public class DirectMessageProcessor {
 	private boolean isMdn;
 	private String originalMessageId;
 	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
+	
+	// MDHT Endpoint
+	private String mdhtR1Endpoint;
+	private String mdhtR2Endpoint;
 
 	public DirectMessageProcessor() {
 		super();
@@ -61,10 +66,22 @@ public class DirectMessageProcessor {
 		this.isMdn = false;
 		this.logModel = new LogModel();
 		this.mainPart = new PartModel();
+		this.mdhtR1Endpoint = "";
+		this.mdhtR2Endpoint = "";
+	}
+	
+	public DirectMessageProcessor(String mdhtR1Endpoint, String mdhtR2Endpoint) {
+		super();
+		this.wrapped = false;
+		this.isMdn = false;
+		this.logModel = new LogModel();
+		this.mainPart = new PartModel();
+		this.mdhtR1Endpoint = mdhtR1Endpoint;
+		this.mdhtR2Endpoint = mdhtR2Endpoint;
 	}
 
 	public DirectMessageProcessor(InputStream directMessage,
-			InputStream certificate, String certificatePassword)
+			InputStream certificate, String certificatePassword, String mdhtR1Endpoint, String mdhtR2Endpoint)
 			throws Exception {
 		this.directMessage = directMessage;
 		this.certificate = certificate;
@@ -74,6 +91,8 @@ public class DirectMessageProcessor {
 		this.isMdn = false;
 		this.logModel = new LogModel();
 		this.mainPart = new PartModel();
+		this.mdhtR1Endpoint = mdhtR1Endpoint;
+		this.mdhtR2Endpoint = mdhtR2Endpoint;
 	}
 
 	public void processDirectMessage() throws Exception {
@@ -91,7 +110,7 @@ public class DirectMessageProcessor {
 		// Process the message
 		this.mainPart = processPart(msg, null);
 
-		PartValidation validationPart = new PartValidation(this.wrapped);
+		PartValidation validationPart = new PartValidation(this.wrapped, this.mdhtR1Endpoint, this.mdhtR2Endpoint);
 		validationPart.processMainPart(this.mainPart);
 
 		// Set status to error if the part contains error
@@ -257,7 +276,15 @@ public class DirectMessageProcessor {
 		this.logModel.setStatus(Status.SUCCESS);
 		this.logModel.setMimeVersion(ValidationUtils.getSingleHeader(msg,
 				"mime-version"));
-		this.logModel.setMessageId(msg.getMessageID());
+		
+		// Check if message id not null
+		if(msg.getMessageID() != null) {
+			this.logModel.setMessageId(msg.getMessageID());
+		} else {
+			String substituteMsgId = "<" + UUID.randomUUID().toString() + "@null>";
+			logger.error("Message ID not present - Generating fake message ID to log message: " + substituteMsgId);
+			this.logModel.setMessageId(substituteMsgId.toString());
+		}
 		this.logModel.setOrigDate(ValidationUtils.getSingleHeader(msg, "date"));
 		this.logModel.setReceived(ValidationUtils.fillArrayLog(msg
 				.getHeader("received")));
@@ -380,6 +407,26 @@ public class DirectMessageProcessor {
 	public void setCcdaReport(List<CCDAValidationReportInterface> ccdaReport) {
 		this.ccdaReport = ccdaReport;
 	}
+
+	public String getMdhtR1Endpoint() {
+		return mdhtR1Endpoint;
+	}
+	
+
+	public void setMdhtR1Endpoint(String mdhtR1Endpoint) {
+		this.mdhtR1Endpoint = mdhtR1Endpoint;
+	}
+	
+
+	public String getMdhtR2Endpoint() {
+		return mdhtR2Endpoint;
+	}
+	
+
+	public void setMdhtR2Endpoint(String mdhtR2Endpoint) {
+		this.mdhtR2Endpoint = mdhtR2Endpoint;
+	}
+	
 
 	public boolean hasCCDAReport() {
 		if (this.ccdaReport.isEmpty())

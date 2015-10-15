@@ -1,3 +1,7 @@
+==Version 0.0.8#10/06/2015
+	*ETT
+		-Added CCDA R2 Validator
+
 ==Version 0.0.7#06/12/2015
 	* Direct
 		-Improved error reporting for DTS 195 when Body contains non ASCII characters.

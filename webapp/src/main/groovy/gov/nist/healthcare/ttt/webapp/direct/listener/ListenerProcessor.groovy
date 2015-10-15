@@ -58,15 +58,16 @@ public class ListenerProcessor implements Runnable {
 	
 	Emailer emailer
 
-	DirectMessageProcessor processor = new DirectMessageProcessor();
+	DirectMessageProcessor processor;
 
 	private DatabaseInstance db;
 
 	private static Logger logger = Logger.getLogger(ListenerProcessor.class.getName());
 
-	ListenerProcessor(Socket server, DatabaseInstance db) throws DatabaseException, SQLException {
+	ListenerProcessor(Socket server, DatabaseInstance db, String mdhtR1Endpoint, String mdhtR2Endpoint) throws DatabaseException, SQLException {
 		this.server = server;
 		this.db = db;
+		this.processor = new DirectMessageProcessor(mdhtR1Endpoint, mdhtR2Endpoint);
 	}
 
 	/**
@@ -298,7 +299,7 @@ public class ListenerProcessor implements Runnable {
 			String toMDN = "";
 			if(processor.getLogModel().getReplyTo() != null) {
 				toMDN = processor.getLogModel().getReplyTo().iterator().next();
-			} else {
+			} else if(this.processor.getLogModel().getFromLine() != null) {
 				toMDN = this.processor.getLogModel().getFromLine().iterator().next();
 			}
 			String fromMDN = this.processor.getLogModel().getToLine().iterator().next();

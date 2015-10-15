@@ -43,6 +43,12 @@ public class DirectListener implements Runnable {
 	@Value('${server.tomcat.basedir}')
 	String tomcatDir = ""
 	
+	@Value('${ett.mdht.r1.url}')
+	String mdhtR1Url = ""
+	
+	@Value('${ett.mdht.r2.url}')
+	String mdhtR2Url = ""
+	
 	// Emailer settings
 	@Autowired
 	EmailerModel emailerModel
@@ -77,7 +83,7 @@ public class DirectListener implements Runnable {
 				String logFilePath = this.tomcatDir + File.separator + "logs" + File.separator + "listener.log"
 				
 				// Set the processor
-				ListenerProcessor processor = new ListenerProcessor(server, db);
+				ListenerProcessor processor = new ListenerProcessor(server, db, this.mdhtR1Url, this.mdhtR2Url);
 				processor.setEmailer(new Emailer(this.emailerModel))
 				processor.setDomainName(this.domainName)
 				processor.setServletName(this.servletName)
