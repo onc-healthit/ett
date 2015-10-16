@@ -52,6 +52,8 @@ public class DirectMessageProcessor {
 	private LogModel logModel;
 	private PartModel mainPart;
 	private boolean wrapped;
+	private boolean encrypted;
+	private boolean signed;
 	private boolean isMdn;
 	private String originalMessageId;
 	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
@@ -63,6 +65,8 @@ public class DirectMessageProcessor {
 	public DirectMessageProcessor() {
 		super();
 		this.wrapped = false;
+		this.encrypted = false;
+		this.signed = false;
 		this.isMdn = false;
 		this.logModel = new LogModel();
 		this.mainPart = new PartModel();
@@ -73,6 +77,8 @@ public class DirectMessageProcessor {
 	public DirectMessageProcessor(String mdhtR1Endpoint, String mdhtR2Endpoint) {
 		super();
 		this.wrapped = false;
+		this.encrypted = false;
+		this.signed = false;
 		this.isMdn = false;
 		this.logModel = new LogModel();
 		this.mainPart = new PartModel();
@@ -88,6 +94,8 @@ public class DirectMessageProcessor {
 		this.certificatePassword = certificatePassword;
 		this.setCertLoader(certificate, certificatePassword);
 		this.wrapped = false;
+		this.encrypted = false;
+		this.signed = false;
 		this.isMdn = false;
 		this.logModel = new LogModel();
 		this.mainPart = new PartModel();
@@ -110,7 +118,7 @@ public class DirectMessageProcessor {
 		// Process the message
 		this.mainPart = processPart(msg, null);
 
-		PartValidation validationPart = new PartValidation(this.wrapped, this.mdhtR1Endpoint, this.mdhtR2Endpoint);
+		PartValidation validationPart = new PartValidation(this.encrypted, this.signed, this.wrapped, this.mdhtR1Endpoint, this.mdhtR2Endpoint);
 		validationPart.processMainPart(this.mainPart);
 
 		// Set status to error if the part contains error
@@ -166,10 +174,15 @@ public class DirectMessageProcessor {
 			} else if (p.isMimeType("application/pkcs7-mime")
 					|| p.isMimeType("application/x-pkcs7-mime")) {
 				logger.debug("Processing application/pkcs7-mime");
+				this.encrypted = true;
 				this.processPart(
 						processSMIMEEnvelope(p, certificate,
 								certificatePassword), currentlyProcessedPart);
 
+			} else if (p.isMimeType("application/pkcs7-signature") || p.isMimeType("application/x-pkcs7-signature")) {
+				logger.debug("Processing application/pkcs7-signature");
+				this.signed = true;
+				
 			} else if (p.isMimeType("multipart/*")) {
 				logger.debug("Processing part " + p.getContentType());
 
@@ -384,6 +397,22 @@ public class DirectMessageProcessor {
 		this.wrapped = wrapped;
 	}
 
+	public boolean isEncrypted() {
+		return encrypted;
+	}
+
+	public void setEncrypted(boolean encrypted) {
+		this.encrypted = encrypted;
+	}
+
+	public boolean isSigned() {
+		return signed;
+	}
+
+	public void setSigned(boolean signed) {
+		this.signed = signed;
+	}
+
 	public boolean isMdn() {
 		return isMdn;
 	}
@@ -464,7 +493,7 @@ public class DirectMessageProcessor {
 			logger.error("Probably wrong format file or wrong certificate "
 					+ e1.getMessage());
 			throw new Exception(
-					"Probably wrong format file or wrong certificate "
+					"Probably wrong format file or wrong certificate: "
 							+ e1.getMessage());
 		}
 	}

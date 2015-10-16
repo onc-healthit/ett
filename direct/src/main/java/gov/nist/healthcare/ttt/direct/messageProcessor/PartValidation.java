@@ -63,6 +63,8 @@ public class PartValidation {
 	private DirectSignatureValidator signatureValidator = new DirectSignatureValidator();
 	
 	private boolean wrapped;
+	private boolean encrypted;
+	private boolean signed;
 	private boolean hasError;
 	
 	// MDHT Endpoint
@@ -74,7 +76,9 @@ public class PartValidation {
 	private String ccdaR2ReferenceFilename;
 	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
 	
-	public PartValidation(boolean wrapped, String mdhtR1Endpoint, String mdhtR2Endpoint) {
+	public PartValidation(boolean encrypted, boolean signed, boolean wrapped, String mdhtR1Endpoint, String mdhtR2Endpoint) {
+		this.encrypted = encrypted;
+		this.signed = signed;
 		this.wrapped = wrapped;
 		this.hasError = false;
 		this.mdhtR1Endpoint = mdhtR1Endpoint;
@@ -82,7 +86,7 @@ public class PartValidation {
 	}
 	
 	public void processMainPart(PartModel part) throws Exception {
-		Part p = part.getContent();		
+		Part p = part.getContent();
 		
 		// MIME Entity Validation
 		detailedpartValidation.validateMimeEntity(part);
@@ -97,7 +101,10 @@ public class PartValidation {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			this.processEnvelope(part, this.wrapped);
+			this.processEnvelope(part);
+		} else if(!part.hasParent()) {
+			logger.error("File is not a Direct Message");
+			part.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", "File is not a Direct Message", "",	"-", Status.ERROR));
 		}
 		
 		if(part.hasParent()) {
@@ -135,17 +142,27 @@ public class PartValidation {
 	 * Validates the envelope of the message
 	 * @throws Exception 
 	 * */
-	public void processEnvelope(PartModel part, boolean wrapped) throws Exception {
+	public void processEnvelope(PartModel part) throws Exception {
 		Part p = part.getContent();
 		
 		try {
 			// Validation Message Headers
-			detailedpartValidation.validateMessageHeader(part, wrapped);
+			detailedpartValidation.validateMessageHeader(part, this.wrapped);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			part.addNewDetailLine(new DetailModel("No DTS", "Message file", "Problem parsing message file", "", "", Status.ERROR));
+			part.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", "Problem parsing message file", "", "", Status.ERROR));
 			throw e;
+		}
+		
+		// Message is not encrypted: Issue an error
+		if(!this.encrypted && !part.hasParent()) {
+			part.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", "Message is not encrypted", "Should be encrypted", "", Status.ERROR));
+		}
+		
+		// Message is not signed: Issue an error
+		if(!this.signed && !part.hasParent()) {
+			part.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", "Message is not signed", "Should be signed", "", Status.ERROR));
 		}
 
 		if(p.isMimeType("application/pkcs7-mime") || p.isMimeType("application/x-pkcs7-mime")) {
@@ -165,7 +182,10 @@ public class PartValidation {
 			// DTS 161-194 Validate Content-Disposition Filename
 			part.addNewDetailLine(mimeEntityValidator.validateContentDispositionFilename(getFilename(part.getContentDisposition())));
 			
-			// Write the blob in the part
+		}
+		
+		// Write the blob in the part if it is not message/rfc822
+		if(!p.isMimeType("message/rfc822") && !p.isMimeType("multipart/*")) {
 			convertContentToBlob(part, p);
 		}
 	}

@@ -286,9 +286,9 @@ public class DirectMessageHeadersValidator {
 	public DetailModel validateOrigDate(String origDate, boolean wrapped) {
 		String rfc = "RFC 5322: Section 3.6.1;http://tools.ietf.org/html/rfc5322#section-3.6.1";
 		if(origDate.equals("") && !wrapped) {
-			return new DetailModel("114", "Orig-Date", "Not present", "Wrapped Message: Orig-Date is not present on the outer (encrypted) message", rfc, Status.INFO);
-		} else if(origDate.equals("") && wrapped) {
 			return new DetailModel("114", "Orig-Date", "Not present", "Unwrapped Message: Orig-Date should be present", rfc, Status.ERROR);
+		} else if(origDate.equals("") && wrapped) {
+			return new DetailModel("114", "Orig-Date", "Not present", "Wrapped Message: Orig-Date is not present on the outer (encrypted) message", rfc, Status.INFO);
 		} else {
 			if(ValidationUtils.validateDate(origDate)) {
 				return new DetailModel("114", "Orig-Date", origDate, "[ day-of-week \",\" ] date time", rfc, Status.SUCCESS);
@@ -307,9 +307,9 @@ public class DirectMessageHeadersValidator {
 	public DetailModel validateFrom(String from, boolean wrapped) {
 		String rfc = "RFC 5322: Section 3.6.2;http://tools.ietf.org/html/rfc5322#section-3.6.2";
 		if(from.equals("") && !wrapped) {
-			return new DetailModel("115", "From", "Not present", "Wrapped Message: From is not present on the outer (encrypted) message", rfc, Status.INFO);
-		}  else if(from.equals("") && wrapped) {
 			return new DetailModel("115", "From", "Not present", "Unwrapped Message: From should be present", rfc, Status.ERROR);
+		}  else if(from.equals("") && wrapped) {
+			return new DetailModel("115", "From", "Not present", "Wrapped Message: From is not present on the outer (encrypted) message", rfc, Status.INFO);
 		} else {
 			if (ValidationUtils.validateEmail(from)){
 				return new DetailModel("115", "From", StringEscapeUtils.escapeHtml4(from), "mailbox-list", rfc, Status.SUCCESS);
@@ -347,9 +347,9 @@ public class DirectMessageHeadersValidator {
 	public DetailModel validateReplyTo(String replyTo, boolean wrapped) {
 		String rfc = "RFC 5322: Section 3.6.2;http://tools.ietf.org/html/rfc5322#section-3.6.2";
 		if(replyTo.equals("") && !wrapped) {
-			return new DetailModel("117", "Reply-To", "Not present", "Wrapped Message: Reply-To is not present on the outer (encrypted) message", rfc, Status.INFO);
-		} else if(replyTo.equals("") && wrapped) {
 			return new DetailModel("117", "Reply-To", "Not present", "Unwrapped Message: Reply-To should be present", rfc, Status.WARNING);
+		} else if(replyTo.equals("") && wrapped) {
+			return new DetailModel("117", "Reply-To", "Not present", "Wrapped Message: Reply-To is not present on the outer (encrypted) message", rfc, Status.INFO);
 		} else {
 			if(ValidationUtils.validateEmail(replyTo)) {
 				return new DetailModel("117", "Reply-To", StringEscapeUtils.escapeHtml4(replyTo), "address-list", rfc, Status.SUCCESS);
@@ -364,9 +364,9 @@ public class DirectMessageHeadersValidator {
 	public DetailModel validateTo(String to, boolean wrapped) {
 		String rfc = "RFC 5322: Section 3.6.3;http://tools.ietf.org/html/rfc5322#section-3.6.3";
 		if(to.equals("") && !wrapped) {
-			return new DetailModel("118", "To", "Not present", "Wrapped Message: To is not present on the outer (encrypted) message", rfc, Status.INFO);
-		} else if(to.equals("") && wrapped) {
 			return new DetailModel("118", "To", "Not present", "Unwrapped Message: To must be present", rfc, Status.ERROR);
+		} else if(to.equals("") && wrapped) {
+			return new DetailModel("118", "To", "Not present", "Wrapped Message: To is not present on the outer (encrypted) message", rfc, Status.INFO);
 		} else {			
 			if(ValidationUtils.validateEmail(to)) {
 				return new DetailModel("118", "To", StringEscapeUtils.escapeHtml4(to), "mailbox-list", rfc, Status.SUCCESS);
@@ -411,9 +411,9 @@ public class DirectMessageHeadersValidator {
 	public DetailModel validateMessageId(String messageId, boolean wrapped) {
 		String rfc = "RFC 5322: Section 3.6.4;http://tools.ietf.org/html/rfc5322#section-3.6.4";
 		if(messageId.equals("") && !wrapped) {
-			return new DetailModel("121", "Message-Id", "Not present", "Wrapped Message: Message-Id is not present on the outer (encrypted) message", rfc, Status.WARNING);
-		} else if(messageId.equals("") && wrapped) {
 			return new DetailModel("121", "Message-Id", "Not present", "Unwrapped Message: Message-Id must be present", rfc, Status.ERROR);
+		} else if(messageId.equals("") && wrapped) {
+			return new DetailModel("121", "Message-Id", "Not present", "Wrapped Message: Message-Id is not present on the outer (encrypted) message", rfc, Status.WARNING);
 		} else {
 			if(ValidationUtils.validateAddrSpec(messageId)) {
 				return new DetailModel("121", "Message-Id", StringEscapeUtils.escapeHtml4(messageId), "<string with no spaces\"@\"string with no spaces>", rfc, Status.SUCCESS);
@@ -522,9 +522,9 @@ public class DirectMessageHeadersValidator {
 	public DetailModel validateMIMEVersion(String MIMEVersion, boolean wrapped) {
 		String rfc = "RFC 2045: Section 4;http://tools.ietf.org/html/rfc2045#section-4";
 		if(MIMEVersion.equals("") && !wrapped) {
-			return new DetailModel("102b", "MIME-Version", "Not present", "Wrapped Message: MIME-Version is not present on the outer (encrypted) message", rfc, Status.WARNING);
-		} else if(MIMEVersion.equals("") && wrapped) {
 			return new DetailModel("102b", "MIME-Version", "Not present", "Unwrapped Message: MIME-Version must be present", rfc, Status.ERROR);
+		} else if(MIMEVersion.equals("") && wrapped) {
+			return new DetailModel("102b", "MIME-Version", "Not present", "Wrapped Message: MIME-Version is not present on the outer (encrypted) message", rfc, Status.WARNING);
 		} else {
 			final String mimeFormat = "[0-9]\\.[0-9].*";
 			Pattern pattern = Pattern.compile(mimeFormat);
