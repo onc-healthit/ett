@@ -51,7 +51,7 @@ public class TTTSenderTests {
 
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.TRUE); // proctored are true unless exception happens
+		tr.setCriteriamet(CriteriaStatus.TRUE); 
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 
@@ -445,7 +445,7 @@ public class TTTSenderTests {
 			// Adding attachments
 
 				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
-						"text/html");
+						"application/zip");
 				messageBodyPart1.setDataHandler(new DataHandler(source1));
 				messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
 				multipart.addBodyPart(messageBodyPart1);
@@ -750,7 +750,7 @@ public class TTTSenderTests {
 				multipart.addBodyPart(messageBodyPart);
 				
 				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
-						"text/html");
+						"application/zip");
 				messageBodyPart1.setDataHandler(new DataHandler(source1));
 				messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
 				multipart.addBodyPart(messageBodyPart1);
@@ -772,6 +772,89 @@ public class TTTSenderTests {
 			System.out.println("Done");
 			log.info("Message Sent");
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Text.txt and CCDA_Ambulatory_in_XDM.zip");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	
+	public TestResult testStarttlsXDMBadHtml(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing XDM with bad XHTML!");
+			message.setText("This is a message to test XDM with bad XHTML!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/BadXHTML.zip")),
+						"application/zip");
+				messageBodyPart1.setDataHandler(new DataHandler(source1));
+				messageBodyPart1.setFileName("BadXHTML.zip");
+				multipart.addBodyPart(messageBodyPart1);
+				
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "BadXHTML.zip");
 			result.put("\n2","Email sent Successfully");
 
 		} catch (SendFailedException e) {

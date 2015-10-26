@@ -127,7 +127,11 @@ public class SmtpTestInput {
 			} else if(this.attachmentType.equals("C32")) {
 				ccdaAttachment = getClass().getResourceAsStream("/cda-samples/C32_Sample1.xml")
 				attachmentName = "C32_Sample1.xml"
-			} else {
+			}  else if(this.attachmentType.equals("XDM")) {
+				ccdaAttachment = getClass().getResourceAsStream("/cda-samples/ToC_Ambulatory.zip")
+				attachmentName = "ToC_Ambulatory.zip"
+			} 
+			else {
 				ccdaAttachment = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")
 				attachmentName = "CCDA_Ambulatory.xml.xml"
 			}

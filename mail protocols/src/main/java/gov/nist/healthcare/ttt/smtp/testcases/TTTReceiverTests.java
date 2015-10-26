@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +56,17 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.sun.mail.imap.IMAPFolder;
@@ -74,6 +85,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
+		String result1 = "";
 		// int j = 0;
 		Properties props = System.getProperties();
 
@@ -85,7 +97,7 @@ public class TTTReceiverTests {
 			prop.load(file);
 			file.close();
 
-		//	Session session = Session.getDefaultInstance(props, null);
+			//	Session session = Session.getDefaultInstance(props, null);
 			Session session = Session.getInstance(props, null);
 			Store store = session.getStore("imap");
 			store.close();
@@ -116,7 +128,7 @@ public class TTTReceiverTests {
 						// h.getValue());
 						result.put("\n" + h.getName(), h.getValue() + "\n");
 					}
-				
+
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
@@ -125,16 +137,47 @@ public class TTTReceiverTests {
 						BodyPart bodyPart = multipart.getBodyPart(i);
 						InputStream stream = bodyPart.getInputStream();
 
+						
+						
 						byte[] targetArray = IOUtils.toByteArray(stream);
 						System.out.println(new String(targetArray));
 						int m = i + 1;
 						if (bodyPart.getFileName() != null) {
 							bodyparts.put(bodyPart.getFileName(), new String(
 									targetArray));
+							
+							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+							// Query MDHT war endpoint
+							CloseableHttpClient client = HttpClients.createDefault();
+							FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+							File file1 = new File("sample.xml");
+							HttpPost post = new HttpPost("http://hit-dev.nist.gov:11080/referenceccdaservice/");
+							FileBody fileBody = new FileBody(file1);
+							
+							
+							//
+							MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+							builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+							builder.addTextBody("validationObjective", "170.315(b)(1)");
+							builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+							builder.addPart("ccdaFile", fileBody);
+							HttpEntity entity = builder.build();
+							//
+							post.setEntity(entity);
+							
+							
+								HttpResponse response = client.execute(post);
+								// CONVERT RESPONSE TO STRING
+								result1 = EntityUtils.toString(response.getEntity());
+								result.put("\n" + "Validation Result for " + bodyPart.getFileName() , result1 + "\n");
+							}
+							
 						} else {
 							bodyparts.put("Message Content" + " " + m,
 									new String(targetArray));
 						}
+						
+						
 
 					}
 				}
@@ -150,10 +193,9 @@ public class TTTReceiverTests {
 			} else {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 			}
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-			;
 			e.printStackTrace();
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put(
@@ -183,7 +225,7 @@ public class TTTReceiverTests {
 			FileInputStream file = new FileInputStream(path);
 			prop.load(file);
 			file.close();
-			
+
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
 			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
@@ -273,7 +315,7 @@ public class TTTReceiverTests {
 			FileInputStream file = new FileInputStream(path);
 			prop.load(file);
 			file.close();
-			
+
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
 			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
@@ -547,6 +589,7 @@ public class TTTReceiverTests {
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
 			Message messages[] = inbox.search(unseenFlagTerm);
 
+			
 			for (Message message : messages) {
 				long a = inbox.getUID(message);
 				String strLong = Long.toString(a);
@@ -820,7 +863,7 @@ public class TTTReceiverTests {
 		ArrayList<String> response = new ArrayList<String>();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
-	//	SSLSocket socket = null;
+		//	SSLSocket socket = null;
 		Socket socket = null;
 		PrintWriter output = null;
 		BufferedReader is = null;
@@ -922,21 +965,21 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
 		ArrayList<String> response = new ArrayList<String>();
-//		SSLSocket socket = null;
-			Socket socket = null;
-			PrintWriter output = null;
-			BufferedReader is = null;
+		//		SSLSocket socket = null;
+		Socket socket = null;
+		PrintWriter output = null;
+		BufferedReader is = null;
 
-			// Initialization section:
-			// Try to open a socket on port 110
-			// Try to open input and output streams
-			try {
-				System.setProperty("java.net.preferIPv4Stack", "true");
-				/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
+		// Initialization section:
+		// Try to open a socket on port 110
+		// Try to open input and output streams
+		try {
+			System.setProperty("java.net.preferIPv4Stack", "true");
+			/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 						.getDefault()).createSocket(
 								InetAddress.getByName(ti.sutSmtpAddress), 993);*/
 
-				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 143);
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 143);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new BufferedReader(new InputStreamReader(
 					socket.getInputStream(), "Windows-1252"));
@@ -1011,21 +1054,21 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		ArrayList<String> response = new ArrayList<String>();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
-//		SSLSocket socket = null;
-			Socket socket = null;
-			PrintWriter output = null;
-			BufferedReader is = null;
+		//		SSLSocket socket = null;
+		Socket socket = null;
+		PrintWriter output = null;
+		BufferedReader is = null;
 
-			// Initialization section:
-			// Try to open a socket on port 110
-			// Try to open input and output streams
-			try {
-				System.setProperty("java.net.preferIPv4Stack", "true");
-				/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
+		// Initialization section:
+		// Try to open a socket on port 110
+		// Try to open input and output streams
+		try {
+			System.setProperty("java.net.preferIPv4Stack", "true");
+			/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 						.getDefault()).createSocket(
 								InetAddress.getByName(ti.sutSmtpAddress), 993);*/
 
-				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 143);
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 143);
 			output = new PrintWriter(socket.getOutputStream(), true);
 			is = new BufferedReader(new InputStreamReader(
 					socket.getInputStream(), "Windows-1252"));
@@ -1073,7 +1116,7 @@ public class TTTReceiverTests {
 		}
 
 		if (response.size() > 1) {
-		if	(response.get(1).contains("BAD") || response.get(1).contains("NO") || response.get(1).contains("FAIL")) {
+			if	(response.get(1).contains("BAD") || response.get(1).contains("NO") || response.get(1).contains("FAIL")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("SUCCESS",
 						"The server rejects the command based on the state of the connection");
@@ -1242,7 +1285,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 			}
 		}
-		
+
 		for (String s : response) {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -1667,7 +1710,7 @@ public class TTTReceiverTests {
 		.put("\nAwating confirmation from proctor",
 				"Proctor needs to verify the messages retrieved from Edge Test Tool.");
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
-		
+
 		return tr;
 	}
 

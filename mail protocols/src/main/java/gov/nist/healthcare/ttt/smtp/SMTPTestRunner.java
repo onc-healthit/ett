@@ -92,6 +92,9 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 	 */
 	@Override
 	public ITestResult[] runTestCase(int i, TestInput ti) {
+		
+		/*if(ti.status.toLowerCase().equals("fetching")) {
+			trs = fetchMail.fetchMail(ti.convert(domainName, smtpHost))*/
 
 		System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -258,7 +261,21 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			}
 			log.info("*****************   END  Testcase 98 *******************************");
 			break;	
-
+		case 99:
+			
+			log.info("*****************   BEGIN  Testcase 99 *******************************");
+			ti.useTLS = false;
+			TestResult tr99;
+			try {
+				tr96 = sTest.testStarttlsXDMBadHtml(ti);
+				tr96.id = 96;
+				res.add(tr96);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 99 *******************************");
+			break;	
 		case 10:
 			res.add(nTest.testBadData(ti));
 			break;
@@ -347,7 +364,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 101 *******************************");
 			ti.useTLS = true;
 			TestResult tr101;
-			tr101 = mu2senderTests.testBadAddress(ti);
+			tr101 = mu2senderTests.testBadAddressSmtp(ti);
 			tr101.id = 101;
 			res.add(tr101);
 			
@@ -375,7 +392,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 102 *******************************");
 			ti.useTLS = true;
 			TestResult tr102;
-			tr102 = mu2senderTests.testMu2Two(ti);
+			tr102 = mu2senderTests.testMu2TwoSmtp(ti);
 			tr102.id = 102;
 			res.add(tr102);
 			log.info("*****************   END  Testcase 102 *******************************");
@@ -385,7 +402,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 103 *******************************");
 			ti.useTLS = true;
 			TestResult tr103;
-			tr103 = mu2senderTests.testMu2Three(ti);
+			tr103 = mu2senderTests.testMu2ThreeSmtp(ti);
 			tr103.id = 103;
 			res.add(tr103);
 			
@@ -396,7 +413,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 104 *******************************");
 			ti.useTLS = true;
 			TestResult tr104;
-			tr104 = mu2senderTests.testMu2Four(ti);
+			tr104 = mu2senderTests.testMu2FourSmtp(ti);
 			tr104.id = 104;
 			res.add(tr104);
 			
@@ -415,25 +432,79 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			break;
 			
 		case 106:
-			log.info("*****************   BEGIN  Testcase 101 *******************************");
-			log.info("*****************   END  Testcase 101 *******************************");
+			log.info("*****************   BEGIN  Testcase 106 *******************************");
+			ti.useTLS = true;
+			TestResult tr106;
+			tr106 = mu2senderTests.testMu2Two(ti);
+			tr106.id = 106;
+			res.add(tr106);
+			log.info("*****************   END  Testcase 106 *******************************");
 			break;
 			
 		case 107:
-			log.info("*****************   BEGIN  Testcase 101 *******************************");
-			log.info("*****************   END  Testcase 101 *******************************");
+			log.info("*****************   BEGIN  Testcase 107 *******************************");
+			ti.useTLS = true;
+			TestResult tr107;
+			tr107 = mu2senderTests.testMu2Three(ti);
+			tr107.id = 107;
+			res.add(tr107);
+			
+			log.info("*****************   END  Testcase 107 *******************************");
 			break;
 			
 		case 108:
-			log.info("*****************   BEGIN  Testcase 101 *******************************");
-			log.info("*****************   END  Testcase 101 *******************************");
+			log.info("*****************   BEGIN  Testcase 108 *******************************");
+			ti.useTLS = true;
+			TestResult tr108;
+			tr108 = mu2senderTests.testMu2Four(ti);
+			tr108.id = 108;
+			res.add(tr108);
+			
+			log.info("*****************   END  Testcase 108 *******************************");
 			break;
 			
 		case 109:
-			log.info("*****************   BEGIN  Testcase 101 *******************************");
-			log.info("*****************   END  Testcase 101 *******************************");
+			log.info("*****************   BEGIN  Testcase 109 *******************************");
+			ti.useTLS = true;
+			TestResult tr109;
+			tr109 = mu2senderTests.testBadAddressPop(ti);
+			tr109.id = 109;
+			res.add(tr109);
+			
+			log.info("*****************   END  Testcase 109 *******************************");
 			break;
 			
+		case 110:
+			log.info("*****************   BEGIN  Testcase 110 *******************************");
+			ti.useTLS = true;
+			TestResult tr110;
+			tr110 = mu2senderTests.testMu2TwoPop(ti);
+			tr110.id = 110;
+			res.add(tr110);
+			log.info("*****************   END  Testcase 110 *******************************");
+			break;
+			
+		case 111:
+			log.info("*****************   BEGIN  Testcase 111 *******************************");
+			ti.useTLS = true;
+			TestResult tr111;
+			tr111 = mu2senderTests.testMu2ThreePop(ti);
+			tr111.id = 111;
+			res.add(tr111);
+			
+			log.info("*****************   END  Testcase 111 *******************************");
+			break;
+			
+		case 112:
+			log.info("*****************   BEGIN  Testcase 112 *******************************");
+			ti.useTLS = true;
+			TestResult tr112;
+			tr112 = mu2senderTests.testMu2FourPop(ti);
+			tr112.id = 112;
+			res.add(tr112);
+			
+			log.info("*****************   END  Testcase 112 *******************************");
+			break;
 		case 117:
 			log.info("*****************   BEGIN  Testcase 117 *******************************");
 
@@ -459,6 +530,17 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 121 *******************************");
 			break;
 			
+		case 151:
+			log.info("*****************   BEGIN  Testcase 151 *******************************");
+
+			TestResult tr151;
+				tr151 = mu2senderTests.testDispositionNotificationPop(ti);
+				tr151.id = 151;
+				res.add(tr151);
+			log.info("*****************   END  Testcase 151 *******************************");
+			break;
+			
+			
 		case 122:
 			log.info("*****************   BEGIN  Testcase 122 *******************************");
 
@@ -467,6 +549,16 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				tr122.id = 122;
 				res.add(tr122);
 			log.info("*****************   END  Testcase 122 *******************************");
+			break;
+			
+		case 152:
+			log.info("*****************   BEGIN  Testcase 152 *******************************");
+
+			TestResult tr152;
+				tr152 = mu2senderTests.testBadDispositionNotificationPop(ti);
+				tr152.id = 152;
+				res.add(tr152);
+			log.info("*****************   END  Testcase 152 *******************************");
 			break;
 			
 		case 123:
@@ -512,6 +604,17 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 126 *******************************");
 			break;
 			
+		case 156:
+			log.info("*****************   BEGIN  Testcase 156 *******************************");
+			ti.useTLS = true;
+			TestResult tr156;
+			tr156 = mu2senderTests.testMu2TwoEightPop(ti,"nomdn8@hit-dev.nist.gov");
+			tr156.id = 156;
+			res.add(tr156);
+			
+			log.info("*****************   END  Testcase 156 *******************************");
+			break;
+			
 		case 127:
 			log.info("*****************   BEGIN  Testcase 127 *******************************");
 			ti.useTLS = true;
@@ -523,6 +626,16 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 127 *******************************");
 			break;
 			
+		case 157:
+			log.info("*****************   BEGIN  Testcase 157 *******************************");
+			ti.useTLS = true;
+			TestResult tr157;
+			tr157 = mu2senderTests.testMu2TwoEightPop(ti,"processedonly5@hit-dev.nist.gov");
+			tr157.id = 157;
+			res.add(tr157);
+			
+			log.info("*****************   END  Testcase 157 *******************************");
+			break;
 		case 128:
 			log.info("*****************   BEGIN  Testcase 128 *******************************");
 			ti.useTLS = true;
@@ -534,6 +647,16 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 128 *******************************");
 			break;
 			
+		case 158:
+			log.info("*****************   BEGIN  Testcase 158 *******************************");
+			ti.useTLS = true;
+			TestResult tr158;
+			tr158 = mu2senderTests.testMu2TwoEightPop(ti,"processdelayeddispatch7@hit-dev.nist.gov");
+			tr158.id = 158;
+			res.add(tr158);
+			
+			log.info("*****************   END  Testcase 158 *******************************");
+			break;
 			
 			
 		case 129:
@@ -544,6 +667,16 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				tr129.id = 129;
 				res.add(tr129);
 			log.info("*****************   END  Testcase 129 *******************************");
+			break;
+			
+		case 159:
+			log.info("*****************   BEGIN  Testcase 159 *******************************");
+
+			TestResult tr159;
+				tr159 = mu2senderTests.testPositiveDeliveryNotification(ti);
+				tr159.id = 159;
+				res.add(tr159);
+			log.info("*****************   END  Testcase 159 *******************************");
 			break;
 			
 		case 139:
@@ -561,9 +694,19 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr140;
 				tr140 = mu2senderTests.testBadDispositionNotification(ti);
-				tr140.id = 139;
+				tr140.id = 140;
 				res.add(tr140);
 			log.info("*****************   END  Testcase 140 *******************************");
+			break;
+			
+		case 141:
+			log.info("*****************   BEGIN  Testcase 141 *******************************");
+
+			TestResult tr141;
+				tr141 = mu2senderTests.testBadDispositionNotification(ti);
+				tr141.id = 141;
+				res.add(tr141);
+			log.info("*****************   END  Testcase 141 *******************************");
 			break;
 			
 		case 145:
