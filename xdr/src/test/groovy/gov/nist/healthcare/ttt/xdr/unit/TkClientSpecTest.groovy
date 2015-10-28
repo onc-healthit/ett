@@ -71,7 +71,7 @@ class TkClientSpecTest extends Specification {
 
         then:
         //we have a successful interaction
-            assert resp.simId.text() == id
+            assert resp.SimulatorId.text() == id
 
     }
 
@@ -92,7 +92,7 @@ class TkClientSpecTest extends Specification {
 
         then:
         //we have a successful interaction
-        assert resp.simId.text() == id
+        assert resp.SimulatorId.text() == id
 
     }
 

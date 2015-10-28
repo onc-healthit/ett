@@ -49,11 +49,7 @@ public class GroovyRestClient {
                 }
             }
             return resp
-        } catch(Exception e) {
-			logger.error("Could not connect to toolkit. XDR won't work!")
-			return null
         }
-
         finally{
             http.shutdown()
         }
