@@ -1,6 +1,9 @@
 ==Version 0.0.8#10/06/2015
 	*ETT
 		-Added CCDA R2 Validator
+	* Direct
+		-Added CCDA R2 validation to Direct validator
+		-Improved error display on Direct Validation report
 
 ==Version 0.0.7#06/12/2015
 	* Direct
