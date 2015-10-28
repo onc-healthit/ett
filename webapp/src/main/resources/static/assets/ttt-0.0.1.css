@@ -2653,3 +2653,7 @@ table.fancy tr.foobar {
 .edit-in-place.active input {
   display: inline-block;
 }
+.search-title {
+  font-size: 30px;
+  font-weight: bold;
+}
