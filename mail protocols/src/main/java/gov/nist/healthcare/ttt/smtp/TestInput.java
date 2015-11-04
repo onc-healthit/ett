@@ -31,13 +31,17 @@ public class TestInput {
 	
 	public int startTlsPort;
 	
+    public String ccdaReferenceFilename;
+	
+	public String ccdaValidationObjective;
+	
 	public LinkedHashMap<String, byte[]> attachments = new LinkedHashMap<String, byte[]>();
 	
 	public TestInput(String _sutSmtpAddress,String _tttSmtpAddress,int _sutSmtpPort, int _tttSmtpPort,
 			String _sutEmailAddress, String _tttEmailAddress, boolean _useTLS,
 			String _sutUserName, String _sutPassword,String _tttUserName, String _tttPassword, int _starTtlsPort,
 			int _sutCommandTimeoutInSeconds, 
-			LinkedHashMap<String, byte[]> _attachments) {
+			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective) {
 		sutSmtpAddress = _sutSmtpAddress;
 		tttSmtpAddress = _tttSmtpAddress;
 		sutSmtpPort = _sutSmtpPort;
@@ -52,6 +56,8 @@ public class TestInput {
 		startTlsPort = _starTtlsPort;
 		sutCommandTimeoutInSeconds = _sutCommandTimeoutInSeconds;
 		attachments = _attachments;
+		ccdaReferenceFilename = _ccdaReferenceFilename;
+		ccdaValidationObjective = _ccdaValidationObjective;
 	}
 
 	public TestInput(String _sutSmtpAddress, int _sutSmtpPort,
@@ -157,6 +163,22 @@ public class TestInput {
 
 	public void setTttSmtpAddress(String tttSmtpAddress) {
 		this.tttSmtpAddress = tttSmtpAddress;
+	}
+	
+	public String getCcdaValidationObjective() {
+		return ccdaValidationObjective;
+	}
+
+	public void setCcdaValidationObjective(String ccdaValidationObjective) {
+		this.ccdaValidationObjective = ccdaValidationObjective;
+	}
+
+	public String getCcdaReferenceFilename() {
+		return ccdaReferenceFilename;
+	}
+
+	public void setCcdaReferenceFilename(String ccdaReferenceFilename) {
+		this.ccdaReferenceFilename = ccdaReferenceFilename;
 	}
 	
 }
