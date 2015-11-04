@@ -683,7 +683,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 139 *******************************");
 
 			TestResult tr139;
-				tr139 = mu2senderTests.testBadDispositionNotification(ti);
+				tr139 = mu2senderTests.testDispositionNotificationSutReceiver(ti);
 				tr139.id = 139;
 				res.add(tr139);
 			log.info("*****************   END  Testcase 139 *******************************");
@@ -693,7 +693,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 140 *******************************");
 
 			TestResult tr140;
-				tr140 = mu2senderTests.testBadDispositionNotification(ti);
+				tr140 = mu2senderTests.testBadDispositionNotificationSutReceiver(ti);
 				tr140.id = 140;
 				res.add(tr140);
 			log.info("*****************   END  Testcase 140 *******************************");
@@ -703,7 +703,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 141 *******************************");
 
 			TestResult tr141;
-				tr141 = mu2senderTests.testBadDispositionNotification(ti);
+				tr141 = mu2senderTests.testBadAddressSutReceiver(ti);
 				tr141.id = 141;
 				res.add(tr141);
 			log.info("*****************   END  Testcase 141 *******************************");

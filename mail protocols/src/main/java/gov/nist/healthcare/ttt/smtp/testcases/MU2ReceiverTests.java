@@ -157,6 +157,10 @@ public class MU2ReceiverTests {
 			store.connect(ti.sutSmtpAddress,143,ti.sutUserName,ti.sutPassword);
 			}
 			
+			else if (fetch.equals("imap1")) {
+				store.connect("hit-testing.nist.gov",143,"sandeep@hit-testing.nist.gov","sandeeppassword");
+				}
+			
 			else {
 				store = session.getStore("pop3");
 				store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);

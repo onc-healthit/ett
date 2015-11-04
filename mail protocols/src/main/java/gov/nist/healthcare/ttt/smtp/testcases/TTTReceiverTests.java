@@ -1257,8 +1257,6 @@ public class TTTReceiverTests {
 				output.flush();
 				// keep on reading from/to the socket till we receive the "Ok"
 				// from IMAP,
-				// once we received that then we want to break.
-				// String responseLine;
 				int i = 1;
 
 				String responseLine;

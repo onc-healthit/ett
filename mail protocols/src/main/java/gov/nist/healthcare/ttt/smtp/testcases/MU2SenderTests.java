@@ -129,7 +129,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gmffail.com"));
+					InternetAddress.parse("provider1@direct2.sitenv.org"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -1165,6 +1165,59 @@ public class MU2SenderTests {
 		return tr;
 	}
 	
+	
+	public TestResult testDispositionNotificationSutReceiver(TestInput ti) {
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+	//	props.put("mail.smtp.starttls.enable","true");
+	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.ssl.trust", "*");
+		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+		fetch = "imap1";
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing sending mail with Disposition Notification Header!");
+			message.setText("This is a message to a SUT");
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+
+			
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort,"sandeep@hit-testing.nist.gov", "sandeeppassword");
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+			MessageId = message.getHeader("Message-ID")[0];
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("1","SENDING EMAIL WITH MESSAGE DISPOSITION NOTIFICATION HEADER\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + MessageId);
+
+		} catch (MessagingException e) {
+			log.info("Error in testBadAddress");
+			result.put("1", "Error in TEST MESSAGE DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	
 	public TestResult testBadDispositionNotification(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
@@ -1215,7 +1268,105 @@ public class MU2SenderTests {
 		return tr;
 	}
 	
+	public TestResult testBadDispositionNotificationSutReceiver(TestInput ti) {
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+	//	props.put("mail.smtp.starttls.enable","true");
+	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.ssl.trust", "*");
+		fetch = "imap1";
+		Session session = Session.getInstance(props, null);
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing sending mail with Bad Disposition Notification Header");
+			message.setText("This is a message to a SUT!");
+			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
+
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort,"sandeep@hit-testing.nist.gov", "sandeeppassword");
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+			MessageId = message.getHeader("Message-ID")[0];
+			
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("1","SENDING EMAIL WITH BAD DISPOSITION NOTIFICATION HEADER\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + MessageId);
+
+		} catch (MessagingException e) {
+			log.info("Error in testBadAddress");
+			result.put("1", "Error in TEST MESSAGE BAD DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
 	
+	
+	public TestResult testBadAddressSutReceiver(TestInput ti) {
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+	//	props.put("mail.smtp.starttls.enable","true");
+	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.ssl.trust", "*");
+		fetch = "imap1";
+		Session session = Session.getInstance(props, null);
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Mail to receivng HISP");
+			message.setText("This is a message to a SUT!");
+
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort,"sandeep@hit-testing.nist.gov", "sandeeppassword");
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+			MessageId = message.getHeader("Message-ID")[0];
+			
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("1","Sending email\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + MessageId);
+
+		} catch (MessagingException e) {
+			log.info("Error in testBadAddress");
+			result.put("1", "Error in TEST MESSAGE BAD DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
 	public TestResult testBadDispositionNotificationPop(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
@@ -1376,7 +1527,7 @@ public class MU2SenderTests {
 
 		return tr;
 	}
-	
+
 	public TestResult testPositiveDeliveryNotificationPop(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
