@@ -11,16 +11,19 @@ public class LogLevelModel {
 	
 	private List<LogLevel> levels;
 	private String logs;
+	private boolean noStacktrace;
 	
 	public LogLevelModel() {
 		this.levels = new ArrayList<LogLevelModel.LogLevel>();
 		this.logs = "";
+		this.noStacktrace = false;
 	}
 	
-	public LogLevelModel(List<LogLevel> levels, String logs) {
+	public LogLevelModel(List<LogLevel> levels, String logs, boolean noStacktrace) {
 		super();
 		this.levels = levels;
 		this.logs = logs;
+		this.noStacktrace = noStacktrace;
 	}
 
 	public List<LogLevel> getLevels() {
@@ -40,5 +43,14 @@ public class LogLevelModel {
 
 	public void setLogs(String logs) {
 		this.logs = logs;
+	}
+
+	public boolean isNoStacktrace() {
+		return noStacktrace;
+	}
+	
+
+	public void setNoStacktrace(boolean noStacktrace) {
+		this.noStacktrace = noStacktrace;
 	}
 }
