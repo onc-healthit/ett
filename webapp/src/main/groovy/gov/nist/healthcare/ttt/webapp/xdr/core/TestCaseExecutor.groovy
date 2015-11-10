@@ -126,7 +126,7 @@ class TestCaseExecutor {
     protected XDRTestStepInterface executeSendDirectStep(def context, String msgType) {
 
         SendDirectMessage msg = new SendDirectMessage("hisp testing","hisp testing",context.direct_from,
-                context.direct_to,"CCDA_Ambulatory.xml","good","","",true,false)
+                context.direct_to,msgType,"good","","",true,false)
         directService.sendDirect(msg)
 
 

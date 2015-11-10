@@ -1,4 +1,5 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive
+
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
@@ -11,20 +12,24 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import java.text.SimpleDateFormat
+
 /**
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase3 extends TestCase {
+final class TestCase14 extends TestCase {
+
 
     @Autowired
-    public TestCase3(TestCaseExecutor executor) {
+    TestCase14(TestCaseExecutor executor) {
         super(executor)
     }
 
-
     @Override
     TestCaseEvent configure(Map context, String username) {
+
+        //Context must contain the endpoint to send to
+
 
         def config = new HashMap()
         config.type = 'docsrc'
@@ -37,11 +42,14 @@ final class TestCase3 extends TestCase {
         def simId = id+"_"+username+"_"+timeStamp
         sim = registerEndpoint(simId, config)
 
+        // We don't need to really create a correlation here.
+        // When we receive an Direct, people would have previously recorded their from address in the direct testing
+        // part of the tool so we know what to look up.
         executor.createRecordForTestCase(context,username,id,sim)
 
 
-        context.directTo = "testcase3@nist.gov"
-        context.directFrom = "testcase3@nist.gov"
+        context.directTo = "testcase13@nist.gov"
+        context.directFrom = "testcase13@nist.gov"
         context.wsaTo = context.targetEndpoint
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
 
@@ -50,15 +58,13 @@ final class TestCase3 extends TestCase {
 
         XDRTestStepInterface step = executor.executeSendXDRStep2(context)
 
-        //Create a new test record
-        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
+        //cumbersome way of updating an object in the db
+        XDRRecordInterface record = executor.db.getLatestXDRRecordByUsernameTestCase(username, id)
+        record = new TestCaseBuilder(record).addStep(step).build()
+        executor.db.updateXDRRecord(record)
 
-        //TODO check. How comes we are adding a new test case here? The update coming after should be enough!
-        executor.db.addNewXdrRecord(record)
-
-        //at this point the test case status is either PASSED or FAILED depending on the result of the validation
-        XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
-
+        //manual as we will wait for manual validation of the direct
+        XDRRecordInterface.CriteriaMet testStatus = done(XDRRecordInterface.CriteriaMet.MANUAL, record)
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
@@ -66,6 +72,5 @@ final class TestCase3 extends TestCase {
 
         return new TestCaseEvent(testStatus, content)
     }
-
 
 }

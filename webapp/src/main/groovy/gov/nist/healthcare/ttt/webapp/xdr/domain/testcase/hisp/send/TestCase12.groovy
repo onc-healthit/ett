@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.send
 
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
@@ -15,16 +15,17 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase11 extends TestCaseSender {
+final class TestCase12 extends TestCaseSender {
 
 
     @Autowired
-    TestCase11(TestCaseExecutor executor) {
+    TestCase12(TestCaseExecutor executor) {
         super(executor)
     }
 
     @Override
     TestCaseEvent configure(Map context, String username) {
+
 
         //basically we need 4 piece of data to inplement the workflow :
         // for the system : the direct address of the SUT, and the endpoint it should send back to,
@@ -34,8 +35,9 @@ final class TestCase11 extends TestCaseSender {
         executor.createRecordForTestCase(context,username,id,sim)
 
         //We send a direct message + XDM
-        String msgType = "Direct+XDM"
-       XDRTestStepInterface step = executor.executeSendDirectStep(context, msgType)
+        String msgType = "CCDA_Ambulatory_in_XDM.zip"
+        //Context should contain direct_from and direct_to
+        XDRTestStepInterface step = executor.executeSendDirectStep(context, msgType)
 
         //cumbersome way of updating an object in the db
         XDRRecordInterface record = executor.db.getLatestXDRRecordByUsernameTestCase(username,id)
