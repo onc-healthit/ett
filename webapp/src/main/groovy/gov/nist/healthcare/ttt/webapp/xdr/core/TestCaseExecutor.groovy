@@ -119,9 +119,18 @@ class TestCaseExecutor {
     }
 
 
-    protected XDRTestStepInterface executeSendDirectStep(def context) {
+    protected XDRTestStepInterface executeSendDirectStep(def context, String msgType) {
 
-        DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.sutDirectAddress, Integer.parseInt(context.sutDirectPort))
+        DirectMessageInfoForXdr info = null
+
+        switch(msgType){
+            case "Direct" :
+               info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.directFrom, senderPort)
+                break;
+            case "Direct+XDM":
+                info =  new DirectMessageSenderForXdr().sendDirectWithXDMForXdr(context.directFrom, senderPort)
+        }
+
 
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.name = "SEND_DIRECT"

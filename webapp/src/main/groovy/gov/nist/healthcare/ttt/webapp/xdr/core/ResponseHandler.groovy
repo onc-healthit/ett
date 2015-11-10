@@ -80,6 +80,8 @@ class ResponseHandler implements IObserver {
         String msgId = report.messageId
         String simId = report.simId
 
+        //we need both simid and directFrom : without simid, we would not know which testcaseid we are talking about.
+        //Without the directFrom address, we would not be able to know who sent us a message.
         rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectFrom(simId, directFrom)
 
         if (rec != null) {

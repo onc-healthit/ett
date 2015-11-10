@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase10 extends TestCaseSender {
+final class TestCase11 extends TestCaseSender {
 
 
     @Autowired
-    TestCase10(TestCaseExecutor executor) {
+    TestCase11(TestCaseExecutor executor) {
         super(executor)
     }
 
@@ -33,8 +33,8 @@ final class TestCase10 extends TestCaseSender {
         //When the user check the status of the test, we just need the username-tcid combinaison to look up the result.
         executor.createRecordForTestCase(context,username,id,sim)
 
-        //We send a direct message
-        String msgType = "Direct"
+        //We send a direct message + XDM
+        String msgType = "Direct+XDM"
        XDRTestStepInterface step = executor.executeSendDirectStep(context, msgType)
 
         //cumbersome way of updating an object in the db
