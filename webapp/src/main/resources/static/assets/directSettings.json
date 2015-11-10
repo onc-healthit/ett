@@ -64,11 +64,11 @@
     }],
 
     "certificates": [{
-        "description": "TTT Public Cert",
+        "description": "ETT Public Cert",
         "icon": "key",
         "name": ""
     }, {
-        "description": "TTT Trust Anchor",
+        "description": "ETT Trust Anchor",
         "icon": "anchor",
         "name": "nist.gov.der"
     }, {
@@ -76,7 +76,7 @@
         "icon": "anchor",
         "name": "invalid-trust-relation.der"
     }, {
-        "description": "TTT Public Root CA",
+        "description": "ETT Public Root CA",
         "icon": "key",
         "name": "sampleca.nist.gov.pem"
     }, {

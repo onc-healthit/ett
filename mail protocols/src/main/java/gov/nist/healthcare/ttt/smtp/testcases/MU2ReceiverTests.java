@@ -3,6 +3,7 @@ package gov.nist.healthcare.ttt.smtp.testcases;
 import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
+import gov.nist.healthcare.ttt.smtp.testcases.MU2SenderTests;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,19 +29,21 @@ import org.apache.log4j.Logger;
 
 public class MU2ReceiverTests {
 	public static Logger log = Logger.getLogger("MU2ReceiverTests");
-
-	public TestResult fetchMail(TestInput ti) throws IOException {
+    MU2SenderTests st = new MU2SenderTests();
+    String id = st.getMessageId();
+    String fetch = st.getfetch();
+    
+	public TestResult fetchMail1(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		//int j = 0;
 		Properties props = System.getProperties();
-
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress,110,"failure15@hit-testing2.nist.gov","smtptesting123");
+			store.connect(ti.tttSmtpAddress,993,"failure15@hit-testing2.nist.gov","smtptesting123");
 
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
@@ -52,6 +55,7 @@ public class MU2ReceiverTests {
 
 			for (Message message : messages) {
 
+				
 				Address[] froms = message.getFrom();
 				String sender_ = froms == null ? ""
 						: ((InternetAddress) froms[0]).getAddress();
@@ -84,10 +88,41 @@ public class MU2ReceiverTests {
 				}
 
 			}
+			
+			/*for (Message message : messages){
+				Enumeration headers = message.getAllHeaders();
+				while(headers.hasMoreElements()) {
+					Header h = (Header) headers.nextElement();
+					if (ti.equals(h.getValue())){
+						
+						Enumeration headers1 = message.getAllHeaders();
+						while (headers.hasMoreElements()) {
+							Header h1 = (Header) headers.nextElement();
+						//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+							result.put("\n"+h1.getName(), h1.getValue()+"\n");
+
+
+
+
+						}
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
+
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i+1;
+							 bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+
+						}
+					}
+				}
+			}*/
 
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.STEP2);
-				tr.getTestRequestResponses().put("ERROR","No messages found! Send a message and try again.");
+				tr.getTestRequestResponses().put("ERROR","No messages found! Send a message and try again." +" id");
 			}
 			else {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
@@ -101,5 +136,87 @@ public class MU2ReceiverTests {
 
 		return tr;
 	}
+	
+	public TestResult fetchMail(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		HashMap<String, String> bodyparts = tr.getAttachments();
+		//int j = 0;
+		 Store store;
+		Properties props = System.getProperties();
+		try {
+			Session session = Session.getDefaultInstance(props, null);
+			
+			store = session.getStore("imap");
+			
+			if (fetch.equals("smtp")){
+				store.connect(ti.tttSmtpAddress,993,"failure15@hit-testing2.nist.gov","smtptesting123");
+			}
+			else if (fetch.equals("imap")) {
+			store.connect(ti.sutSmtpAddress,143,ti.sutUserName,ti.sutPassword);
+			}
+			
+			else if (fetch.equals("imap1")) {
+				store.connect("hit-testing.nist.gov",143,"sandeep@hit-testing.nist.gov","sandeeppassword");
+				}
+			
+			else {
+				store = session.getStore("pop3");
+				store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);
+			}
+			Folder inbox = store.getFolder("Inbox");
+			inbox.open(Folder.READ_WRITE);
 
+
+			Flags seen = new Flags(Flags.Flag.SEEN);
+			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+			Message messages[] = inbox.search(unseenFlagTerm);
+
+			
+			for (Message message : messages){
+				Enumeration headers = message.getAllHeaders();
+				while(headers.hasMoreElements()) {
+					Header h = (Header) headers.nextElement();
+					String x = h.getValue();
+					if (id.equals(x)){
+						
+						Enumeration headers1 = message.getAllHeaders();
+						while (headers1.hasMoreElements()) {
+							Header h1 = (Header) headers1.nextElement();
+						//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+							result.put("\n"+h1.getName(), h1.getValue()+"\n");
+
+						}
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
+
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i+1;
+							 bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+
+						}
+					}
+				}
+			}
+
+			if (result.size() == 0) {
+				tr.setCriteriamet(CriteriaStatus.STEP2);
+				tr.getTestRequestResponses().put("ERROR","No messages found with Message ID: " + id);
+			}
+			else {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+		} catch (MessagingException e) {
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			log.info("Error fetching email " + e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("1","Error fetching email :" + e.getLocalizedMessage());
+		}
+
+		return tr;
+	}
 }
