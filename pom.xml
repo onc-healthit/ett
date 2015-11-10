@@ -19,6 +19,7 @@
         <module>fakeToolkit</module>
         <module>xdrMessageFactory</module>
         <module>database</module>
+        <module>mailprotocols</module>
     </modules>
 
 </project>
