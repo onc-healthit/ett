@@ -1390,7 +1390,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("SUCCESS",
-						"POP server rejects the command with bad sybtax.");
+						"POP server rejects the command with bad syntax.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 
@@ -1493,7 +1493,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("SUCCESS",
-						"POP server rejects the command with bad sybtax.");
+						"POP server rejects the command with bad syntax.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 

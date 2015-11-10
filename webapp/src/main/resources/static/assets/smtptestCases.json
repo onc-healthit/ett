@@ -149,6 +149,15 @@
             "sutEdge": true
         },
         {
+            "name": "SMTP MU2 Test 18 (Accept failure message for invalid recipient)",
+            "id": 147,
+            "protocol": "mu2",
+            "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones and an invalid address (noaddress@hit-testing2.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": true
+        },
+        {
             "name": "SMTP MU2 Test 45 - Generate Unique Message-ID (IG for Delivery Notification Suite)",
             "id": 145,
             "protocol": "mu2",
