@@ -431,6 +431,9 @@ public class ListenerProcessor implements Runnable {
 			msg = msg.toLowerCase();
 			if (msg.startsWith("rcpt to:")) {
 				String to = msg.substring(msg.indexOf(':') + 1);
+				if(isSpam(to)) {
+					throw new Exception("Spam throwing away message");
+				}
 				if (to != null && !to.equals(""))
 					directTo.add(stripBrackets(to));
 				send("250 OK");
@@ -732,6 +735,20 @@ public class ListenerProcessor implements Runnable {
 		} else {
 			return res
 		}
+	}
+	
+	public boolean isSpam(String to) {
+		String[] notAllowed = ["@yahoo.com.tw", "@123.com", "@163.com", 
+			"@ms35.hinet.net", "@ms46.hinet.net", "@pchome.com.tw", "@ms49.hinet.net",
+			"@ms14.hinet.net", "@hotmail.com", "@ms77.hinet.net", "@ms27.hinet.net", 
+			"@msa.hinet.net", "@seed.net.tw", "ms76.hinet.net"];
+		notAllowed = notAllowed.collect {
+			/(.*)<(.*)${it}>(.*)/
+		}
+		def test = notAllowed.any {
+			to ==~ it
+		}
+		return test;
 	}
 	
 	public InputStream getSigningPrivateCert(String type = 'good') {

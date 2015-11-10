@@ -1,15 +1,12 @@
 package gov.nist.healthcare.ttt.webapp.common.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +45,8 @@ public class LogViewerController {
 		String logsPath = this.logsBasedir + File.separator + "logs" + File.separator + file;
 		String logsString = "";
 		try {
-			logsString = IOUtils.toString(new FileInputStream(new File(logsPath)), Charsets.UTF_8);
+//			logsString = IOUtils.toString(new FileInputStream(new File(logsPath)), Charsets.UTF_8);
+			logsString = unix4j.tail(10000, logsPath).toStringResult();
 		} catch (Exception e) {
 			logger.error("Could not read logs file: " + e.getMessage());
 			throw e;
