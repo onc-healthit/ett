@@ -22,7 +22,8 @@ class XdrTestCase10Test extends XDRSpecification {
     String simEndpoint = TestUtils.simEndpoint(simId, system)
     String testCaseConfig =
             """{
-        "direct_from": "$fromAddress"
+        "direct_from": "$fromAddress",
+        "direct_to" : "$toAddress"
 }"""
 
 

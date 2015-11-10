@@ -31,14 +31,14 @@ final class TestCase10 extends TestCaseSender {
         // for the GUI : the username et the test case id.
         //When we receive an XDR on this endpoint we know which record to update thanks to direct-from address.
         //When the user check the status of the test, we just need the username-tcid combinaison to look up the result.
-        executor.createRecordForTestCase(context,username,id,sim)
+        executor.createRecordForTestCase(context, username, id, sim)
 
         //We send a direct message
         String msgType = "Direct"
-       XDRTestStepInterface step = executor.executeSendDirectStep(context, msgType)
+        XDRTestStepInterface step = executor.executeSendDirectStep(context, msgType)
 
         //cumbersome way of updating an object in the db
-        XDRRecordInterface record = executor.db.getLatestXDRRecordByUsernameTestCase(username,id)
+        XDRRecordInterface record = executor.db.getLatestXDRRecordByUsernameTestCase(username, id)
         record = new TestCaseBuilder(record).addStep(step).build()
         executor.db.updateXDRRecord(record)
 
@@ -55,8 +55,13 @@ final class TestCase10 extends TestCaseSender {
         //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
-        //we send back a message status to the GUI
-        done(step.criteriaMet, updatedRecord)
+        //we send back a message status to the GUI. This should come from automatic validation but we do it manually for now.
+        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
 
+    }
+
+    @Override
+    public TestCaseEvent getReport(XDRRecordInterface record) {
+        executor.getSimpleSendReport(record)
     }
 }

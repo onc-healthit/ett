@@ -19,7 +19,6 @@ public class SendDirectService {
 
 	private static Logger logger = Logger.getLogger(SendDirectService.class.getName());
 
-	private SendDirectMessage messageInfo;
 	private ListenerProcessor listener = new ListenerProcessor();
 	private DirectMessageSender sender = new DirectMessageSender();
 
@@ -29,19 +28,11 @@ public class SendDirectService {
 	@Value("${direct.certificates.password}")
 	String certPassword;
 
-	public SendDirectService(SendDirectMessage msgInfo) {
-		this.messageInfo = msgInfo;
+	public SendDirectService() {
+		
 	}
 
-	public SendDirectMessage getMessageInfo() {
-		return messageInfo;
-	}
-
-	public void setMessageInfo(SendDirectMessage messageInfo) {
-		this.messageInfo = messageInfo;
-	}
-
-	public boolean sendDirect() throws Exception {
+	public boolean sendDirect(SendDirectMessage messageInfo) throws Exception {
 		// Set certificates values
 		listener.setCertificatesPath(this.certificatesPath);
 		listener.setCertPassword(this.certPassword);
