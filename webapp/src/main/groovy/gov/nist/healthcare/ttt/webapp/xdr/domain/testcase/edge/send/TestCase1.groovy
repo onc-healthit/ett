@@ -11,8 +11,6 @@ import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import java.text.SimpleDateFormat
-
 /**
  * Created by gerardin on 10/27/14.
  */
@@ -27,17 +25,6 @@ final class TestCase1 extends TestCaseSender {
 
     @Override
     TestCaseEvent configure(Map context, String username) {
-
-        def config = new HashMap()
-        config.type = 'docsrc'
-        config.endpoint = context.targetEndpoint
-        config.endpointTLS = context.targetEndpointTLS
-
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        //because Bill does not update existing simulator, we have to generate unique ids each time
-        //this is true for the case were we need to send with the simulator
-        def simId = id+"_"+username+"_"+timeStamp
-        sim = registerEndpoint(simId, config)
 
         executor.createRecordForTestCase(context,username,id,sim)
 

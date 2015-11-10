@@ -26,6 +26,7 @@ final class TestCase10 extends TestCaseSender {
     //TODO decide
     // either we create a new event has to capture the default configuration
     // either we hardcode it
+    //TODO it cannot find the certificates it looks for  : check
     TestCaseEvent config(){
         StandardContent c = new StandardContent()
         c.endpoint = sim.endpoint
@@ -55,7 +56,7 @@ final class TestCase10 extends TestCaseSender {
         executor.db.updateXDRRecord(record)
 
         //pending as we will wait to receive an XDR back
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.MANUAL, new StandardContent())
+        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, new StandardContent())
     }
 
     @Override
