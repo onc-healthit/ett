@@ -85,6 +85,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
+		HashMap<String, String> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
 		Properties props = System.getProperties();
@@ -160,6 +161,8 @@ public class TTTReceiverTests {
 							builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 							builder.addTextBody("validationObjective", "170.315(b)(1)");
 							builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+						//	builder.addTextBody("validationObjective", ti.ccdaValidationObjective);
+						//	builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
 							builder.addPart("ccdaFile", fileBody);
 							HttpEntity entity = builder.build();
 							//
@@ -169,7 +172,7 @@ public class TTTReceiverTests {
 								HttpResponse response = client.execute(post);
 								// CONVERT RESPONSE TO STRING
 								result1 = EntityUtils.toString(response.getEntity());
-								result.put("\n" + "Validation Result for " + bodyPart.getFileName() , result1 + "\n");
+								validationResult.put("\n" + "Validation Result for " + bodyPart.getFileName() , result1 + "\n");
 							}
 							
 						} else {
@@ -1388,7 +1391,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("SUCCESS",
-						"POP server rejects the command with bad sybtax.");
+						"POP server rejects the command with bad syntax.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 
@@ -1491,7 +1494,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("SUCCESS",
-						"POP server rejects the command with bad sybtax.");
+						"POP server rejects the command with bad syntax.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 

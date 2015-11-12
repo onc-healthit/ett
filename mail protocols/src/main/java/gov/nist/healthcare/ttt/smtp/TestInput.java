@@ -41,7 +41,7 @@ public class TestInput {
 			String _sutEmailAddress, String _tttEmailAddress, boolean _useTLS,
 			String _sutUserName, String _sutPassword,String _tttUserName, String _tttPassword, int _starTtlsPort,
 			int _sutCommandTimeoutInSeconds, 
-			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective) {
+			LinkedHashMap<String, byte[]> _attachments){//, String _ccdaReferenceFilename, String _ccdaValidationObjective) {
 		sutSmtpAddress = _sutSmtpAddress;
 		tttSmtpAddress = _tttSmtpAddress;
 		sutSmtpPort = _sutSmtpPort;
@@ -56,8 +56,8 @@ public class TestInput {
 		startTlsPort = _starTtlsPort;
 		sutCommandTimeoutInSeconds = _sutCommandTimeoutInSeconds;
 		attachments = _attachments;
-		ccdaReferenceFilename = _ccdaReferenceFilename;
-		ccdaValidationObjective = _ccdaValidationObjective;
+//		ccdaReferenceFilename = _ccdaReferenceFilename;
+//		ccdaValidationObjective = _ccdaValidationObjective;
 	}
 
 	public TestInput(String _sutSmtpAddress, int _sutSmtpPort,
