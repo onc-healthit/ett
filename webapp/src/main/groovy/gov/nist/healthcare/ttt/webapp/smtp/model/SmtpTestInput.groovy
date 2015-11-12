@@ -43,10 +43,6 @@ public class SmtpTestInput {
 	String status
 	
 	String attachmentType
-	
-	String ccdaReferenceFilename
-	
-	String ccdaValidationObjective
 
 	public SmtpTestInput() {
 
@@ -74,32 +70,6 @@ public class SmtpTestInput {
 		this.tttSmtpAddress = tttSmtpAddress
 		this.startTlsPort = startTlsPort
 		this.status = status
-	}
-
-	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress, String sutSmtpPort, String tttSmtpPort,
-			String sutEmailAddress, String tttEmailAddress, String useTLS, String sutCommandTimeoutInSeconds,
-			String sutUserName, String sutPassword, String tttUserName, String tttPassword, String tttSmtpAddress,
-			String startTlsPort, String status, String attachmentType, String ccdaReferenceFilename,
-			String ccdaValidationObjective) {
-		super();
-		this.testCaseNumber = testCaseNumber;
-		this.sutSmtpAddress = sutSmtpAddress;
-		this.sutSmtpPort = sutSmtpPort;
-		this.tttSmtpPort = tttSmtpPort;
-		this.sutEmailAddress = sutEmailAddress;
-		this.tttEmailAddress = tttEmailAddress;
-		this.useTLS = useTLS;
-		this.sutCommandTimeoutInSeconds = sutCommandTimeoutInSeconds;
-		this.sutUserName = sutUserName;
-		this.sutPassword = sutPassword;
-		this.tttUserName = tttUserName;
-		this.tttPassword = tttPassword;
-		this.tttSmtpAddress = tttSmtpAddress;
-		this.startTlsPort = startTlsPort;
-		this.status = status;
-		this.attachmentType = attachmentType;
-		this.ccdaReferenceFilename = ccdaReferenceFilename;
-		this.ccdaValidationObjective = ccdaValidationObjective;
 	}
 
 	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress,
@@ -178,7 +148,7 @@ public class SmtpTestInput {
 				this.tttEmailAddress, getBool(this.useTLS), this.sutUserName,
 				this.sutPassword, this.tttUserName, this.tttPassword,
 				Integer.parseInt(this.startTlsPort),
-				Integer.parseInt(this.sutCommandTimeoutInSeconds), attachment, this.ccdaReferenceFilename, this.ccdaValidationObjective)
+				Integer.parseInt(this.sutCommandTimeoutInSeconds), attachment)
 
 		return res
 	}

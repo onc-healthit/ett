@@ -2582,6 +2582,9 @@ table.fancy tr.ccdaSelected {
 .edit-in-place.active input {
   display: inline-block;
 }
+.ccda-modal .modal-dialog {
+  width: 80%;
+}
 /* Custom container */
 .container-full {
   margin: 0 auto;
