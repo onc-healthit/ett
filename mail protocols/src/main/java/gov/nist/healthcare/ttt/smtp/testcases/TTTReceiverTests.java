@@ -85,6 +85,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
+		HashMap<String, String> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
 		Properties props = System.getProperties();
@@ -171,7 +172,7 @@ public class TTTReceiverTests {
 								HttpResponse response = client.execute(post);
 								// CONVERT RESPONSE TO STRING
 								result1 = EntityUtils.toString(response.getEntity());
-								result.put("\n" + "Validation Result for " + bodyPart.getFileName() , result1 + "\n");
+								validationResult.put("\n" + "Validation Result for " + bodyPart.getFileName() , result1 + "\n");
 							}
 							
 						} else {
