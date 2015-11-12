@@ -87,6 +87,16 @@ public class TestResult implements ITestResult {
 	long timeElapsedInSeconds = 0L;
 	boolean proctored = false;
 	public LinkedHashMap<String, String> attachments = new LinkedHashMap<String, String>();
+	public LinkedHashMap<String, String> CCDAValidationReports = new LinkedHashMap<String, String>();
+	
+	public LinkedHashMap<String, String> getCCDAValidationReports() {
+		return CCDAValidationReports;
+	}
+
+	public void setCCDAValidationReports(
+			LinkedHashMap<String, String> cCDAValidationReports) {
+		CCDAValidationReports = cCDAValidationReports;
+	}
 
 	public LinkedHashMap<String, String> getAttachments() {
 		return attachments;
