@@ -53,15 +53,6 @@
     ]
         },
         {
-            "name": "SMTP Test 1-8, 14, 18 (Send)",
-            "id": 1,
-            "protocol": "smtp",
-            "desc": "170.315(b)(1) and CP_Sample1.pdf",
-            "sutRole": "sender",
-            "sutHisp": true,
-            "sutEdge": true
-        },
-        {
             "name": "SMTP Test 9, 16, 20 (Receive)",
             "id": 16,
             "protocol": "smtp",
