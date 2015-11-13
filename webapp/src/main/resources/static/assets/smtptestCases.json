@@ -62,52 +62,32 @@
             "sutEdge": true
         },
         {
-            "name": "SMTP Test 1-8, 14, 18 (Send)",
-            "id": 1,
-            "protocol": "smtp",
-            "desc": "170.315(b)(2) and CP_Sample2.pdf",
-            "sutRole": "sender",
-            "sutHisp": true,
-            "sutEdge": true
-        },
-        {
-            "name": "SMTP Test 1-8, 14, 18 (Send)",
-            "id": 1,
-            "protocol": "smtp",
-            "desc": "170.315(b)(3) and CP_Sample3.pdf",
-            "sutRole": "sender",
-            "sutHisp": true,
-            "sutEdge": true
-        },
-        {
-            "name": "SMTP Test 1-8, 14, 18 (Send)",
-            "id": 1,
-            "protocol": "smtp",
-            "desc": "170.315(b)(4) and CP_Sample4.pdf",
-            "sutRole": "sender",
-            "sutHisp": true,
-            "sutEdge": true
-        },
-        {
-            "name": "SMTP Test 1-8, 14, 18 (Send)",
-            "id": 1,
-            "protocol": "smtp",
-            "desc": "170.315(b)(5) and CP_Sample5.pdf",
-            "sutRole": "sender",
-            "sutHisp": true,
-            "sutEdge": true
-        },
-        {
-            "name": "SMTP Test 1-8, 14, 18 (Send)",
-            "id": 1,
-            "protocol": "smtp",
-            "desc": "170.315(b)(6) and CP_Sample6.pdf",
-            "sutRole": "sender",
-            "sutHisp": true,
-            "sutEdge": true
-        },
-        {
             "name": "SMTP Test 9, 16, 20 (Receive)",
+            "id": 16,
+            "protocol": "smtp",
+            "desc": "Verifies the ability of the receiving system to accept a STARTTLS connection with PLAIN SASL authentication. Hitting 'Run' will cause ETT to send an email. Verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION' from wellformed1@hit-testing2.nist.gov.'",
+            "sutRole": "receiver",
+            "sutHisp": true,
+            "sutEdge": true,
+            "fields": [
+                {
+                    "label": "Attachment type",
+                    "name": "attachmentType",
+                    "datatype": "DropdownString",
+                    "allowedValues": [
+                        "CCDA",
+                        "CCR",
+                        "C32",
+                        "XDM"
+                    ],
+                    "value": "attachmentType",
+                    "readOnly": "false",
+                    "display": "true"
+                }
+            ]
+        },
+        {
+            "name": "SMTP Test 9, 16, 20 (Receive)(IMAP)(POP)",
             "id": 16,
             "protocol": "smtp",
             "desc": "Verifies the ability of the receiving system to accept a STARTTLS connection with PLAIN SASL authentication. Hitting 'Run' will cause ETT to send an email. Verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION' from wellformed1@hit-testing2.nist.gov.'",
