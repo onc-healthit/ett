@@ -69,6 +69,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.mail.imap.IMAPFolder;
 
 public class TTTReceiverTests {
@@ -85,7 +87,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		HashMap<String, String> validationResult = tr.getCCDAValidationReports();
+		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
 		Properties props = System.getProperties();
@@ -172,7 +174,9 @@ public class TTTReceiverTests {
 								HttpResponse response = client.execute(post);
 								// CONVERT RESPONSE TO STRING
 								result1 = EntityUtils.toString(response.getEntity());
-								validationResult.put("\n" + "Validation Result for " + bodyPart.getFileName() , result1 + "\n");
+								ObjectMapper mapper = new ObjectMapper();
+	                               JsonNode jsonObject = mapper.readTree(result1) ;     
+								validationResult.put( bodyPart.getFileName() , jsonObject );
 							}
 							
 						} else {
