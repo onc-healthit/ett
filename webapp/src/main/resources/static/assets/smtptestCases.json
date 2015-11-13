@@ -30,12 +30,21 @@
             "name": "ccdaValidationObjective",
             "datatype": "DropdownString",
             "allowedValues": [
-                "MU2 170.315(b)(1) Transitions of Care Receive - For Ambulatory Care",
-                "MU2 170.315(b)(1) Transitions of Care Receive - For Inpatient Care",
-                "MU2 170.315(e)(1) Ambulatory Summary",
-                "MU2 170.315(e)(1) Inpatient Summary",
-                "MU2 170.315(b)(6) Data Portability",
-                "MU2 170.315(b)(9) Care Plan Documentation"
+                "170.315(b)(1) – Transitions of Care – Send - Ambulatory Setting",
+                "170.315(b)(1) – Transitions of Care – Send - Inpatient Setting",
+                "170.315(b)(2) – Clinical Information Reconciliation and Incorporation - Ambulatory Setting",
+                "170.315(b)(2) – Clinical Information Reconciliation and Incorporation – Inpatient Setting",
+                "170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Ambulatory Setting",
+                "170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Inpatient Setting",
+                "170.315(b)(6) – Data Export - Ambulatory Setting",
+                "170.315(b)(6) – Data Export - Inpatient Setting",
+                "170.315(b)(7) – Data Segmentation for Privacy - Send - Ambulatory Setting",
+                "170.315(b)(7) – Data Segmentation for Privacy - Send - Inpatient Setting",
+                "170.315(b)(9) – Care Plan - Create - Ambulatory Setting",
+                "170.315(b)(9) – Care Plan - Create - Inpatient Setting",
+                "170.315(e)(1) – View,Download and Transmit - Ambulatory Setting",
+                "170.315(e)(1) – View,Download and Transmit - Inpatient Setting",
+                "C-CDA Implementation Guide Conformance"
             ],
             "value": "ccdaValidationObjective",
             "readOnly": "false",
@@ -109,7 +118,7 @@
                 {
                     "label": "Attachment type",
                     "name": "attachmentType",
-                    "datatype": "ListedString",
+                    "datatype": "DropdownString",
                     "allowedValues": [
                         "CCDA",
                         "CCR",

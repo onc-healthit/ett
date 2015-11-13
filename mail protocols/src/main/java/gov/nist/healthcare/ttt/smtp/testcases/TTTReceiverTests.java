@@ -161,10 +161,12 @@ public class TTTReceiverTests {
 							//
 							MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 							builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-							builder.addTextBody("validationObjective", "170.315(b)(1)");
-							builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-						//	builder.addTextBody("validationObjective", ti.ccdaValidationObjective);
-						//	builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+						//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+						//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+							String[] parts = ti.ccdaValidationObjective.split(" ");
+							String obj = parts[0];
+							builder.addTextBody("validationObjective", obj);
+							builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
 							builder.addPart("ccdaFile", fileBody);
 							HttpEntity entity = builder.build();
 							//

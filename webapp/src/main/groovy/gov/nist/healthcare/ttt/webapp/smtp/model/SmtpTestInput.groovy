@@ -43,6 +43,10 @@ public class SmtpTestInput {
 	String status
 	
 	String attachmentType
+	
+	String ccdaReferenceFilename
+	
+	String ccdaValidationObjective
 
 	public SmtpTestInput() {
 
@@ -148,7 +152,7 @@ public class SmtpTestInput {
 				this.tttEmailAddress, getBool(this.useTLS), this.sutUserName,
 				this.sutPassword, this.tttUserName, this.tttPassword,
 				Integer.parseInt(this.startTlsPort),
-				Integer.parseInt(this.sutCommandTimeoutInSeconds), attachment)
+				Integer.parseInt(this.sutCommandTimeoutInSeconds), attachment, this.ccdaReferenceFilename, this.ccdaValidationObjective)
 
 		return res
 	}
