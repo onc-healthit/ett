@@ -24,7 +24,7 @@ final class TestCase3 extends TestCase {
 
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseEvent run(Map context, String username) {
 
         def config = new HashMap()
         config.type = 'docsrc'

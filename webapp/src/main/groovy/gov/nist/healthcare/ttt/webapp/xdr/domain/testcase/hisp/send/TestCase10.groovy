@@ -36,7 +36,7 @@ final class TestCase10 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseEvent run(Map context, String username) {
 
         //basically we need 4 piece of data to inplement the workflow :
         // for the system : the direct address of the SUT, and the endpoint it should send back to,
@@ -45,13 +45,14 @@ final class TestCase10 extends TestCaseSender {
         //When the user check the status of the test, we just need the username-tcid combinaison to look up the result.
         executor.createRecordForTestCase(context, username, id, sim)
 
-        if(context.direct_from.empty()){
-            //check what error to send back
-            return new TestCaseEvent(XDRRecordInterface.CriteriaMet.FAILED, new StandardContent())
+        //TODO validate / sanitize inputs
+        if(context.direct_to == null || context.direct_to.isEmpty()){
+            throw new Exception("direct_to address not provided or not valid")
         }
 
         //We provide a direct_from address. This might be used for trace back the message in the SUT logs.
-        context.directFrom = "testcase10@nist.gov"
+        context.direct_from = "testcase10@nist.gov"
+        //TODO check why there is a mismatch here
         //We send a direct message with a CCDA payload
         String msgType = "CCDA_Ambulatory.xml"
         //Context should contain direct_from and direct_to

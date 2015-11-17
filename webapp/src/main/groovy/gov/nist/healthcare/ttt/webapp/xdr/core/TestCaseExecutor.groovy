@@ -143,7 +143,7 @@ class TestCaseExecutor {
         try {
 
             //TODO add check. We do not always have to create a brand new endpoint.
-            //if an endpoint already exists, we just want to reuse it for the next configure.
+            //if an endpoint already exists, we just want to reuse it for the next run.
             //we get the endpoint for the last record (we should check it is alive as well)
             //then we add it to the step and create a new record
 

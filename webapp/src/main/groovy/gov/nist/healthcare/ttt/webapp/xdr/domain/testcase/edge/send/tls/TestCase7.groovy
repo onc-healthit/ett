@@ -20,7 +20,7 @@ final class TestCase7 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseEvent run(Map context, String username) {
 
         def step = executor.executeCorrelationStep(context, sim)
         step.name = "BAD_AUTHENTIFICATION_MUST_DISCONNECT"

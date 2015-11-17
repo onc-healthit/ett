@@ -16,7 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger
  * TestCaseStrategy defines generic hooks that execute some piece of logic when certain events occur.
  *
  * Possible events are :
- * - user starts a use case (configure)
+ * - user starts a use case (run)
  * - ttt received a notification from Bill's toolkit (notifyXdrReceive)
  * - ttt received a notification from the direct tool (notifyDirectReceive)
  *
@@ -43,7 +43,7 @@ abstract class TestCase {
 
     protected static Logger log = getLogger(TestCase.class)
 
-    public abstract TestCaseEvent configure(Map context, String username)
+    public abstract TestCaseEvent run(Map context, String username)
 
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         throw UnsupportedOperationException()

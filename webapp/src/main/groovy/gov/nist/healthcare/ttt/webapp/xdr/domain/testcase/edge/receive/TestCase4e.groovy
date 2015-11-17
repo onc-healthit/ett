@@ -22,7 +22,7 @@ final class TestCase4e extends TestCase {
 
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseEvent run(Map context, String username) {
 
         context.directTo = "testcase4b@nist.gov"
         context.directFrom = "testcase4b@nist.gov"

@@ -10,7 +10,7 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 
 /**
- * To configure a successful SSL connection :
+ * To run a successful SSL connection :
  * java -cp . -Djavax.net.ssl.trustStore=clientKeystore/keystore.jks  gov.nist.healthcare.ttt.webapp.misc.SslSocketClient
  *
  * The client truststore contains the cert of the server.

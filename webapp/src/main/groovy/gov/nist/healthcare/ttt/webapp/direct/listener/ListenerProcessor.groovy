@@ -160,10 +160,10 @@ public class ListenerProcessor implements Runnable {
 			// TkPropsServer ccdaProps =
 			// reportingProps.withPrefixRemoved("ccdatype");
 			if (directTo.size() > 1) {
-				String msg = "Multiple TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to configure - CCDA validation will be skipped";
+				String msg = "Multiple TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to run - CCDA validation will be skipped";
 				logger.warn(msg);
 			} else if (directTo.size() == 0) {
-				String msg = "No TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to configure - CCDA validation will be skipped";
+				String msg = "No TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to run - CCDA validation will be skipped";
 				logger.warn(msg);
 				// else {
 				// String to = directTo.get(0);

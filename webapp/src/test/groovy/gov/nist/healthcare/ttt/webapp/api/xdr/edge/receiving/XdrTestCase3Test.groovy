@@ -39,8 +39,8 @@ class XdrTestCase3Test extends XDRSpecification {
 
     def "user succeeds in running test case"() throws Exception {
 
-        when: "receiving a request to configure test case"
-        MockHttpServletRequestBuilder getRequest = TestUtils.configure(tcId,userId,testCaseConfig)
+        when: "receiving a request to run test case"
+        MockHttpServletRequestBuilder getRequest = TestUtils.run(tcId,userId,testCaseConfig)
 
         then: "we receive back a message with status and report of the transaction"
 
@@ -54,8 +54,8 @@ class XdrTestCase3Test extends XDRSpecification {
 
     def "user succeeds in running test case with a tls endpoint"() throws Exception {
 
-        when: "receiving a request to configure test case"
-        MockHttpServletRequestBuilder getRequest = TestUtils.configure(tcId,userId,testCaseConfigTLS)
+        when: "receiving a request to run test case"
+        MockHttpServletRequestBuilder getRequest = TestUtils.run(tcId,userId,testCaseConfigTLS)
 
         then: "we receive back a message with status and report of the transaction"
 

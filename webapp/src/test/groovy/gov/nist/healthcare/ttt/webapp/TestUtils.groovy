@@ -17,8 +17,8 @@ class TestUtils {
     GUI Mock calls
      */
 
-    static MockHttpServletRequestBuilder configure(String tcId, String userId, String testCaseConfig) {
-        MockMvcRequestBuilders.post("/api/xdr/tc/$tcId/configure")
+    static MockHttpServletRequestBuilder run(String tcId, String userId, String testCaseConfig) {
+        MockMvcRequestBuilders.post("/api/xdr/tc/$tcId/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -32,8 +32,8 @@ class TestUtils {
                 .principal(new PrincipalImpl(userId))
     }
 
-    static MockHttpServletRequestBuilder getEndpoints(String tcId, String userId, String testCaseConfig) {
-        MockMvcRequestBuilders.get("/api/xdr/tc/$tcId/endpoint")
+    static MockHttpServletRequestBuilder configure(String tcId, String userId, String testCaseConfig) {
+        MockMvcRequestBuilders.get("/api/xdr/tc/$tcId/configure")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)

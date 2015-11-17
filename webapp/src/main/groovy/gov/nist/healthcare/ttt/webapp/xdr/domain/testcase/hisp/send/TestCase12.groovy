@@ -24,7 +24,7 @@ final class TestCase12 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseEvent run(Map context, String username) {
 
 
         //basically we need 4 piece of data to inplement the workflow :

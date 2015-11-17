@@ -29,7 +29,7 @@ class XdrTestCase19Test extends XDRSpecification {
     def "user succeeds in running test case - positive test : message ids are all distinct"() throws Exception {
 
         when : "we looking for the endpoint"
-        MockHttpServletRequestBuilder endpoint = TestUtils.getEndpoints(tcId,userId,testCaseConfig)
+        MockHttpServletRequestBuilder endpoint = TestUtils.configure(tcId,userId,testCaseConfig)
 
         //TODO find a way to test endpoint
         then: "we receive back a success message with the endpoints info"
@@ -40,8 +40,8 @@ class XdrTestCase19Test extends XDRSpecification {
                 .andExpect(jsonPath("content.value.endpoints").exists())
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
-        when: "receiving a request to configure test case"
-        MockHttpServletRequestBuilder configure = TestUtils.configure(tcId,userId,testCaseConfig)
+        when: "receiving a request to run test case"
+        MockHttpServletRequestBuilder configure = TestUtils.run(tcId,userId,testCaseConfig)
 
         then: "we receive back a success message"
         gui.perform(configure)
@@ -88,7 +88,7 @@ class XdrTestCase19Test extends XDRSpecification {
     def "user  in running test case - negative test : message ids are not unique"() throws Exception {
 
         when : "we looking for the endpoint"
-        MockHttpServletRequestBuilder endpoint = TestUtils.getEndpoints(tcId,userId,testCaseConfig)
+        MockHttpServletRequestBuilder endpoint = TestUtils.configure(tcId,userId,testCaseConfig)
 
         //TODO find a way to test endpoint
         then: "we receive back a success message with the endpoints info"
@@ -99,8 +99,8 @@ class XdrTestCase19Test extends XDRSpecification {
                 .andExpect(jsonPath("content.value.endpoints").exists())
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
-        when: "receiving a request to configure test case"
-        MockHttpServletRequestBuilder configure = TestUtils.configure(tcId,userId,testCaseConfig)
+        when: "receiving a request to run test case"
+        MockHttpServletRequestBuilder configure = TestUtils.run(tcId,userId,testCaseConfig)
 
         then: "we receive back a success message"
         gui.perform(configure)

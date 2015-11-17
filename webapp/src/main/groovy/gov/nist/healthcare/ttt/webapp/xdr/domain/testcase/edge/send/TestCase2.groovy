@@ -22,7 +22,7 @@ final class TestCase2 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseEvent run(Map context, String username) {
 
         executor.createRecordForTestCase(context,username,id,sim)
 

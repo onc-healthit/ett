@@ -26,7 +26,7 @@ final class TestCase16mu2 extends TestCase {
     }
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseEvent run(Map context, String username) {
 
         //Context must contain the endpoint to send to
 
