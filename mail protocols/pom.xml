@@ -152,9 +152,4 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-
-	<scm>
-		<connection>scm:svn:https://svn.code.sf.net/p/smptests/svn/trunk</connection>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/smptests/svn/trunk</developerConnection>
-	</scm>
 </project>
