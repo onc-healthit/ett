@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
@@ -9,17 +9,16 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
-import java.text.SimpleDateFormat
-
 /**
  * Created by gerardin on 10/27/14.
  */
+
+//TODO we could factorize all the code. We just need to all immutable context info stored as attributes
 @Component
-final class TestCase3c32 extends TestCase {
+final class TestCase15a extends TestCase {
 
     @Autowired
-    public TestCase3c32(TestCaseExecutor executor) {
+    public TestCase15a(TestCaseExecutor executor) {
         super(executor)
     }
 
@@ -27,30 +26,14 @@ final class TestCase3c32 extends TestCase {
     @Override
     TestCaseEvent configure(Map context, String username) {
 
-        def config = new HashMap()
-        config.type = 'docsrc'
-        config.endpoint = context.targetEndpoint
-        config.endpointTLS = context.targetEndpointTLS
-
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        //because Bill does not update existing simulator, we have to generate unique ids each time
-        def simId = id+"_"+username+"_"+timeStamp
-        sim = registerEndpoint(simId, config)
-
-        executor.createRecordForTestCase(context,username,id,sim)
-
-
-        context.directTo = "testcase3c32@nist.gov"
-        context.directFrom = "testcase3c32@nist.gov"
+        context.directTo = "testcase15a@nist.gov"
+        context.directFrom = "testcase15a@nist.gov"
         context.wsaTo = context.targetEndpoint
-        context.messageType = ArtifactManagement.Type.XDR_C32
+        context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
 
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
+        XDRTestStepInterface step = executor.executeSendBadXDRStep(context)
 
-        XDRTestStepInterface step = executor.executeSendXDRStep(context)
-
-        //Create a new test record
+        //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
         executor.db.addNewXdrRecord(record)
@@ -58,13 +41,10 @@ final class TestCase3c32 extends TestCase {
         //at this point the test case status is either PASSED or FAILED depending on the result of the validation
         XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
+        def content = executor.buildSendXDRContent(step)
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
-        def content = executor.buildSendXDRContent(step)
-
-        return new TestCaseEvent(testStatus, content)
+        new TestCaseEvent(testStatus,content)
     }
-
-
 }

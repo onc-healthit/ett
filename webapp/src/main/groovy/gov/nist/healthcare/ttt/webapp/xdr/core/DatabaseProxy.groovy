@@ -39,7 +39,7 @@ class DatabaseProxy {
         }
     }
 
-    //TODO check. Does it throw any kind of exception?
+    //TODO NEED TO BE REMOVED. Several users might share the same simulator!!!
     XDRRecordInterface getLatestXDRRecordBySimulatorId(String id) {
         instance.xdrFacade.getLatestXDRRecordBySimulatorId(id)
     }

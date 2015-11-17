@@ -3,8 +3,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender
+import gov.nist.healthcare.ttt.model.sendDirect.SendDirectMessage
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
+import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.SendDirectService
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
@@ -42,13 +44,14 @@ class TestCaseExecutor {
     private final Clock clock
     public final TLSReceiver tlsReceiver
     public final TLSClient tlsClient
+    public final SendDirectService directService
 
     protected static ObjectMapper mapper = new ObjectMapper()
 
     private static Logger log = LoggerFactory.getLogger(TestCaseExecutor.class)
 
     @Autowired
-    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, BadXdrSender badSender, TLSReceiver  tlsReceiver, TLSClient tlsClient, Clock clock) {
+    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, BadXdrSender badSender, TLSReceiver  tlsReceiver, TLSClient tlsClient, Clock clock, SendDirectService directService) {
         this.db = db
         this.receiver = receiver
         this.sender = sender
@@ -56,9 +59,10 @@ class TestCaseExecutor {
         this.tlsReceiver = tlsReceiver
         this.tlsClient = tlsClient
         this.clock = clock
+        this.directService = directService
     }
 
-    protected XDRTestStepInterface executeSendXDRStep2(Map config) {
+    protected XDRTestStepInterface executeSendXDRStep(Map config) {
         try {
             def r = sender.sendXdr(config)
 
@@ -88,7 +92,7 @@ class TestCaseExecutor {
 
     }
 
-    protected XDRTestStepInterface executeSendXDRStep(Map config) {
+    protected XDRTestStepInterface executeSendBadXDRStep(Map config) {
 
         def r
         try {
@@ -119,20 +123,16 @@ class TestCaseExecutor {
     }
 
 
-    protected XDRTestStepInterface executeSendDirectStep(def context) {
+    protected XDRTestStepInterface executeSendDirectStep(def context, String msgType) {
 
-        DirectMessageInfoForXdr info = new DirectMessageSenderForXdr().sendDirectWithCCDAForXdr(context.sutDirectAddress, Integer.parseInt(context.sutDirectPort))
+        SendDirectMessage msg = new SendDirectMessage("hisp testing","hisp testing",context.direct_from,
+                context.direct_to,msgType,"good","","",true,false)
+        directService.sendDirect(msg)
+
 
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.name = "SEND_DIRECT"
         step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
-        step.messageId = info.messageId
-        step.xdrReportItems = new LinkedList<>()
-
-        //TODO we need to store a info object
-        XDRReportItemInterface report = new XDRReportItemImpl()
-        report.report = info.messageId
-        step.xdrReportItems.add(report)
 
         return step
     }

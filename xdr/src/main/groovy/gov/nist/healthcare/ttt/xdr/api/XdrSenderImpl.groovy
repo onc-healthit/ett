@@ -42,7 +42,8 @@ class XdrSenderImpl implements XdrSender{
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.targetEndpoint)
 
-        Artifacts art = ArtifactManagement.generateArtifacts(ArtifactManagement.Type.XDR_FULL_METADATA, settings);
+        //TODO this should be created in the test case so it can be customized
+        Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
 
         def req = """
             <sendRequest>

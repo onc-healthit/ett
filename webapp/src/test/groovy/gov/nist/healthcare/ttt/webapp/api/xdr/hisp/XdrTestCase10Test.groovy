@@ -1,5 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.api.xdr.edge.sending.mu2
-
+package gov.nist.healthcare.ttt.webapp.api.xdr.hisp
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.TestUtils
 import gov.nist.healthcare.ttt.webapp.XDRSpecification
@@ -12,26 +11,19 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
+class XdrTestCase10Test extends XDRSpecification {
 
-class XdrTestCase20bTest extends XDRSpecification {
-
-
-    String simId = "20b"
-    String tcId = "20b"
+    String simId = "10"
+    String tcId = "10"
     String simEndpoint = TestUtils.simEndpoint(simId, system)
-
-    String fromAddress = "from@hit-dev.nist.gov"
-    String toAddress = "to@hit-dev.nist.gov"
-
-
     String testCaseConfig =
             """{
-        "direct_from": "$fromAddress"
+        "direct_from": "$fromAddress",
+        "direct_to" : "$toAddress"
 }"""
 
 
@@ -40,24 +32,26 @@ class XdrTestCase20bTest extends XDRSpecification {
         when: "receiving a request to configure test case"
         MockHttpServletRequestBuilder configure = TestUtils.configure(tcId,userId,testCaseConfig)
 
-        then: "we receive back a success message with manual validation"
+        then: "we receive back a success message"
         gui.perform(configure)
                 .andDo(print())
-                .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 
-        when: "receiving xdr report from toolkit."
+        when: "receiving a validation report from toolkit. We mock the actual interaction!"
         MockHttpServletRequestBuilder toolkitNotification = TestUtils.reportNotification(TestUtils.buildReportTemplate(simId,messageID,fromAddress,toAddress))
         toolkit.perform(toolkitNotification)
                 .andDo(print())
                 .andReturn()
 
         then: "we store the validation in the database"
-        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordByDirectFrom("$fromAddress")
-        assert rec != null
-        assert rec.testSteps.size() == 2
+        XDRRecordInterface rec = db.xdrFacade.getLatestXDRRecordBySimulatorId(simId)
+        def step = rec.testSteps.find{
+            it.name == "XDR_RECEIVE"
+        }
+
+        assert !step.xdrReportItems.get(0).report.empty
 
 
         when: "we check the status of testcase"

@@ -33,6 +33,7 @@ final class TestCase3 extends TestCase {
 
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
         //because Bill does not update existing simulator, we have to generate unique ids each time
+        //this is true for the case were we need to send with the simulator
         def simId = id+"_"+username+"_"+timeStamp
         sim = registerEndpoint(simId, config)
 
@@ -47,11 +48,12 @@ final class TestCase3 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
 
-        XDRTestStepInterface step = executor.executeSendXDRStep2(context)
+        XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
         //Create a new test record
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
 
+        //TODO check. How comes we are adding a new test case here? The update coming after should be enough!
         executor.db.addNewXdrRecord(record)
 
         //at this point the test case status is either PASSED or FAILED depending on the result of the validation

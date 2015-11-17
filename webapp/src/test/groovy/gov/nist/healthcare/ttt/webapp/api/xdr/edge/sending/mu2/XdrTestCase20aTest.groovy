@@ -41,7 +41,7 @@ class XdrTestCase20aTest extends XDRSpecification {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
+                .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 
         when: "receiving xdr report from toolkit."
