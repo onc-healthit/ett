@@ -26,31 +26,28 @@ final class TestCase8 extends TestCase {
     @Override
     TestCaseEvent run(Map context, String username) {
 
+        executor.validateInputs(context,["ip_address","port"])
+
         XDRTestStepImpl step = new TestStepBuilder("SEND_OVER_SSL_WITH_GOOD_CERT").build()
 
         try {
             executor.tlsClient.connectOverGoodTLS([ip_address: context.ip_address, port: context.port])
-            log.info("tls connection succeeded.")
+            log.debug("tls connection for tcid $id and user $username succeeded.")
             step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
         }
         catch(IOException e){
-            log.info("tls connection failed.")
+            log.debug("tls connection for tcid $id and user $username failed.")
             e.printStackTrace()
             step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
         }
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-
+        record.criteriaMet = step.criteriaMet
         executor.db.addNewXdrRecord(record)
-
-        //at this point the test case status is either PASSED or FAILED depending on the result of the validation
-        XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
         def content = new StandardContent()
 
-        log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
-
-        new TestCaseEvent(testStatus,content)
+        new TestCaseEvent(record.criteriaMet,content)
     }
 }

@@ -24,8 +24,10 @@ final class TestCase4e extends TestCase {
     @Override
     TestCaseEvent run(Map context, String username) {
 
-        context.directTo = "testcase4b@nist.gov"
-        context.directFrom = "testcase4b@nist.gov"
+        executor.validateInputs(context,["targetEndpoint"])
+
+        context.directTo = "testcase4e@nist.gov"
+        context.directFrom = "testcase4e@nist.gov"
         context.wsaTo = context.targetEndpoint
         context.messageType = ArtifactManagement.Type.NEGATIVE_MISSING_ASSOCIATION
 

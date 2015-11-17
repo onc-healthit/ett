@@ -1,4 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.api.xdr.hisp
+
 import gov.nist.healthcare.ttt.webapp.TestUtils
 import gov.nist.healthcare.ttt.webapp.XDRSpecification
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
@@ -26,37 +27,15 @@ class XdrTestCase13Test extends XDRSpecification {
     String tcId = "13"
     String simEndpoint = TestUtils.simEndpoint(simId, system)
 
-    public String testCaseConfig =
-            """{
-    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
-}"""
-
     public String testCaseConfigTLS =
             """{
-    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr",
     "targetEndpointTLS": "https://transport-testing.nist.gov:12081/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
 }"""
-
-
-    def "user succeeds in running test case"() throws Exception {
-
-        when: "receiving a request to run test case"
-        MockHttpServletRequestBuilder getRequest = TestUtils.run(tcId,userId,testCaseConfig)
-
-        then: "we receive back a message with status and report of the transaction"
-
-        //TODO we cannot validate the body because for now we always get error messages!
-        gui.perform(getRequest)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
-    }
 
     def "user succeeds in running test case with a tls endpoint"() throws Exception {
 
         when: "receiving a request to run test case"
-        MockHttpServletRequestBuilder getRequest = TestUtils.run(tcId,userId,testCaseConfigTLS)
+        MockHttpServletRequestBuilder getRequest = TestUtils.run(tcId, userId, testCaseConfigTLS)
 
         then: "we receive back a message with status and report of the transaction"
 

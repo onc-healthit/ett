@@ -23,9 +23,12 @@ final class TestCase20a extends TestCaseSender {
     @Override
     TestCaseEvent run(Map context, String username) {
 
-        executor.createRecordForTestCase(context,username,id,sim)
+        executor.validateInputs(context,["direct_from"])
 
-        log.info "test case ${id} : successfully configured. Ready to receive messages."
+        //correlate this test to a direct_from address and a simulator id so we can be notified
+        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+        executor.db.addNewXdrRecord(builder.addStep(step1).build())
 
         def content = new StandardContent()
         content.endpoint = endpoints[0]

@@ -1,11 +1,10 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender
 import gov.nist.healthcare.ttt.model.sendDirect.SendDirectMessage
-import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageInfoForXdr
-import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.DirectMessageSenderForXdr
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.SendDirectService
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
@@ -22,6 +21,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+
 /**
  * Created by gerardin on 10/28/14.
  */
@@ -42,7 +42,7 @@ class TestCaseExecutor {
     private final XdrSender sender
     private final BadXdrSender badSender
     private final Clock clock
-    public final TLSReceiver tlsReceiver
+    public final TLSReceiver tlsReceiver //we need a unique endpoint for all tls related test
     public final TLSClient tlsClient
     public final SendDirectService directService
 
@@ -51,7 +51,7 @@ class TestCaseExecutor {
     private static Logger log = LoggerFactory.getLogger(TestCaseExecutor.class)
 
     @Autowired
-    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, BadXdrSender badSender, TLSReceiver  tlsReceiver, TLSClient tlsClient, Clock clock, SendDirectService directService) {
+    TestCaseExecutor(DatabaseProxy db, XdrReceiver receiver, XdrSender sender, BadXdrSender badSender, TLSReceiver tlsReceiver, TLSClient tlsClient, Clock clock, SendDirectService directService) {
         this.db = db
         this.receiver = receiver
         this.sender = sender
@@ -125,8 +125,8 @@ class TestCaseExecutor {
 
     protected XDRTestStepInterface executeSendDirectStep(def context, String msgType) {
 
-        SendDirectMessage msg = new SendDirectMessage("hisp testing","hisp testing",context.direct_from,
-                context.direct_to,msgType,"good","","",true,false)
+        SendDirectMessage msg = new SendDirectMessage("hisp testing", "hisp testing", context.direct_from,
+                context.direct_to, msgType, "good", "", "", true, false)
         directService.sendDirect(msg)
 
 
@@ -255,7 +255,7 @@ class TestCaseExecutor {
         config.name = endpointId.replaceAll(/\./, "_")
 
 
-        log.info("trying to create new endpoints on toolkit... [${config.name}]")
+        log.debug("trying to create new endpoints on toolkit... [${config.name}]")
 
         return receiver.createEndpoints(config)
     }
@@ -311,19 +311,23 @@ class TestCaseExecutor {
         return new TestCaseEvent(record.criteriaMet, content)
     }
 
-    def createRecordForTestCase(Map context, String username, String tcid, XDRSimulatorInterface sim) {
-        def step = executeCorrelationStep(context, sim)
-        XDRRecordInterface record = new TestCaseBuilder(tcid, username).addStep(step).build()
-        db.addNewXdrRecord(record)
-    }
-
-    def executeCorrelationStep(Map context, XDRSimulatorInterface sim) {
+    public def correlateRecordWithSimIdAndDirectAddress(XDRSimulatorInterface sim, String directAddress) {
         XDRTestStepInterface step = new XDRTestStepImpl()
-        step.name = "CORRELATE_RECORD_WITH_SIMID_AND_DIRECT_FROM_ADDRESS"
+        step.name = "CORRELATE_RECORD_WITH_SIMID_AND_DIRECT_ADDRESS"
         step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
         step.xdrSimulator = sim
-        step.directFrom = context.direct_from
-        step.hostname = context.ip_address
+        //TODO change name in the DB
+        step.directFrom = directAddress
+        return step
+    }
+
+    public def correlateRecordWithSimIdAndIpAddress(String ipAddress, XDRSimulatorInterface sim) {
+        XDRTestStepInterface step = new XDRTestStepImpl()
+        step.name = "CORRELATE_RECORD_WITH_SIMID_AND_IP_ADDRESS"
+        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        step.xdrSimulator = sim
+        //TODO change name in the DB
+        step.hostname = ipAddress
         return step
     }
 
@@ -331,14 +335,22 @@ class TestCaseExecutor {
         StandardContent content = new StandardContent()
 
         step.xdrReportItems.each {
-            if(it.reportType == XDRReportItemInterface.ReportType.REQUEST){
+            if (it.reportType == XDRReportItemInterface.ReportType.REQUEST) {
                 content.request = it.report
-            }
-            else if(it.reportType == XDRReportItemInterface.ReportType.RESPONSE){
+            } else if (it.reportType == XDRReportItemInterface.ReportType.RESPONSE) {
                 content.response = it.report
             }
         }
 
         return content
+    }
+
+    def validateInputs(Map<String, String> context, List<String> keys) {
+        for (String key : keys) {
+            //TODO validate / sanitize inputs
+            if (!context.containsKey(key)) {
+                throw new Exception("$key not provided")
+            }
+        }
     }
 }

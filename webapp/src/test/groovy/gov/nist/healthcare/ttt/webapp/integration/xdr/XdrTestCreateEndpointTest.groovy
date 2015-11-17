@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.integration.xdr
 
+import gov.nist.healthcare.ttt.webapp.XDRSpecification
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
 import gov.nist.healthcare.ttt.webapp.testFramework.TestApplication
 import gov.nist.healthcare.ttt.webapp.xdr.controller.XdrTestCaseController
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCreateEndpointTest extends Specification {
+class XdrTestCreateEndpointTest extends XDRSpecification {
 
     Logger log = LoggerFactory.getLogger(this.class)
 
@@ -48,7 +49,12 @@ class XdrTestCreateEndpointTest extends Specification {
 
     //Because we mock the user as user1 , that are testing the test case 1 and the timestamp is fixed at 2014 by the FakeClock
     static String id = "user1_1_2014"
-    static String userId = "user1@gmail.com"
+    static String userId = "user1"
+
+    String testCaseConfig =
+            """{
+        "direct_from": "$fromAddress"
+}"""
 
     /*
     Set up mockmvc with the necessary converter (json or xml)
@@ -112,28 +118,6 @@ class XdrTestCreateEndpointTest extends Specification {
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
                 .principal(new PrincipalImpl(userId))
-    }
-
-    public static String testCaseConfig =
-            """{
-    "tc_config": {
-        "endpoint_url": "sut1.testlab1"
-    }
-}"""
-
-    def setupDb() {
-        createUserInDB()
-        db.xdrFacade.removeAllByUsername(userId)
-        log.info("db data fixture set up.")
-    }
-
-    public void createUserInDB() throws Exception {
-        if (!db.getDf().doesUsernameExist(userId)) {
-            db.getDf().addUsernamePassword(userId, "pass")
-        }
-        assert db.getDf().doesUsernameExist(userId)
-
-
     }
 }
 

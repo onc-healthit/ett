@@ -25,8 +25,10 @@ final class TestCase4d extends TestCase {
     @Override
     TestCaseEvent run(Map context, String username) {
 
-        context.directTo = "testcase4b@nist.gov"
-        context.directFrom = "testcase4b@nist.gov"
+        executor.validateInputs(context,["targetEndpoint"])
+
+        context.directTo = "testcase4d@nist.gov"
+        context.directFrom = "testcasedb@nist.gov"
         context.wsaTo = context.targetEndpoint
 
         context.messageType = chooseMissingMetadata()

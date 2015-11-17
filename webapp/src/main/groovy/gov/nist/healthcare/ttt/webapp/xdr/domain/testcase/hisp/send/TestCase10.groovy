@@ -38,30 +38,23 @@ final class TestCase10 extends TestCaseSender {
     @Override
     TestCaseEvent run(Map context, String username) {
 
-        //basically we need 4 piece of data to inplement the workflow :
-        // for the system : the direct address of the SUT, and the endpoint it should send back to,
-        // for the GUI : the username et the test case id.
-        //When we receive an XDR on this endpoint we know which record to update thanks to direct-from address.
-        //When the user check the status of the test, we just need the username-tcid combinaison to look up the result.
-        executor.createRecordForTestCase(context, username, id, sim)
+        executor.validateInputs(context,["direct_to"])
 
-        //TODO validate / sanitize inputs
-        if(context.direct_to == null || context.direct_to.isEmpty()){
-            throw new Exception("direct_to address not provided or not valid")
-        }
+        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_to)
+        builder.addStep(step1)
 
         //We provide a direct_from address. This might be used for trace back the message in the SUT logs.
         context.direct_from = "testcase10@nist.gov"
-        //TODO check why there is a mismatch here
+
         //We send a direct message with a CCDA payload
         String msgType = "CCDA_Ambulatory.xml"
-        //Context should contain direct_from and direct_to
-        XDRTestStepInterface step = executor.executeSendDirectStep(context, msgType)
+        XDRTestStepInterface step2 = executor.executeSendDirectStep(context, msgType)
 
-        //cumbersome way of updating an object in the db
-        XDRRecordInterface record = executor.db.getLatestXDRRecordByUsernameTestCase(username, id)
-        record = new TestCaseBuilder(record).addStep(step).build()
-        executor.db.updateXDRRecord(record)
+        //We create the record
+        def record = builder.addStep(step2).build()
+        executor.db.addNewXdrRecord(record)
 
         //pending as we will wait to receive an XDR back
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, new StandardContent())

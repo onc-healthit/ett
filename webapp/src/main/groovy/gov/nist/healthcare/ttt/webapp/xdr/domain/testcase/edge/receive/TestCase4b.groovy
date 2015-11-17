@@ -24,6 +24,8 @@ final class TestCase4b extends TestCase {
     @Override
     TestCaseEvent run(Map context, String username) {
 
+        executor.validateInputs(context,["targetEndpoint"])
+
         context.directTo = "testcase4b@nist.gov"
         context.directFrom = "testcase4b@nist.gov"
         context.wsaTo = context.targetEndpoint
