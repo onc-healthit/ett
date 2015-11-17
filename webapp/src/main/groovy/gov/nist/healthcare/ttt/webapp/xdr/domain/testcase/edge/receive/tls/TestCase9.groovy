@@ -1,10 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive.tls
+
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
@@ -24,7 +25,7 @@ class TestCase9 extends TestCase {
 
 
     @Override
-    TestCaseEvent run(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
         executor.validateInputs(context,["ip_address","port"])
 
@@ -33,21 +34,21 @@ class TestCase9 extends TestCase {
         try {
             executor.tlsClient.connectOverBadTLS([ip_address: context.ip_address, port: context.port])
             log.debug("tls connection for tcid $id and user $username succeeded. Test failed.")
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+            step.status = Status.FAILED
         }
         catch(javax.net.ssl.SSLException e){
             log.debug("tls connection for tcid $id and user $username succeeded. Test succeeded.")
             e.printStackTrace()
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+            step.status = Status.PASSED
         }
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-        record.criteriaMet = step.criteriaMet
+        record.status = step.status
         executor.db.addNewXdrRecord(record)
 
         def content = new StandardContent()
 
-        new TestCaseEvent(record.criteriaMet,content)
+        new TestCaseResult(record.criteriaMet,content)
     }
 }

@@ -8,8 +8,7 @@ import gov.nist.healthcare.ttt.model.sendDirect.SendDirectMessage
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.SendDirectService
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
@@ -82,7 +81,7 @@ class TestCaseExecutor {
             step.xdrReportItems.add(response)
 
             //TODO for now we only send back MANUAL CHECKS
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+            step.status = Status.MANUAL
 
             return step
         }
@@ -113,7 +112,7 @@ class TestCaseExecutor {
             step.xdrReportItems.add(response)
 
             //TODO for now we only send back MANUAL CHECKS
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+            step.status = Status.MANUAL
 
             return step
         }
@@ -132,7 +131,7 @@ class TestCaseExecutor {
 
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.name = "SEND_DIRECT"
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        step.status = Status.PASSED
 
         return step
     }
@@ -155,7 +154,7 @@ class TestCaseExecutor {
 
             XDRTestStepInterface step = new XDRTestStepImpl()
             step.name = "CREATE_ENDPOINTS"
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+            step.status = Status.PASSED
             step.xdrSimulator = sim
 
             return step
@@ -172,12 +171,12 @@ class TestCaseExecutor {
         try {
             sendMDN(report, "processed")
             step.name = "DIRECT_PROCESSED_MDN_SENT"
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+            step.status = Status.MANUAL
 
         }
         catch (Exception e) {
             step.name = "DIRECT_PROCESSED_MDN_ERROR"
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+            step.status = Status.FAILED
         }
         return step
     }
@@ -189,12 +188,12 @@ class TestCaseExecutor {
         try {
             sendMDN(report, "failure")
             step.name = "DIRECT_FAILURE_MDN_SENT"
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+            step.status = Status.MANUAL
 
         }
         catch (Exception e) {
             step.name = "DIRECT_FAILURE_MDN_ERROR"
-            step.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+            step.status = Status.FAILED
         }
         return step
     }
@@ -277,7 +276,7 @@ class TestCaseExecutor {
 
             step.xdrReportItems.add(response)
             step.xdrReportItems.add(request)
-            step.criteriaMet = report.status
+            step.status = report.status
             step.name = "XDR_RECEIVE"
 
             return step
@@ -293,10 +292,10 @@ class TestCaseExecutor {
         return step
     }
 
-    TestCaseEvent getSimpleSendReport(XDRRecordInterface record) {
+    TestCaseResult getSimpleSendReport(XDRRecordInterface record) {
         def content = new StandardContent()
 
-        if (record.criteriaMet != XDRRecordInterface.CriteriaMet.PENDING) {
+        if (record.criteriaMet != Status.PENDING) {
 
             def step = record.getTestSteps().last()
 
@@ -308,13 +307,13 @@ class TestCaseExecutor {
             }
         }
 
-        return new TestCaseEvent(record.criteriaMet, content)
+        return new TestCaseResult(record.criteriaMet, content)
     }
 
     public def correlateRecordWithSimIdAndDirectAddress(XDRSimulatorInterface sim, String directAddress) {
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.name = "CORRELATE_RECORD_WITH_SIMID_AND_DIRECT_ADDRESS"
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        step.status = Status.PASSED
         step.xdrSimulator = sim
         //TODO change name in the DB
         step.directFrom = directAddress
@@ -324,7 +323,7 @@ class TestCaseExecutor {
     public def correlateRecordWithSimIdAndIpAddress(String ipAddress, XDRSimulatorInterface sim) {
         XDRTestStepInterface step = new XDRTestStepImpl()
         step.name = "CORRELATE_RECORD_WITH_SIMID_AND_IP_ADDRESS"
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+        step.status = Status.PASSED
         step.xdrSimulator = sim
         //TODO change name in the DB
         step.hostname = ipAddress

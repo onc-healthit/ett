@@ -3,9 +3,8 @@ import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -22,7 +21,7 @@ final class TestCase4e extends TestCase {
 
 
     @Override
-    TestCaseEvent run(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
         executor.validateInputs(context,["targetEndpoint"])
 
@@ -35,11 +34,11 @@ final class TestCase4e extends TestCase {
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-        record.criteriaMet = step.criteriaMet
+        record.status = step.status
         executor.db.addNewXdrRecord(record)
 
         def content = executor.buildSendXDRContent(step)
 
-        new TestCaseEvent(record.criteriaMet,content)
+        new TestCaseResult(record.criteriaMet,content)
     }
 }

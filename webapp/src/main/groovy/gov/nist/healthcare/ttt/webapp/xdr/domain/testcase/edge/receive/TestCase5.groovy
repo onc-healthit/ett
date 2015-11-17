@@ -5,7 +5,7 @@ import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -24,7 +24,7 @@ final class TestCase5 extends TestCase {
 
 
     @Override
-    TestCaseEvent run(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
         executor.validateInputs(context,["targetEndpointTLS"])
 
@@ -54,13 +54,13 @@ final class TestCase5 extends TestCase {
 
         // Create a new test record
         XDRRecordInterface record = builder.addStep(step1).addStep(step2).build()
-        record.setCriteriaMet(step2.criteriaMet)
+        record.setStatus(step2.status)
         executor.db.addNewXdrRecord(record)
 
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
-        return new TestCaseEvent(record.criteriaMet, content)
+        return new TestCaseResult(record.criteriaMet, content)
     }
 
 

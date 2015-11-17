@@ -1,10 +1,10 @@
 package gov.nist.healthcare.ttt.webapp.xdr.controller
 
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 
 //import com.wordnik.swagger.annotations.ApiOperation
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -37,7 +37,7 @@ class XdrTestCaseController {
         log.debug("received configure request for tc$id")
 
         try {
-            TestCaseEvent event = testCaseManager.configure(id)
+            TestCaseResult event = testCaseManager.configure(id)
             return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id is configured", event)
         }
         catch(Exception e){
@@ -65,7 +65,7 @@ class XdrTestCaseController {
         log.debug("received run request for tc$tcid from $username")
 
         try {
-            TestCaseEvent event = testCaseManager.run(id, config, username)
+            TestCaseResult event = testCaseManager.run(id, config, username)
             return new UserMessage(UserMessage.Status.SUCCESS,"ran tc $tcid", event)
         }
         catch(Exception e){
@@ -92,7 +92,7 @@ class XdrTestCaseController {
         def username = principal.getName()
         def status
         String msg
-        TestCaseEvent result
+        TestCaseResult result
 
         log.debug("received status request for tc$id from $username")
 
@@ -102,13 +102,13 @@ class XdrTestCaseController {
             log.debug("[status is $result.criteriaMet]")
             status = UserMessage.Status.SUCCESS
             msg = "result of test case $id"
-            return new UserMessage<XDRRecordInterface.CriteriaMet>(status, msg , result)
+            return new UserMessage<Status>(status, msg , result)
         }catch(Exception e){
             e.printStackTrace()
             status = UserMessage.Status.ERROR
             msg = "error while trying to fetch status for test case $id"
-            result = new TestCaseEvent(XDRRecordInterface.CriteriaMet.FAILED,e.getCause())
-            return new UserMessage<XDRRecordInterface.CriteriaMet>(status, msg , result)
+            result = new TestCaseResult(Status.FAILED,e.getCause())
+            return new UserMessage<Status>(status, msg , result)
         }
     }
 }

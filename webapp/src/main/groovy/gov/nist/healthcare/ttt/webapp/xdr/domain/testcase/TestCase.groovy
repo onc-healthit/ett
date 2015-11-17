@@ -1,9 +1,8 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
@@ -43,9 +42,9 @@ abstract class TestCase {
 
     protected static Logger log = getLogger(TestCase.class)
 
-    public abstract TestCaseEvent run(Map context, String username)
+    public abstract TestCaseResult run(Map context, String username)
 
-    public TestCaseEvent configure() {
+    public TestCaseResult configure() {
         throw UnsupportedOperationException()
     }
 
@@ -57,9 +56,9 @@ abstract class TestCase {
         throw UnsupportedOperationException()
     }
 
-    public TestCaseEvent getReport(XDRRecordInterface record){
+    public TestCaseResult getReport(XDRRecordInterface record){
         log.warn("no report info available for this test case")
-        return new TestCaseEvent(record.criteriaMet, new StandardContent())
+        return new TestCaseResult(record.criteriaMet, new StandardContent())
     }
 
     public XDRSimulatorInterface registerEndpoint(String name, Map params){

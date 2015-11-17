@@ -6,8 +6,6 @@
 
 package gov.nist.healthcare.ttt.database.xdr;
 
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet;
-
 import java.util.List;
 
 /**
@@ -36,7 +34,7 @@ public interface XDRTestStepInterface {
 
     XDRSimulatorInterface getXdrSimulator();
     
-    CriteriaMet getCriteriaMet();
+    Status getStatus();
     
     String getHostname();
     
@@ -63,7 +61,7 @@ public interface XDRTestStepInterface {
     
     void setXdrSimulator(XDRSimulatorInterface xdrSimulator);
     
-    void setCriteriaMet(CriteriaMet criteriaStatus);
+    void setStatus(Status status);
     
     void setHostname(String hostname);
     

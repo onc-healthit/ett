@@ -1,10 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.send
 
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
@@ -24,7 +25,7 @@ final class TestCase12 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent run(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
         executor.validateInputs(context,["direct_to"])
 
@@ -45,7 +46,7 @@ final class TestCase12 extends TestCaseSender {
         executor.db.addNewXdrRecord(record)
 
         //pending as we will wait to receive an XDR back
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, new StandardContent())
+        return new TestCaseResult(Status.PENDING, new StandardContent())
     }
 
     @Override
@@ -56,7 +57,7 @@ final class TestCase12 extends TestCaseSender {
 
         //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-        updatedRecord.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+        updatedRecord.status = Status.MANUAL
         executor.db.updateXDRRecord(updatedRecord)
 
     }

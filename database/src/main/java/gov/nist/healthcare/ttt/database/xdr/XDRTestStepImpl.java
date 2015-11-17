@@ -2,7 +2,6 @@
 
 package gov.nist.healthcare.ttt.database.xdr;
 
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class XDRTestStepImpl implements XDRTestStepInterface {
     private String name = null;
     private List<XDRReportItemInterface> reportItems = null;
     private XDRSimulatorInterface simulator = null;
-    private CriteriaMet criteriaMet = null;
+    private Status criteriaMet = null;
     private String hostname = null;
     private String directFrom = null;
     
@@ -102,15 +101,15 @@ public class XDRTestStepImpl implements XDRTestStepInterface {
     /**
      * @return the criteriaMet
      */
-    public CriteriaMet getCriteriaMet() {
+    public Status getStatus() {
         return criteriaMet;
     }
 
     /**
-     * @param criteriaMet the criteriaMet to set
+     * @param status the criteriaMet to set
      */
-    public void setCriteriaMet(CriteriaMet criteriaMet) {
-        this.criteriaMet = criteriaMet;
+    public void setStatus(Status status) {
+        this.criteriaMet = status;
     }
 
     /**

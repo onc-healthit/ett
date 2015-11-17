@@ -1,9 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.mu2
+
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
@@ -21,7 +23,7 @@ final class TestCase48 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent run(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
         executor.validateInputs(context,["direct_from"])
 
@@ -33,7 +35,7 @@ final class TestCase48 extends TestCaseSender {
         def content = new StandardContent()
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        return new TestCaseResult(Status.PENDING, content)
     }
 
     @Override
@@ -66,11 +68,11 @@ final class TestCase48 extends TestCaseSender {
             boolean two = messageId1 != messageId3
             boolean three = messageId2 != messageId3
             if(one & two & three) {
-                record.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+                record.status = Status.PASSED
                 executor.db.updateXDRRecord(record)
             }
             else{
-                record.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+                record.status = Status.FAILED
                 executor.db.updateXDRRecord(record)
             }
         }

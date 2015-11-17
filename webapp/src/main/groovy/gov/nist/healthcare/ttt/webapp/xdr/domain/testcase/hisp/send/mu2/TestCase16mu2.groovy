@@ -1,12 +1,13 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.send.mu2
 
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -26,7 +27,7 @@ final class TestCase16mu2 extends TestCase {
     }
 
     @Override
-    TestCaseEvent run(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
         //Context must contain the endpoint to send to
 
@@ -64,13 +65,13 @@ final class TestCase16mu2 extends TestCase {
         executor.db.updateXDRRecord(record)
 
         //manual as we will wait for manual validation of the direct
-        XDRRecordInterface.CriteriaMet testStatus = done(XDRRecordInterface.CriteriaMet.MANUAL, record)
+        Status testStatus = done(Status.MANUAL, record)
 
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
 
         def content = executor.buildSendXDRContent(step)
 
-        return new TestCaseEvent(testStatus, content)
+        return new TestCaseResult(testStatus, content)
     }
 
 }

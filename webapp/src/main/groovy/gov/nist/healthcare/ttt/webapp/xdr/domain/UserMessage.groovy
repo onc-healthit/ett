@@ -10,7 +10,7 @@ class UserMessage {
 
     String message
 
-    TestCaseEvent content
+    TestCaseResult content
 
     enum Status  {SUCCESS , ERROR}
 
@@ -25,7 +25,7 @@ class UserMessage {
         this.message = msg
     }
 
-    public UserMessage(Status s, String msg, TestCaseEvent c){
+    public UserMessage(Status s, String msg, TestCaseResult c){
         this.status = s
         this.message = msg
         this.content= c
