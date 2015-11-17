@@ -44,12 +44,8 @@ final class TestCase50b extends TestCaseSender {
         step = executor.executeSendFailureMDN(report)
 
         record = new TestCaseBuilder(record).addStep(step).build()
-
         record.criteriaMet = step.criteriaMet
-
         executor.db.updateXDRRecord(record)
-
-        done(XDRRecordInterface.CriteriaMet.MANUAL, record)
 
     }
 }

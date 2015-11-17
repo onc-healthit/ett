@@ -24,29 +24,6 @@ class XdrTestCase4dTest extends XDRSpecification {
     String tcId = "4d"
     String simEndpoint = TestUtils.simEndpoint(simId, system)
 
-    public String testCaseConfig =
-            """{
-    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
-}"""
-
-
-    def "user succeeds in running test case 4d"() throws Exception {
-
-        when: "receiving a request to run test case"
-        MockHttpServletRequestBuilder getRequest = TestUtils.run(tcId,userId,testCaseConfig)
-
-        then: "we receive back a message with status and report of the transaction"
-
-        //TODO we cannot validate the body because for now we always get error messages!
-        gui.perform(getRequest)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.criteriaMet").value("MANUAL"))
-    }
-
-
-
     public String testCaseConfigTLS =
             """{
     "targetEndpoint": "https://transport-testing.nist.gov:12081/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"

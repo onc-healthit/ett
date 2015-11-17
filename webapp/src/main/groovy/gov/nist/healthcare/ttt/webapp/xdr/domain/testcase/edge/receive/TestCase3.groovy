@@ -58,7 +58,7 @@ final class TestCase3 extends TestCase {
         executor.db.addNewXdrRecord(record)
 
         // Build the message to return to the gui
-        log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
+        log.debug(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
         return new TestCaseEvent(record.criteriaMet, content)
     }

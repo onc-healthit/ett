@@ -66,10 +66,12 @@ final class TestCase48 extends TestCaseSender {
             boolean two = messageId1 != messageId3
             boolean three = messageId2 != messageId3
             if(one & two & three) {
-                done(XDRRecordInterface.CriteriaMet.PASSED, updatedRecord)
+                record.criteriaMet = XDRRecordInterface.CriteriaMet.PASSED
+                executor.db.updateXDRRecord(record)
             }
             else{
-                done(XDRRecordInterface.CriteriaMet.FAILED, updatedRecord)
+                record.criteriaMet = XDRRecordInterface.CriteriaMet.FAILED
+                executor.db.updateXDRRecord(record)
             }
         }
 

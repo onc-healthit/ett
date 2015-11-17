@@ -28,12 +28,9 @@ final class TestCase7 extends TestCaseSender {
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
         def step = executor.correlateRecordWithSimIdAndIpAddress(context.ip_address, sim)
-        //second step is successful if the client disconnects
-        def step2 = new XDRTestStepImpl();
-        step2.name = "BAD_TLS_MUST_DISCONNECT"
 
         //build and store the record for this execution
-        XDRRecordInterface record = builder.addStep(step).addStep(step2).build()
+        XDRRecordInterface record = builder.addStep(step).build()
         executor.db.addNewXdrRecord(record)
 
         //return the endpoint we expect to be reached at
@@ -47,6 +44,12 @@ final class TestCase7 extends TestCaseSender {
     @Override
     public void notifyTLSReceive(XDRRecordInterface record, TLSValidationReport report) {
         record.testSteps.last().criteriaMet = report.status
-        done(report.status, record)
+        //second step is successful if the client disconnects
+        def step = new XDRTestStepImpl();
+        step.name = "BAD_TLS_MUST_DISCONNECT"
+        record.criteriaMet = report.status
+        record = new TestCaseBuilder(record).addStep(step).build()
+
+        executor.db.updateXDRRecord(record)
     }
 }

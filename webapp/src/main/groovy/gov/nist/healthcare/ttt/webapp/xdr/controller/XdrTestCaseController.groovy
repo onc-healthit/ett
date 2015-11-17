@@ -36,7 +36,6 @@ class XdrTestCaseController {
 
         log.debug("received configure request for tc$id")
 
-
         try {
             TestCaseEvent event = testCaseManager.configure(id)
             return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id is configured", event)
@@ -52,7 +51,7 @@ class XdrTestCaseController {
     //@ApiOperation(value = "run a test case")
     @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
     @ResponseBody
-    UserMessage run(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
+    UserMessage run(@PathVariable("id") String id, @RequestBody HashMap config, Principal principal) {
 
         //User must be authenticated in order to run a test case=
         if (principal == null) {
@@ -62,7 +61,6 @@ class XdrTestCaseController {
         //rename variables to make their semantic more obvious
         def tcid = id
         def username = principal.getName()
-        def config = body
 
         log.debug("received run request for tc$tcid from $username")
 

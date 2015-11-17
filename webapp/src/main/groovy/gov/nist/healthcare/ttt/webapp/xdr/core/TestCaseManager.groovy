@@ -59,12 +59,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             throw new Exception("test case $id is not yet implemented", e)
         }
 
-        List<String> endpoints = testcase.getEndpoints()
-        StandardContent content = new StandardContent()
-        content.endpoint = endpoints[0]
-        content.endpointTLS = endpoints[1]
-
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        testcase.configure()
     }
 
     public TestCaseEvent run(String id, Map userInput, String username) {

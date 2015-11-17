@@ -32,12 +32,10 @@ class TestUtils {
                 .principal(new PrincipalImpl(userId))
     }
 
-    static MockHttpServletRequestBuilder configure(String tcId, String userId, String testCaseConfig) {
+    static MockHttpServletRequestBuilder configure(String tcId) {
         MockMvcRequestBuilders.get("/api/xdr/tc/$tcId/configure")
                 .accept(MediaType.ALL)
-                .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
-                .principal(new PrincipalImpl(userId))
     }
 
     /*

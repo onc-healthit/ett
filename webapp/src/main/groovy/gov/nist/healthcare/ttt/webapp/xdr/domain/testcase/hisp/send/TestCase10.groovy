@@ -23,15 +23,11 @@ final class TestCase10 extends TestCaseSender {
         super(executor)
     }
 
-    //TODO decide
-    // either we create a new event has to capture the default configuration
-    // either we hardcode it
-    //TODO it cannot find the certificates it looks for  : check
-    TestCaseEvent config(){
+    @Override
+    TestCaseEvent configure(){
         StandardContent c = new StandardContent()
         c.endpoint = sim.endpoint
         c.endpointTLS = sim.endpointTLS
-        //WE NEED TO PROVIDE THE DIRECT_FROM WE WILL BE SENDING WITH
         new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, c)
     }
 
@@ -68,10 +64,8 @@ final class TestCase10 extends TestCaseSender {
 
         //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-
-        //we send back a message status to the GUI. This should come from automatic validation but we do it manually for now.
-        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
-
+        updatedRecord.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+        executor.db.updateXDRRecord(updatedRecord)
     }
 
     @Override

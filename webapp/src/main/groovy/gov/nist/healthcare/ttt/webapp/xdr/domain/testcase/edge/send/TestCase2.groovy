@@ -43,9 +43,10 @@ final class TestCase2 extends TestCaseSender {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
 
+        //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-
-        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
+        updatedRecord.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+        executor.db.updateXDRRecord(updatedRecord)
 
     }
 

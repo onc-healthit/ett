@@ -45,25 +45,12 @@ abstract class TestCase {
 
     public abstract TestCaseEvent run(Map context, String username)
 
-    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+    public TestCaseEvent configure() {
         throw UnsupportedOperationException()
     }
 
-    //TODO create
-//     public UserMessage notifyDirectReceive(DirectMessage record){
-//         throw UnsupportedOperationException()
-//     }
-
-    /**
-     * Used by all test cases. This method should be called when the test case execution terminates.
-     * @param record : the test case record that is completed.
-     * @param status : final status of the test case.
-     * @return
-     */
-    protected CriteriaMet done(CriteriaMet status, XDRRecordInterface record) {
-        record.criteriaMet = status
-        executor.db.updateXDRRecord(record)
-        return status
+    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+        throw UnsupportedOperationException()
     }
 
     public void notifyTLSReceive(XDRRecordInterface xdrRecordInterface, TLSValidationReport tlsValidationReport) {

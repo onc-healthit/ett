@@ -57,9 +57,8 @@ final class TestCase11 extends TestCaseSender {
 
         //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-
-        //we send back a message status to the GUI
-        done(step.criteriaMet, updatedRecord)
+        updatedRecord.criteriaMet = XDRRecordInterface.CriteriaMet.MANUAL
+        executor.db.updateXDRRecord(updatedRecord)
 
     }
 }

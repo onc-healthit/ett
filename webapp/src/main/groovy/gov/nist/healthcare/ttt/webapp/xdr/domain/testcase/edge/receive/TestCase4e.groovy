@@ -35,16 +35,11 @@ final class TestCase4e extends TestCase {
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-
+        record.criteriaMet = step.criteriaMet
         executor.db.addNewXdrRecord(record)
-
-        //at this point the test case status is either PASSED or FAILED depending on the result of the validation
-        XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
 
         def content = executor.buildSendXDRContent(step)
 
-        log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
-
-        new TestCaseEvent(testStatus,content)
+        new TestCaseEvent(record.criteriaMet,content)
     }
 }
