@@ -64,10 +64,6 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
 
-        //TODO this is redundant. Check how it was used in tc19 so it can be removed
-        content.endpoints = endpoints
-
-
         return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
     }
 
