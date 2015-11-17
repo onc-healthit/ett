@@ -6,7 +6,6 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -30,7 +29,7 @@ final class TestCase4b extends TestCase {
         context.wsaTo = context.targetEndpoint
         context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_BODY
 
-        XDRTestStepInterface step = executor.executeSendXDRStep(context)
+        XDRTestStepInterface step = executor.executeSendBadXDRStep(context)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()

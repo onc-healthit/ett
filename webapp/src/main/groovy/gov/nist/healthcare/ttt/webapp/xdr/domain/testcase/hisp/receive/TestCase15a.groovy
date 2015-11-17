@@ -31,7 +31,7 @@ final class TestCase15a extends TestCase {
         context.wsaTo = context.targetEndpoint
         context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
 
-        XDRTestStepInterface step = executor.executeSendXDRStep(context)
+        XDRTestStepInterface step = executor.executeSendBadXDRStep(context)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()

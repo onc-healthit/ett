@@ -6,7 +6,6 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -49,7 +48,7 @@ final class TestCase3c32 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
 
-        XDRTestStepInterface step = executor.executeSendXDRStep2(context)
+        XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
         //Create a new test record
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()

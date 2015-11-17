@@ -56,7 +56,8 @@ final class TestCase30 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
 
-        XDRTestStepInterface step = executor.executeSendXDRStep2(context)
+        //TODO need to fix XDR code to accept other headers
+        XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
         //cumbersome way of updating an object in the db
         XDRRecordInterface record = executor.db.getLatestXDRRecordByUsernameTestCase(username, id)

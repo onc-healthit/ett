@@ -47,7 +47,7 @@ final class TestCase3ccr extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
 
-        XDRTestStepInterface step = executor.executeSendXDRStep2(context)
+        XDRTestStepInterface step = executor.executeSendXDRStep(context)
 
         //Create a new test record
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()

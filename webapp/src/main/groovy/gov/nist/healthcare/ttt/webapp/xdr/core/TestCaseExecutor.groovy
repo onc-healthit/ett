@@ -62,7 +62,7 @@ class TestCaseExecutor {
         this.directService = directService
     }
 
-    protected XDRTestStepInterface executeSendXDRStep2(Map config) {
+    protected XDRTestStepInterface executeSendXDRStep(Map config) {
         try {
             def r = sender.sendXdr(config)
 
@@ -92,7 +92,7 @@ class TestCaseExecutor {
 
     }
 
-    protected XDRTestStepInterface executeSendXDRStep(Map config) {
+    protected XDRTestStepInterface executeSendBadXDRStep(Map config) {
 
         def r
         try {

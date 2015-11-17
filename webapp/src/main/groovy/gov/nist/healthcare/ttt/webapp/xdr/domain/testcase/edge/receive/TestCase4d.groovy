@@ -33,7 +33,7 @@ final class TestCase4d extends TestCase {
 
         log.debug("building message with missing metadata of type : ${context.messageType}")
 
-        XDRTestStepInterface step = executor.executeSendXDRStep(context)
+        XDRTestStepInterface step = executor.executeSendBadXDRStep(context)
 
         //Create a new test record.
         XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
