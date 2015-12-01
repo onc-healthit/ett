@@ -1,10 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.send
 
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
@@ -23,29 +24,30 @@ final class TestCase11 extends TestCaseSender {
         super(executor)
     }
 
+
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
+        executor.validateInputs(context,["direct_to"])
 
-        //basically we need 4 piece of data to inplement the workflow :
-        // for the system : the direct address of the SUT, and the endpoint it should send back to,
-        // for the GUI : the username et the test case id.
-        //When we receive an XDR on this endpoint we know which record to update thanks to direct-from address.
-        //When the user check the status of the test, we just need the username-tcid combinaison to look up the result.
-        executor.createRecordForTestCase(context,username,id,sim)
+        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_to)
+        builder.addStep(step1)
+
+        //We provide a direct_from address. This might be used for trace back the message in the SUT logs.
+        context.direct_from = "testcase11@nist.gov"
 
         //We send a direct message + XDM
         String msgType = "CCDA_Ambulatory_in_XDM.zip"
-        //Context should contain direct_from and direct_to
-       XDRTestStepInterface step = executor.executeSendDirectStep(context, msgType)
+        XDRTestStepInterface step2 = executor.executeSendDirectStep(context, msgType)
 
-        //cumbersome way of updating an object in the db
-        XDRRecordInterface record = executor.db.getLatestXDRRecordByUsernameTestCase(username,id)
-        record = new TestCaseBuilder(record).addStep(step).build()
-        executor.db.updateXDRRecord(record)
+        //We create the record
+        def record = builder.addStep(step2).build()
+        executor.db.addNewXdrRecord(record)
 
         //pending as we will wait to receive an XDR back
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, new StandardContent())
+        return new TestCaseResult(Status.PENDING, new StandardContent())
     }
 
     @Override
@@ -56,9 +58,8 @@ final class TestCase11 extends TestCaseSender {
 
         //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-
-        //we send back a message status to the GUI
-        done(step.criteriaMet, updatedRecord)
+        updatedRecord.status = Status.MANUAL
+        executor.db.updateXDRRecord(updatedRecord)
 
     }
 }

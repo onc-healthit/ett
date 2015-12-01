@@ -1,8 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.tls
+
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
@@ -20,27 +23,35 @@ final class TestCase7 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
-        def step = executor.executeCorrelationStep(context, sim)
-        step.name = "BAD_AUTHENTIFICATION_MUST_DISCONNECT"
-        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
+        executor.validateInputs(context,["ip_address"])
+
+        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+
+        def step = executor.correlateRecordWithSimIdAndIpAddress(context.ip_address, sim)
+
+        //build and store the record for this execution
+        XDRRecordInterface record = builder.addStep(step).build()
         executor.db.addNewXdrRecord(record)
 
+        //return the endpoint we expect to be reached at
         String endpoint = executor.tlsReceiver.getEndpoint()
         def content = new StandardContent()
         content.endpoint = endpoint
 
-        log.info "successfully recorded hostname for test case ${id} with config : ${context}. Ready to test TLS."
-
-
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        return new TestCaseResult(Status.PENDING, content)
     }
 
     @Override
     public void notifyTLSReceive(XDRRecordInterface record, TLSValidationReport report) {
-        record.testSteps.last().criteriaMet = report.status
+        record.testSteps.last().status = report.status
+        //second step is successful if the client disconnects
+        def step = new XDRTestStepImpl();
+        step.name = "BAD_TLS_MUST_DISCONNECT"
+        record.status = report.status
+        record = new TestCaseBuilder(record).addStep(step).build()
 
-        done(report.status, record)
+        executor.db.updateXDRRecord(record)
     }
 }

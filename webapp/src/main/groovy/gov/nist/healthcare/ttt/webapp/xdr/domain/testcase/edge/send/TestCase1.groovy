@@ -1,10 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
 
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
@@ -24,29 +25,35 @@ final class TestCase1 extends TestCaseSender {
     }
 
     @Override
-    TestCaseEvent configure(Map context, String username) {
+    TestCaseResult run(Map context, String username) {
 
-        executor.createRecordForTestCase(context,username,id,sim)
+        executor.validateInputs(context,["direct_from"])
+
+        //correlate this test to a direct_from address and a simulator id so we can be notified
+        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+        executor.db.addNewXdrRecord(builder.addStep(step1).build())
 
         def content = new StandardContent()
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
 
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
+        return new TestCaseResult(Status.PENDING, content)
     }
 
     @Override
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
-        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 
-        //TODO for now it is a manual check
-        done(XDRRecordInterface.CriteriaMet.MANUAL, updatedRecord)
+        //we update the record
+        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+        updatedRecord.status = Status.MANUAL
+        executor.db.updateXDRRecord(updatedRecord)
 
     }
 
-    public TestCaseEvent getReport(XDRRecordInterface record) {
+    public TestCaseResult getReport(XDRRecordInterface record) {
         executor.getSimpleSendReport(record)
     }
 }

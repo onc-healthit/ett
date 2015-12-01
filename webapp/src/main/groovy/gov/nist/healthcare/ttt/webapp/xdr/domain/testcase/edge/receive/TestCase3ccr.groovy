@@ -5,7 +5,7 @@ import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -23,46 +23,45 @@ final class TestCase3ccr extends TestCase {
     }
 
 
-    @Override
-    TestCaseEvent configure(Map context, String username) {
 
+    @Override
+    TestCaseResult run(Map context, String username) {
+
+        executor.validateInputs(context,["targetEndpointTLS"])
+
+        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+
+        // Correlate this test to a direct_from address and a simulator id so we can be notified
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+
+        // Create an endpoint on the toolkit
+        // because the toolkit does not allow updating existing simulators, we have to generate unique ids each time
+        //this is true for the case were we need to send with the simulator
         def config = new HashMap()
         config.type = 'docsrc'
-        config.endpoint = context.targetEndpoint
         config.endpointTLS = context.targetEndpointTLS
-
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        //because Bill does not update existing simulator, we have to generate unique ids each time
         def simId = id+"_"+username+"_"+timeStamp
         sim = registerEndpoint(simId, config)
 
-        executor.createRecordForTestCase(context,username,id,sim)
-
-
-        context.directTo = "testcase3ccr@nist.gov"
-        context.directFrom = "testcase3ccr@nist.gov"
-        context.wsaTo = context.targetEndpoint
-        context.messageType = ArtifactManagement.Type.XDR_CCR
-
+        // Send an xdr with the endpoint created above
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
+        context.wsaTo = sim.endpointTLS
+        context.directTo = "testcase3ccr@nist.gov"
+        context.directFrom = "testcase3ccr@nist.gov"
+        context.messageType = ArtifactManagement.Type.XDR_CCR
+        XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
-        XDRTestStepInterface step = executor.executeSendXDRStep(context)
-
-        //Create a new test record
-        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step).build()
-
+        // Create a new test record
+        XDRRecordInterface record = builder.addStep(step1).addStep(step2).build()
+        record.setStatus(step2.status)
         executor.db.addNewXdrRecord(record)
 
-        //at this point the test case status is either PASSED or FAILED depending on the result of the validation
-        XDRRecordInterface.CriteriaMet testStatus = done(step.criteriaMet, record)
-
-
+        // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
-
-        def content = executor.buildSendXDRContent(step)
-
-        return new TestCaseEvent(testStatus, content)
+        def content = executor.buildSendXDRContent(step2)
+        return new TestCaseResult(record.criteriaMet, content)
     }
 
 }

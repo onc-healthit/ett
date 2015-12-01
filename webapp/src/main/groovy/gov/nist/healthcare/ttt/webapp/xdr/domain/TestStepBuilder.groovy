@@ -1,6 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain
 
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
@@ -16,7 +16,7 @@ class TestStepBuilder {
     public TestStepBuilder(String name){
         step = new XDRTestStepImpl()
         step.name = name
-        step.criteriaMet = XDRRecordInterface.CriteriaMet.PENDING
+        step.status = Status.PENDING
         step.xdrReportItems = new LinkedList<XDRReportItemInterface>()
     }
 

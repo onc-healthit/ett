@@ -14,7 +14,7 @@ public class XDRRecordImpl implements XDRRecordInterface {
     private String username = null;
     private String testCaseNumber = null;
     private String timestamp = null;
-    private CriteriaMet criteriaMet = null;
+    private Status criteriaMet = null;
     private List<XDRTestStepInterface> testSteps = null;    
 
     public XDRRecordImpl() {
@@ -87,16 +87,16 @@ public class XDRRecordImpl implements XDRRecordInterface {
      * @return the criteriaMet
      */
     @Override
-    public CriteriaMet getCriteriaMet() {
+    public Status getCriteriaMet() {
         return criteriaMet;
     }
 
     /**
-     * @param criteriaMet the criteriaMet to set
+     * @param status the criteriaMet to set
      */
     @Override
-    public void setCriteriaMet(CriteriaMet criteriaMet) {
-        this.criteriaMet = criteriaMet;
+    public void setStatus(Status status) {
+        this.criteriaMet = status;
     }
 
     /**

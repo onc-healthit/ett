@@ -37,8 +37,8 @@ class XdrTestCase20bTest extends XDRSpecification {
 
     def "user succeeds in running test case"() throws Exception {
 
-        when: "receiving a request to configure test case"
-        MockHttpServletRequestBuilder configure = TestUtils.configure(tcId,userId,testCaseConfig)
+        when: "receiving a request to run test case"
+        MockHttpServletRequestBuilder configure = TestUtils.run(tcId,userId,testCaseConfig)
 
         then: "we receive back a success message with manual validation"
         gui.perform(configure)

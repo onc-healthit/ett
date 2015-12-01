@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.xdr.api
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -85,7 +85,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         BufferedWriter w = null;
         BufferedReader r = null;
-        XDRRecordInterface.CriteriaMet status = XDRRecordInterface.CriteriaMet.FAILED
+        Status status = Status.FAILED
 
         log.info("Request coming from a socket: \n" + socketInfo(connection))
 
@@ -100,7 +100,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             //e.printStackTrace()
             System.err.println(e.toString());
             System.out.println("client has dropped the connection.");
-            status = XDRRecordInterface.CriteriaMet.PASSED
+            status = Status.PASSED
         } finally {
             w.close();
 //            r.close();
