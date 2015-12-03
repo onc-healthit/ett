@@ -1,31 +1,31 @@
 {
     "ccda": [{
         "email": "direct-clinical-summary",
-        "description": "MU2 170.314(e)(2) - Clinical Summary"
+        "description": "ONC 2014 Edition Certification 170.314(e)(2) - Clinical Summary"
     }, {
         "email": "direct-ambulatory2",
-        "description": "MU2 170.314(b)(2) Transition of Care/Referral Summary - For Ambulatory Care"
+        "description": "ONC 2014 Edition Certification 170.314(b)(2) Transition of Care/Referral Summary - For Ambulatory Care"
     }, {
         "email": "direct-ambulatory7",
-        "description": "MU2 170.314(b)(7) Data Portability - For Ambulatory Care"
+        "description": "ONC 2014 Edition Certification 170.314(b)(7) Data Portability - For Ambulatory Care"
     }, {
         "email": "direct-ambulatory1",
-        "description": "MU 2 170.314(b)(1) Transition of Care Receive - For Ambulatory Care"
+        "description": "ONC 2014 Edition Certification 170.314(b)(1) Transition of Care Receive - For Ambulatory Care"
     }, {
         "email": "direct-inpatient2",
-        "description": "MU2 170.314(b)(2) Transition of Care/Referral Summary - For Inpatient Care"
+        "description": "ONC 2014 Edition Certification 170.314(b)(2) Transition of Care/Referral Summary - For Inpatient Care"
     }, {
         "email": "direct-inpatient7",
-        "description": "MU2 170.314(b)(7) Data Portability - For Inpatient Care"
+        "description": "ONC 2014 Edition Certification 170.314(b)(7) Data Portability - For Inpatient Care"
     }, {
         "email": "direct-inpatient1",
         "description": "MU 2 170.314(b)(1) Transition of Care Receive - For Inpatient Care"
     }, {
         "email": "direct-vdt-ambulatory",
-        "description": "MU2 170.314 (e)(1) Ambulatory Summary"
+        "description": "ONC 2014 Edition Certification 170.314 (e)(1) Ambulatory Summary"
     }, {
         "email": "direct-vdt-inpatient",
-        "description": "MU2 170.314 (e)(1) Inpatient Summary"
+        "description": "ONC 2014 Edition Certification 170.314 (e)(1) Inpatient Summary"
     }, {
         "email": "ccda",
         "description": "Non-specific CCDA"

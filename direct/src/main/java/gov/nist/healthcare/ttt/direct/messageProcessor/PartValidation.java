@@ -164,6 +164,11 @@ public class PartValidation {
 		if(!this.signed && !part.hasParent()) {
 			part.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", "Message is not signed", "Should be signed", "", Status.ERROR));
 		}
+		
+		// Message is not wrapped: Issue an error
+		if(!this.wrapped && !part.hasParent()) {
+			part.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", "Message is not wrapped", "Should be wrapped", "", Status.ERROR));
+		}
 
 		if(p.isMimeType("application/pkcs7-mime") || p.isMimeType("application/x-pkcs7-mime")) {
 

@@ -34,7 +34,7 @@
         "key": "targetEndpoint",
         "type": "string"
     }]
-},{
+}, {
     "name": "XDR Test 3 -- HITSP/C32",
     "id": "3c32",
     "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Limited metadata.  Attachment is a HITSP/C32 document.",
@@ -192,7 +192,13 @@
     "desc": "Test Tool sends a Direct Message, which is translated to an XDR message and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.",
     "sutEdge": false,
     "sutHisp": true,
-    "sutRole": "sender"
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct To Address",
+        "key": "direct_to",
+        "type": "string"
+    }]
 }, {
     "name": "XDR Test 11",
     "id": 11,

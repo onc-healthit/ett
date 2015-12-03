@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.send.mu2
 
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
