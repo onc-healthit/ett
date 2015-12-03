@@ -17,6 +17,7 @@ public class Settings {
     private String directRecipient = null;
     private String wsaTo = null;
     private String messageId = null;
+    private String finalDestinationDelivery = null;
 
     /**
      * @return the directTo
@@ -100,6 +101,20 @@ public class Settings {
      */
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+
+    /**
+     * @return the finalDestinationDelivery
+     */
+    public String getFinalDestinationDelivery() {
+        return finalDestinationDelivery;
+    }
+
+    /**
+     * @param finalDestinationDelivery the finalDestinationDelivery to set
+     */
+    public void setFinalDestinationDelivery(String finalDestinationDelivery) {
+        this.finalDestinationDelivery = finalDestinationDelivery;
     }
 
 }
