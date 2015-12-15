@@ -129,7 +129,8 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("provider1@direct2.sitenv.org"));
+				//	InternetAddress.parse("provider1@direct2.sitenv.org"));
+					InternetAddress.parse("badaddress@gfail.com"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -1213,6 +1214,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error in TEST MESSAGE BAD DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;
@@ -1313,6 +1320,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error in TEST MESSAGE BAD DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;
@@ -1363,6 +1376,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;
@@ -1412,6 +1431,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error" + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;
@@ -1464,7 +1489,14 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
+		
 
 		return tr;
 	}
@@ -1523,6 +1555,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;
@@ -1582,6 +1620,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;
@@ -1641,6 +1685,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
+			result.put("1", "Error " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;
