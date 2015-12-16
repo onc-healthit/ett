@@ -41,6 +41,7 @@ class XdrSenderImpl implements XdrSender{
         settings.setDirectFrom(config.directFrom)
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.targetEndpoint)
+        settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
 
         //TODO this should be created in the test case so it can be customized
         Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
