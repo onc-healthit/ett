@@ -201,6 +201,8 @@ public class MU2ReceiverTests {
 						}
 					}
 				}
+				
+			//	message.isMimeType(mimeType)
 			}
 
 			if (result.size() == 0) {

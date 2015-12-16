@@ -264,6 +264,38 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			}
 			log.info("*****************   END  Testcase 99 *******************************");
 			break;	
+			
+		case 100:
+			
+			log.info("*****************   BEGIN  Testcase 100 *******************************");
+			ti.useTLS = false;
+			TestResult tr100;
+			try {
+				tr100 = sTest.testSendXDMApplicationOctect(ti, "/cda-samples/CCDA_Ambulatory_in_XDM.zip");
+				tr100.id = 100;
+				res.add(tr100);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 100 *******************************");
+			break;	
+			
+		case 90:
+			
+			log.info("*****************   BEGIN  Testcase 90 *******************************");
+			ti.useTLS = false;
+			TestResult tr90;
+			try {
+				tr90 = sTest.testSendXDMApplicationXml(ti, "/cda-samples/CCDA_Ambulatory_in_XDM.zip");
+				tr90.id = 90;
+				res.add(tr90);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 90 *******************************");
+			break;	
 		case 10:
 			res.add(nTest.testBadData(ti));
 			break;
@@ -917,6 +949,24 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 225 *******************************");
 			break;
 			
+		case 232:
+			log.info("*****************   BEGIN  Testcase 232 *******************************");
+
+			TestResult tr232;
+			
+			try {
+				tr232 = tTest.fetchMailValidateImap(ti);
+				tr232.id = 232;
+				res.add(tr232);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+
+			
+			log.info("*****************   END  Testcase 232 *******************************");
+			break;
+			
 		case 301:
 			log.info("*****************   BEGIN  Testcase 301 *******************************");
 
@@ -1012,6 +1062,39 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				
 			
 			log.info("*****************   END  Testcase 310 *******************************");
+			break;
+		
+		case 317:
+			log.info("*****************   BEGIN  Testcase 317 *******************************");
+
+			TestResult tr317;
+			try {
+				tr317 = tTest.popFetchWrongPass(ti);
+				tr317.id = 317;
+				res.add(tr317);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 317 *******************************");
+			break;
+			
+		case 332:
+			log.info("*****************   BEGIN  Testcase 332 *******************************");
+
+			TestResult tr332;
+			
+			try {
+				tr332 = tTest.fetchMailValidatePop(ti);
+				tr332.id = 332;
+				res.add(tr332);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+
+			
+			log.info("*****************   END  Testcase 232 *******************************");
 			break;
 
 		default:
