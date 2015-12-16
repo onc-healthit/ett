@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase20b extends TestCaseSender {
+final class TestCase20amu2 extends TestCaseSender {
 
     @Autowired
-    public TestCase20b(TestCaseExecutor ex) {
+    public TestCase20amu2(TestCaseExecutor ex) {
         super(ex)
     }
 
@@ -43,7 +43,7 @@ final class TestCase20b extends TestCaseSender {
 
         XDRTestStepInterface step
 
-        step = executor.executeSendFailureMDN(report)
+        step = executor.executeSendProcessedMDN(report)
 
         record = new TestCaseBuilder(record).addStep(step).build()
         record.status = step.status

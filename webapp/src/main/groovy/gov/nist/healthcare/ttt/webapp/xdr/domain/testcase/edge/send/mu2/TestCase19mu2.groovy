@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase19 extends TestCaseSender {
+final class TestCase19mu2 extends TestCaseSender {
 
     @Autowired
-    public TestCase19(TestCaseExecutor ex) {
+    public TestCase19mu2(TestCaseExecutor ex) {
         super(ex)
     }
 

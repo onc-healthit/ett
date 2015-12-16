@@ -38,10 +38,10 @@ final class TestCase14mu2 extends TestCase {
 
         sim = registerDocSrcEndpoint(username,context)
 
-        // Send an xdr with the endpoint created above
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
         context.wsaTo = sim.endpointTLS
+        //address attached to a hisp that is not trusted
         context.directTo = "Provider1@direct2.sitenv.org"
         context.directFrom = "testcase14mu2@nist.gov"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA

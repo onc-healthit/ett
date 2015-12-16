@@ -42,10 +42,10 @@ final class TestCase31mu2 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
         context.wsaTo = sim.endpointTLS
-        context.directTo = "badaddress@gfail.com"
+        //this hisp associated with this address is invalid
+        context.directTo = "testcase32mu2badAddress"
         context.directFrom = "testcase31mu2@nist.gov"
-        //this address has not been registered in the tool
-        context.finalDestinationDelivery = "badaddress@gfail.com"
+        context.finalDestinationDelivery = "testcase32mu2badAddress"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 

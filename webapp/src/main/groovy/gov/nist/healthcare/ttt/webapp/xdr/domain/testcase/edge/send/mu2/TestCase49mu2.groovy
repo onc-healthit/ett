@@ -14,11 +14,12 @@ import org.springframework.stereotype.Component
 /**
  * Created by gerardin on 10/27/14.
  */
+
 @Component
-final class TestCase48 extends TestCaseSender {
+final class TestCase49mu2 extends TestCaseSender {
 
     @Autowired
-    public TestCase48(TestCaseExecutor ex) {
+    public TestCase49mu2(TestCaseExecutor ex) {
         super(ex)
     }
 
@@ -35,6 +36,7 @@ final class TestCase48 extends TestCaseSender {
         def content = new StandardContent()
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
+
         return new TestCaseResult(Status.PENDING, content)
     }
 
@@ -42,40 +44,13 @@ final class TestCase48 extends TestCaseSender {
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
-        step.directFrom = report.directFrom
-        step.messageId = report.messageId
 
-        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+        record = new TestCaseBuilder(record).addStep(step).build()
+        record.status = Status.MANUAL
+        executor.db.updateXDRRecord(record)
+    }
 
-        //TODO cleaner implementation : choose relevant steps + better way to compare message ids.
-
-        if(record.testSteps.size() != 4) {
-            executor.db.updateXDRRecord(record)
-        }
-        else {
-
-            def steps = record.testSteps.findAll{
-                 it.name == "XDR_RECEIVE"
-            }
-
-            def messageId1 = steps[0].messageId
-            def messageId2 = steps[1].messageId
-            def messageId3 = steps[2].messageId
-
-            log.info(" comparing ${messageId1}, ${messageId2}, ${messageId3}")
-
-            boolean one = messageId1 != messageId2
-            boolean two = messageId1 != messageId3
-            boolean three = messageId2 != messageId3
-            if(one & two & three) {
-                record.status = Status.PASSED
-                executor.db.updateXDRRecord(record)
-            }
-            else{
-                record.status = Status.FAILED
-                executor.db.updateXDRRecord(record)
-            }
-        }
-
+    public TestCaseResult getReport(XDRRecordInterface record) {
+        executor.getSimpleSendReport(record)
     }
 }

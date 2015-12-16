@@ -1,4 +1,5 @@
 package gov.nist.healthcare.ttt.webapp.api.xdr.edge.sending.mu2
+
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.TestUtils
 import gov.nist.healthcare.ttt.webapp.XDRSpecification
@@ -16,14 +17,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase20aTest extends XDRSpecification {
 
-    String simId = "20a"
-    String tcId = "20a"
+class XdrTestCase20bmu2Test extends XDRSpecification {
+
+
+    String simId = "20bmu2"
+    String tcId = "20bmu2"
     String simEndpoint = TestUtils.simEndpoint(simId, system)
 
     String fromAddress = "from@hit-dev.nist.gov"
     String toAddress = "to@hit-dev.nist.gov"
+
 
     String testCaseConfig =
             """{

@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase50b extends TestCaseSender {
+final class TestCase50bmu2 extends TestCaseSender {
 
     @Autowired
-    public TestCase50b(TestCaseExecutor ex) {
+    public TestCase50bmu2(TestCaseExecutor ex) {
         super(ex)
     }
 

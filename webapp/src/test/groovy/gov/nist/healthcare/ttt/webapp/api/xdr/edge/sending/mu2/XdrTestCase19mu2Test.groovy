@@ -16,10 +16,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 @ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = TestApplication.class)
-class XdrTestCase19Test extends XDRSpecification {
+class XdrTestCase19mu2Test extends XDRSpecification {
 
-    String simId = "19"
-    String tcId = "19"
+    String simId = "19mu2"
+    String tcId = "19mu2"
     String simEndpoint = TestUtils.simEndpoint(simId, system)
     String testCaseConfig =
             """{
