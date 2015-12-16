@@ -242,4 +242,25 @@ def setup(){
     }
 
 
+
+    def test10(){
+
+        when :
+        def manager = new SSLContextManager()
+        def TLSclient = new TLSClientImpl(manager)
+        def context = [:]
+        context.directTo = "antoine@edge.nist.gov"
+        context.directFrom = "antoine@edge.nist.gov"
+        context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb"
+        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb"
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        def response = new CannedXdrSenderImpl(manager).sendXdr(context)
+
+        then :
+
+        println response
+        assert true
+    }
+
+
 }

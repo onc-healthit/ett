@@ -36,15 +36,7 @@ final class TestCase13 extends TestCase {
         // Correlate this test to a direct_from address and a simulator id so we can be notified
         XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
 
-        // Create an endpoint on the toolkit
-        // because the toolkit does not allow updating existing simulators, we have to generate unique ids each time
-        //this is true for the case were we need to send with the simulator
-        def config = new HashMap()
-        config.type = 'docsrc'
-        config.endpointTLS = context.targetEndpointTLS
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        def simId = id + "_" + username + "_" + timeStamp
-        sim = registerEndpoint(simId, config)
+        sim = registerDocSrcEndpoint(username,context)
 
         // Send an xdr with the endpoint created above
         context.simId = sim.simulatorId

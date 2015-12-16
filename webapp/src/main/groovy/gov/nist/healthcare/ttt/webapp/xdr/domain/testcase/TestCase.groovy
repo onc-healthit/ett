@@ -7,6 +7,8 @@ import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
 
+import java.text.SimpleDateFormat
+
 import static org.slf4j.LoggerFactory.getLogger
 /**
  * Base class for implementing test cases. It defines a 2-parts contract :
@@ -63,6 +65,26 @@ abstract class TestCase {
 
     public XDRSimulatorInterface registerEndpoint(String name, Map params){
         executor.configureEndpoint(name, params)
+    }
+
+    public XDRSimulatorInterface registerDocRecEndpoint(String simId){
+        def config = new HashMap()
+        config.type = 'docrec'
+        config.endpoint = 'NO_VALUE'
+        executor.configureEndpoint(simId, config)
+    }
+
+    // Create an docsrc endpoint on the toolkit
+    // because the toolkit does not allow updating existing simulators, we have to generate unique ids each time
+    // we want to send a message to another direct address
+    public XDRSimulatorInterface registerDocSrcEndpoint(String username, Map context){
+        def config = new HashMap()
+        config.type = 'docsrc'
+        //generate unique simId
+        config.endpointTLS = context.targetEndpointTLS
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        def simId = id + "_" + username + "_" + timeStamp
+        executor.configureEndpoint(simId, config)
     }
 
     public List<String> getEndpoints() {

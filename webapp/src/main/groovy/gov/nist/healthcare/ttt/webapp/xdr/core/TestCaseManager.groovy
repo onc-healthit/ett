@@ -29,6 +29,10 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
+    /*
+    All test cases instances injected by Spring are put in a map for later retrieval.
+    This architecture works because all test cases are stateless.
+     */
     @Autowired
     TestCaseManager(TestCaseExecutor executor, DatabaseProxy db, List<TestCase> tcList) {
         this.executor = executor
