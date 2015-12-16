@@ -42,7 +42,7 @@ final class TestCase33mu2 extends TestCase {
         //address attached to a hisp that is not trusted
         context.directTo = "Provider1@direct2.sitenv.org"
         context.directFrom = "testcase33mu2@nist.gov"
-        context.finalDestinationDelivery = "Provider1@direct2.sitenv.org"
+        context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 

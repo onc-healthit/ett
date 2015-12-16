@@ -42,7 +42,7 @@ final class TestCase34mu2 extends TestCase {
         //certs for this address are not published
         context.directTo = "failure15@hit-testing2.nist.gov"
         context.directFrom = "testcase34mu2@nist.gov"
-        context.finalDestinationDelivery = "failure15@hit-testing2.nist.gov"
+        context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 

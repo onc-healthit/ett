@@ -29,7 +29,7 @@ final class TestCase31mu2 extends TestCase {
     @Override
     TestCaseResult run(Map context, String username) {
 
-        executor.validateInputs(context, ["finalDestinationDelivery"])
+        executor.validateInputs(context, ["targetEndpointTLS"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -45,7 +45,7 @@ final class TestCase31mu2 extends TestCase {
         //this hisp associated with this address is invalid
         context.directTo = "testcase32mu2badAddress"
         context.directFrom = "testcase31mu2@nist.gov"
-        context.finalDestinationDelivery = "testcase32mu2badAddress"
+        context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
