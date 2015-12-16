@@ -69,6 +69,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.mail.imap.IMAPFolder;
 
 public class TTTReceiverTests {
@@ -85,6 +87,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
+		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
 		Properties props = System.getProperties();
@@ -158,8 +161,12 @@ public class TTTReceiverTests {
 							//
 							MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 							builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-							builder.addTextBody("validationObjective", "170.315(b)(1)");
-							builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+						//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+						//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+							String[] parts = ti.ccdaValidationObjective.split(" ");
+							String obj = parts[0];
+							builder.addTextBody("validationObjective", obj);
+							builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
 							builder.addPart("ccdaFile", fileBody);
 							HttpEntity entity = builder.build();
 							//
@@ -169,7 +176,9 @@ public class TTTReceiverTests {
 								HttpResponse response = client.execute(post);
 								// CONVERT RESPONSE TO STRING
 								result1 = EntityUtils.toString(response.getEntity());
-								result.put("\n" + "Validation Result for " + bodyPart.getFileName() , result1 + "\n");
+								ObjectMapper mapper = new ObjectMapper();
+	                               JsonNode jsonObject = mapper.readTree(result1) ;     
+								validationResult.put( bodyPart.getFileName() , jsonObject );
 							}
 							
 						} else {
@@ -378,7 +387,7 @@ public class TTTReceiverTests {
 	}
 
 	/*
-	 * Stub to display log messages for manual test on the tool
+	 * Stub to display log messages for manual test on the too
 	 */
 	public TestResult fetchManualTest(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -1388,7 +1397,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("SUCCESS",
-						"POP server rejects the command with bad sybtax.");
+						"POP server rejects the command with bad syntax.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 
@@ -1491,7 +1500,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("SUCCESS",
-						"POP server rejects the command with bad sybtax.");
+						"POP server rejects the command with bad syntax.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 

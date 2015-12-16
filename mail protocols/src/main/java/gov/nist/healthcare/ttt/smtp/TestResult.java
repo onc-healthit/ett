@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 /*
  * See rfc2821 for the basic specification of SMTP; see also rfc1123 for important additional information. 
 
@@ -87,6 +89,16 @@ public class TestResult implements ITestResult {
 	long timeElapsedInSeconds = 0L;
 	boolean proctored = false;
 	public LinkedHashMap<String, String> attachments = new LinkedHashMap<String, String>();
+	public LinkedHashMap<String, JsonNode> CCDAValidationReports = new LinkedHashMap<String, JsonNode>();
+	
+	public LinkedHashMap<String, JsonNode> getCCDAValidationReports() {
+		return CCDAValidationReports;
+	}
+
+	public void setCCDAValidationReports(
+			LinkedHashMap<String, JsonNode> cCDAValidationReports) {
+		CCDAValidationReports = cCDAValidationReports;
+	}
 
 	public LinkedHashMap<String, String> getAttachments() {
 		return attachments;

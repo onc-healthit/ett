@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>gov.nist.healthcare.ttt</groupId>
 	<artifactId>mailprotocols</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>mailprotocols</name>
@@ -39,6 +40,13 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.3.6</version>
 		</dependency>
+		
+		<dependency>
+	<groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-databind</artifactId>
+	<version>2.6.3</version>
+</dependency>
+		
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -144,15 +152,4 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-
-	<scm>
-		<connection>scm:svn:https://svn.code.sf.net/p/smptests/svn/trunk</connection>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/smptests/svn/trunk</developerConnection>
-	</scm>
-	<parent>
-		<groupId>gov.nist.healthcare.ttt</groupId>
-		<artifactId>ttt</artifactId>
-		<version>1.0</version>
-		<relativePath>..</relativePath>
-	</parent>
 </project>
