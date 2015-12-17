@@ -42,10 +42,11 @@ final class TestCase31mu2 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
         context.wsaTo = sim.endpointTLS
-        //this hisp associated with this address is invalid
-        context.directTo = "testcase32mu2badAddress"
+
+        context.directTo = "testcase31mu2@nist.gov"
         context.directFrom = "testcase31mu2@nist.gov"
-        context.finalDestinationDelivery = "true"
+        //this header has an invalid value
+        context.finalDestinationDelivery = "badHeaderValue"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
