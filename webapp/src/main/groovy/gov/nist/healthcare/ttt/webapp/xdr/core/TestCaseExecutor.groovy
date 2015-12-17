@@ -22,6 +22,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
+ *
+ * Factors functions that are used by many test cases.
+ * See <code>TestCase</code>
+ *
  * Created by gerardin on 10/28/14.
  */
 @Component

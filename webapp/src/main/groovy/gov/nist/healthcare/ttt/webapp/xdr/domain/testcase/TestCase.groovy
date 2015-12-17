@@ -11,23 +11,17 @@ import java.text.SimpleDateFormat
 
 import static org.slf4j.LoggerFactory.getLogger
 /**
- * Base class for implementing test cases. It defines a 2-parts contract :
+ * Base class for implementing test cases.
  *
- * 1/ Each test case has its own execution logic and must react to a subset of some application events.
- * TestCaseStrategy defines generic hooks that execute some piece of logic when certain events occur.
+ * Each test case is implemented by a subclass of TestCase.
+ * This allows to implement a Strategy pattern :
+ * The TestCase superclass provide the general contract
+ * that says when a TestCase can react to events.
+ * Each TestCase subclass is responsible for how it reacts to those events.
  *
- * Possible events are :
- * - user starts a use case (run)
- * - ttt received a notification from Bill's toolkit (notifyXdrReceive)
- * - ttt received a notification from the direct tool (notifyDirectReceive)
- *
- * 2/ Each test case is responsible of managing its lifecycle.
- * When a test case completes, the protected done method MUST be called to set up the final state of the test.
- * Failure to do so will keep its status to the initial PENDING value.
  *
  * Created by gerardin on 10/27/14.
  *
- * TODO get rid of testcase event here
  */
 abstract class TestCase {
 
@@ -50,6 +44,11 @@ abstract class TestCase {
         throw UnsupportedOperationException()
     }
 
+    public TestCaseResult getReport(XDRRecordInterface record){
+        log.warn("no report info available for this test case")
+        return new TestCaseResult(record.criteriaMet, new StandardContent())
+    }
+
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
         throw UnsupportedOperationException()
     }
@@ -58,15 +57,7 @@ abstract class TestCase {
         throw UnsupportedOperationException()
     }
 
-    public TestCaseResult getReport(XDRRecordInterface record){
-        log.warn("no report info available for this test case")
-        return new TestCaseResult(record.criteriaMet, new StandardContent())
-    }
-
-    public XDRSimulatorInterface registerEndpoint(String name, Map params){
-        executor.configureEndpoint(name, params)
-    }
-
+    
     public XDRSimulatorInterface registerDocRecEndpoint(String simId){
         def config = new HashMap()
         config.type = 'docrec'
