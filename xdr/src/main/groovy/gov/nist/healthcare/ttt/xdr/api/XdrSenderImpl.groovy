@@ -53,7 +53,7 @@ class XdrSenderImpl implements XdrSender{
             <sendRequest>
                 <simReference>ett/$config.simId</simReference>
                 <transactionName>prb</transactionName>
-                <tls value="$config.tls"/>
+                <tls value="true"/>
                 <messageId>$art.messageId</messageId>
                 <metadata>$art.metadata</metadata>
                 <extraHeaders>$art.extraHeaders</extraHeaders>
