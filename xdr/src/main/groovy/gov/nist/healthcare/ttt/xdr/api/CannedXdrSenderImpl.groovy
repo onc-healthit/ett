@@ -41,14 +41,14 @@ class CannedXdrSenderImpl implements BadXdrSender {
 
 
             SSLContext sslContext = null
-            if(URLParser.isTLS(config.targetEndpoint)){
-                log.debug "Using $config.targetEndpoint. TLS is turned on"
+            if(URLParser.isTLS(config.targetEndpointTLS)){
+                log.debug "Using $config.targetEndpointTLS. TLS is turned on..."
                 sslContext = sslContextManager.goodSSLContext
             }
 
-            log.info("contacting remote endpoint : $config.targetEndpoint ...")
+            log.info("contacting remote endpoint : $config.targetEndpointTLS ...")
 
-            RequestResponse rr = SimpleSOAPSender.sendMTOMPackage(config.targetEndpoint, config.messageType, settings, sslContext);
+            RequestResponse rr = SimpleSOAPSender.sendMTOMPackage(config.targetEndpointTLS, config.messageType, settings, sslContext);
 
             def map = [request:rr.getRequest(), response:rr.getResponse()]
 
@@ -56,16 +56,16 @@ class CannedXdrSenderImpl implements BadXdrSender {
         }
         catch (Exception e) {
             e.printStackTrace()
-            log.error("problem occured when trying to send to : $config.targetEndpoint")
+            log.error("problem occured when trying to send to : $config.targetEndpointTLS")
             throw new RuntimeException(e);
         }
     }
 
-    private def prepareMessage(Object config) {
+    private def prepareMessage(Map config) {
         Settings settings = new Settings()
         settings.setDirectFrom(config.directFrom)
         settings.setDirectTo(config.directTo)
-        settings.setWsaTo(config.targetEndpoint)
+        settings.setWsaTo(config.wsaTo)
 
 //        String request =
 //                ArtifactManagement.getPayload(config.messageType, settings);
