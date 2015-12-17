@@ -785,6 +785,12 @@ public class ListenerProcessor implements Runnable {
 				logger.info("Found address $smtpFrom so no mdn sent")
 				break
 				
+			case 'processedfailure':
+				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
+				break
+				
 			case 'noaddressfailure9':
 				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
 				break
