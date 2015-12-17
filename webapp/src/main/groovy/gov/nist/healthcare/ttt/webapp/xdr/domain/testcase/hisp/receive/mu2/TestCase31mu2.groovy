@@ -1,14 +1,12 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive.mu2
 
-import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -27,7 +25,7 @@ final class TestCase31mu2 extends TestCase {
 
 
     @Override
-    TestCaseResult run(Map context, String username) {
+    Result run(Map context, String username) {
 
         executor.validateInputs(context, ["targetEndpointTLS"])
 
@@ -58,6 +56,6 @@ final class TestCase31mu2 extends TestCase {
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
-        return new TestCaseResult(record.criteriaMet, content)
+        return new Result(record.criteriaMet, content)
     }
 }

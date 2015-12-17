@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
 
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface

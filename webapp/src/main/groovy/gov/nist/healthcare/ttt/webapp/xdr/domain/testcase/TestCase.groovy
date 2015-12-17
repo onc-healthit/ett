@@ -2,7 +2,6 @@ package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
@@ -38,15 +37,14 @@ abstract class TestCase {
 
     protected static Logger log = getLogger(TestCase.class)
 
-    public abstract TestCaseResult run(Map context, String username)
+    public abstract Result run(Map context, String username)
 
-    public TestCaseResult configure() {
+    /*
+     * Public methods enable the test case to take part in the workflow
+     */
+
+    public Result configure() {
         throw UnsupportedOperationException()
-    }
-
-    public TestCaseResult getReport(XDRRecordInterface record){
-        log.warn("no report info available for this test case")
-        return new TestCaseResult(record.criteriaMet, new StandardContent())
     }
 
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
@@ -57,18 +55,26 @@ abstract class TestCase {
         throw UnsupportedOperationException()
     }
 
-    
-    public XDRSimulatorInterface registerDocRecEndpoint(String simId){
+    public Result getReport(XDRRecordInterface record){
+        log.warn("no report info available for this test case")
+        return new Result(record.criteriaMet, new Content())
+    }
+
+    /*
+     * Create a docrec (Receiving XDR) endpoint on the toolkit.
+     */
+    protected XDRSimulatorInterface registerDocRecEndpoint(String simId){
         def config = new HashMap()
         config.type = 'docrec'
         config.endpoint = 'NO_VALUE'
         executor.configureEndpoint(simId, config)
     }
 
-    // Create an docsrc endpoint on the toolkit
+    // Create an docsrc (Sending XDR) endpoint on the toolkit
     // because the toolkit does not allow updating existing simulators, we have to generate unique ids each time
-    // we want to send a message to another direct address
-    public XDRSimulatorInterface registerDocSrcEndpoint(String username, Map context){
+    // we want to send a message to another direct address.
+    // The scheme to do so can change without impacting the application.
+    protected XDRSimulatorInterface registerDocSrcEndpoint(String username, Map context){
         def config = new HashMap()
         config.type = 'docsrc'
         //generate unique simId
@@ -78,7 +84,10 @@ abstract class TestCase {
         executor.configureEndpoint(simId, config)
     }
 
-    public List<String> getEndpoints() {
+    /*
+     * helper method
+     */
+    protected List<String> getEndpoints() {
         return [sim.endpoint, sim.endpointTLS]
     }
 }

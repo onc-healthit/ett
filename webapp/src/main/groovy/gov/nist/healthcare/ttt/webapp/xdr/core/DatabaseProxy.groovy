@@ -2,7 +2,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
-import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 /**

@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component
 
 /**
  *
- * Receive notification from the XDR layer
+ * This component receives notification from the XDR layer
+ * and try to find a correlated record.
+ * If found, it called the appropriate test case to resume the test workflow.
  *
  * Created by gerardin on 10/14/14.
  */

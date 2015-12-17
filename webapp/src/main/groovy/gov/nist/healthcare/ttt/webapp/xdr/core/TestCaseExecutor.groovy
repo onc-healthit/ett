@@ -7,10 +7,10 @@ import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender
 import gov.nist.healthcare.ttt.model.sendDirect.SendDirectMessage
 import gov.nist.healthcare.ttt.webapp.direct.direcForXdr.SendDirectService
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestStepBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.time.Clock
 import gov.nist.healthcare.ttt.xdr.api.*
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
@@ -296,8 +296,8 @@ class TestCaseExecutor {
         return step
     }
 
-    TestCaseResult getSimpleSendReport(XDRRecordInterface record) {
-        def content = new StandardContent()
+    Result getSimpleSendReport(XDRRecordInterface record) {
+        def content = new Content()
 
         if (record.criteriaMet != Status.PENDING) {
 
@@ -311,7 +311,7 @@ class TestCaseExecutor {
             }
         }
 
-        return new TestCaseResult(record.criteriaMet, content)
+        return new Result(record.criteriaMet, content)
     }
 
     public def correlateRecordWithSimIdAndDirectAddress(XDRSimulatorInterface sim, String directAddress) {
@@ -335,7 +335,7 @@ class TestCaseExecutor {
     }
 
     def buildSendXDRContent(XDRTestStepInterface step) {
-        StandardContent content = new StandardContent()
+        Content content = new Content()
 
         step.xdrReportItems.each {
             if (it.reportType == XDRReportItemInterface.ReportType.REQUEST) {

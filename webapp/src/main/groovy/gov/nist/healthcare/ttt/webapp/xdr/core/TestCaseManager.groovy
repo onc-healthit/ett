@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -11,6 +11,9 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 
 /**
+ *
+ * Configure, keep track of and manage all test cases
+ *
  * Created by gerardin on 10/21/14.
  */
 
@@ -49,7 +52,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
     }
 
 
-    public TestCaseResult configure(String id) {
+    public Result configure(String id) {
 
         log.debug("run test case $id")
 
@@ -65,7 +68,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         testcase.configure()
     }
 
-    public TestCaseResult run(String id, Map userInput, String username) {
+    public Result run(String id, Map userInput, String username) {
         log.debug("run test case $id")
 
         //Check if we have implemented this test case
@@ -86,7 +89,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
     }
 
 
-    public TestCaseResult status(String username, String id) {
+    public Result status(String username, String id) {
 
         log.debug("check status for test case $id")
 
