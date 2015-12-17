@@ -2348,19 +2348,29 @@ pre,
 }
 code {
   padding: 0 3px;
+  white-space: pre-wrap !important;
+  /* css-3 */
+  white-space: -moz-pre-wrap !important;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap !important;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap !important;
+  /* Opera 7 */
+  word-wrap: break-word !important;
+  /* Internet Explorer 5.5+ */
 }
 pre {
   margin: 10px 0;
   padding: 5px;
-  white-space: pre-wrap;
+  white-space: pre-wrap !important;
   /* css-3 */
-  white-space: -moz-pre-wrap;
+  white-space: -moz-pre-wrap !important;
   /* Mozilla, since 1999 */
-  white-space: -pre-wrap;
+  white-space: -pre-wrap !important;
   /* Opera 4-6 */
-  white-space: -o-pre-wrap;
+  white-space: -o-pre-wrap !important;
   /* Opera 7 */
-  word-wrap: break-word;
+  word-wrap: break-word !important;
   /* Internet Explorer 5.5+ */
 }
 /**
