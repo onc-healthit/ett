@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.misc
+package gov.nist.healthcare.ttt.webapp.production
 
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.xdr.api.CannedXdrSenderImpl
@@ -29,7 +29,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -48,7 +48,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/2/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/2/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/2/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -67,7 +67,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/6/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/6/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/6/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -100,7 +100,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/19/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/19/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/19/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         println "first message..."
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
@@ -125,7 +125,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "julien@hit-dev.nist.gov"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20a/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20a/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20a/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -146,7 +146,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "julien@hit-dev.nist.gov"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20b/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20b/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/20b/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -165,7 +165,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/48/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/48/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/48/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         println "first message..."
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
@@ -190,7 +190,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "test@test.com"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/49/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/49/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/49/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -210,7 +210,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "julien@hit-dev.nist.gov"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/50a/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/50a/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/50a/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -231,7 +231,7 @@ def setup(){
         context.directTo = "test@test.com"
         context.directFrom = "julien@hit-dev.nist.gov"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/50b/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/50b/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/50b/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -252,7 +252,7 @@ def setup(){
         context.directTo = "antoine@edge.nist.gov"
         context.directFrom = "antoine@edge.nist.gov"
         context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb"
-        context.targetEndpoint = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
