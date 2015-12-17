@@ -38,7 +38,7 @@ final class TestCase38mu2 extends TestCase {
         // Send an xdr with the endpoint created above
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
-        context.wsaTo = sim.endpointTLS
+        context.wsaTo = context.targetEndpointTLS
         //an address that provides a processed MDN and a dispatched MDN after n seconds (n < sending hisp timeout)
         context.directTo = "processedonly@edge.nist.gov"
         context.directFrom = "testcase38mu2@nist.gov"

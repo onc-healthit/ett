@@ -41,13 +41,13 @@ final class TestCase19mu2 extends TestCaseSender {
     }
 
     @Override
-    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+    public void notifyXdrReceive(XDRRecordInterface r, TkValidationReport report) {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
         step.directFrom = report.directFrom
         step.messageId = report.messageId
 
-        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+        XDRRecordInterface record = new TestCaseBuilder(r).addStep(step).build()
 
         //TODO cleaner implementation : choose relevant steps + better way to compare message ids.
 

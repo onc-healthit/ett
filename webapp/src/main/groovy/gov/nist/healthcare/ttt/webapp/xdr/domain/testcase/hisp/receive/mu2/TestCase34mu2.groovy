@@ -38,7 +38,7 @@ final class TestCase34mu2 extends TestCase {
         // Send an xdr with the endpoint created above
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
-        context.wsaTo = sim.endpointTLS
+        context.wsaTo = context.targetEndpointTLS
         //certs for this address are not published
         context.directTo = "failure15@hit-testing2.nist.gov"
         context.directFrom = "testcase34mu2@nist.gov"

@@ -23,11 +23,11 @@ final class TestCase15a extends TestCase {
     @Override
     TestCaseResult run(Map context, String username) {
 
-        executor.validateInputs(context,["targetEndpoint"])
+        executor.validateInputs(context,["targetEndpointTLS"])
 
         context.directTo = "testcase15a@nist.gov"
         context.directFrom = "testcase15a@nist.gov"
-        context.wsaTo = context.targetEndpoint
+        context.wsaTo = context.targetEndpointTLS
         context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
 
         XDRTestStepInterface step = executor.executeSendBadXDRStep(context)

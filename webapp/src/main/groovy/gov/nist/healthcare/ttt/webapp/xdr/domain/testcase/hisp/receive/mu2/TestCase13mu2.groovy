@@ -40,7 +40,7 @@ final class TestCase13mu2 extends TestCase {
 
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
-        context.wsaTo = sim.endpointTLS
+        context.wsaTo = context.targetEndpointTLS
         //this address has not been registered in the tool
         context.directTo = "badaddress@gfail.com"
         context.directFrom = "testcase13mu2@nist.gov"
