@@ -54,7 +54,10 @@ final class TestCase10 extends TestCaseSender {
         executor.db.addNewXdrRecord(record)
 
         //pending as we will wait to receive an XDR back
-        return new TestCaseResult(Status.PENDING, new StandardContent())
+        StandardContent c = new StandardContent()
+        c.endpoint = sim.endpoint
+        c.endpointTLS = sim.endpointTLS
+        return new TestCaseResult(Status.PENDING, c)
     }
 
     @Override

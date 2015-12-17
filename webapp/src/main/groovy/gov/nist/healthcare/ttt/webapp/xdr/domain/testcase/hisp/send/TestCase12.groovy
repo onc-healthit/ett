@@ -25,6 +25,14 @@ final class TestCase12 extends TestCaseSender {
     }
 
     @Override
+    TestCaseResult configure(){
+        StandardContent c = new StandardContent()
+        c.endpoint = sim.endpoint
+        c.endpointTLS = sim.endpointTLS
+        new TestCaseResult(Status.PENDING, c)
+    }
+
+    @Override
     TestCaseResult run(Map context, String username) {
 
         executor.validateInputs(context,["direct_to"])
@@ -37,8 +45,8 @@ final class TestCase12 extends TestCaseSender {
         //We provide a direct_from address. This might be used for trace back the message in the SUT logs.
         context.direct_from = "testcase12@nist.gov"
 
-        //We send a direct message + XDM
-        String msgType = "CCDA_Ambulatory_in_XDM.zip"
+        //We send a direct message with a CCDA payload
+        String msgType = "CCDA_Ambulatory.xml"
         XDRTestStepInterface step2 = executor.executeSendDirectStep(context, msgType)
 
         //We create the record
@@ -46,7 +54,10 @@ final class TestCase12 extends TestCaseSender {
         executor.db.addNewXdrRecord(record)
 
         //pending as we will wait to receive an XDR back
-        return new TestCaseResult(Status.PENDING, new StandardContent())
+        StandardContent c = new StandardContent()
+        c.endpoint = sim.endpoint
+        c.endpointTLS = sim.endpointTLS
+        return new TestCaseResult(Status.PENDING, c)
     }
 
     @Override
@@ -59,6 +70,10 @@ final class TestCase12 extends TestCaseSender {
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
         updatedRecord.status = Status.MANUAL
         executor.db.updateXDRRecord(updatedRecord)
+    }
 
+    @Override
+    public TestCaseResult getReport(XDRRecordInterface record) {
+        executor.getSimpleSendReport(record)
     }
 }

@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component
 /**
  * Created by gerardin on 10/27/14.
  */
-
 @Component
-final class TestCase49 extends TestCaseSender {
+final class TestCase50amu2 extends TestCaseSender {
+
 
     @Autowired
-    public TestCase49(TestCaseExecutor ex) {
+    public TestCase50amu2(TestCaseExecutor ex) {
         super(ex)
     }
 
@@ -36,21 +36,18 @@ final class TestCase49 extends TestCaseSender {
         def content = new StandardContent()
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
-
         return new TestCaseResult(Status.PENDING, content)
     }
 
     @Override
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
-        XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+        XDRTestStepInterface step
+
+        step = executor.executeSendProcessedMDN(report)
 
         record = new TestCaseBuilder(record).addStep(step).build()
-        record.status = Status.MANUAL
+        record.status = step.status
         executor.db.updateXDRRecord(record)
-    }
-
-    public TestCaseResult getReport(XDRRecordInterface record) {
-        executor.getSimpleSendReport(record)
     }
 }

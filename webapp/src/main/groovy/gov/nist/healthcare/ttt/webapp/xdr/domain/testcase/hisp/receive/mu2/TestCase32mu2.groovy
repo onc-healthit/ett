@@ -1,4 +1,6 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive.mu2
+
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
@@ -6,27 +8,27 @@ import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import java.text.SimpleDateFormat
 /**
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase5 extends TestCase {
+final class TestCase32mu2 extends TestCase {
+
 
     @Autowired
-    public TestCase5(TestCaseExecutor executor) {
+    TestCase32mu2(TestCaseExecutor executor) {
         super(executor)
     }
-
 
     @Override
     TestCaseResult run(Map context, String username) {
 
-        executor.validateInputs(context,["targetEndpointTLS"])
+        executor.validateInputs(context, ["targetEndpointTLS"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -39,9 +41,11 @@ final class TestCase5 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
         context.wsaTo = sim.endpointTLS
-        context.directTo = "testcase3@nist.gov"
-        context.directFrom = "testcase3@nist.gov"
-        context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
+        //this address has not been registered in the tool
+        context.directTo = "badaddress@gfail.com"
+        context.directFrom = "testcase32mu2@nist.gov"
+        context.finalDestinationDelivery = "true"
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
         // Create a new test record
@@ -54,6 +58,4 @@ final class TestCase5 extends TestCase {
         def content = executor.buildSendXDRContent(step2)
         return new TestCaseResult(record.criteriaMet, content)
     }
-
-
 }

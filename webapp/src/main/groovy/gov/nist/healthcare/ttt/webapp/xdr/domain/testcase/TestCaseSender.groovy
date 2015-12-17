@@ -9,12 +9,8 @@ abstract class TestCaseSender extends TestCase {
 
     public TestCaseSender(TestCaseExecutor executor) {
         super(executor)
-        def config = new HashMap()
-        config.type = 'docrec'
-        config.endpoint = 'NO_VALUE'
-
         try {
-            sim = registerEndpoint(id, config)
+            sim = registerDocRecEndpoint(id)
         }
         catch(Exception e){
             log.error("XDR Test Case could not be instantiated. XDR Testing won't work! REASON : " + e.getMessage())

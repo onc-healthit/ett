@@ -350,6 +350,27 @@ class TestCaseExecutor {
             if (!context.containsKey(key)) {
                 throw new Exception("$key not provided")
             }
+            if(context.get(key).isEmpty()){
+                throw new Exception("empty value for $key");
+            }
+        }
+    }
+
+    def validateInputs(Map<String, String> context, List<String> keys, List<String> optionalKeys) {
+        for (String key : keys) {
+            //TODO validate / sanitize inputs
+            if (!context.containsKey(key)) {
+                throw new Exception("$key not provided")
+            }
+            if(context.get(key).isEmpty()){
+                throw new Exception("empty value for $key");
+            }
+        }
+
+        for(String key : optionalKeys){
+            if(context.containsKey(key) && context.get(key).isEmpty()){
+                throw new Exception("empty value for $key");
+            }
         }
     }
 }
