@@ -66,6 +66,7 @@ class CannedXdrSenderImpl implements BadXdrSender {
         settings.setDirectFrom(config.directFrom)
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.wsaTo)
+        settings.setMessageId(config.messageId)
 
 //        String request =
 //                ArtifactManagement.getPayload(config.messageType, settings);
