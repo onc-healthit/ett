@@ -16,6 +16,9 @@ import java.util.regex.Pattern
 
 /**
  * Created by gerardin on 10/21/14.
+ *
+ * This sender implementation uses the toolkit
+ *
  */
 @Component
 class XdrSenderImpl implements XdrSender{
@@ -37,15 +40,15 @@ class XdrSenderImpl implements XdrSender{
     @Override
     public def sendXdr(Map config) {
 
+        //generating headers
         Settings settings = new Settings()
         settings.setDirectFrom(config.directFrom)
         settings.setDirectTo(config.directTo)
-        settings.setWsaTo(config.targetEndpoint)
+        settings.setWsaTo(config.wsaTo)
         settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
-
-        //TODO this should be created in the test case so it can be customized
         Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
 
+        //creating request for the toolkit
         def req = """
             <sendRequest>
                 <simReference>ett/$config.simId</simReference>
