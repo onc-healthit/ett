@@ -83,7 +83,8 @@ class XdrSenderImpl implements XdrSender{
         def xml = XmlUtil.serialize(r)
         report['request'] = extractXmlElement(xml,"Request")
         report['response'] = extractXmlElement(xml,"Response")
-
+        //TODO toolkit seems to report SOAPFAULT for its own internal errors.
+        //What strategy should we implement in order detect those cases (check toolkit documentation for help).
         return report
     }
 

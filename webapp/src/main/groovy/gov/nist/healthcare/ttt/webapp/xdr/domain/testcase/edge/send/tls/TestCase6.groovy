@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.tls
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
 
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
@@ -46,9 +46,10 @@ final class TestCase6 extends TestCaseSender {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
 
-        record = new TestCaseBuilder(record).addStep(step).build()
-        record.status = step.status
-        executor.db.updateXDRRecord(record)
+        //we update the record
+        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+        updatedRecord.status = Status.MANUAL
+        executor.db.updateXDRRecord(updatedRecord)
 
     }
 
