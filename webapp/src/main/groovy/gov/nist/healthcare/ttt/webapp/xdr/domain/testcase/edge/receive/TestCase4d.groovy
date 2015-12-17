@@ -28,7 +28,7 @@ final class TestCase4d extends TestCase {
 
         context.directTo = "testcase4d@nist.gov"
         context.directFrom = "testcasedb@nist.gov"
-        context.wsaTo = context.targetEndpoint
+        context.wsaTo = context.targetEndpointTLS
 
         context.messageType = chooseMissingMetadata()
 
