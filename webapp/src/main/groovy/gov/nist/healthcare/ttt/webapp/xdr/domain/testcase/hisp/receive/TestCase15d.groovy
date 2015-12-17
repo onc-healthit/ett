@@ -28,7 +28,7 @@ final class TestCase15d extends TestCase {
 
         context.directTo = "testcase15d@nist.gov"
         context.directFrom = "testcase15b@nist.gov"
-        context.wsaTo = context.targetEndpoint
+        context.wsaTo = context.targetEndpointTLS
 
         context.messageType = chooseMissingMetadata()
 

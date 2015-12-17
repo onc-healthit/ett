@@ -39,7 +39,7 @@ final class TestCase3ccr extends TestCase {
         // Send an xdr with the endpoint created above
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
-        context.wsaTo = sim.endpointTLS
+        context.wsaTo = context.targetEndpointTLS
         context.directTo = "testcase3ccr@nist.gov"
         context.directFrom = "testcase3ccr@nist.gov"
         context.messageType = ArtifactManagement.Type.XDR_CCR

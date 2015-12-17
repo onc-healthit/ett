@@ -27,7 +27,7 @@ final class TestCase15b extends TestCase {
 
         context.directTo = "testcase15b@nist.gov"
         context.directFrom = "testcase15b@nist.gov"
-        context.wsaTo = context.targetEndpoint
+        context.wsaTo = context.targetEndpointTLS
         context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_BODY
 
         XDRTestStepInterface step = executor.executeSendBadXDRStep(context)

@@ -41,7 +41,7 @@ final class TestCase14 extends TestCase {
         // Send an xdr with the endpoint created above
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
-        context.wsaTo = sim.endpointTLS
+        context.wsaTo = context.targetEndpointTLS
         context.directTo = "testcase14@nist.gov"
         context.directFrom = "testcase14@nist.gov"
         context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
