@@ -111,7 +111,7 @@ class TestCaseExecutor {
             step.xdrReportItems.add(request)
             step.xdrReportItems.add(response)
 
-            //TODO for now we only send back MANUAL CHECKS
+            //Eventually we could have automatic checks coming from the toolkit
             step.status = Status.MANUAL
 
             return step
