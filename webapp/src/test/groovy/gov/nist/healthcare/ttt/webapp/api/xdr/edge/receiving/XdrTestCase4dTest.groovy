@@ -26,7 +26,7 @@ class XdrTestCase4dTest extends XDRSpecification {
 
     public String testCaseConfigTLS =
             """{
-    "targetEndpoint": "https://transport-testing.nist.gov:12081/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
+    "targetEndpointTLS": "https://transport-testing.nist.gov:12081/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
 }"""
 
     def "user succeeds in running test case 4d using TLS"() throws Exception {
@@ -36,7 +36,6 @@ class XdrTestCase4dTest extends XDRSpecification {
 
         then: "we receive back a message with status and report of the transaction"
 
-        //TODO we cannot validate the body because for now we always get error messages!
         gui.perform(getRequest)
                 .andDo(print())
                 .andExpect(status().isOk())

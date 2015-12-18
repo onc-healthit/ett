@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain
+package gov.nist.healthcare.ttt.webapp.xdr.domain.helper
 /**
  * Created by gerardin on 5/11/15.
  */
@@ -13,9 +13,4 @@ class RandomIntegerGenerator {
         int max = upperBound
         rand.nextInt(max)+1
     }
-
-
-//    public static void main(String[] args){
-//        println generate(5)
-//    }
 }

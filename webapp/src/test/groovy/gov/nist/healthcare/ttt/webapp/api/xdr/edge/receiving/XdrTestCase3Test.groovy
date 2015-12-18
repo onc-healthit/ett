@@ -25,11 +25,6 @@ class XdrTestCase3Test extends XDRSpecification {
     String tcId = "3"
     String simEndpoint = TestUtils.simEndpoint(simId, system)
 
-    public String testCaseConfig =
-            """{
-    "targetEndpoint": "http://transport-testing.nist.gov:12080/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"
-}"""
-
     public String testCaseConfigTLS =
             """{
     "targetEndpointTLS": "https://transport-testing.nist.gov:12081/ttt/sim/ce45c84c-fc5f-430e-b1cd-aadf592a67ca/rec/xdrpr"

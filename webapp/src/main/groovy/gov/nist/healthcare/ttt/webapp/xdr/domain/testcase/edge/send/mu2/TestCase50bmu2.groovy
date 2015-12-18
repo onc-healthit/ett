@@ -4,9 +4,9 @@ import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ final class TestCase50bmu2 extends TestCaseSender {
     }
 
     @Override
-    TestCaseResult run(Map context, String username) {
+    Result run(Map context, String username) {
 
         executor.validateInputs(context,["direct_from"])
 
@@ -32,10 +32,10 @@ final class TestCase50bmu2 extends TestCaseSender {
         XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
         executor.db.addNewXdrRecord(builder.addStep(step1).build())
 
-        def content = new StandardContent()
+        def content = new Content()
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
-        return new TestCaseResult(Status.PENDING, content)
+        return new Result(Status.PENDING, content)
     }
 
     @Override

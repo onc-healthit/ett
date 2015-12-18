@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
+ *
+ * This component receives notification from the XDR layer
+ * and try to find a correlated record.
+ * If found, it called the appropriate test case to resume the test workflow.
+ *
  * Created by gerardin on 10/14/14.
  */
 @Component
@@ -37,7 +42,7 @@ class ResponseHandler implements IObserver {
     }
 
     @Override
-    def getNotification(Message msg) {
+    public getNotification(Message msg) {
 
         log.info "notification received"
 
@@ -55,14 +60,17 @@ class ResponseHandler implements IObserver {
         }
     }
 
+    //TODO check : do we ever generate this kind of message?
     private def handleBadNotification(Message message) {
         log.error("$message.status : $message.message")
         log.error("recovery method : Logging error and silent failure")
     }
 
+    /*
+    Handles test case report coming from the TLS socket
+     */
     private handle(TLSValidationReport report) {
-        log.info "handle tls report."
-
+        log.debug "handle tls report."
 
         XDRRecordInterface rec = db.instance.xdrFacade.getLatestXDRRecordByHostname(report.hostname)
         if (rec == null) {
@@ -73,11 +81,15 @@ class ResponseHandler implements IObserver {
         }
     }
 
+    /*
+    Handles test case reports coming from the toolkit
+     */
     private handle(TkValidationReport report) {
+
+        log.debug "handle toolkit report."
 
         XDRRecordInterface rec
         String directFrom = report.directFrom
-        String msgId = report.messageId
         String simId = report.simId
 
         //we need both simid and directFrom : without simid, we would not know which testcaseid we are talking about.
@@ -88,23 +100,10 @@ class ResponseHandler implements IObserver {
             log.info("found correlation with existing record using direct address and simId : $directFrom , $simId")
         } else {
             log.warn("could not find report correlated with the following direct address and simId : $directFrom , $simId")
+            throw new Exception("error : could not correlate report with simId ($simId) and directAddress ($directFrom) with any existing record")
         }
 
-//        if(rec == null & msgId != null) {
-//            String unescapedMsgId = "<" + msgId + ">"
-//            rec = db.instance.xdrFacade.getXDRRecordByMessageId(unescapedMsgId)
-//
-//            if (rec != null) {
-//                log.info("found correlation with existing record using messageID : $msgId")
-//            } else {
-//                log.warn("could not find report correlated with the following messageID : $msgId")
-//            }
-//        }
-
-        if (rec == null) {
-            throw new Exception("error : could not correlate report with any existing record")
-        }
-
+        //the record contains the testcase number so we can resume the test case logic
         TestCase testcase = manager.findTestCase(rec.testCaseNumber)
         testcase.notifyXdrReceive(rec, report)
     }

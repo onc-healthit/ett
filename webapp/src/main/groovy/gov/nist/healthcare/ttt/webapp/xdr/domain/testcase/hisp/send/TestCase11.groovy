@@ -4,9 +4,9 @@ import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,15 +25,15 @@ final class TestCase11 extends TestCaseSender {
     }
 
     @Override
-    TestCaseResult configure(){
-        StandardContent c = new StandardContent()
+    Result configure(){
+        Content c = new Content()
         c.endpoint = sim.endpoint
         c.endpointTLS = sim.endpointTLS
-        new TestCaseResult(Status.PENDING, c)
+        new Result(Status.PENDING, c)
     }
 
     @Override
-    TestCaseResult run(Map context, String username) {
+    Result run(Map context, String username) {
 
         executor.validateInputs(context,["direct_to"])
 
@@ -54,10 +54,10 @@ final class TestCase11 extends TestCaseSender {
         executor.db.addNewXdrRecord(record)
 
         //pending as we will wait to receive an XDR back
-        StandardContent c = new StandardContent()
+        Content c = new Content()
         c.endpoint = sim.endpoint
         c.endpointTLS = sim.endpointTLS
-        return new TestCaseResult(Status.PENDING, c)
+        return new Result(Status.PENDING, c)
     }
 
     @Override
@@ -73,7 +73,7 @@ final class TestCase11 extends TestCaseSender {
     }
 
     @Override
-    public TestCaseResult getReport(XDRRecordInterface record) {
+    public Result getReport(XDRRecordInterface record) {
         executor.getSimpleSendReport(record)
     }
 }

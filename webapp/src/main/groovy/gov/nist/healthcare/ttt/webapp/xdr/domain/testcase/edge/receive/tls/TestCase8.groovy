@@ -4,10 +4,10 @@ import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestStepBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestStepBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -25,7 +25,7 @@ final class TestCase8 extends TestCase {
 
 
     @Override
-    TestCaseResult run(Map context, String username) {
+    Result run(Map context, String username) {
 
         executor.validateInputs(context,["ip_address","port"])
 
@@ -47,8 +47,8 @@ final class TestCase8 extends TestCase {
         record.status = step.status
         executor.db.addNewXdrRecord(record)
 
-        def content = new StandardContent()
+        def content = new Content()
 
-        new TestCaseResult(record.criteriaMet,content)
+        new Result(record.criteriaMet,content)
     }
 }

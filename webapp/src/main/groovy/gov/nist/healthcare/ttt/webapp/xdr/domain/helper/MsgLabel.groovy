@@ -1,6 +1,10 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain
+package gov.nist.healthcare.ttt.webapp.xdr.domain.helper
 
 /**
+ *
+ * Attempt to factor recurrent message.
+ * It use has not been consistent troughout development.
+ *
  * Created by gerardin on 10/29/14.
  */
 enum MsgLabel {

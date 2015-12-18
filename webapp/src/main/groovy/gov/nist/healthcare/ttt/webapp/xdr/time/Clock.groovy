@@ -4,6 +4,9 @@ import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 
 /**
+ *
+ * It is sometimes convenient to fake time for testing purpose.
+ *
  * Created by gerardin on 10/23/14.
  */
 

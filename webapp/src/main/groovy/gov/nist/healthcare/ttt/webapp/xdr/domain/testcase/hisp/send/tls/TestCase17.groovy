@@ -4,9 +4,9 @@ import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseResult
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ final class TestCase17 extends TestCaseSender {
     }
 
     @Override
-    TestCaseResult run(Map context, String username) {
+    Result run(Map context, String username) {
 
         executor.validateInputs(context,["ip_address"])
 
@@ -37,10 +37,10 @@ final class TestCase17 extends TestCaseSender {
 
         //return the endpoint we expect to be reached at
         String endpoint = executor.tlsReceiver.getEndpoint()
-        def content = new StandardContent()
+        def content = new Content()
         content.endpoint = endpoint
 
-        return new TestCaseResult(Status.PENDING, content)
+        return new Result(Status.PENDING, content)
     }
 
     @Override

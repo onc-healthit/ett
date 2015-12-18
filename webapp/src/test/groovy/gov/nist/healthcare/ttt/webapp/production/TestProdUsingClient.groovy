@@ -116,6 +116,32 @@ def setup(){
     }
 
     @Test
+    def test19mu2failure(){
+
+        when :
+        def manager = new SSLContextManager()
+        def TLSclient = new TLSClientImpl(manager)
+        def context = [:]
+        context.directTo = "test@test.com"
+        context.directFrom = "test@test.com"
+        context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/19mu2/docrec/prb"
+        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/19mu2/docrec/prb"
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        context.messageId = "1"
+        println "first message..."
+        def response = new CannedXdrSenderImpl(manager).sendXdr(context)
+        println "second message..."
+        def response2 = new CannedXdrSenderImpl(manager).sendXdr(context)
+        println "third message..."
+        def response3 = new CannedXdrSenderImpl(manager).sendXdr(context)
+
+        then :
+
+        println response3
+        assert true
+    }
+
+    @Test
     def test20amu2(){
 
         when :
