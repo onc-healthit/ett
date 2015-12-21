@@ -56,7 +56,7 @@
             "name": "SMTP Test 9, 16, 20 (Receive)",
             "id": 16,
             "protocol": "smtp",
-            "desc": "Verifies the ability of the receiving system to accept a STARTTLS connection with PLAIN SASL authentication. Hitting 'Run' will cause ETT to send an email. Verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION' from wellformed1@hit-testing2.nist.gov.",
+            "desc": "Verifies the ability of the receiving system to accept a STARTTLS connection with PLAIN SASL authentication. Hitting 'Run' will cause ETT to send an email. Verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION' from wellformed1@hit-testing2.nist.gov.'",
             "sutRole": "receiver",
             "sutHisp": true,
             "sutEdge": true,
@@ -801,13 +801,13 @@
             ]
         },
         {
-            "name": "IMAP 32 (Receive + Validate)",
+            "name": "IMAP 32 (Send + Validate)",
             "id": 232,
             "protocol": "imap",
             "desc": "Verifies the ability of the SUT to host attachements and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
             "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true,
+            "sutHisp": true,
+            "sutEdge": "null",
             "fields": [
                 {
                     "label": "Reference Filename",
@@ -939,13 +939,13 @@
             ]
         },
         {
-            "name": "POP 32 (Receive + Validate)",
+            "name": "POP 32 (Send + Validate)",
             "id": 332,
             "protocol": "pop",
             "desc": "Verifies the ability of the SUT to host attachements and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
             "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true,
+            "sutHisp": true,
+            "sutEdge": false,
             "fields": [
                 {
                     "label": "Reference Filename",
