@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
+import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,37 +34,43 @@ public class CCDAValidatorController {
 	private DatabaseInstance db;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String sendDirectMessage(@RequestBody HashMap<String, String> filePath) throws Exception {
+	public @ResponseBody String validateCCDA(@RequestBody HashMap<String, String> filePath) throws Exception {
 		if(filePath.containsKey("messageFilePath")) {
-			String ccdaType = "NonSpecificCCDA"
-			if(filePath.containsKey("ccdaType")) {
-				ccdaType = filePath.get("ccdaType")
-			}
-			
-			logger.info("Validating CCDA " + filePath.get("messageFilePath") + " with type " + ccdaType);
-			
-			CloseableHttpClient client = HttpClients.createDefault();
-			File file = new File(filePath.get("messageFilePath"));
-			HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
-			FileBody fileBody = new FileBody(file);
-			//
-			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-			builder.addPart("file", fileBody);
-			builder.addTextBody("type_val", ccdaType);
-			HttpEntity entity = builder.build();
-			//
-			post.setEntity(entity);
-			try {
-				HttpResponse response = client.execute(post);
-				// CONVERT RESPONSE TO STRING
-				String result = EntityUtils.toString(response.getEntity());
+			String messageFilePath = filePath.get("messageFilePath")
+			if(messageFilePath != null && !messageFilePath.equals("")) {
 				
-				return result
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw e
+				String ccdaType = "NonSpecificCCDA"
+				if(filePath.containsKey("ccdaType")) {
+					ccdaType = filePath.get("ccdaType")
+				}
+				
+				logger.info("Validating CCDA " + filePath.get("messageFilePath") + " with type " + ccdaType);
+				
+				CloseableHttpClient client = HttpClients.createDefault();
+				File file = new File(filePath.get("messageFilePath"));
+				HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
+				FileBody fileBody = new FileBody(file);
+				//
+				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+				builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+				builder.addPart("file", fileBody);
+				builder.addTextBody("type_val", ccdaType);
+				HttpEntity entity = builder.build();
+				//
+				post.setEntity(entity);
+				try {
+					HttpResponse response = client.execute(post);
+					// CONVERT RESPONSE TO STRING
+					String result = EntityUtils.toString(response.getEntity());
+					
+					return result
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					throw e
+				}
+			} else {
+				throw new TTTCustomException("0x0050", "No CCDA attachment uploaded");
 			}
 		}
 		

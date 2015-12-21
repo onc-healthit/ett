@@ -71,10 +71,30 @@ class TkClientSpecTest extends Specification {
 
         then:
         //we have a successful interaction
-            assert resp.simId.text() == id
+            assert resp.SimulatorId.text() == id
 
     }
 
+    def sendRawXml(){
+
+        given:
+        // a working url
+        def id = "SimpleTest1"
+
+        def config = """
+<createSim><SimType>XDR Document Recipient</SimType><SimulatorId>SimpleTest1</SimulatorId><MetadataValidationLevel>Full</MetadataValidationLevel><CodeValidation>false</CodeValidation><PostNotification>http://localhost:12080/ttt</PostNotification></createSim>
+"""
+
+        def url = fullUrl + "/createSim"
+
+        when:
+        def resp = client.postXml(config, url, 1000)
+
+        then:
+        //we have a successful interaction
+        assert resp.SimulatorId.text() == id
+
+    }
 
     def "test request on wrong endpoint"() {
         given:

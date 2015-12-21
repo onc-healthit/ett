@@ -37,8 +37,8 @@ class XDRSpecification extends Specification{
     String userId = "user1"
     String userPass = "pass"
     String messageID = "1"
-    String toAddress = "from@edge.nist.gov"
-    String fromAddress = "to@edge.nist.gov"
+    String toAddress = "to@edge.nist.gov"
+    String fromAddress = "from@edge.nist.gov"
 
     String system = "ett"
 

@@ -17,8 +17,8 @@ class TestUtils {
     GUI Mock calls
      */
 
-    static MockHttpServletRequestBuilder configure(String tcId, String userId, String testCaseConfig) {
-        MockMvcRequestBuilders.post("/api/xdr/tc/$tcId/configure")
+    static MockHttpServletRequestBuilder run(String tcId, String userId, String testCaseConfig) {
+        MockMvcRequestBuilders.post("/api/xdr/tc/$tcId/run")
                 .accept(MediaType.ALL)
                 .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -32,12 +32,10 @@ class TestUtils {
                 .principal(new PrincipalImpl(userId))
     }
 
-    static MockHttpServletRequestBuilder getEndpoints(String tcId, String userId, String testCaseConfig) {
-        MockMvcRequestBuilders.get("/api/xdr/tc/$tcId/endpoint")
+    static MockHttpServletRequestBuilder configure(String tcId) {
+        MockMvcRequestBuilders.get("/api/xdr/tc/$tcId/configure")
                 .accept(MediaType.ALL)
-                .content(testCaseConfig)
                 .contentType(MediaType.APPLICATION_JSON)
-                .principal(new PrincipalImpl(userId))
     }
 
     /*
@@ -140,11 +138,7 @@ class TestUtils {
     """
     }
 
-//    static String simEndpoint(String simId, String system) {
-//        "http://hit-dev.nist.gov:11080/xdstools3/sim/$system/$simId/docrec/prb"
-//    }
-
     static String simEndpoint(String simId, String system) {
-        "http://hit-dev.nist.gov:11080/xdstools3/sim/$simId/docrec/prb"
+        "http://hit-dev.nist.gov:11080/xdstools3/sim/$system/$simId/docrec/prb"
     }
 }

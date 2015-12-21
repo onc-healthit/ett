@@ -18,15 +18,23 @@ public class FakeTkRestAPIWithBadContent {
 //    """
 
 
-    @RequestMapping(value = "/createSimWithBadContent", method = RequestMethod.POST, headers = "Accept=*")
+    @RequestMapping(value = "/createSim", method = RequestMethod.POST, headers = "Accept=*")
     @ResponseBody
     def receive(@RequestBody String body) {
         GPathResult xml =  new XmlSlurper().parseText(body)
         println "toolkit receive postXml at endpoint /createSim : $body"
         String id = xml.SimulatorId.text()
-        return "{}"
+        return body
     }
 
+    @RequestMapping(value = "/createSimWithBadContent", method = RequestMethod.POST, headers = "Accept=*")
+    @ResponseBody
+    def receiveAndGenerateBadContent(@RequestBody String body) {
+        GPathResult xml =  new XmlSlurper().parseText(body)
+        println "toolkit receive postXml at endpoint /createSim : $body"
+        String id = xml.SimulatorId.text()
+        return "<>"
+    }
 
 
 

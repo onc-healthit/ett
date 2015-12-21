@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
+
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.StandardContent
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
+
 /**
+ *
+ * Configure, keep track of and manage all test cases
+ *
  * Created by gerardin on 10/21/14.
  */
 
@@ -24,16 +28,20 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     TestCaseExecutor executor
     DatabaseProxy db
-    Map<String,TestCase> tcs = [:]
+    Map<String, TestCase> tcs = [:]
 
     private static Logger log = LoggerFactory.getLogger(TestCaseManager.class)
 
+    /*
+    All test cases instances injected by Spring are put in a map for later retrieval.
+    This architecture works because all test cases are stateless.
+     */
     @Autowired
-    TestCaseManager(TestCaseExecutor executor, DatabaseProxy db,List<TestCase> tcList) {
+    TestCaseManager(TestCaseExecutor executor, DatabaseProxy db, List<TestCase> tcList) {
         this.executor = executor
         this.db = db
         tcList.each {
-            def tcIdAsKey =  it.getClass().getSimpleName().split("TestCase")[1]
+            def tcIdAsKey = it.getClass().getSimpleName().split("TestCase")[1]
             tcs[tcIdAsKey] = it
         }
     }
@@ -43,28 +51,10 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         //Nothing done here anymore but we leave the hook in case
     }
 
-    TestCaseEvent getTestCaseEndpoint(String id) {
 
-        log.info("running test case $id")
+    public Result configure(String id) {
 
-        //Check if we have implemented this test case
-        TestCase testcase
-        try {
-            testcase = findTestCase(id)
-        }
-        catch (Exception e) {
-            throw new Exception("test case $id is not yet implemented", e)
-        }
-
-        List<String> endpoints = testcase.getEndpoints()
-        StandardContent content = new StandardContent()
-        content.endpoints = endpoints
-
-        return new TestCaseEvent(XDRRecordInterface.CriteriaMet.PENDING, content)
-    }
-
-    public TestCaseEvent configureTestCase(String id, Map userInput, String username) {
-        log.info("configure test case $id")
+        log.debug("run test case $id")
 
         //Check if we have implemented this test case
         TestCase testcase
@@ -75,14 +65,33 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
             throw new Exception("test case $id is not yet implemented", e)
         }
 
-        //TODO each time a test case is configure for a user, the previous record status should be set to cancelled if it has not return yet
-        testcase.configure(userInput, username)
+        testcase.configure()
     }
 
-    //TODO implement. For now just return a bogus success message.
-    public TestCaseEvent checkTestCaseStatus(String username, String id) {
+    public Result run(String id, Map userInput, String username) {
+        log.debug("run test case $id")
 
-        log.info("check status for test case $id")
+        //Check if we have implemented this test case
+        TestCase testcase
+        try {
+            testcase = findTestCase(id)
+        }
+        catch (Exception e) {
+            throw new Exception("test case $id is not yet implemented", e)
+        }
+
+        //TODO
+        // Discuss this :
+        // Eeach time a test case is configured for a user,
+        // the previous record status could be set to cancelled if it has not return yet
+        // This is for book-keeping only since we only fetch the last record anyway.
+        testcase.run(userInput, username)
+    }
+
+
+    public Result status(String username, String id) {
+
+        log.debug("check status for test case $id")
 
         //Check if we have implemented this test case
         TestCase testcase
@@ -95,7 +104,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         XDRRecordInterface record = db.getLatestXDRRecordByUsernameTestCase(username, id)
 
-        log.info("number of test steps found : " + record.testSteps.size())
+        log.debug("number of test steps found : " + record.testSteps.size())
 
         def stepLists = "test steps recorded :"
         record.getTestSteps().each {
@@ -105,15 +114,13 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info stepLists.substring(0, stepLists.length() - 1)
 
         testcase.getReport(record)
-
-
     }
 
     def findTestCase(String id) {
 
         def tc = tcs[id]
 
-        if(tc == null){
+        if (tc == null) {
             throw new Exception("could not find implementation of test case with id $id.")
         }
 

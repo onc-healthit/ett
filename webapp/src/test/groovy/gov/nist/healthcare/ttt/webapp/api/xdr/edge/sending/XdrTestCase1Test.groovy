@@ -28,14 +28,13 @@ class XdrTestCase1Test extends XDRSpecification {
 
     def "user succeeds in running test case"() throws Exception {
 
-        when: "receiving a request to configure test case"
-        MockHttpServletRequestBuilder configure = TestUtils.configure(tcId,userId,testCaseConfig)
+        when: "receiving a request to run test case"
+        MockHttpServletRequestBuilder configure = TestUtils.run(tcId,userId,testCaseConfig)
 
         then: "we receive back a success message with the endpoints info"
         gui.perform(configure)
                 .andDo(print())
                 .andExpect(jsonPath("status").value("SUCCESS"))
-                .andExpect(jsonPath("content.value.endpoint").value(simEndpoint))
                 .andExpect(jsonPath("content.criteriaMet").value("PENDING"))
 
 

@@ -52,7 +52,7 @@ public class ValidationReportController {
 	@RequestMapping(value = "/rawContent/{messageId:.+}", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody Collection<DirectMessageAttachments> getPartsRawContent(@PathVariable String messageId, HttpServletRequest request) throws Exception {
 		
-		logger.debug("Getting validation report for message id: " + messageId);
+		logger.debug("Getting attachments for message id: " + messageId);
 		
 		Collection<DirectMessageAttachments> res = new ArrayList<DirectMessageAttachments>();
 		

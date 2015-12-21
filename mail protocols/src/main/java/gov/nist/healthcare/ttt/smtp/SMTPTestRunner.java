@@ -92,9 +92,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 	 */
 	@Override
 	public ITestResult[] runTestCase(int i, TestInput ti) {
-		
-		/*if(ti.status.toLowerCase().equals("fetching")) {
-			trs = fetchMail.fetchMail(ti.convert(domainName, smtpHost))*/
 
 		System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -123,15 +120,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				e.printStackTrace();
 			}
 			log.info("*****************   END  Testcase 1 *******************************");
-			break;
-		case 9:
-			
-			log.info("*****************   BEGIN  Testcase 9 *******************************");
-			ti.useTLS = false;
-			TestResult tr9 = sTest.testSendMail(ti);
-			tr9.id = 9;
-			res.add(tr9);
-			log.info("*****************   END  Testcase 9 *******************************");
 			break;
 			
 		case 91:

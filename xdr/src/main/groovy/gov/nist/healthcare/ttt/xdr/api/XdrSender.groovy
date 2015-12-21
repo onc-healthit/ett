@@ -9,6 +9,4 @@ public interface XdrSender  {
     public Object sendXdr(Map config)
 
 
-
-
 }

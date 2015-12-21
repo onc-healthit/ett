@@ -58,15 +58,16 @@ public class ListenerProcessor implements Runnable {
 	
 	Emailer emailer
 
-	DirectMessageProcessor processor = new DirectMessageProcessor();
+	DirectMessageProcessor processor;
 
 	private DatabaseInstance db;
 
 	private static Logger logger = Logger.getLogger(ListenerProcessor.class.getName());
 
-	ListenerProcessor(Socket server, DatabaseInstance db) throws DatabaseException, SQLException {
+	ListenerProcessor(Socket server, DatabaseInstance db, String mdhtR1Endpoint, String mdhtR2Endpoint) throws DatabaseException, SQLException {
 		this.server = server;
 		this.db = db;
+		this.processor = new DirectMessageProcessor(mdhtR1Endpoint, mdhtR2Endpoint);
 	}
 
 	/**
@@ -159,10 +160,10 @@ public class ListenerProcessor implements Runnable {
 			// TkPropsServer ccdaProps =
 			// reportingProps.withPrefixRemoved("ccdatype");
 			if (directTo.size() > 1) {
-				String msg = "Multiple TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to configure - CCDA validation will be skipped";
+				String msg = "Multiple TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to run - CCDA validation will be skipped";
 				logger.warn(msg);
 			} else if (directTo.size() == 0) {
-				String msg = "No TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to configure - CCDA validation will be skipped";
+				String msg = "No TO addresses pulled from SMTP protocol headers - cannot determine which CCDA validator to run - CCDA validation will be skipped";
 				logger.warn(msg);
 				// else {
 				// String to = directTo.get(0);
@@ -258,7 +259,7 @@ public class ListenerProcessor implements Runnable {
 
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
-		String url = "http://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
+		String url = "https://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
 
 		// Generate report template
 		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
@@ -298,7 +299,7 @@ public class ListenerProcessor implements Runnable {
 			String toMDN = "";
 			if(processor.getLogModel().getReplyTo() != null) {
 				toMDN = processor.getLogModel().getReplyTo().iterator().next();
-			} else {
+			} else if(this.processor.getLogModel().getFromLine() != null) {
 				toMDN = this.processor.getLogModel().getFromLine().iterator().next();
 			}
 			String fromMDN = this.processor.getLogModel().getToLine().iterator().next();
@@ -430,6 +431,9 @@ public class ListenerProcessor implements Runnable {
 			msg = msg.toLowerCase();
 			if (msg.startsWith("rcpt to:")) {
 				String to = msg.substring(msg.indexOf(':') + 1);
+				if(isSpam(to)) {
+					throw new Exception("Spam throwing away message");
+				}
 				if (to != null && !to.equals(""))
 					directTo.add(stripBrackets(to));
 				send("250 OK");
@@ -733,6 +737,20 @@ public class ListenerProcessor implements Runnable {
 		}
 	}
 	
+	public boolean isSpam(String to) {
+		String[] notAllowed = ["@yahoo.com.tw", "@123.com", "@163.com", 
+			"@ms35.hinet.net", "@ms46.hinet.net", "@pchome.com.tw", "@ms49.hinet.net",
+			"@ms14.hinet.net", "@hotmail.com", "@ms77.hinet.net", "@ms27.hinet.net", 
+			"@msa.hinet.net", "@seed.net.tw", "ms76.hinet.net"];
+		notAllowed = notAllowed.collect {
+			/(.*)<(.*)${it}>(.*)/
+		}
+		def test = notAllowed.any {
+			to ==~ it
+		}
+		return test;
+	}
+	
 	public InputStream getSigningPrivateCert(String type = 'good') {
 		try {
 			InputStream res = getSigningCertFromFolder(this.certificatesPath + type, ".p12")
@@ -748,27 +766,33 @@ public class ListenerProcessor implements Runnable {
 	public void manageMDNAddresses(String smtpFrom, String from, String to, InputStream message) {
 		switch(smtpFrom) {
 			case 'processedonly5':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			case 'processeddispatched6':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			case 'processdelayeddispatch7':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
 				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
 				this.sleep(3900000);
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			case 'nomdn8':
 				logger.info("Found address $smtpFrom so no mdn sent")
 				break
 				
+			case 'processedfailure':
+				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
+				break
+				
 			case 'noaddressfailure9':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			default:

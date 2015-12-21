@@ -10,14 +10,6 @@ import java.util.List;
  */
 public interface XDRRecordInterface {
 
-    public enum CriteriaMet {        
-        PASSED,
-        FAILED,
-        PENDING,
-        CANCELLED,
-        MANUAL,
-    }
-    
     String getXdrRecordDatabaseId();
     
     /**
@@ -43,15 +35,15 @@ public interface XDRRecordInterface {
     /**
      * @return the criteriaMet
      */
-    CriteriaMet getCriteriaMet();
+    Status getCriteriaMet();
 
     
     void setXdrRecordDatabaseId(String databaseId);
     
     /**
-     * @param criteriaMet the criteriaMet to set
+     * @param status the status to set
      */
-    void setCriteriaMet(CriteriaMet criteriaMet);
+    void setStatus(Status status);
 
     /**
      * @param testCaseNumber the testCaseNumber to set

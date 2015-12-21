@@ -1,11 +1,11 @@
 package gov.nist.healthcare.ttt.webapp.xdr.controller
 
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseManager
 
 //import com.wordnik.swagger.annotations.ApiOperation
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
-import gov.nist.healthcare.ttt.webapp.xdr.domain.UserMessage
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
+import gov.nist.healthcare.ttt.webapp.xdr.domain.ui.UIResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,89 +29,86 @@ class XdrTestCaseController {
         testCaseManager = manager
     }
 
-    //    @ApiOperation(value = "configure a test case")
-    @RequestMapping(value = "/{id}/endpoint", method = RequestMethod.GET)
+    //@ApiOperation(value = "configure a test case")
+    @RequestMapping(value = "/{id}/configure", method = RequestMethod.GET)
     @ResponseBody
-    UserMessage endpoint(@PathVariable("id") String id) {
+    UIResponse configure(@PathVariable("id") String id) {
 
-        log.info("received test case get endpoints $id request")
-
+        log.debug("received configure request for tc$id")
 
         try {
-            TestCaseEvent event = testCaseManager.getTestCaseEndpoint(id)
-            return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id has one or several endpoints defined", event)
+            Result event = testCaseManager.configure(id)
+            return new UIResponse(UIResponse.UIStatus.SUCCESS,"test case with id $id is configured", event)
         }
         catch(Exception e){
-            return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), null)
+            return new UIResponse(UIResponse.UIStatus.ERROR, e.getMessage(), null)
         }
 
 
     }
 
 
-//    @ApiOperation(value = "configure a test case")
-    @RequestMapping(value = "/{id}/configure", method = RequestMethod.POST)
+    //@ApiOperation(value = "run a test case")
+    @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
     @ResponseBody
-    UserMessage configure(@PathVariable("id") String id, @RequestBody HashMap body, Principal principal) {
+    UIResponse run(@PathVariable("id") String id, @RequestBody HashMap config, Principal principal) {
 
-        //User must be authenticated for this test case to be configure
-        String username
-        //TODO enforce user must be authentified or configure tests as anonymous?
+        //User must be authenticated in order to run a test case=
         if (principal == null) {
-            return new UserMessage(UserMessage.Status.ERROR, "user not identified")
-        } else {
-            username = principal.getName();
+            return new UIResponse(UIResponse.UIStatus.ERROR, "user not identified")
         }
 
-        log.info("received configure test case $id request from $username")
+        //rename variables to make their semantic more obvious
+        def tcid = id
+        def username = principal.getName()
 
-        //We get the config from the client
-        def config = body
+        log.debug("received run request for tc$tcid from $username")
 
         try {
-            TestCaseEvent event = testCaseManager.configureTestCase(id, config, username)
-            return new UserMessage(UserMessage.Status.SUCCESS,"test case with id $id has been configured successfully", event)
+            Result event = testCaseManager.run(id, config, username)
+            return new UIResponse(UIResponse.UIStatus.SUCCESS,"ran tc $tcid", event)
         }
         catch(Exception e){
-            return new UserMessage(UserMessage.Status.ERROR, e.getMessage(), null)
+            e.printStackTrace() //TODO flag so it is not logged in production
+            return new UIResponse(UIResponse.UIStatus.ERROR, e.getMessage(), null)
         }
 
 
     }
 
 
-//    @ApiOperation(value = "check status of a test case")
+    //@ApiOperation(value = "check status of a test case")
     @RequestMapping(value = "/{id}/status", method = RequestMethod.GET)
     @ResponseBody
-    UserMessage status(
+    UIResponse status(
             @PathVariable("id") String id, Principal principal) {
 
-        //TODO enforce user must be authentified or configure tests as anonymous?
         if (principal == null) {
-            return new UserMessage(UserMessage.Status.ERROR, "user not identified")
+            return new UIResponse(UIResponse.UIStatus.ERROR, "user not identified")
         }
 
+        //rename variables to make their semantic more obvious
         def tcid = id
         def username = principal.getName()
         def status
         String msg
-        TestCaseEvent result
+        Result result
 
-        log.info("received get status of test case $id request from $username")
+        log.debug("received status request for tc$id from $username")
 
         try {
-            result = testCaseManager.checkTestCaseStatus(username, tcid)
+            result = testCaseManager.status(username, tcid)
 
-            log.info("[status is $result.criteriaMet]")
-            status = UserMessage.Status.SUCCESS
+            log.debug("[status is $result.criteriaMet]")
+            status = UIResponse.UIStatus.SUCCESS
             msg = "result of test case $id"
-            return new UserMessage<XDRRecordInterface.CriteriaMet>(status, msg , result)
+            return new UIResponse<Status>(status, msg , result)
         }catch(Exception e){
             e.printStackTrace()
-            status = UserMessage.Status.ERROR
+            status = UIResponse.UIStatus.ERROR
             msg = "error while trying to fetch status for test case $id"
-            result = new TestCaseEvent(XDRRecordInterface.CriteriaMet.FAILED,e.getCause())
-            return new UserMessage<XDRRecordInterface.CriteriaMet>(status, msg , result)
+            result = new Result(Status.FAILED,e.getCause())
+            return new UIResponse<Status>(status, msg , result)
         }
     }
 }

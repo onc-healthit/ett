@@ -15,7 +15,7 @@
     <properties>
         <!-- Project properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.javaVersion>1.7</project.build.javaVersion>
+        <project.build.javaVersion>1.8</project.build.javaVersion>
 
         <!-- Dependencies -->
         <version.jackson>2.4.2</version.jackson>
@@ -47,7 +47,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.2.RELEASE</version>
+        <version>1.2.3.RELEASE</version>
     </parent>
 
     <!-- ================================================================================ -->

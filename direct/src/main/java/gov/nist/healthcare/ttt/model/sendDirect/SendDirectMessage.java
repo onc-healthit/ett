@@ -20,12 +20,13 @@ public class SendDirectMessage {
 	private String encryptionCert;
 	// Wrapped or Unwrapped message
 	private boolean isWrapped;
+	private boolean invalidDigest;
 	
 	
 	public SendDirectMessage(String textMessage, String subject,
 			String fromAddress, String toAddress, String attachmentFile,
 			String signingCert, String signingCertPassword,
-			String encryptionCert, boolean isWrapped) {
+			String encryptionCert, boolean isWrapped, boolean invalidDigest) {
 		super();
 		this.textMessage = textMessage;
 		this.subject = subject;
@@ -36,6 +37,7 @@ public class SendDirectMessage {
 		this.signingCertPassword = signingCertPassword;
 		this.encryptionCert = encryptionCert;
 		this.isWrapped = isWrapped;
+		this.invalidDigest = invalidDigest;
 	}
 	
 	public SendDirectMessage() {
@@ -49,6 +51,7 @@ public class SendDirectMessage {
 		this.signingCertPassword = "";
 		this.encryptionCert = "";
 		this.isWrapped = true;
+		this.invalidDigest = false;
 	}
 
 
@@ -149,6 +152,14 @@ public class SendDirectMessage {
 		this.ownCcdaAttachment = ownCcdaAttachment;
 	}
 
+	public boolean isInvalidDigest() {
+		return invalidDigest;
+	}
+
+	public void setInvalidDigest(boolean invalidDigest) {
+		this.invalidDigest = invalidDigest;
+	}
+
 	public boolean isValidSendEmail() throws Exception {
 		if(this.fromAddress.equals("")) {
 			logger.log(Level.WARNING, "From address can't be null");
@@ -159,8 +170,7 @@ public class SendDirectMessage {
 			throw new Exception("To address can't be null");
 		}
 		if(this.signingCert.equals("")) {
-			logger.log(Level.WARNING, "Signing cert address can't be null");
-			throw new Exception("Signing cert can't be null");
+			logger.log(Level.WARNING, "Signing cert is null using good cert");
 		}
 		return true;
 	}

@@ -1,6 +1,6 @@
 package gov.nist.healthcare.ttt.xdr.web
 import gov.nist.healthcare.ttt.commons.notification.Message
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import groovy.util.slurpersupport.GPathResult
@@ -72,9 +72,9 @@ public class TkListener {
 
     def parseStatus(String registryResponseStatus) {
         if (registryResponseStatus.contains("Failure")) {
-            return XDRRecordInterface.CriteriaMet.FAILED
+            return Status.FAILED
         } else if (registryResponseStatus.contains("Success")) {
-            return XDRRecordInterface.CriteriaMet.PASSED
+            return Status.PASSED
         }
     }
 

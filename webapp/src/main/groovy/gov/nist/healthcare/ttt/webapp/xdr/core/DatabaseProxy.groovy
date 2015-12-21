@@ -2,10 +2,12 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance
-import gov.nist.healthcare.ttt.webapp.xdr.domain.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 /**
+ * Avoid handling checked exceptions coming from the database in the rest of the application.
+ *
  * Created by gerardin on 10/29/14.
  */
 @Component
@@ -18,33 +20,30 @@ class DatabaseProxy {
         this.instance = db
     }
 
-    def addNewXdrRecord(XDRRecordInterface record){
+    public addNewXdrRecord(XDRRecordInterface record){
         try {
             String recordId = instance.getXdrFacade().addNewXdrRecord(record)
             return recordId
         }
         catch(e){
             e.printStackTrace()
-            throw new Exception(MsgLabel.CREATE_NEW_RECORD_FAILED,e)
+            throw new RuntimeException(MsgLabel.CREATE_NEW_RECORD_FAILED,e)
         }
     }
 
-    def updateXDRRecord(XDRRecordInterface record){
+    public updateXDRRecord(XDRRecordInterface record){
         try {
             instance.getXdrFacade().updateXDRRecord(record)
         }
         catch(e){
             e.printStackTrace()
-            throw new Exception(MsgLabel.UPDATE_RECORD_FAILED.msg,e)
+            throw new RuntimeException(MsgLabel.UPDATE_RECORD_FAILED.msg,e)
         }
     }
 
-    //TODO check. Does it throw any kind of exception?
-    XDRRecordInterface getLatestXDRRecordBySimulatorId(String id) {
-        instance.xdrFacade.getLatestXDRRecordBySimulatorId(id)
-    }
-
-
+    /*
+    A user will always poll the latest record in the database.
+     */
     XDRRecordInterface getLatestXDRRecordByUsernameTestCase(String username, String tcid){
         instance.xdrFacade.getLatestXDRRecordByUsernameTestCase(username,tcid)
     }

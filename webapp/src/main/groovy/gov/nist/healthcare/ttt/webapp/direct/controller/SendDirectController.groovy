@@ -61,6 +61,9 @@ public class SendDirectController {
 			} else if(!messageInfo.getAttachmentFile().equals("")) {
 				attachmentFile = getClass().getResourceAsStream("/cda-samples/" + messageInfo.getAttachmentFile());
 			}
+			if(messageInfo.getSigningCert().toLowerCase().equals("")) {
+				messageInfo.setSigningCert("good")
+			}
 			InputStream signingCert = listener.getSigningPrivateCert(messageInfo.getSigningCert().toLowerCase());
 			
 			DirectMessageGenerator messageGenerator = new DirectMessageGenerator(
@@ -81,7 +84,13 @@ public class SendDirectController {
 			
 			messageGenerator.setEncryptionCert(encryptionCert);
 
-			MimeMessage msg = messageGenerator.generateMessage();
+			// Check if we want invalid digest
+			MimeMessage msg;
+			if(messageInfo.invalidDigest) {
+				msg = messageGenerator.generateAlteredDirectMessage()
+			} else {
+				msg = messageGenerator.generateMessage();
+			}
 			
 			// Log the outgoing message in the database
 			LogModel outgoingMessage = new LogModel(msg);

@@ -47,11 +47,9 @@ public class GroovyRestClient {
                     logger.debug("received xml response :" + XmlUtil.serialize(xml))
                     return xml
                 }
-
             }
             return resp
         }
-
         finally{
             http.shutdown()
         }
@@ -80,6 +78,9 @@ public class GroovyRestClient {
 
             }
             return resp
+        } catch(Exception e) {
+			logger.error("Could not connect to toolkit. XDR won't work!")
+			return null
         }
 
         finally{

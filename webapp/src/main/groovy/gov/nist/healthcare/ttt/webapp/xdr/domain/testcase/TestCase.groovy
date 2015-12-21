@@ -1,32 +1,26 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.TestCaseEvent
 import gov.nist.healthcare.ttt.xdr.domain.TLSValidationReport
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import org.slf4j.Logger
 
+import java.text.SimpleDateFormat
+
 import static org.slf4j.LoggerFactory.getLogger
 /**
- * Base class for implementing test cases. It defines a 2-parts contract :
+ * Base class for implementing test cases.
  *
- * 1/ Each test case has its own execution logic and must react to a subset of some application events.
- * TestCaseStrategy defines generic hooks that execute some piece of logic when certain events occur.
+ * Each test case is implemented by a subclass of TestCase.
+ * This allows to implement a Strategy pattern :
+ * The TestCase superclass provide the general contract
+ * that says when a TestCase can react to events.
+ * Each TestCase subclass is responsible for how it reacts to those events.
  *
- * Possible events are :
- * - user starts a use case (configure)
- * - ttt received a notification from Bill's toolkit (notifyXdrReceive)
- * - ttt received a notification from the direct tool (notifyDirectReceive)
- *
- * 2/ Each test case is responsible of managing its lifecycle.
- * When a test case completes, the protected done method MUST be called to set up the final state of the test.
- * Failure to do so will keep its status to the initial PENDING value.
  *
  * Created by gerardin on 10/27/14.
  *
- * TODO get rid of testcase event here
  */
 abstract class TestCase {
 
@@ -43,43 +37,57 @@ abstract class TestCase {
 
     protected static Logger log = getLogger(TestCase.class)
 
-    public abstract TestCaseEvent configure(Map context, String username)
+    public abstract Result run(Map context, String username)
 
-    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+    /*
+     * Public methods enable the test case to take part in the workflow
+     */
+
+    public Result configure() {
         throw UnsupportedOperationException()
     }
 
-    //TODO create
-//     public UserMessage notifyDirectReceive(DirectMessage record){
-//         throw UnsupportedOperationException()
-//     }
-
-    /**
-     * Used by all test cases. This method should be called when the test case execution terminates.
-     * @param record : the test case record that is completed.
-     * @param status : final status of the test case.
-     * @return
-     */
-    protected CriteriaMet done(CriteriaMet status, XDRRecordInterface record) {
-        record.criteriaMet = status
-        executor.db.updateXDRRecord(record)
-        return status
+    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+        throw UnsupportedOperationException()
     }
 
     public void notifyTLSReceive(XDRRecordInterface xdrRecordInterface, TLSValidationReport tlsValidationReport) {
         throw UnsupportedOperationException()
     }
 
-    public TestCaseEvent getReport(XDRRecordInterface record){
+    public Result getReport(XDRRecordInterface record){
         log.warn("no report info available for this test case")
-        return new TestCaseEvent(record.criteriaMet, new StandardContent())
+        return new Result(record.criteriaMet, new Content())
     }
 
-    public XDRSimulatorInterface registerGlobalEndpoints(String name, Map params){
-        executor.configureGlobalEndpoint(name, params)
+    /*
+     * Create a docrec (Receiving XDR) endpoint on the toolkit.
+     */
+    protected XDRSimulatorInterface registerDocRecEndpoint(String simId){
+        def config = new HashMap()
+        config.type = 'docrec'
+        config.endpoint = 'NO_VALUE'
+        executor.configureEndpoint(simId, config)
     }
 
-    public List<String> getEndpoints() {
+    // Create an docsrc (Sending XDR) endpoint on the toolkit
+    // because the toolkit does not allow updating existing simulators, we have to generate unique ids each time
+    // we want to send a message to another direct address.
+    // The scheme to do so can change without impacting the application.
+    protected XDRSimulatorInterface registerDocSrcEndpoint(String username, Map context){
+        def config = new HashMap()
+        config.type = 'docsrc'
+        //generate unique simId
+        config.endpointTLS = context.targetEndpointTLS
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        def simId = id + "_" + username + "_" + timeStamp
+        executor.configureEndpoint(simId, config)
+    }
+
+    /*
+     * helper method
+     */
+    protected List<String> getEndpoints() {
         return [sim.endpoint, sim.endpointTLS]
     }
 }

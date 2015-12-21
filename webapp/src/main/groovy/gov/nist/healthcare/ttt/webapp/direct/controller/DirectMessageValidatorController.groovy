@@ -7,7 +7,8 @@ import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomExcept
 import gov.nist.healthcare.ttt.model.logging.LogModel;
 import gov.nist.healthcare.ttt.webapp.direct.model.messageValidator.MessageValidator;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,12 @@ private static Logger logger = Logger.getLogger(DirectMessageValidatorController
 	
 	@Autowired
 	private DatabaseInstance db;
+	
+	@Value('${ett.mdht.r2.url}')
+	String mdhtR2Url;
+	
+	@Value('${ett.mdht.r1.url}')
+	String mdhtR1Url;
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
@@ -48,7 +55,7 @@ private static Logger logger = Logger.getLogger(DirectMessageValidatorController
 		
 		// Validate the message
 		logger.debug("Started validation of message");
-		DirectMessageProcessor processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword());
+		DirectMessageProcessor processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword(), mdhtR1Url, mdhtR2Url);
 		processor.processDirectMessage();
 		logger.info("Validating message" + processor.getLogModel().getMessageId() + " done");
 		
