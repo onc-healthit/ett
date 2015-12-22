@@ -39,7 +39,6 @@ public class GetCCDAFolderTest {
 			if(!files2ignore.contains(file.get("path"))) {				
 				// Get path array
 				String[] path = file.get("path").toString().split("/");
-				//				System.out.println(String.join("/", path));
 				//				for(String dir : path) {
 				//					if(Pattern.matches(extensionRegex, dir)) {
 				//						System.out.println("File!! " + dir);
@@ -96,6 +95,7 @@ public class GetCCDAFolderTest {
 				if(Pattern.matches(extensionRegex, currentName)) {
 					HashMap<String, Object> newFile = new HashMap<>();
 					newFile.put("name", currentName);
+					newFile.put("link", getLink(path));
 					List filesList = (List) current.get("files");
 					filesList.add(newFile);
 				} else {
@@ -113,6 +113,12 @@ public class GetCCDAFolderTest {
 				}
 			}			
 		}
+	}
+	
+	public static String getLink(String[] path) {
+		String link = String.join("/", path).replace(" ", "%20");
+		link = "https://raw.githubusercontent.com/siteadmin/2015-Certification-C-CDA-Test-Data/master/" + link;
+		return link;
 	}
 	
 	public static boolean containsName(List<Map> json, String value) {
