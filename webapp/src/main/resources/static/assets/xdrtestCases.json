@@ -157,7 +157,7 @@
 }, {
     "name": "XDR Test 8",
     "id": 8,
-    "desc": "Verifies the ability of the receiving system to complete a mutual TLS handshake before data is sent across.",
+    "desc": "Verifies the ability of the receiving system to complete a mutual TLS handshake before data is sent across. Certificates for this test can be downloaded from the link at the top of this page.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "receiver",
@@ -173,7 +173,7 @@
 }, {
     "name": "XDR Test 9",
     "id": 9,
-    "desc": "Verifies the ability of the receiving system to reject a mutual TLS connection where the certificate provided by the ETT is invalid.",
+    "desc": "Verifies the ability of the receiving system to reject a mutual TLS connection where the certificate provided by the ETT is invalid. Certificates for this test can be downloaded from the link at the top of this page.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "receiver",
@@ -250,9 +250,57 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR Test 15",
+    "name": "XDR Test 15a",
     "id": "15a",
-    "desc": "Verify that the HISP system throws an error when an incorrect message is received.",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of an invalid SOAP header.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15b",
+    "id": "15b",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of an invalid SOAP body.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15c",
+    "id": "15c",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of a missing Direct Address Block.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15d",
+    "id": "15d",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of missing XDR metadata.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15e",
+    "id": "15e",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of malformed/inconsistent XDR metadata.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -288,7 +336,7 @@
 }, {
     "name": "XDR Test 18",
     "id": 18,
-    "desc": "Test Tool authenticates with the HISP using Mutual TLS correctly",
+    "desc": "Test Tool authenticates with the HISP using Mutual TLS correctly. Certificates for this testing tool can be downloaded from the DIRECT portion of the website, which is accessible from the main homepage.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -304,7 +352,7 @@
 }, {
     "name": "XDR Test 19",
     "id": 19,
-    "desc": "Test Tool authenticates with the HISP using bad certificates",
+    "desc": "Test Tool authenticates with the HISP using bad certificates. Certificates for this testing tool can be downloaded from the DIRECT portion of the website, which is accessible from the main homepage.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -318,7 +366,7 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR MU2 Test 19",
+    "name": "XDR MT Test 19",
     "id": "19mu2",
     "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking using Processed MDN.)",
     "sutEdge": true,
@@ -330,7 +378,7 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR Test MU2 20a",
+    "name": "XDR Test MT 20a",
     "id": "20amu2",
     "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
     "sutEdge": true,
@@ -343,7 +391,7 @@
     }],
     "expectedMDN": true
 }, {
-    "name": "XDR MU2 Test 20b",
+    "name": "XDR MT Test 20b",
     "id": "20bmu2",
     "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
     "sutEdge": true,
@@ -356,7 +404,143 @@
     }],
     "expectedMDN": true
 }, {
-    "name": "XDR MU2 Test 48",
+    "name": "XDR MT Test 30",
+    "id": "30mu2",
+    "desc": "Verify the ability of the receiving system to appropriately handle a valid  delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    },{
+        "name": "Direct To Address",
+        "key": "direct_to",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 31",
+    "id": "31mu2",
+    "desc": "Verify the ability of the receiving system to appropriately handle a invalid delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 32",
+    "id": "32mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a non-existent address.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 33",
+    "id": "33mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to an untrusted HISP.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 34",
+    "id": "34mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a HISP whose certificate is unpublished.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 35",
+    "id": "35mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a lack of a Processed MDN.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 36",
+    "id": "36mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a lack of a Dispatched MDN.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 37",
+    "id": "37mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a message timeout failure.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 38",
+    "id": "38mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of positive delivery notification",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 43",
+    "id": "43mu2",
+    "desc": "Verify the ability of the receiving system to appropriately provide a delivery failure message if it is unable to deliver the message to the destination.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 44",
+    "id": "44mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a message timeout failure.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 48",
     "id": "48mu2",
     "desc": "Verify the ability of the sending system to send messages with unique message-IDs.  The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking Using \"Implementation Guide for Delivery Notification\")",
     "sutEdge": true,
@@ -368,7 +552,7 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR MU2 Test 49",
+    "name": "XDR MT Test 49",
     "id": "49mu2",
     "desc": "Verify the ability of the sending system to correctly use a direct address block per the section 4.0 XDR and XDM Messaging for Direct v1.0 and per section 1.3 of the \"Implementation Guide for Delivery Notification for Direct v1.0\".",
     "sutEdge": true,
@@ -380,7 +564,7 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR MU2 Test 50a",
+    "name": "XDR MT Test 50a",
     "id": "50amu2",
     "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to valid recipients.",
     "sutEdge": true,
@@ -393,7 +577,7 @@
     }],
     "expectedMDN": true
 }, {
-    "name": "XDR MU2 Test 50b",
+    "name": "XDR MT Test 50b",
     "id": "50bmu2",
     "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to invalid recipients.",
     "sutEdge": true,

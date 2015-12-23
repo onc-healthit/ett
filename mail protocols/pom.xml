@@ -8,7 +8,7 @@
 	<name>mailprotocols</name>
 	<description>Tests the SUT's SMTP capabilities by positive and negative cases [both sender/receiver]</description>
 	<properties>
-		<project.build.javaVersion>1.7</project.build.javaVersion>
+		<project.build.javaVersion>1.8</project.build.javaVersion>
 	</properties>
 	<dependencies>
 		<dependency>

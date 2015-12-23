@@ -39,6 +39,7 @@ public class GetCCDAFolderTest {
 			if(!files2ignore.contains(file.get("path"))) {				
 				// Get path array
 				String[] path = file.get("path").toString().split("/");
+//				System.out.println(String.join("/", path));
 				//				for(String dir : path) {
 				//					if(Pattern.matches(extensionRegex, dir)) {
 				//						System.out.println("File!! " + dir);
