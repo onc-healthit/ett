@@ -404,7 +404,13 @@ public class ArtifactManagement {
         directBlock.append("soapenv:role=\"urn:direct:addressing:destination\" ");
         directBlock.append("soapenv:relay=\"true\"> ");
         directBlock.append("<direct:from>" + settings.getDirectFrom() + "</direct:from> ");
-        directBlock.append("<direct:to>" + settings.getDirectTo() + "</direct:to> ");     
+        directBlock.append("<direct:to>" + settings.getDirectTo() + "</direct:to> ");
+        String[] additionalDirectTo = settings.getAdditionalDirectTo();        
+        if(additionalDirectTo != null && additionalDirectTo.length > 0){
+            for(int i = 0; i < additionalDirectTo.length; i++) {
+                directBlock.append("<direct:to>" + additionalDirectTo[i] + "</direct:to> ");
+            }            
+        }                                
         String finalDestinationDelivery = settings.getFinalDestinationDelivery();
         if(finalDestinationDelivery != null && !finalDestinationDelivery.equals("")) {
             directBlock.append("<direct:X-DIRECT-FINAL-DESTINATION-DELIVERY>" + finalDestinationDelivery + "</direct:X-DIRECT-FINAL-DESTINATION-DELIVERY> ");
@@ -493,9 +499,8 @@ public class ArtifactManagement {
             settings.setDirectFrom("directFrom");
             settings.setDirectTo("directTo");
             settings.setWsaTo("wsaTo");
-            settings.setFinalDestinationDelivery("true");
-            
-            
+            String[] directTos = {};
+            settings.setAdditionalDirectTo(directTos);
             //   String payload = getPayload(Type.XDR_MINIMAL_METADATA, settings);
             // System.out.println("here!\n" + payload);
             //    URL url = ClassLoader.getSystemResource("DeliveryStatusNotification_success.xml");
