@@ -11,6 +11,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 
+
+
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
@@ -24,8 +26,15 @@ import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
 
+
+
+
+
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+
+import com.sun.mail.dsn.DispositionNotification;
+
 
 public class MU2ReceiverTests {
 	public static Logger log = Logger.getLogger("MU2ReceiverTests");
@@ -202,19 +211,30 @@ public class MU2ReceiverTests {
 					}
 				}
 			}
-			
-			// Content Search
-			/*String s = "";
-			for (Message message : messages){
-				Multipart multipart = (Multipart) message.getContent();
-				for (int i = 0; i < multipart.getCount(); i++){
-					BodyPart bodyPart = multipart.getBodyPart(i);
-						Object d = bodyPart.getContent();
-						System.out.println(d);
-						
-					
-					
-					
+
+			if (bodyparts.size() == 0){
+				// Content Search
+				String s = "";
+				for (Message message : messages){
+					Multipart multipart = (Multipart) message.getContent();
+					for (int i = 0; i < multipart.getCount(); i++){
+						BodyPart bodyPart = multipart.getBodyPart(i);
+						if (!(bodyPart.isMimeType("text/*"))){
+							Object d =   bodyPart.getContent();
+							//d.getNotifications();
+							if (d instanceof DispositionNotification){
+								Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+								while (headers2.hasMoreElements()) {
+									Header h1 = (Header) headers2.nextElement();
+									result.put("\n"+h1.getName(), h1.getValue()+"\n");
+									System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
+
+								}
+
+							}
+						}
+
+
 
 
 						if(s.contains(id)){
@@ -238,9 +258,9 @@ public class MU2ReceiverTests {
 							}
 						}
 					}
-				}*/
-			
+				}
 
+			}
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("ERROR","No messages found with Message ID: " + id);

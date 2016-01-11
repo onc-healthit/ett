@@ -9,18 +9,24 @@
 	<description>Tests the SUT's SMTP capabilities by positive and negative cases [both sender/receiver]</description>
 	<properties>
 		<project.build.javaVersion>1.8</project.build.javaVersion>
-	</properties>	
+	</properties>
 	<dependencies>
-		 <dependency>
-	<groupId>log4j</groupId>
-	<artifactId>log4j</artifactId>
-	<version>1.2.17</version>
-</dependency>  
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>dsn</artifactId>
+			<version>1.4.7</version>
 		</dependency>
 
 		<dependency>
@@ -41,13 +47,13 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.3.6</version>
 		</dependency>
-		
+
 		<dependency>
-	<groupId>com.fasterxml.jackson.core</groupId>
-	<artifactId>jackson-databind</artifactId>
-	<version>2.6.3</version>
-</dependency>
-		
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
