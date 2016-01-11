@@ -19,6 +19,7 @@ public class Settings {
     private String wsaTo = null;
     private String messageId = null;
     private String finalDestinationDelivery = null;
+    private String payload = null;
 
     /**
      * @return the directTo
@@ -130,6 +131,20 @@ public class Settings {
      */
     public void setAdditionalDirectTo(String[] additionalDirectTo) {
         this.additionalDirectTo = additionalDirectTo;
+    }
+
+    /**
+     * @return the payload
+     */
+    public String getPayload() {
+        return payload;
+    }
+
+    /**
+     * @param payload the payload to set
+     */
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 
 

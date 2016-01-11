@@ -405,17 +405,16 @@ public class ArtifactManagement {
         directBlock.append("soapenv:relay=\"true\"> ");
         directBlock.append("<direct:from>" + settings.getDirectFrom() + "</direct:from> ");
         directBlock.append("<direct:to>" + settings.getDirectTo() + "</direct:to> ");
-        String[] additionalDirectTo = settings.getAdditionalDirectTo();        
-        if(additionalDirectTo != null && additionalDirectTo.length > 0){
-            for(int i = 0; i < additionalDirectTo.length; i++) {
+        String[] additionalDirectTo = settings.getAdditionalDirectTo();
+        if (additionalDirectTo != null && additionalDirectTo.length > 0) {
+            for (int i = 0; i < additionalDirectTo.length; i++) {
                 directBlock.append("<direct:to>" + additionalDirectTo[i] + "</direct:to> ");
-            }            
-        }                                
+            }
+        }
         String finalDestinationDelivery = settings.getFinalDestinationDelivery();
-        if(finalDestinationDelivery != null && !finalDestinationDelivery.equals("")) {
+        if (finalDestinationDelivery != null && !finalDestinationDelivery.equals("")) {
             directBlock.append("<direct:X-DIRECT-FINAL-DESTINATION-DELIVERY>" + finalDestinationDelivery + "</direct:X-DIRECT-FINAL-DESTINATION-DELIVERY> ");
-            
-            
+
         }
         directBlock.append("</direct:addressBlock>");
 
@@ -449,42 +448,50 @@ public class ArtifactManagement {
         }
         artifacts.setMimeType("text/xml"); // TODO: make this configurable
         String metadata = null;
+        String payload = null;
+        payload = settings.getPayload();
 
-        switch (type) {
-            case XDR_FULL_METADATA:
-                artifacts.setExtraHeaders(generateExtraHeaders(settings, true));
-                artifacts.setDocument(getBaseEncodedCCDA());
-                metadata = getTemplate(FILENAME_XDR_FULL_METADATA_ONLY_NO_SOAP);
-                break;
-            case XDR_MINIMAL_METADATA:
-                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
-                artifacts.setDocument(getBaseEncodedCCDA());
-                metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
-                break;
-            case XDR_C32:
-                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
-                artifacts.setDocument(getBaseEncodedC32());
-                metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
-                break;
-            case XDR_CCR:
-                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
-                artifacts.setDocument(getBaseEncodedCCR());
-                metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
-                break;
-            case NEGATIVE_MISSING_DIRECT_BLOCK:
-                artifacts.setExtraHeaders(new String());
-                artifacts.setDocument(getBaseEncodedCCDA());
-                metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
-                break;
-            case NEGATIVE_MISSING_ASSOCIATION:
-                artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
-                artifacts.setDocument(getBaseEncodedCCDA());
-                metadata = getTemplate(FILENAME_MISSING_ASSOCIATION_NO_SOAP);
-                break;
-            default:
-                throw new UnsupportedOperationException("not yet guys");
+        if (payload != null && !payload.isEmpty()) {
+            artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+            artifacts.setDocument(payload);
+            metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
+        } else {
+
+            switch (type) {
+                case XDR_FULL_METADATA:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, true));
+                    artifacts.setDocument(getBaseEncodedCCDA());
+                    metadata = getTemplate(FILENAME_XDR_FULL_METADATA_ONLY_NO_SOAP);
+                    break;
+                case XDR_MINIMAL_METADATA:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                    artifacts.setDocument(getBaseEncodedCCDA());
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
+                    break;
+                case XDR_C32:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                    artifacts.setDocument(getBaseEncodedC32());
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
+                    break;
+                case XDR_CCR:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                    artifacts.setDocument(getBaseEncodedCCR());
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
+                    break;
+                case NEGATIVE_MISSING_DIRECT_BLOCK:
+                    artifacts.setExtraHeaders(new String());
+                    artifacts.setDocument(getBaseEncodedCCDA());
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
+                    break;
+                case NEGATIVE_MISSING_ASSOCIATION:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                    artifacts.setDocument(getBaseEncodedCCDA());
+                    metadata = getTemplate(FILENAME_MISSING_ASSOCIATION_NO_SOAP);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("not yet guys");
+            }
         }
-
         metadata = setIds(metadata, artifacts.getMessageId(), artifacts.getDocumentId());
         artifacts.setMetadata(metadata);
 
