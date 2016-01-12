@@ -33,7 +33,7 @@ public class MDNGeneratorDifferentCaseTest {
 		generator.setEncryptionCert(encryptionCert);
 
 
-		MimeBodyPart signed = generator.generateMultipartSigned(generator.generateBodyReport());
+		MimeBodyPart signed = generator.generateMultipartSigned(generator.generateBodyReport(false, false, false));
 		signed.writeTo(new FileOutputStream(new File("d_mdn.txt")));
 
 		MimeMessage msg = generator.generateEncryptedMessage(signed);
