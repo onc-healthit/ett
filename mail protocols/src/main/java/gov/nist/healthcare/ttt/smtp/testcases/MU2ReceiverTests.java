@@ -11,6 +11,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 
+
+
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
@@ -24,15 +26,22 @@ import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
 
+
+
+
+
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import com.sun.mail.dsn.DispositionNotification;
+
+
 public class MU2ReceiverTests {
 	public static Logger log = Logger.getLogger("MU2ReceiverTests");
-    MU2SenderTests st = new MU2SenderTests();
-    String id = st.getMessageId();
-    String fetch = st.getfetch();
-    
+	MU2SenderTests st = new MU2SenderTests();
+	String id = st.getMessageId();
+	String fetch = st.getfetch();
+
 	public TestResult fetchMail1(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
@@ -55,7 +64,7 @@ public class MU2ReceiverTests {
 
 			for (Message message : messages) {
 
-				
+
 				Address[] froms = message.getFrom();
 				String sender_ = froms == null ? ""
 						: ((InternetAddress) froms[0]).getAddress();
@@ -67,7 +76,7 @@ public class MU2ReceiverTests {
 					Enumeration headers = message.getAllHeaders();
 					while (headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
-					//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+						//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 						result.put("\n"+h.getName(), h.getValue()+"\n");
 
 
@@ -82,19 +91,19 @@ public class MU2ReceiverTests {
 						byte[] targetArray = IOUtils.toByteArray(stream);
 						System.out.println(new String(targetArray));
 						int m = i+1;
-						 bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+						bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
 					}
 				}
 
 			}
-			
+
 			/*for (Message message : messages){
 				Enumeration headers = message.getAllHeaders();
 				while(headers.hasMoreElements()) {
 					Header h = (Header) headers.nextElement();
 					if (ti.equals(h.getValue())){
-						
+
 						Enumeration headers1 = message.getAllHeaders();
 						while (headers.hasMoreElements()) {
 							Header h1 = (Header) headers.nextElement();
@@ -136,31 +145,31 @@ public class MU2ReceiverTests {
 
 		return tr;
 	}
-	
+
 	public TestResult fetchMail(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		//int j = 0;
-		 Store store;
+		Store store;
 		Properties props = System.getProperties();
 		try {
 			Session session = Session.getDefaultInstance(props, null);
-			
+
 			store = session.getStore("imap");
-			
+
 			if (fetch.equals("smtp")){
 				store.connect(ti.tttSmtpAddress,993,"failure15@hit-testing2.nist.gov","smtptesting123");
 			}
 			else if (fetch.equals("imap")) {
-			store.connect(ti.sutSmtpAddress,143,ti.sutUserName,ti.sutPassword);
+				store.connect(ti.sutSmtpAddress,143,ti.sutUserName,ti.sutPassword);
 			}
-			
+
 			else if (fetch.equals("imap1")) {
 				store.connect("hit-testing.nist.gov",143,"sandeep@hit-testing.nist.gov","sandeeppassword");
-				}
-			
+			}
+
 			else {
 				store = session.getStore("pop3");
 				store.connect(ti.sutSmtpAddress,110,ti.sutUserName,ti.sutPassword);
@@ -173,18 +182,18 @@ public class MU2ReceiverTests {
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
 			Message messages[] = inbox.search(unseenFlagTerm);
 
-			
+
 			for (Message message : messages){
 				Enumeration headers = message.getAllHeaders();
 				while(headers.hasMoreElements()) {
 					Header h = (Header) headers.nextElement();
 					String x = h.getValue();
 					if (id.equals(x)){
-						
+
 						Enumeration headers1 = message.getAllHeaders();
 						while (headers1.hasMoreElements()) {
 							Header h1 = (Header) headers1.nextElement();
-						//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+							//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 							result.put("\n"+h1.getName(), h1.getValue()+"\n");
 
 						}
@@ -196,15 +205,62 @@ public class MU2ReceiverTests {
 							byte[] targetArray = IOUtils.toByteArray(stream);
 							System.out.println(new String(targetArray));
 							int m = i+1;
-							 bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+							bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
 						}
 					}
 				}
-				
-			//	message.isMimeType(mimeType)
 			}
 
+			if (bodyparts.size() == 0){
+				// Content Search
+				String s = "";
+				for (Message message : messages){
+					Multipart multipart = (Multipart) message.getContent();
+					for (int i = 0; i < multipart.getCount(); i++){
+						BodyPart bodyPart = multipart.getBodyPart(i);
+						if (!(bodyPart.isMimeType("text/*"))){
+							Object d =   bodyPart.getContent();
+							//d.getNotifications();
+							if (d instanceof DispositionNotification){
+								Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+								while (headers2.hasMoreElements()) {
+									Header h1 = (Header) headers2.nextElement();
+									result.put("\n"+h1.getName(), h1.getValue()+"\n");
+									System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
+
+								}
+
+							}
+						}
+
+
+
+
+						if(s.contains(id)){
+							Enumeration headers1 = message.getAllHeaders();
+							while (headers1.hasMoreElements()) {
+								Header h1 = (Header) headers1.nextElement();
+								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+								result.put("\n"+h1.getName(), h1.getValue()+"\n");
+
+							}
+							Multipart multipart1 = (Multipart) message.getContent();
+							for (int j = 0; j < multipart1.getCount(); j++) {
+								BodyPart bodyPart1 = multipart1.getBodyPart(i);
+								InputStream stream = bodyPart1.getInputStream();
+
+								byte[] targetArray = IOUtils.toByteArray(stream);
+								System.out.println(new String(targetArray));
+								int m = i+1;
+								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+
+							}
+						}
+					}
+				}
+
+			}
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("ERROR","No messages found with Message ID: " + id);

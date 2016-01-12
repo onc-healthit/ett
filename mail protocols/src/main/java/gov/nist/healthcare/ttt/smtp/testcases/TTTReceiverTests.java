@@ -735,32 +735,11 @@ public class TTTReceiverTests {
 
 				// Store all the headers in a map
 				Enumeration headers = message.getAllHeaders();
-				/*
-				 * while (headers.hasMoreElements()) { Header h = (Header)
-				 * headers.nextElement(); // result.put(h.getName() + " " + "["
-				 * + j +"]", h.getValue()); result.put(h.getName(),
-				 * h.getValue());
-				 * 
-				 * }
-				 */
 
 				result.put("\nUID " + j, strLong);
 				j++;
 
 				Multipart multipart = (Multipart) message.getContent();
-				/*
-				 * for (int i = 0; i < multipart.getCount(); i++) { BodyPart
-				 * bodyPart = multipart.getBodyPart(i); InputStream stream =
-				 * bodyPart.getInputStream();
-				 * 
-				 * byte[] targetArray = IOUtils.toByteArray(stream);
-				 * System.out.println(new String(targetArray)); int m = i+1; //
-				 * bodyparts.put("bodyPart" + " " + "[" +m +"]", new
-				 * String(targetArray)); // bodyparts.put("bodyPart" + "" + ,
-				 * new String (targetArray));
-				 * 
-				 * }
-				 */
 
 			}
 			if (result.isEmpty()) {
@@ -963,7 +942,7 @@ public class TTTReceiverTests {
 			result.put("SUCCESS",
 					"The CAPABILITY, NOOP and LOGOUT commands are implemented");
 		} else
-			tr.setCriteriamet(CriteriaStatus.FALSE);
+			tr.setCriteriamet(CriteriaStatus.FALSE); // to make the testcase return a fail status
 
 		return tr;
 
@@ -1688,7 +1667,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses()
 				.put("\nERROR",
-						"No messages found! Send a message and try again.\nPlease make sure that the Vendor Email Address is entered and matches the email address from which the email is being sent.\nWait for atleast 30 seconds after sending the email to ensure successful delivery to the ETT.");
+						"No messages found! Send a message and try again.\nPlease make sure that the Vendor Email Address is entered and matches the email address from which the email is being sent.");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 			}
