@@ -12,12 +12,14 @@ package gov.nist.healthcare.ttt.tempxdrcommunication.artifact;
 public class Settings {
 
     private String directTo = null;
+    private String[] additionalDirectTo = null;
     private String directFrom = null;
     private String directRelatesTo = null;
     private String directRecipient = null;
     private String wsaTo = null;
     private String messageId = null;
     private String finalDestinationDelivery = null;
+    private String payload = null;
 
     /**
      * @return the directTo
@@ -116,5 +118,34 @@ public class Settings {
     public void setFinalDestinationDelivery(String finalDestinationDelivery) {
         this.finalDestinationDelivery = finalDestinationDelivery;
     }
+
+    /**
+     * @return the additionalDirectTo
+     */
+    public String[] getAdditionalDirectTo() {
+        return additionalDirectTo;
+    }
+
+    /**
+     * @param additionalDirectTo the additionalDirectTo to set
+     */
+    public void setAdditionalDirectTo(String[] additionalDirectTo) {
+        this.additionalDirectTo = additionalDirectTo;
+    }
+
+    /**
+     * @return the payload
+     */
+    public String getPayload() {
+        return payload;
+    }
+
+    /**
+     * @param payload the payload to set
+     */
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
+
 
 }
