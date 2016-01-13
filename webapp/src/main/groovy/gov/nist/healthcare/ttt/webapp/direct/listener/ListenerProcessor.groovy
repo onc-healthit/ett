@@ -97,6 +97,7 @@ public class ListenerProcessor implements Runnable {
 		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9',
 			'white_space_mdn', 'extra_line_break_mdn', 'extra_space_disposition', 'missing_disposition', 'null_sender',
 			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn']
+		
 		String smtpFrom = directTo?.get(0)
 		logger.info("To " + smtpFrom)
 		smtpFrom = smtpFrom.split("@")[0]
