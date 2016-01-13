@@ -40,6 +40,9 @@ class TestCaseExecutor {
     @Value('${direct.sender.port}')
     private int senderPort
 
+    @Value('${direct.listener.domainName}')
+    public String hostname
+
     public final DatabaseProxy db
     private final XdrReceiver receiver
     private final XdrSender sender
