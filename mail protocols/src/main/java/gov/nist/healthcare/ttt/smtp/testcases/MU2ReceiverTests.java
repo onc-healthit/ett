@@ -216,8 +216,10 @@ public class MU2ReceiverTests {
 				// Content Search
 				String s = "";
 				for (Message message : messages){
+					Object m =  message.getContent();
+					if (m instanceof Multipart){
 					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++){
+					for (int i = 0; i < ((Multipart) m).getCount(); i++){
 						BodyPart bodyPart = multipart.getBodyPart(i);
 						if (!(bodyPart.isMimeType("text/*"))){
 							Object d =   bodyPart.getContent();
@@ -232,10 +234,13 @@ public class MU2ReceiverTests {
 								}
 
 							}
+						
 						}
+						
+					}
 
 
-
+					
 
 						if(s.contains(id)){
 							Enumeration headers1 = message.getAllHeaders();
@@ -247,13 +252,13 @@ public class MU2ReceiverTests {
 							}
 							Multipart multipart1 = (Multipart) message.getContent();
 							for (int j = 0; j < multipart1.getCount(); j++) {
-								BodyPart bodyPart1 = multipart1.getBodyPart(i);
+								BodyPart bodyPart1 = multipart1.getBodyPart(j);
 								InputStream stream = bodyPart1.getInputStream();
 
 								byte[] targetArray = IOUtils.toByteArray(stream);
 								System.out.println(new String(targetArray));
-								int m = i+1;
-								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+								int n = j+1;
+								bodyparts.put("bodyPart" + " " + "[" +n +"]", new String(targetArray));
 
 							}
 						}
