@@ -43,7 +43,8 @@
                         "170.315(b)(9) – Care Plan - Create - Ambulatory Setting",
                         "170.315(b)(9) – Care Plan - Create - Inpatient Setting",
                         "170.315(e)(1) – View,Download and Transmit - Ambulatory Setting",
-                        "170.315(e)(1) – View,Download and Transmit - Inpatient Setting"
+                        "170.315(e)(1) – View,Download and Transmit - Inpatient Setting",
+                        "C-CDA Implementation Guide Conformance"
                     ],
                     "value": "ccdaValidationObjective",
                     "readOnly": false,
@@ -676,6 +677,24 @@
             "sutEdge": false
         },
         {
+            "name": "IMAP Test 13",
+            "id": 213,
+            "protocol": "imap",
+            "desc": "Verifies the ability of the Vendor HISP to support STARTTLS with TLS_RSA_WITH_RC4_128_MD5 cipher suite.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
+            "name": "IMAP Test 14",
+            "id": 214,
+            "protocol": "imap",
+            "desc": "Verifies the ability of the Vendor HISP to support STARTTLS with TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA cipher suite.",
+            "sutRole": "sender",
+            "sutHisp": true,
+            "sutEdge": false
+        },
+        {
             "name": "IMAP Test 17",
             "id": 217,
             "protocol": "imap",
@@ -688,7 +707,7 @@
             "name": "IMAP Test 19, 20, 24",
             "id": 219,
             "protocol": "imap",
-            "desc": "Verifies the ability of the Edge system to initiate a IMAP session with STARTTLS and PLAIN SASL AUTHENTICATION. The SUT should fetch an email from 'imaptesting@hit-testing2.nist.gov'.",
+            "desc": "Verifies the ability of the Edge system to initiate a IMAP session with STARTTLS and PLAIN SASL AUTHENTICATION",
             "sutRole": "receiver",
             "sutHisp": false,
             "sutEdge": true
@@ -697,7 +716,7 @@
             "name": "IMAP Test 21",
             "id": 221,
             "protocol": "imap",
-            "desc": "Verifies the ability of the edge to use either the uppercase, lowercase or mixed case mailbox names and access data. The SUT should fetch emails from imaptesting@hit-testing2.nist.gov within the folders 'FOLDER' and 'folder2'.",
+            "desc": "Verifies the ability of the edge to use either the uppercase, lowercase or mixed case mailbox names and access data",
             "sutRole": "receiver",
             "sutHisp": false,
             "sutEdge": true
@@ -724,7 +743,7 @@
             "name": "IMAP Test 27",
             "id": 225,
             "protocol": "imap",
-            "desc": "Verifies the ability of the SUT to accept XDM packages sent using different MIME Types. The SUT should fetch emails from 'xdmmimetypes@hit-testing.nist.gov'.",
+            "desc": "Verifies the ability of the SUT to accept XDM packages sent using different MIME Types.",
             "sutRole": "receiver",
             "sutHisp": false,
             "sutEdge": true
@@ -733,7 +752,7 @@
             "name": "IMAP Test 28",
             "id": 225,
             "protocol": "imap",
-            "desc": "Verifies the ability of the SUT to accept multiple attachments (in varying order). The SUT should fetch an email from 'multipleattachments@hit-testing2.nist.gov'.",
+            "desc": "Verifies the ability of the SUT to accept multiple attachments (in varying order).",
             "sutRole": "receiver",
             "sutHisp": false,
             "sutEdge": true
@@ -742,7 +761,7 @@
             "name": "IMAP Test 29",
             "id": 225,
             "protocol": "imap",
-            "desc": "Test for the ability of the SUT to accept C-CDA even in the case where a stylesheet is bad or missing. The SUT should fetch an email form 'badccda@hit-testing2.nist.gov'.",
+            "desc": "Verifies the ability of the edge to receive status and size updates from the IMAP4 servTest for the ability of the SUT to accept C-CDA even in the case where a stylesheet is bad or misssing.",
             "sutRole": "receiver",
             "sutHisp": false,
             "sutEdge": true
@@ -751,7 +770,7 @@
             "name": "IMAP Test 30",
             "id": 225,
             "protocol": "imap",
-            "desc": "Verifies the ability of the SUT to accept XDM package even in the case where the required XHTML is bad. The SUT should fetch an email from 'xdmbadxhtml@hit-testing2.nist.gov'.",
+            "desc": "Verifies the ability of the SUT to accept XDM package even in the case where the required XHTML is bad.",
             "sutRole": "receiver",
             "sutHisp": false,
             "sutEdge": true
@@ -785,6 +804,144 @@
             "name": "IMAP 32 (Send + Validate)",
             "id": 232,
             "protocol": "imap",
+            "desc": "Verifies the ability of the SUT to host attachements and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
+            "sutRole": "receiver",
+            "sutHisp": true,
+            "sutEdge": "null",
+            "fields": [
+                {
+                    "label": "Reference Filename",
+                    "name": "ccdaReferenceFilename",
+                    "datatype": "DropdownString",
+                    "allowedValues": [
+                        "CP_Sample1.pdf",
+                        "DP_Sample1.pdf",
+                        "ToC_Sample1.pdf",
+                        "VDT_Sample1.pdf"
+                    ],
+                    "value": "ccdaReferenceFilename",
+                    "readOnly": false,
+                    "display": true
+                },
+                {
+                    "label": "Valiation Objective",
+                    "name": "ccdaValidationObjective",
+                    "datatype": "DropdownString",
+                    "allowedValues": [
+                        "170.315(b)(1) – Transitions of Care – Send - Ambulatory Setting",
+                        "170.315(b)(1) – Transitions of Care – Send - Inpatient Setting",
+                        "170.315(b)(2) – Clinical Information Reconciliation and Incorporation - Ambulatory Setting",
+                        "170.315(b)(2) – Clinical Information Reconciliation and Incorporation – Inpatient Setting",
+                        "170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Ambulatory Setting",
+                        "170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Inpatient Setting",
+                        "170.315(b)(6) – Data Export - Ambulatory Setting",
+                        "170.315(b)(6) – Data Export - Inpatient Setting",
+                        "170.315(b)(7) – Data Segmentation for Privacy - Send - Ambulatory Setting",
+                        "170.315(b)(7) – Data Segmentation for Privacy - Send - Inpatient Setting",
+                        "170.315(b)(9) – Care Plan - Create - Ambulatory Setting",
+                        "170.315(b)(9) – Care Plan - Create - Inpatient Setting",
+                        "170.315(e)(1) – View,Download and Transmit - Ambulatory Setting",
+                        "170.315(e)(1) – View,Download and Transmit - Inpatient Setting",
+                        "C-CDA Implementation Guide Conformance"
+                    ],
+                    "value": "ccdaValidationObjective",
+                    "readOnly": false,
+                    "display": true
+                }
+            ]
+        },
+        {
+            "name": "POP Test 19, 20",
+            "id": 221,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the edge system to support various POP3 commands. The proctor need to send commands to the ETT and fetch an email.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "POP Test 22",
+            "id": 221,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the edge system to deal with exceptions for different commands. The proctor need to send bad commands to the ETT.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "POP Test 24",
+            "id": 219,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the Edge system to initiate a POP session with STARTTLS and PLAIN SASL AUTHENTICATION.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "POP Test 27",
+            "id": 225,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the SUT to accept XDM packages sent using different MIME Types.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "POP Test 28",
+            "id": 225,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the SUT to accept multiple attachments (in varying order).",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "POP Test 29",
+            "id": 225,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the edge to receive status and size updates from the IMAP4 servTest for the ability of the SUT to accept C-CDA even in the case where a stylesheet is bad or misssing.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "POP Test 30",
+            "id": 225,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the SUT to accept XDM package even in the case where the required XHTML is bad.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true
+        },
+        {
+            "name": "POP 31 (Receive)",
+            "id": 225,
+            "protocol": "pop",
+            "desc": "Verifies the ability of the SUT to accept different attachment types.",
+            "sutRole": "receiver",
+            "sutHisp": false,
+            "sutEdge": true,
+            "fields": [
+                {
+                    "label": "Attachment type",
+                    "name": "attachmentType",
+                    "datatype": "DropdownString",
+                    "allowedValues": [
+                        "CCDA",
+                        "CCR",
+                        "C32",
+                        "XDM"
+                    ],
+                    "value": "attachmentType",
+                    "readOnly": false,
+                    "display": true
+                }
+            ]
+        },
+        {
+            "name": "POP 32 (Send + Validate)",
+            "id": 332,
+            "protocol": "pop",
             "desc": "Verifies the ability of the SUT to host attachements and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
             "sutRole": "receiver",
             "sutHisp": true,
@@ -822,135 +979,8 @@
                         "170.315(b)(9) – Care Plan - Create - Ambulatory Setting",
                         "170.315(b)(9) – Care Plan - Create - Inpatient Setting",
                         "170.315(e)(1) – View,Download and Transmit - Ambulatory Setting",
-                        "170.315(e)(1) – View,Download and Transmit - Inpatient Setting"
-                    ],
-                    "value": "ccdaValidationObjective",
-                    "readOnly": false,
-                    "display": true
-                }
-            ]
-        },
-        {
-            "name": "POP Test 19, 20, 24",
-            "id": 221,
-            "protocol": "pop",
-            "desc": "Verifies the ability of the edge system to support various POP3 commands. The proctor need to send commands to the ETT and fetch an email from 'poptesting@hit-testing2.nist.gov'.",
-            "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true
-        },
-        {
-            "name": "POP Test 22",
-            "id": 221,
-            "protocol": "pop",
-            "desc": "Verifies the ability of the edge system to deal with exceptions for different commands. The proctor need to send bad commands to the ETT.",
-            "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true
-        },
-        {
-            "name": "POP Test 27",
-            "id": 225,
-            "protocol": "pop",
-            "desc": "Verifies the ability of the SUT to accept XDM packages sent using different MIME Types. The SUT should fetch emails from 'xdmmimetypes@hit-testing.nist.gov'.",
-            "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true
-        },
-        {
-            "name": "POP Test 28",
-            "id": 225,
-            "protocol": "pop",
-            "desc": "Verifies the ability of the SUT to accept multiple attachments (in varying order). The SUT should fetch emails from 'multipleattachments@hit-testing.nist.gov'.",
-            "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true
-        },
-        {
-            "name": "POP Test 29",
-            "id": 225,
-            "protocol": "pop",
-            "desc": "Test for the ability of the SUT to accept C-CDA even in the case where a stylesheet is bad or missing. The SUT should fetch emails from 'badccda@hit-testing.nist.gov'.",
-            "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true
-        },
-        {
-            "name": "POP Test 30",
-            "id": 225,
-            "protocol": "pop",
-            "desc": "Verifies the ability of the SUT to accept XDM package even in the case where the required XHTML is bad. The SUT should fetch emails from 'xdmbadxhtml@hit-testing.nist.gov'.",
-            "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true
-        },
-        {
-            "name": "POP 31 (Receive)",
-            "id": 225,
-            "protocol": "pop",
-            "desc": "Verifies the ability of the SUT to accept different attachment types.",
-            "sutRole": "receiver",
-            "sutHisp": false,
-            "sutEdge": true,
-            "fields": [
-                {
-                    "label": "Attachment type",
-                    "name": "attachmentType",
-                    "datatype": "DropdownString",
-                    "allowedValues": [
-                        "CCDA",
-                        "CCR",
-                        "C32",
-                        "XDM"
-                    ],
-                    "value": "attachmentType",
-                    "readOnly": false,
-                    "display": true
-                }
-            ]
-        },
-        {
-            "name": "POP 32 (Send + Validate)",
-            "id": 332,
-            "protocol": "pop",
-            "desc": "Verifies the ability of the SUT to host attachments and make it available for fetching through POP. The CCDA is validated using the MDHT validator.",
-            "sutRole": "receiver",
-            "sutHisp": true,
-            "sutEdge": false,
-            "fields": [
-                {
-                    "label": "Reference Filename",
-                    "name": "ccdaReferenceFilename",
-                    "datatype": "DropdownString",
-                    "allowedValues": [
-                        "CP_Sample1.pdf",
-                        "DP_Sample1.pdf",
-                        "ToC_Sample1.pdf",
-                        "VDT_Sample1.pdf"
-                    ],
-                    "value": "ccdaReferenceFilename",
-                    "readOnly": false,
-                    "display": true
-                },
-                {
-                    "label": "Valiation Objective",
-                    "name": "ccdaValidationObjective",
-                    "datatype": "DropdownString",
-                    "allowedValues": [
-                        "170.315(b)(1) – Transitions of Care – Send - Ambulatory Setting",
-                        "170.315(b)(1) – Transitions of Care – Send - Inpatient Setting",
-                        "170.315(b)(2) – Clinical Information Reconciliation and Incorporation - Ambulatory Setting",
-                        "170.315(b)(2) – Clinical Information Reconciliation and Incorporation – Inpatient Setting",
-                        "170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Ambulatory Setting",
-                        "170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Inpatient Setting",
-                        "170.315(b)(6) – Data Export - Ambulatory Setting",
-                        "170.315(b)(6) – Data Export - Inpatient Setting",
-                        "170.315(b)(7) – Data Segmentation for Privacy - Send - Ambulatory Setting",
-                        "170.315(b)(7) – Data Segmentation for Privacy - Send - Inpatient Setting",
-                        "170.315(b)(9) – Care Plan - Create - Ambulatory Setting",
-                        "170.315(b)(9) – Care Plan - Create - Inpatient Setting",
-                        "170.315(e)(1) – View,Download and Transmit - Ambulatory Setting",
-                        "170.315(e)(1) – View,Download and Transmit - Inpatient Setting"
+                        "170.315(e)(1) – View,Download and Transmit - Inpatient Setting",
+                        "C-CDA Implementation Guide Conformance"
                     ],
                     "value": "ccdaValidationObjective",
                     "readOnly": false,
