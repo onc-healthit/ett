@@ -41,8 +41,8 @@ final class TestCase31mu2 extends TestCase {
         context.endpoint = sim.endpointTLS
         context.wsaTo = context.targetEndpointTLS
 
-        context.directTo = "testcase31mu2@nist.gov"
-        context.directFrom = "testcase31mu2@nist.gov"
+        context.directTo = "testcase31mu2@$executor.hostname"
+        context.directFrom = "testcase31mu2@$executor.hostname"
         //this header has an invalid value
         context.finalDestinationDelivery = "badHeaderValue"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA

@@ -41,7 +41,7 @@ final class TestCase37mu2 extends TestCase {
         context.wsaTo = context.targetEndpointTLS
         //an address that provides a processed MDN and a dispatched MDN after n seconds (enough for the sending hisp to timeout)
         context.directTo = "processedonly@edge.nist.gov"
-        context.directFrom = "testcase37mu2@nist.gov"
+        context.directFrom = "testcase37mu2@$executor.hostname"
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)

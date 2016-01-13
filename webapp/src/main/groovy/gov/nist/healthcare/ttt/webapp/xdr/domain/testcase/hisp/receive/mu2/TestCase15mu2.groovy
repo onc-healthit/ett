@@ -41,7 +41,7 @@ final class TestCase15mu2 extends TestCase {
         context.wsaTo = context.targetEndpointTLS
         //certs for this address are not published
         context.directTo = "failure15@hit-testing2.nist.gov"
-        context.directFrom = "testcase15mu2@nist.gov"
+        context.directFrom = "testcase15mu2@$executor.hostname"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 

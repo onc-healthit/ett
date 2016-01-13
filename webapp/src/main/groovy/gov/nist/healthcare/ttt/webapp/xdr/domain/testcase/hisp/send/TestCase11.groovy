@@ -43,7 +43,7 @@ final class TestCase11 extends TestCaseSender {
         builder.addStep(step1)
 
         //We provide a direct_from address. This might be used for trace back the message in the SUT logs.
-        context.direct_from = "testcase11@nist.gov"
+        context.direct_from = "testcase11@$executor.hostname"
 
         //We send a direct+XDM
         String msgType = "CCDA_Ambulatory_in_XDM.zip"

@@ -41,7 +41,7 @@ final class TestCase32mu2 extends TestCase {
         context.wsaTo = context.targetEndpointTLS
         //this address has not been registered in the tool
         context.directTo = "badaddress@gfail.com"
-        context.directFrom = "testcase32mu2@nist.gov"
+        context.directFrom = "testcase32mu2@$executor.hostname"
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)

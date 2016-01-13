@@ -25,8 +25,8 @@ final class TestCase15a extends TestCase {
 
         executor.validateInputs(context,["targetEndpointTLS"])
 
-        context.directTo = "testcase15a@nist.gov"
-        context.directFrom = "testcase15a@nist.gov"
+        context.directTo = "testcase15a@$executor.hostname"
+        context.directFrom = "testcase15a@$executor.hostname"
         context.wsaTo = context.targetEndpointTLS
         context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
 
