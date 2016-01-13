@@ -25,8 +25,8 @@ final class TestCase4c extends TestCase {
 
         executor.validateInputs(context,["targetEndpointTLS"])
 
-        context.directTo = "testcase4c@nist.gov"
-        context.directFrom = "testcase4c@nist.gov"
+        context.directTo = "testcase4c@$executor.hostname"
+        context.directFrom = "testcase4c@$executor.hostname"
         context.wsaTo = context.targetEndpointTLS
         context.messageType = ArtifactManagement.Type.NEGATIVE_MISSING_DIRECT_BLOCK
 

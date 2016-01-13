@@ -25,8 +25,8 @@ final class TestCase15e extends TestCase {
 
         executor.validateInputs(context,["targetEndpoint"])
 
-        context.directTo = "testcase15e@nist.gov"
-        context.directFrom = "testcase15e@nist.gov"
+        context.directTo = "testcase15e@$executor.hostname"
+        context.directFrom = "testcase15e@$executor.hostname"
         context.wsaTo = context.targetEndpointTLS
         context.messageType = ArtifactManagement.Type.NEGATIVE_MISSING_ASSOCIATION
 

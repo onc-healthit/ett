@@ -40,7 +40,7 @@ final class TestCase14mu2 extends TestCase {
         context.wsaTo = context.targetEndpointTLS
         //address attached to a hisp that is not trusted
         context.directTo = "Provider1@direct2.sitenv.org"
-        context.directFrom = "testcase14mu2@nist.gov"
+        context.directFrom = "testcase14mu2@$executor.hostname"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
