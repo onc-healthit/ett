@@ -670,7 +670,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 527 *******************************");
 			ti.useTLS = true;
 			TestResult tr527;
-			tr527 = mu2senderTests.testMu2TwoEight(ti,"processedonly5@hit-dev.nist.gov");
+			tr527 = mu2senderTests.testMu2TwoEightSmtp(ti,"processedonly5@hit-dev.nist.gov");
 			tr527.id = 527;
 			res.add(tr527);
 			
@@ -702,7 +702,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 528 *******************************");
 			ti.useTLS = true;
 			TestResult tr528;
-			tr528 = mu2senderTests.testMu2TwoEight(ti,"processdelayeddispatch7@hit-dev.nist.gov");
+			tr528 = mu2senderTests.testMu2TwoEightSmtp(ti,"processdelayeddispatch7@hit-dev.nist.gov");
 			tr528.id = 527;
 			res.add(tr528);
 			
@@ -735,7 +735,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 529 *******************************");
 
 			TestResult tr529;
-				tr529 = mu2senderTests.testPositiveDeliveryNotification(ti);
+				tr529 = mu2senderTests.testPositiveDeliveryNotificationSmtp(ti);
 				tr529.id = 529;
 				res.add(tr529);
 			log.info("*****************   END  Testcase 529 *******************************");
