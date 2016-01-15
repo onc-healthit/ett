@@ -19,15 +19,15 @@ public class SSLContextManager {
     }
 
     def setupContext(){
-        String relativePath = "badKeystore" + File.separator + "badKeystore";
+        String relativePath = "badKeystore/badKeystore";
         InputStream keystoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         InputStream truststoreInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath);
         badSSLContext = setSSLFactories(keystoreInput, "changeit", truststoreInput, "changeit");
         keystoreInput.close();
         truststoreInput.close();
 
-        String relativePath2 = "goodKeystore" + File.separator + "goodKeystore";
-        String relativePath3 = "goodKeystore" + File.separator + "goodTruststore";
+        String relativePath2 = "goodKeystore/goodKeystore";
+        String relativePath3 = "goodKeystore/goodTruststore";
         InputStream keystoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath2);
         InputStream truststoreInput2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativePath3);
         goodSSLContext = setSSLFactories(keystoreInput2, "changeit", truststoreInput2, "changeit");
