@@ -467,7 +467,12 @@ public class PartValidation {
 		// Get type and reference filename from direct to address
 		this.ccdaR2ReferenceFilename = to.substring(3);
 		
-		this.ccdaR2Type = this.ccdaR2ReferenceFilename.split("_sample")[0];
+		if(this.ccdaR2ReferenceFilename.contains("_sample")) {
+			this.ccdaR2Type = this.ccdaR2ReferenceFilename.split("_sample")[0];
+		} else {
+			this.ccdaR2Type = this.ccdaR2ReferenceFilename;
+			this.ccdaR2ReferenceFilename = "";
+		}
 		
 		logger.info("CCDA R2 validation params: Type " + this.ccdaR2Type + " Ref filename " + this.ccdaR2ReferenceFilename);
 	}

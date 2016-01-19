@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.common.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,43 +12,74 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Controller
 @RequestMapping("/api/ccdadocuments")
 public class GetCCDADocumentsController {
-	
+
+	private static Logger logger = Logger.getLogger(GetCCDADocumentsController.class.getName());
+
+	@Value("${server.tomcat.basedir}")
+	String ccdaFileDirectory;
+
 	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md");
 	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3}$";
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody HashMap<String, Object> getDocuments() throws Exception {
-		JSONObject res = new JSONObject();
-		String sha = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/branches/master")
-				.getJSONObject("commit").get("sha").toString();
-		JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/" 
-				+ sha + "?recursive=1").getJSONArray("tree");
-
+		// Result map
 		HashMap<String, Object> resultMap = new HashMap<>();
-		
-		for(int i=0; i < filesArray.length(); i++) {
-			JSONObject file = filesArray.getJSONObject(i);
-			if(!files2ignore.contains(file.get("path"))) {				
-				// Get path array
-				String[] path = file.get("path").toString().split("/");
-				buildJson(resultMap, path);
-			}
 
-		}
-//		return new JSONObject(resultMap);
+		// CCDA cache File path
+		String ccdaFilePath = ccdaFileDirectory + File.separator + "ccda_objectives.txt";
+		File ccdaObjectivesFile = new File(ccdaFilePath);
+
+		if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
+			JsonFactory factory = new JsonFactory(); 
+			ObjectMapper mapper = new ObjectMapper(factory); 
+			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
+
+			resultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
+		} else {
+			String sha = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/branches/master")
+					.getJSONObject("commit").get("sha").toString();
+			JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/" 
+					+ sha + "?recursive=1").getJSONArray("tree");
+
+			for(int i=0; i < filesArray.length(); i++) {
+				JSONObject file = filesArray.getJSONObject(i);
+				if(!files2ignore.contains(file.get("path"))) {				
+					// Get path array
+					String[] path = file.get("path").toString().split("/");
+					buildJson(resultMap, path);
+				}
+
+			}
+			// Write the cache file
+			try{
+				JSONObject cacheFile = new JSONObject(resultMap);
+				FileUtils.writeStringToFile(ccdaObjectivesFile, cacheFile.toString(2));
+			} catch(Exception e) {
+				logger.error("Could not create ccda cache file: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}	
 		return resultMap;
 	}
-	
+
 	public void buildJson(HashMap<String, Object> json, String[] path) {
 		if(path.length == 1) {
 			HashMap<String, Object> newObj = new HashMap<>();
@@ -81,13 +113,13 @@ public class GetCCDADocumentsController {
 			}			
 		}
 	}
-	
+
 	public String getLink(String[] path) {
 		String link = String.join("/", path).replace(" ", "%20");
 		link = "https://raw.githubusercontent.com/siteadmin/2015-Certification-C-CDA-Test-Data/master/" + link;
 		return link;
 	}
-	
+
 	public static boolean containsName(List<Map> json, String value) {
 		for(Map obj : json) {
 			if(obj.containsValue(value)) {
@@ -96,7 +128,7 @@ public class GetCCDADocumentsController {
 		}
 		return false;
 	}
-	
+
 	public static int getObjByName(List<Map> json, String value) {
 		for(int i = 0 ; i < json.size() ; i++) {
 			if(json.get(i).containsValue(value)) {
@@ -105,7 +137,7 @@ public class GetCCDADocumentsController {
 		}
 		return -1;
 	}
-	
+
 	public static JSONObject getHTML(String urlToRead) throws Exception {
 		StringBuilder result = new StringBuilder();
 		URL url = new URL(urlToRead);
@@ -119,6 +151,6 @@ public class GetCCDADocumentsController {
 		rd.close();
 		return new JSONObject(result.toString());
 	}
-	
-	
+
+
 }
