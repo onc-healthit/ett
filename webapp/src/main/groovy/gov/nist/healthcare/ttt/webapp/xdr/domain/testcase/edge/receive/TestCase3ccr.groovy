@@ -39,8 +39,8 @@ final class TestCase3ccr extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
         context.wsaTo = context.targetEndpointTLS
-        context.directTo = "testcase3ccr@nist.gov"
-        context.directFrom = "testcase3ccr@nist.gov"
+        context.directTo = "testcase3ccr@$executor.hostname"
+        context.directFrom = "testcase3ccr@$executor.hostname"
         context.messageType = ArtifactManagement.Type.XDR_CCR
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 

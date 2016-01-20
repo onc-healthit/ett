@@ -27,7 +27,8 @@ final class TestCase30mu2 extends TestCase {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context, ["directTo","targetEndpointTLS"])
+        //directTo : user registered this address in the tool
+        executor.validateInputs(context, ["direct_to","targetEndpointTLS"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -41,8 +42,8 @@ final class TestCase30mu2 extends TestCase {
         context.endpoint = sim.endpointTLS
         context.wsaTo = context.targetEndpointTLS
         //the user registered this address and we send to it
-        context.directTo = context.directTo
-        context.directFrom = "testcase30mu2@nist.gov"
+        context.directTo = context.direct_to
+        context.directFrom = "testcase30mu2@$executor.hostname"
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)

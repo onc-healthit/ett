@@ -41,7 +41,7 @@ final class TestCase36mu2 extends TestCase {
         context.wsaTo = context.targetEndpointTLS
         //an address that provides a processed MDN and dos not return a dispatched MDN
         context.directTo = "processedonly@edge.nist.gov"
-        context.directFrom = "testcase36mu2@nist.gov"
+        context.directFrom = "testcase36mu2@$executor.hostname"
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)

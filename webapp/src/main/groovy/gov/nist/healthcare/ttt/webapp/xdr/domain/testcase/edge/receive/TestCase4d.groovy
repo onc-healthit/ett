@@ -26,8 +26,8 @@ final class TestCase4d extends TestCase {
 
         executor.validateInputs(context,["targetEndpointTLS"])
 
-        context.directTo = "testcase4d@nist.gov"
-        context.directFrom = "testcase4d@nist.gov"
+        context.directTo = "testcase4d@$executor.hostname"
+        context.directFrom = "testcase4d@$executor.hostname"
         context.wsaTo = context.targetEndpointTLS
 
         context.messageType = chooseMissingMetadata()

@@ -38,8 +38,8 @@ final class TestCase5 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
         context.wsaTo = sim.endpointTLS
-        context.directTo = "testcase5@nist.gov"
-        context.directFrom = "testcase5@nist.gov"
+        context.directTo = "testcase5@$executor.hostname"
+        context.directFrom = "testcase5@$executor.hostname"
         context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 

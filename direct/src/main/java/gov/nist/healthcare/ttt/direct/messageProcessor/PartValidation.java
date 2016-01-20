@@ -21,7 +21,6 @@ import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -450,10 +449,10 @@ public class PartValidation {
 		if(types.containsKey(trimmedTo)) {
 			logger.info("CCDA R1 type: " + types.get(trimmedTo));
 			return types.get(trimmedTo);
-		} else if(to.startsWith("r2_")) {
+		} else if(trimmedTo.startsWith("r2_")) {
 			logger.info("To address start with r2_ this should contain R2 CCDA");
 			// Get ccdar2 types
-			getCCDAR2Type(to);
+			getCCDAR2Type(trimmedTo);
 			return "r2";
 		} else {
 			return "NonSpecificCCDA";
@@ -465,18 +464,16 @@ public class PartValidation {
 		this.ccdaR2Type = "";
 		this.ccdaR2ReferenceFilename = "";
 		
-		// Count underscore to check if email is valid
-		if(StringUtils.countMatches(to, "_") == 5) {
-			if(to.contains("@")) {
-				// Remove address domain
-				String trimmedTo = to.split("@", 2)[0];
-				String[] params = trimmedTo.split("_", 6);
-				if(params[2].length() == 2) {
-					this.ccdaR2Type = params[1] + " (" + params[2].charAt(0) + ")" + "(" + params[2].charAt(1) + ")";
-				}
-				this.ccdaR2ReferenceFilename = params[3] + "_sample" + params[5] + ".pdf";
-			}
+		// Get type and reference filename from direct to address
+		this.ccdaR2ReferenceFilename = to.substring(3);
+		
+		if(this.ccdaR2ReferenceFilename.contains("_sample")) {
+			this.ccdaR2Type = this.ccdaR2ReferenceFilename.split("_sample")[0];
+		} else {
+			this.ccdaR2Type = this.ccdaR2ReferenceFilename;
+			this.ccdaR2ReferenceFilename = "";
 		}
+		
 		logger.info("CCDA R2 validation params: Type " + this.ccdaR2Type + " Ref filename " + this.ccdaR2ReferenceFilename);
 	}
 

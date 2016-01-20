@@ -47,34 +47,40 @@ public class SmtpTestInput {
 	String ccdaReferenceFilename
 	
 	String ccdaValidationObjective
+	
+	String ccdaFileLink
 
 	public SmtpTestInput() {
 
 	}
 
-	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress,
-			String sutSmtpPort, String tttSmtpPort, String sutEmailAddress,
-			String tttEmailAddress, String useTLS,
-			String sutCommandTimeoutInSeconds, String sutUserName,
-			String sutPassword, String tttUserName, String tttPassword,
-			String tttSmtpAddress, String startTlsPort, String status) {
-		super()
-		this.testCaseNumber = testCaseNumber
-		this.sutSmtpAddress = sutSmtpAddress
-		this.sutSmtpPort = sutSmtpPort
-		this.tttSmtpPort = tttSmtpPort
-		this.sutEmailAddress = sutEmailAddress
-		this.tttEmailAddress = tttEmailAddress
-		this.useTLS = useTLS
-		this.sutCommandTimeoutInSeconds = sutCommandTimeoutInSeconds
-		this.sutUserName = sutUserName
-		this.sutPassword = sutPassword
-		this.tttUserName = tttUserName
-		this.tttPassword = tttPassword
-		this.tttSmtpAddress = tttSmtpAddress
-		this.startTlsPort = startTlsPort
-		this.status = status
+	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress, String sutSmtpPort, String tttSmtpPort,
+			String sutEmailAddress, String tttEmailAddress, String useTLS, String sutCommandTimeoutInSeconds,
+			String sutUserName, String sutPassword, String tttUserName, String tttPassword, String tttSmtpAddress,
+			String startTlsPort, String status, String attachmentType, String ccdaReferenceFilename,
+			String ccdaValidationObjective, String ccdaFileLink) {
+		super();
+		this.testCaseNumber = testCaseNumber;
+		this.sutSmtpAddress = sutSmtpAddress;
+		this.sutSmtpPort = sutSmtpPort;
+		this.tttSmtpPort = tttSmtpPort;
+		this.sutEmailAddress = sutEmailAddress;
+		this.tttEmailAddress = tttEmailAddress;
+		this.useTLS = useTLS;
+		this.sutCommandTimeoutInSeconds = sutCommandTimeoutInSeconds;
+		this.sutUserName = sutUserName;
+		this.sutPassword = sutPassword;
+		this.tttUserName = tttUserName;
+		this.tttPassword = tttPassword;
+		this.tttSmtpAddress = tttSmtpAddress;
+		this.startTlsPort = startTlsPort;
+		this.status = status;
+		this.attachmentType = attachmentType;
+		this.ccdaReferenceFilename = ccdaReferenceFilename;
+		this.ccdaValidationObjective = ccdaValidationObjective;
+		this.ccdaFileLink = ccdaFileLink;
 	}
+			
 
 	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress,
 			String sutSmtpPort, String sutEmailAddress, String tttEmailAddress,
@@ -139,6 +145,9 @@ public class SmtpTestInput {
 				ccdaAttachment = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")
 				attachmentName = "CCDA_Ambulatory.xml.xml"
 			}
+		} else if(this.ccdaFileLink != null && !this.ccdaFileLink.equals("")) {
+			ccdaAttachment = new URL(this.ccdaFileLink).openStream();
+			attachmentName = this.ccdaReferenceFilename;
 		} else {
 			ccdaAttachment = getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")
 			attachmentName = "CCDA_Ambulatory.xml"
