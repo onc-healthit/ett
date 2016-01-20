@@ -61,16 +61,10 @@
             "sutEdge": true,
             "fields": [
                 {
-                    "label": "Attachment type",
-                    "name": "attachmentType",
-                    "datatype": "DropdownString",
-                    "allowedValues": [
-                        "CCDA",
-                        "CCR",
-                        "C32",
-                        "XDM"
-                    ],
-                    "value": "attachmentType",
+                    "label": "C-CDA Document Type",
+           		    "name": "ccdaReferenceFilename",
+                    "datatype": "CCDAWidget",
+                    "value": "ccdaReferenceFilename",
                     "readOnly": false,
                     "display": true
                 }

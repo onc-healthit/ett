@@ -13,6 +13,7 @@ import java.util.Properties;
 
 
 
+
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
@@ -25,6 +26,7 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
+
 
 
 
@@ -151,6 +153,7 @@ public class MU2ReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
+		HashMap<String, String> buffer = new HashMap<String, String>();
 		//int j = 0;
 		Store store;
 		Properties props = System.getProperties();
@@ -218,50 +221,32 @@ public class MU2ReceiverTests {
 				for (Message message : messages){
 					Object m =  message.getContent();
 					if (m instanceof Multipart){
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < ((Multipart) m).getCount(); i++){
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						if (!(bodyPart.isMimeType("text/*"))){
-							Object d =   bodyPart.getContent();
-							//d.getNotifications();
-							if (d instanceof DispositionNotification){
-								Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-								while (headers2.hasMoreElements()) {
-									Header h1 = (Header) headers2.nextElement();
-									result.put("\n"+h1.getName(), h1.getValue()+"\n");
-									System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < ((Multipart) m).getCount(); i++){
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							if (!(bodyPart.isMimeType("text/*"))){
+								Object d =   bodyPart.getContent();
+								//d.getNotifications();
+								if (d instanceof DispositionNotification){
+									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+									while (headers2.hasMoreElements()) {
+										Header h1 = (Header) headers2.nextElement();
+										buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+										s = h1.getValue();
+										if (id.equals(s)){
+											result.put("\n"+h1.getName(), h1.getValue()+"\n");
+											result.putAll(buffer);
+											System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
+										}
+
+									}
 
 								}
 
 							}
-						
+
 						}
-						
-					}
 
-
-					
-
-						if(s.contains(id)){
-							Enumeration headers1 = message.getAllHeaders();
-							while (headers1.hasMoreElements()) {
-								Header h1 = (Header) headers1.nextElement();
-								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
-								result.put("\n"+h1.getName(), h1.getValue()+"\n");
-
-							}
-							Multipart multipart1 = (Multipart) message.getContent();
-							for (int j = 0; j < multipart1.getCount(); j++) {
-								BodyPart bodyPart1 = multipart1.getBodyPart(j);
-								InputStream stream = bodyPart1.getInputStream();
-
-								byte[] targetArray = IOUtils.toByteArray(stream);
-								System.out.println(new String(targetArray));
-								int n = j+1;
-								bodyparts.put("bodyPart" + " " + "[" +n +"]", new String(targetArray));
-
-							}
-						}
 					}
 				}
 
