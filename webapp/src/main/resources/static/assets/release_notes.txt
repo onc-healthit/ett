@@ -1,3 +1,9 @@
+==Version 1.0.0#1/21/2016
+	* SMTP
+		-UI change for receiver test
+		-Bugfixes for Message Tracking cases
+		-Added SMTP Message tracking cases
+
 ==Version 0.0.10#1/13/2016
 	* MDN
 		-Added empoints for bad MDNs generation
