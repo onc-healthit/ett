@@ -127,8 +127,8 @@ public class TTTSenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -181,14 +181,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -220,8 +220,8 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -280,14 +280,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -319,8 +319,9 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -378,14 +379,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -417,8 +418,8 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -478,14 +479,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -518,8 +519,8 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -578,14 +579,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -617,8 +618,8 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -677,14 +678,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -716,8 +717,8 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -776,14 +777,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -808,8 +809,8 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -859,14 +860,14 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -987,8 +988,8 @@ public class TTTSenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required", true);
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
@@ -1038,14 +1039,180 @@ public class TTTSenderTests {
 
 		} catch (SendFailedException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 
 		} catch (AddressException e) {
 			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe weren't able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	
+	public TestResult testSendXDMApplicationOctect(TestInput ti, String filename) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing XDM with application/octect MIME type!");
+			message.setText("This is a message to test Text+XDM!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
+						"application/octet-stream");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("CCDA_Ambulatory_XDM.zip");
+				multipart.addBodyPart(messageBodyPart);
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "CCDA_Ambulatory_XDM.zip");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+		catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	
+	public TestResult testSendXDMApplicationXml(TestInput ti, String filename) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.ssl.trust", "*");
+
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(ti.sutEmailAddress));
+			message.setSubject("Testing XDM with applicaton/xml MIME type!");
+			message.setText("This is a message to test Text+XDM!");
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			BodyPart messageBodyPart1 = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart("mixed");
+			
+			// Adding attachments
+
+				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
+						"application/octet-stream");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("CCDA_Ambulatory_XDM.zip");
+				multipart.addBodyPart(messageBodyPart);
+			
+			// Send the complete message parts
+			message.setContent(multipart);
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+
+			System.out.println("Done");
+			log.info("Message Sent");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "CCDA_Ambulatory_XDM.zip");
+			result.put("\n2","Email sent Successfully");
+
+		} catch (SendFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+
+		} catch (AddressException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + "\nWe were not able to find the vendor's domain. Please check for any spelling errors, and make sure you didn't enter any spaces, periods, or other punctuation after the vendor's email address.");
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);

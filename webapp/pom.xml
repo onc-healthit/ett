@@ -10,6 +10,7 @@
 		<groupId>gov.nist.healthcare.ttt</groupId>
 		<artifactId>common-config</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath></relativePath>
 	</parent>
 
 	<!-- ================================================================================ -->
@@ -39,7 +40,16 @@
 			<id>oss-jfrog-artifactory</id>
 			<name>oss-jfrog-artifactory-releases</name>
 			<url>http://oss.jfrog.org/artifactory/oss-release-local</url>
+			
+			
 		</repository>
+		
+		<repository>
+       <id>codehaus.org</id>
+       <url>http://repository.codehaus.org</url>
+   </repository>
+   
+   
 
 	</repositories>
 
@@ -67,14 +77,15 @@
 			<artifactId>database</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>gov.nist.healthcare.ttt</groupId>
-			<artifactId>direct</artifactId>
+			<artifactId>mailprotocols</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nist.healthcare.ttt</groupId>
-			<artifactId>mailprotocols</artifactId>
+			<artifactId>direct</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -117,6 +128,7 @@
 			<artifactId>unix4j-command</artifactId>
 			<version>0.3</version>
 		</dependency>
+		
 
 	</dependencies>
 
@@ -129,6 +141,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			
+			
 
 		</plugins>
 

@@ -1,3 +1,19 @@
+==Version 0.0.10#1/13/2016
+	* MDN
+		-Added empoints for bad MDNs generation
+
+	* C-CDA
+		-Added link to C-CDA R2.1 test samples repository
+		-Added Direct message endpoints for C-CCDA R2.1 validation
+
+==Version 0.0.9#12/15/2015
+	* Message validator
+		-Added widget to select CCDA R2.1 samples and objectives
+
+	* Edge
+		-Added Message Tracking, POP and IMAP test cases
+		-Added MIME type tests, tests with multiple attachments and content validation
+
 ==Version 0.0.8#10/06/2015
 	*ETT
 		-Added CCDA R2 Validator

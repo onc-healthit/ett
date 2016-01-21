@@ -21,6 +21,7 @@ import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeBodyPart;
@@ -253,6 +254,28 @@ public class DirectMessageGenerator {
 
 		return msg;
 	}
+	
+	public MimeMessage generateEncryptedMessageDifferentMsgId(MimeBodyPart body) throws Exception {
+		// Get session to create message
+		Properties props = System.getProperties();
+		Session session = Session.getDefaultInstance(props, null);
+
+		MimeBodyPart encryptedPart = generateEncryptedPart(body);
+
+		MimeMessage msg = new MimeMessage(session);
+		msg.setFrom(new InternetAddress(new SMTPAddress().properEmailAddr(this.fromAddress)));
+		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(new SMTPAddress().properEmailAddr(this.toAddress)));
+		msg.setSentDate(new Date());
+		msg.setContent(encryptedPart.getContent(),
+				encryptedPart.getContentType());
+		msg.setDisposition("attachment");
+		msg.setFileName("smime.p7m");
+		if (!isWrapped) {
+			msg.setSubject(subject);
+		}
+		msg.saveChanges();
+		return msg;
+	}
 
 	public MimeBodyPart generateEncryptedPart(MimeBodyPart body) throws Exception {
 		// Encryption cert
@@ -317,7 +340,7 @@ public class DirectMessageGenerator {
 	 * Faulty Message generator
 	 * 
 	 */
-	public MimeMessage generateEncryptedMessageWithNullSender(MimeBodyPart body, boolean nullSender, boolean differentSender) throws Exception {
+	public MimeMessage generateEncryptedMessageWithDifferentSettings(MimeBodyPart body, boolean nullSender, boolean differentSender) throws Exception {
 
 		// Get session to create message
 		Properties props = System.getProperties();
@@ -434,6 +457,15 @@ public class DirectMessageGenerator {
 
 	public void setFromAddress(String fromAddress) {
 		this.fromAddress = fromAddress;
+		try {
+			this.from = new InternetAddress(new SMTPAddress().properEmailAddr(this.fromAddress));
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getToAddress() {
@@ -442,6 +474,15 @@ public class DirectMessageGenerator {
 
 	public void setToAddress(String toAddress) {
 		this.toAddress = toAddress;
+		try {
+			this.to = new InternetAddress(new SMTPAddress().properEmailAddr(this.toAddress));
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public InputStream getAttachmentFile() {

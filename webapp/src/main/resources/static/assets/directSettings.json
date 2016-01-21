@@ -83,6 +83,11 @@
         "description": "Human readable CDA/CCR",
         "icon": "file-code-o",
         "name": "ccda-samples"
+    }, {
+        "description": "2015 Certification C-CDA Test Data",
+        "icon": "file-code-o",
+        "name": "ccda-samples",
+        "link": "https://github.com/siteadmin/2015-Certification-C-CDA-Test-Data/tree/master"
     }],
 
     "cdaSamples": [{

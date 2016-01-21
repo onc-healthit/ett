@@ -1,4 +1,4 @@
-package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
+package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.tls
 
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
