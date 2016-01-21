@@ -27,7 +27,7 @@ final class TestCase3add extends TestCase {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context,["targetEndpointTLS","payloadType"])
+        executor.validateInputs(context,["targetEndpointTLS","payload"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -42,7 +42,7 @@ final class TestCase3add extends TestCase {
         context.wsaTo = context.targetEndpointTLS
         context.directTo = "testcase3add@$executor.hostname"
         context.directFrom = "testcase3add@$executor.hostname"
-        context.messageType = context.payloadType
+        context.messageType = null
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
         // Create a new test record
