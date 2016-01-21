@@ -1,12 +1,13 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive
+
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -14,23 +15,24 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase3 extends TestCase {
+final class TestCase3add extends TestCase {
 
     @Autowired
-    public TestCase3(TestCaseExecutor executor) {
+    public TestCase3add(TestCaseExecutor executor) {
         super(executor)
     }
+
 
 
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context,["targetEndpointTLS"])
+        executor.validateInputs(context,["targetEndpointTLS","payloadType"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
         // Correlate this test to a direct_from address and a simulator id so we can be notified
-        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, "testcase3@$executor.hostname")
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, "testcase3add@$executor.hostname")
 
         sim = registerDocSrcEndpoint(username,context)
 
@@ -38,9 +40,9 @@ final class TestCase3 extends TestCase {
         context.simId = sim.simulatorId
         context.endpoint = sim.endpointTLS
         context.wsaTo = context.targetEndpointTLS
-        context.directTo = "testcase3@$executor.hostname"
-        context.directFrom = "testcase3@$executor.hostname"
-        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        context.directTo = "testcase3add@$executor.hostname"
+        context.directFrom = "testcase3add@$executor.hostname"
+        context.messageType = context.payloadType
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
         // Create a new test record
@@ -49,10 +51,9 @@ final class TestCase3 extends TestCase {
         executor.db.addNewXdrRecord(record)
 
         // Build the message to return to the gui
-        log.debug(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
+        log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
         return new Result(record.criteriaMet, content)
     }
-
 
 }

@@ -31,7 +31,7 @@ final class TestCase3ccr extends TestCase {
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
         // Correlate this test to a direct_from address and a simulator id so we can be notified
-        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, "testcase3c32@$executor.hostname")
 
         sim = registerDocSrcEndpoint(username,context)
 
