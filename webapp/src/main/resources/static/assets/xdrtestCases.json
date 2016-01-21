@@ -228,7 +228,7 @@
 }, {
     "name": "XDR Test 13",
     "id": 13,
-    "desc": "Test Tool sends an XDR Message to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "desc": "Test Tool sends an XDR Message to the HISP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -240,7 +240,7 @@
 }, {
     "name": "XDR Test 14",
     "id": 14,
-    "desc": "Test Tool sends an XDR Message with Full Metadata to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "desc": "Test Tool sends an XDR Message with Full Metadata to the HISP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
