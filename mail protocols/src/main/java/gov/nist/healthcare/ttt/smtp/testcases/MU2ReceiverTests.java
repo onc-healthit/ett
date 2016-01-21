@@ -13,6 +13,7 @@ import java.util.Properties;
 
 
 
+
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
@@ -30,6 +31,7 @@ import javax.mail.search.FlagTerm;
 
 
 
+
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
@@ -41,6 +43,7 @@ public class MU2ReceiverTests {
 	MU2SenderTests st = new MU2SenderTests();
 	String id = st.getMessageId();
 	String fetch = st.getfetch();
+	String type = st.gettype();
 
 	public TestResult fetchMail1(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -151,6 +154,7 @@ public class MU2ReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
+		HashMap<String, String> buffer = new HashMap<String, String>();
 		//int j = 0;
 		Store store;
 		Properties props = System.getProperties();
@@ -182,67 +186,15 @@ public class MU2ReceiverTests {
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
 			Message messages[] = inbox.search(unseenFlagTerm);
 
-
-			for (Message message : messages){
-				Enumeration headers = message.getAllHeaders();
-				while(headers.hasMoreElements()) {
-					Header h = (Header) headers.nextElement();
-					String x = h.getValue();
-					if (id.equals(x)){
-
-						Enumeration headers1 = message.getAllHeaders();
-						while (headers1.hasMoreElements()) {
-							Header h1 = (Header) headers1.nextElement();
-							//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
-							result.put("\n"+h1.getName(), h1.getValue()+"\n");
-
-						}
-						Multipart multipart = (Multipart) message.getContent();
-						for (int i = 0; i < multipart.getCount(); i++) {
-							BodyPart bodyPart = multipart.getBodyPart(i);
-							InputStream stream = bodyPart.getInputStream();
-
-							byte[] targetArray = IOUtils.toByteArray(stream);
-							System.out.println(new String(targetArray));
-							int m = i+1;
-							bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
-
-						}
-					}
-				}
-			}
-
-			if (bodyparts.size() == 0){
-				// Content Search
-				String s = "";
+			if(type.equals("fail")){
+				System.out.println("FAILBOX");
 				for (Message message : messages){
-					Object m =  message.getContent();
-					if (m instanceof Multipart){
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < ((Multipart) m).getCount(); i++){
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						if (!(bodyPart.isMimeType("text/*"))){
-							Object d =   bodyPart.getContent();
-							//d.getNotifications();
-							if (d instanceof DispositionNotification){
-								Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-								while (headers2.hasMoreElements()) {
-									Header h1 = (Header) headers2.nextElement();
-									result.put("\n"+h1.getName(), h1.getValue()+"\n");
-									System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
+					Enumeration headers = message.getAllHeaders();
+					while(headers.hasMoreElements()) {
+						Header h = (Header) headers.nextElement();
+						String x = h.getValue();
+						if (id.equals(x)){
 
-								}
-
-							}
-						
-						}
-						
-					}
-
-
-					
-
-						if(s.contains(id)){
 							Enumeration headers1 = message.getAllHeaders();
 							while (headers1.hasMoreElements()) {
 								Header h1 = (Header) headers1.nextElement();
@@ -250,19 +202,88 @@ public class MU2ReceiverTests {
 								result.put("\n"+h1.getName(), h1.getValue()+"\n");
 
 							}
-							Multipart multipart1 = (Multipart) message.getContent();
-							for (int j = 0; j < multipart1.getCount(); j++) {
-								BodyPart bodyPart1 = multipart1.getBodyPart(j);
-								InputStream stream = bodyPart1.getInputStream();
+							Multipart multipart = (Multipart) message.getContent();
+							for (int i = 0; i < multipart.getCount(); i++) {
+								BodyPart bodyPart = multipart.getBodyPart(i);
+								InputStream stream = bodyPart.getInputStream();
 
 								byte[] targetArray = IOUtils.toByteArray(stream);
 								System.out.println(new String(targetArray));
-								int n = j+1;
-								bodyparts.put("bodyPart" + " " + "[" +n +"]", new String(targetArray));
+								int m = i+1;
+								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
 							}
 						}
 					}
+				}
+			}
+
+			else {
+				System.out.println("PASSBOX");
+				for (Message message : messages){
+					Enumeration headers = message.getAllHeaders();
+					while(headers.hasMoreElements()) {
+						Header h = (Header) headers.nextElement();
+						String x = h.getValue();
+						if (id.equals(x)){
+
+							Enumeration headers1 = message.getAllHeaders();
+							while (headers1.hasMoreElements()) {
+								Header h1 = (Header) headers1.nextElement();
+								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+								result.put("\n"+h1.getName(), h1.getValue()+"\n");
+
+							}
+							Multipart multipart = (Multipart) message.getContent();
+							for (int i = 0; i < multipart.getCount(); i++) {
+								BodyPart bodyPart = multipart.getBodyPart(i);
+								InputStream stream = bodyPart.getInputStream();
+
+								byte[] targetArray = IOUtils.toByteArray(stream);
+								System.out.println(new String(targetArray));
+								int m = i+1;
+								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+
+							}
+						}
+					}
+				}
+
+				if (bodyparts.size() == 0){
+					// Content Search
+					String s = "";
+					for (Message message : messages){
+						Object m =  message.getContent();
+						if (m instanceof Multipart){
+							Multipart multipart = (Multipart) message.getContent();
+							for (int i = 0; i < ((Multipart) m).getCount(); i++){
+								BodyPart bodyPart = multipart.getBodyPart(i);
+								if (!(bodyPart.isMimeType("text/*"))){
+									Object d =   bodyPart.getContent();
+									//d.getNotifications();
+									if (d instanceof DispositionNotification){
+										Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+										while (headers2.hasMoreElements()) {
+											Header h1 = (Header) headers2.nextElement();
+											buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+											s = h1.getValue();
+											if (id.equals(s)){
+												result.put("\n"+h1.getName(), h1.getValue()+"\n");
+												result.putAll(buffer);
+												System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
+											}
+
+										}
+
+									}
+
+								}
+
+							}
+
+						}
+					}
+
 				}
 
 			}

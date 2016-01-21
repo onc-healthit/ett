@@ -29,13 +29,16 @@ public class MU2SenderTests {
 	public static Logger log = Logger.getLogger("MU2SenderTests");
 	static public String MessageId;
 	static public String fetch;
+	static public String type = "";
 	public String getMessageId(){
 		return MessageId;
 	}
 	public String getfetch(){
 		return fetch;
 	}
-	
+	public String gettype(){
+		return type;
+	}
 	public TestResult testBadAddress(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
@@ -52,6 +55,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -121,6 +125,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap";
+		type = "pass";
 
 		Session session = Session.getInstance(props, null);
 
@@ -188,6 +193,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap";
+		type = "pass";
 
 		Session session = Session.getInstance(props, null);
 	
@@ -252,6 +258,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -319,6 +326,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "pop";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -388,6 +396,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "pop";
+		type = "pass";
 
 		Session session = Session.getInstance(props, null);
 
@@ -454,6 +463,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "pop";
+		type = "pass";
 
 		Session session = Session.getInstance(props, null);
 	
@@ -518,6 +528,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "pop";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -584,6 +595,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "smtp";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -653,6 +665,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "smtp";
+		type = "pass";
 
 		Session session = Session.getInstance(props, null);
 
@@ -719,7 +732,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "smtp";
-
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -783,6 +796,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "smtp";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -848,6 +862,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap";
+		type = "fail";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -902,6 +917,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "smtp";
+		type = "fail";
 
 		Session session = Session.getInstance(props, null);
 
@@ -957,6 +973,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "pop";
+		type = "fail";
 
 		Session session = Session.getInstance(props, null);
 
@@ -1022,6 +1039,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1074,6 +1092,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "pop";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1126,7 +1145,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "smtp";
-		
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1180,6 +1199,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap1";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1237,6 +1257,7 @@ public class MU2SenderTests {
 	//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		fetch = "imap";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 		try {
 
@@ -1287,6 +1308,7 @@ public class MU2SenderTests {
 	//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		fetch = "imap1";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 		try {
 
@@ -1344,6 +1366,7 @@ public class MU2SenderTests {
 	//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		fetch = "imap1";
+		type = "fail";
 		Session session = Session.getInstance(props, null);
 		try {
 
@@ -1398,6 +1421,7 @@ public class MU2SenderTests {
 	//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		fetch = "pop";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 		try {
 
@@ -1455,6 +1479,7 @@ public class MU2SenderTests {
 	//	props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		fetch = "smtp";
+		type = "pass";
 
 		Session session = Session.getInstance(props, null);
 		try {
@@ -1515,6 +1540,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
 		fetch = "imap";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1580,6 +1606,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
 		fetch = "pop";
+		type = "pass";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1646,6 +1673,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 		Session session = Session.getInstance(props, null);
 		fetch = "smtp";
+		type = "pass";
 
 		try {
 			

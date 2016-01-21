@@ -154,7 +154,7 @@ public class TTTReceiverTests {
 							CloseableHttpClient client = HttpClients.createDefault();
 							FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
 							File file1 = new File("sample.xml");
-							HttpPost post = new HttpPost("http://hit-dev.nist.gov:11080/referenceccdaservice/");
+							HttpPost post = new HttpPost("http://edge.nist.gov:11080/referenceccdaservice/");
 							FileBody fileBody = new FileBody(file1);
 							
 							
