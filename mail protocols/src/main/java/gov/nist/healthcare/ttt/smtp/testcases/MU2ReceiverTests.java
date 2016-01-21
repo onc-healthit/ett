@@ -187,7 +187,7 @@ public class MU2ReceiverTests {
 			Message messages[] = inbox.search(unseenFlagTerm);
 
 			if(type.equals("fail")){
-
+				System.out.println("FAILBOX");
 				for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
@@ -219,6 +219,7 @@ public class MU2ReceiverTests {
 			}
 
 			else {
+				System.out.println("PASSBOX");
 				for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
