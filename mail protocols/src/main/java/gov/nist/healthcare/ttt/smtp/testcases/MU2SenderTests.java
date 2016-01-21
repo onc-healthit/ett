@@ -29,13 +29,16 @@ public class MU2SenderTests {
 	public static Logger log = Logger.getLogger("MU2SenderTests");
 	static public String MessageId;
 	static public String fetch;
+	static public String type;
 	public String getMessageId(){
 		return MessageId;
 	}
 	public String getfetch(){
 		return fetch;
 	}
-	
+	public String gettype(){
+		return type;
+	}
 	public TestResult testBadAddress(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
@@ -848,6 +851,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "imap";
+		type = "fail";
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -902,6 +906,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "smtp";
+		type = "fail";
 
 		Session session = Session.getInstance(props, null);
 
@@ -957,6 +962,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		fetch = "pop";
+		type = "fail";
 
 		Session session = Session.getInstance(props, null);
 

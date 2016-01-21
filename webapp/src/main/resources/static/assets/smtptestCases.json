@@ -852,7 +852,9 @@
                         "170.315(b)(5)–Common Clinical Data Set Summary Record-Ambulatory Setting",
                         "170.315(b)(5)–Common Clinical Data Set Summary Record-Inpatient Setting",
                         "170.315(b)(9)–Care Plan-Ambulatory Setting",
-                        "170.315(b)(9)–Care Plan-Inpatient Setting"
+                        "170.315(b)(9)–Care Plan-Inpatient Setting",
+                        "NegativeTesting_CCDS",
+                        "NegativeTesting_CarePlan"
                     ],
                     "value": "attachmentType",
                     "readOnly": false,
@@ -976,11 +978,17 @@
                     "label": "Attachment type",
                     "name": "attachmentType",
                     "datatype": "DropdownString",
-                    "allowedValues": [
-                        "CCDA",
-                        "CCR",
-                        "C32",
-                        "XDM"
+                   "allowedValues": [
+                        "170.315(b)(1)-Transitions of Care-Ambulatory Setting",
+                        "170.315(b)(1)-Transitions of Care-Inpatient Setting",
+                        "170.315(b)(2)–Clinical Information Reconciliation and Incorporation-Ambulatory Setting",
+                        "170.315(b)(2)–Clinical Information Reconciliation and Incorporation–Inpatient Setting",
+                        "170.315(b)(5)–Common Clinical Data Set Summary Record-Ambulatory Setting",
+                        "170.315(b)(5)–Common Clinical Data Set Summary Record-Inpatient Setting",
+                        "170.315(b)(9)–Care Plan-Ambulatory Setting",
+                        "170.315(b)(9)–Care Plan-Inpatient Setting",
+                        "NegativeTesting_CCDS",
+                        "NegativeTesting_CarePlan"
                     ],
                     "value": "attachmentType",
                     "readOnly": false,
