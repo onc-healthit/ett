@@ -46,6 +46,7 @@ class XdrSenderImpl implements XdrSender{
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.wsaTo)
         settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
+        settings.payload(config.payload)
         Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
 
         //creating request for the toolkit
