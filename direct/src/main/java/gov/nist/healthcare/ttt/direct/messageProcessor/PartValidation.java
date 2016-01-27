@@ -316,6 +316,7 @@ public class PartValidation {
 			part.addNewDetailLine(directMessageValidator.validateSecondMIMEPartBody(""));
 
 			// DTS 165, AlgorithmIdentifier.algorithm
+			part.addNewDetailLine(new DetailModel("No DTS", "Encryption Algorithm used", signer.getEncryptionAlgOID(), "AES 128 or AES 256 (or better)", "-", Status.INFO));
 			part.addNewDetailLine(signatureValidator.validateDigestAlgorithmDirectMessage(digestAlgOID, contentTypeMicalg));
 
 			// DTS 166, SignedData.encapContentInfo
