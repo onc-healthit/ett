@@ -344,6 +344,29 @@ public class PartValidation {
 			// verify that the sig is valid and that it was generated
 			// when the certificate was current
 			part.addNewDetailLine(signatureValidator.validateSignature(cert, signer, BouncyCastleProvider.PROVIDER_NAME));
+			
+			//verify and get the digests
+	        Attribute digAttr = signer.getSignedAttributes().get(CMSAttributes.messageDigest);
+	        ASN1Primitive hashObj = digAttr.getAttrValues().getObjectAt(0).toASN1Primitive();
+	        byte[] signedDigest = ((ASN1OctetString)hashObj).getOctets();
+	        String signedDigestHex = org.apache.commons.codec.binary.Hex.encodeHexString(signedDigest);
+	        String digestHex = "";
+	        // System.out.println("\r\nSigned Message Digest: " + signedDigestHex);
+	           
+	        try {
+	        	signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(BouncyCastleProvider.PROVIDER_NAME).build(cert));
+	        } catch (Exception e) {
+	        	logger.error("Signature failed to verify: " + e.getMessage());
+	        }
+	        // should have the computed digest now
+	        try {
+	        	byte[] digest = signer.getContentDigest();
+	        	digestHex = org.apache.commons.codec.binary.Hex.encodeHexString(digest);
+	        } catch(Exception e) {
+	        	logger.error("Failed to get the computed digest: " + e.getMessage());
+	        }
+	        // System.out.println("\r\nComputed Message Digest: " + digestHex);
+	        part.addNewDetailLine(new DetailModel("No DTS", "Signature digest", "Signed Message Digest: " + signedDigestHex, "Computed Message Digest: " + digestHex, "-", Status.INFO));
 
 		}
 	}
