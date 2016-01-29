@@ -72,6 +72,7 @@ import org.apache.log4j.Logger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.mail.imap.IMAPFolder;
+import com.sun.mail.pop3.POP3Folder;
 
 public class TTTReceiverTests {
 
@@ -737,6 +738,65 @@ public class TTTReceiverTests {
 				Enumeration headers = message.getAllHeaders();
 
 				result.put("\nUID " + j, strLong);
+				j++;
+
+				Multipart multipart = (Multipart) message.getContent();
+
+			}
+			if (result.isEmpty()) {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				tr.getTestRequestResponses().put("\nERROR",
+						"No messages found. Send a message and try again.");
+			} else {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+
+		} catch (MessagingException e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error getting mail from TTT server"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
+		}
+
+		return tr;
+	}
+	
+	public TestResult popFetchUid(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		HashMap<String, String> bodyparts = tr.getAttachments();
+		Properties props = System.getProperties();
+		int j = 1;
+
+		try {
+			Session session = Session.getDefaultInstance(props, null);
+			Store store = session.getStore("pop3");
+			store.connect(ti.sutSmtpAddress, 110, ti.sutUserName,
+					ti.sutPassword);
+
+			POP3Folder inbox = (POP3Folder) store.getFolder("Inbox");
+			inbox.open(Folder.READ_WRITE);
+
+			Flags seen = new Flags(Flags.Flag.SEEN);
+			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+			Message messages[] = inbox.search(unseenFlagTerm);
+
+			for (Message message : messages) {
+				String a = inbox.getUID(message);
+				Address[] froms = message.getFrom();
+				String sender_ = froms == null ? ""
+						: ((InternetAddress) froms[0]).getAddress();
+
+				// Store all the headers in a map
+				Enumeration headers = message.getAllHeaders();
+
+				result.put("\nUID " + j, a);
 				j++;
 
 				Multipart multipart = (Multipart) message.getContent();

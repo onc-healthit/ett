@@ -597,6 +597,14 @@
 		"sutRole": "sender",
 		"sutHisp": true,
 		"sutEdge": false
+	},{
+		"name": "POP Test 12",
+		"id": 312,
+		"protocol": "pop",
+		"desc": "Verifies the ability of the Vendor HISP(POP Server) to produce Unique identifiers(UIDs).",
+		"sutRole": "sender",
+		"sutHisp": true,
+		"sutEdge": false
 	}, {
 		"name": "POP Test 17",
 		"id": 317,
@@ -741,44 +749,15 @@
 		"name": "IMAP 32 (Receive + Validate)",
 		"id": 232,
 		"protocol": "imap",
-		"desc": "Verifies the ability of the SUT to host attachements and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
-		"sutRole": "receiver",
+		"desc": "Verifies the ability of the SUT to host attachments and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
+		"sutRole": "sender",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
-			"label": "Reference Filename",
+			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "DropdownString",
-			"allowedValues": [
-				"CP_Sample1.pdf",
-				"DP_Sample1.pdf",
-				"ToC_Sample1.pdf",
-				"VDT_Sample1.pdf"
-			],
+			"datatype": "CCDAWidget",
 			"value": "ccdaReferenceFilename",
-			"readOnly": false,
-			"display": true
-		}, {
-			"label": "Valiation Objective",
-			"name": "ccdaValidationObjective",
-			"datatype": "DropdownString",
-			"allowedValues": [
-				"170.315(b)(1) – Transitions of Care – Send - Ambulatory Setting",
-				"170.315(b)(1) – Transitions of Care – Send - Inpatient Setting",
-				"170.315(b)(2) – Clinical Information Reconciliation and Incorporation - Ambulatory Setting",
-				"170.315(b)(2) – Clinical Information Reconciliation and Incorporation – Inpatient Setting",
-				"170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Ambulatory Setting",
-				"170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Inpatient Setting",
-				"170.315(b)(6) – Data Export - Ambulatory Setting",
-				"170.315(b)(6) – Data Export - Inpatient Setting",
-				"170.315(b)(7) – Data Segmentation for Privacy - Send - Ambulatory Setting",
-				"170.315(b)(7) – Data Segmentation for Privacy - Send - Inpatient Setting",
-				"170.315(b)(9) – Care Plan - Create - Ambulatory Setting",
-				"170.315(b)(9) – Care Plan - Create - Inpatient Setting",
-				"170.315(e)(1) – View,Download and Transmit - Ambulatory Setting",
-				"170.315(e)(1) – View,Download and Transmit - Inpatient Setting"
-			],
-			"value": "ccdaValidationObjective",
 			"readOnly": false,
 			"display": true
 		}]
@@ -863,43 +842,14 @@
 		"id": 332,
 		"protocol": "pop",
 		"desc": "Verifies the ability of the SUT to host attachments and make it available for fetching through POP. The CCDA is validated using the MDHT validator.",
-		"sutRole": "receiver",
+		"sutRole": "sender",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
-			"label": "Reference Filename",
+			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "DropdownString",
-			"allowedValues": [
-				"CP_Sample1.pdf",
-				"DP_Sample1.pdf",
-				"ToC_Sample1.pdf",
-				"VDT_Sample1.pdf"
-			],
+			"datatype": "CCDAWidget",
 			"value": "ccdaReferenceFilename",
-			"readOnly": false,
-			"display": true
-		}, {
-			"label": "Valiation Objective",
-			"name": "ccdaValidationObjective",
-			"datatype": "DropdownString",
-			"allowedValues": [
-				"170.315(b)(1) – Transitions of Care – Send - Ambulatory Setting",
-				"170.315(b)(1) – Transitions of Care – Send - Inpatient Setting",
-				"170.315(b)(2) – Clinical Information Reconciliation and Incorporation - Ambulatory Setting",
-				"170.315(b)(2) – Clinical Information Reconciliation and Incorporation – Inpatient Setting",
-				"170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Ambulatory Setting",
-				"170.315(b)(4) – Common Clinical Data Set Summary Record - Create - Inpatient Setting",
-				"170.315(b)(6) – Data Export - Ambulatory Setting",
-				"170.315(b)(6) – Data Export - Inpatient Setting",
-				"170.315(b)(7) – Data Segmentation for Privacy - Send - Ambulatory Setting",
-				"170.315(b)(7) – Data Segmentation for Privacy - Send - Inpatient Setting",
-				"170.315(b)(9) – Care Plan - Create - Ambulatory Setting",
-				"170.315(b)(9) – Care Plan - Create - Inpatient Setting",
-				"170.315(e)(1) – View,Download and Transmit - Ambulatory Setting",
-				"170.315(e)(1) – View,Download and Transmit - Inpatient Setting"
-			],
-			"value": "ccdaValidationObjective",
 			"readOnly": false,
 			"display": true
 		}]
