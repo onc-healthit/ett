@@ -250,7 +250,7 @@ public class MU2ReceiverTests {
 				}
 
 				if (bodyparts.size() == 0){
-					// Content Search
+					// DSN Search for processed/dispatched MDN
 					String s = "";
 					for (Message message : messages){
 						Object m =  message.getContent();

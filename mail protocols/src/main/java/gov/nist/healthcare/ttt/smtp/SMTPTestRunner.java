@@ -88,6 +88,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 	}
 
 	/**
+	 * @throws InterruptedException 
 	 *  
 	 */
 	@Override
@@ -911,6 +912,21 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				e.printStackTrace();
 			}
 			log.info("*****************   END  Testcase 212 *******************************");
+			break;
+			
+		case 312:
+			log.info("*****************   BEGIN  Testcase 312 *******************************");
+
+			TestResult tr312;
+			try {
+				tr312 = tTest.popFetchUid(ti);
+				tr312.id = 312;
+				res.add(tr312);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 312 *******************************");
 			break;
 			
 		case 213:
