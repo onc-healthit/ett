@@ -5,6 +5,7 @@ import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil
+import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,7 +47,14 @@ class XdrSenderImpl implements XdrSender{
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.wsaTo)
         settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
-        settings.payload(config.payload)
+
+        if(config.payload) {
+            StringWriter writer = new StringWriter();
+            InputStream ccdaAttachment = new URL(config.payload.link).openStream();
+            IOUtils.copy(ccdaAttachment, writer, "UTF-8");
+            String payload = writer.toString();
+            settings.payload(payload)
+        }
         Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
 
         //creating request for the toolkit
