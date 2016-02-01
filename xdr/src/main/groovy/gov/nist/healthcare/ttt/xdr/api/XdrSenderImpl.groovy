@@ -50,7 +50,7 @@ class XdrSenderImpl implements XdrSender{
 
         if(config.payload) {
             StringWriter writer = new StringWriter();
-            InputStream ccdaAttachment = new URL(config.payload).openStream();
+            InputStream ccdaAttachment = new URL(config.payload.link).openStream();
             IOUtils.copy(ccdaAttachment, writer, "UTF-8");
             String payload = writer.toString();
             settings.payload(payload)
