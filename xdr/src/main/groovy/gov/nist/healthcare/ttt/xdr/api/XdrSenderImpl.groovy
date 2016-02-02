@@ -53,7 +53,7 @@ class XdrSenderImpl implements XdrSender{
             InputStream ccdaAttachment = new URL(config.payload.link).openStream();
             IOUtils.copy(ccdaAttachment, writer, "UTF-8");
             String payload = writer.toString();
-            settings.payload(payload)
+            settings.setPayload(payload)
         }
         Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
 
