@@ -990,6 +990,78 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 219 *******************************");
 			break;
 		
+		case 227:
+			log.info("*****************   BEGIN  Testcase 227 *******************************");
+
+			TestResult tr227;
+			try {
+				tr227 = tTest.fetchTestMailboxNames(ti);
+				tr227.id = 227;
+				res.add(tr227);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 227 *******************************");
+			break;
+			
+		case 228:
+			log.info("*****************   BEGIN  Testcase 228 *******************************");
+
+			TestResult tr228;
+			try {
+				tr228 = tTest.fetchTestMailboxNames(ti);
+				tr228.id = 228;
+				res.add(tr228);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 228 *******************************");
+			break;
+		case 229:
+			log.info("*****************   BEGIN  Testcase 229 *******************************");
+
+			TestResult tr229;
+			try {
+				tr229 = tTest.fetchTestMailboxNames(ti);
+				tr229.id = 229;
+				res.add(tr229);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 229 *******************************");
+			break;
+		case 230:
+			log.info("*****************   BEGIN  Testcase 230 *******************************");
+
+			TestResult tr230;
+			try {
+				tr230 = tTest.fetchTestMailboxNames(ti);
+				tr230.id = 230;
+				res.add(tr230);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 230 *******************************");
+			break;
+		case 231:
+			log.info("*****************   BEGIN  Testcase 231 *******************************");
+
+			TestResult tr231;
+			try {
+				tr231 = tTest.fetchTestMailboxNames(ti);
+				tr231.id = 221;
+				res.add(tr231);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 231 *******************************");
+			break;
+			
 		case 221:
 			log.info("*****************   BEGIN  Testcase 221 *******************************");
 
@@ -1005,6 +1077,20 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 221 *******************************");
 			break;
 			
+		case 222:
+			log.info("*****************   BEGIN  Testcase 222 *******************************");
+
+			TestResult tr222;
+			try {
+				tr222 = tTest.fetchTestMailboxNames(ti);
+				tr222.id = 222;
+				res.add(tr222);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 222 *******************************");
+			break;
 		case 225:
 			log.info("*****************   BEGIN  Testcase 225 *******************************");
 
@@ -1146,6 +1232,111 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			}
 			log.info("*****************   END  Testcase 317 *******************************");
 			break;
+			
+		case 319:
+			log.info("*****************   BEGIN  Testcase 319 *******************************");
+
+			TestResult tr319;
+			try {
+				tr319 = tTest.fetchTestMailboxNames(ti);
+				tr319.id = 319;
+				res.add(tr319);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 319 *******************************");
+			break;
+			
+		case 322:
+			log.info("*****************   BEGIN  Testcase 322 *******************************");
+
+			TestResult tr322;
+			try {
+				tr322 = tTest.fetchTestMailboxNames(ti);
+				tr322.id = 322;
+				res.add(tr322);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 322 *******************************");
+			break;
+			
+		case 327:
+			log.info("*****************   BEGIN  Testcase 327 *******************************");
+
+			TestResult tr327;
+			try {
+				tr327 = tTest.fetchTestMailboxNames(ti);
+				tr327.id = 327;
+				res.add(tr327);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 327 *******************************");
+			break;
+			
+		case 328:
+			log.info("*****************   BEGIN  Testcase 328 *******************************");
+
+			TestResult tr328;
+			try {
+				tr328 = tTest.fetchTestMailboxNames(ti);
+				tr328.id = 328;
+				res.add(tr328);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 328 *******************************");
+			break;
+			
+		case 329:
+			log.info("*****************   BEGIN  Testcase 329 *******************************");
+
+			TestResult tr329;
+			try {
+				tr329 = tTest.fetchTestMailboxNames(ti);
+				tr329.id = 227;
+				res.add(tr329);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 329 *******************************");
+			break;
+			
+		case 330:
+			log.info("*****************   BEGIN  Testcase 330 *******************************");
+
+			TestResult tr330;
+			try {
+				tr330 = tTest.fetchTestMailboxNames(ti);
+				tr330.id = 330;
+				res.add(tr330);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 330 *******************************");
+			break;
+			
+		case 331:
+			log.info("*****************   BEGIN  Testcase 331 *******************************");
+
+			TestResult tr331;
+			try {
+				tr331 = tTest.fetchTestMailboxNames(ti);
+				res.add(tr331);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 331 *******************************");
+			break;
+			
 			
 		case 332:
 			log.info("*****************   BEGIN  Testcase 332 *******************************");
