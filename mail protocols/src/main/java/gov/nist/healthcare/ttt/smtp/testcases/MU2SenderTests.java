@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.smtp.testcases;
 
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -1203,9 +1204,15 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
+			
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
+			message.setFrom(new InternetAddress(prop.getProperty("dir.username")));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing sending mail with Disposition Notification Header!");
@@ -1218,7 +1225,7 @@ public class MU2SenderTests {
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
-					: ti.sutSmtpPort,"sandeep@hit-testing.nist.gov", "sandeeppassword");
+					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 			MessageId = message.getHeader("Message-ID")[0];
@@ -1260,7 +1267,8 @@ public class MU2SenderTests {
 		type = "pass";
 		Session session = Session.getInstance(props, null);
 		try {
-
+			
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1291,6 +1299,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (Exception e) {
+			result.put("1", "Error in TEST MESSAGE BAD DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
 		}
 
 		return tr;

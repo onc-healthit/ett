@@ -4,20 +4,8 @@ import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
-
-
-
-
-
-
-
-
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -37,8 +25,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -126,28 +112,26 @@ public class TTTSenderTests {
 	 * 
 	 * @return
 	 */
-
 	public TestResult testStarttls(TestInput ti) {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-
+		
+		try{
+			
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
-
-
+		props.setProperty("mail.smtp.ssl.trust", "*");
+	  
 		Session session = Session.getInstance(props, null);
 
-		try {
-
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(ti.sutEmailAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing STARTTLS & PLAIN SASL AUTHENTICATION (Test Case 9,16,20)!");
@@ -304,8 +288,19 @@ public class TTTSenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-		}
-		catch (MessagingException e) {
+		}catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -333,7 +328,6 @@ public class TTTSenderTests {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
@@ -404,7 +398,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -504,7 +510,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -542,7 +560,6 @@ public class TTTSenderTests {
 		props.put("mail.smtp.starttls.required", "true"); 
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
-		props.put("mail.smtp.ssl.socketFactory", socketFactory);
 
 
 		Session session = Session.getInstance(props, null);
@@ -611,17 +628,24 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			log.info("Error in testStarttls");
-			result.put("\nERROR ", e.getLocalizedMessage());
-			e.printStackTrace();
 		}
 
 		return tr;
@@ -715,7 +739,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -814,7 +850,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -897,14 +945,25 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-
 		return tr;
 	}
 	/**
@@ -1076,7 +1135,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1159,7 +1230,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1242,7 +1325,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
