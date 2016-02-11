@@ -132,7 +132,7 @@ public class TTTSenderNegativeTests {
 		smtpSender.setTimeOut(30); // we wait for 30 seconds
 		res.expectedResult.add(-2);
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
-		res.add(smtpSender.sndMsgMAILFROM(VALID_FROM));
+		res.add(smtpSender.sndMsgMAILFROM(ti.sutUserName));
 		res.add(smtpSender.sndMsgRCPTTO(VALID_TO));
 		String badData = String
 				.format(AbstractSMTPSender.DATA_LFCR, VALID_DATA);
@@ -352,7 +352,7 @@ public class TTTSenderNegativeTests {
 																	// twice the
 																	// time
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
-		res.add(smtpSender.sndMsgMAILFROM(VALID_FROM));
+		res.add(smtpSender.sndMsgMAILFROM(ti.sutUserName));
 		res.add(smtpSender.sndMsgRCPTTO(VALID_TO));
 
 		res.add(smtpSender.getResponseForRequest("DATA\r\n"), true);
@@ -396,7 +396,7 @@ public class TTTSenderNegativeTests {
 																	// twice the
 																	// time
 		res.add(smtpSender.sndMsgEHLO(VALID_DOMAIN));
-		res.add(smtpSender.sndMsgMAILFROM(VALID_FROM));
+		res.add(smtpSender.sndMsgMAILFROM(ti.sutUserName));
 		res.add(smtpSender.sndMsgRCPTTO(VALID_TO), true);
 		res.add(smtpSender.getResponseForRequest(""), true);
 
