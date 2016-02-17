@@ -35,6 +35,9 @@ public class TestInput {
 	
 	public String ccdaValidationObjective;
 	
+	public TestResult tr;
+	
+
 	public LinkedHashMap<String, byte[]> attachments = new LinkedHashMap<String, byte[]>();
 	
 	public TestInput(String _sutSmtpAddress,String _tttSmtpAddress,int _sutSmtpPort, int _tttSmtpPort,
@@ -179,6 +182,14 @@ public class TestInput {
 
 	public void setCcdaReferenceFilename(String ccdaReferenceFilename) {
 		this.ccdaReferenceFilename = ccdaReferenceFilename;
+	}
+	
+	public TestResult getTr() {
+		return tr;
+	}
+
+	public void setTr(TestResult tr) {
+		this.tr = tr;
 	}
 	
 }

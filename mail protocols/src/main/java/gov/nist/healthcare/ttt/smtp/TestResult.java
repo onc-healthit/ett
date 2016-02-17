@@ -90,7 +90,44 @@ public class TestResult implements ITestResult {
 	boolean proctored = false;
 	public LinkedHashMap<String, String> attachments = new LinkedHashMap<String, String>();
 	public LinkedHashMap<String, JsonNode> CCDAValidationReports = new LinkedHashMap<String, JsonNode>();
+	public String  MessageId;
+	public String fetchType;
+	public String searchType;
+	public String startTime;
 	
+	
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getSearchType() {
+		return searchType;
+	}
+
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+
+	public String getFetchType() {
+		return fetchType;
+	}
+
+	public void setFetchType(String fetchType) {
+		this.fetchType = fetchType;
+	}
+	
+	public String getMessageId() {
+		return MessageId;
+	}
+
+	public void setMessageId(String messageId) {
+		MessageId = messageId;
+	}
+
 	public LinkedHashMap<String, JsonNode> getCCDAValidationReports() {
 		return CCDAValidationReports;
 	}
