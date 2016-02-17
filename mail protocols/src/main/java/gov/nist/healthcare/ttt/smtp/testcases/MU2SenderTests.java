@@ -1,6 +1,8 @@
 package gov.nist.healthcare.ttt.smtp.testcases;
 
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -88,9 +90,16 @@ public class MU2SenderTests {
 		//	tr.setMessageId(message.getHeader("Message-ID")[0]);
 			System.out.println("Done");
 			log.info("Message Sent");
-			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
-			result.put("2","Email sent Successfully\n");
-			result.put("3", "Message-ID of the email sent: " + MessageId);
+			result.put("SUCCESS","Email sent\n");
+			result.put("Message-Id ", message.getHeader("Message-ID")[0]+"\n");
+			result.put("MDN type ", "Failure\n");
+			result.put("Protocol ", "imap\n");
+			result.put("Start Time ", new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime()));
+			
+			tr.setMessageId(message.getHeader("Message-ID")[0]);
+			tr.setFetchType("imap");
+			tr.setSearchType("Failure");
+			tr.setStartTime(new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime()));
 
 
 		} 
