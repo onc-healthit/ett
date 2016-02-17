@@ -84,6 +84,8 @@ public class MU2SenderTests {
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 			MessageId = message.getHeader("Message-ID")[0];
+			String mId = message.getHeader("Message-ID")[0];
+		//	tr.setMessageId(message.getHeader("Message-ID")[0]);
 			System.out.println("Done");
 			log.info("Message Sent");
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");

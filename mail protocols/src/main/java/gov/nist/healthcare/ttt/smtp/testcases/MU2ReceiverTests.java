@@ -5,11 +5,13 @@ import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 import gov.nist.healthcare.ttt.smtp.testcases.MU2SenderTests;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
+
 
 
 
@@ -26,6 +28,7 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
+
 
 
 
@@ -159,6 +162,13 @@ public class MU2ReceiverTests {
 		Store store;
 		Properties props = System.getProperties();
 		try {
+			
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Session session = Session.getDefaultInstance(props, null);
 
 			store = session.getStore("imap");
@@ -171,7 +181,7 @@ public class MU2ReceiverTests {
 			}
 
 			else if (fetch.equals("imap1")) {
-				store.connect("hit-testing.nist.gov",143,"sandeep@hit-testing.nist.gov","sandeeppassword");
+				store.connect("hit-testing.nist.gov",143,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			}
 
 			else {
@@ -187,14 +197,14 @@ public class MU2ReceiverTests {
 			Message messages[] = inbox.search(unseenFlagTerm);
 
 			if(type.equals("fail")){
-				System.out.println("FAILBOX");
+				System.out.println("Search in-reply-to");
 				for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
 						String x = h.getValue();
 						if (id.equals(x)){
-
+					//	if (ti.MessageId.equals(x)){
 							Enumeration headers1 = message.getAllHeaders();
 							while (headers1.hasMoreElements()) {
 								Header h1 = (Header) headers1.nextElement();
@@ -210,7 +220,7 @@ public class MU2ReceiverTests {
 								byte[] targetArray = IOUtils.toByteArray(stream);
 								System.out.println(new String(targetArray));
 								int m = i+1;
-								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+							//	bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
 							}
 						}
@@ -219,7 +229,7 @@ public class MU2ReceiverTests {
 			}
 
 			else {
-				System.out.println("PASSBOX");
+				System.out.println("Search Original-Message-Id");
 				for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
@@ -242,7 +252,7 @@ public class MU2ReceiverTests {
 								byte[] targetArray = IOUtils.toByteArray(stream);
 								System.out.println(new String(targetArray));
 								int m = i+1;
-								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+						//		bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
 							}
 						}
