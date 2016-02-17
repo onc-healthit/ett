@@ -1,3 +1,17 @@
+==Version 1.0.1#2/11/2016
+	* SMTP
+		-Description updates for SMTP/IMAP/POP test cases
+		-From address change for all SMTP receive cases i.e the from address will be the same as to address. (Earlier the from address was wellformed1@hit-testing2.nist.gov). The descriptions for this cases have been changed accordingly
+
+	* XDR
+		-Fixed XDR Test 11 and 12 in HISP, when sending the Direct+XDM, the subject line now contains "XDM/1.0/DDM"
+
+==Version 1.0.0#1/21/2016
+	* SMTP
+		-UI change for receiver test
+		-Bugfixes for Message Tracking cases
+		-Added SMTP Message tracking cases
+
 ==Version 0.0.10#1/13/2016
 	* MDN
 		-Added empoints for bad MDNs generation

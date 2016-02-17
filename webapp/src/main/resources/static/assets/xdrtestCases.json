@@ -24,7 +24,7 @@
     }]
 }, {
     "name": "XDR Test 3",
-    "id": 3,
+    "id": "3add",
     "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Limited metadata.  (Default attachment is a Consolidated CDA document.)",
     "sutEdge": true,
     "sutHisp": false,
@@ -33,30 +33,10 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
-    }]
-}, {
-    "name": "XDR Test 3 -- HITSP/C32",
-    "id": "3c32",
-    "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Limited metadata.  Attachment is a HITSP/C32 document.",
-    "sutEdge": true,
-    "sutHisp": false,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
-    "name": "XDR Test 3 -- CCR",
-    "id": "3ccr",
-    "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Limited metadata.  Attachment is a Continuity of Care Record.",
-    "sutEdge": true,
-    "sutHisp": false,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
+    }, {
+        "name": "C-CDA Document Type",
+        "key": "payload",
+        "type": "CCDAWidget"
     }]
 }, {
     "name": "XDR Test 4a",
@@ -228,7 +208,19 @@
 }, {
     "name": "XDR Test 13",
     "id": 13,
-    "desc": "Test Tool sends an XDR Message to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "desc": "Test Tool sends an XDR Message to the HISP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 13",
+    "id": "32mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a non-existent address. This test is part of the Message Tracking Using Processed MDN test suite.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -240,7 +232,19 @@
 }, {
     "name": "XDR Test 14",
     "id": 14,
-    "desc": "Test Tool sends an XDR Message with Full Metadata to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "desc": "Test Tool sends an XDR Message with Full Metadata to the HISP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 14",
+    "id": "33mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to an untrusted HISP. This test is part of the Message Tracking Using Processed MDN test suite.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -310,6 +314,18 @@
         "type": "string"
     }]
 }, {
+    "name": "XDR MT Test 15",
+    "id": "34mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a HISP whose certificate is unpublished. This test is part of the Message Tracking Using Processed MDN test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
     "name": "XDR Test 16",
     "id": 16,
     "desc": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data.",
@@ -319,6 +335,18 @@
     "inputs": [{
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 16",
+    "id": "35mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a lack of a Processed MDN. This test is part of the Message Tracking Using Processed MDN test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
         "type": "string"
     }]
 }, {
@@ -414,7 +442,7 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
-    },{
+    }, {
         "name": "Direct To Address",
         "key": "direct_to",
         "type": "string"
@@ -434,7 +462,7 @@
 }, {
     "name": "XDR MT Test 32",
     "id": "32mu2",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a non-existent address.",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a non-existent address. This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -446,7 +474,7 @@
 }, {
     "name": "XDR MT Test 33",
     "id": "33mu2",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to an untrusted HISP.",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to an untrusted HISP. This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -458,7 +486,7 @@
 }, {
     "name": "XDR MT Test 34",
     "id": "34mu2",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a HISP whose certificate is unpublished.",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a potential delivery to a HISP whose certificate is unpublished. This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -470,7 +498,7 @@
 }, {
     "name": "XDR MT Test 35",
     "id": "35mu2",
-    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a lack of a Processed MDN.",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a lack of a Processed MDN. This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",

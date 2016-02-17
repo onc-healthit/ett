@@ -4,8 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -452,6 +456,12 @@ public class ArtifactManagement {
         payload = settings.getPayload();
 
         if (payload != null && !payload.isEmpty()) {
+            try {
+                payload = Base64.getEncoder().encodeToString(payload.getBytes("utf-8"));
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(ArtifactManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
             artifacts.setDocument(payload);
             metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
@@ -506,6 +516,7 @@ public class ArtifactManagement {
             settings.setDirectFrom("directFrom");
             settings.setDirectTo("directTo");
             settings.setWsaTo("wsaTo");
+          //  settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
             String[] directTos = {};
             settings.setAdditionalDirectTo(directTos);
             //   String payload = getPayload(Type.XDR_MINIMAL_METADATA, settings);
@@ -529,6 +540,7 @@ public class ArtifactManagement {
             System.out.println("metadata = " + art.getMetadata());
             System.out.println("mimetype = " + art.getMimeType());
             System.out.println("document = " + art.getDocument());
+            
 
         } catch (Exception e) {
             e.printStackTrace();

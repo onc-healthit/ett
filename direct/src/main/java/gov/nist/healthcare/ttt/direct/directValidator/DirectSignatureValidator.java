@@ -316,16 +316,16 @@ public class DirectSignatureValidator {
 		try {
 			if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(BC).build(cert))) {
 				// C-1 - Certificate has not expired - Required
-				return new DetailModel("C1", "Signature", "The certificate has not expired",  "The certificate must not be expired", rfc, Status.SUCCESS);
+				return new DetailModel("C1", "Signature", "Signature verified",  "Signature must be verified", rfc, Status.SUCCESS);
 			} else {
-				return new DetailModel("C1", "Signature", "The certificate has expired",  "The certificate must not be expired", rfc, Status.ERROR);
+				return new DetailModel("C1", "Signature", "Signature verification failed",  "Signature must be verified", rfc, Status.ERROR);
 			}
 		} catch (OperatorCreationException e) {
 			e.printStackTrace();
-			return new DetailModel("C1", "Signature", e.getMessage(),  "The certificate must not be expired", rfc, Status.ERROR);
+			return new DetailModel("C1", "Signature", "Signature verification failed " + e.getMessage(),  "Signature must be verified", rfc, Status.ERROR);
 		} catch (CMSException e) {
 			e.printStackTrace();
-			return new DetailModel("C1", "Signature", e.getMessage(),  "The certificate must not be expired", rfc, Status.ERROR);
+			return new DetailModel("C1", "Signature", "Signature verification failed " + e.getMessage(),  "Signature must be verified", rfc, Status.ERROR);
 		}
 	}
 	
