@@ -3,21 +3,15 @@ package gov.nist.healthcare.ttt.smtp.testcases;
 import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
-import gov.nist.healthcare.ttt.smtp.testcases.MU2SenderTests;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
-
-
-
-
-
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -32,13 +26,6 @@ import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
 
-
-
-
-
-
-
-
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
@@ -47,10 +34,6 @@ import com.sun.mail.dsn.DispositionNotification;
 
 public class MU2ReceiverTests {
 	public static Logger log = Logger.getLogger("MU2ReceiverTests");
-	MU2SenderTests st = new MU2SenderTests();
-	String id = st.getMessageId();
-	String fetch = st.getfetch();
-	String type = st.gettype();
 
 	public TestResult fetchMail1(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -165,24 +148,27 @@ public class MU2ReceiverTests {
 		//int j = 0;
 		Store store;
 		Properties props = System.getProperties();
-		
-		/*TestResult t = ti.tr;
-		if(t.getMessageId()!= null){
-		String id1 = t.getMessageId();
-		String type1 = t.getSearchType();
-		String fetch1 = t.getFetchType();
+
+		TestResult t = ti.tr;
+
+		String id = t.getMessageId();
+		String fetch = t.getFetchType();
+		String type = t.getSearchType();
 		String startTime = t.getStartTime();
-		}*/
-		
+		Duration duration = null;
+		Duration timeout = null;
+		final long  timeoutConstant = 65; // 1 hour 5 mins (or) 65 minutes to get back the failure MDN
+
+
 		try {
-			
-			
+
+
 			Properties prop = new Properties();
 			String path = "./application.properties";
 			FileInputStream file = new FileInputStream(path);
 			prop.load(file);
 			file.close();
-			
+
 			Session session = Session.getDefaultInstance(props, null);
 
 			store = session.getStore("imap");
@@ -218,13 +204,14 @@ public class MU2ReceiverTests {
 						Header h = (Header) headers.nextElement();
 						String x = h.getValue();
 						if (id.equals(x)){
-					//	if (ti.MessageId.equals(x)){
+							ZonedDateTime endTime = ZonedDateTime.now();
 							Enumeration headers1 = message.getAllHeaders();
 							while (headers1.hasMoreElements()) {
 								Header h1 = (Header) headers1.nextElement();
 								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 								result.put("\n"+h1.getName(), h1.getValue()+"\n");
-								result.put("\nFetch Time", new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime())+"\n");
+								duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 
 							}
 							Multipart multipart = (Multipart) message.getContent();
@@ -235,29 +222,31 @@ public class MU2ReceiverTests {
 								byte[] targetArray = IOUtils.toByteArray(stream);
 								System.out.println(new String(targetArray));
 								int m = i+1;
-							//	bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+								//	bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
 							}
 						}
 					}
 				}
 			}
-			
-			else if (type.equals("failtime")){
+
+			else if (type.equals("timeout")){
+				System.out.println("Search in-reply-to on Timeout");
 				for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
 						String x = h.getValue();
 						if (id.equals(x)){
-							String endTime = new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime());
-					//	if (ti.MessageId.equals(x)){
+							ZonedDateTime endTime = ZonedDateTime.now();
+							//	if (ti.MessageId.equals(x)){
 							Enumeration headers1 = message.getAllHeaders();
 							while (headers1.hasMoreElements()) {
 								Header h1 = (Header) headers1.nextElement();
 								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 								result.put("\n"+h1.getName(), h1.getValue()+"\n");
-								result.put("\nFetch Time", new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime())+"\n");
+								timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
+								result.put("\nElapsed Time", timeout.toString().substring(3)+"\n");
 
 							}
 							Multipart multipart = (Multipart) message.getContent();
@@ -274,24 +263,25 @@ public class MU2ReceiverTests {
 						}
 					}
 				}
-				
+
 			}
 
 			else {
-				System.out.println("Search Original-Message-Id");
+				System.out.println("Search Original-Message-Id in DSN or in-reply-to in Headers");
 				for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
 						String x = h.getValue();
 						if (id.equals(x)){
-
+							ZonedDateTime endTime = ZonedDateTime.now();
 							Enumeration headers1 = message.getAllHeaders();
 							while (headers1.hasMoreElements()) {
 								Header h1 = (Header) headers1.nextElement();
 								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 								result.put("\n"+h1.getName(), h1.getValue()+"\n");
-								result.put("\nFetch Time", new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime())+"\n");
+								duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 
 							}
 							Multipart multipart = (Multipart) message.getContent();
@@ -302,7 +292,7 @@ public class MU2ReceiverTests {
 								byte[] targetArray = IOUtils.toByteArray(stream);
 								System.out.println(new String(targetArray));
 								int m = i+1;
-							bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
 							}
 						}
@@ -328,9 +318,11 @@ public class MU2ReceiverTests {
 											buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
 											s = h1.getValue();
 											if (id.equals(s)){
+												ZonedDateTime endTime = ZonedDateTime.now();
 												result.put("\n"+h1.getName(), h1.getValue()+"\n");
 												result.putAll(buffer);
-												result.put("\nFetch Time", new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime())+"\n");
+												duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+												result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 												System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
 											}
 
@@ -352,18 +344,29 @@ public class MU2ReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("ERROR","No messages found with Message ID: " + id);
 			}
-			
+
+			else if(timeout!=null && (timeout.toMinutes() > timeoutConstant)){
+
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				tr.getTestRequestResponses().put("ERROR","MDN received after timeout");
+
+			}
+
 			else {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 			}
-		} catch (MessagingException e) {
+
+		} catch (Exception e) {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			e.printStackTrace();
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put("1","Error fetching email :" + e.getLocalizedMessage());
 		}
-		
 
+		tr.setMessageId(id);
+		tr.setFetchType(fetch);
+		tr.setSearchType(type);
+		tr.setStartTime(startTime);
 		return tr;
 	}
 }
