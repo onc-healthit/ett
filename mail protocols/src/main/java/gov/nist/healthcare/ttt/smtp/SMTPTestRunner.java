@@ -776,10 +776,20 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 141 *******************************");
 
 			TestResult tr141;
-				tr141 = mu2senderTests.testBadAddressSutReceiver(ti);
+				tr141 = mu2senderTests.testBadAddressSutReceiverTimeout(ti);
 				tr141.id = 141;
 				res.add(tr141);
 			log.info("*****************   END  Testcase 141 *******************************");
+			break;
+			
+		case 142:
+			log.info("*****************   BEGIN  Testcase 142 *******************************");
+
+			TestResult tr142;
+				tr142 = mu2senderTests.testBadAddressSutReceiver(ti);
+				tr142.id = 142;
+				res.add(tr142);
+			log.info("*****************   END  Testcase 142 *******************************");
 			break;
 			
 		case 145:

@@ -628,7 +628,7 @@
     },
     {
       "name": "SMTP/IMAP MT Test 42 (Message to Bad Address)",
-      "id": 141,
+      "id": 142,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid.  If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.The proctor needs to enter a bad receiving HISP address in the 'Vendor MU2 Email Address'section..",
       "protocol": "mu2",
       "sutRole": "receiver",
