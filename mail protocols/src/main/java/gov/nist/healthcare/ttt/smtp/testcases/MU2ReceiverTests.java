@@ -147,7 +147,7 @@ public class MU2ReceiverTests {
 		HashMap<String, String> buffer = new HashMap<String, String>();
 		//int j = 0;
 		Store store;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		TestResult t = ti.tr;
 
