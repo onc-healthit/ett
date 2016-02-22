@@ -325,6 +325,7 @@ public class MU2ReceiverTests {
 												result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 												System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
 											}
+											
 
 										}
 
@@ -340,6 +341,7 @@ public class MU2ReceiverTests {
 				}
 
 			}
+			
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("ERROR","No messages found with Message ID: " + id);

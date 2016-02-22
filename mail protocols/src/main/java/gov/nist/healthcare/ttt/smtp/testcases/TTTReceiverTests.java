@@ -135,59 +135,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
 
 
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
 
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-								// Query MDHT war endpoint
-								CloseableHttpClient client = HttpClients.createDefault();
-								FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-								File file1 = new File("sample.xml");
-								HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
-								FileBody fileBody = new FileBody(file1);
-
-
-								//
-								MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-								builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-								//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-								//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-								String[] parts = ti.ccdaValidationObjective.split(" ");
-								String obj = parts[0];
-								builder.addTextBody("validationObjective", obj);
-								builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-								builder.addPart("ccdaFile", fileBody);
-								HttpEntity entity = builder.build();
-								//
-								post.setEntity(entity);
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
 
 
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-								JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
 
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
+
+
 						}
-
-
-
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
@@ -771,7 +773,7 @@ public class TTTReceiverTests {
 				result.put("\nUID " + j, strLong);
 				j++;
 
-			//	Multipart multipart = (Multipart) message.getContent();
+				//	Multipart multipart = (Multipart) message.getContent();
 
 			}
 			if (result.isEmpty()) {
@@ -840,7 +842,7 @@ public class TTTReceiverTests {
 				result.put("\nUID " + j, a);
 				j++;
 
-		//		Multipart multipart = (Multipart) message.getContent();
+				//		Multipart multipart = (Multipart) message.getContent();
 
 			}
 			if (result.isEmpty()) {
@@ -1393,7 +1395,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put("ERROR", "All commands are not implemented");
 			} 
-			
+
 
 		}
 
@@ -1918,59 +1920,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
 
 
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
 
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-								// Query MDHT war endpoint
-								CloseableHttpClient client = HttpClients.createDefault();
-								FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-								File file1 = new File("sample.xml");
-								HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
-								FileBody fileBody = new FileBody(file1);
-
-
-								//
-								MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-								builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-								//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-								//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-								String[] parts = ti.ccdaValidationObjective.split(" ");
-								String obj = parts[0];
-								builder.addTextBody("validationObjective", obj);
-								builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-								builder.addPart("ccdaFile", fileBody);
-								HttpEntity entity = builder.build();
-								//
-								post.setEntity(entity);
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
 
 
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-								JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
 
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
+
+
 						}
-
-
-
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
@@ -2051,59 +2055,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
 
 
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
 
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-								// Query MDHT war endpoint
-								CloseableHttpClient client = HttpClients.createDefault();
-								FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-								File file1 = new File("sample.xml");
-								HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
-								FileBody fileBody = new FileBody(file1);
-
-
-								//
-								MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-								builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-								//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-								//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-								String[] parts = ti.ccdaValidationObjective.split(" ");
-								String obj = parts[0];
-								builder.addTextBody("validationObjective", obj);
-								builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-								builder.addPart("ccdaFile", fileBody);
-								HttpEntity entity = builder.build();
-								//
-								post.setEntity(entity);
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
 
 
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-								JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
 
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
+
+
 						}
-
-
-
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
