@@ -40,8 +40,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable",true);
-	//	props.put("mail.smtp.starttls.required",true);
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required",true);
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap");
 		tr.setSearchType("pass");
@@ -113,8 +113,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
@@ -181,8 +181,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
@@ -249,8 +249,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
@@ -317,8 +317,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable",true);
-	//	props.put("mail.smtp.starttls.required",true);
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required",true);
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
@@ -391,8 +391,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
@@ -460,8 +460,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
@@ -528,8 +528,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
@@ -596,8 +596,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable",true);
-	//	props.put("mail.smtp.starttls.required",true);
+		props.put("mail.smtp.starttls.enable",true);
+		props.put("mail.smtp.starttls.required",true);
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
@@ -671,8 +671,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-//		props.put("mail.smtp.starttls.enable","true");
-//		props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
@@ -741,8 +741,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
@@ -808,8 +808,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
@@ -877,8 +877,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
@@ -935,8 +935,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
@@ -994,8 +994,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
@@ -1063,8 +1063,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
@@ -1119,8 +1119,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
@@ -1175,8 +1175,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
@@ -1232,8 +1232,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap1");
@@ -1300,8 +1300,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap");
 		tr.setSearchType("pass");
@@ -1361,8 +1361,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
 		tr.setSearchType("pass");
@@ -1422,8 +1422,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
 		tr.setSearchType("timeout");
@@ -1481,8 +1481,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
 		tr.setSearchType("pass");
@@ -1539,8 +1539,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("pop");
 		tr.setSearchType("pass");
@@ -1599,8 +1599,8 @@ public class MU2SenderTests {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("smtp");;
 		tr.setSearchType("pass");
@@ -1661,8 +1661,8 @@ public class MU2SenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
@@ -1730,8 +1730,8 @@ public class MU2SenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
@@ -1799,8 +1799,8 @@ public class MU2SenderTests {
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-	//	props.put("mail.smtp.starttls.enable","true");
-	//	props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
