@@ -23,7 +23,7 @@ final class TestCase15c extends TestCase {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context,["targetEndpoint"])
+        executor.validateInputs(context,["targetEndpointTLS"])
 
         context.directTo = "testcase15c@$executor.hostname"
         context.directFrom = "testcase15c@$executor.hostname"
