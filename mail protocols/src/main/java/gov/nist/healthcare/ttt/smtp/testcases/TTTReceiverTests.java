@@ -91,8 +91,7 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
-		Properties props = System.getProperties();
-
+		Properties props = new Properties();
 		try {
 
 			Properties prop = new Properties();
@@ -136,59 +135,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
 
 
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
 
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-								// Query MDHT war endpoint
-								CloseableHttpClient client = HttpClients.createDefault();
-								FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-								File file1 = new File("sample.xml");
-								HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
-								FileBody fileBody = new FileBody(file1);
-
-
-								//
-								MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-								builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-								//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-								//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-								String[] parts = ti.ccdaValidationObjective.split(" ");
-								String obj = parts[0];
-								builder.addTextBody("validationObjective", obj);
-								builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-								builder.addPart("ccdaFile", fileBody);
-								HttpEntity entity = builder.build();
-								//
-								post.setEntity(entity);
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
 
 
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-								JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
 
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
+
+
 						}
-
-
-
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
@@ -227,7 +228,7 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		int j = 1;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		try {
 			Properties prop = new Properties();
@@ -327,7 +328,7 @@ public class TTTReceiverTests {
 		tr.setCriteriamet(CriteriaStatus.FALSE);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		try {
 			Properties prop = new Properties();
@@ -417,7 +418,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
 		props.put("mail.imap.sasl.enable", true);
@@ -513,7 +514,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
 		props.put("mail.imap.ssl.ciphersuites", "TLS_RSA_WITH_RC4_128_MD5");
@@ -598,7 +599,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
 		props.put("mail.imap.ssl.ciphersuites",
@@ -684,7 +685,7 @@ public class TTTReceiverTests {
 	public TestResult imapFetchWrongPass(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.sasl.enable", true);
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
@@ -743,7 +744,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		int j = 1;
 
 		try {
@@ -772,7 +773,7 @@ public class TTTReceiverTests {
 				result.put("\nUID " + j, strLong);
 				j++;
 
-				Multipart multipart = (Multipart) message.getContent();
+				//	Multipart multipart = (Multipart) message.getContent();
 
 			}
 			if (result.isEmpty()) {
@@ -813,7 +814,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		int j = 1;
 
 		try {
@@ -841,7 +842,7 @@ public class TTTReceiverTests {
 				result.put("\nUID " + j, a);
 				j++;
 
-				Multipart multipart = (Multipart) message.getContent();
+				//		Multipart multipart = (Multipart) message.getContent();
 
 			}
 			if (result.isEmpty()) {
@@ -1312,7 +1313,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		ArrayList<String> response = new ArrayList<String>();
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		tr.setCriteriamet(CriteriaStatus.FALSE);
+		tr.setCriteriamet(CriteriaStatus.TRUE);
 		//	SSLSocket socket = null;
 		Socket socket = null;
 		PrintWriter output = null;
@@ -1350,7 +1351,10 @@ public class TTTReceiverTests {
 		// to the socket we have opened a connection to on port 110
 		if (socket != null && output != null && is != null) {
 			try {
-
+				output.print("USER "+ti.sutUserName+"\r\n");
+				output.flush();
+				output.print("PASS "+ti.sutPassword+"\r\n");
+				output.flush();
 				output.print("CAPA\r\n");
 				output.flush();
 				output.print("NOOP\r\n");
@@ -1391,6 +1395,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put("ERROR", "All commands are not implemented");
 			} 
+
 
 		}
 
@@ -1719,7 +1724,7 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		// int j = 0;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.pop3s.starttls.enable", true);
 		props.put("mail.pop3s.starttls.required", true);
 
@@ -1813,7 +1818,7 @@ public class TTTReceiverTests {
 	public TestResult popFetchWrongPass(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.sasl.enable", true);
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
@@ -1872,7 +1877,7 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		try {
 
@@ -1915,59 +1920,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
 
 
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
 
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-								// Query MDHT war endpoint
-								CloseableHttpClient client = HttpClients.createDefault();
-								FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-								File file1 = new File("sample.xml");
-								HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
-								FileBody fileBody = new FileBody(file1);
-
-
-								//
-								MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-								builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-								//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-								//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-								String[] parts = ti.ccdaValidationObjective.split(" ");
-								String obj = parts[0];
-								builder.addTextBody("validationObjective", obj);
-								builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-								builder.addPart("ccdaFile", fileBody);
-								HttpEntity entity = builder.build();
-								//
-								post.setEntity(entity);
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
 
 
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-								JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
 
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
+
+
 						}
-
-
-
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
@@ -2005,7 +2012,7 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		try {
 
@@ -2048,59 +2055,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
 
 
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
 
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-								// Query MDHT war endpoint
-								CloseableHttpClient client = HttpClients.createDefault();
-								FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-								File file1 = new File("sample.xml");
-								HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
-								FileBody fileBody = new FileBody(file1);
-
-
-								//
-								MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-								builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-								//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-								//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-								String[] parts = ti.ccdaValidationObjective.split(" ");
-								String obj = parts[0];
-								builder.addTextBody("validationObjective", obj);
-								builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-								builder.addPart("ccdaFile", fileBody);
-								HttpEntity entity = builder.build();
-								//
-								post.setEntity(entity);
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
 
 
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-								JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
 
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
+
+
 						}
-
-
-
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);

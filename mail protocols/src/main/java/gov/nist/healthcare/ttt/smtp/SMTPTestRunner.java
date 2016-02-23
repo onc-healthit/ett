@@ -1363,7 +1363,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			}
 
 			
-			log.info("*****************   END  Testcase 232 *******************************");
+			log.info("*****************   END  Testcase 332 *******************************");
 			break;
 
 		default:
