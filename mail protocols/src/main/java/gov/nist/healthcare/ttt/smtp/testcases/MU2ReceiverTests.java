@@ -41,7 +41,7 @@ public class MU2ReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		//int j = 0;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");

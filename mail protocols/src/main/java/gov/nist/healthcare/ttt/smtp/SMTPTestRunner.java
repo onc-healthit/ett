@@ -929,10 +929,10 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr312;
 			try {
-				tr312 = tTest.popFetchUid(ti);
+				tr312 = tTest.SocketPopUid(ti);
 				tr312.id = 312;
 				res.add(tr312);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
