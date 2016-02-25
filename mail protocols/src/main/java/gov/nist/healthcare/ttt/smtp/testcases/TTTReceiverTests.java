@@ -1018,7 +1018,7 @@ public class TTTReceiverTests {
 				while ((responseLine = is.readLine()) != null) {
 
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1052,7 +1052,7 @@ public class TTTReceiverTests {
 
 		if (response.size() > 2) {
 			tr.setCriteriamet(CriteriaStatus.TRUE);
-			result.put("SUCCESS",
+			result.put("\nSUCCESS ",
 					"The CAPABILITY, NOOP and LOGOUT commands are implemented");
 		} else
 			tr.setCriteriamet(CriteriaStatus.FALSE); // to make the testcase return a fail status
@@ -1109,7 +1109,7 @@ public class TTTReceiverTests {
 				int i = 1;
 				while ((responseLine = is.readLine()) != null) {
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1137,11 +1137,11 @@ public class TTTReceiverTests {
 		if (response.size() > 1) {
 			if (response.get(1).contains("BAD") || response.get(1).contains("BYE") || response.get(1).contains("FAIL")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"The server rejects the command with bad syntax");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
-				result.put("ERROR",
+				result.put("\nERROR ",
 						"The server accepts commands with bad syntax!\n");
 			}
 
@@ -1194,7 +1194,7 @@ public class TTTReceiverTests {
 				int i = 1;
 				while ((responseLine = is.readLine()) != null) {
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1219,11 +1219,11 @@ public class TTTReceiverTests {
 		if (response.size() > 1) {
 			if	(response.get(1).contains("BAD") || response.get(1).contains("NO") || response.get(1).contains("FAIL")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"The server rejects the command based on the state of the connection");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
-				result.put("ERROR",
+				result.put("\nERROR ",
 						"The server accepts commands without regards to state of the connection!\n");
 			}
 		}
@@ -1409,6 +1409,111 @@ public class TTTReceiverTests {
 		return tr;
 
 	}
+	
+	public TestResult SocketPopUid(TestInput ti) throws NoSuchAlgorithmException,
+	KeyManagementException {
+		TestResult tr = new TestResult();
+		ArrayList<String> response = new ArrayList<String>();
+		LinkedHashMap<String, String> result = tr.getTestRequestResponses();
+		tr.setCriteriamet(CriteriaStatus.TRUE);
+		//	SSLSocket socket = null;
+		Socket socket = null;
+		PrintWriter output = null;
+		BufferedReader is = null;
+
+		// Initialization section:
+		// Try to open a socket on port 110
+		// Try to open input and output streams
+		try {
+			System.setProperty("java.net.preferIPv4Stack", "true");
+			/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
+					.getDefault()).createSocket(
+							InetAddress.getByName(ti.sutSmtpAddress), 995);*/
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
+
+			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
+					socket.getOutputStream(), "Windows-1252")), true);
+			// output = new DataOutputStream(socket.getOutputStream());
+			// is = new DataInputStream(socket.getInputStream());
+
+			is = new BufferedReader(new InputStreamReader(
+					socket.getInputStream(), "Windows-1252"));
+		} catch (UnknownHostException e1) {
+			System.err.println("Don't know about host: hostname");
+			result.put("ERROR", "Unknown Host " + " : " + e1.getLocalizedMessage());
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (IOException e) {
+			System.err
+			.println("Couldn't get I/O for the connection to: hostname");
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			result.put("ERROR", "Couldn't get I/O for the connection to "
+					+ ti.sutSmtpAddress + " : " + e.getLocalizedMessage());
+		}
+		// If everything has been initialized then we want to write some data
+		// to the socket we have opened a connection to on port 110
+		
+		if (socket != null && output != null && is != null) {
+			try {
+
+				output.print("USER "+ti.sutUserName+"\r\n");
+				output.flush();
+				
+				output.print("PASS "+ti.sutPassword+"\r\n");
+				output.flush();
+				
+				output.print("UIDL\r\n");
+				output.flush();
+				
+				output.print("QUIT\r\n");
+				output.flush();
+			
+				// keep on reading from/to the socket till we receive the "Ok"
+				// from POP,
+				int i = 1;
+
+				String responseLine;
+				while ((responseLine = is.readLine()) != null) {
+					System.out.println("Server: " + responseLine);
+					result.put("\nSERVER " + i, responseLine + "\n");
+					response.add(responseLine);
+					i++;
+					if (responseLine.indexOf("Ok") != -1) {
+						break;
+					}
+				}
+				output.close();
+				is.close();
+				socket.close();
+			} catch (UnknownHostException e) {
+				System.err.println("Trying to connect to unknown host: " + e);
+				tr.getTestRequestResponses().put("ERROR", "Unknown host " + e);
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+			} catch (IOException e) {
+				System.err.println("IOException:  " + e);
+				tr.getTestRequestResponses().put("ERROR", "IO Exception" + e);
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+			}
+		}
+
+		for (String s : response) {
+			if (s.contains("ERR") || s.contains("-ERR")) {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+			//	result.put("ERROR", "Authentication Failure");
+			} 
+
+
+		}
+
+		/*if (response.size() > 2) {
+			tr.setCriteriamet(CriteriaStatus.TRUE);
+			result.put("SUCCESS",
+					"The CAPABILITY, NOOP and QUIT commands are implemented");
+		} else
+			tr.setCriteriamet(CriteriaStatus.FALSE);*/
+
+		return tr;
+
+	}
 
 	@SuppressWarnings("deprecation")
 	public TestResult SocketPopBadSyntax(TestInput ti)
@@ -1469,7 +1574,7 @@ public class TTTReceiverTests {
 				while ((responseLine = is.readLine()) != null) {
 
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1493,7 +1598,7 @@ public class TTTReceiverTests {
 		for (String s : response) {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"POP server rejects the command with bad syntax.");
 			} 
 
@@ -1571,7 +1676,7 @@ public class TTTReceiverTests {
 				while ((responseLine = is.readLine()) != null) {
 
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1595,7 +1700,7 @@ public class TTTReceiverTests {
 		for (String s : response) {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"POP server rejects the command with bad syntax.");
 			} 
 
@@ -1725,8 +1830,9 @@ public class TTTReceiverTests {
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		// int j = 0;
 		Properties props = new Properties();
-		props.put("mail.pop3s.starttls.enable", true);
-		props.put("mail.pop3s.starttls.required", true);
+		props.put("mail.pop3.starttls.enable", true);
+		props.put("mail.pop3.starttls.required", true);
+		props.put("mail.pop3.ssl.trust", "*");
 
 		try {
 			Session session = Session.getDefaultInstance(props, null);

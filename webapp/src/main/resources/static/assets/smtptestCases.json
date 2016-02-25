@@ -659,7 +659,7 @@
       "name": "POP Test 3-5, 11, 15",
       "id": 303,
       "protocol": "pop",
-      "desc": "Verifies POP3 STAT, STLS, RETR, LIST, DELE, RSET and QUIT commands are implemented",
+      "desc": "Verifies POP3 STAT, STLS, RETR, LIST, RSET and QUIT commands are implemented",
       "longDesc": "The vendor has to provide the profile information (hostname, username, password) and an account with preloaded email.  ",
       "sutRole": "sender",
       "sutHisp": true,
