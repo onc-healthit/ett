@@ -1,3 +1,8 @@
+==Version 1.0.3#2/25/2016
+	* SMTP
+		-POP-1,2 perform AUTH before NOOP
+		-POP 12 fixed to handle empty UIDL issue with Apache James
+
 ==Version 1.0.2#2/19/2016
 	* Direct
 		-Links for Direct certificates on Direct Home page are now configurable for ETT local installation
