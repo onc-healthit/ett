@@ -114,5 +114,9 @@
         "name": "C32_Sample2.xml"
     }, {
         "name": "C32_Sample2_in_XDM.zip"
+    }, {
+        "name": "ToC_XDM_Full_Metadata.zip"
+    }, {
+        "name": "ToC_XDM_Limited_Metadata.zip"
     }]
 }
