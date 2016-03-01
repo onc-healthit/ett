@@ -44,7 +44,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.required",true);
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -118,7 +118,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 
 		Session session = Session.getInstance(props, null);
 
@@ -186,7 +186,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 
 		Session session = Session.getInstance(props, null);
 	
@@ -254,7 +254,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -262,7 +262,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("nomdn8@hit-dev.nist.gov"));
+					InternetAddress.parse("nomdn8@edge.nist.gov"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -324,7 +324,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -396,7 +396,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 
 		Session session = Session.getInstance(props, null);
 
@@ -465,7 +465,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 
 		Session session = Session.getInstance(props, null);
 	
@@ -533,7 +533,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -541,7 +541,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("nomdn8@hit-dev.nist.gov"));
+					InternetAddress.parse("nomdn8@edge.nist.gov"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -603,7 +603,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -676,7 +676,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 
 		Session session = Session.getInstance(props, null);
 
@@ -746,7 +746,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -813,7 +813,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -821,7 +821,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("nomdn8@hit-dev.nist.gov"));
+					InternetAddress.parse("nomdn8@edge.nist.gov"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -1076,7 +1076,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
@@ -1132,7 +1132,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
@@ -1188,7 +1188,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
@@ -1312,7 +1312,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
@@ -1485,7 +1485,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
-		tr.setSearchType("pass");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 		try {
 
@@ -1550,7 +1550,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
@@ -1611,7 +1611,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
@@ -1675,7 +1675,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
@@ -1744,7 +1744,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
@@ -1813,7 +1813,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@hit-dev.nist.gov"));
+					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			

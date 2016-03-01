@@ -267,8 +267,8 @@ public class MU2ReceiverTests {
 			}
 
 			else {
-				System.out.println("Search Original-Message-Id in DSN or in-reply-to in Headers");
-				for (Message message : messages){
+				System.out.println("Search Original-Message-Id in DSN");
+				/*for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
@@ -297,14 +297,14 @@ public class MU2ReceiverTests {
 							}
 						}
 					}
-				}
+				}*/
 
-				if (bodyparts.size() == 0){
+			//	if (bodyparts.size() == 0){
 					// DSN Search for processed/dispatched MDN
 					String s = "";
 					for (Message message : messages){
 						Object m =  message.getContent();
-						if (m instanceof Multipart){
+						if (message.getContent() instanceof Multipart){
 							Multipart multipart = (Multipart) message.getContent();
 							for (int i = 0; i < ((Multipart) m).getCount(); i++){
 								BodyPart bodyPart = multipart.getBodyPart(i);
@@ -340,7 +340,9 @@ public class MU2ReceiverTests {
 
 				}
 
-			}
+	//		}
+			
+			store.close();
 			
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.STEP2);

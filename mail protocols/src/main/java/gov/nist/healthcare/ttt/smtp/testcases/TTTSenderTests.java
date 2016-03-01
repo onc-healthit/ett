@@ -245,13 +245,13 @@ public class TTTSenderTests {
 			// Adding attachments
 
 				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
-						"text/html");
+						"application/xml");
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName("CCDA_Ambulatory.xml");
 				multipart.addBodyPart(messageBodyPart);
 				
 				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/xml");
+						"text/plain");
 				messageBodyPart1.setDataHandler(new DataHandler(source1));
 				messageBodyPart1.setFileName("Text.txt");
 				multipart.addBodyPart(messageBodyPart1);
@@ -361,7 +361,7 @@ public class TTTSenderTests {
 				multipart.addBodyPart(messageBodyPart1);
 				
 				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
-						"text/html");
+						"application/pdf");
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName("Sample.pdf");
 				multipart.addBodyPart(messageBodyPart);
@@ -471,7 +471,7 @@ public class TTTSenderTests {
 				multipart.addBodyPart(messageBodyPart1);
 				
 				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/html");
+						"text/plain");
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName("Text.txt");
 				multipart.addBodyPart(messageBodyPart);
@@ -584,13 +584,13 @@ public class TTTSenderTests {
 			// Adding attachments
 
 				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/html");
+						"text/plain");
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName("Text.txt");
 				multipart.addBodyPart(messageBodyPart);
 				
 				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
-						"text/xml");
+						"application/xml");
 				messageBodyPart1.setDataHandler(new DataHandler(source1));
 				messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
 				multipart.addBodyPart(messageBodyPart1);
@@ -695,7 +695,7 @@ public class TTTSenderTests {
 			// Adding attachments
 
 				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
-						"text/html");
+						"application/pdf");
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName("Sample.pdf");
 				multipart.addBodyPart(messageBodyPart);
@@ -806,7 +806,7 @@ public class TTTSenderTests {
 			// Adding attachments
 
 				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/html");
+						"text/plain");
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName("Text.txt");
 				multipart.addBodyPart(messageBodyPart);
