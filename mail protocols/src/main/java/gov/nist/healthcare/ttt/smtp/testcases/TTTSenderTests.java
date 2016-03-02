@@ -1290,7 +1290,7 @@ public class TTTSenderTests {
 			// Adding attachments
 
 				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
-						"application/octet-stream");
+						"application/zip");
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName("CCDA_Ambulatory_XDM.zip");
 				multipart.addBodyPart(messageBodyPart);
