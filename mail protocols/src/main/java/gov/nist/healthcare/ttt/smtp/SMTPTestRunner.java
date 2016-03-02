@@ -746,7 +746,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 159 *******************************");
 
 			TestResult tr159;
-				tr159 = mu2senderTests.testPositiveDeliveryNotification(ti);
+				tr159 = mu2senderTests.testPositiveDeliveryNotificationPop(ti);
 				tr159.id = 159;
 				res.add(tr159);
 			log.info("*****************   END  Testcase 159 *******************************");
