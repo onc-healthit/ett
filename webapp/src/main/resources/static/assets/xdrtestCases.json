@@ -232,7 +232,7 @@
 }, {
     "name": "XDR Test 14",
     "id": 14,
-    "desc": ""Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Full (XDS) metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "desc": "Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Full (XDS) metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
