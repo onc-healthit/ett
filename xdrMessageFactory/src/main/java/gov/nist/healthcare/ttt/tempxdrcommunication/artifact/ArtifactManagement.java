@@ -457,13 +457,16 @@ public class ArtifactManagement {
         payload = settings.getPayload();
 
         if (payload != null && !payload.isEmpty()) {
-            if (!ArtifactManagement.isBase64Encoded(payload)) {
+            /* Temp removal 3/4/2016
+            if (!ArtifactManagement.isBase64Encoded(payload)) {                
                 try {
                     payload = Base64.getEncoder().encodeToString(payload.getBytes("utf-8"));
                 } catch (UnsupportedEncodingException ex) {
                     Logger.getLogger(ArtifactManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
             }
+                */
             artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
             artifacts.setDocument(payload);
             metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
@@ -528,7 +531,8 @@ public class ArtifactManagement {
             settings.setDirectFrom("directFrom");
             settings.setDirectTo("directTo");
             settings.setWsaTo("wsaTo");
-            settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
+            //settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
+        //    settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
             String[] directTos = {};
             settings.setAdditionalDirectTo(directTos);
             //   String payload = getPayload(Type.XDR_MINIMAL_METADATA, settings);
@@ -544,7 +548,8 @@ public class ArtifactManagement {
              "wsaTo",
              null));
              */
-            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
+//            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
+            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
