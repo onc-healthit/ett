@@ -198,7 +198,7 @@ public class DirectMessageGenerator {
 
 		return generateBodyPartfromMultipart(mm, mm.getContentType());
 	}
-	
+
 	/**
 	 * Generate the multipart/signed
 	 * @param mul
@@ -219,7 +219,7 @@ public class DirectMessageGenerator {
 			logger.warn(ex.getMessage());
 			throw new RuntimeException(ex);
 		}
-		
+
 		return body;
 	}
 
@@ -254,7 +254,7 @@ public class DirectMessageGenerator {
 
 		return msg;
 	}
-	
+
 	public MimeMessage generateEncryptedMessageDifferentMsgId(MimeBodyPart body) throws Exception {
 		// Get session to create message
 		Properties props = System.getProperties();
@@ -297,11 +297,11 @@ public class DirectMessageGenerator {
 		MimeBodyPart encryptedPart = encrypter.generate(body,
 				// RC2_CBC
 				new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC)
-		.setProvider("BC").build());
+				.setProvider("BC").build());
 
 		return encryptedPart;
 	}
-	
+
 	/**
 	 * Alter message to get invalid digest
 	 * @throws Exception 
@@ -316,20 +316,20 @@ public class DirectMessageGenerator {
 		}
 		MimeBodyPart signed = generateMultipartSigned(attachments);
 		String contentType = signed.getContentType();
-		
+
 		// Add header to alter message
 		BodyPart firstContent = ((MimeMultipart) signed.getContent()).getBodyPart(0);
 		firstContent.addHeader("NewHeader", "Message altered");
 		BodyPart secondContent = ((MimeMultipart) signed.getContent()).getBodyPart(1);
-		
+
 		MimeMultipart signedMultipart = new MimeMultipart();
 		signedMultipart.addBodyPart(firstContent, 0);
 		signedMultipart.addBodyPart(secondContent, 1);
-		
+
 		String boundary = signedMultipart.getContentType().split("boundary=\"")[1].split("\"")[0];
-		
+
 		contentType = contentType.replaceAll("boundary=\\\"(.+)\\\"", boundary);
-		
+
 		MimeBodyPart messageToEncrypt = generateBodyPartfromMultipart(signedMultipart, contentType);
 
 		return generateEncryptedMessage(messageToEncrypt);
@@ -380,38 +380,54 @@ public class DirectMessageGenerator {
 		LdapDnslookUp ldapDl = new LdapDnslookUp();
 
 		// 1st try Ldap address bound cert
-		InputStream certStream = ldapDl.getLdapCert(targetedTo);
-		if(certStream != null) {
-			logger.info("Address bound encryption certificate pulled from LDAP");
-			return certStream;
-		} else {
+		try {
+			InputStream certStream = ldapDl.getLdapCert(targetedTo);
+			if(certStream != null) {
+				logger.info("Address bound encryption certificate pulled from LDAP");
+				return certStream;
+			} else {
+				logger.warn("Cannot pull address bound encryption certificate from LDAP");
+			}
+		} catch(Exception e) {
 			logger.warn("Cannot pull address bound encryption certificate from LDAP");
 		}
 
 		// 2nd try DNS address bound cert
-		String encCertAddressString = dl.getCertRecord(this.getAddressBoundDomain(targetedTo));
-		if (encCertAddressString != null) {
-			logger.info("Address bound encryption certificate pulled from DNS");
-			return convertCertToInputStream(encCertAddressString);
-		} else {
+		try {
+			String encCertAddressString = dl.getCertRecord(this.getAddressBoundDomain(targetedTo));
+			if (encCertAddressString != null) {
+				logger.info("Address bound encryption certificate pulled from DNS");
+				return convertCertToInputStream(encCertAddressString);
+			} else {
+				logger.warn("Cannot pull address bound encryption certificate from DNS");
+			}
+		} catch(Exception e) {
 			logger.warn("Cannot pull address bound encryption certificate from DNS");
 		}
 
 		// 3rd try LDAP domain bound cert
-		InputStream certStream2 = ldapDl.getLdapCert(getTargetDomain(targetedTo));
-		if(certStream2 != null) {
-			logger.info("Domain bound encryption certificate pulled from LDAP");
-			return certStream2;
-		} else {
+		try {
+			InputStream certStream2 = ldapDl.getLdapCert(getTargetDomain(targetedTo));
+			if(certStream2 != null) {
+				logger.info("Domain bound encryption certificate pulled from LDAP");
+				return certStream2;
+			} else {
+				logger.warn("Cannot pull domain bound encryption certificate from LDAP");
+			}
+		} catch(Exception e) {
 			logger.warn("Cannot pull domain bound encryption certificate from LDAP");
 		}
 
 		// 4th try DNS domain bound cert
-		String encCertDomainString = dl.getCertRecord(this.getTargetDomain(targetedTo));
-		if (encCertDomainString != null) {
-			logger.info("Domain bound encryption certificate pulled from DNS");
-			return convertCertToInputStream(encCertDomainString);
-		} else {
+		try{
+			String encCertDomainString = dl.getCertRecord(this.getTargetDomain(targetedTo));
+			if (encCertDomainString != null) {
+				logger.info("Domain bound encryption certificate pulled from DNS");
+				return convertCertToInputStream(encCertDomainString);
+			} else {
+				logger.warn("Cannot pull domain bound encryption certificate from DNS");
+			}
+		} catch(Exception e) {
 			logger.warn("Cannot pull domain bound encryption certificate from DNS");
 		}
 
