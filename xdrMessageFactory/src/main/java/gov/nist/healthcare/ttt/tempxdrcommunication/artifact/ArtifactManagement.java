@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -455,23 +457,31 @@ public class ArtifactManagement {
         String metadata = null;
         String payload = null;
         payload = settings.getPayload();
-
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+        String formattedDate = sdf.format(date);
+        System.out.println(formattedDate);
         if (payload != null && !payload.isEmpty()) {
-            /* Temp removal 3/4/2016
-            if (!ArtifactManagement.isBase64Encoded(payload)) {                
+            System.out.println("Payload is not empty " + formattedDate);
+            if (!ArtifactManagement.isBase64Encoded(payload)) {
+                System.out.println("!!!Payload is not base64encoded " + payload);
                 try {
                     payload = Base64.getEncoder().encodeToString(payload.getBytes("utf-8"));
+                    System.out.println("!!!now base64encoded " + payload);
                 } catch (UnsupportedEncodingException ex) {
                     Logger.getLogger(ArtifactManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
+            } else {
+                System.out.println("!!! Payload IS base64 encoded " + payload);
             }
-                */
+
             artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
             artifacts.setDocument(payload);
+            System.out.println("Setting doc to payload " + formattedDate);
             metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
         } else {
-
+            System.out.println("PAYLOAD EMPTY " + formattedDate);
             switch (type) {
                 case XDR_FULL_METADATA:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, true));
@@ -531,8 +541,8 @@ public class ArtifactManagement {
             settings.setDirectFrom("directFrom");
             settings.setDirectTo("directTo");
             settings.setWsaTo("wsaTo");
-            //settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
-        //    settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
+            //    settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
+            settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
             String[] directTos = {};
             settings.setAdditionalDirectTo(directTos);
             //   String payload = getPayload(Type.XDR_MINIMAL_METADATA, settings);
@@ -548,8 +558,8 @@ public class ArtifactManagement {
              "wsaTo",
              null));
              */
-//            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
-            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
+//            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
