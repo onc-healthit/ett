@@ -451,7 +451,11 @@ public class ArtifactManagement {
         }
         return xml;
     }
-
+    public static String escapeXml(String xml) {
+        return xml.replace("<", "&lt;");
+    
+    
+    }
     public static Artifacts generateArtifacts(Type type, Settings settings) {
 
         Artifacts artifacts = new Artifacts();
@@ -474,6 +478,7 @@ public class ArtifactManagement {
         if (payload != null && !payload.isEmpty()) {
             System.out.println("Payload is not empty " + formattedDate);
             payload = ArtifactManagement.removeXmlDeclaration(payload);
+            payload = ArtifactManagement.escapeXml(payload);
             if (!ArtifactManagement.isBase64Encoded(payload)) {
                 System.out.println("!!!Payload is not base64encoded " + payload);
                 
@@ -594,7 +599,7 @@ public class ArtifactManagement {
             
             
             System.out.println(testXMl + "\n\n");
-            System.out.println(ArtifactManagement.removeXmlDeclaration(testXMl));
+            System.out.println(ArtifactManagement.escapeXml(testXMl));
             
             
             
