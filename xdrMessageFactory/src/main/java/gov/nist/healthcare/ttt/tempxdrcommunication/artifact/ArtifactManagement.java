@@ -442,6 +442,16 @@ public class ArtifactManagement {
 
     }
 
+    public static String removeXmlDeclaration(String xml) {
+        
+        int start = xml.indexOf("<?xml ");
+        int end = xml.indexOf("?>");
+        if (start != -1 && end != -1 && end > start) {
+            xml = xml.substring(0, start) + xml.substring(end + 2);
+        }
+        return xml;
+    }
+
     public static Artifacts generateArtifacts(Type type, Settings settings) {
 
         Artifacts artifacts = new Artifacts();
@@ -463,15 +473,21 @@ public class ArtifactManagement {
         System.out.println(formattedDate);
         if (payload != null && !payload.isEmpty()) {
             System.out.println("Payload is not empty " + formattedDate);
+            payload = ArtifactManagement.removeXmlDeclaration(payload);
             if (!ArtifactManagement.isBase64Encoded(payload)) {
                 System.out.println("!!!Payload is not base64encoded " + payload);
+                
+                
+                
+                /*
                 try {
                     payload = Base64.getEncoder().encodeToString(payload.getBytes("utf-8"));
+                 
                     System.out.println("!!!now base64encoded " + payload);
                 } catch (UnsupportedEncodingException ex) {
                     Logger.getLogger(ArtifactManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+*/
             } else {
                 System.out.println("!!! Payload IS base64 encoded " + payload);
             }
@@ -568,6 +584,20 @@ public class ArtifactManagement {
             System.out.println("mimetype = " + art.getMimeType());
             System.out.println("document = " + art.getDocument());
 
+            
+            String testXMl = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                            "<?xml-stylesheet type=\"text/xsl\" href=\"CDA.xsl\"?>\n" +
+                            "<ClinicalDocument>\n" +
+                            "hello world\n" +
+                            "</ClinicalDocument>";
+            
+            
+            
+            System.out.println(testXMl + "\n\n");
+            System.out.println(ArtifactManagement.removeXmlDeclaration(testXMl));
+            
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
