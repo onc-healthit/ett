@@ -52,7 +52,7 @@ public class DirectListener implements Runnable {
 	@Value('${ett.smtp.host}')
 	String smtpHost = ""
 	
-	@Value('${unpublishedwellformed1@hit-testing2.nist.gov}')
+	@Value('${ett.starttls.address}')
 	String startTlsAddress = ""
 	
 	// Emailer settings

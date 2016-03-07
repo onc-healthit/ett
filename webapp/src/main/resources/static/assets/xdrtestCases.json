@@ -113,7 +113,7 @@
 }, {
     "name": "XDR Test 6",
     "id": 6,
-    "desc": "Verifies the ability of the sending system to complete a mutual TLS handshake before data is sent across.",
+    "desc": "Verifies the ability of the sending system to complete a mutual TLS handshake before data is sent across.\nNote that an unsuccessful TLS attempt may result in the Pending Refresh button being displayed instead of a Fail.  A disconnection happening at the server level would cause the communication not to be forwarded to the application level.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -153,7 +153,7 @@
 }, {
     "name": "XDR Test 9",
     "id": 9,
-    "desc": "Verifies the ability of the receiving system to reject a mutual TLS connection where the certificate provided by the ETT is invalid. Certificates for this test can be downloaded from the link at the top of this page. As this is a socket-level test, the full endpoint is not necessary and only hostname and port are to be entered below.",
+    "desc": "Verifies the ability of the receiving system to reject a mutual TLS connection where the certificate provided by the ETT is invalid. Certificates for this test can be downloaded from the link at the top of this page. As this is a socket-level test, the full endpoint is not necessary and only hostname and port are to be entered below. The SUT MUST attempt an HTTPS connection.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "receiver",
@@ -169,8 +169,9 @@
 }, {
     "name": "XDR Test 10",
     "id": 10,
-    "desc": "Test Tool sends a Direct Message to the SUT.  The SUT must translate this to an XDR message and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.  The return endpoint is provided below.",
-    "sutEdge": false,
+<<<<<<< .mine    "desc": "Test Tool sends a Direct Message to the SUT.  The SUT must translate this to an XDR message and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.  The return endpoint is provided below.",
+=======    "desc": "Test Tool sends a Direct Message, which is translated by the SUT to an XDR message and sent back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.",
+>>>>>>> .theirs    "sutEdge": false,
     "sutHisp": true,
     "sutRole": "sender",
     "status": "configure",
@@ -182,8 +183,9 @@
 }, {
     "name": "XDR Test 11",
     "id": 11,
-    "desc": "Test Tool sends a Direct Message + XDM to the SUT.  The SUT must translate this to an XDR message with Limited Metadata and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The return endpoint is provided below.",
-    "sutEdge": false,
+<<<<<<< .mine    "desc": "Test Tool sends a Direct Message + XDM to the SUT.  The SUT must translate this to an XDR message with Limited Metadata and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The return endpoint is provided below.",
+=======    "desc": "Test Tool sends a Direct Message + XDM, which is translated by the SUT to an XDR message with Limited Metadata and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.",
+>>>>>>> .theirs    "sutEdge": false,
     "sutHisp": true,
     "sutRole": "sender",
     "status": "configure",
@@ -195,8 +197,9 @@
 }, {
     "name": "XDR Test 12",
     "id": 12,
-    "desc": "Test Tool sends a Direct Message + XDM to the SUT.  The SUT must translate this to an XDR message with Full Metadata and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The return endpoint is provided below.",
-    "sutEdge": false,
+<<<<<<< .mine    "desc": "Test Tool sends a Direct Message + XDM to the SUT.  The SUT must translate this to an XDR message with Full Metadata and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The return endpoint is provided below.",
+=======    "desc": "Test Tool sends a Direct Message + XDM, which is translated by the SUT to an XDR message with Full Metadata and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.",
+>>>>>>> .theirs    "sutEdge": false,
     "sutHisp": true,
     "sutRole": "sender",
     "status": "configure",
