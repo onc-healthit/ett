@@ -60,6 +60,10 @@ public class ListenerProcessor implements Runnable {
 	Emailer emailer
 
 	DirectMessageProcessor processor;
+	
+	String smtpHost
+	
+	String startTlsAdress
 
 	private DatabaseInstance db;
 
@@ -111,8 +115,8 @@ public class ListenerProcessor implements Runnable {
 			Session session = Session.getDefaultInstance(props, null);
 			MimeMessage forward = new MimeMessage(session, this.messageStream);
 			DirectMessageSender sender = new DirectMessageSender();
-			logger.info("Forwarding message to unpublishedwellformed1@hit-testing2.nist.gov");
-			sender.sendMessage(25, "hit-testing2.nist.gov", forward, forward.getFrom()[0].toString(), "unpublishedwellformed1@hit-testing2.nist.gov");
+			logger.info("Forwarding message to " + this.startTlsAdress);
+			sender.sendMessage(25, this.smtpHost, forward, forward.getFrom()[0].toString(), this.startTlsAdress);
 			return
 		}
 		

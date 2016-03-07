@@ -49,6 +49,12 @@ public class DirectListener implements Runnable {
 	@Value('${ett.mdht.r2.url}')
 	String mdhtR2Url = ""
 	
+	@Value('${ett.smtp.host}')
+	String smtpHost = ""
+	
+	@Value('${unpublishedwellformed1@hit-testing2.nist.gov}')
+	String startTlsAddress = ""
+	
 	// Emailer settings
 	@Autowired
 	EmailerModel emailerModel
@@ -92,6 +98,8 @@ public class DirectListener implements Runnable {
 				processor.setCertificatesPath(this.certificatesPath)
 				processor.setCertPassword(this.certPassword)
 				processor.setLogFilePath(logFilePath)
+				processor.setSmtpHost(this.smtpHost)
+				processor.setStartTlsAdress(this.startTlsAddress)
 				
 				Thread t = new Thread(processor);
 				threadsList.add(t);
