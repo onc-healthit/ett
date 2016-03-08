@@ -132,7 +132,7 @@ public class TTTReceiverTests {
 						result.put("\n" + h.getName(), h.getValue() + "\n");
 					}
 
-					result.put("Delivered-To", "********");
+					result.put("\n" + "Delivered-To", "********" + "\n");
 
 					// Storing the Message Body Parts
 					if(message.getContent() instanceof Multipart){

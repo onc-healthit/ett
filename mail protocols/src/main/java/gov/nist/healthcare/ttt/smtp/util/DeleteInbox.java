@@ -23,7 +23,7 @@ public class DeleteInbox {
 			System.out.println("Enter hostname: ");
 			String hostname = reader.next();
 
-			System.out.println("Enter Protocol[Enter 'imap' if the server is unencypted. Enter 'imaps' if SSL/TLS]:");
+			System.out.println("Enter Protocol[Enter 'imap' if the server is unencypted. Enter 'imaps' if SSL/TLS is enabled.]:");
 			String protocol = reader.next().toLowerCase();
 
 			System.out.println("Enter port number:");
@@ -35,6 +35,8 @@ public class DeleteInbox {
 			System.out.println("Enter Password: ");
 			String password = reader.next();
 
+			reader.close();
+			
 			Session session = Session.getDefaultInstance(props, null);
 			store = session.getStore(protocol);
 
