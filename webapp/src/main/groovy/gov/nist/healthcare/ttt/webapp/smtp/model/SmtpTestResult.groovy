@@ -2,13 +2,14 @@ package gov.nist.healthcare.ttt.webapp.smtp.model;
 
 import gov.nist.healthcare.ttt.smtp.ITestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult;
+import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
 import java.util.LinkedHashMap;
 
 public class SmtpTestResult {
 
 	boolean testSuccess
-	boolean criteriaMet
+	CriteriaStatus criteriaMet
 	int testCaseId
 	LinkedHashMap<String, String> testRequestResponses
 	String testCaseDesc
@@ -19,13 +20,13 @@ public class SmtpTestResult {
 
 	}
 
-	public SmtpTestResult(boolean testSuccess, boolean criteriaMet,
+	public SmtpTestResult(boolean testSuccess, CriteriaStatus criteria,
 			int testCaseId, LinkedHashMap<String, String> testRequestResponses,
 			String testCaseDesc, String lastTestResponse,
 			int lastTestResultStatus) {
 		super();
 		this.testSuccess = testSuccess;
-		this.criteriaMet = criteriaMet;
+		this.criteria = criteria;
 		this.testCaseId = testCaseId;
 		this.testRequestResponses = testRequestResponses;
 		this.testCaseDesc = testCaseDesc;
@@ -35,7 +36,7 @@ public class SmtpTestResult {
 
 	public SmtpTestResult(ITestResult trs) {
 //		this.testSuccess = ((TestResult) trs).isTestSuccess();
-		this.criteriaMet = trs.isCriteriaMet();
+		this.criteria = trs.getCriteriaMet();
 		this.testCaseId = trs.getTestCaseId();
 		this.testRequestResponses = trs.getTestRequestResponses();
 		this.testCaseDesc = trs.getTestCaseDesc();

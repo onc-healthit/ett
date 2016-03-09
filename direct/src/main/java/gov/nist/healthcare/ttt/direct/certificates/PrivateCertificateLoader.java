@@ -19,7 +19,8 @@ Authors: William Majurski
 
 package gov.nist.healthcare.ttt.direct.certificates;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.security.cert.Certificate;
 import java.security.KeyStore;
@@ -29,11 +30,12 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Security;
 import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import org.bouncycastle.asn1.ASN1EncodableVector;
@@ -62,10 +64,15 @@ public class PrivateCertificateLoader {
 	Certificate[] chain;
 	String signDN;
 
-	public PrivateCertificateLoader(InputStream certificate, String password)
-			throws Exception {
+	public PrivateCertificateLoader(InputStream certificate, String password) throws Exception {
 
 		Security.addProvider(new BouncyCastleProvider());
+		
+		// Copy InputStream in byte array so we can read it more than once
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		IOUtils.copy(certificate, baos);
+		byte[] bytesCert = baos.toByteArray();
+		
 		//
 		// Open the key store
 		//
@@ -82,30 +89,21 @@ public class PrivateCertificateLoader {
 			if (password == null) {
 				password = "";
 			}
-			ks.load(certificate, password.toCharArray());
-		} catch (NoSuchAlgorithmException e1) {
-			throw new NoSuchAlgorithmException();
-		} catch (CertificateException e1) {
-			throw new CertificateException();
-		} catch (IOException e1) {
-			throw new IOException();
+			ks.load(new ByteArrayInputStream(bytesCert), password.toCharArray());
 		} catch (Exception e1) {
 
-			// Verifying certificate format
-			certificate.reset();
-
-			logger.info("Trying to read as a public certificate");
+			logger.error("File is not a private certificate. Trying to read as a public certificate");
 			try {
 				@SuppressWarnings("unused")
-				PublicCertLoader publicCertLoader = new PublicCertLoader(certificate);
-				logger.warn("It is a public certificate");
-				throw new Exception("The file is a public certificate");
+				PublicCertLoader publicCertLoader = new PublicCertLoader(new ByteArrayInputStream(bytesCert));
 				// System.out.println(encCert);
 			} catch (Exception e2) {
-				System.out.println("It is not a public certificate");
+				logger.warn("File is not a public certificate");
+				throw new Exception("The file is not a certificate. You need to upload a private certificate in order to decrypt the message");
 			}
+			logger.warn("File is a public certificate");
+			throw new Exception("The file is a public certificate. You need to upload a private certificate in order to decrypt the message");
 			
-			throw new Exception("The file is not a certificate");
 		}
 
 		@SuppressWarnings("rawtypes")

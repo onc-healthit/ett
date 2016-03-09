@@ -35,11 +35,19 @@ public class MDNGeneratorTest {
 		generator.setEncryptionCert(encryptionCert);
 		
 		
-		MimeBodyPart signed = generator.generateMultipartSigned(generator.generateBodyReport());
+		MimeBodyPart signed = generator.generateMultipartSigned(generator.generateBodyReport(true, false, false));
 		signed.writeTo(new FileOutputStream(new File("d_mdn.txt")));
 		
 		MimeMessage msg = generator.generateEncryptedMessage(signed);
 		msg.writeTo(new FileOutputStream(new File("e_mdn.txt")));
+		
+		generator.setEncryptionCert(new FileInputStream(new File(publicCertPath)));
+		MimeMessage msg2 = generator.generateEncryptedMessageWithDifferentSettings(signed, true, false);
+		msg2.writeTo(new FileOutputStream(new File("mdnnullsender.txt")));
+		
+		generator.setEncryptionCert(new FileInputStream(new File(publicCertPath)));
+		MimeMessage msg3 = generator.generateEncryptedMessageWithDifferentSettings(signed, false, true);
+		msg3.writeTo(new FileOutputStream(new File("mdndifferentsender.txt")));
 		
 	}
 

@@ -12,5 +12,4 @@ public interface XdrReceiver extends IObservable {
 
 
 
-
 }

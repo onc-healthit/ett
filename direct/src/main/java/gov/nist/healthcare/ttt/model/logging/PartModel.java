@@ -24,6 +24,8 @@ public class PartModel extends PartImpl implements PartInterface {
 	private PartInterface parent;
 	private Collection<PartInterface> children;
 	private List<DetailInterface> details;
+	
+	private boolean isQuotedPrintable = false;
 
 	public PartModel(String contentType, String contentTransferEncoding,
 			String contentDisposition, Part content, boolean status,
@@ -176,6 +178,14 @@ public class PartModel extends PartImpl implements PartInterface {
 			it = (PartModel) it.getParent();
 		}
 		return off;
+	}
+
+	public boolean isQuotedPrintable() {
+		return isQuotedPrintable;
+	}
+
+	public void setQuotedPrintable(boolean isQuotedPrintable) {
+		this.isQuotedPrintable = isQuotedPrintable;
 	}
 
 }

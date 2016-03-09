@@ -1,99 +1,999 @@
 {
-    "testingMode": "true",
-    "tests": [
+  "testingMode": false,
+  "tests": [
+    {
+      "name": "SMTP Test 1-8, 14, 18 (Send)",
+      "id": 1,
+      "protocol": "smtp",
+      "desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS and PLAIN SASL Authentication. The SUT will send an email to wellformed1@edge.nist.gov. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@edge.nist.gov from the email address entered in Profile window.",
+      "longDesc": "The credentials for SASL authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123 ",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": true,
+      "fields": [
         {
-            "name": "SMTP test 1-8, 14, 18",
-            "id": 1,
-            "desc": "Tests the ability of the Vendor to send an email using SMTP protocol with STARTTLS and PLAIN SASL Authentication. the Vendor sends email to wellformed1@hit-testing2.nist.gov",
-            "sutRole": "sender",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP test 9, 16, 20",
-            "id": 16,
-            "desc": "Tests the ability  of the Vendor to accept a STARTTLS connection with PLAIN SASL authentication.The test lab should verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION'",
-            "sutRole": "receiver",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP test 10",
-            "id": 10,
-            "desc": "Tests the ability of the Vendor to reject invalid data as part of DATA command. TTT sends an email to Test Address 1(the Vendor) from wellformed3@hit-testing2.nist.gov.",
-            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects data sent from a HISP (e.g., ETT), acting as the sender, as a component of a successfully established and active session. Successful establishment of an end-point to end-point connection between the SUT and ETT is a necessary function for SMTP Test Case 10 execution.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT and attempt to send an invalid data via the DATA command (e.g., bad line feeds).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 10 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet.",
-            "sutRole": "receiver",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP test 11",
-            "id": 11,
-            "desc": "Tests the ability of the Vendor to reject bad SMTP commands. The tool will send invalid SMTP commands to intiate the session following exception paths identified in Section 4.1.1 and 4.1.4 of RFC 2821",
-            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects as invalid the commands sent from a HISP (e.g., ETT), acting as the sender./n The details for conformance testing flow are as follows: The ETT attempts to initiate a session with the SUT by sending an invalid SMTP command following identified exception paths. The test attempts to determine if the SUT rejects the command sent by the Edge Testing Tool as invalid and responds using the appropriate mechanisms. This is conducted in accordance with RFC 2811, Section 4.1.1 and 4.1.4 (e.g., closing the session abruptly).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \nThe test correlates to Test ID 11 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
-            "sutRole": "receiver",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP test 13",
-            "id": 13,
-            "desc": "Tests the timeouts for various SMTP commands. The tool will keep the transaction open for beyond the specified timelimits in RFC 2821 section 4.5.3.2",
-            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, can successfully establish an active session with a HISP (e.g., ETT), acting as the sender, and conform to the specific timeout requirements within the RFC and SMTP command.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT. The SUT will attempt to keep a transaction open with the ETT for beyond the specified time constraints found within RFC 2821, Section 4.5.3.2. \nThis is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 13 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
-            "sutRole": "receiver",
-            "sutHisp": "true",
-            "sutEdge": "true",
-            "fields": [
-                {
-                    "label": "Command timeout in seconds",
-                    "name": "sutCommandTimeoutInSeconds",
-                    "datatype": "String",
-                    "value": "sutCommandTimeoutInSeconds",
-                    "readOnly": "false",
-                    "display": "true"
-                }
-            ]
-        },
-        {
-            "name": "SMTP test 17",
-            "id": 17,
-            "desc": "Tests the ability of the Vendor to reject invalid STARTTLS commands.The tool sends invalid STARTTLS commands and check for server behavior.",
-            "sutRole": "receiver",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP MU2 test 17",
-            "id": 117,
-            "desc": "Tests the ability of the Vendor to send messages with unique message-IDs.",
-            "sutRole": "sender",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP MU2 test 45",
-            "id": 145,
-            "desc": "Tests the ability of the Vendor to send messages with unique message-IDs.",
-            "sutRole": "sender",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP MU2 test 46",
-            "id": 146,
-            "desc": "Tests the ability of the Vendor to send messages with Disposition Notification Options Header.",
-            "sutRole": "sender",
-            "sutHisp": "true",
-            "sutEdge": "true"
-        },
-        {
-            "name": "SMTP test 22",
-            "id": 22,
-            "desc": "Tests the ability of the Vendor to reject a PLAIN SASL connection. TTT tries to authenticate with the Vendor using bad username/password",
-            "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, will reject and fail to authenticate an invalid PLAIN SASL request sent from a HISP (e.g., ETT), acting as the sender.\nThe details for conformance testing flow are as follows: The ETT will send an invalid PLAIN SASL username/password authentication scheme to the SUT. The SUT will receive the invalid PLAIN SASL username/password, reject the credentials, and fail to established authentication to the ETT. The PLAIN SASL connection mechanisms will conform to the specified requirements within RFC 4616, Section 2.\n This is conditional test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.4 of the ‘Implementation Guide for Direct Edge Protocols’ document.\n The test correlates to Test ID 22 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
-            "sutRole": "receiver",
-            "sutHisp": "true",
-            "sutEdge": "true"
+          "label": "C-CDA Document Type",
+          "name": "ccdaReferenceFilename",
+          "datatype": "CCDAWidget",
+          "value": "ccdaReferenceFilename",
+          "readOnly": false,
+          "display": true
         }
-    ]
+      ]
+    },
+    {
+      "name": "SMTP Test 9, 16, 20 (Receive)",
+      "id": 16,
+      "protocol": "smtp",
+      "desc": "Verifies the ability of the receiving system to accept a STARTTLS connection with PLAIN SASL authentication. Hitting 'Run' will cause ETT to send an email. Verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION'.",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true,
+      "fields": [
+        {
+          "label": "C-CDA Document Type",
+          "name": "ccdaReferenceFilename",
+          "datatype": "CCDAWidget",
+          "value": "ccdaReferenceFilename",
+          "readOnly": false,
+          "display": true
+        }
+      ]
+    },
+    {
+      "name": "SMTP Test 10 (Reject Invalid DATA)",
+      "id": 10,
+      "protocol": "smtp",
+      "desc": "Negative Test: Verifies the ability of the receiving system to REJECT invalid data as part of DATA command. Hitting 'Run' will cause ETT to begin an SMTP transaction to the Vendor SMTP Hostname/IP entered into Profile window. A correct REJECTION will cause the SMTP session to end before the email is delivered.",
+      "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects data sent from a HISP (e.g., ETT), acting as the sender, as a component of a successfully established and active session. Successful establishment of an end-point to end-point connection between the SUT and ETT is a necessary function for SMTP Test Case 10 execution.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT and attempt to send an invalid data via the DATA command (e.g., bad line feeds).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 10 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet.",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 11 (Reject Bad Commands)",
+      "id": 11,
+      "protocol": "smtp",
+      "desc": "Negative Tests: Verifies the ability of the receiving system to REJECT bad SMTP commands. ETT will send invalid SMTP commands following exception paths identified in Section 4.1.1 and 4.1.4 of RFC 2821. Hitting 'Run' will cause ETT to begin the invalid transactions to the Vendor SMTP Hostname/IP entered into Profile window.",
+      "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects as invalid the commands sent from a HISP (e.g., ETT), acting as the sender./n The details for conformance testing flow are as follows: The ETT attempts to initiate a session with the SUT by sending an invalid SMTP command following identified exception paths. The test attempts to determine if the SUT rejects the command sent by the Edge Testing Tool as invalid and responds using the appropriate mechanisms. This is conducted in accordance with RFC 2811, Section 4.1.1 and 4.1.4 (e.g., closing the session abruptly).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \nThe test correlates to Test ID 11 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 13 (Command Timeout)",
+      "id": 13,
+      "protocol": "smtp",
+      "desc": "Verifies the ability of the receiving system to correctly timeout for various SMTP commands. The tool will keep the transaction open until a timeout is noted. As there are no required time limits in RFC 2821 section 4.5.3.2, this test is configurable. Hitting 'Run' will begin the ETT's timer based on the value in seconds entered below.",
+      "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, can successfully establish an active session with a HISP (e.g., ETT), acting as the sender, and conform to the specific timeout requirements within the RFC and SMTP command.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT. The SUT will attempt to keep a transaction open with the ETT for beyond the specified time constraints found within RFC 2821, Section 4.5.3.2. \nThis is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the ‘Implementation Guide for Direct Edge Protocols’ document. \n The test correlates to Test ID 13 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true,
+      "fields": [
+        {
+          "label": "Command timeout in seconds",
+          "name": "sutCommandTimeoutInSeconds",
+          "datatype": "String",
+          "value": "sutCommandTimeoutInSeconds",
+          "readOnly": false,
+          "display": true
+        }
+      ]
+    },
+    {
+      "name": "SMTP Test 17 (Reject Invalid STARTTLS)",
+      "id": 17,
+      "protocol": "smtp",
+      "desc": "Verifies the ability of the receiving system to reject invalid STARTTLS commands.Hitting 'Run' will cause ETT to begin an invalid STARTTLS session. This session SHALL end before a message can be sent.",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP MT Test 17 - Generate Unique Message-ID (Processed MDN suite)",
+      "id": 117,
+      "protocol": "mu2",
+      "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@hit-testing2.nist.gov. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Processed MDN').",
+      "longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
+      "sutRole": "sender",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP MT Test 18 - Accept failure message for invalid recipient (Processed MDN suite)",
+      "id": 147,
+      "protocol": "mu2",
+      "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones and an invalid address (noaddress@hit-testing2.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+      "longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
+      "sutRole": "sender",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP MT Test 45 - Generate Unique Message-ID (IG for Delivery Notification Suite)",
+      "id": 145,
+      "protocol": "mu2",
+      "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@hit-testing2.nist.gov. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Implementation Guide for Delivery Notification').",
+      "longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
+      "sutRole": "sender",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP MT Test 46 (Generate Disposition Notification Options Header)",
+      "id": 146,
+      "protocol": "mu2",
+      "desc": "Verifies the ability of the sending system to send messages with a correct Disposition Notification Options Header. The sending system will send a message to wellformed14@hit-testing2.nist.gov with the required header. Hitting 'Run' will cause ETT to check for this header.",
+      "longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
+      "sutRole": "sender",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP MT Test 47 - Accept failure message for invalid recipient (IG for Delivery Notification Suite)",
+      "id": 147,
+      "protocol": "mu2",
+      "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones and an invalid address (noaddress@hit-testing2.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+      "longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
+      "sutRole": "sender",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 22 (Reject invalid username/password)",
+      "id": 22,
+      "protocol": "smtp",
+      "desc": "Verifies the ability of the receiving to reject a PLAIN SASL connection. Hitting 'Run' will cause ETT to use an invalid username/password to authenticate to the system entered into Vendor SMTP Hostname/IP in the profile window.",
+      "longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, will reject and fail to authenticate an invalid PLAIN SASL request sent from a HISP (e.g., ETT), acting as the sender.\nThe details for conformance testing flow are as follows: The ETT will send an invalid PLAIN SASL username/password authentication scheme to the SUT. The SUT will receive the invalid PLAIN SASL username/password, reject the credentials, and fail to established authentication to the ETT. The PLAIN SASL connection mechanisms will conform to the specified requirements within RFC 4616, Section 2.\n This is conditional test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.4 of the ‘Implementation Guide for Direct Edge Protocols’ document.\n The test correlates to Test ID 22 of the SMTP Test Cases (tab) within the ‘DirectEdgeProtocols’ spreadsheet. ",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 25(a) (Receive Text and CCDA)",
+      "id": 91,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive text and CCDA attachments",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 25(b) (Receive PDF and CCDA)",
+      "id": 92,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive PDF and CCDA attachments",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 25(c) (Receive Text and XDM)",
+      "id": 93,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive text and XDM attachments",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 25(d) (Receive CCDA and Text)",
+      "id": 94,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive CCDA and text attachments",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 25(e) (Receive CCDA and Pdf)",
+      "id": 95,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive CCDA and PDF attachments",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 25(f) (Receive XDM and Text)",
+      "id": 96,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive XDM and text attachments",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 26(a) (Receive bad CCDA)",
+      "id": 97,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive a CCDA document that includes a broken reference to a style-sheet",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 26(b) (Receive bad CCDA)",
+      "id": 98,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive a CCDA document with good reference to an invalid style-sheet",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 27 (Receive XDM with bad XHTML)",
+      "id": 99,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive an XDM package containing a bad XHTML file",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 28 (Receive XDM with MIME type 'application/octet-stream')",
+      "id": 100,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of SUT to receive an XDM package with MIME-type 'application/octet-stream' at the SMTP layer",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP Test 29 (Receive XDM with MIME type 'application/xml')",
+      "id": 90,
+      "protocol": "smtp",
+      "desc": " Verifies the ability of Vendor to receive an XDM package with MIME-type 'application/xml' at the XDM layer (in METADATA.XML)",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": true
+    },
+    {
+      "name": "SMTP MT Test 1 (Message to Bad Address)",
+      "id": 101,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid.If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 2 (Receiving HISP Not Trusted)",
+      "id": 102,
+      "desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to an untrusted address.  Hitting ‘Run’ will cause ETT  to send a message to an untrusted final address. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 3 (Receipient's Certificate Not Published)",
+      "id": 103,
+      "desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 4 (No Processed MDN)",
+      "id": 104,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 5 (Message to Bad Address)",
+      "id": 105,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 6 (Receiving HISP Not Trusted)",
+      "id": 106,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. The expectation is that if the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 7 (Receipient's Certificate Not Published)",
+      "id": 107,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 8 (No Processed MDN)",
+      "id": 108,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 9 (Message to Bad Address)",
+      "id": 109,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid.  The expectation is that if the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 10 (Receiving HISP Not Trusted)",
+      "id": 110,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 11 (Receipient's Certificate Not Published)",
+      "id": 111,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 12 (No Processed MDN)",
+      "id": 112,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 21(a) (Message with Good Header)",
+      "id": 521,
+      "desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag).The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 21(b) (Message with Good Header)",
+      "id": 121,
+      "desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag).The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 21(c) (Message with Good Header)",
+      "id": 151,
+      "desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag).he expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 22(a) (Message with Bad Header)",
+      "id": 522,
+      "desc": "Verify the ability of the system to properly process an incorrect  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an incorrect Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag).The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 22(b) (Message with Bad Header)",
+      "id": 122,
+      "desc": "Verify the ability of the system to properly process an incorrect  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an incorrect Disposition-Notifications-Options  Header. message was sent successfully 'Check MDN' will appear. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag).The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 22(c) (Message with Bad Header)",
+      "id": 152,
+      "desc": "Verify the ability of the system to properly process an incorrect  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an incorrect Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag).The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 23(a) (Message to Bad Address)",
+      "id": 101,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 23(b) (Message to Bad Address)",
+      "id": 105,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 23(c) (Message to Bad Address)",
+      "id": 109,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 24(a) (Receiving HISP Not Trusted)",
+      "id": 102,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 24(b) (Receiving HISP Not Trusted)",
+      "id": 106,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 24(c) (Receiving HISP Not Trusted)",
+      "id": 110,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 25(a) (Receipient's Certificate Not Published)",
+      "id": 103,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 25(b) (Receipient's Certificate Not Published)",
+      "id": 107,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 25(c) (Receipient's Certificate Not Published)",
+      "id": 111,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 26(a) (No Processed MDN)",
+      "id": 104,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 26(b) (No Processed MDN)",
+      "id": 108,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 26(c) (No Processed MDN)",
+      "id": 112,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 27(a) (No Dispatched MDN)",
+      "id": 527,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that will not provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 27(b) (No Dispatched MDN)",
+      "id": 127,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that will not provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 27(c) (No Dispatched MDN)",
+      "id": 157,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that will not provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 28(a) (Delayed Dispatched MDN)",
+      "id": 528,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 28(b) (Delayed Dispatched MDN)",
+      "id": 128,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 28(c) (Delayed Dispatched MDN)",
+      "id": 158,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP MT Test 29(a) (Positive Notification)",
+      "id": 529,
+      "desc": "Verify the ability of the system to provide a final positive delivery  notification when a message is sent to a destination that has responding  appropriately. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate final positive delivery notification will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 29(b) (Positive Notification)",
+      "id": 129,
+      "desc": "Verify the ability of the system to provide a final positive delivery  notification when a message is sent to a destination that has responding  appropriately.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that will respond appropriately. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate final positive delivery notification will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/POP MT Test 29(c) (Positive Notification)",
+      "id": 159,
+      "desc": "Verify the ability of the system to provide a final positive delivery  notification when a message is sent to a destination that has responding  appropriately.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that will respond appropriately. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate final positive delivery notification will be returned.",
+      "protocol": "mu2",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 39 (Message with Good Header)",
+      "id": 139,
+      "desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and pass it on to the destination HISP.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
+      "protocol": "mu2",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 40 (Message with Bad Header)",
+      "id": 140,
+      "desc": "Verify the ability of the system to properly process an incorrect  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an incorrect Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
+      "protocol": "mu2",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 41 (No Dispatched MDN)",
+      "id": 141,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that will not provide a dispatched MDN.  The expectatiosfully 'Check MDN' will appear. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.The proctor needs to enter a bad receiving HISP address in the 'Vendor MU2 Email Address'section.",
+      "protocol": "mu2",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "SMTP/IMAP MT Test 42 (Message to Bad Address)",
+      "id": 142,
+      "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid.  If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.The proctor needs to enter a bad receiving HISP address in the 'Vendor MU2 Email Address'section..",
+      "protocol": "mu2",
+      "sutRole": "receiver",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "IMAP Test 1, 2, 3",
+      "id": 201,
+      "protocol": "imap",
+      "desc": "Verifies IMAP4 CAPABILITY, NOOP and LOGOUT commands are implemented.",
+      "longDesc": "The test tool connects to the vendor on the standard IMAP port 143.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "POP Test 1, 2",
+      "id": 301,
+      "protocol": "pop",
+      "desc": "Verifies POP3 CAPA, NOOP and QUIT commands are implemented.",
+      "longDesc": "The test tool connects to the vendor on the standard POP3 port 110.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "POP Test 3-5, 11, 15",
+      "id": 303,
+      "protocol": "pop",
+      "desc": "Verifies POP3 STAT, STLS, RETR, LIST, DELE, RSET and QUIT commands are implemented",
+      "longDesc": "The vendor has to provide the profile information (hostname, username, password) and an account with preloaded email.  ",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "POP Test 9",
+      "id": 309,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the Vendor HISP(POP Server) to reject a command when a command with bad syntax is sent.",
+      "longDesc": "The test tool connects to the vendor on the standard POP3 port 110.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "POP Test 10",
+      "id": 310,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the Vendor HISP(POP Server) to reject a command in bad state.",
+      "longDesc": "The test tool connects to the vendor on the standard POP3 port 110.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "POP Test 12",
+      "id": 312,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the Vendor HISP(POP Server) to produce Unique identifiers(UIDs).",
+      "longDesc": "The proctor has to send two emails to the vendor one after another and see that each message has a different UID. ",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "POP Test 17",
+      "id": 317,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the Vendor HISP(POP Server) to reject authentication when bad username/password is used.",
+      "longDesc": "The test tool connects to the vendor on the standard POP3 port 110.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "IMAP Test 4-8, 11, 15",
+      "id": 205,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor HISP to implement imap commands.(AUTHENTICATE, STARTTLS, LOGIN, SELECT, FETCH)",
+      "longDesc": "The vendor has to provide the profile information (hostname, username, password) and an account with preloaded email.  ",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "IMAP Test 9",
+      "id": 209,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor HISP to reject a command when a command with bad syntax is sent.",
+      "longDesc": "The test tool connects to the vendor on the standard IMAP port 143.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "IMAP Test 10",
+      "id": 210,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor HISP to reject commands with right syntax based on the specific state of the connection.",
+      "longDesc": "The test tool connects to the vendor on the standard IMAP port 143.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "IMAP Test 12",
+      "id": 212,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor HISP to generate Unique Identifiers(UIDs) for each message.",
+      "longDesc": "The proctor has to send two emails to the vendor one after another and see that each message has a different UID. ",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "IMAP Test 17",
+      "id": 217,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor HISP to reject incorrect username/password.",
+      "longDesc": "The test tool connects to the vendor on the standard IMAP port 143.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false
+    },
+    {
+      "name": "IMAP Test 19, 20, 24",
+      "id": 219,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Edge system to initiate a IMAP session with STARTTLS and PLAIN SASL AUTHENTICATION. The Vendor should fetch an email from 'imaptesting@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is imaptesting@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP Test 21",
+      "id": 221,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor to use either the uppercase, lowercase or mixed case mailbox names and access data. The Vendor should fetch emails from imaptesting@hit-testing2.nist.gov within the folders 'FOLDER' and 'folder2'.",
+      "longDesc": "The credentials for authentication is imaptesting@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP Test 22",
+      "id": 222,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor to deal with exceptions for different commands. The proctor need to send bad commands to the ETT.",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP Test 25",
+      "id": 225,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor to receive status and size updates from the IMAP4 server. An email will be sent to the SUT and the SUT will show size and status updates (e.g change in the number of emails in inbox) when new email is received",
+      "longDesc": "The proctor needs to send an email to the Vendor and should verify that the Vendor system is able to show size and status updates (e.g change in the number of emails in inbox) when new email is received ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP Test 27",
+      "id": 227,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor to accept XDM packages sent using different MIME Types. The SUT should fetch emails from 'xdmmimetypes@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is xdmmimetypes@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP Test 28",
+      "id": 228,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor to accept multiple attachments (in varying order). The Vendor should fetch an email from 'multipleattachments@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is multipleattachments@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP Test 29",
+      "id": 229,
+      "protocol": "imap",
+      "desc": "Test for the ability of the Vendor to accept C-CDA even in the case where a stylesheet is bad or missing. The Vendor should fetch an email form 'badccda@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is badccda@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP Test 30",
+      "id": 230,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the Vendor to accept XDM package even in the case where the required XHTML is bad. The Vendor should fetch an email from 'xdmbadxhtml@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is xdmbadxhtml@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "IMAP 31 (Receive)",
+      "id": 231,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the SUT to accept different attachment types.",
+      "longDesc": "The credentials for authentication is b1-ambulatory@hit-testing2.nist.gov, b1-inpatient@hit-testing2.nist.gov, b2-ambulatory@hit-testing2.nist.gov, b2-inpatient@hit-testing2.nist.gov, b5-ambulatory@hit-testing2.nist.gov, b5-inpatient@hit-testing2.nist.gov, b9-ambulatory@hit-testing2.nist.gov, b9-inpatient@hit-testing2.nist.gov, negativetestccds@hit-testing2.nist.gov, negativetestingcareplan@hit-testing2.nist.gov. The password is smtptesting123 for all accounts. ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true,
+      "fields": [
+        {
+          "label": "Attachment type",
+          "name": "attachmentType",
+          "datatype": "DropdownString",
+          "allowedValues": [
+            "170.315(b)(1)-Transitions of Care-Ambulatory Setting",
+            "170.315(b)(1)-Transitions of Care-Inpatient Setting",
+            "170.315(b)(2)–Clinical Information Reconciliation and Incorporation-Ambulatory Setting",
+            "170.315(b)(2)–Clinical Information Reconciliation and Incorporation–Inpatient Setting",
+            "170.315(b)(5)–Common Clinical Data Set Summary Record-Ambulatory Setting",
+            "170.315(b)(5)–Common Clinical Data Set Summary Record-Inpatient Setting",
+            "170.315(b)(9)–Care Plan-Ambulatory Setting",
+            "170.315(b)(9)–Care Plan-Inpatient Setting",
+            "NegativeTesting_CCDS",
+            "NegativeTesting_CarePlan"
+          ],
+          "value": "attachmentType",
+          "readOnly": false,
+          "display": true
+        }
+      ]
+    },
+    {
+      "name": "IMAP 32 (Receive + Validate)",
+      "id": 232,
+      "protocol": "imap",
+      "desc": "Verifies the ability of the SUT to host attachments and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false,
+      "fields": [
+        {
+          "label": "C-CDA Document Type",
+          "name": "ccdaReferenceFilename",
+          "datatype": "CCDAWidget",
+          "value": "ccdaReferenceFilename",
+          "readOnly": false,
+          "display": true
+        }
+      ]
+    },
+    {
+      "name": "POP Test 19, 20, 24",
+      "id": 319,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the SUT to support various POP3 commands. The proctor need to send commands to the ETT and fetch an email from 'poptesting@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is poptesting@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "POP Test 22",
+      "id": 322,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the SUT to deal with exceptions for different commands. The proctor need to send bad commands to the ETT.",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "POP Test 27",
+      "id": 327,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the SUT to accept XDM packages sent using different MIME Types. The Vendor should fetch emails from 'xdmmimetypes@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is xdmmimetypes@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "POP Test 28",
+      "id": 328,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the SUT to accept multiple attachments (in varying order). The Vendor should fetch emails from 'multipleattachments@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is multipleattachments@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "POP Test 29",
+      "id": 329,
+      "protocol": "pop",
+      "desc": "Test for the ability of the SUT to accept C-CDA even in the case where a stylesheet is bad or missing. The Vendor should fetch emails from 'badccda@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is badccda@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "POP Test 30",
+      "id": 330,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the SUT to accept XDM package even in the case where the required XHTML is bad. The Vendor should fetch emails from 'xdmbadxhtml@hit-testing2.nist.gov'.",
+      "longDesc": "The credentials for authentication is xdmbadxhtml@hit-testing2.nist.gov / smtptesting123 ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true
+    },
+    {
+      "name": "POP 31 (Receive)",
+      "id": 331,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the SUT to accept different attachment types.",
+      "longDesc": "The credentials for authentication is b1-ambulatory@hit-testing2.nist.gov, b1-inpatient@hit-testing2.nist.gov, b2-ambulatory@hit-testing2.nist.gov, b2-inpatient@hit-testing2.nist.gov, b5-ambulatory@hit-testing2.nist.gov, b5-inpatient@hit-testing2.nist.gov, b9-ambulatory@hit-testing2.nist.gov, b9-inpatient@hit-testing2.nist.gov, negativetestccds@hit-testing2.nist.gov, negativetestingcareplan@hit-testing2.nist.gov. The password is smtptesting123 for all accounts. ",
+      "sutRole": "receiver",
+      "sutHisp": false,
+      "sutEdge": true,
+      "fields": [
+        {
+          "label": "Attachment type",
+          "name": "attachmentType",
+          "datatype": "DropdownString",
+          "allowedValues": [
+            "170.315(b)(1)-Transitions of Care-Ambulatory Setting",
+            "170.315(b)(1)-Transitions of Care-Inpatient Setting",
+            "170.315(b)(2)–Clinical Information Reconciliation and Incorporation-Ambulatory Setting",
+            "170.315(b)(2)–Clinical Information Reconciliation and Incorporation–Inpatient Setting",
+            "170.315(b)(5)–Common Clinical Data Set Summary Record-Ambulatory Setting",
+            "170.315(b)(5)–Common Clinical Data Set Summary Record-Inpatient Setting",
+            "170.315(b)(9)–Care Plan-Ambulatory Setting",
+            "170.315(b)(9)–Care Plan-Inpatient Setting",
+            "NegativeTesting_CCDS",
+            "NegativeTesting_CarePlan"
+          ],
+          "value": "attachmentType",
+          "readOnly": false,
+          "display": true
+        }
+      ]
+    },
+    {
+      "name": "POP 32 (Receive + Validate)",
+      "id": 332,
+      "protocol": "pop",
+      "desc": "Verifies the ability of the SUT to host attachments and make it available for fetching through POP. The CCDA is validated using the MDHT validator.",
+      "sutRole": "sender",
+      "sutHisp": true,
+      "sutEdge": false,
+      "fields": [
+        {
+          "label": "C-CDA Document Type",
+          "name": "ccdaReferenceFilename",
+          "datatype": "CCDAWidget",
+          "value": "ccdaReferenceFilename",
+          "readOnly": false,
+          "display": true
+        }
+      ]
+    }
+  ]
 }

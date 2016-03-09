@@ -1,0 +1,116 @@
+==Version 1.0.4#3/02/2016
+	* SMTP
+		-MIME Type updates on SMTP cases 25b, 25d, 25e and 29
+
+	* XDR
+		-Fixed a double base64 encoding bug that was occurring in some test cases
+
+	* C-CDA Widget
+		-Fixed Cancel button for C-CCDA Widget
+
+	* Direct
+		-Certificate links on Direct main page are now configurable via a file
+
+==Version 1.0.3#2/25/2016
+	* SMTP
+		-POP-1,2 perform AUTH before NOOP
+		-POP 12 fixed to handle empty UIDL issue with Apache James
+
+==Version 1.0.2#2/19/2016
+	* Direct
+		-Links for Direct certificates on Direct Home page are now configurable for ETT local installation
+
+	* SMTP
+		-Message Tracking logs shows time taken to get back an MDN
+		-Bug fix for Message Tracking timeout cases
+
+==Version 1.0.1#2/11/2016
+	* SMTP
+		-Description updates for SMTP/IMAP/POP test cases
+		-From address change for all SMTP receive cases i.e the from address will be the same as to address. (Earlier the from address was wellformed1@hit-testing2.nist.gov). The descriptions for this cases have been changed accordingly
+
+	* XDR
+		-Fixed XDR Test 11 and 12 in HISP, when sending the Direct+XDM, the subject line now contains "XDM/1.0/DDM"
+
+==Version 1.0.0#1/21/2016
+	* SMTP
+		-UI change for receiver test
+		-Bugfixes for Message Tracking cases
+		-Added SMTP Message tracking cases
+
+==Version 0.0.10#1/13/2016
+	* MDN
+		-Added empoints for bad MDNs generation
+
+	* C-CDA
+		-Added link to C-CDA R2.1 test samples repository
+		-Added Direct message endpoints for C-CCDA R2.1 validation
+
+==Version 0.0.9#12/15/2015
+	* Message validator
+		-Added widget to select CCDA R2.1 samples and objectives
+
+	* Edge
+		-Added Message Tracking, POP and IMAP test cases
+		-Added MIME type tests, tests with multiple attachments and content validation
+
+==Version 0.0.8#10/06/2015
+	*ETT
+		-Added CCDA R2 Validator
+	* Direct
+		-Added CCDA R2 validation to Direct validator
+		-Improved error display on Direct Validation report
+
+==Version 0.0.7#06/12/2015
+	* Direct
+		-Improved error reporting for DTS 195 when Body contains non ASCII characters.
+	* XDR
+		-Added test case 4e
+
+==Version 0.0.6#05/27/2015
+	* XDR
+		-Added XDR MU2 tests.
+		-Updated descriptions for the XDR test cases.
+
+==Version 0.0.5#05/11/2015
+	* SMTP
+		-Added download link for SMTP attachments in the log.
+
+==Version 0.0.4#05/05/2015
+	* SMTP
+		-Updated test cases 46.
+		-Fixed the exception error for test case 13.
+		-Better logs for negative test cases (10,11,13,17).
+
+==Version 0.0.3#03/10/2015
+	* Direct
+		-Added DNS lookup for address bound encryption certificates.
+		-Added LDAP lookup for address and domain bound encryption certificates.
+	* XDR
+		-Added Cancel button to XDR tests.
+	* SMTP
+		-Fixed few minor bugs.
+		-Added Cancel button to XDR tests.
+
+==Version 0.0.2#03/03/2015
+	* Direct
+		-Changed subject validation from Warning to Info when message is wrapped
+		-Added validation Content-transfer-encoding (DTS 136-148-157) and Body (DTS 195) which were missing
+		-Fixed bug where XDM zip attachment could not be downloaded
+		-Fixed bug with quoted-printable encoding, part was recognized as plain text
+	* Direct listener
+		-Fixed bug when sending two messages through the same connection. The listener now returns an error 421 and close the connection if the system tries to send more than one message.
+	* XDR
+		-ETT is now using fixed endpoints when ETT is receiving XDR and users need to provide Direct from address to corelate the XDR message.
+	* Misc. ETT
+		-Added favicon
+
+==Version 0.0.1#07/09/2014
+	*ETT
+		-Initial add of the release notes
+	*Direct
+		-Initial add of DIRECT from TTT code
+	*SMTP
+		-Initial add of SMTP module
+	*XDR
+		-Initial add of XDR module

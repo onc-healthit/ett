@@ -17,6 +17,9 @@
         <module>common-config</module>
         <module>commons</module>
         <module>fakeToolkit</module>
+        <module>xdrMessageFactory</module>
+        <module>database</module>
+        <module>mail protocols</module>
     </modules>
 
 </project>

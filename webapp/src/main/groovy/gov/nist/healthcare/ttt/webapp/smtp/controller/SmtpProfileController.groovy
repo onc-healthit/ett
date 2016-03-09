@@ -63,14 +63,14 @@ class SmtpProfileController {
 		smtpProfile.setSutUsername(profile?.get("sutUsername"))
 		smtpProfile.setSutPassword(profile?.get("sutPassword"))
 		
-		db.getSmtpEdgeLogFacade().addNewSmtpProfile(smtpProfile)
+		db.getSmtpEdgeLogFacade().saveSmtpProfile(smtpProfile)
 	}
 	
 	@RequestMapping(value = "/{profile:.+}", method = RequestMethod.DELETE, produces = "application/json")
 	@ResponseBody
 	boolean deleteProfile(@PathVariable String profile, Principal principal) throws Exception {
 		if (principal == null) {
-			throw new TTTCustomException("0x0035", "You must be logged in to save profile")
+			throw new TTTCustomException("0x0035", "You must be logged in to delete a profile")
 		} else {
 			String username = principal.getName()
 			if(db.getSmtpEdgeLogFacade().removeSmtpProfile(username, profile)) {

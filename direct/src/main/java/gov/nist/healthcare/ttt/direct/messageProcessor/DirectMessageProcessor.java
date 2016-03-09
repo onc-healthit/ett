@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.direct.messageProcessor;
 
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
 import gov.nist.healthcare.ttt.database.log.LogInterface.Status;
 import gov.nist.healthcare.ttt.direct.certificates.PrivateCertificateLoader;
 import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
@@ -13,7 +14,10 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -36,35 +40,67 @@ import org.bouncycastle.mail.smime.SMIMEException;
 import org.bouncycastle.mail.smime.SMIMEUtil;
 
 public class DirectMessageProcessor {
-	
-	private Logger logger = Logger.getLogger(DirectMessageProcessor.class.getName());
-	
+
+	private Logger logger = Logger.getLogger(DirectMessageProcessor.class
+			.getName());
+
 	private InputStream directMessage;
 	private InputStream certificate;
 	private String certificatePassword;
+	private PrivateCertificateLoader certLoader = null;
 	// Log object to fill with message validation
 	private LogModel logModel;
 	private PartModel mainPart;
 	private boolean wrapped;
+	private boolean encrypted;
+	private boolean signed;
 	private boolean isMdn;
 	private String originalMessageId;
+	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
 	
+	// MDHT Endpoint
+	private String mdhtR1Endpoint;
+	private String mdhtR2Endpoint;
+
 	public DirectMessageProcessor() {
 		super();
 		this.wrapped = false;
+		this.encrypted = false;
+		this.signed = false;
 		this.isMdn = false;
 		this.logModel = new LogModel();
 		this.mainPart = new PartModel();
+		this.mdhtR1Endpoint = "";
+		this.mdhtR2Endpoint = "";
 	}
 	
-	public DirectMessageProcessor(InputStream directMessage, InputStream certificate, String certificatePassword) {
+	public DirectMessageProcessor(String mdhtR1Endpoint, String mdhtR2Endpoint) {
+		super();
+		this.wrapped = false;
+		this.encrypted = false;
+		this.signed = false;
+		this.isMdn = false;
+		this.logModel = new LogModel();
+		this.mainPart = new PartModel();
+		this.mdhtR1Endpoint = mdhtR1Endpoint;
+		this.mdhtR2Endpoint = mdhtR2Endpoint;
+	}
+
+	public DirectMessageProcessor(InputStream directMessage,
+			InputStream certificate, String certificatePassword, String mdhtR1Endpoint, String mdhtR2Endpoint)
+			throws Exception {
 		this.directMessage = directMessage;
 		this.certificate = certificate;
 		this.certificatePassword = certificatePassword;
+		this.setCertLoader(certificate, certificatePassword);
 		this.wrapped = false;
+		this.encrypted = false;
+		this.signed = false;
 		this.isMdn = false;
 		this.logModel = new LogModel();
 		this.mainPart = new PartModel();
+		this.mdhtR1Endpoint = mdhtR1Endpoint;
+		this.mdhtR2Endpoint = mdhtR2Endpoint;
 	}
 
 	public void processDirectMessage() throws Exception {
@@ -82,27 +118,21 @@ public class DirectMessageProcessor {
 		// Process the message
 		this.mainPart = processPart(msg, null);
 
-		PartValidation validationPart = new PartValidation(this.wrapped);
+		PartValidation validationPart = new PartValidation(this.encrypted, this.signed, this.wrapped, this.mdhtR1Endpoint, this.mdhtR2Endpoint);
 		validationPart.processMainPart(this.mainPart);
 
 		// Set status to error if the part contains error
 		if (validationPart.isHasError()) {
 			this.logModel.setStatus(Status.ERROR);
 		}
+
+		this.ccdaReport = validationPart.getCcdaReport();
 	}
 
 	public PartModel processPart(Part p, PartModel parent) throws Exception {
 		if (p == null) {
 			logger.info("Part is null");
 			return null;
-		}
-
-		// Decode if quoted printable
-		String encoding = "";
-		encoding = ValidationUtils.getSingleHeader(p,
-				"content-transfer-encoding");
-		if (encoding.equals("quoted-printable")) {
-			p = decodeQP(p.getInputStream());
 		}
 
 		// Add the child except if it is the first Part
@@ -144,10 +174,15 @@ public class DirectMessageProcessor {
 			} else if (p.isMimeType("application/pkcs7-mime")
 					|| p.isMimeType("application/x-pkcs7-mime")) {
 				logger.debug("Processing application/pkcs7-mime");
+				this.encrypted = true;
 				this.processPart(
 						processSMIMEEnvelope(p, certificate,
 								certificatePassword), currentlyProcessedPart);
 
+			} else if (p.isMimeType("application/pkcs7-signature") || p.isMimeType("application/x-pkcs7-signature")) {
+				logger.debug("Processing application/pkcs7-signature");
+				this.signed = true;
+				
 			} else if (p.isMimeType("multipart/*")) {
 				logger.debug("Processing part " + p.getContentType());
 
@@ -163,15 +198,15 @@ public class DirectMessageProcessor {
 				ProcessMDN mdnProcessor = new ProcessMDN(p);
 				mdnProcessor.validate(currentlyProcessedPart);
 				this.setOriginalMessageId(mdnProcessor.getOriginalMessageId());
-				this.logModel.setOriginalMessageId(mdnProcessor.getOriginalMessageId());
+				this.logModel.setOriginalMessageId(mdnProcessor
+						.getOriginalMessageId());
 				logger.debug("Processing part " + p.getContentType());
 			} else {
 
 				// This is a leaf part
 				logger.debug("Processing part " + p.getContentType());
 			}
-			
-			
+
 		} catch (Exception e) {
 			currentlyProcessedPart
 					.addNewDetailLine(new DetailModel(
@@ -184,43 +219,32 @@ public class DirectMessageProcessor {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
-		
-		
+
 		return currentlyProcessedPart;
 	}
-	
-public Part processSMIMEEnvelope(Part p, InputStream certificate, String password) throws Exception {
-		
-		PrivateCertificateLoader certLoader = null;
-		RecipientId     recId = null;		
-		
-		try {
-			certLoader = new PrivateCertificateLoader(certificate, password);
-			recId = new JceKeyTransRecipientId(certLoader.getX509Certificate());
-		} catch (KeyStoreException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (NoSuchProviderException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (NoSuchAlgorithmException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (CertificateException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (IOException e1) {
-			logger.error(e1.getMessage());
-			throw e1;
-		} catch (Exception e1) {
-			logger.error("Probably wrong format file or wrong certificate " + e1.getMessage());
-			throw new Exception("Probably wrong format file or wrong certificate " + e1.getMessage());
-		}
 
+	public Part processSMIMEEnvelope(Part p, InputStream certificate,
+			String password) throws Exception {
+
+		if (this.certLoader == null) {
+			this.setCertLoader(certificate, password);
+		}
+		RecipientId recId = null;
+
+		try {
+			recId = new JceKeyTransRecipientId(
+					this.certLoader.getX509Certificate());
+		} catch (Exception e1) {
+			logger.error("Probably wrong format file or wrong certificate "
+					+ e1.getMessage());
+			throw new Exception(
+					"Probably wrong format file or wrong certificate "
+							+ e1.getMessage());
+		}
 
 		SMIMEEnveloped m = null;
 		try {
-			m = new SMIMEEnveloped((MimeMessage)p);
+			m = new SMIMEEnveloped((MimeMessage) p);
 		} catch (MessagingException e1) {
 			logger.error(e1.getMessage());
 			throw e1;
@@ -228,13 +252,15 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 			logger.error(e1.getMessage());
 			throw e1;
 		}
-		
-		RecipientInformationStore   recipients = m.getRecipientInfos();
-		RecipientInformation        recipient = recipients.get(recId);
+
+		RecipientInformationStore recipients = m.getRecipientInfos();
+		RecipientInformation recipient = recipients.get(recId);
 
 		MimeBodyPart res = null;
 		try {
-			res = SMIMEUtil.toMimeBodyPart(recipient.getContent(new JceKeyTransEnvelopedRecipient(certLoader.getPrivateKey()).setProvider("BC")));
+			res = SMIMEUtil.toMimeBodyPart(recipient
+					.getContent(new JceKeyTransEnvelopedRecipient(certLoader
+							.getPrivateKey()).setProvider("BC")));
 		} catch (SMIMEException e1) {
 			logger.error(e1.getMessage());
 			throw e1;
@@ -242,47 +268,85 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 			logger.error(e1.getMessage());
 			throw e1;
 		} catch (Exception e1) {
-			logger.error("Encryption certificate was probably wrong file " + e1.getMessage());
-			throw new Exception("Encryption certificate was probably wrong file " + e1.getMessage());
+			logger.error("Encryption certificate was probably wrong file "
+					+ e1.getMessage());
+			e1.printStackTrace();
+			throw new Exception(
+					"Encryption certificate was probably wrong file "
+							+ e1.getMessage());
 		}
 
 		return res;
 	}
-	
+
 	public void fillLogModel(MimeMessage msg) throws MessagingException {
 		this.logModel.setContentType(msg.getContentType());
-		this.logModel.setContentDisposition(ValidationUtils.getSingleHeader(msg, "content-disposition"));
+		this.logModel.setContentDisposition(ValidationUtils.getSingleHeader(
+				msg, "content-disposition"));
 		this.logModel.setFromLine(ValidationUtils.fillArrayLog(msg.getFrom()));
 		this.logModel.setIncoming(true);
 		this.logModel.setMdn(false);
 		this.logModel.setStatus(Status.SUCCESS);
-		this.logModel.setMimeVersion(ValidationUtils.getSingleHeader(msg, "mime-version"));
-		this.logModel.setMessageId(msg.getMessageID());
+		this.logModel.setMimeVersion(ValidationUtils.getSingleHeader(msg,
+				"mime-version"));
+		
+		// Check if message id not null
+		if(msg.getMessageID() != null) {
+			this.logModel.setMessageId(msg.getMessageID());
+		} else {
+			String substituteMsgId = "<" + UUID.randomUUID().toString() + "@null>";
+			logger.error("Message ID not present - Generating fake message ID to log message: " + substituteMsgId);
+			this.logModel.setMessageId(substituteMsgId.toString());
+		}
 		this.logModel.setOrigDate(ValidationUtils.getSingleHeader(msg, "date"));
-		this.logModel.setReceived(ValidationUtils.fillArrayLog(msg.getHeader("received")));
-		this.logModel.setReplyTo(ValidationUtils.fillArrayLog(msg.getReplyTo()));
+		this.logModel.setReceived(ValidationUtils.fillArrayLog(msg
+				.getHeader("received")));
+		this.logModel
+				.setReplyTo(ValidationUtils.fillArrayLog(msg.getReplyTo()));
 		this.logModel.setSubject(msg.getSubject());
-		this.logModel.setToLine(ValidationUtils.fillArrayLog(msg.getRecipients(Message.RecipientType.TO)));
+		this.logModel.setToLine(ValidationUtils.fillArrayLog(msg
+				.getRecipients(Message.RecipientType.TO)));
 	}
-	
+
 	public PartModel fillPartModel(Part p, PartModel parent) {
 		PartModel partModel = new PartModel();
 		try {
 			partModel.setContent(p);
-			partModel.setContentDisposition(ValidationUtils.getSingleHeader(p, "content-disposition"));
-			partModel.setContentTransferEncoding(ValidationUtils.getSingleHeader(p, "content-transfer-encoding"));
+			partModel.setContentDisposition(ValidationUtils.getSingleHeader(p,
+					"content-disposition"));
+			partModel.setContentTransferEncoding(ValidationUtils
+					.getSingleHeader(p, "content-transfer-encoding"));
 			partModel.setContentType(p.getContentType());
 			partModel.setStatus(true);
 			partModel.setParent(parent);
-		} catch(Exception e) {
-			partModel.addNewDetailLine(new DetailModel("No DTS", "Unexpected Error", e.getMessage(), "", "-", gov.nist.healthcare.ttt.database.log.DetailInterface.Status.ERROR));
+			// Set boolean if quoted printable
+			String encoding = "";
+			encoding = ValidationUtils.getSingleHeader(p,
+					"content-transfer-encoding");
+			if (encoding.equals("quoted-printable")) {
+				partModel.setQuotedPrintable(true);
+			}
+		} catch (Exception e) {
+			partModel
+					.addNewDetailLine(new DetailModel(
+							"No DTS",
+							"Unexpected Error",
+							e.getMessage(),
+							"",
+							"-",
+							gov.nist.healthcare.ttt.database.log.DetailInterface.Status.ERROR));
 		}
 		return partModel;
 	}
-	
-	public MimeBodyPart decodeQP(InputStream encodedQP) throws MessagingException {
-		InputStream res = MimeUtility.decode(encodedQP, "quoted-printable");
-		return new MimeBodyPart(res);
+
+	public static MimeBodyPart decodeQP(InputStream encodedQP)
+			throws MessagingException {
+		return new MimeBodyPart(decodeQPStream(encodedQP));
+	}
+
+	public static InputStream decodeQPStream(InputStream encodedQP)
+			throws MessagingException {
+		return MimeUtility.decode(encodedQP, "quoted-printable");
 	}
 
 	public LogModel getLogModel() {
@@ -333,6 +397,22 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 		this.wrapped = wrapped;
 	}
 
+	public boolean isEncrypted() {
+		return encrypted;
+	}
+
+	public void setEncrypted(boolean encrypted) {
+		this.encrypted = encrypted;
+	}
+
+	public boolean isSigned() {
+		return signed;
+	}
+
+	public void setSigned(boolean signed) {
+		this.signed = signed;
+	}
+
 	public boolean isMdn() {
 		return isMdn;
 	}
@@ -348,5 +428,74 @@ public Part processSMIMEEnvelope(Part p, InputStream certificate, String passwor
 	public void setOriginalMessageId(String originalMessageId) {
 		this.originalMessageId = originalMessageId;
 	}
+
+	public List<CCDAValidationReportInterface> getCcdaReport() {
+		return ccdaReport;
+	}
+
+	public void setCcdaReport(List<CCDAValidationReportInterface> ccdaReport) {
+		this.ccdaReport = ccdaReport;
+	}
+
+	public String getMdhtR1Endpoint() {
+		return mdhtR1Endpoint;
+	}
 	
+
+	public void setMdhtR1Endpoint(String mdhtR1Endpoint) {
+		this.mdhtR1Endpoint = mdhtR1Endpoint;
+	}
+	
+
+	public String getMdhtR2Endpoint() {
+		return mdhtR2Endpoint;
+	}
+	
+
+	public void setMdhtR2Endpoint(String mdhtR2Endpoint) {
+		this.mdhtR2Endpoint = mdhtR2Endpoint;
+	}
+	
+
+	public boolean hasCCDAReport() {
+		if (this.ccdaReport.isEmpty())
+			return false;
+		else
+			return true;
+	}
+
+	public PrivateCertificateLoader getCertLoader() {
+		return certLoader;
+	}
+
+	public void setCertLoader(InputStream certificate,
+			String certificatePassword) throws Exception {
+		// Load certificate
+		try {
+			this.certLoader = new PrivateCertificateLoader(certificate,
+					certificatePassword);
+		} catch (KeyStoreException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (NoSuchProviderException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (NoSuchAlgorithmException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (CertificateException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (IOException e1) {
+			logger.error(e1.getMessage());
+			throw e1;
+		} catch (Exception e1) {
+			logger.error("Probably wrong format file or wrong certificate "
+					+ e1.getMessage());
+			throw new Exception(
+					"Probably wrong format file or wrong certificate: "
+							+ e1.getMessage());
+		}
+	}
+
 }

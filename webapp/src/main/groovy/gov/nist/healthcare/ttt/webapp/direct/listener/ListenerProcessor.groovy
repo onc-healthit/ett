@@ -6,7 +6,8 @@ import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
-import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator;
+import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator
+import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator.MDNType;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
 import org.apache.log4j.Logger;
@@ -16,12 +17,14 @@ import org.springframework.stereotype.Component;
 import org.xbill.DNS.TextParseException;
 
 import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 
 public class ListenerProcessor implements Runnable {
 	Socket server;
@@ -35,6 +38,8 @@ public class ListenerProcessor implements Runnable {
 	InputStream certStream = null;
 	BufferedReader inReader = null;
 	BufferedOutputStream outStream = null;
+	
+	String logFilePath = ""
 
 	Collection<String> contactAddr = null;
 	String logHostname = "";
@@ -54,15 +59,16 @@ public class ListenerProcessor implements Runnable {
 	
 	Emailer emailer
 
-	DirectMessageProcessor processor = new DirectMessageProcessor();
+	DirectMessageProcessor processor;
 
 	private DatabaseInstance db;
 
 	private static Logger logger = Logger.getLogger(ListenerProcessor.class.getName());
 
-	ListenerProcessor(Socket server, DatabaseInstance db) throws DatabaseException, SQLException {
+	ListenerProcessor(Socket server, DatabaseInstance db, String mdhtR1Endpoint, String mdhtR2Endpoint) throws DatabaseException, SQLException {
 		this.server = server;
 		this.db = db;
+		this.processor = new DirectMessageProcessor(mdhtR1Endpoint, mdhtR2Endpoint);
 	}
 
 	/**
@@ -88,12 +94,25 @@ public class ListenerProcessor implements Runnable {
 		// processdelayeddispatch7
 		// nomdn8
 		// noaddressfailure9
-		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9']
+		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9',
+			'white_space_mdn', 'extra_line_break_mdn', 'extra_space_disposition', 'missing_disposition', 'null_sender',
+			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn']
+		
 		String smtpFrom = directTo?.get(0)
+		logger.info("To " + smtpFrom)
 		smtpFrom = smtpFrom.split("@")[0]
 		if(smtpAddressList.contains(smtpFrom)) {
 			logger.info("MDN address found $smtpFrom sending back appropriate MDN")
 			manageMDNAddresses(smtpFrom, directTo?.get(0), directFrom, messageStream)
+			return
+		} else if(smtpFrom.equals("wellformed1")) {
+			// Get the session variable
+			Properties props = System.getProperties();
+			Session session = Session.getDefaultInstance(props, null);
+			MimeMessage forward = new MimeMessage(session, this.messageStream);
+			DirectMessageSender sender = new DirectMessageSender();
+			logger.info("Forwarding message to unpublishedwellformed1@hit-testing2.nist.gov");
+			sender.sendMessage(25, "hit-testing2.nist.gov", forward, forward.getFrom()[0].toString(), "unpublishedwellformed1@hit-testing2.nist.gov");
 			return
 		}
 		
@@ -186,6 +205,11 @@ public class ListenerProcessor implements Runnable {
 				db.getLogFacade().addNewPart(
 						processor.getLogModel().getMessageId(),
 						processor.getMainPart());
+				if(processor.hasCCDAReport()) {
+					processor.getCcdaReport().each {
+						db.getLogFacade().addNewCCDAValidationReport(processor.getLogModel().getMessageId(), it);					
+				}
+			}
 			} catch (DatabaseException e) {
 				logger.error("Error trying to log in the database "
 						+ e.getMessage());
@@ -208,17 +232,30 @@ public class ListenerProcessor implements Runnable {
 			// Log line for the stats
 			if (directTo != null) {
 				String docType;
-				 if(processor.isMdn()) {
-					 docType = "mdn";
-				 } else {
-					 docType = getCcdaType(directTo.get(0));
-				 }
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
-				String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())} ]\"POST /ttt/xdstools2/toolkit/${docType} HTTP/1.1\" 200 75"
-				logger.info(statLog);
+				if(processor.isMdn()) {
+					docType = "mdn";
+				} else {
+					docType = getCcdaType(directTo.get(0));
+				}
+				 
+				try {
+					FileWriter fw = new FileWriter(this.logFilePath, true); //the true will append the new data
+					
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss Z"); // Date format
+					String statLog = "| ${logHostname}  - - [${dateFormat.format(new Date())}] \"POST /ttt/listener/${docType} HTTP/1.1\" 200 75"
+					logger.info(statLog);
+					
+					// Write in listener log
+					fw.write(statLog +"\n");
+					fw.close();
+					
+				} catch(Exception e) {
+					logger.info(e.getMessage())
+				}
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("Message Validation Error: " + e.getMessage());
 		}
 
@@ -226,9 +263,7 @@ public class ListenerProcessor implements Runnable {
 
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
-		String url = """http://${domainName}:${port}${servletName}
-				/direct/#/validationReport/
-				${this.processor.getLogModel().getMessageId()}""".stripMargin()
+		String url = "https://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
 
 		// Generate report template
 		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
@@ -247,7 +282,7 @@ public class ListenerProcessor implements Runnable {
 
 			// Send report
 
-			logger.debug("Sending report from " + emailer.model.getFrom()
+			logger.info("Sending report from " + emailer.model.getFrom()
 					+ "   to " + contactAddr);
 			Iterator<String> it = contactAddr.iterator();
 			while (it.hasNext()) {
@@ -256,9 +291,7 @@ public class ListenerProcessor implements Runnable {
 			}
 
 		} catch (Exception e) {
-			logger.error("Cannot send email (" + e.getClass().getName() + ". "
-					+ e.getMessage());
-		} catch (Throwable e) {
+			e.printStackTrace();
 			logger.error("Cannot send email (" + e.getClass().getName() + ". "
 					+ e.getMessage());
 		}
@@ -270,15 +303,15 @@ public class ListenerProcessor implements Runnable {
 			String toMDN = "";
 			if(processor.getLogModel().getReplyTo() != null) {
 				toMDN = processor.getLogModel().getReplyTo().iterator().next();
-			} else {
+			} else if(this.processor.getLogModel().getFromLine() != null) {
 				toMDN = this.processor.getLogModel().getFromLine().iterator().next();
 			}
 			String fromMDN = this.processor.getLogModel().getToLine().iterator().next();
 			
 			try {
 				logger.info("Generating MDN for message " + processor.getLogModel().getMessageId());
-				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), this.certStream,
-						this.certPassword);
+				MimeMessage mdn = generateMDN(fromMDN, toMDN, this.processor.getLogModel().getMessageId(), getSigningPrivateCert(),
+						this.certPassword, true);
 				DirectMessageSender sender = new DirectMessageSender();
 				logger.info("Sending MDN to " + toMDN);
 				sender.send(listenerPort, sender.getTargetDomain(toMDN), mdn, fromMDN, toMDN);
@@ -368,8 +401,9 @@ public class ListenerProcessor implements Runnable {
 			logger.trace("MESSAGE: \n" + buf);
 
 		} catch (RSETException e) {
-			send("250 OK");
-			return "";
+			// Reset all buffers
+			resetAllBuff();
+			buf = rcvStateMachine();
 		} catch (IOException e) {
 			return "";
 		} finally {
@@ -395,11 +429,15 @@ public class ListenerProcessor implements Runnable {
 			RSETException, Exception {
 		StringBuffer buf = new StringBuffer();
 		String msg;
+		boolean isFirstMessage = true;
 		while (true) {
 			msg = rcv().trim();
 			msg = msg.toLowerCase();
 			if (msg.startsWith("rcpt to:")) {
 				String to = msg.substring(msg.indexOf(':') + 1);
+				if(isSpam(to)) {
+					throw new Exception("Spam throwing away message");
+				}
 				if (to != null && !to.equals(""))
 					directTo.add(stripBrackets(to));
 				send("250 OK");
@@ -411,8 +449,10 @@ public class ListenerProcessor implements Runnable {
 				logInputs = false;
 				while (true) {
 					msg = rcv();
-					if (".".equals(msg.trim()))
+					if (".".equals(msg.trim())) {
+						isFirstMessage = false;
 						break;
+					}
 					buf.append(msg).append(CRLF);
 				}
 				logInputs = true;
@@ -434,15 +474,25 @@ public class ListenerProcessor implements Runnable {
 				continue;
 			}
 			if (msg.startsWith("rset")) {
-				send("250 OK");
-				throw new RSETException();
+				if(!isFirstMessage) {
+					send("421 Ony one message per connection allowed");
+					return buf.toString();
+				} else {
+					send("250 OK");
+					throw new RSETException();
+				}
 			}
 			if (msg.startsWith("vrfy")) {
 				send("250 OK");
 				continue;
 			}
 			if (msg.startsWith("noop")) {
-				send("250 OK");
+				if(!isFirstMessage) {
+					send("421 Ony one message per connection allowed");
+					return buf.toString();
+				} else {
+					send("250 OK");
+				}
 				continue;
 			}
 			if (msg.startsWith("quit")) {
@@ -472,6 +522,11 @@ public class ListenerProcessor implements Runnable {
 		if (logInputs)
 			logger.debug("SMTP RCV: " + msg);
 		return (msg == null) ? "" : msg;
+	}
+	
+	void resetAllBuff() {
+		this.directFrom = null;
+		this.directTo = new ArrayList<String>();
 	}
 
 	String ccdaValidationType(String toAddr) {
@@ -582,7 +637,7 @@ public class ListenerProcessor implements Runnable {
 		return input;
 	}
 
-	public MimeMessage generateMDN(String from, String to, String messageId, InputStream signingCert, String signingCertPassword) throws MessagingException, Exception {
+	public MimeMessage generateMDN(String from, String to, String messageId, InputStream signingCert, String signingCertPassword, boolean wrapped) throws MessagingException, Exception {
 		
 		// Generate the MDN
 		MDNGenerator generator = new MDNGenerator();
@@ -596,9 +651,10 @@ public class ListenerProcessor implements Runnable {
 		generator.setSigningCert(signingCert);
 		generator.setSigningCertPassword(signingCertPassword);
 		generator.setSubject("Automatic MDN");
-		generator.setText("Your message was successfully processed.");;
+		generator.setText("Your message was successfully processed.");
 		generator.setToAddress(to);
 		generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup(to));
+		generator.setWrapped(wrapped);
 		
 		return generator.generateMDN();
 		
@@ -639,8 +695,13 @@ public class ListenerProcessor implements Runnable {
 				res = directAddress.split("@")[0];
 				res = res.toLowerCase();
 				if (!res.equals("direct-clinical-summary")
-						&& !res.equals("direct-ambulatory")
-						&& !res.equals("direct-inpatient")
+						&& !res.equals("direct-ambulatory2")
+						&& !res.equals("direct-ambulatory7")
+						&& !res.equals("direct-ambulatory1")
+						&& !res.equals("direct-inpatient2")
+						&& !res.equals("direct-inpatient7")
+						&& !res.equals("direct-inpatient1")
+						&& !res.equals("direct-vdt-inpatient")
 						&& !res.equals("direct-vdt-ambulatory")) {
 					res = "non-specific";
 				}
@@ -681,6 +742,20 @@ public class ListenerProcessor implements Runnable {
 		}
 	}
 	
+	public boolean isSpam(String to) {
+		String[] notAllowed = ["@yahoo.com.tw", "@123.com", "@163.com", 
+			"@ms35.hinet.net", "@ms46.hinet.net", "@pchome.com.tw", "@ms49.hinet.net",
+			"@ms14.hinet.net", "@hotmail.com", "@ms77.hinet.net", "@ms27.hinet.net", 
+			"@msa.hinet.net", "@seed.net.tw", "ms76.hinet.net"];
+		notAllowed = notAllowed.collect {
+			/(.*)<(.*)${it}>(.*)/
+		}
+		def test = notAllowed.any {
+			to ==~ it
+		}
+		return test;
+	}
+	
 	public InputStream getSigningPrivateCert(String type = 'good') {
 		try {
 			InputStream res = getSigningCertFromFolder(this.certificatesPath + type, ".p12")
@@ -694,31 +769,92 @@ public class ListenerProcessor implements Runnable {
 	}
 	
 	public void manageMDNAddresses(String smtpFrom, String from, String to, InputStream message) {
+		// Get the session variable
+		Properties props = System.getProperties();
+		Session session = Session.getDefaultInstance(props, null);
+
+		// Get the MimeMessage object
+		MimeMessage msg = new MimeMessage(session, message);
+		String originalMsgId = msg.getMessageID()
+		
 		switch(smtpFrom) {
 			case 'processedonly5':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'processeddispatched6':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'processdelayeddispatch7':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
 				this.sleep(3900000);
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '')
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'nomdn8':
 				logger.info("Found address $smtpFrom so no mdn sent")
 				break
 				
-			case 'noaddressfailure9':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN')
+			case 'processedfailure':
+				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
+			case 'processedtimeoutfailure':
+				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				this.sleep(3900000);
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				break
+				
+			case 'noaddressfailure9':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				break
+				
+			case 'white_space_mdn':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE)
+				break
+
+			case 'extra_line_break_mdn':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_LINE_BREAK)
+				break
+
+			case 'extra_space_disposition':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE_DISPOSITION)
+				break
+				
+			case 'missing_disposition':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.MISS_DISPOSITION)
+				break
+
+			case 'null_sender':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.NULL_SENDER)
+				break
+
+			case 'different_sender':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_SENDER)
+				break
+
+			case 'different_msgid':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_MSG_ID)
+				break
+
+			case 'white_space_822':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE_822)
+				break
+
+			case 'different_cases_822':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_CASES_822)
+				break
+
+			case 'dsn':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DSN)
+				break
+
 			default:
 				logger.info("Could not intepret the address $smtpFrom")
 				break

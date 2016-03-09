@@ -1,6 +1,6 @@
 package gov.nist.healthcare.ttt.xdr.domain
 
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.Status
 
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
@@ -25,11 +25,13 @@ class TkValidationReport {
     @XmlElement
     String response
 
-    XDRRecordInterface.CriteriaMet status
+    Status status
 
     String messageId
 
     String simId
+
+    String directFrom
 
 
 }

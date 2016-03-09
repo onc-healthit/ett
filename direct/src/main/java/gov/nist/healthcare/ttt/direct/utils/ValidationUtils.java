@@ -445,9 +445,6 @@ public class ValidationUtils {
 							isOnlyCRLF = false;
 					}
 				}
-				else if(str.charAt(i)!=9) {
-					isOnlyCRLF = false;	
-				}
 			}
 		}
 		return isOnlyCRLF;
@@ -649,7 +646,12 @@ public class ValidationUtils {
 		ArrayList<String> res = new ArrayList<String>();
 		if(array != null) {
 			for(int i=0;i<array.length;i++) {
-				res.add(array[i].toString());
+				String trimedFrom = array[i].toString();
+				if(array[i].toString().contains("<")) {
+					trimedFrom = trimedFrom.split("<")[1];
+					trimedFrom = trimedFrom.split(">")[0];
+				}
+				res.add(trimedFrom);
 			}
 		}
 		return res;

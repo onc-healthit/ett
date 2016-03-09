@@ -9,12 +9,15 @@ import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
+
+import javax.annotation.PostConstruct
+
 /**
  * Created by gerardin on 10/9/14.
  *
  * Here we only test the http client behavior under various conditions.
  * The fake toolkit we use does not comply with the new API but this is largely irrelevant.
- * We want to know if the client reacts appropriately.
+ * We want to know whether the client reacts appropriately.
  */
 @WebAppConfiguration
 @IntegrationTest
@@ -23,6 +26,25 @@ class TkClientSpecTest extends Specification {
 
     @Value('${xdr.notification')
     private String notificationUrl
+
+    @Value('${server.contextPath}')
+    private String contextPath
+
+    @Value('${server.port}')
+    private String port
+
+    //TODO change that : either find a better way or rename property
+    @Value('${direct.listener.domainName}')
+    private String hostname
+
+    private String fullNotificationUrl
+    private String fullUrl
+
+    @PostConstruct
+    def buildUrls(){
+        fullNotificationUrl = "http://"+hostname+":"+port+contextPath+notificationUrl
+        fullUrl = "http://"+hostname+":"+port+contextPath
+    }
 
     @Autowired
     GroovyRestClient client
@@ -38,21 +60,41 @@ class TkClientSpecTest extends Specification {
                 SimulatorId(id)
                 MetadataValidationLevel("Full")
                 CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+                PostNotification("$fullNotificationUrl")
             }
         }
 
-        def url = "http://localhost:8080/ttt/createSim"
+        def url = fullUrl + "/createSim"
 
         when:
         def resp = client.postXml(config, url, 1000)
 
         then:
         //we have a successful interaction
-            assert resp.simId.text() == id
+            assert resp.SimulatorId.text() == id
 
     }
 
+    def sendRawXml(){
+
+        given:
+        // a working url
+        def id = "SimpleTest1"
+
+        def config = """
+<createSim><SimType>XDR Document Recipient</SimType><SimulatorId>SimpleTest1</SimulatorId><MetadataValidationLevel>Full</MetadataValidationLevel><CodeValidation>false</CodeValidation><PostNotification>http://localhost:12080/ttt</PostNotification></createSim>
+"""
+
+        def url = fullUrl + "/createSim"
+
+        when:
+        def resp = client.postXml(config, url, 1000)
+
+        then:
+        //we have a successful interaction
+        assert resp.SimulatorId.text() == id
+
+    }
 
     def "test request on wrong endpoint"() {
         given:
@@ -65,11 +107,11 @@ class TkClientSpecTest extends Specification {
                 SimulatorId(id)
                 MetadataValidationLevel("Full")
                 CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+                PostNotification("$fullNotificationUrl")
             }
         }
 
-        def url = "http://localhost:8080/badEndpoint"
+        def url = fullUrl + "/badEndpoint"
 
         when:
         def resp = client.postXml(config, url, 1000)
@@ -91,11 +133,11 @@ class TkClientSpecTest extends Specification {
                 SimulatorId(id)
                 MetadataValidationLevel("Full")
                 CodeValidation("false")
-                PostNotification("http://localhost:8080/ttt/$notificationUrl")
+                PostNotification("$fullNotificationUrl")
             }
         }
 
-        def url = "http://localhost:8080/ttt//createSimWithBadContent"
+        def url = fullUrl + "/createSimWithBadContent"
 
         when:
         def resp = client.postXml(config, url, 1000)

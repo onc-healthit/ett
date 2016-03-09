@@ -69,6 +69,7 @@ public class ArtifactManagement {
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY = "Xdr_minimal_metadata_only.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP = "Xdr_minimal_metadata_only_no_soap.xml";
     private static final String FILENAME_ENCODED_CCDA = "encodedCCDA.txt";
+    private static final String FILENAME_IGNORE_PAYLOAD = "ignorePayload.txt";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS = "DeliveryStatusNotification_success.xml";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE = "DeliveryStatusNotification_failure.xml";
 
@@ -326,6 +327,10 @@ public class ArtifactManagement {
         return out.toString();
     }
 
+    public static String getIgnorePayload(){
+        return getTemplate(FILENAME_IGNORE_PAYLOAD);
+    }
+    
     public static String getBaseEncodedCCDA() {
         return getTemplate(FILENAME_ENCODED_CCDA);
     }
@@ -452,7 +457,9 @@ public class ArtifactManagement {
         return xml;
     }
     public static String escapeXml(String xml) {
-        return xml.replace("<", "&lt;");
+        xml = xml.replace("<", "&lt;");
+        xml = xml.replace(">", "&gt;");
+        return xml;
     
     
     }
@@ -477,24 +484,18 @@ public class ArtifactManagement {
         System.out.println(formattedDate);
         if (payload != null && !payload.isEmpty()) {
             System.out.println("Payload is not empty " + formattedDate);
-            payload = ArtifactManagement.removeXmlDeclaration(payload);
-            payload = ArtifactManagement.escapeXml(payload);
+     //       payload = ArtifactManagement.removeXmlDeclaration(payload);
+     //       payload = ArtifactManagement.escapeXml(payload);
             if (!ArtifactManagement.isBase64Encoded(payload)) {
-                System.out.println("!!!Payload is not base64encoded " + payload);
-                
-                
-                
-                /*
+             //   System.out.println("!!!Payload is not base64encoded " + payload);                                                             
                 try {
-                    payload = Base64.getEncoder().encodeToString(payload.getBytes("utf-8"));
-                 
-                    System.out.println("!!!now base64encoded " + payload);
+                    payload = Base64.getEncoder().encodeToString(payload.getBytes("utf-8"));                 
+                  //  System.out.println("!!!now base64encoded " + payload);
                 } catch (UnsupportedEncodingException ex) {
                     Logger.getLogger(ArtifactManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
-*/
             } else {
-                System.out.println("!!! Payload IS base64 encoded " + payload);
+              //  System.out.println("!!! Payload IS base64 encoded " + payload);
             }
 
             artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
@@ -526,12 +527,16 @@ public class ArtifactManagement {
                     break;
                 case NEGATIVE_MISSING_DIRECT_BLOCK:
                     artifacts.setExtraHeaders(new String());
-                    artifacts.setDocument(getBaseEncodedCCDA());
+                    // artifacts.setDocument(getBaseEncodedCCDA());
+                    artifacts.setDocument(getIgnorePayload());
+                    artifacts.setMimeType("text/plain");
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
                     break;
                 case NEGATIVE_MISSING_ASSOCIATION:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
-                    artifacts.setDocument(getBaseEncodedCCDA());
+                    // artifacts.setDocument(getBaseEncodedCCDA());
+                    artifacts.setDocument(getIgnorePayload());
+                    artifacts.setMimeType("text/plain");
                     metadata = getTemplate(FILENAME_MISSING_ASSOCIATION_NO_SOAP);
                     break;
                 default:

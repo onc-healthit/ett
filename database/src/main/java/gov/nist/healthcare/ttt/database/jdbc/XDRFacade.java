@@ -2,7 +2,7 @@ package gov.nist.healthcare.ttt.database.jdbc;
 
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordImpl;
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface;
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface.CriteriaMet;
+import gov.nist.healthcare.ttt.database.xdr.Status;
 import gov.nist.healthcare.ttt.database.xdr.XDRReportItemImpl;
 import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface;
 import gov.nist.healthcare.ttt.database.xdr.XDRReportItemInterface.ReportType;
@@ -96,18 +96,18 @@ public class XDRFacade extends DatabaseFacade {
         }
 
         sql.append("' , '");
-        CriteriaMet criteriaStatus = xdr.getCriteriaMet();
+        Status status = xdr.getCriteriaMet();
 
         //TODO: Either document this mapping or make it an automatic function.
-        if (criteriaStatus == CriteriaMet.PASSED) {
+        if (status == Status.PASSED) {
             sql.append("1");
-        } else if (criteriaStatus == CriteriaMet.FAILED) {
+        } else if (status == Status.FAILED) {
             sql.append("0");
-        } else if (criteriaStatus == CriteriaMet.CANCELLED) {
+        } else if (status == Status.CANCELLED) {
             sql.append("-2");
-        } else if (criteriaStatus == CriteriaMet.PENDING) {
+        } else if (status == Status.PENDING) {
             sql.append("-1");
-        } else if (criteriaStatus == CriteriaMet.MANUAL) {
+        } else if (status == Status.MANUAL) {
             sql.append("2");
         } else {
             sql.append("-1");
@@ -188,16 +188,16 @@ public class XDRFacade extends DatabaseFacade {
         sql.append(DatabaseConnection.makeSafe(testStep.getDirectFrom()));
         sql.append("', '");
         
-        CriteriaMet criteriaMet = testStep.getCriteriaMet();
-        if (criteriaMet == CriteriaMet.PASSED) {
+        Status status = testStep.getStatus();
+        if (status == Status.PASSED) {
             sql.append("1");
-        } else if (criteriaMet == CriteriaMet.FAILED) {
+        } else if (status == Status.FAILED) {
             sql.append("0");
-        } else if (criteriaMet == CriteriaMet.CANCELLED) {
+        } else if (status == Status.CANCELLED) {
             sql.append("-2");
-        } else if (criteriaMet == CriteriaMet.PENDING) {
+        } else if (status == Status.PENDING) {
             sql.append("-1");
-        } else if (criteriaMet == CriteriaMet.MANUAL) {
+        } else if (status == Status.MANUAL) {
             sql.append("2");
         } else {
             sql.append("-1");
@@ -440,17 +440,17 @@ public class XDRFacade extends DatabaseFacade {
 
                 int i = result.getInt(XDRRECORD_CRITERIAMET);
                 if (i == 1) {
-                    record.setCriteriaMet(CriteriaMet.PASSED);
+                    record.setStatus(Status.PASSED);
                 } else if (i == 0) {
-                    record.setCriteriaMet(CriteriaMet.FAILED);
+                    record.setStatus(Status.FAILED);
                 } else if (i == -2) {
-                    record.setCriteriaMet(CriteriaMet.CANCELLED);
+                    record.setStatus(Status.CANCELLED);
                 } else if (i == -1) {
-                    record.setCriteriaMet(CriteriaMet.PENDING);
+                    record.setStatus(Status.PENDING);
                 } else if (i == 2) {
-                    record.setCriteriaMet(CriteriaMet.MANUAL);
+                    record.setStatus(Status.MANUAL);
                 } else {
-                    record.setCriteriaMet(CriteriaMet.PENDING);
+                    record.setStatus(Status.PENDING);
                 }
 
             } else {
@@ -515,17 +515,17 @@ public class XDRFacade extends DatabaseFacade {
                 testStep.setDirectFrom(result.getString(XDRTESTSTEP_DIRECTFROM));
                 int i = result.getInt(XDRTESTSTEP_CRITERIAMET);
                 if (i == 1) {
-                    testStep.setCriteriaMet(CriteriaMet.PASSED);
+                    testStep.setStatus(Status.PASSED);
                 } else if (i == 0) {
-                    testStep.setCriteriaMet(CriteriaMet.FAILED);
+                    testStep.setStatus(Status.FAILED);
                 } else if (i == -2) {
-                    testStep.setCriteriaMet(CriteriaMet.CANCELLED);
+                    testStep.setStatus(Status.CANCELLED);
                 } else if (i == -1) {
-                    testStep.setCriteriaMet(CriteriaMet.PENDING);
+                    testStep.setStatus(Status.PENDING);
                 } else if (i == 2) {
-                    testStep.setCriteriaMet(CriteriaMet.MANUAL);
+                    testStep.setStatus(Status.MANUAL);
                 } else {
-                    testStep.setCriteriaMet(CriteriaMet.PENDING);
+                    testStep.setStatus(Status.PENDING);
                 }
                 testStep.setHostname(result.getString(XDRTESTSTEP_HOSTNAME));
 
@@ -1247,18 +1247,18 @@ public class XDRFacade extends DatabaseFacade {
         sql.append(XDRTESTSTEP_MESSAGEID + " = '" + testStep.getMessageId() + "', ");
 
         sql.append(XDRTESTSTEP_CRITERIAMET + " = '");
-        CriteriaMet criteriaStatus = testStep.getCriteriaMet();
+        Status status = testStep.getStatus();
 
         //TODO: Either document this mapping or make it an automatic function.
-        if (criteriaStatus == CriteriaMet.PASSED) {
+        if (status == Status.PASSED) {
             sql.append("1");
-        } else if (criteriaStatus == CriteriaMet.FAILED) {
+        } else if (status == Status.FAILED) {
             sql.append("0");
-        } else if (criteriaStatus == CriteriaMet.CANCELLED) {
+        } else if (status == Status.CANCELLED) {
             sql.append("-2");
-        } else if (criteriaStatus == CriteriaMet.PENDING) {
+        } else if (status == Status.PENDING) {
             sql.append("-1");
-        } else if (criteriaStatus == CriteriaMet.MANUAL) {
+        } else if (status == Status.MANUAL) {
             sql.append("2");
         } else {
             sql.append("-1");
@@ -1281,7 +1281,7 @@ public class XDRFacade extends DatabaseFacade {
     public static void main(String[] args) {
         try {
             XDRRecordImpl record = new XDRRecordImpl();
-            record.setCriteriaMet(CriteriaMet.PENDING);
+            record.setStatus(Status.PENDING);
             record.setTestCaseNumber("1");
             record.setTimestamp(new Timestamp(Calendar.getInstance().getTimeInMillis()).toString());
             record.setUsername("Username");

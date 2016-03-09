@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/upload")
@@ -36,8 +37,11 @@ public class TempUploadController {
         
         File temp;
         
+        // Unique uuid for filename
+        UUID fileuuid = UUID.randomUUID();
+        
         if(!fileInfo.getFlowFilename().equals("")) {
-        	temp = new File(tDir + File.separator + fileInfo.getFlowFilename());
+        	temp = new File(tDir + File.separator + fileInfo.getFlowFilename() + "-" + fileuuid);
         } else {
         	temp = File.createTempFile("tempfile", ".tmp");
         }

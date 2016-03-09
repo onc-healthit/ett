@@ -2,6 +2,7 @@ package messageProcessorTests;
 
 import gov.nist.healthcare.ttt.database.jdbc.DatabaseException;
 import gov.nist.healthcare.ttt.database.jdbc.LogFacade;
+import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.misc.Configuration;
 
@@ -15,8 +16,10 @@ import javax.mail.MessagingException;
 public class DirectMessageProcessorTest {
 	
 	public static String privateCertPath = "src/test/java/messageProcessorTests/testCert.p12";
-	public static String messagePath = "src/test/java/messageProcessorTests/TestGeneratedMessage.txt";
+	public static String messagePath = "src/test/java/messageProcessorTests/ccdar2.txt";
 	public static String password = "";
+	public static String mdhtR1Endpoint = "http://devccda.sitenv.org/CCDAValidatorServices/r1.1/";
+	public static String mdhtR2Endpoint = "http://hit-dev.nist.gov:11080/referenceccdaservice/";
 	
 	public static void main(String args[]) {
 		File privateCert = new File(privateCertPath);
@@ -44,7 +47,13 @@ public class DirectMessageProcessorTest {
 			e.printStackTrace();
 		}
 		
-		DirectMessageProcessor processor = new DirectMessageProcessor(messageStream, privateCertStream, password);
+		DirectMessageProcessor processor = null;
+		try {
+			processor = new DirectMessageProcessor(messageStream, privateCertStream, password, mdhtR1Endpoint, mdhtR2Endpoint);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			processor.processDirectMessage();
 		} catch (MessagingException e) {
@@ -62,6 +71,9 @@ public class DirectMessageProcessorTest {
 		try {
 			db.addNewLog(processor.getLogModel());
 			db.addNewPart(processor.getLogModel().getMessageId(), processor.getMainPart());
+			for(CCDAValidationReportInterface report : processor.getCcdaReport()) {
+				db.addNewCCDAValidationReport(processor.getLogModel().getMessageId(), report);				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

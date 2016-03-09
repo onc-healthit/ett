@@ -21,12 +21,12 @@ public class MessageSenderTest {
 		SendDirectMessage messageInfo = new SendDirectMessage();
 		messageInfo.setAttachmentFile("CCDA_Inpatient.xml");
 		messageInfo.setEncryptionCert("src/test/java/messageSenderTest/testCert.der");
-		messageInfo.setFromAddress("test@localhost");
+		messageInfo.setFromAddress("\"Perugini, Julien C.\" <julien@hit-testing.nist.gov>");
 		messageInfo.setSigningCert("");
 		messageInfo.setSigningCertPassword("");
 		messageInfo.setSubject("Internal Test");
 		messageInfo.setTextMessage("Internal Test");
-		messageInfo.setToAddress("processedonly5@localhost");
+		messageInfo.setToAddress("julien@localhost");
 		messageInfo.setWrapped(true);
 		
 

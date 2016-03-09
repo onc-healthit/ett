@@ -3,6 +3,7 @@ package gov.nist.healthcare.ttt.direct.messageGenerator;
 import gov.nist.healthcare.ttt.direct.certificates.PrivateCertificateLoader;
 import gov.nist.healthcare.ttt.direct.certificates.PublicCertLoader;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
+import gov.nist.healthcare.ttt.direct.sender.LdapDnslookUp;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,9 +17,11 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import javax.mail.Address;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeBodyPart;
@@ -34,30 +37,30 @@ import org.bouncycastle.mail.smime.SMIMESignedGenerator;
 import org.xbill.DNS.TextParseException;
 
 public class DirectMessageGenerator {
-	
+
 	private static Logger logger = Logger.getLogger(DirectMessageGenerator.class.getName());
 
-	private String textMessage;
-	private String subject;
-	private String fromAddress;
-	private String toAddress;
-	private InputStream attachmentFile;
-	private String attachmentFileName;
+	protected String textMessage;
+	protected String subject;
+	protected String fromAddress;
+	protected String toAddress;
+	protected InputStream attachmentFile;
+	protected String attachmentFileName;
 	// Signing certificate
-	private InputStream signingCert;
-	private String signingCertPassword;
+	protected InputStream signingCert;
+	protected String signingCertPassword;
 	// Encryption cert
-	private InputStream encryptionCert;
+	protected InputStream encryptionCert;
 	// Wrapped or Unwrapped message
-	private boolean isWrapped;
+	protected boolean isWrapped;
 	// Convert to Address
-	Address from;
-	Address to;
+	protected Address from;
+	protected Address to;
 
-	private String wrappedMessageID;
-	
+	protected String wrappedMessageID;
+
 	public DirectMessageGenerator() {
-		
+
 	}
 
 	public DirectMessageGenerator(String textMessage, String subject,
@@ -103,10 +106,10 @@ public class DirectMessageGenerator {
 	 * @throws IOException
 	 */
 	public MimeBodyPart generateUnWrappedMultipart() throws MessagingException,
-			IOException {
+	IOException {
 
 		MimeBodyPart m = new MimeBodyPart();
-		
+
 		if(this.attachmentFile != null && !this.attachmentFileName.equals("")) {
 			m.setContent(addAttachments());
 		} else {
@@ -122,7 +125,7 @@ public class DirectMessageGenerator {
 	 * @throws Exception
 	 */
 	public MimeBodyPart generateWrappedMultipart() throws Exception {
-		
+
 
 		InternetHeaders rfc822Headers = new InternetHeaders();
 		rfc822Headers.addHeaderLine("Content-Type: message/rfc822");
@@ -145,7 +148,7 @@ public class DirectMessageGenerator {
 		} else {
 			message2.setText(this.textMessage);
 		}
-		
+
 		message2.saveChanges();
 
 		MimeBodyPart m = new MimeBodyPart();
@@ -156,7 +159,7 @@ public class DirectMessageGenerator {
 
 		return m;
 	}
-	
+
 	/**
 	 * Generate the attachments multipart
 	 * @return
@@ -164,18 +167,18 @@ public class DirectMessageGenerator {
 	 * @throws IOException
 	 */
 	public MimeMultipart addAttachments() throws MessagingException, IOException {
-		
+
 		MimeMultipart mp = new MimeMultipart();
-		
+
 		// Add the text part
 		mp.addBodyPart(MessageContentGenerator.addTextPart(this.textMessage));
-		
+
 		// Add the CDA file if the filename is not empty
 		if (!this.attachmentFileName.equals("") && this.attachmentFile != null) {
 			mp.addBodyPart(MessageContentGenerator.addAttachement(
 					this.attachmentFile, this.attachmentFileName));
 		}
-		
+
 		return mp;
 	}
 
@@ -193,20 +196,30 @@ public class DirectMessageGenerator {
 
 		MimeMultipart mm = gen.generate(m);
 
+		return generateBodyPartfromMultipart(mm, mm.getContentType());
+	}
+
+	/**
+	 * Generate the multipart/signed
+	 * @param mul
+	 * @return
+	 * @throws Exception
+	 */
+	public MimeBodyPart generateBodyPartfromMultipart(MimeMultipart mul, String contentType) {
 		MimeBodyPart body = new MimeBodyPart();
 		ByteArrayOutputStream oStream = new ByteArrayOutputStream();
 		try {
-			mm.writeTo(oStream);
+			mul.writeTo(oStream);
 			oStream.flush();
 			InternetHeaders headers = new InternetHeaders();
-			headers.addHeader("Content-Type", mm.getContentType());
+			headers.addHeader("Content-Type", contentType);
 
 			body = new MimeBodyPart(headers, oStream.toByteArray());
 		} catch (Exception ex) {
 			logger.warn(ex.getMessage());
 			throw new RuntimeException(ex);
 		}
-		
+
 		return body;
 	}
 
@@ -216,32 +229,12 @@ public class DirectMessageGenerator {
 	 * @return
 	 * @throws Exception
 	 */
-	public MimeMessage generateEncryptedMessage(MimeBodyPart body)
-			throws Exception {
+	public MimeMessage generateEncryptedMessage(MimeBodyPart body) throws Exception {
 		// Get session to create message
 		Properties props = System.getProperties();
 		Session session = Session.getDefaultInstance(props, null);
 
-		// Encryption cert
-		PublicCertLoader publicLoader = new PublicCertLoader(
-				this.encryptionCert);
-		X509Certificate encCert = publicLoader.getCertificate();
-
-		/* Create the encrypter */
-		SMIMEEnvelopedGenerator encrypter = new SMIMEEnvelopedGenerator();
-		try {
-			encrypter
-					.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(
-							encCert).setProvider("BC"));
-		} catch (Exception e1) {
-			logger.warn("Error loading encryption cert - must be in X.509 format" + e1.getMessage());
-			throw new Exception("Error loading encryption cert - must be in X.509 format" + e1.getMessage());
-		}
-		/* Encrypt the message */
-		MimeBodyPart encryptedPart = encrypter.generate(body,
-		// RC2_CBC
-				new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC)
-						.setProvider("BC").build());
+		MimeBodyPart encryptedPart = generateEncryptedPart(body);
 
 		MimeMessage msg = new MimeMessage(session);
 		msg.setFrom(new InternetAddress(new SMTPAddress().properEmailAddr(this.fromAddress)));
@@ -261,25 +254,190 @@ public class DirectMessageGenerator {
 
 		return msg;
 	}
-	
-	public InputStream getEncryptionCertByDnsLookup(String targetedTo) throws TextParseException, Exception {
-		
-		// Certificate was not uploaded. Try fetching from DNS.
-		InputStream encryptionCert = null;
-		
-		DnsLookup dl = new DnsLookup();
-		String encCertString = dl.getCertRecord(this.getTargetDomain(targetedTo));
-		if (encCertString != null)
-			encryptionCert = new ByteArrayInputStream(org.bouncycastle.util.encoders.Base64.decode(encCertString.getBytes()));
-		if (encryptionCert != null) {
-			logger.info("Encryption certificate pulled from DNS");
-		} else {
-			logger.warn("Cannot pull encryption certificate from DNS");
-			throw new Exception("Cannot pull encryption certificate from DNS");
+
+	public MimeMessage generateEncryptedMessageDifferentMsgId(MimeBodyPart body) throws Exception {
+		// Get session to create message
+		Properties props = System.getProperties();
+		Session session = Session.getDefaultInstance(props, null);
+
+		MimeBodyPart encryptedPart = generateEncryptedPart(body);
+
+		MimeMessage msg = new MimeMessage(session);
+		msg.setFrom(new InternetAddress(new SMTPAddress().properEmailAddr(this.fromAddress)));
+		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(new SMTPAddress().properEmailAddr(this.toAddress)));
+		msg.setSentDate(new Date());
+		msg.setContent(encryptedPart.getContent(),
+				encryptedPart.getContentType());
+		msg.setDisposition("attachment");
+		msg.setFileName("smime.p7m");
+		if (!isWrapped) {
+			msg.setSubject(subject);
 		}
-		return encryptionCert;
+		msg.saveChanges();
+		return msg;
 	}
-	
+
+	public MimeBodyPart generateEncryptedPart(MimeBodyPart body) throws Exception {
+		// Encryption cert
+		PublicCertLoader publicLoader = new PublicCertLoader(
+				this.encryptionCert);
+		X509Certificate encCert = publicLoader.getCertificate();
+
+		/* Create the encrypter */
+		SMIMEEnvelopedGenerator encrypter = new SMIMEEnvelopedGenerator();
+		try {
+			encrypter
+			.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(
+					encCert).setProvider("BC"));
+		} catch (Exception e1) {
+			logger.warn("Error loading encryption cert - must be in X.509 format" + e1.getMessage());
+			throw new Exception("Error loading encryption cert - must be in X.509 format" + e1.getMessage());
+		}
+		/* Encrypt the message */
+		MimeBodyPart encryptedPart = encrypter.generate(body,
+				// RC2_CBC
+				new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC)
+				.setProvider("BC").build());
+
+		return encryptedPart;
+	}
+
+	/**
+	 * Alter message to get invalid digest
+	 * @throws Exception 
+	 */
+	public MimeMessage generateAlteredDirectMessage() throws Exception {
+		Security.addProvider(new BouncyCastleProvider());
+		MimeBodyPart attachments;
+		if (isWrapped) {
+			attachments = generateWrappedMultipart();
+		} else {
+			attachments = generateUnWrappedMultipart();
+		}
+		MimeBodyPart signed = generateMultipartSigned(attachments);
+		String contentType = signed.getContentType();
+
+		// Add header to alter message
+		BodyPart firstContent = ((MimeMultipart) signed.getContent()).getBodyPart(0);
+		firstContent.addHeader("NewHeader", "Message altered");
+		BodyPart secondContent = ((MimeMultipart) signed.getContent()).getBodyPart(1);
+
+		MimeMultipart signedMultipart = new MimeMultipart();
+		signedMultipart.addBodyPart(firstContent, 0);
+		signedMultipart.addBodyPart(secondContent, 1);
+
+		String boundary = signedMultipart.getContentType().split("boundary=\"")[1].split("\"")[0];
+
+		contentType = contentType.replaceAll("boundary=\\\"(.+)\\\"", boundary);
+
+		MimeBodyPart messageToEncrypt = generateBodyPartfromMultipart(signedMultipart, contentType);
+
+		return generateEncryptedMessage(messageToEncrypt);
+	}
+
+	/**
+	 * 
+	 * Faulty Message generator
+	 * 
+	 */
+	public MimeMessage generateEncryptedMessageWithDifferentSettings(MimeBodyPart body, boolean nullSender, boolean differentSender) throws Exception {
+
+		// Get session to create message
+		Properties props = System.getProperties();
+		Session session = Session.getDefaultInstance(props, null);
+
+		MimeBodyPart encryptedPart = generateEncryptedPart(body);
+
+		MimeMessage msg = new MimeMessage(session);
+		if(!nullSender) {
+			msg.setFrom(new InternetAddress(new SMTPAddress().properEmailAddr(this.fromAddress)));
+		}
+		if(differentSender) {
+			msg.setHeader("Sender", "anotheraddress@ttt.gov");
+		}
+		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(new SMTPAddress().properEmailAddr(this.toAddress)));
+		msg.setSentDate(new Date());
+		msg.setContent(encryptedPart.getContent(),
+				encryptedPart.getContentType());
+		msg.setDisposition("attachment");
+		msg.setFileName("smime.p7m");
+		if (!isWrapped) {
+			msg.setSubject(subject);
+		}
+		msg.saveChanges();
+		if (isWrapped) {
+			msg.setHeader("Message-ID", this.wrappedMessageID);
+		}
+
+		return msg;
+
+	}
+
+	public InputStream getEncryptionCertByDnsLookup(String targetedTo) throws TextParseException, Exception {
+
+		// Certificate was not uploaded. Try fetching from DNS.
+		DnsLookup dl = new DnsLookup();
+		LdapDnslookUp ldapDl = new LdapDnslookUp();
+
+		// 1st try Ldap address bound cert
+		try {
+			InputStream certStream = ldapDl.getLdapCert(targetedTo);
+			if(certStream != null) {
+				logger.info("Address bound encryption certificate pulled from LDAP");
+				return certStream;
+			} else {
+				logger.warn("Cannot pull address bound encryption certificate from LDAP");
+			}
+		} catch(Exception e) {
+			logger.warn("Cannot pull address bound encryption certificate from LDAP");
+		}
+
+		// 2nd try DNS address bound cert
+		try {
+			String encCertAddressString = dl.getCertRecord(this.getAddressBoundDomain(targetedTo));
+			if (encCertAddressString != null) {
+				logger.info("Address bound encryption certificate pulled from DNS");
+				return convertCertToInputStream(encCertAddressString);
+			} else {
+				logger.warn("Cannot pull address bound encryption certificate from DNS");
+			}
+		} catch(Exception e) {
+			logger.warn("Cannot pull address bound encryption certificate from DNS");
+		}
+
+		// 3rd try LDAP domain bound cert
+		try {
+			InputStream certStream2 = ldapDl.getLdapCert(getTargetDomain(targetedTo));
+			if(certStream2 != null) {
+				logger.info("Domain bound encryption certificate pulled from LDAP");
+				return certStream2;
+			} else {
+				logger.warn("Cannot pull domain bound encryption certificate from LDAP");
+			}
+		} catch(Exception e) {
+			logger.warn("Cannot pull domain bound encryption certificate from LDAP");
+		}
+
+		// 4th try DNS domain bound cert
+		try{
+			String encCertDomainString = dl.getCertRecord(this.getTargetDomain(targetedTo));
+			if (encCertDomainString != null) {
+				logger.info("Domain bound encryption certificate pulled from DNS");
+				return convertCertToInputStream(encCertDomainString);
+			} else {
+				logger.warn("Cannot pull domain bound encryption certificate from DNS");
+			}
+		} catch(Exception e) {
+			logger.warn("Cannot pull domain bound encryption certificate from DNS");
+		}
+
+		throw new Exception("Cannot pull encryption certificate from DNS");
+	}
+
+	public InputStream convertCertToInputStream(String encCertString) {
+		return new ByteArrayInputStream(org.bouncycastle.util.encoders.Base64.decode(encCertString.getBytes()));
+	}
+
 	public String getTargetDomain(String targetedTo) {
 		// Get the targeted domain
 		String targetDomain = "";
@@ -287,6 +445,10 @@ public class DirectMessageGenerator {
 			targetDomain = targetedTo.split("@", 2)[1];
 		}
 		return targetDomain;
+	}
+
+	public String getAddressBoundDomain(String targetTo) {
+		return targetTo.replace("@", ".");
 	}
 
 	public String getTextMessage() {
@@ -311,6 +473,15 @@ public class DirectMessageGenerator {
 
 	public void setFromAddress(String fromAddress) {
 		this.fromAddress = fromAddress;
+		try {
+			this.from = new InternetAddress(new SMTPAddress().properEmailAddr(this.fromAddress));
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getToAddress() {
@@ -319,6 +490,15 @@ public class DirectMessageGenerator {
 
 	public void setToAddress(String toAddress) {
 		this.toAddress = toAddress;
+		try {
+			this.to = new InternetAddress(new SMTPAddress().properEmailAddr(this.toAddress));
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public InputStream getAttachmentFile() {

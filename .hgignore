@@ -11,3 +11,5 @@ target/
 *.orig
 
 .DS_Store
+.metadata/
+Servers/

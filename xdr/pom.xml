@@ -12,6 +12,7 @@
         <groupId>gov.nist.healthcare.ttt</groupId>
         <artifactId>common-config</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath></relativePath>
     </parent>
 
     <dependencies>
@@ -32,15 +33,20 @@
 
         <dependency>
             <groupId>gov.nist.healthcare.ttt</groupId>
-            <artifactId>TempXDRCommunication</artifactId>
+            <artifactId>xdrMessageFactory</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- Needed for parsing xml with jackson -->
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.4.3</version>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
 
         <!-- Groovy code for building rest clients -->

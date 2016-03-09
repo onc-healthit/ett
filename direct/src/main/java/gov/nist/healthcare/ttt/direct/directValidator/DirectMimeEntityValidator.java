@@ -78,9 +78,13 @@ public class DirectMimeEntityValidator {
 	// DTS 191, Content-Type Subtype, Required
 	public DetailModel validateContentTypeSubtype(String subtype) {
 		String rfc = "RFC 2045: Section 1;http://tools.ietf.org/html/rfc2045#section-1";
-		String[] typeAndSubtype = subtype.split("/"); // first one is the type (ex. "text"), second one is the subtype (ex. "plain").
-		if (typeAndSubtype[1] != "") {
-			return new DetailModel("191", "Content-Type Subtype", subtype, "Content Type Subtype must be present", rfc, Status.SUCCESS);
+		if(subtype.contains("/")) {
+			String[] typeAndSubtype = subtype.split("/"); // first one is the type (ex. "text"), second one is the subtype (ex. "plain").
+			if (typeAndSubtype[1] != "") {
+				return new DetailModel("191", "Content-Type Subtype", subtype, "Content Type Subtype must be present", rfc, Status.SUCCESS);
+			} else {
+				return new DetailModel("191", "Content-Type Subtype", "Not present", "Content Type Subtype must be present", rfc, Status.ERROR);
+			}
 		} else {
 			return new DetailModel("191", "Content-Type Subtype", "Not present", "Content Type Subtype must be present", rfc, Status.ERROR);
 		}
@@ -171,7 +175,7 @@ public class DirectMimeEntityValidator {
 		} else if(content.equals("")) {
 			return new DetailModel("161-194", "Content-Disposition filename", "Not present", "Content Type Disposition filename SHOULD be present", rfc, Status.WARNING);
 		} else {
-			return new DetailModel("161-194", "Content-Disposition filename", content, "Content Type Disposition filename SHOULD have an extension in .p7c, .p7z or .p7s", rfc, Status.WARNING);
+			return new DetailModel("161-194", "Content-Disposition filename", content, "Content Type Disposition filename SHOULD have an extension in .p7m, .p7c, .p7z or .p7s", rfc, Status.WARNING);
 		}
 		
 	}
@@ -209,22 +213,25 @@ public class DirectMimeEntityValidator {
 	// DTS 136-148-157, Content-Transfer-Encoding, Optional
 	public DetailModel validateContentTransferEncodingOptional(String contentTransfertEncoding, String contentType) {
 		String rfc = "RFC 2045: Section 6, 6.1, 6.4, 6.7, 6.8;http://tools.ietf.org/html/rfc2045#section-6;RFC 5751: Section 3.1.2, 3.1.3;http://tools.ietf.org/html/rfc5751#section-3.2.1";
+		if(contentTransfertEncoding == null || contentTransfertEncoding.equals("")) {
+			return new DetailModel("136-148-157", "Content-Transfer-Encoding", "Not present", "Content-Transfer-Encoding is not present", rfc, Status.INFO);
+		}
 		if(contentType.contains("multipart") || contentType.contains("message")) {
 			if(contentTransfertEncoding.contains("7bit") || contentTransfertEncoding.contains("8bit") || contentTransfertEncoding.contains("binary")) {
 				return new DetailModel("136-148-157", "Content-Transfer-Encoding", contentTransfertEncoding, "Content-Transfer-Encoding must be either 7bit, 8bit or binary", rfc, Status.SUCCESS);
 			} else {
-				return new DetailModel("136-148-157", "Content-Transfer-Encoding", contentTransfertEncoding, "Content-Transfer-Encoding must be either 7bit, 8bit or binary", rfc, Status.ERROR);
+				return new DetailModel("136-148-157", "Content-Transfer-Encoding", contentTransfertEncoding, "Content-Transfer-Encoding must be either 7bit, 8bit or binary", rfc, Status.WARNING);
 			}
 		} else {
-			if(contentTransfertEncoding.contains("quoted-printable") || contentTransfertEncoding.contains("base-64") || contentTransfertEncoding.contains("7-bit")) {
+			if(contentTransfertEncoding.contains("quoted-printable") || contentTransfertEncoding.contains("base-64") || contentTransfertEncoding.contains("7-bit") || contentTransfertEncoding.contains("7bit") || contentTransfertEncoding.contains("base64")) {
 				return new DetailModel("136-148-157", "Content-Transfer-Encoding", contentTransfertEncoding, "Content-Transfer-Encoding must be either quoted-printable, base64 or 7-bit", rfc, Status.SUCCESS);
 			} else if(contentTransfertEncoding.startsWith("X-")) {
 				return new DetailModel("136-148-157", "Content-Transfer-Encoding", contentTransfertEncoding, "Content-Transfer-Encoding start with X- and do not need to be checked", rfc, Status.SUCCESS);
 			} else {
-				return new DetailModel("136-148-157", "Content-Transfer-Encoding", contentTransfertEncoding, "Content-Transfer-Encoding must be either quoted-printable, base64 or 7-bit", rfc, Status.ERROR);
+				return new DetailModel("136-148-157", "Content-Transfer-Encoding", contentTransfertEncoding, "Content-Transfer-Encoding must be either quoted-printable, base64 or 7-bit", rfc, Status.WARNING);
 			}
 		}
-		
+
 	}
 	
 	// DTS 138-149, Content-*, Optional
@@ -242,50 +249,36 @@ public class DirectMimeEntityValidator {
 	
 	// DTS 195, Body, Required
 	@SuppressWarnings("rawtypes")
-	public DetailModel validateBody(Part p, String body) {
+	public DetailModel validateBody(Part p, String body, String encoding) {
 		String rfc = "RFC 2046: Section 5.1.1;http://tools.ietf.org/html/rfc2046#section-5.1.1";
 		String bodyTxt = StringEscapeUtils.escapeHtml4(body);
 		if(body.length()>50) {
 			bodyTxt = StringEscapeUtils.escapeHtml4(body.substring(0, 50) + "...");
 		}
 		
-		if(ValidationUtils.isAscii(body) && ValidationUtils.isOnlyCRLF(body)) {
-			String[] tab = {"Content-Transfer-Encoding"};
-			String head = "";
-			Enumeration e = null;
-			try {
-				e = p.getMatchingHeaders(tab);
-			} catch (MessagingException e1) {
-				e1.printStackTrace();
-			}
-			while (e.hasMoreElements()) {
-				Header hed = (Header)e.nextElement();
-				head = hed.getValue();
-			}
-
-			// Check if Content-Transfer-Encoding="quoted-printable"
-			if(head.contains("quoted-printable")) {
-				// Check only CRLF and TAB control char
-				if(ValidationUtils.controlCharAreOnlyCRLFAndTAB(body)) {
-					return new DetailModel("195", "Body", bodyTxt, "Body does not contain illegal character", rfc, Status.SUCCESS);
-				} else {
-					return new DetailModel("195", "Body", bodyTxt, "Content-Transfer-Encoding = \"quoted-printable\", control characters other than TAB, or CR and LF as parts of CRLF pairs, MUST NOT appear", rfc, Status.ERROR);
-				}
-			} else if(head.contains("base64")) {
-				if(ValidationUtils.isOnlyCRLF(body)) {
-					return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.SUCCESS);
-				} else {
-					return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
-				}
+		// Skip ascii validation if quoted-printable or base64 encoded
+		if(encoding.toLowerCase().equals("quoted-printable")) {
+			// Check only CRLF and TAB control char
+			if(ValidationUtils.controlCharAreOnlyCRLFAndTAB(body)) {
+				return new DetailModel("195", "Body", bodyTxt, "Body does not contain illegal character", rfc, Status.SUCCESS);
 			} else {
+				return new DetailModel("195", "Body", bodyTxt, "Content-Transfer-Encoding = \"quoted-printable\", control characters other than TAB, or CR and LF as parts of CRLF pairs, MUST NOT appear", rfc, Status.ERROR);
+			}
+		} else if(encoding.toLowerCase().equals("base64")) {
+			if(ValidationUtils.isOnlyCRLF(body)) {
 				return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.SUCCESS);
+			} else {
+				return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
 			}
 		} else {
-			return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
-		}
-		
+			if(!ValidationUtils.isAscii(body)) {
+				return new DetailModel("195", "Body", bodyTxt, "Document must only contain ASCII characters", rfc, Status.ERROR);
+			}
+			if(!ValidationUtils.isOnlyCRLF(body)) {
+				return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF", rfc, Status.ERROR);
+			}
+			return new DetailModel("195", "Body", bodyTxt, "Any linebreak must be represented as a CRLF and body must only contain ASCII characters", rfc, Status.SUCCESS);
+		}	
 	}
-	
-	
 
 }

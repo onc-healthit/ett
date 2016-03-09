@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.direct.controller;
 
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
+import gov.nist.healthcare.ttt.direct.certificates.PublicCertLoader;
 import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.cert.X509Certificate;
 
 @Controller
 @RequestMapping("/api/sendDirect")
@@ -59,6 +61,9 @@ public class SendDirectController {
 			} else if(!messageInfo.getAttachmentFile().equals("")) {
 				attachmentFile = getClass().getResourceAsStream("/cda-samples/" + messageInfo.getAttachmentFile());
 			}
+			if(messageInfo.getSigningCert().toLowerCase().equals("")) {
+				messageInfo.setSigningCert("good")
+			}
 			InputStream signingCert = listener.getSigningPrivateCert(messageInfo.getSigningCert().toLowerCase());
 			
 			DirectMessageGenerator messageGenerator = new DirectMessageGenerator(
@@ -73,13 +78,19 @@ public class SendDirectController {
 			if(!messageInfo.getEncryptionCert().equals("")) {
 				encryptionCert = new FileInputStream(new File(messageInfo.getEncryptionCert()));
 			} else {
-				logger.debug("Trying to fetch encryption cert by DNS Lookup");
+				logger.debug("Trying to fetch encryption cert for " + messageInfo.getToAddress());
 				encryptionCert = messageGenerator.getEncryptionCertByDnsLookup(messageInfo.getToAddress());
 			}
 			
 			messageGenerator.setEncryptionCert(encryptionCert);
 
-			MimeMessage msg = messageGenerator.generateMessage();
+			// Check if we want invalid digest
+			MimeMessage msg;
+			if(messageInfo.invalidDigest) {
+				msg = messageGenerator.generateAlteredDirectMessage()
+			} else {
+				msg = messageGenerator.generateMessage();
+			}
 			
 			// Log the outgoing message in the database
 			LogModel outgoingMessage = new LogModel(msg);
