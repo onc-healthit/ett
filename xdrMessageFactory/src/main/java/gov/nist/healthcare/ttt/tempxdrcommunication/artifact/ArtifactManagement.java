@@ -35,8 +35,8 @@ public class ArtifactManagement {
         XDR_CCR, // DONE
         XDR_C32, // DONE
         NEGATIVE_MISSING_ASSOCIATION, // DONE
-        DELIVERY_STATUS_NOTIFICATION_SUCCESS,
-        DELIVERY_STATUS_NOTIFICATION_FAILURE
+        DELIVERY_STATUS_NOTIFICATION_SUCCESS, //DONE
+        DELIVERY_STATUS_NOTIFICATION_FAILURE //DONE
     };
 
     public static final String NIST_OID_PREFIX = "2.16.840.1.113883.3.72.5";
@@ -72,6 +72,8 @@ public class ArtifactManagement {
     private static final String FILENAME_IGNORE_PAYLOAD = "ignorePayload.txt";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS = "DeliveryStatusNotification_success.xml";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE = "DeliveryStatusNotification_failure.xml";
+    private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS_STANDALONE = "Xdr_positive_delivery.xml";
+    private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE_STANDALONE = "Xdr_negative_delivery.xml";
 
     public static String getPayload(Type type, Settings settings) throws IOException {
         makeSettingsSafe(settings);
@@ -145,6 +147,26 @@ public class ArtifactManagement {
 
     }
 
+    private static String getDeliveryStatusNotificationSuccessStandalone(Settings settings) {
+        makeSettingsSafe(settings);
+        String message = getTemplate(FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS_STANDALONE);
+        message = message.replaceAll("#DIRECT_RECIPIENT#", settings.getDirectFrom());
+        message = setIds(message, settings.getMessageId());
+
+        return message;
+    }
+    
+    private static String getDeliveryStatusNotificationFailureStandalone(Settings settings) {
+        makeSettingsSafe(settings);
+        String message = getTemplate(FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS_STANDALONE);
+        message = message.replaceAll("#DIRECT_RECIPIENT#", settings.getDirectFrom());
+        message = setIds(message, settings.getMessageId());
+
+        return message;
+    }
+    
+    
+    
     // if messageId null or empty, creates one
     private static String getDeliveryStatusNotificationSuccess(Settings settings) {
         makeSettingsSafe(settings);
@@ -158,6 +180,18 @@ public class ArtifactManagement {
         return message;
     }
 
+    private static String getDeliveryStatusNotificationFailure(Settings settings) {
+        makeSettingsSafe(settings);
+        String message = getTemplate(FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE);
+        message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
+        message = message.replaceAll("#DIRECT_RELATESTO#", settings.getDirectRelatesTo());
+        message = message.replaceAll("#DIRECT_RECIPIENT#", settings.getDirectRecipient());
+        message = setSOAPHeaders(message, settings.getWsaTo());
+        message = setIds(message, settings.getMessageId());
+
+        return message;
+    }    
+    
     public static String getXdrFullMetadata(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_XDR_FULL_METADATA);
@@ -515,6 +549,16 @@ public class ArtifactManagement {
                     artifacts.setDocument(getBaseEncodedCCDA());
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
                     break;
+                case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
+                    artifacts.setDocument(getDeliveryStatusNotificationSuccessStandalone(settings));
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);                                        
+                    break;
+                case DELIVERY_STATUS_NOTIFICATION_FAILURE:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
+                    artifacts.setDocument(getDeliveryStatusNotificationFailureStandalone(settings));
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);                                        
+                    break;
                 case XDR_C32:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     artifacts.setDocument(getBaseEncodedC32());
@@ -568,7 +612,7 @@ public class ArtifactManagement {
             settings.setDirectTo("directTo");
             settings.setWsaTo("wsaTo");
             //    settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
-            settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
+          //  settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
             String[] directTos = {};
             settings.setAdditionalDirectTo(directTos);
             //   String payload = getPayload(Type.XDR_MINIMAL_METADATA, settings);
@@ -584,8 +628,10 @@ public class ArtifactManagement {
              "wsaTo",
              null));
              */
-            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
+     //       Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
 //            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+
+Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
@@ -603,8 +649,8 @@ public class ArtifactManagement {
             
             
             
-            System.out.println(testXMl + "\n\n");
-            System.out.println(ArtifactManagement.escapeXml(testXMl));
+       //     System.out.println(testXMl + "\n\n");
+//            System.out.println(ArtifactManagement.escapeXml(testXMl));
             
             
             
