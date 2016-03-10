@@ -638,7 +638,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 126 *******************************");
 			ti.useTLS = true;
 			TestResult tr126;
-			tr126 = mu2senderTests.testMu2TwoEight(ti,"nomdn8@hit-dev.nist.gov");
+			tr126 = mu2senderTests.testMu2TwoEight(ti,"nomdn8@edge.nist.gov");
 			tr126.id = 126;
 			res.add(tr126);
 			
@@ -649,7 +649,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 156 *******************************");
 			ti.useTLS = true;
 			TestResult tr156;
-			tr156 = mu2senderTests.testMu2TwoEightPop(ti,"nomdn8@hit-dev.nist.gov");
+			tr156 = mu2senderTests.testMu2TwoEightPop(ti,"nomdn8@edge.nist.gov");
 			tr156.id = 156;
 			res.add(tr156);
 			
@@ -660,7 +660,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 127 *******************************");
 			ti.useTLS = true;
 			TestResult tr127;
-			tr127 = mu2senderTests.testMu2TwoEight(ti,"processedonly5@hit-dev.nist.gov");
+			tr127 = mu2senderTests.testMu2TwoEight(ti,"processedonly5@edge.nist.gov");
 			tr127.id = 127;
 			res.add(tr127);
 			
@@ -671,7 +671,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 527 *******************************");
 			ti.useTLS = true;
 			TestResult tr527;
-			tr527 = mu2senderTests.testMu2TwoEightSmtp(ti,"processedonly5@hit-dev.nist.gov");
+			tr527 = mu2senderTests.testMu2TwoEightSmtp(ti,"processedonly5@edge.nist.gov");
 			tr527.id = 527;
 			res.add(tr527);
 			
@@ -682,7 +682,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 157 *******************************");
 			ti.useTLS = true;
 			TestResult tr157;
-			tr157 = mu2senderTests.testMu2TwoEightPop(ti,"processedonly5@hit-dev.nist.gov");
+			tr157 = mu2senderTests.testMu2TwoEightPop(ti,"processedonly5@edge.nist.gov");
 			tr157.id = 157;
 			res.add(tr157);
 			
@@ -692,7 +692,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 128 *******************************");
 			ti.useTLS = true;
 			TestResult tr128;
-			tr128 = mu2senderTests.testMu2TwoEight(ti,"processdelayeddispatch7@hit-dev.nist.gov");
+			tr128 = mu2senderTests.testMu2TwoEight(ti,"processdelayeddispatch7@edge.nist.gov");
 			tr128.id = 127;
 			res.add(tr128);
 			
@@ -703,7 +703,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 528 *******************************");
 			ti.useTLS = true;
 			TestResult tr528;
-			tr528 = mu2senderTests.testMu2TwoEightSmtp(ti,"processdelayeddispatch7@hit-dev.nist.gov");
+			tr528 = mu2senderTests.testMu2TwoEightSmtp(ti,"processdelayeddispatch7@edge.nist.gov");
 			tr528.id = 527;
 			res.add(tr528);
 			
@@ -714,7 +714,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   BEGIN  Testcase 158 *******************************");
 			ti.useTLS = true;
 			TestResult tr158;
-			tr158 = mu2senderTests.testMu2TwoEightPop(ti,"processdelayeddispatch7@hit-dev.nist.gov");
+			tr158 = mu2senderTests.testMu2TwoEightPop(ti,"processdelayeddispatch7@edge.nist.gov");
 			tr158.id = 158;
 			res.add(tr158);
 			
