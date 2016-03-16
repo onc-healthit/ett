@@ -91,6 +91,7 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
+		String host = "";
 		Properties props = new Properties();
 		try {
 
@@ -104,11 +105,12 @@ public class TTTReceiverTests {
 			Session session = Session.getInstance(props, null);
 			Store store = session.getStore("imap");
 			store.close();
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.starttls.address"),
 					prop.getProperty("ett.password"));
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
+			host = prop.getProperty("ett.smtp.host");
 
 			Flags seen = new Flags(Flags.Flag.SEEN);
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
@@ -132,7 +134,7 @@ public class TTTReceiverTests {
 						result.put("\n" + h.getName(), h.getValue() + "\n");
 					}
 
-					result.put("Delivered-To", "********");
+					result.put("\n" + "Delivered-To", "********" + "\n");
 
 					// Storing the Message Body Parts
 					if(message.getContent() instanceof Multipart){
@@ -211,7 +213,7 @@ public class TTTReceiverTests {
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put(
 					"\nERROR",
-					"Cannot fetch email from " + ti.tttSmtpAddress + " :"
+					"Cannot fetch email from " + host + " :"
 							+ e.getLocalizedMessage());
 		}
 
@@ -239,7 +241,7 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
@@ -339,7 +341,7 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
