@@ -3,6 +3,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.mu2
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
+import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
@@ -25,7 +26,7 @@ final class TestCase20amu2 extends TestCaseSender {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context,["direct_from"])
+        executor.validateInputs(context,["direct_from,targetEndpointTLS"])
 
         //correlate this test to a direct_from address and a simulator id so we can be notified
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
@@ -43,10 +44,23 @@ final class TestCase20amu2 extends TestCaseSender {
 
         XDRTestStepInterface step
 
-        step = executor.executeSendProcessedMDN(report)
+        def context = new HashMap()
+        XDRTestStepInterface step1
+        context.targetEndpointTLS = step1.xdrSimulator.endpointTLS
+        sim = registerDocSrcEndpoint(record.username,context)
 
-        record = new TestCaseBuilder(record).addStep(step).build()
+        // Send an xdr with the endpoint created above
+        context.simId = step1.xdrSimulator.simulatorId
+        context.endpoint = step1.xdrSimulator.endpointTLS
+        context.wsaTo = step1.xdrSimulator.endpointTLS
+        context.directTo = step1.directFrom
+        context.directFrom = "testcase20a@$executor.hostname"
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+
+        XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
+        record = new TestCaseBuilder(record).addStep(step2).build()
         record.status = step.status
+
         executor.db.updateXDRRecord(record)
 
     }
