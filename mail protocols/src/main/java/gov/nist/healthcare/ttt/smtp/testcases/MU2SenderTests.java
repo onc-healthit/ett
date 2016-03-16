@@ -127,8 +127,8 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-				//	InternetAddress.parse("provider1@direct2.sitenv.org"));
-					InternetAddress.parse("badaddress@gfail.com"));
+					InternetAddress.parse("Provider1@direct2.sitenv.org"));
+				//	InternetAddress.parse("badaddress@gfail.com"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -405,7 +405,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gmffail.com"));
+					InternetAddress.parse("Provider1@direct2.sitenv.org"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -685,7 +685,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gmffail.com"));
+					InternetAddress.parse("Provider1@direct2.sitenv.org"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -893,6 +893,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -952,6 +953,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1011,6 +1013,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1068,7 +1071,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1124,7 +1127,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1180,7 +1183,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1237,7 +1240,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap1");
-		tr.setSearchType("pass");
+		tr.setSearchType("both");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1667,7 +1670,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1736,7 +1739,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1806,7 +1809,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 		Session session = Session.getInstance(props, null);
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 
 		try {
 			
