@@ -797,7 +797,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr145;
 			try {
-				tr145 = tTest.fetchUniqueId(ti);
+				tr145 = tTest.fetchUniqueIdHeaders(ti);
 				tr145.id = 145;
 				res.add(tr145);
 			} catch (IOException e) {

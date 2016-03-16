@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -144,8 +146,9 @@ public class MU2ReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		HashMap<String, String> buffer = new HashMap<String, String>();
-		//int j = 0;
+		LinkedHashMap<String, String> buffer = new LinkedHashMap<String, String>();
+		ArrayList<String> list = new ArrayList<String>();
+		int dsnFlag = 0;
 		Store store;
 		Properties props = new Properties();
 
@@ -197,13 +200,14 @@ public class MU2ReceiverTests {
 			Message messages[] = inbox.search(unseenFlagTerm);
 
 			if(type.equals("fail")){
-				System.out.println("Search in-reply-to");
+				System.out.println("Search in-reply-to or Failure MDN");
 				for (Message message : messages){
 					Enumeration headers = message.getAllHeaders();
 					while(headers.hasMoreElements()) {
 						Header h = (Header) headers.nextElement();
 						String x = h.getValue();
 						if (id.equals(x)){
+							dsnFlag = 1;
 							ZonedDateTime endTime = ZonedDateTime.now();
 							Enumeration headers1 = message.getAllHeaders();
 							while (headers1.hasMoreElements()) {
@@ -223,6 +227,41 @@ public class MU2ReceiverTests {
 								System.out.println(new String(targetArray));
 								int m = i+1;
 								//	bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
+
+							}
+						}
+
+						if (dsnFlag == 0){
+							Object m =  message.getContent();
+							if (message.getContent() instanceof Multipart){
+								Multipart multipart = (Multipart) message.getContent();
+								for (int i = 0; i < ((Multipart) m).getCount(); i++){
+									BodyPart bodyPart = multipart.getBodyPart(i);
+									if (!(bodyPart.isMimeType("text/*"))){
+										Object d =   bodyPart.getContent();
+										//d.getNotifications();
+										if (d instanceof DispositionNotification){
+											Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+											while (headers2.hasMoreElements()) {
+												Header h1 = (Header) headers2.nextElement();
+												buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+											}
+											System.out.println(buffer);
+											if(buffer.containsValue(id+"\n") && buffer.containsValue("automatic-action/MDN-sent-automatically;failure"+"\n")){
+												//	buffer.get("\n"+"Disposition").toLowerCase().contains("fail");
+												ZonedDateTime endTime = ZonedDateTime.now();
+												result.putAll(buffer);
+												duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+												result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+
+											}
+
+
+										}
+
+									}
+
+								}
 
 							}
 						}
@@ -262,88 +301,148 @@ public class MU2ReceiverTests {
 							}
 						}
 					}
+
+					/*if(result.size() == 0){
+
+					}*/
 				}
 
 			}
 
-			else {
-				System.out.println("Search Original-Message-Id in DSN");
-				/*for (Message message : messages){
-					Enumeration headers = message.getAllHeaders();
-					while(headers.hasMoreElements()) {
-						Header h = (Header) headers.nextElement();
-						String x = h.getValue();
-						if (id.equals(x)){
-							ZonedDateTime endTime = ZonedDateTime.now();
-							Enumeration headers1 = message.getAllHeaders();
-							while (headers1.hasMoreElements()) {
-								Header h1 = (Header) headers1.nextElement();
-								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
-								result.put("\n"+h1.getName(), h1.getValue()+"\n");
-								duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-
-							}
-							Multipart multipart = (Multipart) message.getContent();
-							for (int i = 0; i < multipart.getCount(); i++) {
-								BodyPart bodyPart = multipart.getBodyPart(i);
-								InputStream stream = bodyPart.getInputStream();
-
-								byte[] targetArray = IOUtils.toByteArray(stream);
-								System.out.println(new String(targetArray));
-								int m = i+1;
-								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
-
-							}
-						}
-					}
-				}*/
-
-			//	if (bodyparts.size() == 0){
-					// DSN Search for processed/dispatched MDN
-					String s = "";
-					for (Message message : messages){
-						Object m =  message.getContent();
-						if (message.getContent() instanceof Multipart){
-							Multipart multipart = (Multipart) message.getContent();
-							for (int i = 0; i < ((Multipart) m).getCount(); i++){
-								BodyPart bodyPart = multipart.getBodyPart(i);
-								if (!(bodyPart.isMimeType("text/*"))){
-									Object d =   bodyPart.getContent();
-									//d.getNotifications();
-									if (d instanceof DispositionNotification){
-										Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-										while (headers2.hasMoreElements()) {
-											Header h1 = (Header) headers2.nextElement();
-											buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
-											s = h1.getValue();
-											if (id.equals(s)){
-												ZonedDateTime endTime = ZonedDateTime.now();
-												result.put("\n"+h1.getName(), h1.getValue()+"\n");
-												result.putAll(buffer);
-												duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-												result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-												System.out.println("\n"+h1.getName() + ":" + h1.getValue()+"\n");
-											}
-											
+			else if (type.equals("pass")) { //either
+				System.out.println("Search Original-Message-Id for Processed/Dispatched in DN");
+				String s = "";
+				for (Message message : messages){
+					Object m =  message.getContent();
+					if (message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < ((Multipart) m).getCount(); i++){
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							if (!(bodyPart.isMimeType("text/*"))){
+								Object d =   bodyPart.getContent();
+								//d.getNotifications();
+								if (d instanceof DispositionNotification){
+									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+									while (headers2.hasMoreElements()) {
+										Header h1 = (Header) headers2.nextElement();
+										buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+										s = h1.getValue();
+										if (id.equals(s)){
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 
 										}
 
+
 									}
+
+
 
 								}
 
 							}
 
 						}
-					}
 
+					}
 				}
 
-	//		}
-			
+			}
+
+			else if (type.equals("dispatched")) {
+				System.out.println("Search Original-Message-Id for Dispatched in DN");
+				String s = "";
+				for (Message message : messages){
+					Object m =  message.getContent();
+					if (message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < ((Multipart) m).getCount(); i++){
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							if (!(bodyPart.isMimeType("text/*"))){
+								Object d =   bodyPart.getContent();
+								//d.getNotifications();
+								if (d instanceof DispositionNotification){
+									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+									while (headers2.hasMoreElements()) {
+										Header h1 = (Header) headers2.nextElement();
+										buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+									}
+									System.out.println(buffer);
+									if(buffer.containsValue(id+"\n") && buffer.containsValue("automatic-action/MDN-sent-automatically;dispatched"+"\n")){
+										ZonedDateTime endTime = ZonedDateTime.now();
+										result.putAll(buffer);
+										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+
+									}
+
+
+								}
+
+							}
+
+						}
+
+					}
+				}
+
+			}
+
+			else if (type.equals("both")) {
+				System.out.println("Search Original-Message-Id for Processed and Dispatched in DN");
+				int j = 1;
+				for (Message message : messages){
+					Object m =  message.getContent();
+					if (message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < ((Multipart) m).getCount(); i++){
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							if (!(bodyPart.isMimeType("text/*"))){
+								Object d =   bodyPart.getContent();
+								//d.getNotifications();
+								if (d instanceof DispositionNotification){
+									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+									while (headers2.hasMoreElements()) {
+										Header h1 = (Header) headers2.nextElement();
+										
+											buffer.put("\n"+h1.getName()+" "+j, h1.getValue()+"\n");
+											list.add(h1.getValue());
+											j++;
+										}
+									
+
+									System.out.println(list);
+
+									if(list.contains(id)){
+
+										if(list.contains("automatic-action/MDN-sent-automatically;processed") && list.contains("automatic-action/MDN-sent-automatically;dispatched")){
+
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+										}
+
+									}
+
+
+								}
+
+							}
+
+						}
+
+					}
+				}
+
+			}
+
+			//		}
+
 			store.close();
-			
+
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("ERROR","No messages found with Message ID: " + id);
