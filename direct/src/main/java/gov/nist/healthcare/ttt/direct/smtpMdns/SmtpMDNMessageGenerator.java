@@ -73,7 +73,11 @@ public class SmtpMDNMessageGenerator {
 		generator.setReporting_UA_name("smtp.nist.gov");
 		generator.setReporting_UA_product("Security Agent");
 		generator.setSubject("Automatic MDN");
-		generator.setText("Your message was successfully processed.");
+		if(type.equals("dispatched")) {
+			generator.setText("Your message was successfully dispatched.");
+		} else {
+			generator.setText("Your message was successfully processed.");
+		}
 		generator.setToAddress(to);
 		generator.setFailure(failure);
 		// Certificates 
