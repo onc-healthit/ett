@@ -51,20 +51,20 @@ class XdrSenderImpl implements XdrSender{
     public def sendXdr(Map config) {
 
         //generating headers
-//        Settings settings = new Settings()
-//        settings.setDirectFrom(config.directFrom)
-//        settings.setDirectTo(config.directTo)
-//        settings.setWsaTo(config.wsaTo)
-//        settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
-//
-//        if(config.payload) {
-//            StringWriter writer = new StringWriter();
-//            InputStream ccdaAttachment = new URL(config.payload.link).openStream();
-//            IOUtils.copy(ccdaAttachment, writer, "UTF-8");
-//            String payload = writer.toString();
-//            settings.setPayload(payload)
-//        }
-//        Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
+        Settings settings = new Settings()
+        settings.setDirectFrom(config.directFrom)
+        settings.setDirectTo(config.directTo)
+        settings.setWsaTo(config.wsaTo)
+        settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
+
+        if(config.payload) {
+            StringWriter writer = new StringWriter();
+            InputStream ccdaAttachment = new URL(config.payload.link).openStream();
+            IOUtils.copy(ccdaAttachment, writer, "UTF-8");
+            String payload = writer.toString();
+            settings.setPayload(payload)
+        }
+        Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
 //
 //        //creating request for the toolkit
 //        def req = """
@@ -95,15 +95,15 @@ class XdrSenderImpl implements XdrSender{
 //            throw new RuntimeException("could not understand response from toolkit.",e)
 //        }
 		
-		String urlRoot = String.format("http://localhost:8080/xdstools2");
+		String urlRoot = tkSendXdrUrl;
 
 		SimulatorBuilder spi = new SimulatorBuilder(urlRoot);
 		BasicSimParameters srcParams = new BasicSimParameters();
 
-		srcParams.setId("source");
-		srcParams.setUser("bill");
+		srcParams.setId(config.simId);
+		srcParams.setUser("ett");
 		srcParams.setActorType(SimulatorActorType.DOCUMENT_SOURCE);
-		srcParams.setEnvironmentName("test");
+		srcParams.setEnvironmentName("NA2015");
 		
 		System.out.println("STEP - DELETE DOCSRC SIM");
 		spi.delete(srcParams.getId(), srcParams.getUser());
@@ -122,10 +122,10 @@ class XdrSenderImpl implements XdrSender{
 		System.out.println("STEP - UPDATE - SET DOC REC ENDPOINTS INTO DOC SRC");
 		//		documentSource.setProperty(SimulatorProperties.pnrEndpoint, documentRecipient.asString(SimulatorProperties.pnrEndpoint));
 		//		documentSource.setProperty(SimulatorProperties.pnrEndpoint, "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb");
-		if(config.targetEndpointTLS.startsWith("https")) {
-			documentSource.setProperty(SimulatorProperties.pnrTlsEndpoint, config.targetEndpointTLS);
+		if(config.endpoint.startsWith("https")) {
+			documentSource.setProperty(SimulatorProperties.pnrTlsEndpoint, config.endpoint);
 		} else {
-			documentSource.setProperty(SimulatorProperties.pnrEndpoint, config.targetEndpointTLS);
+			documentSource.setProperty(SimulatorProperties.pnrEndpoint, config.endpoint);
 		}
 		SimConfig updatedVersion = documentSource.update(documentSource.getConfig());
 		System.out.println("Updated Src Sim config is " + updatedVersion.describe());
@@ -134,16 +134,24 @@ class XdrSenderImpl implements XdrSender{
 		
 		System.out.println("STEP - SEND XDR");
 		RawSendRequest req = documentSource.newRawSendRequest();
+		if(config.endpoint.startsWith("https")) {
+			req.setTls(true);
+		}
 		
 		InputStream ccdaAttachment = new URL(config.payload.link).openStream();
-		req.setMetadata(IOUtils.toString(ccdaAttachment));
+		req.setMetadata(art.metadata);
 		DocumentResource document = new DocumentResource();
-		document.setContents("Hello World!".getBytes());
-		document.setMimeType("text/plain");
+		document.setContents(IOUtils.toByteArray(ccdaAttachment));
+		document.setMimeType("text/xml");
 		req.addDocument("Document01", document);
 
 		RawSendResponse response = documentSource.sendProvideAndRegister(req);
 		
+		Map res = new HashMap();
+		res.put("request", art.metadata);
+		res.put("response", response.getResponseSoapBody());
+		
+		return res
 	}
 
     private def parseSendXdrResponse(GPathResult r){
