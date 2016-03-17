@@ -1368,7 +1368,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
-		tr.setSearchType("pass");
+		tr.setSearchType("either");
 		Session session = Session.getInstance(props, null);
 		try {
 
