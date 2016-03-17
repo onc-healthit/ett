@@ -11,7 +11,7 @@ import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 
 public class SmtpMDNMessageGenerator {
 
-	public static void sendSmtpMDN(InputStream originalMessage, String from, String to, String type, String failure, InputStream signingCert, String signingCertPassword) throws Exception {
+	public static void sendSmtpMDN(InputStream originalMessage, String originalMsgId, String from, String to, String type, String failure, InputStream signingCert, String signingCertPassword) throws Exception {
 
 		// Get the session variable
 		Properties props = System.getProperties();
@@ -24,7 +24,7 @@ public class SmtpMDNMessageGenerator {
 		generator.setDisposition("automatic-action/MDN-sent-automatically;" + type);
 		generator.setFinal_recipient(to);
 		generator.setFromAddress(from);
-		generator.setOriginal_message_id(msg.getMessageID());
+		generator.setOriginal_message_id(originalMsgId);
 		generator.setOriginal_recipient(from);
 		generator.setReporting_UA_name("smtp.nist.gov");
 		generator.setReporting_UA_product("Security Agent");
@@ -39,9 +39,9 @@ public class SmtpMDNMessageGenerator {
 		// Certificates 
 		generator.setSigningCert(signingCert);
 		generator.setSigningCertPassword(signingCertPassword);
-		generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup(to));
+//		generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup(to));
 		
-		MimeMessage mdnToSend = generator.generateMDN();
+		MimeMessage mdnToSend = generator.generateSmtpMDN();
 		
 		DirectMessageSender sender = new DirectMessageSender();
 		
