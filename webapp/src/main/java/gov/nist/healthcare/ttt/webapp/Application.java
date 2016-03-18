@@ -33,6 +33,14 @@ public class Application {
         registration.setLoadOnStartup(1);
         return registration;
     }
+    
+    @Bean
+    public ServletRegistrationBean jerseyServlet() {
+        ServletRegistrationBean registration = new ServletRegistrationBean(new XDRServlet(), "/rest/*");
+        // our rest resources will be available in the path /rest/*
+        registration.addInitParameter("jersey.config.server.provider.packages", "gov.nist.toolkit");
+        return registration;
+    }
 
     /*
     We register the direct listener Bill's way. We should probably clean that up later
