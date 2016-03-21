@@ -4,6 +4,8 @@ package gov.nist.healthcare.ttt.webapp;
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
+
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -26,17 +28,17 @@ public class Application {
     /*
     Not really necessary since it is equivalent to springboot default
      */
-    @Bean
-    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
-        ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
-        registration.addUrlMappings("/");
-        registration.setLoadOnStartup(1);
-        return registration;
-    }
+//    @Bean
+//    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
+//        ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
+//        registration.addUrlMappings("/");
+//        registration.setLoadOnStartup(1);
+//        return registration;
+//    }
     
     @Bean
     public ServletRegistrationBean jerseyServlet() {
-        ServletRegistrationBean registration = new ServletRegistrationBean(new XDRServlet(), "/rest/*");
+        ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/rest/*");
         // our rest resources will be available in the path /rest/*
         registration.addInitParameter("jersey.config.server.provider.packages", "gov.nist.toolkit");
         return registration;
