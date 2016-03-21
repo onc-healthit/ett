@@ -31,7 +31,7 @@ import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 public class MU2SenderTests {
 
 	public static Logger log = Logger.getLogger("MU2SenderTests");
-	public TestResult testBadAddress(TestInput ti) {
+	public TestResult testBadAddress(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -56,6 +56,10 @@ public class MU2SenderTests {
 		//	InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
+			
+			if (header){
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			}
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -105,7 +109,7 @@ public class MU2SenderTests {
 	}
 
 
-	public TestResult testMu2Two(TestInput ti) {
+	public TestResult testMu2Two(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -127,15 +131,17 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-				//	InternetAddress.parse("provider1@direct2.sitenv.org"));
-					InternetAddress.parse("badaddress@gfail.com"));
+					InternetAddress.parse("Provider1@direct2.sitenv.org"));
+				//	InternetAddress.parse("badaddress@gfail.com"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -173,7 +179,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	public TestResult testMu2Three(TestInput ti) {
+	public TestResult testMu2Three(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -203,7 +209,9 @@ public class MU2SenderTests {
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -241,7 +249,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	public TestResult testMu2Four(TestInput ti) {
+	public TestResult testMu2Four(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -265,7 +273,9 @@ public class MU2SenderTests {
 					InternetAddress.parse("nomdn8@edge.nist.gov"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
@@ -308,7 +318,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	public TestResult testBadAddressPop(TestInput ti) {
+	public TestResult testBadAddressPop(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -340,7 +350,9 @@ public class MU2SenderTests {
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -383,7 +395,7 @@ public class MU2SenderTests {
 	}
 
 
-	public TestResult testMu2TwoPop(TestInput ti) {
+	public TestResult testMu2TwoPop(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -405,10 +417,12 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gmffail.com"));
+					InternetAddress.parse("Provider1@direct2.sitenv.org"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
@@ -452,7 +466,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	public TestResult testMu2ThreePop(TestInput ti) {
+	public TestResult testMu2ThreePop(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -478,7 +492,9 @@ public class MU2SenderTests {
 					InternetAddress.parse("failure15@hit-testing2.nist.gov"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
@@ -520,7 +536,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	public TestResult testMu2FourPop(TestInput ti) {
+	public TestResult testMu2FourPop(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -548,7 +564,9 @@ public class MU2SenderTests {
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -587,7 +605,7 @@ public class MU2SenderTests {
 
 		return tr;
 	}
-	public TestResult testBadAddressSmtp(TestInput ti) {
+	public TestResult testBadAddressSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -615,7 +633,9 @@ public class MU2SenderTests {
 		//	InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
@@ -663,7 +683,7 @@ public class MU2SenderTests {
 	}
 
 
-	public TestResult testMu2TwoSmtp(TestInput ti) {
+	public TestResult testMu2TwoSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -685,14 +705,16 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gmffail.com"));
+					InternetAddress.parse("Provider1@direct2.sitenv.org"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -733,7 +755,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	public TestResult testMu2ThreeSmtp(TestInput ti) {
+	public TestResult testMu2ThreeSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -761,7 +783,9 @@ public class MU2SenderTests {
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -800,7 +824,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-	public TestResult testMu2FourSmtp(TestInput ti) {
+	public TestResult testMu2FourSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -824,7 +848,9 @@ public class MU2SenderTests {
 					InternetAddress.parse("nomdn8@edge.nist.gov"));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
-
+			if (header){
+				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
@@ -893,6 +919,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -952,6 +979,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1011,6 +1039,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1068,7 +1097,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1124,7 +1153,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1180,7 +1209,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1237,7 +1266,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
 		tr.setFetchType("imap1");
-		tr.setSearchType("pass");
+		tr.setSearchType("both");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1365,7 +1394,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
-		tr.setSearchType("pass");
+		tr.setSearchType("either");
 		Session session = Session.getInstance(props, null);
 		try {
 
@@ -1667,7 +1696,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
 		tr.setFetchType("imap");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1736,7 +1765,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
 		tr.setFetchType("pop");
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1806,7 +1835,7 @@ public class MU2SenderTests {
 		//	props.put("mail.smtp.notify", dsn);
 		Session session = Session.getInstance(props, null);
 		tr.setFetchType("smtp");;
-		tr.setSearchType("pass");
+		tr.setSearchType("dispatched");
 
 		try {
 			

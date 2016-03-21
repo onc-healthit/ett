@@ -103,7 +103,7 @@
       "name": "SMTP MT Test 18 - Accept failure message for invalid recipient (Processed MDN suite)",
       "id": 147,
       "protocol": "mu2",
-      "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones and an invalid address (noaddress@hit-testing2.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+      "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones(processedonly5-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
       "longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
       "sutRole": "sender",
       "sutHisp": false,
@@ -133,7 +133,7 @@
       "name": "SMTP MT Test 47 - Accept failure message for invalid recipient (IG for Delivery Notification Suite)",
       "id": 147,
       "protocol": "mu2",
-      "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones and an invalid address (noaddress@hit-testing2.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+      "desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones(processeddispatched6-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
       "longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
       "sutRole": "sender",
       "sutHisp": false,
@@ -412,7 +412,7 @@
     },
     {
       "name": "SMTP MT Test 23(a) (Message to Bad Address)",
-      "id": 101,
+      "id": 523,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -421,7 +421,7 @@
     },
     {
       "name": "SMTP/IMAP MT Test 23(b) (Message to Bad Address)",
-      "id": 105,
+      "id": 123,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -430,7 +430,7 @@
     },
     {
       "name": "SMTP/POP MT Test 23(c) (Message to Bad Address)",
-      "id": 109,
+      "id": 623,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -439,7 +439,7 @@
     },
     {
       "name": "SMTP MT Test 24(a) (Receiving HISP Not Trusted)",
-      "id": 102,
+      "id": 524,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -448,7 +448,7 @@
     },
     {
       "name": "SMTP/IMAP MT Test 24(b) (Receiving HISP Not Trusted)",
-      "id": 106,
+      "id": 124,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -457,7 +457,7 @@
     },
     {
       "name": "SMTP/POP MT Test 24(c) (Receiving HISP Not Trusted)",
-      "id": 110,
+      "id": 624,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address.  Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -466,7 +466,7 @@
     },
     {
       "name": "SMTP MT Test 25(a) (Receipient's Certificate Not Published)",
-      "id": 103,
+      "id": 525,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -475,7 +475,7 @@
     },
     {
       "name": "SMTP/IMAP MT Test 25(b) (Receipient's Certificate Not Published)",
-      "id": 107,
+      "id": 125,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -484,7 +484,7 @@
     },
     {
       "name": "SMTP/POP MT Test 25(c) (Receipient's Certificate Not Published)",
-      "id": 111,
+      "id": 625,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -493,7 +493,7 @@
     },
     {
       "name": "SMTP MT Test 26(a) (No Processed MDN)",
-      "id": 104,
+      "id": 526,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -502,7 +502,7 @@
     },
     {
       "name": "SMTP/IMAP MT Test 26(b) (No Processed MDN)",
-      "id": 108,
+      "id": 126,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -511,7 +511,7 @@
     },
     {
       "name": "SMTP/POP MT Test 26(c) (No Processed MDN)",
-      "id": 112,
+      "id": 626,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN.  Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
       "protocol": "mu2",
       "sutRole": "sender",
@@ -600,7 +600,7 @@
       "sutEdge": false
     },
     {
-      "name": "SMTP/IMAP MT Test 39 (Message with Good Header)",
+      "name": "SMTP MT Test 39 (Message with Good Header)",
       "id": 139,
       "desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and pass it on to the destination HISP.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
       "protocol": "mu2",
@@ -609,7 +609,7 @@
       "sutEdge": false
     },
     {
-      "name": "SMTP/IMAP MT Test 40 (Message with Bad Header)",
+      "name": "SMTP MT Test 40 (Message with Bad Header)",
       "id": 140,
       "desc": "Verify the ability of the system to properly process an incorrect  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an incorrect Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
       "protocol": "mu2",
@@ -618,7 +618,7 @@
       "sutEdge": false
     },
     {
-      "name": "SMTP/IMAP MT Test 41 (No Dispatched MDN)",
+      "name": "SMTP MT Test 41 (No Dispatched MDN)",
       "id": 141,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that will not provide a dispatched MDN.  The expectatiosfully 'Check MDN' will appear. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.The proctor needs to enter a bad receiving HISP address in the 'Vendor MU2 Email Address'section.",
       "protocol": "mu2",
@@ -627,7 +627,7 @@
       "sutEdge": false
     },
     {
-      "name": "SMTP/IMAP MT Test 42 (Message to Bad Address)",
+      "name": "SMTP MT Test 42 (Message to Bad Address)",
       "id": 142,
       "desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address.  Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid.  If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.The proctor needs to enter a bad receiving HISP address in the 'Vendor MU2 Email Address'section..",
       "protocol": "mu2",
@@ -659,7 +659,7 @@
       "name": "POP Test 3-5, 11, 15",
       "id": 303,
       "protocol": "pop",
-      "desc": "Verifies POP3 STAT, STLS, RETR, LIST, DELE, RSET and QUIT commands are implemented",
+      "desc": "Verifies POP3 STAT, STLS, RETR, LIST, RSET and QUIT commands are implemented",
       "longDesc": "The vendor has to provide the profile information (hostname, username, password) and an account with preloaded email.  ",
       "sutRole": "sender",
       "sutHisp": true,
