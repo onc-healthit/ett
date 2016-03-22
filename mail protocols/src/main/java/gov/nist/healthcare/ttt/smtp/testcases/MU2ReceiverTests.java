@@ -202,6 +202,67 @@ public class MU2ReceiverTests {
 				}
 
 			}
+			
+			else if (type.equals("failure/dispatched")) { 
+				System.out.println("Search Original-Message-Id for Processed/Dispatched in DN with no X-Header");
+				int j = 1;
+				for (Message message : messages){
+					Object m =  message.getContent();
+					if (message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < ((Multipart) m).getCount(); i++){
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							if (!(bodyPart.isMimeType("text/*"))){
+								Object d =   bodyPart.getContent();
+								//d.getNotifications();
+								if (d instanceof DispositionNotification){
+									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+									while (headers2.hasMoreElements()) {
+										Header h1 = (Header) headers2.nextElement();
+										if (id.equals(h1.getValue())){
+											Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+											while (headers3.hasMoreElements()) {
+												Header h2 = (Header) headers3.nextElement();
+												buffer.put("\n"+h2.getName()+" "+j, h2.getValue()+"\n");
+												list.add(h2.getValue());
+												list1.add(h2.getName());
+												j++;
+											}
+										}
+										
+										/*else{
+											message.setFlag(Flags.Flag.SEEN, false);
+										}*/
+									}
+
+									System.out.println(list);
+
+									if(list1.contains("X-DIRECT-FINAL-DESTINATION-DELIVERY")){
+										headerFlag = 1;
+										ZonedDateTime endTime = ZonedDateTime.now();
+										result.putAll(buffer);
+										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+									}
+									
+									else if (list.contains("automatic-action/MDN-sent-automatically;processed")){
+										ZonedDateTime endTime = ZonedDateTime.now();
+										result.putAll(buffer);
+										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+									}
+
+
+								}
+
+							}
+
+						}
+
+					}
+				}
+
+			}
 
 			else if (type.equals("either")) { 
 				System.out.println("Search Original-Message-Id for Processed/Dispatched in DN with no X-Header");

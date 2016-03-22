@@ -648,15 +648,7 @@
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true
-	}, {
-		"name": "IMAP Test 22",
-		"id": 222,
-		"protocol": "imap",
-		"desc": "Verifies the ability of the Vendor to deal with exceptions for different commands. The proctor need to send bad commands to the ETT.",
-		"sutRole": "receiver",
-		"sutHisp": false,
-		"sutEdge": true
-	}, {
+	},  {
 		"name": "IMAP Test 25",
 		"id": 225,
 		"protocol": "imap",
@@ -755,15 +747,7 @@
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true
-	}, {
-		"name": "POP Test 22",
-		"id": 322,
-		"protocol": "pop",
-		"desc": "Verifies the ability of the SUT to deal with exceptions for different commands. The proctor need to send bad commands to the ETT.",
-		"sutRole": "receiver",
-		"sutHisp": false,
-		"sutEdge": true
-	}, {
+	},  {
 		"name": "POP Test 27",
 		"id": 327,
 		"protocol": "pop",
