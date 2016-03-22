@@ -6,29 +6,12 @@ import java.util.Properties;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
-import gov.nist.healthcare.ttt.direct.messageGenerator.MDNExtraSpaceDisposition;
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
-import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGeneratorExtraLineBreaks;
-import gov.nist.healthcare.ttt.direct.messageGenerator.MDNMissingDisposition;
-import gov.nist.healthcare.ttt.direct.messageGenerator.MDNWhiteSpaces;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 
 public class SmtpMDNMessageGenerator {
 
-	public enum MDNType {
-		GOOD,
-		EXTRA_SPACE,
-		EXTRA_LINE_BREAK,
-		NULL_SENDER,
-		DIFF_SENDER,
-		MISS_DISPOSITION,
-		EXTRA_SPACE_822,
-		DIFF_CASES_822,
-		EXTRA_SPACE_DISPOSITION,
-		DIFF_MSG_ID,
-		DSN};
-	
-	public static void sendSmtpMDN(InputStream originalMessage, String originalMsgId, String from, String to, String type, String failure, InputStream signingCert, String signingCertPassword, MDNType mdntype) throws Exception {
+	public static void sendSmtpMDN(InputStream originalMessage, String originalMsgId, String from, String to, String type, String failure, InputStream signingCert, String signingCertPassword) throws Exception {
 
 		// Get the session variable
 		Properties props = System.getProperties();
@@ -37,34 +20,7 @@ public class SmtpMDNMessageGenerator {
 		// Get the MimeMessage object
 		MimeMessage msg = new MimeMessage(session, originalMessage);
 
-		MDNGenerator generator;
-		// Create MDN type
-		switch (mdntype) {
-        case GOOD:
-        	generator = new MDNGenerator();
-        	break;
-        
-        case EXTRA_SPACE:
-        	generator = new MDNWhiteSpaces();
-        	break;
-        	
-        case EXTRA_LINE_BREAK:
-        	generator = new MDNGeneratorExtraLineBreaks();
-        	break;
-        	
-        case EXTRA_SPACE_DISPOSITION:
-        	generator = new MDNExtraSpaceDisposition();
-        	break;
-        	
-        case MISS_DISPOSITION:
-        	generator = new MDNMissingDisposition();
-        	break;
-        	
-        default:
-        	generator = new MDNGenerator();
-        	break;
-		}
-		
+		MDNGenerator generator = new MDNGenerator();
 		generator.setDisposition("automatic-action/MDN-sent-automatically;" + type);
 		generator.setFinal_recipient(to);
 		generator.setFromAddress(from);
@@ -73,49 +29,19 @@ public class SmtpMDNMessageGenerator {
 		generator.setReporting_UA_name("smtp.nist.gov");
 		generator.setReporting_UA_product("Security Agent");
 		generator.setSubject("Automatic MDN");
-		generator.setText("Your message was successfully processed.");
+		if(type.equals("dispatched")) {
+			generator.setText("Your message was successfully dispatched.");
+		} else {
+			generator.setText("Your message was successfully processed.");
+		}
 		generator.setToAddress(to);
 		generator.setFailure(failure);
 		// Certificates 
 		generator.setSigningCert(signingCert);
 		generator.setSigningCertPassword(signingCertPassword);
-		generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup(to));
+//		generator.setEncryptionCert(generator.getEncryptionCertByDnsLookup(to));
 		
-		MimeMessage mdnToSend;
-		// Switch for different message generator
-		switch (mdntype) {
-        case GOOD:
-        	mdnToSend = generator.generateMDN();
-        	break;
-        
-        case NULL_SENDER:
-        	mdnToSend = generator.generateNullEnvelopeSenderMDN();
-        	break;
-        	
-        case DIFF_SENDER:
-        	mdnToSend = generator.generateDifferentSenderMDN();
-        	break;
-        	
-        case DIFF_MSG_ID:
-        	mdnToSend = generator.generateDifferentMsgIdMDN();
-        	break;
-        	
-        case EXTRA_SPACE_822:
-        	mdnToSend = generator.generate822ExtraSpaces();
-        	break;
-        	
-        case DIFF_CASES_822:
-        	mdnToSend = generator.generate822DifferentCases();
-        	break;
-        	
-        case DSN:
-        	mdnToSend = generator.generateDSN();
-        	break;
-        	
-        default:
-        	mdnToSend = generator.generateMDN();
-        	break;
-		}
+		MimeMessage mdnToSend = generator.generateSmtpMDN();
 		
 		DirectMessageSender sender = new DirectMessageSender();
 		

@@ -198,6 +198,13 @@ public class MDNGenerator extends DirectMessageGenerator {
 	}
 	
 	/**
+	 * SMTP Only MDN
+	 */
+	public MimeMessage generateSmtpMDN() throws MessagingException, Exception {
+		return generateUnencryptedMessage(create());
+	}
+	
+	/**
 	 * 
 	 * Faulty MDN generation
 	 * 

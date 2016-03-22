@@ -35,7 +35,7 @@ final class TestCase6 extends TestCaseSender {
         executor.db.addNewXdrRecord(builder.addStep(step1).build())
 
         def content = new Content()
-        content.endpoint = endpoints[0]
+//        content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
 
         return new Result(Status.PENDING, content)

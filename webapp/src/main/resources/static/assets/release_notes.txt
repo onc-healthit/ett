@@ -1,3 +1,16 @@
+==Version 1.0.4#3/02/2016
+	* SMTP
+		-MIME Type updates on SMTP cases 25b, 25d, 25e and 29
+
+	* XDR
+		-Fixed a double base64 encoding bug that was occurring in some test cases
+
+	* C-CDA Widget
+		-Fixed Cancel button for C-CCDA Widget
+
+	* Direct
+		-Certificate links on Direct main page are now configurable via a file
+
 ==Version 1.0.3#2/25/2016
 	* SMTP
 		-POP-1,2 perform AUTH before NOOP

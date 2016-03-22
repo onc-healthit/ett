@@ -25,7 +25,7 @@ final class TestCase20bmu2 extends TestCaseSender {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context,["direct_from"])
+        executor.validateInputs(context,["direct_from,targetEndpointTLS"])
 
         //correlate this test to a direct_from address and a simulator id so we can be notified
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
