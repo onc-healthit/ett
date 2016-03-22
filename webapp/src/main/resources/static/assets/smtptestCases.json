@@ -511,6 +511,7 @@
 		"id": 139,
 		"desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and pass it on to the destination HISP.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
 		"protocol": "mu2",
+		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
 		"sutEdge": false
@@ -519,6 +520,7 @@
 		"id": 140,
 		"desc": "Verify the ability of the system to properly process an incorrect  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an incorrect Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
 		"protocol": "mu2",
+		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
 		"sutEdge": false
