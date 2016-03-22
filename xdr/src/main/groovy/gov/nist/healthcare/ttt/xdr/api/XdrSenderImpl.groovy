@@ -1,4 +1,5 @@
 package gov.nist.healthcare.ttt.xdr.api
+
 import gov.nist.toolkit.configDatatypes.SimulatorActorType;
 import gov.nist.toolkit.configDatatypes.SimulatorProperties;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
@@ -11,6 +12,7 @@ import gov.nist.toolkit.toolkitApi.SimulatorBuilder
 import gov.nist.toolkit.toolkitServicesCommon.RawSendRequest
 import gov.nist.toolkit.toolkitServicesCommon.RawSendResponse
 import gov.nist.toolkit.toolkitServicesCommon.SimConfig
+import gov.nist.toolkit.toolkitServicesCommon.DcmImageSet.Document;
 import gov.nist.toolkit.toolkitServicesCommon.resource.DocumentResource
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil
@@ -138,17 +140,30 @@ class XdrSenderImpl implements XdrSender{
 			req.setTls(true);
 		}
 		
-		InputStream ccdaAttachment = new URL(config.payload.link).openStream();
 		req.setMetadata(art.metadata);
-		DocumentResource document = new DocumentResource();
-		document.setContents(IOUtils.toByteArray(ccdaAttachment));
-		document.setMimeType("text/xml");
-		req.addDocument("Document01", document);
+		
+		// CCDA attachment
+		String ccdaAttachmentString = "";
+		if(config.payload) {
+			if(config.payload.link) {
+				InputStream ccdaAttachment = new URL(config.payload.link).openStream();
+				DocumentResource document = new DocumentResource();
+				byte[] ccdaAttachmentByte = IOUtils.toByteArray(ccdaAttachment);
+				ccdaAttachmentString = new String(ccdaAttachmentByte);
+				document.setContents(ccdaAttachmentByte);
+				document.setMimeType("text/xml");
+				req.addDocument("Document01", document);
+			}
+		}
 
 		RawSendResponse response = documentSource.sendProvideAndRegister(req);
 		
 		Map res = new HashMap();
-		res.put("request", art.metadata);
+		if(ccdaAttachmentString != "") {
+			res.put("request", art.metadata + "\n C-CDA Attachment\n\n" + ccdaAttachmentString);	
+		} else {
+			res.put("request", art.metadata);
+		}
 		res.put("response", response.getResponseSoapBody());
 		
 		return res
