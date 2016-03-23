@@ -18,7 +18,7 @@
 			"display": true
 		}]
 	}, {
-		"name": "SMTP Test 1-8, 14(Send)",
+		"name": "SMTP Test 1-8, 14 (Send)",
 		"id": 1,
 		"protocol": "smtp",
 		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS. The SUT will send an email to wellformed1@edge.nist.gov. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@edge.nist.gov from the email address entered in Profile window.",
@@ -106,7 +106,7 @@
 		"name": "SMTP MT Test 18 - Accept failure message for invalid recipient (Processed MDN suite)",
 		"id": 147,
 		"protocol": "mu2",
-		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones(processedonly5-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones(processedonly5-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.dnsops.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
 		"longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
@@ -133,7 +133,7 @@
 		"name": "SMTP MT Test 47 - Accept failure message for invalid recipient (IG for Delivery Notification Suite)",
 		"id": 147,
 		"protocol": "mu2",
-		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones(processeddispatched6-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.nist.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
+		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones(processeddispatched6-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.dnsops.gov). The failure message for invalid recipient noaddress@hit-testing2.nist.gov needs to be verified.",
 		"longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
