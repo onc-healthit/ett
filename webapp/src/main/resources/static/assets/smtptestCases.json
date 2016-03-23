@@ -7,8 +7,25 @@
 		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS and PLAIN SASL Authentication. The SUT will send an email to wellformed1@edge.nist.gov. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@edge.nist.gov from the email address entered in Profile window.",
 		"longDesc": "The credentials for SASL authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123 ",
 		"sutRole": "sender",
-		"sutHisp": true,
+		"sutHisp": false,
 		"sutEdge": true,
+		"fields": [{
+			"label": "C-CDA Document Type",
+			"name": "ccdaReferenceFilename",
+			"datatype": "CCDAWidget",
+			"value": "ccdaReferenceFilename",
+			"readOnly": false,
+			"display": true
+		}]
+	}, {
+		"name": "SMTP Test 1-8, 14(Send)",
+		"id": 1,
+		"protocol": "smtp",
+		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS. The SUT will send an email to wellformed1@edge.nist.gov. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@edge.nist.gov from the email address entered in Profile window.",
+		"longDesc": "The credentials for SASL authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123 ",
+		"sutRole": "sender",
+		"sutHisp": true,
+		"sutEdge": false,
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
@@ -650,7 +667,7 @@
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true
-	},  {
+	}, {
 		"name": "IMAP Test 25",
 		"id": 225,
 		"protocol": "imap",
@@ -749,7 +766,7 @@
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true
-	},  {
+	}, {
 		"name": "POP Test 27",
 		"id": 327,
 		"protocol": "pop",
