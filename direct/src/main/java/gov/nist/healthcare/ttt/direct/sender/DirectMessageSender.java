@@ -23,7 +23,10 @@ public class DirectMessageSender {
 	
 	public boolean send(int port, String mailerHostname, MimeMessage msg, String fromAddress, String toAddress) throws Exception {
 		DnsLookup lookup = new DnsLookup();
-		mailerHostname = lookup.getMxRecord(mailerHostname);
+		String mxMailerHostname = lookup.getMxRecord(mailerHostname);
+		if(mxMailerHostname != null) {
+			mailerHostname = mxMailerHostname;
+		}
 		return sendMessage(port, mailerHostname, msg, fromAddress, toAddress);
 	}
 	

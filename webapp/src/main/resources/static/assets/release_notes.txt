@@ -1,3 +1,22 @@
+==Version 1.0.6#3/22/2016
+	* Message Tracking
+		-MT 18/47 Endpoints Updated Removal of MT 22, 41 and 42 Removal of IMAP/POP 22
+
+	* Direct 
+		-Fixed smtp MDN when no MX record has been dicovered. It now send to the hostname
+
+==Version 1.0.5#3/21/2016
+	* SMTP
+		-Check both failure MDNs and DSNs
+
+	* Message Tracking
+		-MT 39 - Check both processed and dispatched MDNs
+		-MT 40 - Check for processed MDNs with no x-header in dispatched MDN
+		-MT 45 - Check for both unique Ids and disposition notifications header
+
+	*Direct
+		-Fixed problem when trying to pull encryption certificate by DNS/LDAP. If an exception was thrown during the lookup the Direct message was not sent.
+
 ==Version 1.0.4#3/02/2016
 	* SMTP
 		-MIME Type updates on SMTP cases 25b, 25d, 25e and 29
