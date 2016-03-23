@@ -31,6 +31,8 @@ import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 public class MU2SenderTests {
 
 	public static Logger log = Logger.getLogger("MU2SenderTests");
+	
+	
 	public TestResult testBadAddress(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
@@ -48,6 +50,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
+			
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
@@ -127,7 +135,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -198,7 +211,12 @@ public class MU2SenderTests {
 	
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -266,7 +284,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -338,7 +361,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -413,7 +441,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -485,7 +518,12 @@ public class MU2SenderTests {
 	
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -553,7 +591,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -625,7 +668,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -701,7 +749,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -772,7 +825,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -841,7 +899,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -912,7 +975,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -943,7 +1011,7 @@ public class MU2SenderTests {
 			tr.setMessageId(MessageId);
 			tr.setStartTime(ZonedDateTime.now().toString());
 
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			log.info("Error in MU2 -27/28");
 			result.put("ERROR", "Cannot send message to " + Address + ": " +  e.getLocalizedMessage());
 			e.printStackTrace();
@@ -972,7 +1040,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1003,7 +1076,7 @@ public class MU2SenderTests {
 			tr.setMessageId(MessageId);
 			tr.setStartTime(ZonedDateTime.now().toString());
 
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			log.info("Error in MU2 -27/28");
 			result.put("ERROR", "Cannot send message to " + Address + ": " +  e.getLocalizedMessage());
 			e.printStackTrace();
@@ -1032,7 +1105,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1063,7 +1141,7 @@ public class MU2SenderTests {
 			tr.setMessageId(MessageId);
 			tr.setStartTime(ZonedDateTime.now().toString());
 
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			log.info("Error in MU2 -27/28");
 			result.put("ERROR", "Cannot send message to " + Address + ": " +  e.getLocalizedMessage());
 			e.printStackTrace();
@@ -1101,7 +1179,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1129,7 +1212,7 @@ public class MU2SenderTests {
 			tr.setMessageId(MessageId);
 			tr.setStartTime(ZonedDateTime.now().toString());
 
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			log.info("Error in testBadAddress");
 			result.put("1", "Error in TEST MESSAGE DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1157,7 +1240,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1185,7 +1273,7 @@ public class MU2SenderTests {
 			tr.setMessageId(MessageId);
 			tr.setStartTime(ZonedDateTime.now().toString());
 
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			log.info("Error in testBadAddress");
 			result.put("1", "Error in TEST MESSAGE DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1213,7 +1301,12 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1241,7 +1334,7 @@ public class MU2SenderTests {
 			tr.setMessageId(MessageId);
 			tr.setStartTime(ZonedDateTime.now().toString());
 
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			log.info("Error in testBadAddress");
 			result.put("1", "Error in TEST MESSAGE DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1342,6 +1435,11 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 		try {
 			
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
@@ -1403,7 +1501,12 @@ public class MU2SenderTests {
 		tr.setSearchType("either");
 		Session session = Session.getInstance(props, null);
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1470,7 +1573,12 @@ public class MU2SenderTests {
 		tr.setSearchType("timeout");
 		Session session = Session.getInstance(props, null);
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1529,7 +1637,12 @@ public class MU2SenderTests {
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1587,7 +1700,12 @@ public class MU2SenderTests {
 		tr.setSearchType("pass");
 		Session session = Session.getInstance(props, null);
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1648,7 +1766,12 @@ public class MU2SenderTests {
 
 		Session session = Session.getInstance(props, null);
 		try {
-
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
 			message.setRecipients(Message.RecipientType.TO,
@@ -1712,6 +1835,11 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
@@ -1781,6 +1909,11 @@ public class MU2SenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
@@ -1850,6 +1983,11 @@ public class MU2SenderTests {
 		tr.setSearchType("dispatched");
 
 		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ti.sutUserName));
