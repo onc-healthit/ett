@@ -35,9 +35,9 @@ final class TestCase14mu2 extends TestCase {
 
         sim = registerDocSrcEndpoint(username,context)
 
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = context.targetEndpointTLS
+        context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         //address attached to a hisp that is not trusted
         context.directTo = "Provider1@direct2.sitenv.org"
         context.directFrom = "testcase14mu2@$executor.hostname"

@@ -36,6 +36,8 @@ public class Application {
 //        return registration;
 //    }
     
+	
+	// Servlet to receive XDR notification from toolkit
     @Bean
     public ServletRegistrationBean jerseyServlet() {
         ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/rest/*");

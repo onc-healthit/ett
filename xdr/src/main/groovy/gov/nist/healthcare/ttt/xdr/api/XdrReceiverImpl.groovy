@@ -2,10 +2,18 @@ package gov.nist.healthcare.ttt.xdr.api
 import gov.nist.healthcare.ttt.commons.notification.IObservable
 import gov.nist.healthcare.ttt.commons.notification.IObserver
 import gov.nist.healthcare.ttt.commons.notification.Message
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl;
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface
+import gov.nist.healthcare.ttt.misc.Configuration;
 import gov.nist.healthcare.ttt.xdr.domain.CreateEndpointResponseParser
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
+import gov.nist.toolkit.configDatatypes.SimulatorActorType
+import gov.nist.toolkit.configDatatypes.SimulatorProperties;
+import gov.nist.toolkit.toolkitApi.BasicSimParameters
+import gov.nist.toolkit.toolkitApi.DocumentRecipient
+import gov.nist.toolkit.toolkitApi.SimulatorBuilder
+import gov.nist.toolkit.toolkitServicesCommon.SimConfig
 import groovy.util.slurpersupport.GPathResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -59,7 +67,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     def buildUrls(){
         tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
         notificationUrl = notificationUrl.replaceAll('/$', "")
-        fullNotificationUrl = prefix+"://"+hostname+":"+port+contextPath+notificationUrl
+        fullNotificationUrl = prefix+"://"+hostname+":"+port+contextPath+"/rest"
 
         log.debug("notification url is :" + fullNotificationUrl)
     }
@@ -69,9 +77,17 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
         def createEndpointTkMsg =buildCreateEndpointRequest(config)
         try {
             //For some reason, there response is empty and we need to do a get to retrieve the config!
-            restClient.postXml(createEndpointTkMsg, tkSimCreationUrl+"/"+config.name, timeout)
-            GPathResult response = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
-            def sim = CreateEndpointResponseParser.parse(response, config.name)
+//            restClient.postXml(createEndpointTkMsg, tkSimCreationUrl+"/"+config.name, timeout)
+//            GPathResult response = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
+//            def sim = CreateEndpointResponseParser.parse(response, config.name)
+			
+			SimConfig conf = createDocRecipient(config);
+			XDRSimulatorInterface sim = new XDRSimulatorImpl();
+
+			sim.endpoint = getPropertyFromSim(conf, "PnR_endpoint");
+			sim.endpointTLS = getPropertyFromSim(conf, "PnR_TLS_endpoint");
+			sim.simulatorId = getPropertyFromSim(conf, "Name");
+			
             return sim
         }
         catch (groovyx.net.http.HttpResponseException e) {
@@ -132,6 +148,52 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
             }
         }
     }
+	
+	
+	public def createDocRecipient(EndpointConfig config) {
+		SimulatorBuilder spi = new SimulatorBuilder("http://localhost:8080/xdstools2");
+		BasicSimParameters recParams = new BasicSimParameters();
+
+		recParams.setId(config.name);
+		recParams.setUser("ett");
+		recParams.setActorType(SimulatorActorType.DOCUMENT_RECIPIENT);
+		recParams.setEnvironmentName("NA2015");
+
+		System.out.println("STEP - DELETE DOCREC SIM");
+		spi.delete(recParams.getId(), recParams.getUser());
+
+
+		System.out.println("STEP - CREATE DOCREC SIM");
+		DocumentRecipient documentRecipient = spi.createDocumentRecipient(
+				recParams.getId(),
+				recParams.getUser(),
+				recParams.getEnvironmentName()
+				);
+
+		System.out.println(documentRecipient.getFullId());
+
+		System.out.println("This is un-verifiable since notifications are handled through the servlet filter chain which is not configured here");
+		System.out.println("STEP - UPDATE - REGISTER NOTIFICATION");
+		documentRecipient.setProperty(SimulatorProperties.TRANSACTION_NOTIFICATION_URI, fullNotificationUrl);
+		documentRecipient.setProperty(SimulatorProperties.TRANSACTION_NOTIFICATION_CLASS, "gov.nist.healthcare.ttt.xdr.api.XDRServlet");
+		SimConfig withRegistration = documentRecipient.update(documentRecipient.getConfig());
+		System.out.println("Updated Src Sim config is" + withRegistration.describe());
+
+		return withRegistration;
+	}
+	
+	public String getPropertyFromSim(SimConfig sim, String key) {
+		for(Object prop in sim.props) {
+			String stringified = new String(prop);
+			if(stringified.contains("=")) {
+				String[] splitted = prop.split("=", 2);
+				if(splitted[0].equals(key)) {
+					return splitted[1];
+				}
+			}
+		}
+		return "";
+	}
 
 
 }

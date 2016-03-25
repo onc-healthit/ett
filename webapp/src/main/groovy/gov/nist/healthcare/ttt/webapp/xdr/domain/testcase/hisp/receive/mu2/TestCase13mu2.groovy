@@ -36,9 +36,9 @@ final class TestCase13mu2 extends TestCase {
 
         sim = registerDocSrcEndpoint(username,context)
 
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = context.targetEndpointTLS
+        context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         //this address has not been registered in the tool
         context.directTo = "badaddress@gfail.com"
         context.directFrom = "testcase13mu2@$executor.hostname"

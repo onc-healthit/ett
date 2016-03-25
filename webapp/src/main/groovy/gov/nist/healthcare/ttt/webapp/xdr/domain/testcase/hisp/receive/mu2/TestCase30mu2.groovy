@@ -38,9 +38,9 @@ final class TestCase30mu2 extends TestCase {
         sim = registerDocSrcEndpoint(username,context)
 
         // Send an xdr with the endpoint created above
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = context.targetEndpointTLS
+        context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         //the user registered this address and we send to it
         context.directTo = context.direct_to
         context.directFrom = "testcase30mu2@$executor.hostname"
