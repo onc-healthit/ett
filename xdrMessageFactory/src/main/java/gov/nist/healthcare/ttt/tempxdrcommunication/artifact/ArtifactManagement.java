@@ -69,6 +69,7 @@ public class ArtifactManagement {
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY = "Xdr_minimal_metadata_only.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP = "Xdr_minimal_metadata_only_no_soap.xml";
     private static final String FILENAME_ENCODED_CCDA = "encodedCCDA.txt";
+    private static final String FILENAME_CCDA = "CCDA.xml";
     private static final String FILENAME_IGNORE_PAYLOAD = "ignorePayload.txt";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS = "DeliveryStatusNotification_success.xml";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE = "DeliveryStatusNotification_failure.xml";
@@ -89,6 +90,9 @@ public class ArtifactManagement {
                 payload = getDeliveryStatusNotificationSuccess(settings);
                 break;
             case DELIVERY_STATUS_NOTIFICATION_FAILURE:
+                payload = getDeliveryStatusNotificationFailure(settings);
+                break;
+            default:
                 break;
 
         }
@@ -368,6 +372,10 @@ public class ArtifactManagement {
     public static String getBaseEncodedCCDA() {
         return getTemplate(FILENAME_ENCODED_CCDA);
     }
+    
+    public static String getCCDA() {
+        return getTemplate(FILENAME_CCDA);
+    }
 
     public static String getBaseEncodedC32() {
         return getTemplate(FILENAME_XDR_C32_ENCODED);
@@ -520,6 +528,7 @@ public class ArtifactManagement {
             System.out.println("Payload is not empty " + formattedDate);
      //       payload = ArtifactManagement.removeXmlDeclaration(payload);
      //       payload = ArtifactManagement.escapeXml(payload);
+     /*
             if (!ArtifactManagement.isBase64Encoded(payload)) {
              //   System.out.println("!!!Payload is not base64encoded " + payload);                                                             
                 try {
@@ -531,7 +540,7 @@ public class ArtifactManagement {
             } else {
               //  System.out.println("!!! Payload IS base64 encoded " + payload);
             }
-
+*/
             artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
             artifacts.setDocument(payload);
             System.out.println("Setting doc to payload " + formattedDate);
@@ -541,12 +550,12 @@ public class ArtifactManagement {
             switch (type) {
                 case XDR_FULL_METADATA:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, true));
-                    artifacts.setDocument(getBaseEncodedCCDA());
+                    artifacts.setDocument(getCCDA());
                     metadata = getTemplate(FILENAME_XDR_FULL_METADATA_ONLY_NO_SOAP);
                     break;
                 case XDR_MINIMAL_METADATA:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
-                    artifacts.setDocument(getBaseEncodedCCDA());
+                    artifacts.setDocument(getCCDA());
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
                     break;
                 case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
@@ -573,14 +582,14 @@ public class ArtifactManagement {
                     artifacts.setExtraHeaders(new String());
                     // artifacts.setDocument(getBaseEncodedCCDA());
                     artifacts.setDocument(getIgnorePayload());
-                    artifacts.setMimeType("text/plain");
+                    //artifacts.setMimeType("text/plain");
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
                     break;
                 case NEGATIVE_MISSING_ASSOCIATION:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     // artifacts.setDocument(getBaseEncodedCCDA());
                     artifacts.setDocument(getIgnorePayload());
-                    artifacts.setMimeType("text/plain");
+                    //artifacts.setMimeType("text/plain");
                     metadata = getTemplate(FILENAME_MISSING_ASSOCIATION_NO_SOAP);
                     break;
                 default:
@@ -660,4 +669,3 @@ Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFI
     }
 
 }
-

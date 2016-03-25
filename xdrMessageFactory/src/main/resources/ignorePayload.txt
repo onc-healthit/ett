@@ -1,1 +1,1 @@
-I am the payload. Ignore me.
+<XML>I am the payload. Ignore me.</XML>
