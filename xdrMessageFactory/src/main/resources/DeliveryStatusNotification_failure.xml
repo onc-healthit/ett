@@ -107,7 +107,6 @@
             <direct:messageDisposition xmlns:direct="urn:direct:addressing"> 
                <direct:recipient>#DIRECT_RECIPIENT#</direct:recipient>
                <direct:disposition>failure</direct:disposition>
-               <direct:reasonForFailure>reason</direct:reasonForFailure>
             </direct:messageDisposition>            
          </xdsb:Document>
       </xdsb:ProvideAndRegisterDocumentSetRequest>
