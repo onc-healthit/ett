@@ -116,7 +116,7 @@ public class MU2ReceiverTests {
 								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 
 							}
-							Multipart multipart = (Multipart) message.getContent();
+							/*Multipart multipart = (Multipart) message.getContent();
 							for (int i = 0; i < multipart.getCount(); i++) {
 								BodyPart bodyPart = multipart.getBodyPart(i);
 								InputStream stream = bodyPart.getInputStream();
@@ -126,7 +126,7 @@ public class MU2ReceiverTests {
 								int m = i+1;
 								//	bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
-							}
+							}*/
 						}
 
 						if (dsnFlag == 0){
@@ -185,7 +185,7 @@ public class MU2ReceiverTests {
 								result.put("\nElapsed Time", timeout.toString().substring(3)+"\n");
 
 							}
-							Multipart multipart = (Multipart) message.getContent();
+							/*Multipart multipart = (Multipart) message.getContent();
 							for (int i = 0; i < multipart.getCount(); i++) {
 								BodyPart bodyPart = multipart.getBodyPart(i);
 								InputStream stream = bodyPart.getInputStream();
@@ -195,7 +195,7 @@ public class MU2ReceiverTests {
 								int m = i+1;
 								bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
 
-							}
+							}*/
 						}
 					}
 
