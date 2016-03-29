@@ -47,6 +47,7 @@ public class MU2ReceiverTests {
 		ArrayList<String> list1 = new ArrayList<String>();
 		int dsnFlag = 0;
 		int headerFlag = 0;
+		int dispatchedFlag = 0;
 		Store store;
 		Properties props = new Properties();
 
@@ -58,7 +59,7 @@ public class MU2ReceiverTests {
 		String startTime = t.getStartTime();
 		Duration duration = null;
 		Duration timeout = null;
-		final long  timeoutConstant = 65; // 1 hour 5 mins (or) 65 minutes to get back the failure MDN
+		final long  timeoutConstant = 70; // 1 hour 10 mins (or) 70 minutes to get back the failure MDN
 
 
 		try {
@@ -201,6 +202,67 @@ public class MU2ReceiverTests {
 
 				}
 
+			}
+			
+			else if (type.equals("28")){
+				System.out.println("Search in-reply-to or Failure MDN");
+				for (Message message : messages){
+					Enumeration headers = message.getAllHeaders();
+					while(headers.hasMoreElements()) {
+						Header h = (Header) headers.nextElement();
+						String x = h.getValue();
+						if (id.equals(x)){
+							dsnFlag = 1;
+							Enumeration headers1 = message.getAllHeaders();
+							while (headers1.hasMoreElements()) {
+								Header h1 = (Header) headers1.nextElement();
+								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+								buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+								
+
+							}
+						}
+
+						if (dsnFlag == 0){
+							Object m =  message.getContent();
+							if (message.getContent() instanceof Multipart){
+								Multipart multipart = (Multipart) message.getContent();
+								for (int i = 0; i < ((Multipart) m).getCount(); i++){
+									BodyPart bodyPart = multipart.getBodyPart(i);
+									if (!(bodyPart.isMimeType("text/*"))){
+										Object d =   bodyPart.getContent();
+										//d.getNotifications();
+										if (d instanceof DispositionNotification){
+											Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+											while (headers2.hasMoreElements()) {
+												Header h1 = (Header) headers2.nextElement();
+												list.add(h1.getName());
+												list.add(h1.getValue());
+												
+											}
+											System.out.println(buffer);
+											if(list.contains(id) && list.contains("automatic-action/MDN-sent-automatically;dispatched")){
+												dispatchedFlag = 1;
+											}
+											
+											else{
+												ZonedDateTime endTime = ZonedDateTime.now();
+												duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+												result.putAll(buffer);
+												result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+											}
+
+
+										}
+
+									}
+
+								}
+
+							}
+						}
+					}
+				}
 			}
 			
 			else if (type.equals("failure/dispatched")) { 
@@ -435,6 +497,11 @@ public class MU2ReceiverTests {
 			else if (headerFlag == 1){
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses().put("\n"+"ERROR","Dispatched MDN contains X-DIRECT-FINAL-DESTINATION-DELIVERY header");
+			}
+			
+			else if (dispatchedFlag == 1){
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				tr.getTestRequestResponses().put("\n"+"ERROR","Dispatched MDN is sent from SUT");
 			}
 
 			else {
