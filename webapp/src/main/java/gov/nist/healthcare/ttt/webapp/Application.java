@@ -25,26 +25,16 @@ import org.springframework.web.servlet.DispatcherServlet;
 @ImportResource("classpath:/spring/resources.xml")
 public class Application {
 
-    /*
-    Not really necessary since it is equivalent to springboot default
-     */
-//    @Bean
-//    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
-//        ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
-//        registration.addUrlMappings("/");
-//        registration.setLoadOnStartup(1);
-//        return registration;
-//    }
-    
-	
-	// Servlet to receive XDR notification from toolkit
+
     @Bean
-    public ServletRegistrationBean jerseyServlet() {
-        ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/rest/*");
-        // our rest resources will be available in the path /rest/*
-        registration.addInitParameter("jersey.config.server.provider.packages", "gov.nist.toolkit");
+    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
+        ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
+        registration.addUrlMappings("/");
+        registration.setLoadOnStartup(1);
         return registration;
     }
+    
+	
 
     /*
     We register the direct listener Bill's way. We should probably clean that up later
