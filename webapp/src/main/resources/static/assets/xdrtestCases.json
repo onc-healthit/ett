@@ -348,7 +348,7 @@
 }, {
     "name": "XDR MT Test 19",
     "id": "19mu2",
-    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking using Processed MDN.)",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking using Delivery Status Notification.)",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
