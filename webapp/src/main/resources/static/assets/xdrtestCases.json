@@ -75,30 +75,6 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR Test 4d",
-    "id": "4d",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of missing required XDR metadata elements.",
-    "sutEdge": true,
-    "sutHisp": false,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
-    "name": "XDR Test 4e",
-    "id": "4e",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of garbled XDR metadata such as missing associations between ebRIM constructs",
-    "sutEdge": true,
-    "sutHisp": false,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
     "name": "XDR Test 5",
     "id": 5,
     "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Full (XDS) metadata.",
@@ -281,30 +257,6 @@
     "name": "XDR Test 15c",
     "id": "15c",
     "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of a missing Direct Address Block.",
-    "sutEdge": false,
-    "sutHisp": true,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
-    "name": "XDR Test 15d",
-    "id": "15d",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of missing XDR metadata.",
-    "sutEdge": false,
-    "sutHisp": true,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
-    "name": "XDR Test 15e",
-    "id": "15e",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of malformed/inconsistent XDR metadata.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
