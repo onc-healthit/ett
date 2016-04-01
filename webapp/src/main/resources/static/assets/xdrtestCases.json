@@ -402,7 +402,7 @@
 }, {
     "name": "XDR MT Test 31",
     "id": "31mu2",
-    "desc": "Verify the ability of the receiving system to appropriately handle an INVALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include INVALID X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT.",
+    "desc": "Verify the ability of the receiving system to appropriately handle an INVALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include INVALID X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT. The proctor will verify that the invalid X-DIRECT-FINAL-DESTINATION-DELIVERY is removed from the message before it was passed along.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
