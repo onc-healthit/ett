@@ -68,6 +68,8 @@ public class ArtifactManagement {
     private static final String FILENAME_XDR_MINIMAL_METADATA = "Xdr_minimal_metadata.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY = "Xdr_minimal_metadata_only.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP = "Xdr_minimal_metadata_only_no_soap.xml";
+    private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP_NO_ROUTING = "Xdr_minimal_metadata_only_no_soap_no_routing.xml";
+   
     private static final String FILENAME_ENCODED_CCDA = "encodedCCDA.txt";
     private static final String FILENAME_CCDA = "CCDA.xml";
     private static final String FILENAME_IGNORE_PAYLOAD = "ignorePayload.txt";
@@ -557,7 +559,7 @@ public class ArtifactManagement {
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     artifacts.setDocument(getCCDA());
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
-                    break;
+                    break;                    
                 case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
                     artifacts.setDocument(getDeliveryStatusNotificationSuccessStandalone(settings));
@@ -581,9 +583,9 @@ public class ArtifactManagement {
                 case NEGATIVE_MISSING_DIRECT_BLOCK:
                     artifacts.setExtraHeaders(new String());
                     // artifacts.setDocument(getBaseEncodedCCDA());
-                    artifacts.setDocument(getIgnorePayload());
+                    artifacts.setDocument(getCCDA());
                     //artifacts.setMimeType("text/plain");
-                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP_NO_ROUTING);
                     break;
                 case NEGATIVE_MISSING_ASSOCIATION:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
@@ -640,7 +642,8 @@ public class ArtifactManagement {
      //       Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
 //            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
 
-Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
+//Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
+Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
