@@ -98,8 +98,10 @@ public class SimpleSOAPSender {
 
         StringBuilder response = new StringBuilder();
         String line = null;
+        System.out.println("SOAPSender.getResponse");
         while ((line = bufferedReader.readLine()) != null) {
             response.append(line + "\n");
+            System.out.println(line);
         }
         return response.toString();
 
