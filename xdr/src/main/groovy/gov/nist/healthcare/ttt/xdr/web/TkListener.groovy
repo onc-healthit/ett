@@ -42,7 +42,7 @@ public class TkListener {
      * Notify of a new validation report
      * @param httpBody : the report
      */
-    @RequestMapping(value = 'rest/{id}', consumes = "application/xml")
+    @RequestMapping(value = 'api/xdrNotification/{id}', consumes = "application/xml")
     @ResponseBody
     public void receiveBySimulatorId(@RequestBody String httpBody) {
 

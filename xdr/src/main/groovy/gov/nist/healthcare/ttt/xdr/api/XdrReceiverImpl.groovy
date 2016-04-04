@@ -41,15 +41,21 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
     @Value('${xdr.notification}')
     private String notificationUrl
+	
+	@Value('${toolkit.url}')
+	private String toolkitUrl
+	
+	@Value('${toolkit.user}')
+	private String toolkitUser
 
     @Value('${xdr.notification.prefix}')
     private String prefix
 
-    @Value('${toolkit.createSim.url}')
-    private String tkSimCreationUrl
+//    @Value('${toolkit.createSim.url}')
+//    private String tkSimCreationUrl
 
-    @Value('${toolkit.getSimConfig.url}')
-    private String tkSimInfo
+//    @Value('${toolkit.getSimConfig.url}')
+//    private String tkSimInfo
 
     @Value('${server.contextPath}')
     private String contextPath
@@ -65,9 +71,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
     @PostConstruct
     def buildUrls(){
-        tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
+//        tkSimCreationUrl = tkSimCreationUrl.replaceAll('/$', "")
         notificationUrl = notificationUrl.replaceAll('/$', "")
-        fullNotificationUrl = prefix+"://"+hostname+":"+port+contextPath+"/rest"
+        fullNotificationUrl = prefix+"://"+hostname+":"+port+contextPath+notificationUrl
 
         log.debug("notification url is :" + fullNotificationUrl)
     }
@@ -151,33 +157,35 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 	
 	
 	public def createDocRecipient(EndpointConfig config) {
-		SimulatorBuilder spi = new SimulatorBuilder("http://localhost:8080/xdstools2");
+		SimulatorBuilder spi = new SimulatorBuilder(this.toolkitUrl);
 		BasicSimParameters recParams = new BasicSimParameters();
 
 		recParams.setId(config.name);
-		recParams.setUser("ett");
+		recParams.setUser(this.toolkitUser);
 		recParams.setActorType(SimulatorActorType.DOCUMENT_RECIPIENT);
-		recParams.setEnvironmentName("NA2015");
+		recParams.setEnvironmentName("XDR");
 
-		System.out.println("STEP - DELETE DOCREC SIM");
+//		System.out.println("STEP - DELETE DOCREC SIM");
 		spi.delete(recParams.getId(), recParams.getUser());
 
 
-		System.out.println("STEP - CREATE DOCREC SIM");
+//		System.out.println("STEP - CREATE DOCREC SIM");
 		DocumentRecipient documentRecipient = spi.createDocumentRecipient(
 				recParams.getId(),
 				recParams.getUser(),
 				recParams.getEnvironmentName()
 				);
 
-		System.out.println(documentRecipient.getFullId());
+//		System.out.println(documentRecipient.getFullId());
 
-		System.out.println("This is un-verifiable since notifications are handled through the servlet filter chain which is not configured here");
-		System.out.println("STEP - UPDATE - REGISTER NOTIFICATION");
+//		System.out.println("This is un-verifiable since notifications are handled through the servlet filter chain which is not configured here");
+//		System.out.println("STEP - UPDATE - REGISTER NOTIFICATION");
 		documentRecipient.setProperty(SimulatorProperties.TRANSACTION_NOTIFICATION_URI, fullNotificationUrl);
 		documentRecipient.setProperty(SimulatorProperties.TRANSACTION_NOTIFICATION_CLASS, "gov.nist.healthcare.ttt.xdr.api.XDRServlet");
 		SimConfig withRegistration = documentRecipient.update(documentRecipient.getConfig());
-		System.out.println("Updated Src Sim config is" + withRegistration.describe());
+//		System.out.println("Updated Src Sim config is" + withRegistration.describe());
+		log.info("TLS Endpoint created: " + getPropertyFromSim(withRegistration, "PnR_TLS_endpoint"))
+		log.info("Non TLS Endpoint created: " + getPropertyFromSim(withRegistration, "PnR_endpoint"))
 
 		return withRegistration;
 	}

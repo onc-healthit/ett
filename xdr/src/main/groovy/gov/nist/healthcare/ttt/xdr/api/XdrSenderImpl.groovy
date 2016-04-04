@@ -43,8 +43,11 @@ class XdrSenderImpl implements XdrSender{
     @Value('${toolkit.request.timeout}')
     Integer timeout = 1000
 
-    @Value('${toolkit.sendXdr.url}')
+    @Value('${toolkit.url}')
     private String tkSendXdrUrl
+	
+	@Value('${toolkit.user}')
+	private String toolkitUser
 
     @Value('${toolkit.testName}')
     private String testName
@@ -103,14 +106,14 @@ class XdrSenderImpl implements XdrSender{
 		BasicSimParameters srcParams = new BasicSimParameters();
 
 		srcParams.setId(config.simId);
-		srcParams.setUser("ett");
+		srcParams.setUser(this.toolkitUser);
 		srcParams.setActorType(SimulatorActorType.DOCUMENT_SOURCE);
 		srcParams.setEnvironmentName("NA2015");
 		
-		System.out.println("STEP - DELETE DOCSRC SIM");
+//		System.out.println("STEP - DELETE DOCSRC SIM");
 		spi.delete(srcParams.getId(), srcParams.getUser());
 
-		System.out.println("STEP - CREATE DOCSRC SIM");
+//		System.out.println("STEP - CREATE DOCSRC SIM");
 		DocumentSource documentSource = spi.createDocumentSource(
 		srcParams.getId(),
 		srcParams.getUser(),
@@ -118,10 +121,10 @@ class XdrSenderImpl implements XdrSender{
 		);
 
 
-		System.out.println("verify sim built");
-		System.out.println(documentSource.getId() == srcParams.getId());
+//		System.out.println("verify sim built");
+//		System.out.println(documentSource.getId() == srcParams.getId());
 
-		System.out.println("STEP - UPDATE - SET DOC REC ENDPOINTS INTO DOC SRC");
+//		System.out.println("STEP - UPDATE - SET DOC REC ENDPOINTS INTO DOC SRC");
 		//		documentSource.setProperty(SimulatorProperties.pnrEndpoint, documentRecipient.asString(SimulatorProperties.pnrEndpoint));
 		//		documentSource.setProperty(SimulatorProperties.pnrEndpoint, "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb");
 		if(config.endpoint.startsWith("https")) {
@@ -130,11 +133,11 @@ class XdrSenderImpl implements XdrSender{
 			documentSource.setProperty(SimulatorProperties.pnrEndpoint, config.endpoint);
 		}
 		SimConfig updatedVersion = documentSource.update(documentSource.getConfig());
-		System.out.println("Updated Src Sim config is " + updatedVersion.describe());
+//		System.out.println("Updated Src Sim config is " + updatedVersion.describe());
 
-		System.out.println(updatedVersion);
+//		System.out.println(updatedVersion);
 		
-		System.out.println("STEP - SEND XDR");
+//		System.out.println("STEP - SEND XDR");
 		RawSendRequest req = documentSource.newRawSendRequest();
 		if(config.endpoint.startsWith("https")) {
 			req.setTls(true);
