@@ -99,7 +99,8 @@ public class ListenerProcessor implements Runnable {
 		// processdelayeddispatch7
 		// nomdn8
 		// noaddressfailure9
-		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9',
+		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 
+			'noaddressfailure9', 'goodaddress-plain',
 			'processedonly5-plain', 'processeddispatched6-plain', 'noaddressfailure9-plain', 'dispatchedonly-plain',
 			'white_space_mdn', 'extra_line_break_mdn', 'extra_space_disposition', 'missing_disposition', 'null_sender',
 			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn']
@@ -803,6 +804,10 @@ public class ListenerProcessor implements Runnable {
 			case 'nomdn8':
 				logger.info("Found address $smtpFrom so no mdn sent")
 				break
+			
+			case 'goodaddress-plain':
+				logger.info("Found address $smtpFrom so no mdn sent")
+				break
 				
 			case 'processedfailure':
 				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
@@ -829,7 +834,7 @@ public class ListenerProcessor implements Runnable {
 			case 'processeddispatched6-plain':
 				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
 				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dipsatched', '', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword)
 				break
 			
 			case 'dispatchedonly-plain':
