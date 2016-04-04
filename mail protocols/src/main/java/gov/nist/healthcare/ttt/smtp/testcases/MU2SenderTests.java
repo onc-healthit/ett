@@ -965,6 +965,7 @@ public class MU2SenderTests {
 			result.put("3", "Message-ID of the email sent: " + MessageId);
 			
 			tr.setMessageId(MessageId);
+			tr.setStartTime(ZonedDateTime.now().toString());
 		} 
 
 		catch (NullPointerException e) {
@@ -973,7 +974,6 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-			tr.setStartTime(ZonedDateTime.now().toString());
 		}
 
 		catch (Exception e) {
