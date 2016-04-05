@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.smtp.util;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
+import gov.nist.healthcare.ttt.smtp.TestResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class ConfigReader {
 			IllegalArgumentException, IllegalAccessException {
 		LinkedHashMap<String, byte[]> attachment = new LinkedHashMap<String, byte[]>();
 		attachment.put("Test.txt", "test attachment".getBytes());
+		TestResult tr = new TestResult();
 		TestInput ti = new TestInput("localhost", "localhost", 25, 25,
 				"blue@localhost", "red@localhost", false, "red", "red", "red",
 				"red", 25, 600, attachment,"a","b");

@@ -131,7 +131,11 @@ class TestCaseExecutor {
 
     protected XDRTestStepInterface executeSendDirectStep(def context, String msgType) {
 
-        SendDirectMessage msg = new SendDirectMessage("hisp testing", "hisp testing", context.direct_from,
+		String subject = "hisp testing"
+		if(msgType.endsWith(".zip")) {
+			subject = "XDM/1.0/DDM"
+		}
+        SendDirectMessage msg = new SendDirectMessage("hisp testing", subject, context.direct_from,
                 context.direct_to, msgType, "good", "", "", true, false)
         directService.sendDirect(msg)
 

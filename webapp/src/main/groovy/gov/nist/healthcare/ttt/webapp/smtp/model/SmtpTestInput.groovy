@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.smtp.model;
 
-import gov.nist.healthcare.ttt.smtp.TestInput;
+import gov.nist.healthcare.ttt.smtp.TestInput
+import gov.nist.healthcare.ttt.smtp.TestResult;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -49,16 +50,19 @@ public class SmtpTestInput {
 	String ccdaValidationObjective
 	
 	String ccdaFileLink
+	
+	TestResult previousResult;
+	
 
 	public SmtpTestInput() {
 
-	}
+	}		
 
 	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress, String sutSmtpPort, String tttSmtpPort,
 			String sutEmailAddress, String tttEmailAddress, String useTLS, String sutCommandTimeoutInSeconds,
 			String sutUserName, String sutPassword, String tttUserName, String tttPassword, String tttSmtpAddress,
 			String startTlsPort, String status, String attachmentType, String ccdaReferenceFilename,
-			String ccdaValidationObjective, String ccdaFileLink) {
+			String ccdaValidationObjective, String ccdaFileLink, TestResult previousTr) {
 		super();
 		this.testCaseNumber = testCaseNumber;
 		this.sutSmtpAddress = sutSmtpAddress;
@@ -79,8 +83,8 @@ public class SmtpTestInput {
 		this.ccdaReferenceFilename = ccdaReferenceFilename;
 		this.ccdaValidationObjective = ccdaValidationObjective;
 		this.ccdaFileLink = ccdaFileLink;
+		this.previousTr = previousTr;
 	}
-			
 
 	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress,
 			String sutSmtpPort, String sutEmailAddress, String tttEmailAddress,
@@ -153,7 +157,6 @@ public class SmtpTestInput {
 			attachmentName = "CCDA_Ambulatory.xml"
 		}
 		attachment.put(attachmentName, IOUtils.toByteArray(ccdaAttachment))
-	//	attachment.put("blah.xml", IOUtils.toByteArray(ccdaAttachment))
 
 		TestInput res = new TestInput(this.sutSmtpAddress, this.tttSmtpAddress,
 				Integer.parseInt(this.sutSmtpPort),
@@ -163,6 +166,8 @@ public class SmtpTestInput {
 				Integer.parseInt(this.startTlsPort),
 				Integer.parseInt(this.sutCommandTimeoutInSeconds), attachment, this.ccdaReferenceFilename, this.ccdaValidationObjective)
 
+		res.setTr(this.previousResult)
+		
 		return res
 	}
 

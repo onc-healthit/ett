@@ -27,30 +27,24 @@ final class TestCase5 extends TestCase {
 
         executor.validateInputs(context,["targetEndpointTLS"])
 
-        TestCaseBuilder builder = new TestCaseBuilder(id, username)
-
-        // Correlate this test to a direct_from address and a simulator id so we can be notified
-        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
-
-        sim = registerDocSrcEndpoint(username,context)
-
         // Send an xdr with the endpoint created above
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = sim.endpointTLS
+		context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         context.directTo = "testcase5@$executor.hostname"
         context.directFrom = "testcase5@$executor.hostname"
         context.messageType = ArtifactManagement.Type.XDR_FULL_METADATA
-        XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
+		
+        XDRTestStepInterface step1 = executor.executeSendXDRStep(context)
 
         // Create a new test record
-        XDRRecordInterface record = builder.addStep(step1).addStep(step2).build()
-        record.setStatus(step2.status)
+        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step1).build()
+        record.setStatus(step1.status)
         executor.db.addNewXdrRecord(record)
 
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
-        def content = executor.buildSendXDRContent(step2)
+        def content = executor.buildSendXDRContent(step1)
         return new Result(record.criteriaMet, content)
     }
 

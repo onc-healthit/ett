@@ -5,9 +5,13 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
+import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport;
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -15,13 +19,21 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase37mu2 extends TestCase {
+final class TestCase37mu2 extends TestCaseSender {
 
 
     @Autowired
     TestCase37mu2(TestCaseExecutor executor) {
         super(executor)
     }
+	
+	@Override
+	Result configure(){
+		Content c = new Content()
+		c.endpoint = sim.endpoint
+		c.endpointTLS = sim.endpointTLS
+		new Result(Status.PENDING, c)
+	}
 
     @Override
     Result run(Map context, String username) {
@@ -36,9 +48,9 @@ final class TestCase37mu2 extends TestCase {
         sim = registerDocSrcEndpoint(username,context)
 
         // Send an xdr with the endpoint created above
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = context.targetEndpointTLS
+        context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         //an address that provides a processed MDN and a dispatched MDN after n seconds (enough for the sending hisp to timeout)
         context.directTo = "processedonly@edge.nist.gov"
         context.directFrom = "testcase37mu2@$executor.hostname"
@@ -56,4 +68,21 @@ final class TestCase37mu2 extends TestCase {
         def content = executor.buildSendXDRContent(step2)
         return new Result(record.criteriaMet, content)
     }
+	
+	@Override
+	public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+
+		//we parse the XDR report
+		XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+
+		//we update the record
+		XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+		updatedRecord.status = Status.MANUAL
+		executor.db.updateXDRRecord(updatedRecord)
+	}
+
+	@Override
+	public Result getReport(XDRRecordInterface record) {
+		executor.getSimpleSendReport(record)
+	}
 }

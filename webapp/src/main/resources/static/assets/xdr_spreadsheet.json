@@ -1,5 +1,5 @@
 [{
-    "ID": 1,
+    "ID": "1",
     "Test Focus": "XDR Send ",
     "Data Flow in Direct": "Edge Sends an XDR message to HISP along with Direct Address block",
     "Metadata Included": "Limited Metadata",
@@ -13,7 +13,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 2,
+    "ID": "2",
     "Test Focus": "XDR Send",
     "Data Flow in Direct": "Edge Sends an XDR message to HISP along with Full Metadata",
     "Metadata Included": "Full Metadata",
@@ -27,7 +27,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 3,
+    "ID": "3",
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "Edge receives an XDR message from the HISP",
     "Metadata Included": "Limited Metadata",
@@ -41,7 +41,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 4,
+    "ID": "4",
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "Edge receives an incorrect XDR message from the HISP",
     "Metadata Included": "N/A",
@@ -55,7 +55,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference ": 1.1,
     "Test Data IDs ": null
 }, {
-    "ID": 5,
+    "ID": "5",
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "Edge receives an XDR message from the HISP",
     "Metadata Included": "Full Metadata",
@@ -69,21 +69,21 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 6,
+    "ID": "6",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "Edge uses Mutual TLS to authenticate to the HISP",
     "Metadata Included": "N/A",
     "Direct Address Block": "N/A",
     "SUT: Sender/ Receiver": "Sender (Edge - SUT)",
     "Test Tool: Sender / Receiver": "Server (Test Tool)",
-    "Purpose/Description": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data.",
+    "Purpose/Description": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data. The Tester (i.e., Vendor) assures that the appropriate XDR Certificates have been downloaded from the ETT and imported into the SUT trust store before executing the test.",
     "Conformance  Test Details": "Require Mutual TLS in the configuration",
     "Expected Test Results": "Edge Sysem is capable of establishing the Mutual TLS connection priort to transmitting the data.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 7,
+    "ID": "7",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "Edge uses Mutual TLS to authenticate to the HISP exception case",
     "Metadata Included": "N/A",
@@ -97,7 +97,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": "Column J is not necessary."
 }, {
-    "ID": 8,
+    "ID": "8",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "HISP authenticates to the Edge using Mutual TLS",
     "Metadata Included": "N/A",
@@ -111,7 +111,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 9,
+    "ID": "9",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "HISP authenticates to the Edge using Mutual TLS exception case",
     "Metadata Included": "N/A",
@@ -125,7 +125,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 10,
+    "ID": "10",
     "Test Focus": "XDR Send ",
     "Data Flow in Direct": "HISP Sends an XDR message to Edge",
     "Metadata Included": "Limited Metadata",
@@ -139,7 +139,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 11,
+    "ID": "11",
     "Test Focus": "XDR Send",
     "Data Flow in Direct": "HISP Sends an XDR message to Edge with Limited Metadata",
     "Metadata Included": "Limited Metadata",
@@ -153,7 +153,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 12,
+    "ID": "12",
     "Test Focus": "XDR Send",
     "Data Flow in Direct": "HISP Sends an XDR message to Edge along with Full Metadata",
     "Metadata Included": "Full Metadata",
@@ -167,7 +167,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 13,
+    "ID": "13",
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "HISP receives an XDR message from the Edge",
     "Metadata Included": "Limited Metadata",
@@ -181,7 +181,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 14,
+    "ID": "14",
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "HISP receives an XDR message from the Edge along with Full Metadata",
     "Metadata Included": "Full Metadata",
@@ -195,7 +195,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 15,
+    "ID": "15",
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "HISP receives an incorrect XDR message from the Edge",
     "Metadata Included": "Limited Metadata",
@@ -209,7 +209,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference ": 1.1,
     "Test Data IDs ": null
 }, {
-    "ID": 16,
+    "ID": "16",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "HISP uses Mutual TLS to authenticate to the Edge",
     "Metadata Included": "N/A",
@@ -223,7 +223,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 17,
+    "ID": "17",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "HISP uses Mutual TLS to authenticate to the Edge exception case",
     "Metadata Included": "N/A",
@@ -237,7 +237,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 18,
+    "ID": "18",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "Edge authenticates to the HISP using Mutual TLS",
     "Metadata Included": "N/A",
@@ -251,7 +251,7 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 }, {
-    "ID": 19,
+    "ID": "19",
     "Test Focus": "Authentication",
     "Data Flow in Direct": "Edge authenticates to the HISP using Mutual TLS exception case",
     "Metadata Included": "N/A",

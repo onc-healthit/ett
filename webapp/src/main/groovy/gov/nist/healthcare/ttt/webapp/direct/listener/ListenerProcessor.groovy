@@ -6,8 +6,9 @@ import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
 import gov.nist.healthcare.ttt.direct.sender.DnsLookup;
-import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator
-import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator.MDNType;
+import gov.nist.healthcare.ttt.direct.smtpMdns.EncryptedSmtpMDNMessageGenerator
+import gov.nist.healthcare.ttt.direct.smtpMdns.EncryptedSmtpMDNMessageGenerator.MDNType
+import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
 import org.apache.log4j.Logger;
@@ -60,6 +61,10 @@ public class ListenerProcessor implements Runnable {
 	Emailer emailer
 
 	DirectMessageProcessor processor;
+	
+	String smtpHost
+	
+	String startTlsAdress
 
 	private DatabaseInstance db;
 
@@ -95,6 +100,7 @@ public class ListenerProcessor implements Runnable {
 		// nomdn8
 		// noaddressfailure9
 		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 'noaddressfailure9',
+			'processedonly5-plain', 'processeddispatched6-plain', 'noaddressfailure9-plain',
 			'white_space_mdn', 'extra_line_break_mdn', 'extra_space_disposition', 'missing_disposition', 'null_sender',
 			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn']
 		
@@ -111,8 +117,8 @@ public class ListenerProcessor implements Runnable {
 			Session session = Session.getDefaultInstance(props, null);
 			MimeMessage forward = new MimeMessage(session, this.messageStream);
 			DirectMessageSender sender = new DirectMessageSender();
-			logger.info("Forwarding message to unpublishedwellformed1@hit-testing2.nist.gov");
-			sender.sendMessage(25, "hit-testing2.nist.gov", forward, forward.getFrom()[0].toString(), "unpublishedwellformed1@hit-testing2.nist.gov");
+			logger.info("Forwarding message to " + this.startTlsAdress);
+			sender.sendMessage(25, this.smtpHost, forward, forward.getFrom()[0].toString(), this.startTlsAdress);
 			return
 		}
 		
@@ -769,21 +775,29 @@ public class ListenerProcessor implements Runnable {
 	}
 	
 	public void manageMDNAddresses(String smtpFrom, String from, String to, InputStream message) {
+		// Get the session variable
+		Properties props = System.getProperties();
+		Session session = Session.getDefaultInstance(props, null);
+
+		// Get the MimeMessage object
+		MimeMessage msg = new MimeMessage(session, message);
+		String originalMsgId = msg.getMessageID()
+		
 		switch(smtpFrom) {
 			case 'processedonly5':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'processeddispatched6':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'processdelayeddispatch7':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
 				this.sleep(3900000);
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'nomdn8':
@@ -792,59 +806,74 @@ public class ListenerProcessor implements Runnable {
 				
 			case 'processedfailure':
 				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'processedtimeoutfailure':
 				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				this.sleep(3900000);
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'noaddressfailure9':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				break
+				
+			case 'processedonly5-plain':
+				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
+				break
+				
+			case 'processeddispatched6-plain':
+				logger.info("Found address $smtpFrom for XDR. Sending processed MDN and failure MDN")
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
+				break
+				
+			case 'noaddressfailure9-plain':
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
 				break
 				
 			case 'white_space_mdn':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE)
 				break
 
 			case 'extra_line_break_mdn':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_LINE_BREAK)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_LINE_BREAK)
 				break
 
 			case 'extra_space_disposition':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE_DISPOSITION)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE_DISPOSITION)
 				break
 				
 			case 'missing_disposition':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.MISS_DISPOSITION)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.MISS_DISPOSITION)
 				break
 
 			case 'null_sender':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.NULL_SENDER)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.NULL_SENDER)
 				break
 
 			case 'different_sender':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_SENDER)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_SENDER)
 				break
 
 			case 'different_msgid':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_MSG_ID)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_MSG_ID)
 				break
 
 			case 'white_space_822':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE_822)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.EXTRA_SPACE_822)
 				break
 
 			case 'different_cases_822':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_CASES_822)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_CASES_822)
 				break
 
 			case 'dsn':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DSN)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DSN)
 				break
 
 			default:

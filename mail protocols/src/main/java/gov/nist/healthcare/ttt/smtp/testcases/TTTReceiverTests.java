@@ -72,6 +72,7 @@ import org.apache.log4j.Logger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.mail.imap.IMAPFolder;
+import com.sun.mail.pop3.POP3Folder;
 
 public class TTTReceiverTests {
 
@@ -90,8 +91,8 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
-		Properties props = System.getProperties();
-
+		String host = "";
+		Properties props = new Properties();
 		try {
 
 			Properties prop = new Properties();
@@ -104,11 +105,12 @@ public class TTTReceiverTests {
 			Session session = Session.getInstance(props, null);
 			Store store = session.getStore("imap");
 			store.close();
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.starttls.address"),
 					prop.getProperty("ett.password"));
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
+			host = prop.getProperty("ett.smtp.host");
 
 			Flags seen = new Flags(Flags.Flag.SEEN);
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
@@ -132,62 +134,64 @@ public class TTTReceiverTests {
 						result.put("\n" + h.getName(), h.getValue() + "\n");
 					}
 
-					result.put("Delivered-To", "********");
+					result.put("\n" + "Delivered-To", "********" + "\n");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
-						
-						
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
-							
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-							// Query MDHT war endpoint
-							CloseableHttpClient client = HttpClients.createDefault();
-							FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-							File file1 = new File("sample.xml");
-							HttpPost post = new HttpPost("http://edge.nist.gov:11080/referenceccdaservice/");
-							FileBody fileBody = new FileBody(file1);
-							
-							
-							//
-							MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-							builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-						//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-						//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-							String[] parts = ti.ccdaValidationObjective.split(" ");
-							String obj = parts[0];
-							builder.addTextBody("validationObjective", obj);
-							builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-							builder.addPart("ccdaFile", fileBody);
-							HttpEntity entity = builder.build();
-							//
-							post.setEntity(entity);
-							
-							
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-	                               JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+
+
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
+
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
+
+
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
-							
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
-						}
-						
-						
 
+
+
+						}
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
@@ -209,7 +213,7 @@ public class TTTReceiverTests {
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put(
 					"\nERROR",
-					"Cannot fetch email from " + ti.tttSmtpAddress + " :"
+					"Cannot fetch email from " + host + " :"
 							+ e.getLocalizedMessage());
 		}
 
@@ -226,7 +230,7 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		int j = 1;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		try {
 			Properties prop = new Properties();
@@ -237,7 +241,7 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
@@ -301,22 +305,36 @@ public class TTTReceiverTests {
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put("\nERROR",
 					"Unknown Host  - " + e.getLocalizedMessage());
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
 		}
 
 		return tr;
 	}
 
 	/*
-	 * Fetches the Disposition-Notification-Header from the mail.
+	 * Fetches message-ids and Disposition-Notification-Options header for each unread message in the inbox.
 	 */
-	public TestResult fetchDispositionNotificaton(TestInput ti)
-			throws IOException {
+	public TestResult fetchUniqueIdHeaders(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
+		HashSet<String> hash = new HashSet<String>();
+		ArrayList<String> list = new ArrayList<String>();
 		HashMap<String, String> result = tr.getTestRequestResponses();
+		boolean flag = false;
 
-		Properties props = System.getProperties();
+		int j = 1;
+		int m = 1;
+		Properties props = new Properties();
 
 		try {
 			Properties prop = new Properties();
@@ -327,7 +345,135 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
+					prop.getProperty("ett.other.address"),
+					prop.getProperty("ett.password"));
+
+			Folder inbox = store.getFolder("Inbox");
+			inbox.open(Folder.READ_WRITE);
+
+			Flags seen = new Flags(Flags.Flag.SEEN);
+			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+			Message messages[] = inbox.search(unseenFlagTerm);
+
+			for (Message message : messages) {
+
+				Address[] froms = message.getFrom();
+				String sender_ = froms == null ? ""
+						: ((InternetAddress) froms[0]).getAddress();
+
+				String sender = ti.sutEmailAddress;
+				if (sender_.equals(sender)) {
+
+					// Store all the headers in a map
+					Enumeration headers = message.getAllHeaders();
+					while (headers.hasMoreElements()) {
+						Header h = (Header) headers.nextElement();
+						String mID = h.getName();
+						if (mID.contains("Message-ID")) {
+							result.put("\nMessage-ID " + j, h.getValue()+"\n");
+							hash.add(h.getValue());
+							j++;
+						}
+
+						if (mID.contains("Disposition-Notification-Options")){
+							result.put("\nDisposition-Notification-Options " + m, h.getValue()+"\n");
+							list.add(h.getValue());
+							m++;
+						}
+					}
+
+					inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
+
+				}
+			}
+
+
+
+
+			if (hash.size() == result.size() - (result.size()/2)) {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+
+			else {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				result.put("\nERROR",
+						"Message IDs not unique. One or more messages have the same message-ID");
+			}
+
+			if (list.size() == hash.size()){
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+
+			}
+
+			else{
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				result.put("\nERROR",
+						"One or more messages do not have the Disposition-Notification-Options header");
+				flag = true;
+			}
+			
+			if (hash.size() < 3) {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				result.put(
+						"\nERROR",
+						"ETT received "
+								+ hash.size()
+								+ " messages.\n"
+								+ "Please verify that the user has sent atleast 3 messages and also wait for few minutes after sending to ensure delivery.");
+
+			} else {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+			
+			if (flag){
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+			}
+			
+			
+
+		} catch (MessagingException e) {
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			log.info("Error fetching email " + e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR",
+					"Unknown Host  - " + e.getLocalizedMessage());
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
+		}
+
+		return tr;
+	}
+	/*
+	 * Fetches the Disposition-Notification-Header from the mail.
+	 */
+	public TestResult fetchDispositionNotificaton(TestInput ti)
+			throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setCriteriamet(CriteriaStatus.FALSE);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+
+		Properties props = new Properties();
+
+		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+
+			Session session = Session.getDefaultInstance(props, null);
+			Store store = session.getStore("imap");
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
@@ -406,7 +552,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
 		props.put("mail.imap.sasl.enable", true);
@@ -447,19 +593,21 @@ public class TTTReceiverTests {
 
 				// result.put("Delivered-To", "********");
 				result.put("\nUID", strLong);
-				Multipart multipart = (Multipart) message.getContent();
-				for (int i = 0; i < multipart.getCount(); i++) {
-					BodyPart bodyPart = multipart.getBodyPart(i);
-					InputStream stream = bodyPart.getInputStream();
+				if(message.getContent() instanceof Multipart){
 
-					byte[] targetArray = IOUtils.toByteArray(stream);
-					System.out.println(new String(targetArray));
-					int m = i + 1;
-					bodyparts.put("bodyPart" + " " + "[" + m + "]", new String(
-							targetArray));
+					Multipart multipart = (Multipart) message.getContent();
+					for (int i = 0; i < multipart.getCount(); i++) {
+						BodyPart bodyPart = multipart.getBodyPart(i);
+						InputStream stream = bodyPart.getInputStream();
 
+						byte[] targetArray = IOUtils.toByteArray(stream);
+						System.out.println(new String(targetArray));
+						int m = i + 1;
+						bodyparts.put("bodyPart" + " " + "[" + m + "]", new String(
+								targetArray));
+
+					}
 				}
-
 			}
 			if (bodyparts.isEmpty()) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -476,6 +624,16 @@ public class TTTReceiverTests {
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put("\nERROR",
 					"Cannot fetch email from :" + e.getLocalizedMessage());
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
 		}
 
 		return tr;
@@ -490,7 +648,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
 		props.put("mail.imap.ssl.ciphersuites", "TLS_RSA_WITH_RC4_128_MD5");
@@ -575,7 +733,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
 		props.put("mail.imap.ssl.ciphersuites",
@@ -598,7 +756,7 @@ public class TTTReceiverTests {
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
 			Message messages[] = inbox.search(unseenFlagTerm);
 
-			
+
 			for (Message message : messages) {
 				long a = inbox.getUID(message);
 				String strLong = Long.toString(a);
@@ -661,7 +819,7 @@ public class TTTReceiverTests {
 	public TestResult imapFetchWrongPass(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.sasl.enable", true);
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
@@ -696,6 +854,16 @@ public class TTTReceiverTests {
 			tr.getTestRequestResponses().put("\nERROR :",
 					e.getLocalizedMessage());
 
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
 		}
 
 		return tr;
@@ -710,7 +878,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		int j = 1;
 
 		try {
@@ -739,7 +907,7 @@ public class TTTReceiverTests {
 				result.put("\nUID " + j, strLong);
 				j++;
 
-				Multipart multipart = (Multipart) message.getContent();
+				//	Multipart multipart = (Multipart) message.getContent();
 
 			}
 			if (result.isEmpty()) {
@@ -756,6 +924,85 @@ public class TTTReceiverTests {
 			e.printStackTrace();
 			// log.info("Error fetching email " + e.getLocalizedMessage());
 			log.info("Error getting mail from TTT server"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
+		}
+
+		return tr;
+	}
+
+	public TestResult popFetchUid(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		HashMap<String, String> bodyparts = tr.getAttachments();
+		Properties props = new Properties();
+		int j = 1;
+
+		try {
+			Session session = Session.getDefaultInstance(props, null);
+			Store store = session.getStore("pop3");
+			store.connect(ti.sutSmtpAddress, 110, ti.sutUserName,
+					ti.sutPassword);
+
+			POP3Folder inbox = (POP3Folder) store.getFolder("Inbox");
+			inbox.open(Folder.READ_WRITE);
+
+			Flags seen = new Flags(Flags.Flag.SEEN);
+			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+			Message messages[] = inbox.search(unseenFlagTerm);
+
+			for (Message message : messages) {
+				String a = inbox.getUID(message);
+				Address[] froms = message.getFrom();
+				String sender_ = froms == null ? ""
+						: ((InternetAddress) froms[0]).getAddress();
+
+				// Store all the headers in a map
+				Enumeration headers = message.getAllHeaders();
+
+				result.put("\nUID " + j, a);
+				j++;
+
+				//		Multipart multipart = (Multipart) message.getContent();
+
+			}
+			if (result.isEmpty()) {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				tr.getTestRequestResponses().put("\nERROR",
+						"No messages found. Send a message and try again.");
+			} else {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+
+		} catch (MessagingException e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error getting mail from TTT server"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
 					+ e.getLocalizedMessage());
 			tr.getTestRequestResponses().put("\nERROR ",
 					e.getLocalizedMessage());
@@ -875,14 +1122,14 @@ public class TTTReceiverTests {
 					socket.getInputStream(), "Windows-1252"));
 		} catch (UnknownHostException e1) {
 			System.err.println("Don't know about host: hostname");
-			result.put("ERROR", "Unknown Host " + e1.getLocalizedMessage());
+			result.put("ERROR", "Unknown Host " + " : " + e1.getLocalizedMessage());
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (IOException e) {
 			System.err
 			.println("Couldn't get I/O for the connection to: hostname");
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			result.put("ERROR", "Couldn't get I/O for the connection to "
-					+ ti.sutSmtpAddress + e.getLocalizedMessage());
+					+ ti.sutSmtpAddress + " : " + e.getLocalizedMessage());
 		}
 		// If everything has been initialized then we want to write some data
 		// to the socket we have opened a connection to on port 110
@@ -905,7 +1152,7 @@ public class TTTReceiverTests {
 				while ((responseLine = is.readLine()) != null) {
 
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -939,7 +1186,7 @@ public class TTTReceiverTests {
 
 		if (response.size() > 2) {
 			tr.setCriteriamet(CriteriaStatus.TRUE);
-			result.put("SUCCESS",
+			result.put("\nSUCCESS ",
 					"The CAPABILITY, NOOP and LOGOUT commands are implemented");
 		} else
 			tr.setCriteriamet(CriteriaStatus.FALSE); // to make the testcase return a fail status
@@ -996,7 +1243,7 @@ public class TTTReceiverTests {
 				int i = 1;
 				while ((responseLine = is.readLine()) != null) {
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1024,11 +1271,11 @@ public class TTTReceiverTests {
 		if (response.size() > 1) {
 			if (response.get(1).contains("BAD") || response.get(1).contains("BYE") || response.get(1).contains("FAIL")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"The server rejects the command with bad syntax");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
-				result.put("ERROR",
+				result.put("\nERROR ",
 						"The server accepts commands with bad syntax!\n");
 			}
 
@@ -1081,7 +1328,7 @@ public class TTTReceiverTests {
 				int i = 1;
 				while ((responseLine = is.readLine()) != null) {
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1106,11 +1353,11 @@ public class TTTReceiverTests {
 		if (response.size() > 1) {
 			if	(response.get(1).contains("BAD") || response.get(1).contains("NO") || response.get(1).contains("FAIL")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"The server rejects the command based on the state of the connection");
 			} else {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
-				result.put("ERROR",
+				result.put("\nERROR ",
 						"The server accepts commands without regards to state of the connection!\n");
 			}
 		}
@@ -1200,8 +1447,8 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 		ArrayList<String> response = new ArrayList<String>();
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		tr.setCriteriamet(CriteriaStatus.FALSE);
-	//	SSLSocket socket = null;
+		tr.setCriteriamet(CriteriaStatus.TRUE);
+		//	SSLSocket socket = null;
 		Socket socket = null;
 		PrintWriter output = null;
 		BufferedReader is = null;
@@ -1225,20 +1472,23 @@ public class TTTReceiverTests {
 					socket.getInputStream(), "Windows-1252"));
 		} catch (UnknownHostException e1) {
 			System.err.println("Don't know about host: hostname");
-			result.put("ERROR", "Unknown Host " + e1.getLocalizedMessage());
+			result.put("ERROR", "Unknown Host " + " : " + e1.getLocalizedMessage());
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (IOException e) {
 			System.err
 			.println("Couldn't get I/O for the connection to: hostname");
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			result.put("ERROR", "Couldn't get I/O for the connection to "
-					+ ti.sutSmtpAddress + e.getLocalizedMessage());
+					+ ti.sutSmtpAddress + " : " + e.getLocalizedMessage());
 		}
 		// If everything has been initialized then we want to write some data
 		// to the socket we have opened a connection to on port 110
 		if (socket != null && output != null && is != null) {
 			try {
-
+				output.print("USER "+ti.sutUserName+"\r\n");
+				output.flush();
+				output.print("PASS "+ti.sutPassword+"\r\n");
+				output.flush();
 				output.print("CAPA\r\n");
 				output.flush();
 				output.print("NOOP\r\n");
@@ -1279,7 +1529,113 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put("ERROR", "All commands are not implemented");
 			} 
-			
+
+
+		}
+
+		/*if (response.size() > 2) {
+			tr.setCriteriamet(CriteriaStatus.TRUE);
+			result.put("SUCCESS",
+					"The CAPABILITY, NOOP and QUIT commands are implemented");
+		} else
+			tr.setCriteriamet(CriteriaStatus.FALSE);*/
+
+		return tr;
+
+	}
+
+	public TestResult SocketPopUid(TestInput ti) throws NoSuchAlgorithmException,
+	KeyManagementException {
+		TestResult tr = new TestResult();
+		ArrayList<String> response = new ArrayList<String>();
+		LinkedHashMap<String, String> result = tr.getTestRequestResponses();
+		tr.setCriteriamet(CriteriaStatus.TRUE);
+		//	SSLSocket socket = null;
+		Socket socket = null;
+		PrintWriter output = null;
+		BufferedReader is = null;
+
+		// Initialization section:
+		// Try to open a socket on port 110
+		// Try to open input and output streams
+		try {
+			System.setProperty("java.net.preferIPv4Stack", "true");
+			/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
+					.getDefault()).createSocket(
+							InetAddress.getByName(ti.sutSmtpAddress), 995);*/
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
+
+			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
+					socket.getOutputStream(), "Windows-1252")), true);
+			// output = new DataOutputStream(socket.getOutputStream());
+			// is = new DataInputStream(socket.getInputStream());
+
+			is = new BufferedReader(new InputStreamReader(
+					socket.getInputStream(), "Windows-1252"));
+		} catch (UnknownHostException e1) {
+			System.err.println("Don't know about host: hostname");
+			result.put("ERROR", "Unknown Host " + " : " + e1.getLocalizedMessage());
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (IOException e) {
+			System.err
+			.println("Couldn't get I/O for the connection to: hostname");
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			result.put("ERROR", "Couldn't get I/O for the connection to "
+					+ ti.sutSmtpAddress + " : " + e.getLocalizedMessage());
+		}
+		// If everything has been initialized then we want to write some data
+		// to the socket we have opened a connection to on port 110
+
+		if (socket != null && output != null && is != null) {
+			try {
+
+				output.print("USER "+ti.sutUserName+"\r\n");
+				output.flush();
+
+				output.print("PASS "+ti.sutPassword+"\r\n");
+				output.flush();
+
+				output.print("UIDL\r\n");
+				output.flush();
+
+				output.print("QUIT\r\n");
+				output.flush();
+
+				// keep on reading from/to the socket till we receive the "Ok"
+				// from POP,
+				int i = 1;
+
+				String responseLine;
+				while ((responseLine = is.readLine()) != null) {
+					System.out.println("Server: " + responseLine);
+					result.put("\nSERVER " + i, responseLine + "\n");
+					response.add(responseLine);
+					i++;
+					if (responseLine.indexOf("Ok") != -1) {
+						break;
+					}
+				}
+				output.close();
+				is.close();
+				socket.close();
+			} catch (UnknownHostException e) {
+				System.err.println("Trying to connect to unknown host: " + e);
+				tr.getTestRequestResponses().put("ERROR", "Unknown host " + e);
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+			} catch (IOException e) {
+				System.err.println("IOException:  " + e);
+				tr.getTestRequestResponses().put("ERROR", "IO Exception" + e);
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+			}
+		}
+
+		for (String s : response) {
+			if (s.contains("ERR") || s.contains("-ERR")) {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				//	result.put("ERROR", "Authentication Failure");
+			} 
+
+
 		}
 
 		/*if (response.size() > 2) {
@@ -1300,20 +1656,20 @@ public class TTTReceiverTests {
 		ArrayList<String> response = new ArrayList<String>();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
-//		SSLSocket socket = null;
-			Socket socket = null;
-			PrintWriter output = null;
-			BufferedReader is = null;
+		//		SSLSocket socket = null;
+		Socket socket = null;
+		PrintWriter output = null;
+		BufferedReader is = null;
 
-			// Initialization section:
-			// Try to open a socket on port 110
-			// Try to open input and output streams
-			try {
-				System.setProperty("java.net.preferIPv4Stack", "true");
-				/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
+		// Initialization section:
+		// Try to open a socket on port 110
+		// Try to open input and output streams
+		try {
+			System.setProperty("java.net.preferIPv4Stack", "true");
+			/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 						.getDefault()).createSocket(
 								InetAddress.getByName(ti.sutSmtpAddress), 995);*/
-				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
 
 			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					socket.getOutputStream(), "Windows-1252")), true);
@@ -1352,7 +1708,7 @@ public class TTTReceiverTests {
 				while ((responseLine = is.readLine()) != null) {
 
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1376,7 +1732,7 @@ public class TTTReceiverTests {
 		for (String s : response) {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"POP server rejects the command with bad syntax.");
 			} 
 
@@ -1400,20 +1756,20 @@ public class TTTReceiverTests {
 		ArrayList<String> response = new ArrayList<String>();
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
-//		SSLSocket socket = null;
-			Socket socket = null;
-			PrintWriter output = null;
-			BufferedReader is = null;
+		//		SSLSocket socket = null;
+		Socket socket = null;
+		PrintWriter output = null;
+		BufferedReader is = null;
 
-			// Initialization section:
-			// Try to open a socket on port 110
-			// Try to open input and output streams
-			try {
-				System.setProperty("java.net.preferIPv4Stack", "true");
-				/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
+		// Initialization section:
+		// Try to open a socket on port 110
+		// Try to open input and output streams
+		try {
+			System.setProperty("java.net.preferIPv4Stack", "true");
+			/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 						.getDefault()).createSocket(
 								InetAddress.getByName(ti.sutSmtpAddress), 995);*/
-				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
 
 			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					socket.getOutputStream(), "Windows-1252")), true);
@@ -1454,7 +1810,7 @@ public class TTTReceiverTests {
 				while ((responseLine = is.readLine()) != null) {
 
 					System.out.println("Server: " + responseLine);
-					result.put("SERVER " + i, responseLine + "\n");
+					result.put("\nSERVER " + i, responseLine + "\n");
 					response.add(responseLine);
 					i++;
 					if (responseLine.indexOf("Ok") != -1) {
@@ -1478,7 +1834,7 @@ public class TTTReceiverTests {
 		for (String s : response) {
 			if (s.contains("ERR")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
-				result.put("SUCCESS",
+				result.put("\nSUCCESS ",
 						"POP server rejects the command with bad syntax.");
 			} 
 
@@ -1501,20 +1857,20 @@ public class TTTReceiverTests {
 		ArrayList<String> response = new ArrayList<String>();
 		LinkedHashMap<String, String> result = tr.getTestRequestResponses();
 		tr.setCriteriamet(CriteriaStatus.FALSE);
-//		SSLSocket socket = null;
-			Socket socket = null;
-			PrintWriter output = null;
-			BufferedReader is = null;
+		//		SSLSocket socket = null;
+		Socket socket = null;
+		PrintWriter output = null;
+		BufferedReader is = null;
 
-			// Initialization section:
-			// Try to open a socket on port 110
-			// Try to open input and output streams
-			try {
-				System.setProperty("java.net.preferIPv4Stack", "true");
-				/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
+		// Initialization section:
+		// Try to open a socket on port 110
+		// Try to open input and output streams
+		try {
+			System.setProperty("java.net.preferIPv4Stack", "true");
+			/*socket = (SSLSocket) ((SSLSocketFactory) SSLSocketFactory
 						.getDefault()).createSocket(
 								InetAddress.getByName(ti.sutSmtpAddress), 995);*/
-				socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
+			socket = new Socket(InetAddress.getByName(ti.sutSmtpAddress), 110);
 
 			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					socket.getOutputStream(), "Windows-1252")), true);
@@ -1607,9 +1963,10 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		// int j = 0;
-		Properties props = System.getProperties();
-		props.put("mail.pop3s.starttls.enable", true);
-		props.put("mail.pop3s.starttls.required", true);
+		Properties props = new Properties();
+		props.put("mail.pop3.starttls.enable", true);
+		props.put("mail.pop3.starttls.required", true);
+		props.put("mail.pop3.ssl.trust", "*");
 
 		try {
 			Session session = Session.getDefaultInstance(props, null);
@@ -1642,22 +1999,24 @@ public class TTTReceiverTests {
 					}
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) { 
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) { 
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
+							}
+
 						}
-
 					}
 				}
 
@@ -1681,15 +2040,25 @@ public class TTTReceiverTests {
 					"\nERROR",
 					"Cannot fetch email from " + ti.sutSmtpAddress + " :"
 							+ e.getLocalizedMessage());
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
 		}
 
 		return tr;
 	} 
-	
+
 	public TestResult popFetchWrongPass(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 		props.put("mail.imap.sasl.enable", true);
 		props.put("mail.imap.starttls.enable", true);
 		props.put("mail.imap.starttls.required", true);
@@ -1724,11 +2093,21 @@ public class TTTReceiverTests {
 			tr.getTestRequestResponses().put("\nERROR :",
 					e.getLocalizedMessage());
 
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
 		}
 
 		return tr;
 	}
-	
+
 	public TestResult fetchMailValidateImap(TestInput ti) throws IOException {
 
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -1738,7 +2117,7 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		try {
 
@@ -1781,59 +2160,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
-						
-						
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
-							
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-							// Query MDHT war endpoint
-							CloseableHttpClient client = HttpClients.createDefault();
-							FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-							File file1 = new File("sample.xml");
-							HttpPost post = new HttpPost("http://hit-dev.nist.gov:11080/referenceccdaservice/");
-							FileBody fileBody = new FileBody(file1);
-							
-							
-							//
-							MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-							builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-						//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-						//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-							String[] parts = ti.ccdaValidationObjective.split(" ");
-							String obj = parts[0];
-							builder.addTextBody("validationObjective", obj);
-							builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-							builder.addPart("ccdaFile", fileBody);
-							HttpEntity entity = builder.build();
-							//
-							post.setEntity(entity);
-							
-							
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-	                               JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+
+
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
+
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
+
+
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
-							
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
-						}
-						
-						
 
+
+
+						}
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
@@ -1861,7 +2242,7 @@ public class TTTReceiverTests {
 
 		return tr;
 	}
-	
+
 	public TestResult fetchMailValidatePop(TestInput ti) throws IOException {
 
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -1871,7 +2252,7 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
-		Properties props = System.getProperties();
+		Properties props = new Properties();
 
 		try {
 
@@ -1914,59 +2295,61 @@ public class TTTReceiverTests {
 					result.put("Delivered-To", "********");
 
 					// Storing the Message Body Parts
-					Multipart multipart = (Multipart) message.getContent();
-					for (int i = 0; i < multipart.getCount(); i++) {
-						BodyPart bodyPart = multipart.getBodyPart(i);
-						InputStream stream = bodyPart.getInputStream();
+					if(message.getContent() instanceof Multipart){
+						Multipart multipart = (Multipart) message.getContent();
+						for (int i = 0; i < multipart.getCount(); i++) {
+							BodyPart bodyPart = multipart.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
 
-						
-						
-						byte[] targetArray = IOUtils.toByteArray(stream);
-						System.out.println(new String(targetArray));
-						int m = i + 1;
-						if (bodyPart.getFileName() != null) {
-							bodyparts.put(bodyPart.getFileName(), new String(
-									targetArray));
-							
-							if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
-							// Query MDHT war endpoint
-							CloseableHttpClient client = HttpClients.createDefault();
-							FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
-							File file1 = new File("sample.xml");
-							HttpPost post = new HttpPost("http://hit-dev.nist.gov:11080/referenceccdaservice/");
-							FileBody fileBody = new FileBody(file1);
-							
-							
-							//
-							MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-							builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-						//	builder.addTextBody("validationObjective", "170.315(b)(1)");
-						//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
-							String[] parts = ti.ccdaValidationObjective.split(" ");
-							String obj = parts[0];
-							builder.addTextBody("validationObjective", obj);
-							builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
-							builder.addPart("ccdaFile", fileBody);
-							HttpEntity entity = builder.build();
-							//
-							post.setEntity(entity);
-							
-							
-								HttpResponse response = client.execute(post);
-								// CONVERT RESPONSE TO STRING
-								result1 = EntityUtils.toString(response.getEntity());
-								ObjectMapper mapper = new ObjectMapper();
-	                               JsonNode jsonObject = mapper.readTree(result1) ;     
-								validationResult.put( bodyPart.getFileName() , jsonObject );
+
+
+							byte[] targetArray = IOUtils.toByteArray(stream);
+							System.out.println(new String(targetArray));
+							int m = i + 1;
+							if (bodyPart.getFileName() != null) {
+								bodyparts.put(bodyPart.getFileName(), new String(
+										targetArray));
+
+								if ((bodyPart.getFileName().contains(".xml") || bodyPart.getFileName().contains(".XML"))){
+									// Query MDHT war endpoint
+									CloseableHttpClient client = HttpClients.createDefault();
+									FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
+									File file1 = new File("sample.xml");
+									HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+									FileBody fileBody = new FileBody(file1);
+
+
+									//
+									MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+									builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+									//	builder.addTextBody("validationObjective", "170.315(b)(1)");
+									//	builder.addTextBody("referenceFileName", "CP_Sample1.pdf");
+									String[] parts = ti.ccdaValidationObjective.split(" ");
+									String obj = parts[0];
+									builder.addTextBody("validationObjective", obj);
+									builder.addTextBody("referenceFileName", ti.ccdaReferenceFilename);
+									builder.addPart("ccdaFile", fileBody);
+									HttpEntity entity = builder.build();
+									//
+									post.setEntity(entity);
+
+
+									HttpResponse response = client.execute(post);
+									// CONVERT RESPONSE TO STRING
+									result1 = EntityUtils.toString(response.getEntity());
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode jsonObject = mapper.readTree(result1) ;     
+									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
+
+							} else {
+								bodyparts.put("Message Content" + " " + m,
+										new String(targetArray));
 							}
-							
-						} else {
-							bodyparts.put("Message Content" + " " + m,
-									new String(targetArray));
-						}
-						
-						
 
+
+
+						}
 					}
 				}
 				// inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);

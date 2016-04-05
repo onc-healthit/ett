@@ -94,8 +94,15 @@ public class MDNGenerator extends DirectMessageGenerator {
 			notification.addHeader("Original-Recipient", "rfc822; " + original_recipient);
 		if(!isNullorEmpty(original_message_id))
 			notification.addHeader("Original-Message-ID", original_message_id);
-		if(!isNullorEmpty(disposition))
+		if(!isNullorEmpty(disposition)) {
+			// Add X-DIRECT-FINAL-DESTINATION-DELIVERY if it is dispatched MDN
+			if(disposition.contains("dispatched")) {
+				notification.addHeader("X-DIRECT-FINAL-DESTINATION-DELIVERY", "");		
+			}
+		
 			notification.addHeader("Disposition", disposition);
+		}
+		
 		if(!isNullorEmpty(failure))
 			notification.addHeader("Failure", failure);
 

@@ -105,9 +105,8 @@
          <xdsb:Document id="urn:uuid:ab68f810-0d5e-4ee2-b529-8d0ae1229056"
             >            
             <direct:messageDisposition xmlns:direct="urn:direct:addressing"> 
-               <direct:recipient>mailto:entity1@direct.example.org</direct:recipient>
+               <direct:recipient>#DIRECT_RECIPIENT#</direct:recipient>
                <direct:disposition>failure</direct:disposition>
-               <direct:reasonForFailure>reason</direct:reasonForFailure>
             </direct:messageDisposition>            
          </xdsb:Document>
       </xdsb:ProvideAndRegisterDocumentSetRequest>

@@ -4,15 +4,8 @@ import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
-
-
-
-
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -35,6 +28,8 @@ import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+
+import com.sun.mail.util.MailSSLSocketFactory;
 
 public class TTTSenderTests {
 
@@ -110,14 +105,13 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
+
 
 	/**
 	 * Implements Testcase #16. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
 	 * 
 	 * @return
 	 */
-
 	public TestResult testStarttls(TestInput ti) {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
@@ -125,20 +119,27 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		try{
 
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable","true");
+			props.put("mail.smtp.starttls.required", "true");
+			props.put("mail.smtp.auth.mechanisms", "PLAIN");
+			props.setProperty("mail.smtp.ssl.trust", "*");
 
-		Session session = Session.getInstance(props, null);
+			Session session = Session.getInstance(props, null);
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
 
-		try {
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing STARTTLS & PLAIN SASL AUTHENTICATION (Test Case 9,16,20)!");
@@ -150,7 +151,7 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart();
-			
+
 			// Adding attachments
 			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
 
@@ -192,18 +193,22 @@ public class TTTSenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-		}
-		catch (MessagingException e) {
+		} catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		} catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-
 		return tr;
 	}
-	
+
 	/**
 	 * Implements Testcase to send Text and CCDA. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
 	 * 
@@ -217,7 +222,7 @@ public class TTTSenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -230,8 +235,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing CCDA and Text!");
@@ -244,24 +258,24 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("CCDA_Ambulatory.xml");
-				multipart.addBodyPart(messageBodyPart);
-				
-				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/xml");
-				messageBodyPart1.setDataHandler(new DataHandler(source1));
-				messageBodyPart1.setFileName("Text.txt");
-				multipart.addBodyPart(messageBodyPart1);
-				
+			DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+					"application/xml");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("CCDA_Ambulatory.xml");
+			multipart.addBodyPart(messageBodyPart);
 
-			
-			
+			DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+					"text/plain");
+			messageBodyPart1.setDataHandler(new DataHandler(source1));
+			messageBodyPart1.setFileName("Text.txt");
+			multipart.addBodyPart(messageBodyPart1);
+
+
+
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -291,8 +305,19 @@ public class TTTSenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-		}
-		catch (MessagingException e) {
+		}catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -316,11 +341,10 @@ public class TTTSenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.auth.mechanisms", "PLAIN");
 		props.put("mail.smtp.ssl.trust", "*");
@@ -330,8 +354,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing CCDA and Pdf!");
@@ -344,23 +377,23 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
-						"application/xml");
-				messageBodyPart1.setDataHandler(new DataHandler(source1));
-				messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
-				multipart.addBodyPart(messageBodyPart1);
-				
-				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("Sample.pdf");
-				multipart.addBodyPart(messageBodyPart);
+			DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+					"application/xml");
+			messageBodyPart1.setDataHandler(new DataHandler(source1));
+			messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
+			multipart.addBodyPart(messageBodyPart1);
 
-			
-			
+			DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
+					"application/pdf");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("Sample.pdf");
+			multipart.addBodyPart(messageBodyPart);
+
+
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -391,7 +424,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -401,7 +446,7 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
+
 	/**
 	 * Implements Testcase to send Text and XDM. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
 	 * 
@@ -415,7 +460,7 @@ public class TTTSenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -428,8 +473,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing XDM and Text!");
@@ -442,25 +496,25 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
-						"application/zip");
-				messageBodyPart1.setDataHandler(new DataHandler(source1));
-				messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
-				multipart.addBodyPart(messageBodyPart1);
-				
-				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("Text.txt");
-				multipart.addBodyPart(messageBodyPart);
-				
-				
+			DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
+					"application/zip");
+			messageBodyPart1.setDataHandler(new DataHandler(source1));
+			messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
+			multipart.addBodyPart(messageBodyPart1);
 
-			
-			
+			DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+					"text/plain");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("Text.txt");
+			multipart.addBodyPart(messageBodyPart);
+
+
+
+
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -491,7 +545,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -501,8 +567,8 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
-	
+
+
 	/**
 	 * Implements Testcase to send Text and CCDA. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
 	 * 
@@ -516,21 +582,36 @@ public class TTTSenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
 
-
-		Session session = Session.getInstance(props, null);
 
 		try {
+			MailSSLSocketFactory socketFactory= new MailSSLSocketFactory();
+			socketFactory.setTrustAllHosts(true);
+
+
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable","true");
+			props.put("mail.smtp.starttls.required", "true"); 
+			props.put("mail.smtp.auth.mechanisms", "PLAIN");
+			props.put("mail.smtp.ssl.trust", "*");
+
+
+			Session session = Session.getInstance(props, null);
+
+
+
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing Text and CCDA!");
@@ -543,24 +624,24 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("Text.txt");
-				multipart.addBodyPart(messageBodyPart);
-				
-				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
-						"text/xml");
-				messageBodyPart1.setDataHandler(new DataHandler(source1));
-				messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
-				multipart.addBodyPart(messageBodyPart1);
-				
+			DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+					"text/plain");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("Text.txt");
+			multipart.addBodyPart(messageBodyPart);
 
-			
-			
+			DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+					"application/xml");
+			messageBodyPart1.setDataHandler(new DataHandler(source1));
+			messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
+			multipart.addBodyPart(messageBodyPart1);
+
+
+
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -591,7 +672,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -615,7 +708,7 @@ public class TTTSenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -628,8 +721,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing Pdf and CCDA!");
@@ -642,24 +744,24 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("Sample.pdf");
-				multipart.addBodyPart(messageBodyPart);
-				
-				DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
-						"application/xml");
-				messageBodyPart1.setDataHandler(new DataHandler(source1));
-				messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
-				multipart.addBodyPart(messageBodyPart1);
-				
+			DataSource source = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Sample.pdf")),
+					"application/pdf");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("Sample.pdf");
+			multipart.addBodyPart(messageBodyPart);
 
-			
-			
+			DataSource source1 = new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory.xml")),
+					"application/xml");
+			messageBodyPart1.setDataHandler(new DataHandler(source1));
+			messageBodyPart1.setFileName("CCDA_Ambulatory.xml");
+			multipart.addBodyPart(messageBodyPart1);
+
+
+
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -690,7 +792,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -700,7 +814,7 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
+
 	/**
 	 * Implements Testcase to send Text and XDM. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
 	 * 
@@ -714,7 +828,7 @@ public class TTTSenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -727,8 +841,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing Text and XDM!");
@@ -741,24 +864,24 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("Text.txt");
-				multipart.addBodyPart(messageBodyPart);
-				
-				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
-						"application/zip");
-				messageBodyPart1.setDataHandler(new DataHandler(source1));
-				messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
-				multipart.addBodyPart(messageBodyPart1);
-				
+			DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
+					"text/plain");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("Text.txt");
+			multipart.addBodyPart(messageBodyPart);
 
-			
-			
+			DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
+					"application/zip");
+			messageBodyPart1.setDataHandler(new DataHandler(source1));
+			messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
+			multipart.addBodyPart(messageBodyPart1);
+
+
+
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -789,7 +912,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -799,14 +934,14 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
+
 	public TestResult testStarttlsXDMBadHtml(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -818,9 +953,17 @@ public class TTTSenderTests {
 		Session session = Session.getInstance(props, null);
 
 		try {
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing XDM with bad XHTML!");
@@ -833,15 +976,15 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/BadXHTML.zip")),
-						"application/zip");
-				messageBodyPart1.setDataHandler(new DataHandler(source1));
-				messageBodyPart1.setFileName("BadXHTML.zip");
-				multipart.addBodyPart(messageBodyPart1);
-				
+			DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/BadXHTML.zip")),
+					"application/zip");
+			messageBodyPart1.setDataHandler(new DataHandler(source1));
+			messageBodyPart1.setFileName("BadXHTML.zip");
+			multipart.addBodyPart(messageBodyPart1);
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -872,14 +1015,25 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-
 		return tr;
 	}
 	/**
@@ -904,11 +1058,20 @@ public class TTTSenderTests {
 
 		Session session = Session.getInstance(props, null);
 		Transport transport = null;
-		
+
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.tttEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing PLAIN SASL (Test Case 20)");
@@ -930,7 +1093,7 @@ public class TTTSenderTests {
 				// Send the complete message parts
 				message.setContent(multipart);
 			}
-			
+
 			log.info("Authenticating....");
 			transport = session.getTransport("smtp");
 
@@ -967,13 +1130,13 @@ public class TTTSenderTests {
 			result.put("ERROR", e.getLocalizedMessage());
 		}
 		finally {
-				if (transport != null)
-					try {
-						transport.close();
-					} catch (MessagingException e) {
-						log.error("Error when closing transport");
-						e.printStackTrace();
-					}
+			if (transport != null)
+				try {
+					transport.close();
+				} catch (MessagingException e) {
+					log.error("Error when closing transport");
+					e.printStackTrace();
+				}
 		}
 
 		return tr;
@@ -985,7 +1148,7 @@ public class TTTSenderTests {
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -998,8 +1161,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing bad CCDA!");
@@ -1012,15 +1184,15 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("ToC_Ambulatory.xml");
-				multipart.addBodyPart(messageBodyPart);
-			
+			DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
+					"text/html");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("ToC_Ambulatory.xml");
+			multipart.addBodyPart(messageBodyPart);
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -1051,7 +1223,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1061,14 +1245,14 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
+
 	public TestResult testSendXDMApplicationOctect(TestInput ti, String filename) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -1081,8 +1265,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing XDM with application/octect MIME type!");
@@ -1095,15 +1288,15 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
-						"application/octet-stream");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("CCDA_Ambulatory_XDM.zip");
-				multipart.addBodyPart(messageBodyPart);
-			
+			DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
+					"application/octet-stream");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("CCDA_Ambulatory_XDM.zip");
+			multipart.addBodyPart(messageBodyPart);
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -1134,7 +1327,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1144,14 +1349,14 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
+
 	public TestResult testSendXDMApplicationXml(TestInput ti, String filename) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
-		
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
@@ -1164,8 +1369,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing XDM with applicaton/xml MIME type!");
@@ -1178,15 +1392,15 @@ public class TTTSenderTests {
 			String aName = "";
 
 			Multipart multipart = new MimeMultipart("mixed");
-			
+
 			// Adding attachments
 
-				DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
-						"application/octet-stream");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName("CCDA_Ambulatory_XDM.zip");
-				multipart.addBodyPart(messageBodyPart);
-			
+			DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
+					"application/zip");
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName("CCDA_Ambulatory_XDM.zip");
+			multipart.addBodyPart(messageBodyPart);
+
 			// Send the complete message parts
 			message.setContent(multipart);
 			log.info("Sending Message");
@@ -1217,7 +1431,19 @@ public class TTTSenderTests {
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}
-		catch (MessagingException e) {
+		catch (AuthenticationFailedException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage() + " Authentication Failed");
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}catch (MessagingException e) {
+			log.info("Error in testStarttls");
+			result.put("\nERROR ", e.getLocalizedMessage());
+			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE); 
+		}catch (Exception e) {
 			log.info("Error in testStarttls");
 			result.put("\nERROR ", e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1240,8 +1466,17 @@ public class TTTSenderTests {
 
 		try {
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.tttEmailAddress));
+			message.setFrom(new InternetAddress(fromAddress));
 
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));

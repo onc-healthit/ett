@@ -1,3 +1,43 @@
+==Version 1.0.4#3/02/2016
+	* SMTP
+		-MIME Type updates on SMTP cases 25b, 25d, 25e and 29
+
+	* XDR
+		-Fixed a double base64 encoding bug that was occurring in some test cases
+
+	* C-CDA Widget
+		-Fixed Cancel button for C-CCDA Widget
+
+	* Direct
+		-Certificate links on Direct main page are now configurable via a file
+
+==Version 1.0.3#2/25/2016
+	* SMTP
+		-POP-1,2 perform AUTH before NOOP
+		-POP 12 fixed to handle empty UIDL issue with Apache James
+
+==Version 1.0.2#2/19/2016
+	* Direct
+		-Links for Direct certificates on Direct Home page are now configurable for ETT local installation
+
+	* SMTP
+		-Message Tracking logs shows time taken to get back an MDN
+		-Bug fix for Message Tracking timeout cases
+
+==Version 1.0.1#2/11/2016
+	* SMTP
+		-Description updates for SMTP/IMAP/POP test cases
+		-From address change for all SMTP receive cases i.e the from address will be the same as to address. (Earlier the from address was wellformed1@hit-testing2.nist.gov). The descriptions for this cases have been changed accordingly
+
+	* XDR
+		-Fixed XDR Test 11 and 12 in HISP, when sending the Direct+XDM, the subject line now contains "XDM/1.0/DDM"
+
+==Version 1.0.0#1/21/2016
+	* SMTP
+		-UI change for receiver test
+		-Bugfixes for Message Tracking cases
+		-Added SMTP Message tracking cases
+
 ==Version 0.0.10#1/13/2016
 	* MDN
 		-Added empoints for bad MDNs generation

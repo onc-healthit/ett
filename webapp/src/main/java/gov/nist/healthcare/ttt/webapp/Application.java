@@ -4,6 +4,8 @@ package gov.nist.healthcare.ttt.webapp;
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
+
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -23,9 +25,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @ImportResource("classpath:/spring/resources.xml")
 public class Application {
 
-    /*
-    Not really necessary since it is equivalent to springboot default
-     */
+
     @Bean
     public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
         ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
@@ -33,6 +33,8 @@ public class Application {
         registration.setLoadOnStartup(1);
         return registration;
     }
+    
+	
 
     /*
     We register the direct listener Bill's way. We should probably clean that up later
