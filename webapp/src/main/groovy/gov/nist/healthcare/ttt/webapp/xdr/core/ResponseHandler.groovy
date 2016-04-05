@@ -90,21 +90,28 @@ class ResponseHandler implements IObserver {
 
         XDRRecordInterface rec
         String directFrom = report.directFrom
+        String directTo = report.directTo
         String simId = report.simId
 
         //we need both simid and directFrom : without simid, we would not know which testcaseid we are talking about.
         //Without the directFrom address, we would not be able to know who sent us a message.
-        rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectFrom(simId, directFrom)
+        rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectAddress(simId, directFrom)
 
         if (rec != null) {
-            log.info("found correlation with existing record using direct address and simId : $directFrom , $simId")
-        } else {
-            log.warn("could not find report correlated with the following direct address and simId : $directFrom , $simId")
-            throw new Exception("error : could not correlate report with simId ($simId) and directAddress ($directFrom) with any existing record")
+            log.info("found correlation with existing record using direct from address and simId : $directFrom , $simId")
+        } else{
+            rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectAddress(simId, directTo)
+            if(rec != null) {
+                log.info("found correlation with existing record using direct to address and simId : $directTo , $simId")
+            }
+            else{
+                log.warn("could not find report correlated with the following direct address and simId : $directFrom , $simId")
+                throw new Exception("error : could not correlate report with simId ($simId) and directAddress ($directFrom) with any existing record")
+            }
         }
 
-        //the record contains the testcase number so we can resume the test case logic
-        TestCase testcase = manager.findTestCase(rec.testCaseNumber)
+        TestCase testcase = manager.findTestCase(rec.testCaseNumber);
+
         testcase.notifyXdrReceive(rec, report)
     }
 

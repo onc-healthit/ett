@@ -33,5 +33,7 @@ class TkValidationReport {
 
     String directFrom
 
+    String directTo
+
 
 }
