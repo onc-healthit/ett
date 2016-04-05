@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive.mu2
 
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement

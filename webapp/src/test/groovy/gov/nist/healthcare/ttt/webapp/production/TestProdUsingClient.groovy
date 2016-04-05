@@ -326,6 +326,24 @@ def setup(){
 
         assert true
     }
+	
+	@Test
+	def test37mu2(){
+
+		when :
+		def manager = new SSLContextManager()
+		def context = [:]
+		context.directTo = "test@test.com"
+		context.directFrom = "test@test.com"
+		context.wsaTo = "http://localhost:8080/xdstools2/sim/local-ett__37mu2/rep/xdrpr"
+		context.targetEndpointTLS = "http://localhost:8080/xdstools2/sim/local-ett__37mu2/rep/xdrpr"
+		context.messageType = ArtifactManagement.Type.DELIVERY_STATUS_NOTIFICATION_SUCCESS
+		def response = new CannedXdrSenderImpl(manager).sendXdr(context)
+
+		then :
+
+		assert true
+	}
 
 
 }

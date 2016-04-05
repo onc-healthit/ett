@@ -55,7 +55,7 @@ final class TestCase20amu2 extends TestCaseSender {
         context.wsaTo = step1.xdrSimulator.endpointTLS
         context.directTo = step1.directFrom
         context.directFrom = "testcase20a@$executor.hostname"
-        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        context.messageType = ArtifactManagement.Type.DELIVERY_STATUS_NOTIFICATION_SUCCESS
 
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
         record = new TestCaseBuilder(record).addStep(step2).build()
