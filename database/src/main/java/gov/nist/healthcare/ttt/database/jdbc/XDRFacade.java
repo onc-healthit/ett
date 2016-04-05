@@ -826,7 +826,7 @@ public class XDRFacade extends DatabaseFacade {
         return records;
     }
 
-    public XDRRecordInterface getLatestXDRRecordBySimulatorAndDirectFrom(String simulatorId, String directFrom) throws DatabaseException {
+    public XDRRecordInterface getLatestXDRRecordBySimulatorAndDirectAddress(String simulatorId, String directFrom) throws DatabaseException {
         StringBuilder sqlDirectFrom = new StringBuilder();
         sqlDirectFrom.append("SELECT " + XDRRECORD_XDRRECORDID + ' ');
         sqlDirectFrom.append("FROM " + XDRTESTSTEP_TABLE + ' ');
@@ -1325,7 +1325,7 @@ public class XDRFacade extends DatabaseFacade {
             XDRFacade facade = new XDRFacade(config);
          //   facade.addNewXdrRecord(record);
             
-            XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectFrom("endpointstandalone", "from@direct.com");
+            XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectAddress("endpointstandalone", "from@direct.com");
             System.out.println(get.getTimestamp());
             facade.updateXDRRecord(record);
             record.setTestSteps(steps);

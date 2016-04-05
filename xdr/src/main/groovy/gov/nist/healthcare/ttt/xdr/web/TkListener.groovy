@@ -95,11 +95,13 @@ public class TkListener {
 
         Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
         Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
+        Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</
 
         //we expect only one match (thus the 0) and we want to get back the first group match
 
         tkValidationReport.messageId = (messageIDMatcher.find()) ? messageIDMatcher[0][1] : null
         tkValidationReport.directFrom = (directFromMatcher.find()) ? directFromMatcher[0][1] : null
+        tkValidationReport.directTo = (directToMatcher.find()) ? directToMatcher[0][1] : null
 
     }
 
