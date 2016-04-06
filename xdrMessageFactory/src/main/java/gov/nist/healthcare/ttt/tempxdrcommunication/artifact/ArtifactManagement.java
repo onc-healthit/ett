@@ -563,11 +563,13 @@ public class ArtifactManagement {
                 case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
                     artifacts.setDocument(getDeliveryStatusNotificationSuccessStandalone(settings));
+                    System.out.println("Setting artifact document to notification success");
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);                                        
                     break;
                 case DELIVERY_STATUS_NOTIFICATION_FAILURE:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
                     artifacts.setDocument(getDeliveryStatusNotificationFailureStandalone(settings));
+                    System.out.println("Setting artifact document to notification failure");
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);                                        
                     break;
                 case XDR_C32:
@@ -642,8 +644,8 @@ public class ArtifactManagement {
      //       Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
 //            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
 
-//Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
-Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
+Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
+//Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
