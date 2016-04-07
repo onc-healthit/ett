@@ -39,7 +39,7 @@ final class TestCase20amu2 extends TestCaseSender {
         content.endpoint = endpoints[0]
         content.endpointTLS = endpoints[1]
 		
-        return new Result(Status.PENDING, content)
+        return new Result(Status.MANUAL, content)
     }
 
     @Override
