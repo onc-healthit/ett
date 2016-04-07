@@ -360,7 +360,7 @@
 }, {
     "name": "XDR Test MT 20a",
     "id": "20amu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a SUCCESS Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -373,7 +373,7 @@
 }, {
     "name": "XDR MT Test 20b",
     "id": "20bmu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a FAILURE Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -546,7 +546,7 @@
 }, {
     "name": "XDR MT Test 50a",
     "id": "50amu2",
-    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to valid recipients. The SUT is expected to appropriately track success messages.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a SUCCESS Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -559,7 +559,7 @@
 }, {
     "name": "XDR MT Test 50b",
     "id": "50bmu2",
-    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to invalid recipients. The SUT is expected to appropriately track failure messages. Failure messages to invalid recipients have to be processed/tracked appropriately by the edge system and has to be made available for testing purposes.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a FAILURE Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
