@@ -157,6 +157,12 @@ class XdrSenderImpl implements XdrSender{
 				document.setMimeType("text/xml");
 				req.addDocument("Document01", document);
 			}
+		} else {
+			DocumentResource document = new DocumentResource();
+			ccdaAttachmentString = art.getDocument();
+			document.setContents(ccdaAttachmentString.getBytes());
+			document.setMimeType("text/xml");
+			req.addDocument("Document01", document);
 		}
 
 		RawSendResponse response = documentSource.sendProvideAndRegister(req);
