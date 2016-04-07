@@ -75,8 +75,8 @@ public class ArtifactManagement {
     private static final String FILENAME_IGNORE_PAYLOAD = "ignorePayload.txt";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS = "DeliveryStatusNotification_success.xml";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE = "DeliveryStatusNotification_failure.xml";
-    private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS_STANDALONE = "Xdr_positive_delivery.xml";
-    private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE_STANDALONE = "Xdr_negative_delivery.xml";
+    private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS_STANDALONE = "DeliveryStatusNotification_success_standalone.xml";
+    private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE_STANDALONE = "DeliveryStatusNotification_failure_standalone.xml";
 
     public static String getPayload(Type type, Settings settings) throws IOException {
         makeSettingsSafe(settings);
@@ -164,7 +164,7 @@ public class ArtifactManagement {
     
     private static String getDeliveryStatusNotificationFailureStandalone(Settings settings) {
         makeSettingsSafe(settings);
-        String message = getTemplate(FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS_STANDALONE);
+        String message = getTemplate(FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE_STANDALONE);
         message = message.replaceAll("#DIRECT_RECIPIENT#", settings.getDirectFrom());
         message = setIds(message, settings.getMessageId());
 
