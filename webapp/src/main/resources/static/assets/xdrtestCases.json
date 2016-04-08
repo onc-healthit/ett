@@ -75,6 +75,30 @@
         "type": "string"
     }]
 }, {
+    "name": "XDR Test 4d",
+    "id": "4d",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of missing required XDR metadata elements.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 4e",
+    "id": "4e",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of garbled XDR metadata such as missing associations between ebRIM constructs",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
     "name": "XDR Test 5",
     "id": 5,
     "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Full (XDS) metadata.",
@@ -89,7 +113,7 @@
 }, {
     "name": "XDR Test 6",
     "id": 6,
-    "desc": "Verifies the ability of the sending system to complete a mutual TLS handshake before data is sent across.",
+    "desc": "Verifies the ability of the sending system to complete a mutual TLS handshake before data is sent across.\nNote that an unsuccessful TLS attempt may result in the Pending Refresh button being displayed instead of a Fail.  A disconnection happening at the server level would cause the communication not to be forwarded to the application level.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -129,7 +153,7 @@
 }, {
     "name": "XDR Test 9",
     "id": 9,
-    "desc": "Verifies the ability of the receiving system to reject a mutual TLS connection where the certificate provided by the ETT is invalid. Certificates for this test can be downloaded from the link at the top of this page. As this is a socket-level test, the full endpoint is not necessary and only hostname and port are to be entered below.",
+    "desc": "Verifies the ability of the receiving system to reject a mutual TLS connection where the certificate provided by the ETT is invalid. Certificates for this test can be downloaded from the link at the top of this page. As this is a socket-level test, the full endpoint is not necessary and only hostname and port are to be entered below. The SUT MUST attempt an HTTPS connection.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "receiver",
@@ -184,7 +208,7 @@
 }, {
     "name": "XDR Test 13",
     "id": 13,
-    "desc": "Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Limited metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message. The resulting XDM will be validated.",
+    "desc": "Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Limited metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -204,11 +228,15 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR Test 14",
     "id": 14,
-    "desc": "Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Full (XDS) metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message. The resulting XDM will be validated.",
+    "desc": "Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Full (XDS) metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -227,6 +255,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -266,6 +298,30 @@
         "type": "string"
     }]
 }, {
+    "name": "XDR Test 15d",
+    "id": "15d",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of missing XDR metadata.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15e",
+    "id": "15e",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of malformed/inconsistent XDR metadata.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
     "name": "XDR MT Test 15",
     "id": "34mu2",
     "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP which does not have a published certificate.  The SUT will respond with a message that conforms to section 1.5.2.1.1 of the Direct Edge Protocol Implementation Guide 1.1, including an appropriately filled <direct:disposition> element in the XML payload. This test is part of the Message Tracking Using Processed MDN test suite.",
@@ -275,6 +331,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -299,6 +359,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -348,7 +412,7 @@
 }, {
     "name": "XDR MT Test 19",
     "id": "19mu2",
-    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking using Delivery Status Notification.)",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking using Processed MDN.)",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -360,7 +424,7 @@
 }, {
     "name": "XDR Test MT 20a",
     "id": "20amu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a SUCCESS Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -368,18 +432,26 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
     }],
     "expectedMDN": true
 }, {
     "name": "XDR MT Test 20b",
     "id": "20bmu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a FAILURE Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
     "inputs": [{
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
         "type": "string"
     }],
     "expectedMDN": true
@@ -402,7 +474,7 @@
 }, {
     "name": "XDR MT Test 31",
     "id": "31mu2",
-    "desc": "Verify the ability of the receiving system to appropriately handle an INVALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include INVALID X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT. The proctor will verify that the invalid X-DIRECT-FINAL-DESTINATION-DELIVERY is removed from the message before it was passed along.",
+    "desc": "Verify the ability of the receiving system to appropriately handle an INVALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include INVALID X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
@@ -422,6 +494,10 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 33",
@@ -433,6 +509,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -446,6 +526,10 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 35",
@@ -457,6 +541,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -470,6 +558,10 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 37",
@@ -477,10 +569,15 @@
     "desc": "Verify the ability of the SUT to appropriately respond in the event of a message timeout failure. The SUT will respond with a message that conforms to section 1.5.2.1.1 of the Direct Edge Protocol Implementation Guide 1.1, including an appropriately filled <direct:disposition> element in the XML payload.  This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
     "sutHisp": true,
+    "status": "configure",
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -506,6 +603,10 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 44",
@@ -517,6 +618,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -546,7 +651,7 @@
 }, {
     "name": "XDR MT Test 50a",
     "id": "50amu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a SUCCESS Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
+    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to valid recipients. The SUT is expected to appropriately track success messages.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -554,18 +659,26 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
     }],
     "expectedMDN": true
 }, {
     "name": "XDR MT Test 50b",
     "id": "50bmu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT.  ETT will respond with a FAILURE Direct Disposition message.  The proctor will inspect the SUT's logs and system to verify that the disposition message was handled appropriately.  The Direct From entered into the UI is what will be used to track the incoming XDR message.  The Endpoint entered into the UI is where the Direct Disposition message will be sent.",
+    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to invalid recipients. The SUT is expected to appropriately track failure messages. Failure messages to invalid recipients have to be processed/tracked appropriately by the edge system and has to be made available for testing purposes.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
     "inputs": [{
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
         "type": "string"
     }],
     "expectedMDN": true
