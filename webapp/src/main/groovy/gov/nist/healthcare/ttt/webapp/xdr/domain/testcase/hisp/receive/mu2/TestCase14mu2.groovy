@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive.mu2
 
+import gov.nist.healthcare.ttt.database.xdr.Status;
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
@@ -52,6 +53,6 @@ final class TestCase14mu2 extends TestCase {
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
-        return new Result(record.criteriaMet, content)
+        return new Result(Status.PENDING, content)
     }
 }

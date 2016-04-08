@@ -333,16 +333,18 @@ def setup(){
 
 		when :
 		def manager = new SSLContextManager()
+		def TLSclient = new TLSClientImpl(manager)
 		def context = [:]
 		context.directTo = "test@test.com"
 		context.directFrom = "test@test.com"
 		context.wsaTo = "http://localhost:8080/xdstools2/sim/local-ett__37mu2/rep/xdrpr"
 		context.targetEndpointTLS = "http://localhost:8080/xdstools2/sim/local-ett__37mu2/rep/xdrpr"
-		context.messageType = ArtifactManagement.Type.DELIVERY_STATUS_NOTIFICATION_SUCCESS
+		context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
 		def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
 		then :
 
+		println response
 		assert true
 	}
 

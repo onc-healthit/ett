@@ -2,6 +2,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive.mu2
 
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface;
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
@@ -16,9 +17,7 @@ import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport;
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-/**
- * Created by gerardin on 10/27/14.
- */
+
 @Component
 final class TestCase37mu2 extends TestCaseSender {
 
@@ -44,9 +43,12 @@ final class TestCase37mu2 extends TestCaseSender {
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
         // Correlate this test to a direct_from address and a simulator id so we can be notified
-        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+		if(context.direct_from != null) {
+			XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+			builder.addStep(step1)
+		}
 
-        sim = registerDocSrcEndpoint(username,context)
+        registerDocSrcEndpoint(username,context)
 
         // Send an xdr with the endpoint created above
         context.endpoint = context.targetEndpointTLS
@@ -60,14 +62,14 @@ final class TestCase37mu2 extends TestCaseSender {
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
         // Create a new test record
-        XDRRecordInterface record = builder.addStep(step1).addStep(step2).build()
+        XDRRecordInterface record = builder.addStep(step2).build()
         record.setStatus(step2.status)
         executor.db.addNewXdrRecord(record)
 
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
-        return new Result(record.criteriaMet, content)
+        return new Result(Status.PENDING, content)
     }
 	
 	@Override
