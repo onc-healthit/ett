@@ -4,6 +4,11 @@
 		-XDR 13 now sends sample C-CDA payload for use in packaging XDM
 		-Removed all routing information from metadata for test case XDR 4c and 15c
 		-Corrected a typo in the routing addresses used in XDR 15d
+		-Added asynchronous possibility for test case MT 13-16, 32-37, 42 and 43
+
+	* SMTP
+		-Bug fix for MT 3
+		-Updated endpoints for MT 18 and MT 47
 
 ==Version 1.0.6#3/22/2016
 	* Message Tracking
