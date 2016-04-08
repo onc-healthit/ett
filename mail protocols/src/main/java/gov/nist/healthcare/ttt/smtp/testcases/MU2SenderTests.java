@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.smtp.testcases;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -32,7 +33,11 @@ public class MU2SenderTests {
 
 	public static Logger log = Logger.getLogger("MU2SenderTests");
 	
-	
+	/**
+	 * Implements  a Testcase to send an email to a Bad Address. Authenticates with SUT and sends a mail from SUT Server to a end point using STARTTLS.
+	 * 
+	 * @return
+	 */
 	public TestResult testBadAddress(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
@@ -57,10 +62,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gfail.com"));
+					InternetAddress.parse(prop.getProperty("bad.address")));
 		//	InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
@@ -128,7 +142,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("fail");
 
@@ -141,11 +155,20 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("Provider1@direct2.sitenv.org"));
-				//	InternetAddress.parse("badaddress@gfail.com"));
+					InternetAddress.parse(prop.getProperty("not.trusted")));
+				//	InternetAddress.parse(prop.getProperty("bad.address")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -203,7 +226,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("fail");
 
@@ -217,10 +240,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("failure15@hit-testing2.nist.gov"));
+					InternetAddress.parse(prop.getProperty("not.published")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -278,7 +310,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -290,10 +322,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("nomdn8@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("no.processedmdn")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 			if (header){
@@ -355,7 +396,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -367,10 +408,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName +"@"+ ti.sutSmtpAddress;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gfail.com"));
+					InternetAddress.parse(prop.getProperty("bad.address")));
 		//	InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
@@ -434,7 +484,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 
@@ -447,10 +497,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("Provider1@direct2.sitenv.org"));
+					InternetAddress.parse(prop.getProperty("not.trusted")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 			if (header){
@@ -510,7 +569,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 
@@ -524,10 +583,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("failure15@hit-testing2.nist.gov"));
+					InternetAddress.parse(prop.getProperty("not.published")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 			if (header){
@@ -585,7 +653,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -597,10 +665,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("nomdn8@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("no.processedmdn")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -662,7 +739,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -674,10 +751,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("badaddress@gmffail.com"));
+					InternetAddress.parse(prop.getProperty("bad.address")));
 		//	InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
@@ -742,7 +828,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 
@@ -755,10 +841,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("Provider1@direct2.sitenv.org"));
+					InternetAddress.parse(prop.getProperty("not.trusted")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -819,7 +914,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -831,10 +926,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("failure15@hit-testing2.nist.gov"));
+					InternetAddress.parse(prop.getProperty("not.published")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 
@@ -861,6 +965,7 @@ public class MU2SenderTests {
 			result.put("3", "Message-ID of the email sent: " + MessageId);
 			
 			tr.setMessageId(MessageId);
+			tr.setStartTime(ZonedDateTime.now().toString());
 		} 
 
 		catch (NullPointerException e) {
@@ -869,7 +974,6 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
-			tr.setStartTime(ZonedDateTime.now().toString());
 		}
 
 		catch (Exception e) {
@@ -893,7 +997,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -905,10 +1009,19 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("nomdn8@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("no.processedmdn")));
 			message.setSubject("Testing sending mail to BadAddress!");
 			message.setText("This is a message to a badAddress!");
 			if (header){
@@ -969,7 +1082,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("timeout");
 		Session session = Session.getInstance(props, null);
@@ -980,9 +1093,18 @@ public class MU2SenderTests {
 			FileInputStream file = new FileInputStream(path);
 			prop.load(file);
 			file.close();
-			
+			  
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
@@ -1033,7 +1155,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
 		tr.setSearchType("timeout");
 
@@ -1046,8 +1168,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
@@ -1098,7 +1229,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
 		tr.setSearchType("timeout");
 
@@ -1111,8 +1242,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(Address));
 			message.setSubject("Testing sending mail to " + Address);
@@ -1173,7 +1313,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
@@ -1185,8 +1325,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
@@ -1234,7 +1383,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
 		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
@@ -1246,8 +1395,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
@@ -1295,7 +1453,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
 		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
@@ -1307,8 +1465,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
@@ -1357,7 +1524,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", "failure15@hit-testing2.nist.gov");
+		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap1");
 		tr.setSearchType("both");
 		Session session = Session.getInstance(props, null);
@@ -1441,8 +1608,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
@@ -1706,8 +1882,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
@@ -1772,8 +1957,17 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
@@ -1841,14 +2035,23 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
-			//	message.addHeader("Disposition-Notification-To", "failure15@hit-testing2.nist.gov");
+			//	message.addHeader("Disposition-Notification-To", prop.getProperty("not.published"));
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1915,14 +2118,23 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
-			//	message.addHeader("Disposition-Notification-To", "failure15@hit-testing2.nist.gov");
+			//	message.addHeader("Disposition-Notification-To", prop.getProperty("not.published"));
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1989,14 +2201,23 @@ public class MU2SenderTests {
 			prop.load(file);
 			file.close();
 			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
+			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
-			//	message.addHeader("Disposition-Notification-To", "failure15@hit-testing2.nist.gov");
+			//	message.addHeader("Disposition-Notification-To", prop.getProperty("not.published"));
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 

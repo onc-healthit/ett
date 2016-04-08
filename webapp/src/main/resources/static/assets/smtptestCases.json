@@ -104,7 +104,7 @@
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 18 - Accept failure message for invalid recipient (Processed MDN suite)",
-		"id": 147,
+		"id": 118,
 		"protocol": "mu2",
 		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid ones(processedonly5-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.dnsops.gov). The MDNs are deleivered to the 'Mail From' address. The failure MDN for invalid recipient noaddressfailure9-plain@edge.dnsops.gov needs to be verified.",
 		"longDesc": "The credentials for authentication is vendoraccount@hit-testing2.nist.gov / vendortesting123  ",

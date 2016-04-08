@@ -135,7 +135,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;
 			}
 
 			Message message = new MimeMessage(session);
@@ -241,7 +241,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -360,7 +360,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -479,7 +479,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -607,7 +607,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -727,7 +727,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -847,7 +847,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -959,7 +959,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -1067,7 +1067,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -1167,7 +1167,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -1271,7 +1271,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -1375,7 +1375,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
@@ -1472,7 +1472,7 @@ public class TTTSenderTests {
 			}
 
 			else {
-				fromAddress = ti.sutUserName + ti.sutSmtpAddress;
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
 			Message message = new MimeMessage(session);
