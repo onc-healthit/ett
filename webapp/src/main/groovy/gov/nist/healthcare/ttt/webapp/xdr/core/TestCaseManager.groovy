@@ -22,7 +22,7 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         setupTestCases()
-        log.info("application started!")
+//        log.info("application started!")
 
     }
 

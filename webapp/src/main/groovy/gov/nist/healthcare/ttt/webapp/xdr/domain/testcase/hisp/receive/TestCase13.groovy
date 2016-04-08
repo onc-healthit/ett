@@ -37,12 +37,13 @@ final class TestCase13 extends TestCase {
         sim = registerDocSrcEndpoint(username,context)
 
         // Send an xdr with the endpoint created above
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = context.targetEndpointTLS
+		context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         context.directTo = "testcase13@$executor.hostname"
         context.directFrom = "testcase13@$executor.hostname"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+		
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
         // Create a new test record

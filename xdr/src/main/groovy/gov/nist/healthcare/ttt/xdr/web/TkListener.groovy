@@ -42,7 +42,7 @@ public class TkListener {
      * Notify of a new validation report
      * @param httpBody : the report
      */
-    @RequestMapping(value = 'api/xdrNotification', consumes = "application/xml")
+    @RequestMapping(value = 'api/xdrNotification/{id}', consumes = "application/xml")
     @ResponseBody
     public void receiveBySimulatorId(@RequestBody String httpBody) {
 
@@ -55,8 +55,8 @@ public class TkListener {
             def report = new XmlSlurper().parseText(httpBody)
 
             parseReportFormat(tkValidationReport, report)
-            parseRequest(tkValidationReport , report.request)
-            parseResponse(tkValidationReport, report.response)
+            parseRequest(tkValidationReport , report.requestMessageBody)
+            parseResponse(tkValidationReport, report.responseMessageBody)
 
             m = new Message<TkValidationReport>(Message.Status.SUCCESS, "new validation result received...", tkValidationReport)
         }
@@ -81,7 +81,7 @@ public class TkListener {
     def parseResponse(TkValidationReport tkValidationReport, GPathResult response){
 
         //TODO modify : all that to extract registryResponseStatus info!
-        String content = response.body.text()
+        String content = response.text()
         def registryResponse = content.split("<.?S:Body>")
         def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
         def registryResponseStatus = registryResponseXml.@status.text()
@@ -90,22 +90,24 @@ public class TkListener {
     }
 
     def parseRequest(TkValidationReport tkValidationReport, GPathResult request){
-        String text = request.body.text()
+        String text = request.text()
         String unescapeXml = StringEscapeUtils.unescapeXml(text)
 
         Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
         Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
+        Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</
 
         //we expect only one match (thus the 0) and we want to get back the first group match
 
         tkValidationReport.messageId = (messageIDMatcher.find()) ? messageIDMatcher[0][1] : null
         tkValidationReport.directFrom = (directFromMatcher.find()) ? directFromMatcher[0][1] : null
+        tkValidationReport.directTo = (directToMatcher.find()) ? directToMatcher[0][1] : null
 
     }
 
     def parseReportFormat(TkValidationReport tkValidationReport,  GPathResult report){
-        tkValidationReport.request = report.request.header.text() + "\r\n\r\n" + report.request.body.text()
-        tkValidationReport.response = report.response.header.text() + "\r\n\r\n" + report.response.body.text()
-        tkValidationReport.simId = report.@simId.text()
+        tkValidationReport.request = report.requestMessageHeader.text() + "\r\n\r\n" + report.requestMessageBody.text()
+        tkValidationReport.response = report.responseMessageHeader.text() + "\r\n\r\n" + report.responseMessageBody.text()
+        tkValidationReport.simId = report.simulatorUser.text() + "__" + report.simulatorId.text()
     }
 }

@@ -102,7 +102,7 @@
                </rim:Association>
             </rim:RegistryObjectList>
          </lcm:SubmitObjectsRequest>
-         <xdsb:Document id="id_doc"
+         <xdsb:Document id="#ENTRY_UUID#"
             >            
             <direct:messageDisposition xmlns:direct="urn:direct:addressing"> 
                <direct:recipient>#DIRECT_RECIPIENT#</direct:recipient>
