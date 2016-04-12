@@ -84,6 +84,6 @@ public static void main(String args[]) throws Exception {
 //		this.db.getLogFacade().addNewLog(outgoingMessage);
 
 		DirectMessageSender sender = new DirectMessageSender();
-		sender.sendMessage(12999, targetDomain, mdn, messageInfo.getToAddress(), messageInfo.getFromAddress());
+		sender.sendMessage(12999, targetDomain, mdn, messageInfo.getToAddress(), messageInfo.getFromAddress(), false);
 	}
 }

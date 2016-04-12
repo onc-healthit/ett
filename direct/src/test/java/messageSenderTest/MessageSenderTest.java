@@ -80,6 +80,6 @@ public class MessageSenderTest {
 //		this.db.getLogFacade().addNewLog(outgoingMessage);
 
 		DirectMessageSender sender = new DirectMessageSender();
-		sender.sendMessage(12999, targetDomain, msg, messageInfo.getFromAddress(), messageInfo.getToAddress());
+		sender.sendMessage(12999, targetDomain, msg, messageInfo.getFromAddress(), messageInfo.getToAddress(), false);
 	}
 }
