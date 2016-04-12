@@ -4,9 +4,14 @@ package gov.nist.healthcare.ttt.webapp;
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
+
+import org.apache.catalina.connector.Connector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
@@ -111,7 +116,7 @@ we currently do not use tomcat ssl capabilities.
 //                    + "] or truststore: [" + "keystore" + "]", ex);
 //        }
 //    }
-
+        
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         SpringApplication.run(Application.class, args);
