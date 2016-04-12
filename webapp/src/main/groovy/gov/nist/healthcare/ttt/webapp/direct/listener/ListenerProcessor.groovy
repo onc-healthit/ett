@@ -839,11 +839,11 @@ public class ListenerProcessor implements Runnable {
 			
 			case 'dispatchedonly-plain':
 				logger.info("Found address $smtpFrom for XDR. Sending dispatched MDN")
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, true)
 				break
 				
 			case 'noaddressfailure9-plain':
-				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword)
+				SmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, true)
 				break
 				
 			case 'white_space_mdn':
