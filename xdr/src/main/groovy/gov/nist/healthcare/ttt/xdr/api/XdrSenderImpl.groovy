@@ -143,6 +143,9 @@ class XdrSenderImpl implements XdrSender{
 			req.setTls(true);
 		}
 		
+		for (String block : art.getExtraHeaders()) {
+			req.addExtraHeader(block);
+		}
 		req.setMetadata(art.metadata);
 		
 		// CCDA attachment

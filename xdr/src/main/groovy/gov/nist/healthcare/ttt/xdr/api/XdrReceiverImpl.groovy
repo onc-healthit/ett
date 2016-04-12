@@ -60,7 +60,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${server.contextPath}')
     private String contextPath
 
-    @Value('${server.port}')
+    @Value('${toolkit.endpoint.port}')
     private String port
 
     //TODO change that : either find a better way or rename property

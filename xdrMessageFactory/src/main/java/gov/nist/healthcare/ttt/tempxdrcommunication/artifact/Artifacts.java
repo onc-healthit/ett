@@ -5,6 +5,8 @@
  */
 package gov.nist.healthcare.ttt.tempxdrcommunication.artifact;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author mccaffrey
@@ -12,7 +14,7 @@ package gov.nist.healthcare.ttt.tempxdrcommunication.artifact;
 public class Artifacts {
     
     private String metadata = null;
-    private String extraHeaders = null;
+    private ArrayList<String> extraHeaders = null;
     private String document = null;
     private String messageId = null;
     private String documentId = null;
@@ -35,14 +37,14 @@ public class Artifacts {
     /**
      * @return the extraHeaders
      */
-    public String getExtraHeaders() {
+    public ArrayList<String> getExtraHeaders() {
         return extraHeaders;
     }
 
     /**
      * @param extraHeaders the extraHeaders to set
      */
-    public void setExtraHeaders(String extraHeaders) {
+    public void setExtraHeaders(ArrayList<String> extraHeaders) {
         this.extraHeaders = extraHeaders;
     }
 

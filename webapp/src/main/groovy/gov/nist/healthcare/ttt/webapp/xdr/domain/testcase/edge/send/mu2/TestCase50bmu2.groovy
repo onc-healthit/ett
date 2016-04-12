@@ -23,6 +23,14 @@ final class TestCase50bmu2 extends TestCaseSender {
     public TestCase50bmu2(TestCaseExecutor ex) {
         super(ex)
     }
+	
+	@Override
+	Result configure(){
+		Content c = new Content()
+		c.endpoint = sim.endpoint
+		c.endpointTLS = sim.endpointTLS
+		new Result(Status.PENDING, c)
+	}
 
     @Override
     Result run(Map context, String username) {

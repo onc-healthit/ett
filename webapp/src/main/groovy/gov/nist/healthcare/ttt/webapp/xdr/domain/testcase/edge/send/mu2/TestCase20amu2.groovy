@@ -23,6 +23,14 @@ final class TestCase20amu2 extends TestCaseSender {
     public TestCase20amu2(TestCaseExecutor ex) {
         super(ex)
     }
+	
+	@Override
+	Result configure(){
+		Content c = new Content()
+		c.endpoint = sim.endpoint
+		c.endpointTLS = sim.endpointTLS
+		new Result(Status.PENDING, c)
+	}
 
     @Override
     Result run(Map context, String username) {
@@ -63,6 +71,8 @@ final class TestCase20amu2 extends TestCaseSender {
         context.directTo = report.directFrom
         context.directFrom = "testcase20a@$executor.hostname"
         context.messageType = ArtifactManagement.Type.DELIVERY_STATUS_NOTIFICATION_SUCCESS
+		// TODO
+//		context.messageId = report.messageId
 
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
         record = new TestCaseBuilder(record).addStep(step2).build()

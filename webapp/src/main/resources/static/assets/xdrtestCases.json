@@ -428,6 +428,7 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
+    "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
         "key": "direct_from",
@@ -445,6 +446,7 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
+    "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
         "key": "direct_from",
@@ -655,6 +657,7 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
+    "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
         "key": "direct_from",
@@ -672,6 +675,7 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
+    "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
         "key": "direct_from",
