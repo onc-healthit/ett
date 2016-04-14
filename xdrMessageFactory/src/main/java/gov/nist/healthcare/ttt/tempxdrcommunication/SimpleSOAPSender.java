@@ -193,8 +193,12 @@ public class SimpleSOAPSender {
             case NEGATIVE_MISSING_ASSOCIATION:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
+            case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
+            	metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
             default:
             // throw new UnsupportedOperationException();  // TODO
+            	break;
 
         }
 

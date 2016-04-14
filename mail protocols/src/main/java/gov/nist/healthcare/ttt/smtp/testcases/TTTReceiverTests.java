@@ -91,6 +91,7 @@ public class TTTReceiverTests {
 		HashMap<String, JsonNode> validationResult = tr.getCCDAValidationReports();
 		String result1 = "";
 		// int j = 0;
+		String host = "";
 		Properties props = new Properties();
 		try {
 
@@ -104,11 +105,12 @@ public class TTTReceiverTests {
 			Session session = Session.getInstance(props, null);
 			Store store = session.getStore("imap");
 			store.close();
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.starttls.address"),
 					prop.getProperty("ett.password"));
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
+			host = prop.getProperty("ett.smtp.host");
 
 			Flags seen = new Flags(Flags.Flag.SEEN);
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
@@ -132,7 +134,7 @@ public class TTTReceiverTests {
 						result.put("\n" + h.getName(), h.getValue() + "\n");
 					}
 
-					result.put("Delivered-To", "********");
+					result.put("\n" + "Delivered-To", "********" + "\n");
 
 					// Storing the Message Body Parts
 					if(message.getContent() instanceof Multipart){
@@ -211,7 +213,7 @@ public class TTTReceiverTests {
 			log.info("Error fetching email " + e.getLocalizedMessage());
 			tr.getTestRequestResponses().put(
 					"\nERROR",
-					"Cannot fetch email from " + ti.tttSmtpAddress + " :"
+					"Cannot fetch email from " + host + " :"
 							+ e.getLocalizedMessage());
 		}
 
@@ -239,7 +241,7 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
@@ -319,6 +321,138 @@ public class TTTReceiverTests {
 	}
 
 	/*
+	 * Fetches message-ids and Disposition-Notification-Options header for each unread message in the inbox.
+	 */
+	public TestResult fetchUniqueIdHeaders(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setCriteriamet(CriteriaStatus.FALSE);
+		HashSet<String> hash = new HashSet<String>();
+		ArrayList<String> list = new ArrayList<String>();
+		HashMap<String, String> result = tr.getTestRequestResponses();
+		boolean flag = false;
+
+		int j = 1;
+		int m = 1;
+		Properties props = new Properties();
+
+		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+
+			Session session = Session.getDefaultInstance(props, null);
+			Store store = session.getStore("imap");
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
+					prop.getProperty("ett.other.address"),
+					prop.getProperty("ett.password"));
+
+			Folder inbox = store.getFolder("Inbox");
+			inbox.open(Folder.READ_WRITE);
+
+			Flags seen = new Flags(Flags.Flag.SEEN);
+			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+			Message messages[] = inbox.search(unseenFlagTerm);
+
+			for (Message message : messages) {
+
+				Address[] froms = message.getFrom();
+				String sender_ = froms == null ? ""
+						: ((InternetAddress) froms[0]).getAddress();
+
+				String sender = ti.sutEmailAddress;
+				if (sender_.equals(sender)) {
+
+					// Store all the headers in a map
+					Enumeration headers = message.getAllHeaders();
+					while (headers.hasMoreElements()) {
+						Header h = (Header) headers.nextElement();
+						String mID = h.getName();
+						if (mID.contains("Message-ID")) {
+							result.put("\nMessage-ID " + j, h.getValue()+"\n");
+							hash.add(h.getValue());
+							j++;
+						}
+
+						if (mID.contains("Disposition-Notification-Options")){
+							result.put("\nDisposition-Notification-Options " + m, h.getValue()+"\n");
+							list.add(h.getValue());
+							m++;
+						}
+					}
+
+					inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
+
+				}
+			}
+
+
+
+
+			if (hash.size() == result.size() - (result.size()/2)) {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+
+			else {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				result.put("\nERROR",
+						"Message IDs not unique. One or more messages have the same message-ID");
+			}
+
+			if (list.size() == hash.size()){
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+
+			}
+
+			else{
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				result.put("\nERROR",
+						"One or more messages do not have the Disposition-Notification-Options header");
+				flag = true;
+			}
+			
+			if (hash.size() < 3) {
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				result.put(
+						"\nERROR",
+						"ETT received "
+								+ hash.size()
+								+ " messages.\n"
+								+ "Please verify that the user has sent atleast 3 messages and also wait for few minutes after sending to ensure delivery.");
+
+			} else {
+				tr.setCriteriamet(CriteriaStatus.TRUE);
+			}
+			
+			if (flag){
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+			}
+			
+			
+
+		} catch (MessagingException e) {
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			log.info("Error fetching email " + e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR",
+					"Unknown Host  - " + e.getLocalizedMessage());
+		}catch (Exception e) {
+
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			// log.info("Error fetching email " + e.getLocalizedMessage());
+			log.info("Error :"
+					+ e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR ",
+					e.getLocalizedMessage());
+
+		}
+
+		return tr;
+	}
+	/*
 	 * Fetches the Disposition-Notification-Header from the mail.
 	 */
 	public TestResult fetchDispositionNotificaton(TestInput ti)
@@ -339,7 +473,7 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect(ti.tttSmtpAddress, Integer.parseInt(prop.getProperty("ett.imap.port")),
+			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
 					prop.getProperty("ett.other.address"),
 					prop.getProperty("ett.password"));
 
@@ -1409,7 +1543,7 @@ public class TTTReceiverTests {
 		return tr;
 
 	}
-	
+
 	public TestResult SocketPopUid(TestInput ti) throws NoSuchAlgorithmException,
 	KeyManagementException {
 		TestResult tr = new TestResult();
@@ -1451,22 +1585,22 @@ public class TTTReceiverTests {
 		}
 		// If everything has been initialized then we want to write some data
 		// to the socket we have opened a connection to on port 110
-		
+
 		if (socket != null && output != null && is != null) {
 			try {
 
 				output.print("USER "+ti.sutUserName+"\r\n");
 				output.flush();
-				
+
 				output.print("PASS "+ti.sutPassword+"\r\n");
 				output.flush();
-				
+
 				output.print("UIDL\r\n");
 				output.flush();
-				
+
 				output.print("QUIT\r\n");
 				output.flush();
-			
+
 				// keep on reading from/to the socket till we receive the "Ok"
 				// from POP,
 				int i = 1;
@@ -1498,7 +1632,7 @@ public class TTTReceiverTests {
 		for (String s : response) {
 			if (s.contains("ERR") || s.contains("-ERR")) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
-			//	result.put("ERROR", "Authentication Failure");
+				//	result.put("ERROR", "Authentication Failure");
 			} 
 
 

@@ -4,6 +4,7 @@ import gov.nist.healthcare.ttt.direct.messageGenerator.SMTPAddress;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
@@ -12,6 +13,11 @@ import java.net.UnknownHostException;
 import org.apache.log4j.Logger;
 
 import javax.mail.internet.MimeMessage;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class DirectMessageSender {
 	
@@ -20,14 +26,23 @@ public class DirectMessageSender {
 	public static final String CRLF = "\r\n";
 	public BufferedReader in = null;
 	public BufferedOutputStream out = null;
+
 	
 	public boolean send(int port, String mailerHostname, MimeMessage msg, String fromAddress, String toAddress) throws Exception {
-		DnsLookup lookup = new DnsLookup();
-		mailerHostname = lookup.getMxRecord(mailerHostname);
-		return sendMessage(port, mailerHostname, msg, fromAddress, toAddress);
+		return send(port, mailerHostname, msg, fromAddress, toAddress, false);
 	}
 	
-	public boolean sendMessage(int mailerPort, String mailerHostname, MimeMessage msg, String fromAddress, String toAddress) throws Exception {
+	
+	public boolean send(int port, String mailerHostname, MimeMessage msg, String fromAddress, String toAddress, boolean startTLS) throws Exception {
+		DnsLookup lookup = new DnsLookup();
+		String mxMailerHostname = lookup.getMxRecord(mailerHostname);
+		if(mxMailerHostname != null) {
+			mailerHostname = mxMailerHostname;
+		}
+		return sendMessage(port, mailerHostname, msg, fromAddress, toAddress, startTLS);
+	}
+	
+	public boolean sendMessage(int mailerPort, String mailerHostname, MimeMessage msg, String fromAddress, String toAddress, boolean startTLS) throws Exception {
 		logger.info("Opening socket to Direct system on " + mailerHostname + ":" + mailerPort + "...");
 		Socket socket;
 		try {
@@ -42,7 +57,7 @@ public class DirectMessageSender {
 		logger.info("\t...Success");
 		
 		try {
-			smtpProtocol(socket, msg, mailerHostname, fromAddress, toAddress);
+			smtpProtocol(socket, msg, mailerHostname, fromAddress, toAddress, startTLS);
 		} catch (Exception ex) {
 			logger.info("Exception: " + ex.getMessage());
 			throw new Exception(ex.getMessage());
@@ -53,8 +68,12 @@ public class DirectMessageSender {
 		return true;
 	}
 	
-
 	public void smtpProtocol(Socket socket, MimeMessage mmsg, String domainname, String from, String to) throws Exception {
+		smtpProtocol(socket, mmsg, domainname, from, to, false);
+	}
+	
+	
+	public void smtpProtocol(Socket socket, MimeMessage mmsg, String domainname, String from, String to, boolean startTLS) throws Exception {
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new BufferedOutputStream(socket.getOutputStream());
 
@@ -67,6 +86,17 @@ public class DirectMessageSender {
 			send("HELO " + domainname);
 
 			rcv("250"); 
+			
+			if (startTLS) {
+				logger.info("smtpProtocol: issuing STARTTLS");
+				send("STARTTLS");
+				rcv("220"); 
+				socket = startTLS(socket);
+				out = new BufferedOutputStream(socket.getOutputStream());
+				in = new BufferedReader(new InputStreamReader(
+						socket.getInputStream()));
+				
+			}
 
 			send("MAIL FROM:" + from);
 
@@ -101,6 +131,47 @@ public class DirectMessageSender {
 			out = null;
 		}
 	}
+	
+	
+	public Socket startTLS(Socket smtpSocket) {
+		try {
+				logger.info("startTLS: upgrading the regular socket to startTLS");
+				SSLContext sc = SSLContext.getInstance("TLS");
+				sc.init(null, new TrustManager[] { new X509TrustManager() {
+					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+						return null;
+					}
+
+					public void checkClientTrusted(
+							java.security.cert.X509Certificate[] certs,
+							String authType) {
+					}
+
+					public void checkServerTrusted(
+							java.security.cert.X509Certificate[] certs,
+							String authType) {
+					}
+				} }, new java.security.SecureRandom());
+				SSLSocketFactory sslSocketFactory = ((SSLSocketFactory) sc
+						.getSocketFactory());
+				SSLSocket sslSocket = (SSLSocket) sslSocketFactory
+						.createSocket(smtpSocket, smtpSocket.getInetAddress()
+								.getHostAddress(), smtpSocket.getPort(), true);
+				sslSocket.startHandshake();
+				smtpSocket = sslSocket;
+				
+				return smtpSocket;
+			
+		} 
+		catch (Exception e) {
+			logger.info("startTLS threw an error: " + e.getMessage());
+		}
+		
+		logger.info("Unable to upgrade to startTLS: returning plain socket!");
+		return smtpSocket;
+
+	}
+
 
 	public void send(String cmd) throws IOException {
 		logger.info("SMTP SEND: " + cmd);

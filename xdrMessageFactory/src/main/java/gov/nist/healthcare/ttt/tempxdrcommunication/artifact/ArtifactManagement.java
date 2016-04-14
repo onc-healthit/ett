@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
@@ -484,16 +485,16 @@ public class ArtifactManagement {
 
     }
 
-    public static String generateExtraHeaders(Settings settings, boolean full) {
+    public static ArrayList<String> generateExtraHeaders(Settings settings, boolean full) {
 
-        StringBuilder headers = new StringBuilder();
+    	ArrayList<String> headers = new ArrayList<String>();
         if (full) {
-            headers.append("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">XDS</direct:metadata-level>");
+            headers.add("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">XDS</direct:metadata-level>");
         } else {
-            headers.append("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">minimal</direct:metadata-level>");
+            headers.add("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">minimal</direct:metadata-level>");
         }
-        headers.append(generateDirectMessageBlock(settings));
-        return headers.toString();
+        headers.add(generateDirectMessageBlock(settings));
+        return headers;
 
     }
 
@@ -589,7 +590,7 @@ public class ArtifactManagement {
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
                     break;
                 case NEGATIVE_MISSING_DIRECT_BLOCK:
-                    artifacts.setExtraHeaders(new String());
+                    artifacts.setExtraHeaders(new ArrayList<String>());
                     // artifacts.setDocument(getBaseEncodedCCDA());
                     artifacts.setDocument(getCCDA());
                     //artifacts.setMimeType("text/plain");

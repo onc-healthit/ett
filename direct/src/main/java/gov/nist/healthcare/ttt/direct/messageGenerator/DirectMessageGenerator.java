@@ -254,6 +254,35 @@ public class DirectMessageGenerator {
 
 		return msg;
 	}
+	
+	/**
+	 * Generate unencrypted message
+	 * @param body
+	 * @return
+	 * @throws Exception
+	 */
+	public MimeMessage generateUnencryptedMessage(MimeMultipart body) throws Exception {
+		// Get session to create message
+		Properties props = System.getProperties();
+		Session session = Session.getDefaultInstance(props, null);
+
+		MimeMessage msg = new MimeMessage(session);
+		msg.setFrom(new InternetAddress(new SMTPAddress().properEmailAddr(this.fromAddress)));
+		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(new SMTPAddress().properEmailAddr(this.toAddress)));
+		msg.setSentDate(new Date());
+		msg.setContent(body);
+		msg.setDisposition("attachment");
+		msg.setFileName("smime.p7m");
+		if (!isWrapped) {
+			msg.setSubject(subject);
+		}
+		msg.saveChanges();
+		if (isWrapped) {
+			msg.setHeader("Message-ID", this.wrappedMessageID);
+		}
+
+		return msg;
+	}
 
 	public MimeMessage generateEncryptedMessageDifferentMsgId(MimeBodyPart body) throws Exception {
 		// Get session to create message

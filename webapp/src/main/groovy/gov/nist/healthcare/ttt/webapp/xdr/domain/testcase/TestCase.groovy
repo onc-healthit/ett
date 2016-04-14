@@ -79,8 +79,8 @@ abstract class TestCase {
         config.type = 'docsrc'
         //generate unique simId
         config.endpointTLS = context.targetEndpointTLS
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        def simId = id + "_" + username + "_" + timeStamp
+//        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        def simId = id + "_" + username; //+ "_" + timeStamp
         executor.configureEndpoint(simId, config)
     }
 
