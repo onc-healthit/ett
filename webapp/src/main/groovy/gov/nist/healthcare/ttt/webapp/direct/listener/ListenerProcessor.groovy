@@ -119,7 +119,7 @@ public class ListenerProcessor implements Runnable {
 			MimeMessage forward = new MimeMessage(session, this.messageStream);
 			DirectMessageSender sender = new DirectMessageSender();
 			logger.info("Forwarding message to " + this.startTlsAdress);
-			sender.sendMessage(25, this.smtpHost, forward, forward.getFrom()[0].toString(), this.startTlsAdress);
+			sender.sendMessage(25, this.smtpHost, forward, forward.getFrom()[0].toString(), this.startTlsAdress, false);
 			return
 		}
 		

@@ -1,3 +1,7 @@
+==Version 1.0.9#4/12/2016
+	* SMTP
+		-For SMTP Test Cases MT18/MT47, now enables the use of STARTTLS for sending of MDNs
+
 ==Version 1.0.8#4/11/2016
 	* XDR
 		-Fixed XDR message, direct block was not properly added

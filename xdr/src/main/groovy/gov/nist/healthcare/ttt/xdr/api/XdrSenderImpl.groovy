@@ -61,6 +61,9 @@ class XdrSenderImpl implements XdrSender{
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.wsaTo)
         settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
+		if(config.containsKey("relatesTo")) {
+			settings.setDirectRelatesTo(config.relatesTo)
+		}
 
         if(config.payload) {
             StringWriter writer = new StringWriter();
