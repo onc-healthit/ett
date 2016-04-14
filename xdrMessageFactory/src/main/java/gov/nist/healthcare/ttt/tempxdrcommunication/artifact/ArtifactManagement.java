@@ -468,6 +468,12 @@ public class ArtifactManagement {
                 directBlock.append("<direct:to>" + additionalDirectTo[i] + "</direct:to> ");
             }
         }
+        String relatesTo = settings.getDirectRelatesTo();
+        if(relatesTo != null && !relatesTo.isEmpty()) {            
+            directBlock.append("<direct:notification relatesTo=\"" + relatesTo + "\"/>");            
+        }
+            
+        
         String finalDestinationDelivery = settings.getFinalDestinationDelivery();
         if (finalDestinationDelivery != null && !finalDestinationDelivery.equals("")) {
             directBlock.append("<direct:X-DIRECT-FINAL-DESTINATION-DELIVERY>" + finalDestinationDelivery + "</direct:X-DIRECT-FINAL-DESTINATION-DELIVERY> ");
@@ -625,6 +631,7 @@ public class ArtifactManagement {
             settings.setDirectFrom("directFrom");
             settings.setDirectTo("directTo");
             settings.setWsaTo("wsaTo");
+            settings.setDirectRelatesTo("MESSAGEID1");
             //    settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
           //  settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
             String[] directTos = {};
@@ -645,8 +652,9 @@ public class ArtifactManagement {
      //       Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
 //            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
 
-Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
+//Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
+Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
