@@ -494,6 +494,12 @@ public class ArtifactManagement {
             headers.add("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">minimal</direct:metadata-level>");
         }
         headers.add(generateDirectMessageBlock(settings));
+        
+        // Add the relatesTo header
+        String relatesTo = settings.getDirectRelatesTo();
+        if(relatesTo != null && !relatesTo.isEmpty()) {            
+        	headers.add("<direct:notification xmlns:direct=\"urn:direct:addressing\" relatesTo=\"" + relatesTo + "\"/>");            
+        }
         return headers;
 
     }

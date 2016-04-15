@@ -26,10 +26,10 @@ def setup(){
         def manager = new SSLContextManager()
         def TLSclient = new TLSClientImpl(manager)
         def context = [:]
-        context.directTo = "test@test.com"
-        context.directFrom = "test@test.com"
-        context.wsaTo = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
-        context.targetEndpointTLS = "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/1/docrec/prb"
+        context.directTo = "mailto:test@test.com"
+        context.directFrom = "mailto:test@test.com"
+        context.wsaTo = "http://localhost:8080/xdstools2/sim/local-ett__1/rep/xdrpr"
+        context.targetEndpointTLS = "http://localhost:8080/xdstools2/sim/local-ett__1/rep/xdrpr"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
