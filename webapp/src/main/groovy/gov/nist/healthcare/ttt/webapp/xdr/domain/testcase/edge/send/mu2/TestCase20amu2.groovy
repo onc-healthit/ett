@@ -71,6 +71,7 @@ final class TestCase20amu2 extends TestCaseSender {
         context.directTo = report.directFrom
         context.directFrom = "testcase20a@$executor.hostname"
         context.messageType = ArtifactManagement.Type.DELIVERY_STATUS_NOTIFICATION_SUCCESS
+		context.relatesTo = report.messageId
 		// TODO
 //		context.messageId = report.messageId
 

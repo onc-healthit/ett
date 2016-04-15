@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController
 
 import java.util.regex.Matcher
 
+import javax.mail.Address;
+
 /**
  * Created by gerardin on 10/14/14.
  *
@@ -102,8 +104,18 @@ public class TkListener {
         tkValidationReport.messageId = (messageIDMatcher.find()) ? messageIDMatcher[0][1] : null
         tkValidationReport.directFrom = (directFromMatcher.find()) ? directFromMatcher[0][1] : null
         tkValidationReport.directTo = (directToMatcher.find()) ? directToMatcher[0][1] : null
-
+		
+		// Strip mailto: from both direct addresses
+		tkValidationReport.directFrom = stripMailTo(tkValidationReport.directFrom);
+		tkValidationReport.directTo = stripMailTo(tkValidationReport.directTo);
     }
+	
+	def stripMailTo(String address) {
+		if(address.toLowerCase().startsWith("mailto:")) {
+			return address.split("mailto:")[1];
+		}
+		return address;
+	}
 
     def parseReportFormat(TkValidationReport tkValidationReport,  GPathResult report){
         tkValidationReport.request = report.requestMessageHeader.text() + "\r\n\r\n" + report.requestMessageBody.text()

@@ -95,22 +95,27 @@ class ResponseHandler implements IObserver {
 
 		//we need both simid and directFrom : without simid, we would not know which testcaseid we are talking about.
 		//Without the directFrom address, we would not be able to know who sent us a message.
-		if (directFrom != null) {
-			rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectAddress(simId, directFrom)
-		}
+		if(directFrom == null && directTo == null) {
+			log.info("DirectFrom and DirectTo are null ignoring this")
+			return
+		} else {
+			if (directFrom != null) {
+				rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectAddress(simId, directFrom)
+			}
 
-		if (rec != null) {
-			log.info("found correlation with existing record using direct from address and simId : $directFrom , $simId")
-		} else{
-			if (directTo != null) {
-				rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectAddress(simId, directTo)
-			}
-			if(rec != null) {
-				log.info("found correlation with existing record using direct to address and simId : $directTo , $simId")
-			}
-			else{
-				log.warn("could not find report correlated with the following direct address and simId : $directFrom , $simId")
-				throw new Exception("error : could not correlate report with simId ($simId) and directAddress ($directFrom) with any existing record")
+			if (rec != null) {
+				log.info("found correlation with existing record using direct from address and simId : $directFrom , $simId")
+			} else{
+				if (directTo != null) {
+					rec = db.instance.xdrFacade.getLatestXDRRecordBySimulatorAndDirectAddress(simId, directTo)
+				}
+				if(rec != null) {
+					log.info("found correlation with existing record using direct to address and simId : $directTo , $simId")
+				}
+				else{
+					log.warn("could not find report correlated with the following direct address and simId : $directFrom , $simId")
+					throw new Exception("error : could not correlate report with simId ($simId) and directAddress ($directFrom) with any existing record")
+				}
 			}
 		}
 

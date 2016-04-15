@@ -556,6 +556,21 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 118 *******************************");
 			break;
 			
+		case 119:
+			log.info("*****************   BEGIN  Testcase 119 *******************************");
+
+			TestResult tr119;
+			try {
+				tr119 = tTest.fetchandSendMDN(ti);
+				tr119.id = 119;
+				res.add(tr119);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 119 *******************************");
+			break;
+			
 		case 121:
 			log.info("*****************   BEGIN  Testcase 121 *******************************");
 
