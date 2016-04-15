@@ -43,7 +43,10 @@ public class SmtpMDNMessageGenerator {
 		generator.setSubject("Automatic MDN");
 		if(type.equals("dispatched")) {
 			generator.setText("Your message was successfully dispatched.");
-		} else {
+		} else if (type.equals("failure")){
+			generator.setText("The message delivery failed.");
+		}
+		else {
 			generator.setText("Your message was successfully processed.");
 		}
 		generator.setToAddress(to);
