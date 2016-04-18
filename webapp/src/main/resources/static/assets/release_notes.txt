@@ -1,3 +1,23 @@
+==Version 1.0.9#4/12/2016
+	* SMTP
+		-For SMTP Test Cases MT18/MT47, now enables the use of STARTTLS for sending of MDNs
+
+==Version 1.0.8#4/11/2016
+	* XDR
+		-Fixed XDR message, direct block was not properly added
+
+==Version 1.0.7#4/8/2016
+	* XDR
+		-Removed XDR 4d, 4e and 15d, 15e
+		-XDR 13 now sends sample C-CDA payload for use in packaging XDM
+		-Removed all routing information from metadata for test case XDR 4c and 15c
+		-Corrected a typo in the routing addresses used in XDR 15d
+		-Added asynchronous possibility for test case MT 13-16, 32-37, 42 and 43
+
+	* SMTP
+		-Bug fix for MT 3
+		-Updated endpoints for MT 18 and MT 47
+
 ==Version 1.0.6#3/22/2016
 	* Message Tracking
 		-MT 18/47 Endpoints Updated Removal of MT 22, 41 and 42 Removal of IMAP/POP 22

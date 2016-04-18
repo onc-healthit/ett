@@ -1,21 +1,26 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.hisp.receive.mu2
 
+import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface;
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
+import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport;
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-/**
- * Created by gerardin on 10/27/14.
- */
+
+
 @Component
-final class TestCase13mu2 extends TestCase {
+final class TestCase13mu2 extends TestCaseSender {
 
 
     @Autowired
@@ -23,6 +28,13 @@ final class TestCase13mu2 extends TestCase {
         super(executor)
     }
 
+	@Override
+	Result configure(){
+		Content c = new Content()
+		c.endpoint = sim.endpoint
+		c.endpointTLS = sim.endpointTLS
+		new Result(Status.PENDING, c)
+	}
 
     @Override
     Result run(Map context, String username) {
@@ -31,14 +43,17 @@ final class TestCase13mu2 extends TestCase {
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
-        // Correlate this test to a direct_from address and a simulator id so we can be notified
-        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+       // Correlate this test to a direct_from address and a simulator id so we can be notified
+		if(context.direct_from != null) {
+			XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+			builder.addStep(step1)
+		}
+		
+        registerDocSrcEndpoint(username,context)
 
-        sim = registerDocSrcEndpoint(username,context)
-
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = context.targetEndpointTLS
+        context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         //this address has not been registered in the tool
         context.directTo = "badaddress@gfail.com"
         context.directFrom = "testcase13mu2@$executor.hostname"
@@ -46,7 +61,7 @@ final class TestCase13mu2 extends TestCase {
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
         // Create a new test record
-        XDRRecordInterface record = builder.addStep(step1).addStep(step2).build()
+        XDRRecordInterface record = builder.addStep(step2).build()
         record.setStatus(step2.status)
         executor.db.addNewXdrRecord(record)
 
@@ -55,4 +70,21 @@ final class TestCase13mu2 extends TestCase {
         def content = executor.buildSendXDRContent(step2)
         return new Result(record.criteriaMet, content)
     }
+	
+	@Override
+	public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+
+		//we parse the XDR report
+		XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+
+		//we update the record
+		XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+		updatedRecord.status = Status.MANUAL
+		executor.db.updateXDRRecord(updatedRecord)
+	}
+
+	@Override
+	public Result getReport(XDRRecordInterface record) {
+		executor.getSimpleSendReport(record)
+	}
 }

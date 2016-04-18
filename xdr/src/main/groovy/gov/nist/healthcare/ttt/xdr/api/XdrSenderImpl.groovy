@@ -1,8 +1,19 @@
 package gov.nist.healthcare.ttt.xdr.api
+
+import gov.nist.toolkit.configDatatypes.SimulatorActorType;
+import gov.nist.toolkit.configDatatypes.SimulatorProperties;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
+import gov.nist.toolkit.toolkitApi.BasicSimParameters
+import gov.nist.toolkit.toolkitApi.DocumentSource
+import gov.nist.toolkit.toolkitApi.SimulatorBuilder
+import gov.nist.toolkit.toolkitServicesCommon.RawSendRequest
+import gov.nist.toolkit.toolkitServicesCommon.RawSendResponse
+import gov.nist.toolkit.toolkitServicesCommon.SimConfig
+import gov.nist.toolkit.toolkitServicesCommon.DcmImageSet.Document;
+import gov.nist.toolkit.toolkitServicesCommon.resource.DocumentResource
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil
 import org.apache.commons.io.IOUtils
@@ -32,8 +43,11 @@ class XdrSenderImpl implements XdrSender{
     @Value('${toolkit.request.timeout}')
     Integer timeout = 1000
 
-    @Value('${toolkit.sendXdr.url}')
+    @Value('${toolkit.url}')
     private String tkSendXdrUrl
+	
+	@Value('${toolkit.user}')
+	private String toolkitUser
 
     @Value('${toolkit.testName}')
     private String testName
@@ -47,6 +61,9 @@ class XdrSenderImpl implements XdrSender{
         settings.setDirectTo(config.directTo)
         settings.setWsaTo(config.wsaTo)
         settings.setFinalDestinationDelivery(config.finalDestinationDelivery)
+		if(config.containsKey("relatesTo")) {
+			settings.setDirectRelatesTo(config.relatesTo)
+		}
 
         if(config.payload) {
             StringWriter writer = new StringWriter();
@@ -56,36 +73,116 @@ class XdrSenderImpl implements XdrSender{
             settings.setPayload(payload)
         }
         Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
+//
+//        //creating request for the toolkit
+//        def req = """
+//            <sendRequest>
+//                <simReference>ett/$config.simId</simReference>
+//                <transactionName>prb</transactionName>
+//                <tls value="true"/>
+//                <messageId>$art.messageId</messageId>
+//                <metadata>$art.metadata</metadata>
+//                <extraHeaders>$art.extraHeaders</extraHeaders>
+//                <document id="$art.documentId" mimeType="$art.mimeType">$art.document</document>
+//            </sendRequest>
+//        """
+//
+//        try {
+//            log.debug("xdr send request :" + req.toString())
+//            GPathResult r = restClient.postXml(req, tkSendXdrUrl +"/$config.simId", timeout)
+//            parseSendXdrResponse(r)
+//
+//        }
+//        catch (groovyx.net.http.HttpResponseException e) {
+//            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
+//        }
+//        catch (java.net.SocketTimeoutException e) {
+//            throw new RuntimeException("connection timeout when calling toolkit.",e)
+//        }
+//        catch(groovyx.net.http.ResponseParseException e){
+//            throw new RuntimeException("could not understand response from toolkit.",e)
+//        }
+		
+		String urlRoot = tkSendXdrUrl;
 
-        //creating request for the toolkit
-        def req = """
-            <sendRequest>
-                <simReference>ett/$config.simId</simReference>
-                <transactionName>prb</transactionName>
-                <tls value="true"/>
-                <messageId>$art.messageId</messageId>
-                <metadata>$art.metadata</metadata>
-                <extraHeaders>$art.extraHeaders</extraHeaders>
-                <document id="$art.documentId" mimeType="$art.mimeType">$art.document</document>
-            </sendRequest>
-        """
+		SimulatorBuilder spi = new SimulatorBuilder(urlRoot);
+		BasicSimParameters srcParams = new BasicSimParameters();
 
-        try {
-            log.debug("xdr send request :" + req.toString())
-            GPathResult r = restClient.postXml(req, tkSendXdrUrl +"/$config.simId", timeout)
-            parseSendXdrResponse(r)
+		srcParams.setId(config.simId);
+		srcParams.setUser(this.toolkitUser);
+		srcParams.setActorType(SimulatorActorType.DOCUMENT_SOURCE);
+		srcParams.setEnvironmentName("NA2015");
+		
+//		System.out.println("STEP - DELETE DOCSRC SIM");
+		spi.delete(srcParams.getId(), srcParams.getUser());
 
-        }
-        catch (groovyx.net.http.HttpResponseException e) {
-            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
-        }
-        catch (java.net.SocketTimeoutException e) {
-            throw new RuntimeException("connection timeout when calling toolkit.",e)
-        }
-        catch(groovyx.net.http.ResponseParseException e){
-            throw new RuntimeException("could not understand response from toolkit.",e)
-        }
-    }
+//		System.out.println("STEP - CREATE DOCSRC SIM");
+		DocumentSource documentSource = spi.createDocumentSource(
+		srcParams.getId(),
+		srcParams.getUser(),
+		srcParams.getEnvironmentName()
+		);
+
+
+//		System.out.println("verify sim built");
+//		System.out.println(documentSource.getId() == srcParams.getId());
+
+//		System.out.println("STEP - UPDATE - SET DOC REC ENDPOINTS INTO DOC SRC");
+		//		documentSource.setProperty(SimulatorProperties.pnrEndpoint, documentRecipient.asString(SimulatorProperties.pnrEndpoint));
+		//		documentSource.setProperty(SimulatorProperties.pnrEndpoint, "http://hit-dev.nist.gov:11080/xdstools3/sim/ett/10/docrec/prb");
+		if(config.endpoint.startsWith("https")) {
+			documentSource.setProperty(SimulatorProperties.pnrTlsEndpoint, config.endpoint);
+		} else {
+			documentSource.setProperty(SimulatorProperties.pnrEndpoint, config.endpoint);
+		}
+		SimConfig updatedVersion = documentSource.update(documentSource.getConfig());
+//		System.out.println("Updated Src Sim config is " + updatedVersion.describe());
+
+//		System.out.println(updatedVersion);
+		
+//		System.out.println("STEP - SEND XDR");
+		RawSendRequest req = documentSource.newRawSendRequest();
+		if(config.endpoint.startsWith("https")) {
+			req.setTls(true);
+		}
+		
+		for (String block : art.getExtraHeaders()) {
+			req.addExtraHeader(block);
+		}
+		req.setMetadata(art.metadata);
+		
+		// CCDA attachment
+		String ccdaAttachmentString = "";
+		if(config.payload) {
+			if(config.payload.link) {
+				InputStream ccdaAttachment = new URL(config.payload.link).openStream();
+				DocumentResource document = new DocumentResource();
+				byte[] ccdaAttachmentByte = IOUtils.toByteArray(ccdaAttachment);
+				ccdaAttachmentString = new String(ccdaAttachmentByte);
+				document.setContents(ccdaAttachmentByte);
+				document.setMimeType("text/xml");
+				req.addDocument("Document01", document);
+			}
+		} else {
+			DocumentResource document = new DocumentResource();
+			ccdaAttachmentString = art.getDocument();
+			document.setContents(ccdaAttachmentString.getBytes());
+			document.setMimeType("text/xml");
+			req.addDocument("Document01", document);
+		}
+
+		RawSendResponse response = documentSource.sendProvideAndRegister(req);
+		
+		Map res = new HashMap();
+		if(ccdaAttachmentString != "") {
+			res.put("request", art.metadata + "\n C-CDA Attachment\n\n" + ccdaAttachmentString);	
+		} else {
+			res.put("request", art.metadata);
+		}
+		res.put("response", response.getResponseSoapBody());
+		
+		return res
+	}
 
     private def parseSendXdrResponse(GPathResult r){
         def report = [:]

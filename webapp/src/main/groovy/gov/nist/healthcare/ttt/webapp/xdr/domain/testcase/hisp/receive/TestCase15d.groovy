@@ -27,7 +27,7 @@ final class TestCase15d extends TestCase {
         executor.validateInputs(context,["targetEndpointTLS"])
 
         context.directTo = "testcase15d@$executor.hostname"
-        context.directFrom = "testcase15b@$executor.hostname"
+        context.directFrom = "testcase15d@$executor.hostname"
         context.wsaTo = context.targetEndpointTLS
 
         context.messageType = chooseMissingMetadata()

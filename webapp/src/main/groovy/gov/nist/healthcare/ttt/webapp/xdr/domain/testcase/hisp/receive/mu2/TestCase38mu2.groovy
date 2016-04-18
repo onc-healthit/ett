@@ -36,9 +36,9 @@ final class TestCase38mu2 extends TestCase {
         sim = registerDocSrcEndpoint(username,context)
 
         // Send an xdr with the endpoint created above
-        context.simId = sim.simulatorId
-        context.endpoint = sim.endpointTLS
-        context.wsaTo = context.targetEndpointTLS
+        context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.endpointTLS
         //an address that provides a processed MDN and a dispatched MDN after n seconds (n < sending hisp timeout)
         context.directTo = "processedonly@edge.nist.gov"
         context.directFrom = "testcase38mu2@$executor.hostname"

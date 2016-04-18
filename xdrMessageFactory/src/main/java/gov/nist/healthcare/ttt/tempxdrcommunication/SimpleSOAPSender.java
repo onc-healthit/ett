@@ -98,8 +98,10 @@ public class SimpleSOAPSender {
 
         StringBuilder response = new StringBuilder();
         String line = null;
+        System.out.println("SOAPSender.getResponse");
         while ((line = bufferedReader.readLine()) != null) {
             response.append(line + "\n");
+            System.out.println(line);
         }
         return response.toString();
 
@@ -191,8 +193,12 @@ public class SimpleSOAPSender {
             case NEGATIVE_MISSING_ASSOCIATION:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
+            case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
+            	metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
             default:
             // throw new UnsupportedOperationException();  // TODO
+            	break;
 
         }
 
