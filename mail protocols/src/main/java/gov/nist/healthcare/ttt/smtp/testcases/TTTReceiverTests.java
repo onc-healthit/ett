@@ -412,7 +412,7 @@ public class TTTReceiverTests {
 						"One or more messages do not have the Disposition-Notification-Options header");
 				flag = true;
 			}
-			
+
 			if (hash.size() < 3) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put(
@@ -425,12 +425,12 @@ public class TTTReceiverTests {
 			} else {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 			}
-			
+
 			if (flag){
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 			}
-			
-			
+
+
 
 		} catch (MessagingException e) {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
@@ -532,6 +532,87 @@ public class TTTReceiverTests {
 		return tr;
 	}
 
+
+
+	public TestResult fetchandSendMDN(TestInput ti) throws IOException {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		TestResult tr = new TestResult();
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+
+		Properties props = new Properties();
+
+		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+
+			Session session = Session.getDefaultInstance(props, null);
+			Store store = session.getStore("imap");
+			store.connect("hit-testing2.nist.gov", 143,
+					"vendor1smtpsmtp@hit-testing2.nist.gov",
+					"vendortesting123");
+
+			Folder inbox = store.getFolder("Inbox");
+			inbox.open(Folder.READ_WRITE);
+
+			Flags seen = new Flags(Flags.Flag.SEEN);
+			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+			Message messages[] = inbox.search(unseenFlagTerm);
+
+			for (Message message : messages) {
+
+
+				MimeMessage m = (MimeMessage) message;
+
+				Properties props1 = new Properties();
+				props1.put("mail.smtp.auth", "true");
+				props1.put("mail.smtp.starttls.enable","true");
+				props1.put("mail.smtp.starttls.required", "true");
+				props1.put("mail.smtp.auth.mechanisms", "PLAIN");
+				props1.setProperty("mail.smtp.ssl.trust", "*");
+
+				Session session1 = Session.getInstance(props1, null);
+
+				Message message1 = new MimeMessage(m);
+
+
+				message1.setRecipients(Message.RecipientType.TO,
+						InternetAddress.parse(ti.sutEmailAddress));
+
+
+				Transport transport = session1.getTransport("smtp");
+				transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+						: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+				transport.sendMessage(message1, message1.getAllRecipients());
+				transport.close();
+
+
+
+				inbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
+
+				System.out.println("MDNs SENT!");
+				result.put("\nSUCCESS", "MDNs sent to " + ti.sutEmailAddress+ "\n");
+
+			}
+
+			if (messages.length == 0){
+				tr.setCriteriamet(CriteriaStatus.FALSE);
+				result.put("\nERROR", "No MDNs found\n");
+			}
+			
+		} catch (Exception e) {
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
+			log.info("Error" + e.getLocalizedMessage());
+			tr.getTestRequestResponses().put("\nERROR",
+					"Error  " + e.getLocalizedMessage());
+		}
+
+		return tr;
+	}
 	/*
 	 * Stub to display log messages for manual test on the too
 	 */

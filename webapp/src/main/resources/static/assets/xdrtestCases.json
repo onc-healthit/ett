@@ -75,30 +75,6 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR Test 4d",
-    "id": "4d",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of missing required XDR metadata elements.",
-    "sutEdge": true,
-    "sutHisp": false,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
-    "name": "XDR Test 4e",
-    "id": "4e",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of garbled XDR metadata such as missing associations between ebRIM constructs",
-    "sutEdge": true,
-    "sutHisp": false,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
     "name": "XDR Test 5",
     "id": 5,
     "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Full (XDS) metadata.",
@@ -298,30 +274,6 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR Test 15d",
-    "id": "15d",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of missing XDR metadata.",
-    "sutEdge": false,
-    "sutHisp": true,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
-    "name": "XDR Test 15e",
-    "id": "15e",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of malformed/inconsistent XDR metadata.",
-    "sutEdge": false,
-    "sutHisp": true,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
     "name": "XDR MT Test 15",
     "id": "34mu2",
     "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP which does not have a published certificate.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Message Tracking Using Processed MDN test suite.",
@@ -412,7 +364,7 @@
 }, {
     "name": "XDR MT Test 19",
     "id": "19mu2",
-    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking using Processed MDN.)",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. Hit 'RUN' and then the sending system will send three messages with unique identifiers to the endpoint provided. When all three messages have been completely sent, press the 'Pending Refresh' button.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -424,7 +376,7 @@
 }, {
     "name": "XDR Test MT 20a",
     "id": "20amu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the response was handled appropriately.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -442,7 +394,7 @@
 }, {
     "name": "XDR MT Test 20b",
     "id": "20bmu2",
-    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the process MDN was handled appropriately.",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the response was handled appropriately.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
@@ -629,7 +581,7 @@
 }, {
     "name": "XDR MT Test 48",
     "id": "48mu2",
-    "desc": "Verify the ability of the sending system to send messages with unique message-IDs.  The sending system will send three messages with unique identifiers to the endpoint provided.  (Message Tracking Using \"Implementation Guide for Delivery Notification\")",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. Hit 'RUN' and then the sending system will send three messages with unique identifiers to the endpoint provided. When all three messages have been completely sent, press the 'Pending Refresh' button.  (Message Tracking Using \"Implementation Guide for Delivery Notification\")",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",

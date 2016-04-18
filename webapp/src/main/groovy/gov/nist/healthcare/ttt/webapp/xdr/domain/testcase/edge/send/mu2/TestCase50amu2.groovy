@@ -73,6 +73,7 @@ final class TestCase50amu2 extends TestCaseSender {
         context.directTo = report.directFrom
         context.directFrom = "testcase50a@$executor.hostname"
         context.messageType = ArtifactManagement.Type.DELIVERY_STATUS_NOTIFICATION_SUCCESS
+		context.relatesTo = report.messageId
 
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
         record = new TestCaseBuilder(record).addStep(step2).build()
