@@ -149,7 +149,7 @@
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 47(a) - Accept failure message for invalid recipient (IG for Delivery Notification Suite - SMTP Receiver)",
-		"id": 119,
+		"id": 120,
 		"protocol": "mu2",
 		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid one (dispatchedonly-plain@edge.nist.gov) and an invalid address (noaddressfailure9-plain@edge.dnsops.gov). Hitting 'Run' will cause the MDNs to be delivered using the account information specified in the profile using SMTP protocol with STARTTLS and SASL. The failure MDN for invalid recipient noaddressfailure9-plain@edge.dnsops.gov needs to be verified.",
 		"longDesc": "The credentials for authentication is vendor1smtpsmtp@hit-testing2.nist.gov / vendortesting123  ",
