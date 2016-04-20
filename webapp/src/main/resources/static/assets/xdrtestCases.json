@@ -420,7 +420,6 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
-    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -437,7 +436,6 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
-    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -556,6 +554,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
