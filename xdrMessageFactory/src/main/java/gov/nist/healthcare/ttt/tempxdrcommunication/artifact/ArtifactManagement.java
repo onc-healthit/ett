@@ -660,8 +660,8 @@ public class ArtifactManagement {
 
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
-Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
-
+//Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
+Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_MINIMAL_METADATA, settings);
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
             System.out.println("messageId = " + art.getMessageId());

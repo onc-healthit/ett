@@ -51,7 +51,7 @@
                         <rim:Description/>
                         <rim:Classification
                             classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d"
-                            classifiedObject="id_extrinsicobject"
+                            classifiedObject="Document01"
                             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                             id="id_1">
                             <rim:Slot name="authorPerson">
@@ -67,7 +67,7 @@
                         </rim:Classification>
                         <rim:Classification
                             classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a"
-                            classifiedObject="id_extrinsicobject" nodeRepresentation="34133-9"
+                            classifiedObject="Document01" nodeRepresentation="34133-9"
                             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                             id="id_3">
                             <rim:Slot name="codingScheme">
@@ -83,7 +83,7 @@
                         <!-- Value from HITSP/C80 table 2-146 -->
                         <rim:Classification
                             classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1"
-                            classifiedObject="id_extrinsicobject" nodeRepresentation="72311000"
+                            classifiedObject="Document01" nodeRepresentation="72311000"
                             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                             id="id_6">
                             <rim:Slot name="codingScheme">
@@ -99,7 +99,7 @@
                         <!-- Value from HITSP/C80 table 2-149 -->
                         <rim:Classification
                             classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead"
-                            classifiedObject="id_extrinsicobject" nodeRepresentation="408443003"
+                            classifiedObject="Document01" nodeRepresentation="408443003"
                             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                             id="id_7">
                             <rim:Slot name="codingScheme">
@@ -115,7 +115,7 @@
                         <!-- LOINC code from HITSP/C80 table 2-144  -->
                         <rim:Classification
                             classificationScheme="urn:uuid:f0306f51-975f-434e-a61c-c59651d33983"
-                            classifiedObject="id_extrinsicobject" nodeRepresentation="34133-9"
+                            classifiedObject="Document01" nodeRepresentation="34133-9"
                             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                             id="id_10">
                             <rim:Slot name="codingScheme">
@@ -131,7 +131,7 @@
                             identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427"
                             value="1^^^&amp;2.16.840.1.113883.4.6&amp;ISO"
                             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
-                            id="id_11" registryObject="id_extrinsicobject">
+                            id="id_11" registryObject="Document01">
                             <rim:Name>
                                 <rim:LocalizedString value="XDSDocumentEntry.patientId"/>
                             </rim:Name>
@@ -140,7 +140,7 @@
                             identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab"
                             value="1.42.20140915172101.10.1"
                             objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
-                            id="id_12" registryObject="id_extrinsicobject">
+                            id="id_12" registryObject="Document01">
                             <rim:Name>
                                 <rim:LocalizedString value="XDSDocumentEntry.uniqueId"/>
                             </rim:Name>
@@ -240,7 +240,7 @@
                     <rim:Association
                         associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"
                         sourceObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10"
-                        targetObject="id_extrinsicobject" id="id_association"
+                        targetObject="Document01" id="id_association"
                         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association">
                         <rim:Slot name="SubmissionSetStatus">
                             <rim:ValueList>
@@ -250,7 +250,7 @@
                     </rim:Association>
                 </rim:RegistryObjectList>
             </lcm:SubmitObjectsRequest>
-            <xdsb:Document id="id_extrinsicobject">
+            <xdsb:Document id="Document01">
                 <xop:Include href="cid:1.3293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org"
                     xmlns:xop="http://www.w3.org/2004/08/xop/include"/>
             </xdsb:Document>

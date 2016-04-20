@@ -1,3 +1,8 @@
+==Version 1.0.11#4/20/2016
+	* XDR
+		-Corrected XDM file-name length issue in XDR
+		-Corrected mismatch in outgoing XDR messages (ID of metadata did not match ID of document)
+		
 ==Version 1.0.10#4/15/2016
 	* SMTP
 		-Added MT SMTP cases 18(a) and 47(a)
