@@ -200,6 +200,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -228,6 +229,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -280,6 +282,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -308,6 +311,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -416,6 +420,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -432,6 +437,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -444,6 +450,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -460,6 +467,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -476,6 +484,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -492,6 +501,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -508,6 +518,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -541,6 +552,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -553,6 +565,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -569,6 +582,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "status": "configure",
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
