@@ -6,9 +6,13 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
+import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport;
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -16,13 +20,21 @@ import org.springframework.stereotype.Component
  * Created by gerardin on 10/27/14.
  */
 @Component
-final class TestCase14mu2 extends TestCase {
+final class TestCase14mu2 extends TestCaseSender {
 
 
     @Autowired
     TestCase14mu2(TestCaseExecutor executor) {
         super(executor)
     }
+	
+	@Override
+	Result configure(){
+		Content c = new Content()
+		c.endpoint = sim.endpoint
+		c.endpointTLS = sim.endpointTLS
+		new Result(Status.PENDING, c)
+	}
 
     @Override
     Result run(Map context, String username) {
@@ -32,9 +44,12 @@ final class TestCase14mu2 extends TestCase {
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
         // Correlate this test to a direct_from address and a simulator id so we can be notified
-        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
-
-        sim = registerDocSrcEndpoint(username,context)
+		if(context.direct_from != null) {
+			XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+			builder.addStep(step1)
+		}
+        
+		registerDocSrcEndpoint(username,context)
 
         context.endpoint = context.targetEndpointTLS
         context.simId = id + "_" + username
@@ -53,6 +68,23 @@ final class TestCase14mu2 extends TestCase {
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
-        return new Result(Status.PENDING, content)
+        return new Result(record.criteriaMet, content)
     }
+	
+	@Override
+	public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+
+		//we parse the XDR report
+		XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+
+		//we update the record
+		XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+		updatedRecord.status = Status.MANUAL
+		executor.db.updateXDRRecord(updatedRecord)
+	}
+
+	@Override
+	public Result getReport(XDRRecordInterface record) {
+		executor.getSimpleSendReport(record)
+	}
 }
