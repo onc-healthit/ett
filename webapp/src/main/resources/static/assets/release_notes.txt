@@ -1,3 +1,8 @@
+==Version 1.0.12#4/21/2016
+	* XDR
+		-XDR 4* sends XML attachment now.
+		-XDR 4*: better error reporting.
+		
 ==Version 1.0.11#4/20/2016
 	* XDR
 		-Corrected XDM file-name length issue in XDR
@@ -38,7 +43,7 @@
 		-MT 18/47 Endpoints Updated Removal of MT 22, 41 and 42 Removal of IMAP/POP 22
 
 	* Direct 
-		-Fixed smtp MDN when no MX record has been dicovered. It now send to the hostname
+		-Fixed smtp MDN when no MX record has been discovered. It now send to the hostname
 
 ==Version 1.0.5#3/21/2016
 	* SMTP
