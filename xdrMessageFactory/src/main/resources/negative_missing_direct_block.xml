@@ -188,7 +188,7 @@
                 </rim:ExternalIdentifier>
                 <rim:ExternalIdentifier
                     identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab"
-                    value="1.42.20140915172101.10.1"
+                    value="1.42.20140915172101.10.1.#UNIQUE_ID#"
                     objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
                     id="id_12" registryObject="Document01">
                     <rim:Name>
@@ -196,7 +196,7 @@
                     </rim:Name>
                 </rim:ExternalIdentifier>
             </rim:ExtrinsicObject>
-            <rim:RegistryPackage id="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10"
+            <rim:RegistryPackage id="RegPackage1"
                 objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
                 <rim:Slot name="submissionTime">
                     <rim:ValueList>
@@ -217,7 +217,7 @@
                 </rim:Description>
                 <rim:Classification
                     classificationScheme="urn:uuid:a7058bb9-b4e4-4307-ba5b-e3f0ab85e12d"
-                    classifiedObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10"
+                    classifiedObject="RegPackage1"
                     nodeRepresentation=""
                     objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                     id="id_13">
@@ -239,7 +239,7 @@
                 </rim:Classification>
                 <rim:Classification
                     classificationScheme="urn:uuid:aa543740-bdda-424e-8c96-df4873be8500"
-                    classifiedObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10"
+                    classifiedObject="RegPackage1"
                     nodeRepresentation="34133-9"
                     objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                     id="id_14">
@@ -256,13 +256,13 @@
                     identificationScheme="urn:uuid:96fdda7c-d067-4183-912e-bf5ee74998a8"
                     value="#UNIQUE_ID_SS#"
                     objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
-                    id="id_15" registryObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10">
+                    id="id_15" registryObject="RegPackage1">
                     <rim:Name>
                         <rim:LocalizedString value="XDSSubmissionSet.uniqueId"/>
                     </rim:Name>
                 </rim:ExternalIdentifier>
                 <rim:ExternalIdentifier id="fefcba76-ab23-4138-96ce-795f02b26d79"
-                    registryObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10"
+                    registryObject="RegPackage1"
                     identificationScheme="urn:uuid:554ac39e-e3fe-47fe-b233-965d2a147832"
                     value="1.2.840.114350.1.13.252.1.7.2.688879">
                     <rim:Name>
@@ -274,19 +274,19 @@
                     identificationScheme="urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446"
                     value="1^^^&amp;2.16.840.1.113883.4.6&amp;ISO"
                     objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
-                    id="id_17" registryObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10">
+                    id="id_17" registryObject="RegPackage1">
                     <rim:Name>
                         <rim:LocalizedString value="XDSSubmissionSet.patientId"/>
                     </rim:Name>
                 </rim:ExternalIdentifier>
             </rim:RegistryPackage>
-            <rim:Classification classifiedObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10"
+            <rim:Classification classifiedObject="RegPackage1"
                 classificationNode="urn:uuid:a54d6aa5-d40d-43f9-88c5-b4633d873bdd"
                 id="urn:uuid:c6e5bf3c-3e5b-4777-bfcd-85e5c66328e1"
                 objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
             <rim:Association
                 associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"
-                sourceObject="urn:uuid:96bd4589-6975-43bf-81e8-9cf1701d0f10"
+                sourceObject="RegPackage1"
                 targetObject="Document01"
                 id="id_association"
                 objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association">

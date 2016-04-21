@@ -202,12 +202,19 @@ public class SimpleSOAPSender {
 
         }
 
-        String attachment = ArtifactManagement.getBaseEncodedCCDA();
+        //String attachment = ArtifactManagement.getBaseEncodedCCDA();
+        String attachment = ArtifactManagement.getCCDA();
         String mtom = buildMTOMPackage(metadata, attachment);
         String fullWithHttpHeaders = addHttpHeadersMtom(endpoint, mtom);
 
 //        String toSend = readFile("/home/mccaffrey/xdr/captured/received_mod.txt");
-        String response = sendMessage(endpoint, fullWithHttpHeaders, sc);
+        String response = null;
+        try {
+            response = sendMessage(endpoint, fullWithHttpHeaders, sc);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            response = new String("IOException Bad Connection\n" + ioe.toString() + "\n" + ioe.getMessage());
+        }
         //  String response = sendMessage(endpoint, toSend);
 
         RequestResponse rr = new RequestResponse(fullWithHttpHeaders, response);
@@ -228,7 +235,7 @@ public class SimpleSOAPSender {
         mtom.append(metadata);
         mtom.append("\r\n");
         mtom.append("--MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\r\n");
-        mtom.append("Content-Type: application/octet-stream\r\n");
+        mtom.append("Content-Type: text/xml\r\n");
         mtom.append("Content-Transfer-Encoding: binary\r\n");
         mtom.append("Content-ID: <1.3293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>\r\n");
         mtom.append("\r\n");
@@ -254,11 +261,15 @@ public class SimpleSOAPSender {
             //String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/f8488a75-fc7d-4d70-992b-e5b2c852b412/rep/prb";
            //  String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
             //  String endpoint = "https://transport-testing.nist.gov:12080/ttt/sim/1b578eb5-d2a5-46c1-87ab-d1efdbfdbf72/rep/prb";
-            String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/9fdc17ba-0191-4d0c-be2a-c4ea5294b861/rec/xdrpr";
+         //   String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/9fdc17ba-0191-4d0c-be2a-c4ea5294b861/rec/xdrpr";
 
             // String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/ecb4e054-9581-439f-9f12-de2d052a3132/rep/prb";
             // String endpoint = "http://ihexds.nist.gov:12090/tf6/services/xdsregistryb";
           //  String endpoint = "http://hit-dev.nist.gov:12090/xdstools2/sim/811fd97a-6ea3-437e-bf42-e0a8a505ba98/rec/xdrpr";
+          
+          
+          String endpoint = "http://edge.nist.gov:11080/xdstools2/sim/edge-ett__1/rep/xdrpr";
+          
             String directTo = "directTo";
             String directFrom = "directFrom";
             String relatesTo = "relatesTo";
@@ -276,7 +287,8 @@ public class SimpleSOAPSender {
             // payload.append("POST /random HTTP/1.1\r\n");
             // payload.append("\r\n");
         //    String payload = readFile("/home/mccaffrey/src/TempXDRCommunication/src/main/resources/sample_request.txt");
-            //String response = sendSecureMessage(endpoint,payload);
+        
+  //          String response = sendSecureMessage(endpoint,payload);
             // String payload = PayloadManager.getPayload(endpoint,Type.XDR_FULL_METADATA, settings);
 /*
             String payload = PayloadManager.getPayload(endpoint, Type.XDR_C32, settings);
@@ -286,15 +298,39 @@ public class SimpleSOAPSender {
             System.out.println("------ ABOVE WAS THE REQUEST ----  BELOW IS THE RESPONSE ----");
             System.out.println(response);
 */
-            
-             // RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+    
+StringBuilder payload = new StringBuilder();
+
+
+/*
+    payload.append("POST xdstools2/sim/edge-ett__1/rep/xdrpr HTTP/1.1\r\n");
+    payload.append("Content-Type: multipart/related; boundary=MIMEBoundaryurn_uuid_AFBE87CB65FD88AC4B1220879854348; type=\"application/xop+xml\"; start=\"0.urn:uuid:AFBE87CB65FD88AC4B1220879854349@apache.org\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"\r\n");
+payload.append("User-Agent: Axis2\r\n");
+        
+    payload.append("Host: localhost:5000\r\n");
+payload.append("Transfer-Encoding: chunked\r\n\r\n");
+
+
+payload.append(readFile("/home/mccaffrey/working/epic/XDRRequest.txt"));
+*/
+//System.out.println(payload.toString());
+
+//String response = sendMessage(endpoint, payload.toString());
+//String response = sendMTOMPackage(endpoint,Type.NEGATIVE_BAD_SOAP_BODY,settings);
+//System.out.println(response);
+
+
+
+          //    RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+    //          RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_BAD_SOAP_BODY, settings);
+              RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
              //   RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
-              RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
+      //        RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
            //  RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_MISSING_METADATA_ELEMENTS5, settings);
 
-             System.out.println(rr.getRequest());
+             System.out.println("REQUEST=\n" + rr.getRequest());
              System.out.println("--------------\n");
-             System.out.println(rr.getResponse());
+             System.out.println("RESPONSE=\n" + rr.getResponse());
              
         } catch (Exception e) {
             e.printStackTrace();

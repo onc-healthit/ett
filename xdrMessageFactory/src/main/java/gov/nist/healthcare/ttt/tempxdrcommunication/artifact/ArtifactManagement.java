@@ -397,7 +397,7 @@ public class ArtifactManagement {
         long timestamp = Calendar.getInstance().getTimeInMillis();
         String uniqueId = NIST_OID_PREFIX + "." + timestamp;
         metadata = metadata.replaceAll("#UNIQUE_ID_SS#", uniqueId);
-
+        metadata = metadata.replaceAll("#UNIQUE_ID#", Long.toString(timestamp));
         return metadata;
 
     }
@@ -417,7 +417,7 @@ public class ArtifactManagement {
         long timestamp = Calendar.getInstance().getTimeInMillis();
         String uniqueId = NIST_OID_PREFIX + "." + timestamp;
         message = message.replaceAll("#UNIQUE_ID_SS#", uniqueId);
-
+        message = message.replaceAll("#UNIQUE_ID#", Long.toString(timestamp));
         return message;
     }
 
@@ -661,7 +661,8 @@ public class ArtifactManagement {
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
-Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_MINIMAL_METADATA, settings);
+//Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_MINIMAL_METADATA, settings);
+Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
             System.out.println("messageId = " + art.getMessageId());
