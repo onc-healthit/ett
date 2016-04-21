@@ -1,3 +1,18 @@
+==Version 1.0.11#4/20/2016
+	* XDR
+		-Corrected XDM file-name length issue in XDR
+		-Corrected mismatch in outgoing XDR messages (ID of metadata did not match ID of document)
+		
+==Version 1.0.10#4/15/2016
+	* SMTP
+		-Added MT SMTP cases 18(a) and 47(a)
+		-Checking Disposition-Notification-Oprions header for dispatchedonly-plain endpoint
+		-Text change for noaddressfailure9-plain endpoint
+
+	* XDR
+		-For sending of XDR Direct Disposition, Direct Address Block now contains relatesTo field
+		-Parser now strips the 'mailto:' from the direct address in the XDR direct address block
+
 ==Version 1.0.9#4/12/2016
 	* SMTP
 		-For SMTP Test Cases MT18/MT47, now enables the use of STARTTLS for sending of MDNs
