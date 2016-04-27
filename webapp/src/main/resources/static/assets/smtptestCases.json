@@ -422,7 +422,7 @@
 		"sutHisp": true,
 		"sutEdge": false
 	}, {
-		"name": "SMTP MT Test 25(a) (Receipient's Certificate Not Published)",
+		"name": "SMTP MT Test 25(a) (Recipient's Certificate Not Published)",
 		"id": 525,
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
@@ -430,7 +430,7 @@
 		"sutHisp": true,
 		"sutEdge": false
 	}, {
-		"name": "SMTP/IMAP MT Test 25(b) (Receipient's Certificate Not Published)",
+		"name": "SMTP/IMAP MT Test 25(b) (Recipient's Certificate Not Published)",
 		"id": 125,
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
@@ -438,7 +438,7 @@
 		"sutHisp": true,
 		"sutEdge": false
 	}, {
-		"name": "SMTP/POP MT Test 25(c) (Receipient's Certificate Not Published)",
+		"name": "SMTP/POP MT Test 25(c) (Recipient's Certificate Not Published)",
 		"id": 625,
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate.  Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
