@@ -63,6 +63,7 @@ public class TkListener {
             m = new Message<TkValidationReport>(Message.Status.SUCCESS, "new validation result received...", tkValidationReport)
         }
         catch(Exception e) {
+	    e.printStackTrace();
             log.error("receive an invalid validation report. Bad payload rejected :\n $httpBody")
 
             m = new Message<TkValidationReport>(Message.Status.ERROR, "received unparseable payload...", null)
@@ -95,7 +96,9 @@ public class TkListener {
         String text = request.text()
         String unescapeXml = StringEscapeUtils.unescapeXml(text)
 
-        Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
+        //TODO: Don't do this with regular expressions...
+        //Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
+        Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]*>)([^<]*)(?:<)/        
         Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
         Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</
 

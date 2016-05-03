@@ -37,7 +37,8 @@ public class ArtifactManagement {
         XDR_C32, // DONE
         NEGATIVE_MISSING_ASSOCIATION, // DONE
         DELIVERY_STATUS_NOTIFICATION_SUCCESS, //DONE
-        DELIVERY_STATUS_NOTIFICATION_FAILURE //DONE
+        DELIVERY_STATUS_NOTIFICATION_FAILURE, //DONE
+        TESTING_ONLY
     };
 
     public static final String NIST_OID_PREFIX = "2.16.840.1.113883.3.72.5";
@@ -79,6 +80,8 @@ public class ArtifactManagement {
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_SUCCESS_STANDALONE = "DeliveryStatusNotification_success_standalone.xml";
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE_STANDALONE = "DeliveryStatusNotification_failure_standalone.xml";
 
+    private static final String FILENAME_XDR_TESTING_ONLY = "XdrTestingOnly.xml";
+    
     public static String getPayload(Type type, Settings settings) throws IOException {
         makeSettingsSafe(settings);
         String payload = null;
@@ -148,6 +151,8 @@ public class ArtifactManagement {
             case NEGATIVE_MISSING_ASSOCIATION:
                 payload = getXdrMissingAssociation(settings);
                 break;
+            case TESTING_ONLY:
+                payload = getXdrTestingOnly(settings);
         }
 
         return payload;
@@ -238,7 +243,18 @@ public class ArtifactManagement {
 
         return message;
     }
+    public static String getXdrTestingOnly(Settings settings) {
+        makeSettingsSafe(settings);
+        String message = getTemplate(FILENAME_XDR_TESTING_ONLY);
+        message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
+        message = setSOAPHeaders(message, settings.getWsaTo());
+        message = setIds(message, settings.getMessageId());
 
+        return message;
+    }
+
+    
+    
     public static String getXdrBadSoap(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_BAD_SOAP);
