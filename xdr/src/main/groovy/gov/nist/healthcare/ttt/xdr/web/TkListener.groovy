@@ -98,7 +98,7 @@ public class TkListener {
 
         //TODO: Don't do this with regular expressions...
         //Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
-        Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]*>)([^<]*)(?:<)/        
+        Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]*>)([^<]*)(?:<)/
         Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
         Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</
 
