@@ -1,3 +1,14 @@
+==Version 1.0.14#5/4/2016
+
+	* XDR
+		-Bug Fix for XDR MT 19/48, was not consistently tracking MessageID.
+
+        * SMTP
+	        -Language cleanup on test case descriptions.
+
+        * Misc
+	        -Minor bug fixes and improvements.
+
 ==Version 1.0.12#4/21/2016
 	* XDR
 		-XDR 4* sends XML attachment now.
