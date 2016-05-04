@@ -544,7 +544,7 @@
 	}, {
 		"name": "SMTP MT Test 39 (Message with Good Header)",
 		"id": 139,
-		"desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and pass it on to the destination HISP.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
+		"desc": "Verify the ability of the system to properly process the Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT to send a message with a well-formed Disposition-Notifications-Options Header. If the message is sent successfully 'Check MDN' will appear. Clicking that will check for the expected Processed and Dispatched MDN (Note that you may have to click multiple times due to lag.) The expected result is a Processed and Dispatched MDN.",
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
@@ -553,7 +553,7 @@
 	}, {
 		"name": "SMTP MT Test 40 (Message with Bad Header)",
 		"id": 140,
-		"desc": "Verify the ability of the system to properly process an incorrect  Disposition-Notifications-Options Header.  Hitting ‘Run’ will cause ETT  to send a message with an incorrect Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.The proctor needs to enter a good receiving HISP address in the 'Vendor MU2 Email Address'section.",
+		"desc": "Verify the ability of the system to process an invalid Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT to send a message with an incorrect Disposition-Notifications-Options Header. If the message is sent successfully 'Check MDN' will appear. Clicking that will check for the expected Processed MDN (Note that you may have to click multiple times due to lag.) The expected result is that the Vendor will be able to process the invalid Disposition-Notifications-Options Header and respond with a Processed MDN. Optionally, the test will accommodate systems that also respond with a Dispatched MDN--however the Dispatched MDN must NOT contain the X-DIRECT-FINAL-DESTINATION-DELIVERY header to pass.",
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
