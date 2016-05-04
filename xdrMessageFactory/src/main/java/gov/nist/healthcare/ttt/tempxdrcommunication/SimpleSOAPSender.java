@@ -201,6 +201,10 @@ public class SimpleSOAPSender {
             case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
+            case TESTING_ONLY:
+                metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
+
             default:
                 // throw new UnsupportedOperationException();  // TODO
                 break;
@@ -270,9 +274,9 @@ public class SimpleSOAPSender {
             // String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/ecb4e054-9581-439f-9f12-de2d052a3132/rep/prb";
             // String endpoint = "http://ihexds.nist.gov:12090/tf6/services/xdsregistryb";
             //  String endpoint = "http://hit-dev.nist.gov:12090/xdstools2/sim/811fd97a-6ea3-437e-bf42-e0a8a505ba98/rec/xdrpr";
-            //String endpoint = "http://edge.nist.gov:11080/xdstools2/sim/edge-ett__1/rep/xdrpr";
+            String endpoint = "http://edge.nist.gov:11080/xdstools2/sim/edge-ett__1/rep/xdrpr";
 
-            String endpoint = "https://vs-wsproxy.epic.com:443/Interconnect-CE-2016/wcf/epic.community.hie/provideandregister.svc/mtom";
+         //   String endpoint = "https://vs-wsproxy.epic.com:443/Interconnect-CE-2016/wcf/epic.community.hie/provideandregister.svc/mtom";
             
             String directTo = "directTo";
             String directFrom = "directFrom";
@@ -313,7 +317,7 @@ payload.append("User-Agent: Axis2\r\n");
 payload.append("Transfer-Encoding: chunked\r\n\r\n");
 
 
-payload.append(readFile("/home/mccaffrey/working/epic/XDRRequest.txt"));
+payload.append(readFile("/home/mccaffrey/working/XDRRequest.txt"));
              */
 //System.out.println(payload.toString());
 //String response = sendMessage(endpoint, payload.toString());
@@ -321,7 +325,10 @@ payload.append(readFile("/home/mccaffrey/working/epic/XDRRequest.txt"));
 //System.out.println(response);
             //    RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_BAD_SOAP_HEADER, settings);
             //          RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_BAD_SOAP_BODY, settings);
-            RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
+            //RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
+            
+            RequestResponse rr = sendMTOMPackage(endpoint, Type.TESTING_ONLY, settings);
+            
             //   RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
             //        RequestResponse rr = sendMTOMPackage(endpoint, Type.XDR_FULL_METADATA, settings);
             //  RequestResponse rr = sendMTOMPackage(endpoint, Type.NEGATIVE_MISSING_METADATA_ELEMENTS5, settings);
