@@ -1572,7 +1572,7 @@ public class MU2SenderTests {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		}	catch (NullPointerException e) {
 				log.info("Error in testBadAddress");
-				result.put("ERROR " ,"Please enter 'Vendor MU2 Email Address'");
+				result.put("ERROR " ,"Please enter 'Vendor Email Address'");
 				e.printStackTrace();
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (Exception e) {
@@ -1719,7 +1719,7 @@ public class MU2SenderTests {
 			
 		}	catch (NullPointerException e) {
 			log.info("Error in testBadAddress");
-			result.put("ERROR " ,"Please enter 'Vendor MU2 Email Address'");
+			result.put("ERROR " ,"Please enter 'Vendor Email Address'");
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (Exception e) {
