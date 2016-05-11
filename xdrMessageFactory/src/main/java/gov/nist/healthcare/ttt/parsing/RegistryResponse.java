@@ -28,12 +28,15 @@ public class RegistryResponse {
     public static final String SUCCESS = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success";
     public static final String FAILURE = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
 
+    
     public static boolean isSuccessSoap(String soap) {
         
         Element regresp = RegistryResponse.pullRegistryResponseFromSoap(soap);
         return RegistryResponse.isSuccess(MiscUtil.xmlToString(regresp));
         
     }
+    
+
     
     private static Element pullRegistryResponseFromSoap(String soap) {
         Envelope env = (Envelope) JAXB.unmarshal(new StringReader(soap), Envelope.class);
@@ -119,8 +122,8 @@ public class RegistryResponse {
             String xml = MiscUtil.readFile("/home/mccaffrey/ett/schema_to_java/samples/reg_response_failure.xml", Charset.defaultCharset());
 
             
-            System.out.println(RegistryResponse.isSuccessSoap(xml));
-            
+          //  System.out.println(RegistryResponse.isSuccessSoap(xml));
+         //     System.out.println(RegistryResponse.getMetadataLevel(xml));
 //             RegistryResponseType registryResponse = (RegistryResponseType) u.unmarshal(new FileInputStream("/home/mccaffrey/ett/schema_to_java/samples/reg_response_failure_no_soap.xml"));
             //      RegistryResponseType registryResponse = (RegistryResponseType) JAXB.unmarshal(new StringReader(xml), RegistryResponseType.class);
             //    System.out.println(registryResponse.getStatus());
