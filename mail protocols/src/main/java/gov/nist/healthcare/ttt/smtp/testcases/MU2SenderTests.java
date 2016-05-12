@@ -1810,7 +1810,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
-		tr.setSearchType("fail");
+		tr.setSearchType("processedandfailure");
 		Session session = Session.getInstance(props, null);
 		try {
 			Properties prop = new Properties();
@@ -1825,6 +1825,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Mail to receivng HISP");
 			message.setText("This is a message to a SUT!");
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
