@@ -25,18 +25,25 @@ import org.w3c.dom.Element;
  */
 public class RegistryResponse {
 
+    /**
+     * From ebXML the full string (with namespace) for registry status success.
+     */
     public static final String SUCCESS = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success";
+
+    /**
+     * From ebXML the full string (with namespace) for registry status failure.
+     */
     public static final String FAILURE = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
-
     
-    public static boolean isSuccessSoap(String soap) {
-        
+    /**
+     * Returns boolean based on whether the Registry Response was a success or failure.
+     * @param soap An XML string representing the entire SOAP message.
+     * @return
+     */
+    public static boolean isSuccessSoap(String soap) {        
         Element regresp = RegistryResponse.pullRegistryResponseFromSoap(soap);
-        return RegistryResponse.isSuccess(MiscUtil.xmlToString(regresp));
-        
-    }
-    
-
+        return RegistryResponse.isSuccess(MiscUtil.xmlToString(regresp));        
+    }    
     
     private static Element pullRegistryResponseFromSoap(String soap) {
         Envelope env = (Envelope) JAXB.unmarshal(new StringReader(soap), Envelope.class);
@@ -46,6 +53,11 @@ public class RegistryResponse {
         return regresp;
     }
     
+    /**
+     * Returns boolean based on whether the Registry Response was a success or failure.
+     * @param registryResponse An XML string representing just the Registry Response (no SOAP wrapper).
+     * @return
+     */
     public static boolean isSuccess(String registryResponse) {
         RegistryResponseType registryResponseElement = (RegistryResponseType) JAXB.unmarshal(new StringReader(registryResponse), RegistryResponseType.class);
         if (registryResponseElement.getStatus() == null) {
@@ -57,12 +69,24 @@ public class RegistryResponse {
         return false;
     }           
 
+    /**
+     * Return the error report (if any).  Will return an empty collection if no
+     * report exists.
+     * @param soap An XML string representing the entire SOAP message.
+     * @return
+     */
     public static Collection<ErrorItem> getErrorReportSoap(String soap) {
         Element regresp = RegistryResponse.pullRegistryResponseFromSoap(soap);
         return RegistryResponse.getErrorReport(MiscUtil.xmlToString(regresp));
         
     }
     
+    /**
+     * Return the error report (if any).  Will return an empty collection if no
+     * report exists.
+     * @param registryResponse An XML string representing just the Registry Response (no SOAP wrapper).
+     * @return
+     */
     public static Collection<ErrorItem> getErrorReport(String registryResponse) {
         Collection<ErrorItem> report = new ArrayList<ErrorItem>();
         //   if(RegistryResponse.isSuccess(registryResponse))

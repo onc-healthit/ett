@@ -33,12 +33,19 @@ public class Soap {
     public static final String METADATA_LEVEL_MINIMAL = "minimal";
     public static final String METADATA_LEVEL_XDS = "XDS";
     
-    
+    /**
+     * Enum type depicting the two allowed metadata level values: XDS (full) and minimal.
+     */
     public enum MetadataLevel {
         MINIMAL,
         XDS
     }
 
+    /**
+     * Checks if the SOAP contains a syntactically correct Direct Address Block.
+     * @param soap A string representing the entire SOAP wrapper.
+     * @return
+     */
     public static boolean isValidDirectAddressBlock(String soap) {
         Envelope env = (Envelope) JAXB.unmarshal(new StringReader(soap), Envelope.class);
         List<Object> headers = env.getHeader().getAny();
@@ -62,6 +69,12 @@ public class Soap {
         
     }
     
+    /**
+     * Given an XML string representing a SOAP wrapper, what is the Direct Edge
+     * XDR metadata level: minimal or full (XDS).
+     * @param soap A string representing the entire SOAP wrapper.
+     * @return An enum representing one of two allowed metadata levels.
+     */
     public static MetadataLevel getMetadataLevel(String soap) {
         Envelope env = (Envelope) JAXB.unmarshal(new StringReader(soap), Envelope.class);
         List<Object> headers = env.getHeader().getAny();

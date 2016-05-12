@@ -6,14 +6,12 @@
 package gov.nist.healthcare.ttt.parsing;
 
 import direct.addressing.MessageDisposition;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.ValidationEvent;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -24,6 +22,12 @@ import javax.xml.validation.SchemaFactory;
 public class DirectDisposition {
 
     //TODO: return report
+
+    /**
+     * Validates if the Direct Disposition was syntactically well-formed.
+     * @param xml The XML of the Direct Disposition, expected to have been extracted from the rest of the payload.
+     * @return True or false depending on if the direct disposition was well-formed.
+     */
     
     public static boolean isValidDirectDisposition(String xml) {
         try {
@@ -41,9 +45,7 @@ public class DirectDisposition {
             disposition = (MessageDisposition) unmarshaller.unmarshal(new StringReader(xml));
             //disposoition = (MessageDisposition) JAXB.unmarshal(new StringReader(xml), MessageDisposition.class);
             //ValidationEvent vEvent = event.getValidationEvent();
-            
-            
-            
+                                
         } catch (Exception e) {
             e.printStackTrace();
             return false;
