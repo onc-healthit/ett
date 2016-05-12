@@ -559,6 +559,15 @@
 		"sutRole": "receiver",
 		"sutHisp": true,
 		"sutEdge": false
+	},{
+		"name": "SMTP MT Test 41 (Unable to deliver)",
+		"id": 142,
+		"desc": "Verifies that when the system successfully validates security and trust, but cannot deliver the message to its final destination, the system generates an Failure MDN. ETT (as Sending HISP) sends a well-formed message to a destination address.  The system decrypts and trust validates the message, returning a Processed MDN. The system is unable to deliver the message (mail box full, unavailable, mailbox does not exist)  and returns a negative delivery status notification.",
+		"protocol": "mu2",
+		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
+		"sutRole": "receiver",
+		"sutHisp": true,
+		"sutEdge": false
 	}, {
 		"name": "IMAP Test 1, 2, 3",
 		"id": 201,

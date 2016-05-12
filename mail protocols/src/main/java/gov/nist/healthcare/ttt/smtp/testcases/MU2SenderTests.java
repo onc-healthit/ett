@@ -1787,6 +1787,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
+		}	catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR " ,"Please enter 'Vendor Email Address'");
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (Exception e) {
 			result.put("1", "Error " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1850,6 +1856,11 @@ public class MU2SenderTests {
 			log.info("Error in testBadAddress");
 			result.put("1", "Error in TEST MESSAGE BAD DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}	catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR " ,"Please enter 'Vendor Email Address'");
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (Exception e) {
