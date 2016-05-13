@@ -1,18 +1,19 @@
-==Version 1.0.15#5/12/2016
+==Version 1.0.15#5/13/2016
+	* SMTP
+		-Added new MT case 41
 
-       * SMTP
-	        -Added new MT case 41
-	        
+	* XDR
+		-Bug Fix for XDR MT 38.
+			
 ==Version 1.0.14#5/4/2016
-
 	* XDR
 		-Bug Fix for XDR MT 19/48, was not consistently tracking MessageID.
 
-        * SMTP
-	        -Language cleanup on test case descriptions.
+	* SMTP
+		-Language cleanup on test case descriptions.
 
-        * Misc
-	        -Minor bug fixes and improvements.
+	* Misc
+		-Minor bug fixes and improvements.
 
 ==Version 1.0.12#4/21/2016
 	* XDR
