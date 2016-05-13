@@ -117,17 +117,6 @@ public class MU2ReceiverTests {
 								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 
 							}
-							/*Multipart multipart = (Multipart) message.getContent();
-							for (int i = 0; i < multipart.getCount(); i++) {
-								BodyPart bodyPart = multipart.getBodyPart(i);
-								InputStream stream = bodyPart.getInputStream();
-
-								byte[] targetArray = IOUtils.toByteArray(stream);
-								System.out.println(new String(targetArray));
-								int m = i+1;
-								//	bodyparts.put("bodyPart" + " " + "[" +m +"]", new String(targetArray));
-
-							}*/
 						}
 
 						if (dsnFlag == 0){
@@ -203,7 +192,7 @@ public class MU2ReceiverTests {
 				}
 
 			}
-			
+
 			else if (type.equals("28")){
 				System.out.println("Search in-reply-to or Failure MDN");
 				for (Message message : messages){
@@ -218,7 +207,7 @@ public class MU2ReceiverTests {
 								Header h1 = (Header) headers1.nextElement();
 								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 								buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
-								
+
 
 							}
 						}
@@ -238,13 +227,13 @@ public class MU2ReceiverTests {
 												Header h1 = (Header) headers2.nextElement();
 												list.add(h1.getName());
 												list.add(h1.getValue());
-												
+
 											}
 											System.out.println(buffer);
 											if(list.contains(id) && list.contains("automatic-action/MDN-sent-automatically;dispatched")){
 												dispatchedFlag = 1;
 											}
-											
+
 											else{
 												ZonedDateTime endTime = ZonedDateTime.now();
 												duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
@@ -264,7 +253,7 @@ public class MU2ReceiverTests {
 					}
 				}
 			}
-			
+
 			else if (type.equals("failure/dispatched")) { 
 				System.out.println("Search Original-Message-Id for Processed/Dispatched in DN with no X-Header");
 				int j = 1;
@@ -291,7 +280,7 @@ public class MU2ReceiverTests {
 												j++;
 											}
 										}
-										
+
 										/*else{
 											message.setFlag(Flags.Flag.SEEN, false);
 										}*/
@@ -306,7 +295,7 @@ public class MU2ReceiverTests {
 										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 									}
-									
+
 									else if (list.contains("automatic-action/MDN-sent-automatically;processed")){
 										ZonedDateTime endTime = ZonedDateTime.now();
 										result.putAll(buffer);
@@ -352,7 +341,7 @@ public class MU2ReceiverTests {
 												j++;
 											}
 										}
-										
+
 										/*else{
 											message.setFlag(Flags.Flag.SEEN, false);
 										}*/
@@ -367,7 +356,7 @@ public class MU2ReceiverTests {
 										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 									}
-									
+
 									else if (list.contains("automatic-action/MDN-sent-automatically;processed")){
 										ZonedDateTime endTime = ZonedDateTime.now();
 										result.putAll(buffer);
@@ -451,10 +440,6 @@ public class MU2ReceiverTests {
 												j++;
 											}
 										}
-										
-										/*else{
-											message.setFlag(Flags.Flag.SEEN, false);
-										}*/
 									}
 
 									System.out.println(list);
@@ -479,6 +464,78 @@ public class MU2ReceiverTests {
 
 			}
 
+			else if (type.equals("processedandfailure")) {
+				System.out.println("Search in-reply-to or Failure MDN and Processed MDN");
+				int j = 1;
+				for (Message message : messages){
+					Enumeration headers = message.getAllHeaders();
+					while(headers.hasMoreElements()) {
+						Header h = (Header) headers.nextElement();
+						String x = h.getValue();
+						if (id.equals(x)){
+							dsnFlag = 1;
+							ZonedDateTime endTime = ZonedDateTime.now();
+							Enumeration headers1 = message.getAllHeaders();
+							while (headers1.hasMoreElements()) {
+								Header h1 = (Header) headers1.nextElement();
+								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
+								buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+								list.add(h1.getName());
+							//	duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+							//	result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+
+							}
+							System.out.println(list);
+						}
+
+						if (dsnFlag == 0){
+							Object m =  message.getContent();
+							if (message.getContent() instanceof Multipart){
+								Multipart multipart = (Multipart) message.getContent();
+								for (int i = 0; i < ((Multipart) m).getCount(); i++){
+									BodyPart bodyPart = multipart.getBodyPart(i);
+									if (!(bodyPart.isMimeType("text/*"))){
+										Object d =   bodyPart.getContent();
+										//d.getNotifications();
+										if (d instanceof DispositionNotification){
+											Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+											while (headers2.hasMoreElements()) {
+												Header h1 = (Header) headers2.nextElement();
+												if (id.equals(h1.getValue())){
+													Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+													while (headers3.hasMoreElements()) {
+														Header h2 = (Header) headers3.nextElement();
+														buffer.put("\n"+h2.getName(), h2.getValue()+"\n");
+														list1.add(h2.getValue());
+													}
+												}
+											}
+
+										}
+
+									}
+
+								}
+
+							}
+						}
+					}
+				}
+				
+				System.out.println(list1);
+				System.out.println(list);
+				if(list1.contains("automatic-action/MDN-sent-automatically;processed")){
+
+					if(list.contains("in-reply-to") || list1.contains("automatic-action/MDN-sent-automatically;failure")){
+						ZonedDateTime endTime = ZonedDateTime.now();
+						result.putAll(buffer);
+						duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+						result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+
+					}
+				}
+			}
+
 
 			store.close();
 
@@ -493,12 +550,12 @@ public class MU2ReceiverTests {
 				tr.getTestRequestResponses().put("ERROR","MDN received after timeout");
 
 			}
-			
+
 			else if (headerFlag == 1){
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses().put("\n"+"ERROR","Dispatched MDN contains X-DIRECT-FINAL-DESTINATION-DELIVERY header");
 			}
-			
+
 			else if (dispatchedFlag == 1){
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses().put("\n"+"ERROR","Dispatched MDN is sent from SUT");
