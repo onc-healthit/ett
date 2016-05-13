@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -15,6 +16,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public SimpleCORSFilter cors;
 	
+	@Autowired
+	public AjaxAuthenticationFailureHandler failHand;
+	
+	@Autowired
+	public AjaxAuthenticationSuccessHandler successHand;
+	
+	@Autowired
+	public UserAuth userAuth;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -24,11 +34,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated()
 		.and()
 			.formLogin()
-			.loginPage("/#/login")
-			.successHandler(new AjaxAuthenticationSuccessHandler())
-			.failureHandler(new AjaxAuthenticationFailureHandler())
+//			.loginPage("/login") // this is used to redirect user on the login page (we do not use it here)
+			.successHandler(successHand)
+			.failureHandler(failHand)
 			.loginProcessingUrl("/login")
-			.failureUrl("/#/login?error")
+//			.failureUrl("/login?error")  // redirection after failure
 			.permitAll()
 //		.and()
 //			.logout()
@@ -76,8 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-		.inMemoryAuthentication()
-		.withUser("user").password("password").roles("USER");
+		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+		auth.userDetailsService(userAuth).passwordEncoder(encoder);
 	}
 }
