@@ -1,0 +1,114 @@
+<div>
+
+    <div class="alert" ng-class="{true:'alert-danger', false:'alert-success'}[data.ccdaResults.report.hasErrors]" ng-if="!data.ccdaResults.error">
+        <table style="width:100%;">
+            <tr>
+                <td style="padding-right: 10px;" ng-switch on="data.ccdaResults.report.hasErrors">
+                    <i class="fa fa-times fa-4x" ng-switch-when="true"></i>
+                    <i class="fa fa-check fa-4x" ng-switch-when="false"></i>
+                </td>
+                <td>
+                    <strong>{{data.ccdaResults.report.validationResults1}}</strong>
+                    <br>
+                    <small>{{data.ccdaResults.report.validationResults2}}</small>
+                </td>
+                <td class="pull-right" style="text-align: center;" ns-popover ns-popover-template="popover" ns-popover-trigger="mouseenter" ns-popover-placement="left" ns-popover-theme="ns-popover-tooltip-theme">
+                    <i class="fa fa-info-circle fa-4x"></i>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="alert alert-danger" ng-if="data.ccdaResults.error">
+        {{data.ccdaResults.error}}
+    </div>
+
+
+    <div ng-if="data && !data.ccdaResults.error" class="reportTab">
+        <hr>
+        <uib-tabset>
+            <uib-tab heading="CCDA Results" class="clickable not-selectable">
+                <div class="error-notice">
+                    <div class="oaerror danger" ng-repeat="error in data.ccdaResults.errors" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false">
+                        <strong>Error</strong> - {{error.message}}
+                        <br>
+                        <strong style="color: black;">{{error.path}}</strong>
+                        <div ng-show="showDiv">
+                            <u>Line number:</u>
+                            <strong style="color: black;"> {{error.lineNumber}}
+                            </strong>
+                            <br>
+                            <u>Source:</u> {{error.source}}
+                        </div>
+                    </div>
+                    <div class="oaerror warning" ng-repeat="warning in data.ccdaResults.warnings" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false">
+                        <strong>Warning</strong> - {{warning.message}}
+                        <br>
+                        <strong style="color: black;">{{warning.path}}</strong>
+                        <div ng-show="showDiv">
+                            <u>Line number:</u>
+                            <strong style="color: black;"> {{warning.lineNumber}}
+                            </strong>
+                            <br>
+                            <u>Source:</u> {{warning.source}}
+                        </div>
+                    </div>
+                    <div class="oaerror info" ng-repeat="info in data.ccdaResults.info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false">
+                        <strong>Info</strong> - {{info.message}}
+                        <br>
+                        <strong style="color: black;">{{info.path}}</strong>
+                        <div ng-show="showDiv">
+                            <u>Line number:</u>
+                            <strong style="color: black;"> {{info.lineNumber}}
+                            </strong>
+                            <br>
+                            <u>Source:</u> {{info.source}}
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+
+            <uib-tab heading="Extended Results" class="clickable not-selectable">
+                <div class="error-notice">
+                    <div class="oaerror danger" ng-repeat="error in data.ccdaExtendedResults.errorList" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false">
+                        <strong>Error</strong> - {{error.message}}
+                        <div ng-show="showDiv">
+                            <p ng-repeat="(key, value) in error" style="margin-left: 10px;">
+                                <strong style="color: black;">{{key}}:</strong> {{value}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="oaerror warning" ng-repeat="warning in data.ccdaExtendedResults.warningList" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false">
+                        <strong>Warning</strong> - {{warning.message}}
+                        <div ng-show="showDiv">
+                            <p ng-repeat="(key, value) in warning" style="margin-left: 10px;">
+                                <strong style="color: black;">{{key}}:</strong> {{value}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="oaerror info" ng-repeat="info in data.ccdaExtendedResults.informationList" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false">
+                        <strong>Info</strong> - {{info.message}}
+                        <div ng-show="showDiv">
+                            <p ng-repeat="(key, value) in info" style="margin-left: 10px;">
+                                <strong style="color: black;">{{key}}:</strong> {{value}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+
+    <script type="text/ng-template" id="popover">
+        <div class="triangle"></div>
+        <div class="ns-popover-tooltip">
+            Processing Time: {{data.ccdaResults.performance.processingTime}}
+            <br> Date of Request: {{data.ccdaResults.performance.dateTimeOfRequest}}
+            <br> Errors: {{data.ccdaResults.report.errorCount}}
+            <br> Warnings: {{data.ccdaResults.report.warningCount}}
+            <br> Info: {{data.ccdaResults.report.infoCount}}
+            <br>
+        </div>
+    </script>
+
+</div>

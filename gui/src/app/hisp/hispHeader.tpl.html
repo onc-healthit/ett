@@ -1,0 +1,79 @@
+<div class="navbar">
+    <div class="brand" id="appheader">
+        <a style="display: inline-block; text-shadow:none" href ui-sref="home">
+            <div msg="" id="apptitle" key="title">Edge Testing Tool - HISP System</div>
+            <div msg="" key="subtitle" id="appsubtitle">ONC Certification</div>
+        </a>
+        <a href ui-sref="home" style="display: inline-block; text-shadow:none" class="pull-right">
+            <div msg="" key="subtitle" id="appsubtitle">
+                ETT Home <i class="fa fa-chevron-right"></i>
+            </div>
+        </a>
+    </div>
+    <div class="navbar-inner" ng-controller="HeaderCtrl">
+        <ul class="nav">
+            <li ui-sref-active="active">
+                <a ui-sref=".home">
+                    <div msg="" key="navbar.home">Home</div>
+                </a>
+            </li>
+            <li ng-class="{active: $state.includes('hisp.smtp')}">
+                <a ui-sref=".smtp.main">
+                    <div msg="" key="navbar.smtp">SMTP Test Cases</div>
+                </a>
+            </li> 
+            <li ng-class="{active: $state.includes('hisp.mu2')}">
+                <a ui-sref=".mu2.main">
+                    <div msg="" key="navbar.mu2">Message Tracking</div>
+                </a>
+            </li>
+            <li ng-class="{active: $state.includes('hisp.imap')}">
+                <a ui-sref=".imap.main">
+                    <div msg="" key="navbar.imap">IMAP Test Cases</div>
+                </a>
+            </li>
+            <li ng-class="{active: $state.includes('hisp.pop')}">
+                <a ui-sref=".pop.main">
+                    <div msg="" key="navbar.pop">POP3 Test Cases</div>
+                </a>
+            </li>
+            <li ng-class="{active: $state.includes('hisp.xdr')}">
+                <a ui-sref=".xdr.main">
+                    <div msg="" key="navbar.xdr">XDR Test Cases</div>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref=".reports">
+                    <div msg="" key="navbar.reports">Validation Reports</div>
+                </a>
+            </li>
+            <li ui-sref-active="active" class="pull-right">
+                <a ui-sref=".help">
+                    <div msg="" key="navbar.help"><i class="fa fa-question-circle"></i> Help</div>
+                </a>
+            </li>
+            <li ui-sref-active="active" class="pull-right">
+                <a ui-sref=".documents">
+                    <div msg="" key="navbar.documents"><i class="fa fa-book"></i> Documents</div>
+                </a>
+            </li>
+            <li class="pull-right" ng-show="!userInfo.logged">
+                <a href="">
+                    <div key="navbar.login" ng-click="loginPopup()">Login/Sign up</div>
+                </a>
+            </li>
+            <li uib-dropdown class="pull-right" ng-show="userInfo.logged">
+                <a href="#" uib-dropdown-toggle>Welcome {{userInfo.username}}<b class="caret"></b></a>
+                <ul class="uib-dropdown-menu">
+                    <li><a ui-sref=".accountInfo">Account Info</a>
+                    </li>
+                    <li><a ui-sref=".changePassword">Change Password</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="" ng-click="logout()">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
