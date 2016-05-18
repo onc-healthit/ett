@@ -98,9 +98,11 @@ public class TkListener {
 
         //TODO: Don't do this with regular expressions...
         //Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
+        //Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
+        //Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</        
         Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]*>)([^<]*)(?:<)/
-        Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
-        Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</
+        Matcher directFromMatcher = unescapeXml =~ /(?:from[^>]*>)([^<]*)(?:<)/
+        Matcher directToMatcher = unescapeXml =~ /(?:to[^>]*>)([^<]*)(?:<)/
 
         //we expect only one match (thus the 0) and we want to get back the first group match
 
