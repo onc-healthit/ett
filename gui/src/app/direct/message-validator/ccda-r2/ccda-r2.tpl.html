@@ -1,0 +1,163 @@
+<div flow-prevent-drop flow-drag-enter="dropClass='drag-over'" flow-drag-leave="dropClass=''">
+
+    <h2><i class="fa fa-pie-chart"></i> ONC C-CDA R2.1 Validator Tool</h2>
+
+    <a href="https://github.com/siteadmin/2015-C-CDA-Certification-Samples"> 2015 C-CDA Certification Sample Repository</a>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ol>
+                <li>
+                    Download a test data input file to be used as input for generating a C-CDA.
+                </li>
+                <div class="form-group">
+                    <label class="control-label" for="sutRole">Message format&nbsp;
+                        <i class="fa fa-question-circle" tooltips tooltip-title="The role of the System under Test" tooltip-side="right"></i>
+                    </label>
+                    <div class="input-group">
+                        <div class="btn-group">
+                            <a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType}}</a>
+                            <!-- <a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="sutRole='sender'">Sender</a>
+                            <a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="sutRole='receiver'">Receiver</a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <!-- <ui-select ng-model="sample.selected" theme="bootstrap">
+                                    <ui-select-match placeholder="Select test data input file...">{{$select.selected.name}}</ui-select-match>
+                                    <ui-select-choices repeat="item in testData | filter: $select.search">
+                                        <span ng-bind-html="item.name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+
+                                <span class="input-group-btn">
+                                <button ng-click="sample.selected = undefined" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                                </span> -->
+
+
+                            <div ng-dropover ng-dropover-options="{'triggerEvent':'click', 'verticalOffset': 10}">
+                                <button class="btn btn-default">Select document...</button>
+                                <div ng-dropover-contents class="arrowed">
+                                    <form class="form-inline">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Search..." ng-model="ccdaDocSearch" style="margin-bottom: 10px;">
+                                        </div>
+                                    </form>
+                                    <finder-tree data="ccdaData" ng-model="ccdaDocument" search-filter="ccdaDocSearch"></finder-tree>
+                                </div>
+                            </div>
+
+                            <strong style="margin-left: 20px;">{{ccdaDocument.name}}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <a ng-href="{{ccdaDocument.link}}" target="_self" class="btn btn-primary" download="{{ccdaDocument.name}}" ng-disabled="!ccdaDocument.link">
+                            <span>Download</span>
+                        </a>
+                        <a href="https://github.com/siteadmin/2015-Certification-C-CDA-Test-Data/archive/master.zip" target="_blank" class="btn btn-primary">
+                            <span>Download all files</span>
+                        </a>
+                    </div>
+                </div>
+                <li>
+                    Generate your CCDA file and when you are ready to validate, proceed to Step 3.
+                </li>
+                <br />
+                <li>
+                    Select a C-CDA Document Type or ONC 2015 Edition Certification from the list below.
+                </li>
+                <div class="form-group">
+                    <label class="control-label" for="sutRole">Message format&nbsp;
+                        <i class="fa fa-question-circle" tooltips tooltip-title="The role of the System under Test" tooltip-side="right"></i>
+                    </label>
+                    <div class="input-group">
+                        <div class="btn-group">
+                            <a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType}}</a>
+                            <!-- <a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="sutRole='sender'">Sender</a>
+                            <a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="sutRole='receiver'">Receiver</a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <!-- <ui-select ng-model="sample.selected" theme="bootstrap">
+                                    <ui-select-match placeholder="Select test data input file...">{{$select.selected.name}}</ui-select-match>
+                                    <ui-select-choices repeat="item in testData | filter: $select.search">
+                                        <span ng-bind-html="item.name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+
+                                <span class="input-group-btn">
+                                <button ng-click="sample.selected = undefined" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                                </span> -->
+
+
+                            <div ng-dropover ng-dropover-options="{'triggerEvent':'click', 'verticalOffset': 10}">
+                                <button class="btn btn-default">Select document...</button>
+                                <div ng-dropover-contents class="arrowed">
+                                    <form class="form-inline">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Search..." ng-model="ccdaDocSearch" style="margin-bottom: 10px;">
+                                        </div>
+                                    </form>
+                                    <finder-tree data="ccdaData" ng-model="ccdaDocument" search-filter="ccdaDocSearch"></finder-tree>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <span style="font-style: italic">Validation Objective: </span><strong style="margin-left: 20px;" ng-if="ccdaDocument.path.length">{{ccdaDocument.path[ccdaDocument.path.length - 1]}}</strong>
+                            <br>
+                            <span style="font-style: italic">Reference Filename: </span><strong style="margin-left: 20px;">{{ccdaDocument.name}}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <li>
+                    Upload generated C-CDA file and click validate.
+                </li>
+                <div class="col-md-6">
+                    <div flow-init="{target: apiUrl + 'upload'}" flow-files-submitted="$flow.upload()" flow-file-success="successMessage($message)">
+                        <div class="drop" flow-drop ng-class="dropClass" ng-hide="$flow.files.length">
+                            <span class="btn btn-default" flow-btn>Upload File</span>
+                            <b>OR</b> Drag And Drop your file here
+                        </div>
+
+                        <br/>
+
+                        <div>
+
+                            <div ng-repeat="file in $flow.files" class="transfer-box">
+                                {{file.relativePath}} ({{file.size}}bytes)
+                                <div class="progress progress-striped" ng-class="{active: file.isUploading()}">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{file.progress() * 100}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: (file.progress() * 100) + '%'}">
+                                        <span class="sr-only">{{file.progress()}}% Complete</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-default" ng-show="$flow.files.length" ng-click="$flow.cancel() || resetMessage()" flow-btn>Change</button>
+                                    <button class="btn btn-danger" ng-show="$flow.files.length" ng-click="$flow.cancel() || resetMessage()">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </ol>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-lg btn-primary center-block" ng-click="validate()" ladda="laddaLoading" style="margin-bottom: 10px;">Validate</button>
+
+    <div ng-if="ccdaResult">
+        <hr>
+        <ccda-r2-report data="ccdaResult"></ccda-r2-report>
+    </div>
+
+</div>

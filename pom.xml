@@ -11,6 +11,7 @@
     <name>ttt - Main Project for Toolkit</name>
 
     <modules>
+    	<module>gui</module>
         <module>webapp</module>
         <module>xdr</module>
 		<module>direct</module>

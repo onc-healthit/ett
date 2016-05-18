@@ -2,7 +2,6 @@ package gov.nist.healthcare.ttt.webapp.testFramework;
 
 //import com.mangofactory.swagger.plugin.EnableSwagger;
 import gov.nist.healthcare.ttt.webapp.common.config.ComponentConfig;
-import gov.nist.healthcare.ttt.webapp.common.config.SecurityConfig;
 import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +23,9 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 
 @ComponentScan({"gov.nist.healthcare.ttt.webapp.testFramework"})
-@EnableWebMvcSecurity
 @EnableAutoConfiguration
 //@EnableSwagger
 @Import({ComponentConfig.class,
-        SecurityConfig.class,
         ToolkitClientConfig.class
 })
 @ImportResource("classpath:/spring/resources.xml")
