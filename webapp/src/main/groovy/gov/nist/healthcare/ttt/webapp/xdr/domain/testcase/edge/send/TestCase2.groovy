@@ -3,6 +3,8 @@ package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
+import gov.nist.healthcare.ttt.parsing.Parsing
+import gov.nist.healthcare.ttt.parsing.Parsing.MetadataLevel;
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
@@ -47,7 +49,24 @@ final class TestCase2 extends TestCaseSender {
 
         //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-        updatedRecord.status = Status.MANUAL
+		
+		// Parsing of the request
+		try {
+			MetadataLevel level = Parsing.getMetadataLevel(report.request);
+			if(level.equals(MetadataLevel.MINIMAL)) {
+				updatedRecord.status = Status.FAILED
+			} else {
+				if(Parsing.isRegistryResponseSuccess(report.response)) {
+					updatedRecord.status = Status.PASSED
+				} else {
+					updatedRecord.status = Status.FAILED
+				}
+			}
+		} catch(Exception e) {
+			log.error(e.getMessage())
+			updatedRecord.status = Status.MANUAL
+		}
+		
         executor.db.updateXDRRecord(updatedRecord)
 
     }
