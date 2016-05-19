@@ -33,6 +33,7 @@ import javax.xml.bind.JAXB;
 import org.apache.commons.io.IOUtils;
 import org.w3._2003._05.soap_envelope.Body;
 import org.w3._2003._05.soap_envelope.Envelope;
+import org.w3._2003._05.soap_envelope.Header;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -43,12 +44,16 @@ import org.w3c.dom.NodeList;
  */
 public class Parsing {
 
+    
     public static final String ELEMENT_NAME_METADATA_LEVEL = "metadata-level";
     public static final String ELEMENT_NAME_DIRECT_ADDRESS_BLOCK = "addressBlock";
     public static final String ELEMENT_NAME_DIRECT_FROM = "from";
     public static final String ELEMENT_NAME_DIRECT_TO = "to";
     public static final String NAMESPACE_DIRECT = "urn:direct:addressing";
 
+    public static final String ELEMENT_NAME_WSA_MESSAGEID = "MessageID";
+    public static final String NAMESPACE_WSA = "http://www.w3.org/2005/08/addressing";
+    
     public static final String METADATA_LEVEL_MINIMAL = "minimal";
     public static final String METADATA_LEVEL_XDS = "XDS";
 
@@ -160,6 +165,33 @@ public class Parsing {
         return MetadataLevel.XDS;
     }
 
+    public static DirectAddressing getDirectAddressing(String mtom) throws MessagingException, IOException {
+        
+        SOAPWithAttachment swa = Parsing.parseMtom(mtom);
+        DirectAddressing directAddressing = new DirectAddressing();
+        Envelope env = (Envelope) JAXB.unmarshal(new StringReader(swa.getSoap()), Envelope.class);
+        List<Object> headers = env.getHeader().getAny();
+        if (headers == null) {
+            return directAddressing;
+        }
+        Iterator it = headers.iterator();
+        boolean foundDirectAddressBlock = false;
+        while (it.hasNext()) {
+            Element header = (Element) it.next();                                    
+            if (header.getLocalName().equals(ELEMENT_NAME_DIRECT_ADDRESS_BLOCK) && header.getNamespaceURI().equals(NAMESPACE_DIRECT)) {
+                foundDirectAddressBlock = true;
+                NodeList directFrom = header.getElementsByTagNameNS(NAMESPACE_DIRECT, ELEMENT_NAME_DIRECT_FROM);
+                NodeList directTo = header.getElementsByTagNameNS(NAMESPACE_DIRECT, ELEMENT_NAME_DIRECT_TO);
+                
+                directAddressing.setDirectFrom(directFrom.item(0).getFirstChild().getNodeValue());
+                directAddressing.setDirectTo(directTo.item(0).getFirstChild().getNodeValue());
+            } else if (header.getLocalName().equals(ELEMENT_NAME_WSA_MESSAGEID) && header.getNamespaceURI().equals(NAMESPACE_WSA)) {
+                directAddressing.setMessageID(header.getFirstChild().getNodeValue());                        
+            }                        
+        }
+        return directAddressing;
+    }
+    
     private static String getDocumentFromSoap(String soap) {
         Envelope env = (Envelope) JAXB.unmarshal(new StringReader(soap), Envelope.class);
 
@@ -329,6 +361,10 @@ public class Parsing {
           System.out.println(Parsing.isValidDirectAddressBlock(xml));
           System.out.println(Parsing.isRegistryResponseSuccess(xml));
           System.out.println(Parsing.getMetadataLevel(xml));
+          DirectAddressing da = Parsing.getDirectAddressing(xml);
+          System.out.println(da.getDirectFrom());
+          System.out.println(da.getDirectTo());
+          System.out.println(da.getMessageID());
   /*
           
           
