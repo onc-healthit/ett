@@ -14,11 +14,6 @@ import spock.lang.Specification
 class TestProdUsingClient extends Specification{
 
 
-@Before
-def setup(){
-    }
-
-
     @Test
     def test1(){
 

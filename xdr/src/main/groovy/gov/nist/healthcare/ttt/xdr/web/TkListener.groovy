@@ -116,8 +116,10 @@ public class TkListener {
     }
 	
 	def stripMailTo(String address) {
-		if(address.toLowerCase().startsWith("mailto:")) {
-			return address.split("mailto:")[1];
+		if(address!=null) {
+			if(address.toLowerCase().startsWith("mailto:")) {
+				return address.split("mailto:")[1];
+			}
 		}
 		return address;
 	}
