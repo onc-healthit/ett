@@ -5,11 +5,6 @@
  */
 package gov.nist.healthcare.ttt.parsing;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ContentType;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeMultipart;
-import com.sun.xml.internal.ws.util.ByteArrayDataSource;
 
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequestType;
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequestType.Document;
@@ -18,12 +13,21 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 import javax.xml.bind.JAXB;
 
 import org.apache.commons.io.IOUtils;
@@ -239,28 +243,56 @@ public class Parsing {
 //        Parsing.fixMissingEndBoundry(mtom);
         
         MimeMultipart mp;
-        String contentType = Parsing.findContentType(mtom);
+       // String contentType = Parsing.findContentType(mtom);
 
-        mp = new MimeMultipart(new ByteArrayDataSource(mtom.getBytes(), ""), new ContentType(contentType));
+ 
+        
+   //     mp = new MimeMultipart(new ByteArrayDataSource(mtom.getBytes(), ""), new ContentType(contentType));
+        mp = new MimeMultipart(new ByteArrayDataSource(mtom.getBytes(),"multipart/related"));
         SOAPWithAttachment swa = new SOAPWithAttachment();
         int count = mp.getCount();
         for (int i = 0; i < count; i++) {
-            MimeBodyPart bp = mp.getBodyPart(i);
-            ByteArrayInputStream content = (ByteArrayInputStream) bp.getContent();
-            String contentString = IOUtils.toString(content);
+            BodyPart bp = mp.getBodyPart(i);
+            String contentType = bp.getContentType();
+            if(contentType.startsWith("application/xop+xml")) {
+                // SOAP
+                ByteArrayInputStream content = (ByteArrayInputStream) bp.getContent();
+                swa.setSoap(IOUtils.toString(content));
+                
+            } else {
+                String content =  (String) bp.getContent();
+                swa.getAttachment().add(content.getBytes());
+            }
+            
+           // System.out.println("contentype=" + bp.getContentType());
+            
+            //ByteArrayInputStream content = (ByteArrayInputStream) bp.getContent();
+            //String contentString = IOUtils.toString(content);
+            //String contentString = (String) bp.getContent();
+            /*
             try {
                 Envelope env = (Envelope) JAXB.unmarshal(new StringReader(contentString), Envelope.class);
                 if (env.getHeader() == null && env.getBody() == null) {
                     swa.getAttachment().add(Parsing.read(content));
+                    //swa.getAttachment().add(contentString.getBytes());
                 } else {
                     swa.setSoap(contentString);
                 }
             } catch (Exception saxe) {
                 // Not SOAP so must be attachment.
-                swa.getAttachment().add(Parsing.read(content));
+                 swa.getAttachment().add(Parsing.read(content));
+                //swa.getAttachment().add(contentString.getBytes());
             }
-
+            */
         }
+        
+        if(swa.getAttachment() == null || swa.getAttachment().size() == 0) {            
+            byte[] document = Parsing.getDocumentFromSoap(swa.getSoap()).getBytes();            
+            Collection<byte[]> attachments = new ArrayList<byte[]>();
+            attachments.add(document);
+            swa.setAttachment(attachments);
+        }
+        
         return swa;
     }
 
@@ -295,7 +327,8 @@ public class Parsing {
           xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM.txt", Charset.defaultCharset());  
           
           System.out.println(Parsing.isValidDirectAddressBlock(xml));
-          
+          System.out.println(Parsing.isRegistryResponseSuccess(xml));
+          System.out.println(Parsing.getMetadataLevel(xml));
   /*
           
           
