@@ -291,7 +291,7 @@ public class Parsing {
         
     }
     
-    private static SOAPWithAttachment parseMtom(String mtom) throws MessagingException, IOException {
+    public static SOAPWithAttachment parseMtom(String mtom) throws MessagingException, IOException {
 
 //        Parsing.fixMissingEndBoundry(mtom);
         
