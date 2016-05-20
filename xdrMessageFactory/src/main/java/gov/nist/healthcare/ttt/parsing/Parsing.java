@@ -127,13 +127,22 @@ public class Parsing {
         
     }
     
+    public static boolean isRegistryResponseSuccess(String regResp) {
+        return RegistryResponse.isSuccess(regResp);        
+    }
+    
+    public static Collection<ErrorItem> getRegistryResponseErrorReport(String regResp) {
+        return RegistryResponse.getErrorReport(regResp);
+    }
+    
+    /*
     public static boolean isRegistryResponseSuccess(String responseBody) throws MessagingException, IOException {
         
         String soap = findSoapOfRegistryResponse(responseBody);
         return RegistryResponse.isSuccessSoap(soap);
         
         
-    }
+    }*/
     
     public static MetadataLevel getMetadataLevel(String mtom) throws MessagingException, IOException {
         
@@ -190,6 +199,18 @@ public class Parsing {
             }                        
         }
         return directAddressing;
+    }
+    
+    
+    public static boolean isValidDirectDisposition(String mtom) throws MessagingException, IOException {
+        SOAPWithAttachment swa = Parsing.parseMtom(mtom);
+        Collection<byte[]> documents = swa.getAttachment();
+        if (documents == null || documents.size() == 0)
+            return false;
+        String directDis = new String((byte[]) documents.toArray()[0]);
+        return DirectDisposition.isValidDirectDisposition(directDis);
+        
+        
     }
     
     private static String getDocumentFromSoap(String soap) {
@@ -355,7 +376,7 @@ public class Parsing {
 
 //              System.out.println(Parsing.getMetadataLevel(xml));
             //          System.out.println(Parsing.isValidDirectAddressBlock(xml));
-            
+      /*      
           xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM.txt", Charset.defaultCharset());  
           
           System.out.println(Parsing.isValidDirectAddressBlock(xml));
@@ -365,6 +386,11 @@ public class Parsing {
           System.out.println(da.getDirectFrom());
           System.out.println(da.getDirectTo());
           System.out.println(da.getMessageID());
+            */
+      
+       xml = MiscUtil.readFile("/home/mccaffrey/ett/schema_to_java/samples/reg_response_failure.xml", Charset.defaultCharset());
+          System.out.println(Parsing.isRegistryResponseSuccess(xml));
+      
   /*
           
           
