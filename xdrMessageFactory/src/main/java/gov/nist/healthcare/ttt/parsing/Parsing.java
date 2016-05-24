@@ -232,7 +232,6 @@ public class Parsing {
                 return payload;
             }            
         }
-
         return null;
     }
 
@@ -388,8 +387,11 @@ public class Parsing {
           System.out.println(da.getMessageID());
             */
       
-       xml = MiscUtil.readFile("/home/mccaffrey/ett/schema_to_java/samples/reg_response_failure.xml", Charset.defaultCharset());
-          System.out.println(Parsing.isRegistryResponseSuccess(xml));
+    //   xml = MiscUtil.readFile("/home/mccaffrey/ett/schema_to_java/samples/reg_response_failure.xml", Charset.defaultCharset());
+      //    System.out.println(Parsing.isRegistryResponseSuccess(xml));
+          xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM2.txt", Charset.defaultCharset());  
+      
+          System.out.println(Parsing.isValidDirectDisposition(xml));
       
   /*
           
