@@ -44,6 +44,8 @@ public interface XDRRecordInterface {
      * @param status the status to set
      */
     void setStatus(Status status);
+    
+    Status getStatus();
 
     /**
      * @param testCaseNumber the testCaseNumber to set

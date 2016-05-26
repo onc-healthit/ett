@@ -57,8 +57,8 @@ final class TestCase1 extends TestCaseSender {
 		// Set C-CDA variables
 		this.ccdaR2ReferenceFilename = context.payload.name;
         ArrayList<String> path = context.payload.path;
-		if(context.payload.path.size() > 1) {
-			this.ccdaR2Type = context.payload.get(1);
+		if(path.size() > 1) {
+			this.ccdaR2Type = path.get(path.size() - 1);
 		}
 
         //correlate this test to a direct_from address and a simulator id so we can be notified
@@ -99,12 +99,11 @@ final class TestCase1 extends TestCaseSender {
 		}
 		
 		// Extracting C-CDA from the request
-		if(updatedRecord.status == Status.PASSED) {
+		if(updatedRecord.status.equals(Status.PASSED)) {
 			SOAPWithAttachment soap = Parsing.parseMtom(report.request);
-			String res = validateCCDA_R2(soap.getAttachment().iterator().next())
-			log.info("CCDA validation result: " + res);
+			String res = validateCCDA_R2(soap.getAttachment().iterator().next(), updatedRecord)
+//			log.info("CCDA validation result: " + res);
 		}
-		
         executor.db.updateXDRRecord(updatedRecord)
 
     }

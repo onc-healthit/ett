@@ -114,6 +114,11 @@ public class XDRRecordImpl implements XDRRecordInterface {
     public void setTestSteps(List<XDRTestStepInterface> testSteps) {
         this.testSteps = testSteps;
     }
+
+	@Override
+	public Status getStatus() {
+		return criteriaMet;
+	}
     
     
     
