@@ -9,6 +9,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "C-CDA Document Type",
+        "key": "payload",
+        "type": "CCDAWidget"
     }]
 }, {
     "name": "XDR Test 2",

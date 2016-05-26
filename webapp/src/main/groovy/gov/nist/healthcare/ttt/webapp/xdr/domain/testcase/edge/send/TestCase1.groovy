@@ -53,6 +53,13 @@ final class TestCase1 extends TestCaseSender {
     Result run(Map context, String username) {
 
         executor.validateInputs(context,["direct_from"])
+		
+		// Set C-CDA variables
+		this.ccdaR2ReferenceFilename = context.payload.name;
+        ArrayList<String> path = context.payload.path;
+		if(context.payload.path.size() > 1) {
+			this.ccdaR2Type = context.payload.get(1);
+		}
 
         //correlate this test to a direct_from address and a simulator id so we can be notified
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
@@ -80,7 +87,7 @@ final class TestCase1 extends TestCaseSender {
 			if(level.equals(MetadataLevel.XDS)) {
 				updatedRecord.status = Status.FAILED
 			} else {
-				if(Parsing.isRegistryResponseSuccess(report.response)) {
+				if(Parsing.isRegistryResponseSuccessFullHeaders(report.response)) {
 					updatedRecord.status = Status.PASSED
 				} else {
 					updatedRecord.status = Status.FAILED

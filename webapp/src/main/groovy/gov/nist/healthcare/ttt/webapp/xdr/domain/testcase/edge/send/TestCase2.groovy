@@ -60,7 +60,7 @@ final class TestCase2 extends TestCaseSender {
 			if(level.equals(MetadataLevel.MINIMAL)) {
 				updatedRecord.status = Status.FAILED
 			} else {
-				if(Parsing.isRegistryResponseSuccess(report.response)) {
+				if(Parsing.isRegistryResponseSuccessFullHeaders(report.response)) {
 					updatedRecord.status = Status.PASSED
 				} else {
 					updatedRecord.status = Status.FAILED
