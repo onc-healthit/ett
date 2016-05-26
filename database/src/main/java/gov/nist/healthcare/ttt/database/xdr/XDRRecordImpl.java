@@ -15,6 +15,7 @@ public class XDRRecordImpl implements XDRRecordInterface {
     private String testCaseNumber = null;
     private String timestamp = null;
     private Status criteriaMet = null;
+    private String mDHTValidationReport = null;
     private List<XDRTestStepInterface> testSteps = null;    
 
     public XDRRecordImpl() {
@@ -113,6 +114,20 @@ public class XDRRecordImpl implements XDRRecordInterface {
     @Override
     public void setTestSteps(List<XDRTestStepInterface> testSteps) {
         this.testSteps = testSteps;
+    }
+
+    /**
+     * @return the mDHTValidationReport
+     */
+    public String getMDHTValidationReport() {
+        return mDHTValidationReport;
+    }
+
+    /**
+     * @param mDHTValidationReport the mDHTValidationReport to set
+     */
+    public void setMDHTValidationReport(String mDHTValidationReport) {
+        this.mDHTValidationReport = mDHTValidationReport;
     }
     
     
