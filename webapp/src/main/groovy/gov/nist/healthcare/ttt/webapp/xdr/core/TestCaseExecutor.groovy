@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
@@ -338,7 +339,11 @@ class TestCaseExecutor {
 
 		if (record.criteriaMet != Status.PENDING) {
 
-			content.ccdaReport = record.MDHTValidationReport; 
+			// Convert to json object
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode jsonObject = mapper.readTree(record.MDHTValidationReport)
+			content.ccdaReport = jsonObject;
+			
 			def step = record.getTestSteps().last()
 
 			if (!step.xdrReportItems.empty) {

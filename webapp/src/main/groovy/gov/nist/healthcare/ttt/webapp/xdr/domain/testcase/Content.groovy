@@ -1,5 +1,7 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase
 
+import com.fasterxml.jackson.databind.JsonNode
+
 /**
  * We control what values a test step execution send back.
  *
@@ -17,7 +19,7 @@ class Content {
 
     String endpointTLS
 	
-	String ccdaReport
+	JsonNode ccdaReport
 
     List<String> endpoints
 
