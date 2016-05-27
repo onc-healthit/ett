@@ -16,6 +16,8 @@ class Content {
     String endpoint
 
     String endpointTLS
+	
+	String ccdaReport
 
     List<String> endpoints
 
