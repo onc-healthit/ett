@@ -1,0 +1,661 @@
+[{
+    "name": "XDR Test 1",
+    "id": 1,
+    "desc": "Verifies the ability of the sending system to initiate a SOAP-based communication with an XDR-based payload.  The XDR metadata used in this test case is: Limited.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "C-CDA Document Type",
+        "key": "payload",
+        "type": "CCDAWidget"
+    }]
+}, {
+    "name": "XDR Test 2",
+    "id": 2,
+    "desc": "Verifies the ability of the sending system to initiate a SOAP-based communication with an XDR-based payload.  The XDR metadata used in this test case is: Full (XDS).",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 3",
+    "id": "3add",
+    "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Limited metadata.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "C-CDA Document Type",
+        "key": "payload",
+        "type": "CCDAWidget"
+    }]
+}, {
+    "name": "XDR Test 4a",
+    "id": "4a",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of an invalid SOAP header.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 4b",
+    "id": "4b",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of an invalid SOAP body.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 4c",
+    "id": "4c",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of a missing Direct Address Block.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 5",
+    "id": 5,
+    "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Full (XDS) metadata.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 6",
+    "id": 6,
+    "desc": "Verifies the ability of the sending system to complete a mutual TLS handshake before data is sent across.\nNote that an unsuccessful TLS attempt may result in the Pending Refresh button being displayed instead of a Fail.  A disconnection happening at the server level would cause the communication not to be forwarded to the application level.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 7",
+    "id": 7,
+    "desc": "Verifies the ability of the sending system to reject a mutual TLS connection where the certificate provided by the ETT is invalid.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 8",
+    "id": 8,
+    "desc": "Verifies the ability of the receiving system to complete a mutual TLS handshake before data is sent across. Certificates for this test can be downloaded from the link at the top of this page.  As this is a socket-level test, the full endpoint is not necessary and only hostname and port are to be entered below.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }, {
+        "name": "Port",
+        "key": "port",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 9",
+    "id": 9,
+    "desc": "Verifies the ability of the receiving system to reject a mutual TLS connection where the certificate provided by the ETT is invalid. Certificates for this test can be downloaded from the link at the top of this page. As this is a socket-level test, the full endpoint is not necessary and only hostname and port are to be entered below. The SUT MUST attempt an HTTPS connection.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }, {
+        "name": "Port",
+        "key": "port",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 10",
+    "id": 10,
+    "desc": "Test Tool sends a Direct Message to the SUT.  The SUT must translate this to an XDR message and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.  The return endpoint is provided below.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct To Address",
+        "key": "direct_to",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 11",
+    "id": 11,
+    "desc": "Test Tool sends a Direct Message + XDM to the SUT.  The SUT must translate this to an XDR message with Limited Metadata and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The return endpoint is provided below.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct To Address",
+        "key": "direct_to",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 12",
+    "id": 12,
+    "desc": "Test Tool sends a Direct Message + XDM to the SUT.  The SUT must translate this to an XDR message with Full Metadata and send it back to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The return endpoint is provided below.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct To Address",
+        "key": "direct_to",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 13",
+    "id": 13,
+    "desc": "Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Limited metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 13",
+    "id": "32mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a non-existent address.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Message Tracking Using Processed MDN test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 14",
+    "id": 14,
+    "desc": "Before this test is run, the vendor must register a Direct Address / Contact address pairing using the Direct portion of the ETT tool.\nTest Tool sends an XDR Message with Full (XDS) metadata to the SUT (HISP).  The SUT must then translate the message into Direct and send it back to the ETT which is acting as the Destination HISP.  The Direct Address it passes the message along to must match the Direct Address that has been pre-registered.  A validation report will be sent to the Contact address.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 14",
+    "id": "33mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond to a delivery to an untrusted HISP.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Message Tracking Using Processed MDN test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15a",
+    "id": "15a",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of an invalid SOAP header.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15b",
+    "id": "15b",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of an invalid SOAP body.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 15c",
+    "id": "15c",
+    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of a missing Direct Address Block.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 15",
+    "id": "34mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP which does not have a published certificate.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Message Tracking Using Processed MDN test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 16",
+    "id": 16,
+    "desc": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 16",
+    "id": "35mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond in the event of a lack of a Processed MDN. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Message Tracking Using Processed MDN test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 17",
+    "id": 17,
+    "desc": "Verify that HISP disconnects when the Server provided certificate is invalid.  Only the IP address of the SUT shall be entered below.  As this is a socket based test, the full endpoint is not required.  Only the hostname and port are needed and provided.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 18",
+    "id": 18,
+    "desc": "Test Tool authenticates with the HISP using Mutual TLS correctly. Certificates for this testing tool can be downloaded from the top of this page.  This is a socket-level test and therefore a full endpoint is not necessary.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }, {
+        "name": "Port",
+        "key": "port",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test 19",
+    "id": 19,
+    "desc": "Test Tool authenticates with the HISP using bad certificates. The SUT is expected to disconnect before any meaningful data is sent. Certificates for this testing tool can be downloaded from the top of this page.  This is a socket-level test and therefore a full endpoint is not necessary.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "IP Address",
+        "key": "ip_address",
+        "type": "string"
+    }, {
+        "name": "Port",
+        "key": "port",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 19",
+    "id": "19mu2",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. Hit 'RUN' and then the sending system will send three messages with unique identifiers to the endpoint provided. When all three messages have been completely sent, press the 'Pending Refresh' button.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR Test MT 20a",
+    "id": "20amu2",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a process MDN.  The test lab will inspect the SUT’s logs and system to verify that the response was handled appropriately.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }],
+    "expectedMDN": true
+}, {
+    "name": "XDR MT Test 20b",
+    "id": "20bmu2",
+    "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the response was handled appropriately.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }],
+    "expectedMDN": true
+}, {
+    "name": "XDR MT Test 30",
+    "id": "30mu2",
+    "desc": "Verify the ability of the receiving system to appropriately handle a VALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include the X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct To Address",
+        "key": "direct_to",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 31",
+    "id": "31mu2",
+    "desc": "Verify the ability of the receiving system to appropriately handle an INVALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include INVALID X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 32",
+    "id": "32mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a non-existent address.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Implementation Guide for Delivery Notification test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 33",
+    "id": "33mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond to a delivery to an untrusted HISP.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Implementation Guide for Delivery Notification test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 34",
+    "id": "34mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP which does not have a published certificate.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Implementation Guide for Delivery Notification test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 35",
+    "id": "35mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond in the event of a lack of a Processed MDN. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 36",
+    "id": "36mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond in the event of a lack of a Dispatched MDN. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 37",
+    "id": "37mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond in the event of a message timeout failure. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "status": "configure",
+    "sutRole": "receiver",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 38",
+    "id": "38mu2",
+    "desc": "Verify the ability of the SUT to appropriately respond in the event of positive delivery notification. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 43",
+    "id": "43mu2",
+    "desc": "Verify the ability of the SUT to appropriately provide a delivery failure message if it is unable to deliver the message to the destination. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 44",
+    "id": "44mu2",
+    "desc": "Verify the ability of the receiving system to appropriately respond in the event of a message timeout failure. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.",
+    "sutEdge": false,
+    "sutHisp": true,
+    "sutRole": "receiver",
+    "status": "configure",
+    "inputs": [{
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 48",
+    "id": "48mu2",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. Hit 'RUN' and then the sending system will send three messages with unique identifiers to the endpoint provided. When all three messages have been completely sent, press the 'Pending Refresh' button.  (Message Tracking Using \"Implementation Guide for Delivery Notification\")",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 49",
+    "id": "49mu2",
+    "desc": "Verify the ability of the sending system to correctly use a direct address block per the section 4.0 XDR and XDM Messaging for Direct v1.0 and per section 1.3 of the \"Implementation Guide for Delivery Notification for Direct v1.0\".  The SOAP header will be inspected for the appropriate content.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }]
+}, {
+    "name": "XDR MT Test 50a",
+    "id": "50amu2",
+    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to valid recipients. The SUT is expected to appropriately track success messages.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }],
+    "expectedMDN": true
+}, {
+    "name": "XDR MT Test 50b",
+    "id": "50bmu2",
+    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to invalid recipients. The SUT is expected to appropriately track failure messages. Failure messages to invalid recipients have to be processed/tracked appropriately by the edge system and has to be made available for testing purposes.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }],
+    "expectedMDN": true
+}]

@@ -158,6 +158,12 @@ public class TTTSenderTests {
 				DataSource source = new ByteArrayDataSource(e.getValue(),
 						"text/html");
 				messageBodyPart.setDataHandler(new DataHandler(source));
+				if (e.getKey().contains("zip")){
+					DataSource source1 = new ByteArrayDataSource(e.getValue(),
+							"application/zip");
+					messageBodyPart.setDataHandler(new DataHandler(source1));
+				}
+				
 				messageBodyPart.setFileName(e.getKey());
 				aName += e.getKey();
 				multipart.addBodyPart(messageBodyPart);

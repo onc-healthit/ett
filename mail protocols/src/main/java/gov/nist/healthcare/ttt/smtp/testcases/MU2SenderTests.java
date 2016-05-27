@@ -1787,6 +1787,12 @@ public class MU2SenderTests {
 			// throw new RuntimeException(e);
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
+		}	catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR " ,"Please enter 'Vendor Email Address'");
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (Exception e) {
 			result.put("1", "Error " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
@@ -1810,7 +1816,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
-		tr.setSearchType("fail");
+		tr.setSearchType("processedandfailure");
 		Session session = Session.getInstance(props, null);
 		try {
 			Properties prop = new Properties();
@@ -1825,6 +1831,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Mail to receivng HISP");
 			message.setText("This is a message to a SUT!");
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -1849,6 +1856,11 @@ public class MU2SenderTests {
 			log.info("Error in testBadAddress");
 			result.put("1", "Error in TEST MESSAGE BAD DISPOSITION NOTIFICATION: " + e.getLocalizedMessage());
 			// throw new RuntimeException(e);
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}	catch (NullPointerException e) {
+			log.info("Error in testBadAddress");
+			result.put("ERROR " ,"Please enter 'Vendor Email Address'");
 			e.printStackTrace();
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 		} catch (Exception e) {

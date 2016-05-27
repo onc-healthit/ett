@@ -63,7 +63,7 @@ final class TestCase38mu2 extends TestCaseSender {
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
         // Create a new test record
-        XDRRecordInterface record = builder.addStep(step1).addStep(step2).build()
+        XDRRecordInterface record = builder.addStep(step2).build()
         record.setStatus(step2.status)
         executor.db.addNewXdrRecord(record)
 

@@ -1,6 +1,8 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.receive
+import gov.nist.healthcare.ttt.database.xdr.Status;
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
+import gov.nist.healthcare.ttt.parsing.Parsing;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel
@@ -45,6 +47,19 @@ final class TestCase5 extends TestCase {
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step1)
+		
+		// Parsing of the request
+		try {
+			if(Parsing.isRegistryResponseSuccess(content.response)) {
+					record.criteriaMet = Status.PASSED
+			} else {
+					record.criteriaMet = Status.FAILED
+			}
+		} catch(Exception e) {
+			log.error(e.getMessage())
+			record.criteriaMet = Status.MANUAL
+		}
+		
         return new Result(record.criteriaMet, content)
     }
 

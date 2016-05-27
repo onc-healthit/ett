@@ -1,0 +1,25 @@
+<div class="modal-header" style="background-color: #d2322d;color: white;">
+    <h4 class="modal-title">
+		<i class="fa fa-exclamation-triangle"></i>
+		{{modalTitle}} <span ng-show="showdebug">{{excode}}</span>
+	</h4>
+</div>
+<div class="modal-body">
+    <div ng-hide="showdebug">
+        <p style="font-size: 20px;">
+            {{exceptionText}}
+        </p>
+        <a href="" ng-click="showdebug=!showdebug"><i class="fa fa-caret-square-o-down"></i> Show debugging</a>
+    </div>
+    <div ng-show="showdebug">
+        <p>
+            <a href="" ng-click="showdebug=!showdebug"><i class="fa fa-caret-square-o-down"></i> Hide debugging</a>
+        </p>
+        <p>Exception: {{exceptionText}}</p>
+        <p>Caused by: {{cause}}</p>
+        <p>Requesting: {{url}}</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-default" ng-click="close()">Ok</button>
+</div>

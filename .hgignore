@@ -13,3 +13,8 @@ target/
 .DS_Store
 .metadata/
 Servers/
+gui/node_modules/
+gui/bower_components/
+gui/node/
+gui/vendor/
+webapp/src/main/resources/public/

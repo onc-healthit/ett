@@ -104,7 +104,7 @@ public class ListenerProcessor implements Runnable {
 			'noaddressfailure9', 'goodaddress-plain',
 			'processedonly5-plain', 'processeddispatched6-plain', 'noaddressfailure9-plain', 'dispatchedonly-plain',
 			'white_space_mdn', 'extra_line_break_mdn', 'extra_space_disposition', 'missing_disposition', 'null_sender',
-			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn']
+			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn', 'processedfailuretest']
 
 		String smtpFrom = directTo?.get(0)
 		logger.info("To " + smtpFrom)
@@ -795,6 +795,11 @@ public class ListenerProcessor implements Runnable {
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 
+			case 'processedfailuretest':
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				break
+				
 			case 'processdelayeddispatch7':
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
