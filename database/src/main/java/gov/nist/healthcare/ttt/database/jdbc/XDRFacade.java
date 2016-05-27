@@ -116,7 +116,7 @@ public class XDRFacade extends DatabaseFacade {
             sql.append("-1");
         }
         sql.append("' , '");
-        sql.append(xdr.getMDHTValidationReport());
+        sql.append(DatabaseConnection.makeSafe(xdr.getMDHTValidationReport()));
         sql.append("');");
 
         try {
