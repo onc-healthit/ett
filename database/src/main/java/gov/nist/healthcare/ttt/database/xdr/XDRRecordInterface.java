@@ -36,8 +36,6 @@ public interface XDRRecordInterface {
      * @return the criteriaMet
      */
     Status getCriteriaMet();
-
-    Status getStatus();
     
     String getMDHTValidationReport();
             
