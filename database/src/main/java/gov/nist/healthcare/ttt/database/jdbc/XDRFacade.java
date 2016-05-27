@@ -69,8 +69,11 @@ public class XDRFacade extends DatabaseFacade {
     // The unique constraint was removed in the database because it didn't allow
     // multiple "NULL" values.
     public String addNewXdrRecord(XDRRecordInterface xdr) throws DatabaseException {
-
-        String validationReportString = xdr.getMDHTValidationReport().replace("\\\"", "&quot;");
+    	
+    	String validationReportString = "";
+    	if(xdr.getMDHTValidationReport() != null) {
+    		validationReportString = xdr.getMDHTValidationReport().replace("\\\"", "&quot;");
+    	}
         
         String recordID = UUID.randomUUID().toString();   
         xdr.setXdrRecordDatabaseId(recordID);
@@ -460,7 +463,9 @@ public class XDRFacade extends DatabaseFacade {
                     record.setStatus(Status.PENDING);
                 }
 
-                record.setMDHTValidationReport(result.getString(XDRRECORD_MDHTVALIDATIONREPORT).replace("&quot;", "\\\""));
+                if(result.getString(XDRRECORD_MDHTVALIDATIONREPORT) != null) {
+                	record.setMDHTValidationReport(result.getString(XDRRECORD_MDHTVALIDATIONREPORT).replace("&quot;", "\\\""));
+                }
                 
             } else {
                 return null;
