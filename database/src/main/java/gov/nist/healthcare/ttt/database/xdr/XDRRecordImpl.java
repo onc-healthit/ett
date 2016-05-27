@@ -1,4 +1,3 @@
-
 package gov.nist.healthcare.ttt.database.xdr;
 
 import java.util.ArrayList;
@@ -6,6 +5,7 @@ import java.util.List;
 
 /**
  * Created Oct 10, 2014 1:55:29 PM
+ *
  * @author mccaffrey
  */
 public class XDRRecordImpl implements XDRRecordInterface {
@@ -15,12 +15,13 @@ public class XDRRecordImpl implements XDRRecordInterface {
     private String testCaseNumber = null;
     private String timestamp = null;
     private Status criteriaMet = null;
-    private List<XDRTestStepInterface> testSteps = null;    
+    private String mDHTValidationReport = null;
+    private List<XDRTestStepInterface> testSteps = null;
 
     public XDRRecordImpl() {
         this.setTestSteps(new ArrayList<XDRTestStepInterface>());
     }
-    
+
     /**
      * @return the xdrRecordDatabaseId
      */
@@ -114,8 +115,24 @@ public class XDRRecordImpl implements XDRRecordInterface {
     public void setTestSteps(List<XDRTestStepInterface> testSteps) {
         this.testSteps = testSteps;
     }
-    
-    
-    
-    
+
+    /**
+     * @return the mDHTValidationReport
+     */
+    public String getMDHTValidationReport() {
+        return mDHTValidationReport;
+    }
+
+    /**
+     * @param mDHTValidationReport the mDHTValidationReport to set
+     */
+    public void setMDHTValidationReport(String mDHTValidationReport) {
+        this.mDHTValidationReport = mDHTValidationReport;
+    }
+
+    @Override
+    public Status getStatus() {
+        return criteriaMet;
+    }
+
 }

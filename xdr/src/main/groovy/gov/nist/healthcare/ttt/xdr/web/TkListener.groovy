@@ -1,6 +1,9 @@
 package gov.nist.healthcare.ttt.xdr.web
 import gov.nist.healthcare.ttt.commons.notification.Message
+import gov.nist.healthcare.ttt.database.jdbc.LogFacade;
 import gov.nist.healthcare.ttt.database.xdr.Status
+import gov.nist.healthcare.ttt.parsing.DirectAddressing
+import gov.nist.healthcare.ttt.parsing.Parsing;
 import gov.nist.healthcare.ttt.xdr.api.XdrReceiver
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 import groovy.util.slurpersupport.GPathResult
@@ -98,15 +101,25 @@ public class TkListener {
 
         //TODO: Don't do this with regular expressions...
         //Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]+>)([^<]+)(?:<)/
+        //Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
+        //Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</        
         Matcher messageIDMatcher = unescapeXml =~ /(?:MessageID[^>]*>)([^<]*)(?:<)/
-        Matcher directFromMatcher = unescapeXml =~ /from>([^<]+)</
-        Matcher directToMatcher = unescapeXml =~ /to>([^<]+)</
+        Matcher directFromMatcher = unescapeXml =~ /(?:from[^>]*>)([^<]*)(?:<)/
+        Matcher directToMatcher = unescapeXml =~ /(?:to[^>]*>)([^<]*)(?:<)/
 
         //we expect only one match (thus the 0) and we want to get back the first group match
-
-        tkValidationReport.messageId = (messageIDMatcher.find()) ? messageIDMatcher[0][1] : null
-        tkValidationReport.directFrom = (directFromMatcher.find()) ? directFromMatcher[0][1] : null
-        tkValidationReport.directTo = (directToMatcher.find()) ? directToMatcher[0][1] : null
+		try {
+			DirectAddressing directAdd = Parsing.getDirectAddressing(text);
+			tkValidationReport.messageId = directAdd.getMessageID();
+			tkValidationReport.directFrom = directAdd.getDirectFrom();
+			tkValidationReport.directTo = directAdd.getDirectTo();
+		} catch(Exception e) {
+			log.error(e.getMessage());
+			tkValidationReport.messageId = (messageIDMatcher.find()) ? messageIDMatcher[0][1] : null
+			tkValidationReport.directFrom = (directFromMatcher.find()) ? directFromMatcher[0][1] : null
+			tkValidationReport.directTo = (directToMatcher.find()) ? directToMatcher[0][1] : null
+		}
+		
 		
 		// Strip mailto: from both direct addresses
 		tkValidationReport.directFrom = stripMailTo(tkValidationReport.directFrom);
@@ -114,8 +127,10 @@ public class TkListener {
     }
 	
 	def stripMailTo(String address) {
-		if(address.toLowerCase().startsWith("mailto:")) {
-			return address.split("mailto:")[1];
+		if(address!=null) {
+			if(address.toLowerCase().startsWith("mailto:")) {
+				return address.split("mailto:")[1];
+			}
 		}
 		return address;
 	}

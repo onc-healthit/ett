@@ -38,6 +38,7 @@ public class XDRFacade extends DatabaseFacade {
     public final static String XDRRECORD_TESTCASENUMBER = "TestCaseNumber";
     public final static String XDRRECORD_TIMESTAMP = "Timestamp";
     public final static String XDRRECORD_CRITERIAMET = "CriteriaMet";
+    public final static String XDRRECORD_MDHTVALIDATIONREPORT = "MDHTValidationReport";
 
     public final static String XDRTESTSTEP_TABLE = "XDRTestStep";
     public final static String XDRTESTSTEP_XDRTESTSTEPID = "XDRTestStepID";
@@ -82,6 +83,8 @@ public class XDRFacade extends DatabaseFacade {
         sql.append(XDRRECORD_TIMESTAMP);
         sql.append(", ");
         sql.append(XDRRECORD_CRITERIAMET);
+        sql.append(", ");
+        sql.append(XDRRECORD_MDHTVALIDATIONREPORT);
         sql.append(") VALUES ('");
         sql.append(recordID);
         sql.append("' , '");
@@ -112,6 +115,8 @@ public class XDRFacade extends DatabaseFacade {
         } else {
             sql.append("-1");
         }
+        sql.append("' , '");
+        sql.append(DatabaseConnection.makeSafe(xdr.getMDHTValidationReport()));
         sql.append("');");
 
         try {
@@ -453,6 +458,8 @@ public class XDRFacade extends DatabaseFacade {
                     record.setStatus(Status.PENDING);
                 }
 
+                record.setMDHTValidationReport(result.getString(XDRRECORD_MDHTVALIDATIONREPORT));
+                
             } else {
                 return null;
             }
@@ -1285,6 +1292,7 @@ public class XDRFacade extends DatabaseFacade {
             record.setTestCaseNumber("1");
             record.setTimestamp(new Timestamp(Calendar.getInstance().getTimeInMillis()).toString());
             record.setUsername("Username");
+            record.setMDHTValidationReport("report goes here, guys!");
 
             XDRTestStepImpl testStep = new XDRTestStepImpl();
             // testStep.setMessageId("message1");
@@ -1303,7 +1311,7 @@ public class XDRFacade extends DatabaseFacade {
             testStep.setMessageId(UUID.randomUUID().toString());
             testStep.setDirectFrom("from@direct.com");
             XDRReportItemImpl reportItem = new XDRReportItemImpl();
-            String report = readFile("/home/mccaffrey/body.txt", Charset.defaultCharset());
+            String report = "ignore me!"; //readFile("/home/mccaffrey/body.txt", Charset.defaultCharset());
             reportItem.setReport(report);
 
             reportItem.setReportType(ReportType.REQUEST);
@@ -1321,18 +1329,23 @@ public class XDRFacade extends DatabaseFacade {
             Configuration config = new Configuration();
             config.setDatabaseHostname("localhost");
             config.setDatabaseName("direct");
+            config.setDatabaseUsername("root");
 
             XDRFacade facade = new XDRFacade(config);
+            
+            facade.addNewXdrRecord(record);
+            record.setMDHTValidationReport("new report, guys");
+            facade.updateXDRRecord(record);
          //   facade.addNewXdrRecord(record);
             
-            XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectAddress("endpointstandalone", "from@direct.com");
-            System.out.println(get.getTimestamp());
-            facade.updateXDRRecord(record);
-            record.setTestSteps(steps);
-            facade.updateXDRRecord(record);
-            facade.updateXDRRecord(record);
-            facade.updateXDRRecord(record);
-            facade.updateXDRRecord(record);
+            //XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectAddress("endpointstandalone", "from@direct.com");
+            //System.out.println(get.getTimestamp());
+            //facade.updateXDRRecord(record);
+            //record.setTestSteps(steps);
+            //facade.updateXDRRecord(record);
+            //facade.updateXDRRecord(record);
+            //facade.updateXDRRecord(record);
+            //facade.updateXDRRecord(record);
             //List<XDRRecordInterface> getRecord = facade.getXDRRecordsByDirectFrom("from@direct.com");
             
             //System.out.append(Integer.toString(getRecord.size()));
@@ -1364,6 +1377,8 @@ public class XDRFacade extends DatabaseFacade {
             //facade.removeXdrRecord("4b4157aa-dde9-4fa3-86c2-cfc4d031384d");
             // facade.removeAllByUsername("username2");
             //System.out.println(           facade.getXDRRecordByMessageId("message2").getTimestamp() + " hjere!");
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
