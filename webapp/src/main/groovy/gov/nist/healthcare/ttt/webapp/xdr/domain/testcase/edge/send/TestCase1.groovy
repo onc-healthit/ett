@@ -103,6 +103,7 @@ final class TestCase1 extends TestCaseSender {
 			SOAPWithAttachment soap = Parsing.parseMtom(report.request);
 			String res = validateCCDA_R2(soap.getAttachment().iterator().next(), updatedRecord)
 //			log.info("CCDA validation result: " + res);
+			updatedRecord.setMDHTValidationReport(res);
 		}
         executor.db.updateXDRRecord(updatedRecord)
 
@@ -140,6 +141,6 @@ final class TestCase1 extends TestCaseSender {
 	}
 
     public Result getReport(XDRRecordInterface record) {
-        executor.getSimpleSendReport(record)
+        executor.getSimpleSendReportWithCcda(record)
     }
 }

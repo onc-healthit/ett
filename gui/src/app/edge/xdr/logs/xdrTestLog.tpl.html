@@ -18,6 +18,9 @@
                 <uib-tab heading="Response" class="tabbable clickable not-selectable">
                     <pre><code class="language-markup" prism>{{logToDisplay.results.content.value.response}}</code></pre>
                 </uib-tab>
+                <uib-tab heading="C-CDA Validation" class="tabbable clickable not-selectable" ng-if="logToDisplay.results.content.value.ccdaReport">
+                    <ccda-r2-report data="logToDisplay.results.content.value.ccdaReport"></ccda-r2-report>
+                </uib-tab>
             </uib-tabset>
 
         </div>

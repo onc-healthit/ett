@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.xdr.core
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper
 import gov.nist.healthcare.ttt.database.xdr.*
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator
@@ -320,6 +321,29 @@ class TestCaseExecutor {
 
 		if (record.criteriaMet != Status.PENDING) {
 
+			def step = record.getTestSteps().last()
+
+			if (!step.xdrReportItems.empty) {
+				log.info(step.xdrReportItems.size() + " report(s) found.")
+				def report = step.xdrReportItems
+				content.request = report.find { it.reportType == XDRReportItemInterface.ReportType.REQUEST }.report
+				content.response = report.find { it.reportType == XDRReportItemInterface.ReportType.RESPONSE }.report
+			}
+		}
+
+		return new Result(record.criteriaMet, content)
+	}
+	
+	Result getSimpleSendReportWithCcda(XDRRecordInterface record) {
+		def content = new Content()
+
+		if (record.criteriaMet != Status.PENDING) {
+
+			// Convert to json object
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode jsonObject = mapper.readTree(record.MDHTValidationReport)
+			content.ccdaReport = jsonObject;
+			
 			def step = record.getTestSteps().last()
 
 			if (!step.xdrReportItems.empty) {
