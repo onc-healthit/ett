@@ -183,7 +183,6 @@ public class Parsing {
 
             }
         }
-
         return MetadataLevel.XDS;
     }
 
@@ -237,6 +236,7 @@ public class Parsing {
         if (!documents.isEmpty()) {
             Document document = documents.get(0);
             byte[] documentByteArray = document.getValue();
+            
             String payload = new String(documentByteArray);
             if (Parsing.isBase64Encoded(payload)) {
                 return new String(Base64.getDecoder().decode(documentByteArray));
@@ -256,7 +256,8 @@ public class Parsing {
             return false;
         }
     }
-
+    
+/* Wrong
     private static SimpleSoapOrMTOM isSoapOrMTOM(String incoming) throws IOException, MessagingException {
         SOAPWithAttachment swa = Parsing.parseMtom(incoming);
         if (swa.getAttachment() == null || swa.getAttachment().size() == 0) {
@@ -264,7 +265,8 @@ public class Parsing {
         }
         return SimpleSoapOrMTOM.MTOM;
     }
-
+*/
+    
     private static String findContentType(String mtom) throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(mtom));
         while (reader.ready()) {
@@ -393,10 +395,16 @@ public class Parsing {
             //   xml = MiscUtil.readFile("/home/mccaffrey/ett/schema_to_java/samples/reg_response_failure.xml", Charset.defaultCharset());
             //    System.out.println(Parsing.isRegistryResponseSuccess(xml));
 //          xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM2.txt", Charset.defaultCharset());  
-            xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/fromToolkit.txt", Charset.defaultCharset());
-
+            //xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/fromToolkit.txt", Charset.defaultCharset());
+            xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/simple.txt", Charset.defaultCharset());
+            
             System.out.println(Parsing.isRegistryResponseSuccessFullHeaders(xml));
 
+            SOAPWithAttachment swa = Parsing.parseMtom(xml);
+            
+            System.out.println(swa.getSoap());
+            System.out.println(new String(swa.getAttachment().iterator().next()));
+            
             //     System.out.println(Parsing.isValidDirectDisposition(xml));
             /*
           

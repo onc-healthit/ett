@@ -37,6 +37,10 @@ public interface XDRRecordInterface {
      */
     Status getCriteriaMet();
 
+    Status getStatus();
+    
+    String getMDHTValidationReport();
+            
     
     void setXdrRecordDatabaseId(String databaseId);
     
@@ -67,4 +71,5 @@ public interface XDRRecordInterface {
      */
     void setUsername(String username);
 
+    void setMDHTValidationReport(String validationReport);
 }
