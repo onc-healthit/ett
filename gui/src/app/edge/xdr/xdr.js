@@ -103,8 +103,10 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 			XDRTestCases.configure({
 				id: test.id
 			}, function(data) {
-				test.endpoint = data.content.value.endpoint;
-				test.endpointTLS = data.content.value.endpointTLS;
+				if(data.content) {
+					test.endpoint = data.content.value.endpoint;
+					test.endpointTLS = data.content.value.endpointTLS;
+				}
 				test.status = 'na';
 			}, function(data) {
 				test.status = 'error';
@@ -131,8 +133,10 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 				if (data.content !== null && data.content !== undefined) {
 					if (data.content.criteriaMet.toLowerCase() === 'pending') {
 						test.status = "pending";
-						test.endpoint = data.content.value.endpoint;
-						test.endpointTLS = data.content.value.endpointTLS;
+						if(data.content) {
+							test.endpoint = data.content.value.endpoint;
+							test.endpointTLS = data.content.value.endpointTLS;
+						}
 					} else if (data.content.criteriaMet.toLowerCase() === 'manual') {
 						test.status = "manual";
 					} else if (data.content.criteriaMet.toLowerCase() === 'passed') {
