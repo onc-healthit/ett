@@ -20,6 +20,7 @@ public class Settings {
     private String messageId = null;
     private String finalDestinationDelivery = null;
     private String payload = null;
+    private String patientId = null;
 
     /**
      * @return the directTo
@@ -145,6 +146,20 @@ public class Settings {
      */
     public void setPayload(String payload) {
         this.payload = payload;
+    }
+
+    /**
+     * @return the patientId
+     */
+    public String getPatientId() {
+        return patientId;
+    }
+
+    /**
+     * @param patientId the patientId to set
+     */
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
 
