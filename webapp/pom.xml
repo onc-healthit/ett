@@ -10,7 +10,6 @@
 		<groupId>gov.nist.healthcare.ttt</groupId>
 		<artifactId>common-config</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath></relativePath>
 	</parent>
 
 	<properties>
