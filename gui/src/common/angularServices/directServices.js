@@ -101,3 +101,10 @@ directService.factory('DirectCertsLinkFactory', ['$resource', 'RESOURCES',
         });
     }
 ]);
+
+directService.factory('XDMValidatorFactory', ['$resource', 'RESOURCES',
+    function($resource, RESOURCES) {
+        return $resource(RESOURCES.USERS_API + 'xdm', {}, {
+        });
+    }
+]);

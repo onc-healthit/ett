@@ -71,10 +71,10 @@ public class ListenerProcessor implements Runnable {
 
 	private static Logger logger = Logger.getLogger(ListenerProcessor.class.getName());
 
-	ListenerProcessor(Socket server, DatabaseInstance db, String mdhtR1Endpoint, String mdhtR2Endpoint) throws DatabaseException, SQLException {
+	ListenerProcessor(Socket server, DatabaseInstance db, String mdhtR1Endpoint, String mdhtR2Endpoint, String toolkitUrl) throws DatabaseException, SQLException {
 		this.server = server;
 		this.db = db;
-		this.processor = new DirectMessageProcessor(mdhtR1Endpoint, mdhtR2Endpoint);
+		this.processor = new DirectMessageProcessor(mdhtR1Endpoint, mdhtR2Endpoint, toolkitUrl);
 	}
 
 	/**

@@ -34,7 +34,13 @@ public class CCDAValidationReport {
 		List<CCDAReport> ccdaReports = new ArrayList<CCDAReport>() 
 		db.getLogFacade().getCCDAValidationReportByMessageId(messageId).each { 
 				ObjectMapper mapper = new ObjectMapper();
-				JsonNode jsonObject = mapper.readTree(it.getValidationReport())	
+				String report = it.getValidationReport();
+				// Escape new lines
+				if(report.contains("\n")) {
+					report = report.replace("\n", "\\n");
+					report = report.replaceAll("\\p{Cc}", "")
+				}
+				JsonNode jsonObject = mapper.readTree(report)	
 				ccdaReports.add(new CCDAReport(it.getFilename(), jsonObject))
 		}
 		return ccdaReports
