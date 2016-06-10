@@ -69,7 +69,12 @@ public class XDRFacade extends DatabaseFacade {
     // The unique constraint was removed in the database because it didn't allow
     // multiple "NULL" values.
     public String addNewXdrRecord(XDRRecordInterface xdr) throws DatabaseException {
-
+    	
+    	String validationReportString = "";
+    	if(xdr.getMDHTValidationReport() != null) {
+    		validationReportString = xdr.getMDHTValidationReport().replace("\\\"", "&quot;");
+    	}
+        
         String recordID = UUID.randomUUID().toString();   
         xdr.setXdrRecordDatabaseId(recordID);
         StringBuilder sql = new StringBuilder();
@@ -116,7 +121,7 @@ public class XDRFacade extends DatabaseFacade {
             sql.append("-1");
         }
         sql.append("' , '");
-        sql.append(DatabaseConnection.makeSafe(xdr.getMDHTValidationReport()));
+        sql.append(DatabaseConnection.makeSafe(validationReportString));
         sql.append("');");
 
         try {
@@ -458,7 +463,9 @@ public class XDRFacade extends DatabaseFacade {
                     record.setStatus(Status.PENDING);
                 }
 
-                record.setMDHTValidationReport(result.getString(XDRRECORD_MDHTVALIDATIONREPORT));
+                if(result.getString(XDRRECORD_MDHTVALIDATIONREPORT) != null) {
+                	record.setMDHTValidationReport(result.getString(XDRRECORD_MDHTVALIDATIONREPORT).replace("&quot;", "\\\""));
+                }
                 
             } else {
                 return null;
@@ -1334,8 +1341,9 @@ public class XDRFacade extends DatabaseFacade {
             XDRFacade facade = new XDRFacade(config);
             
             facade.addNewXdrRecord(record);
-            record.setMDHTValidationReport("new report, guys");
+            record.setMDHTValidationReport("new report', guys");
             facade.updateXDRRecord(record);
+            System.out.println(facade.getXDRRecordByRecordId("30769be4-eaf2-48af-b705-ee9f65779260").getMDHTValidationReport());
          //   facade.addNewXdrRecord(record);
             
             //XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectAddress("endpointstandalone", "from@direct.com");

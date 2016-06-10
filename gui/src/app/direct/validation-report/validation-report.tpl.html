@@ -58,12 +58,19 @@
 				</div>
 			</div>
 		</uib-tab>
-		<uib-tab heading="CCDA Validation {{ccdaValidationType[$index]}}" class="actualReport tabbable clickable not-selectable" ng-repeat="ccdaResult in ccdaReports">
-			<div ng-if="ccdaValidationType[$index] === 'R1.1'" style="margin-top:10px;">
+		<uib-tab heading="{{ccdaValidationType[$index]}}" class="actualReport tabbable clickable not-selectable" ng-repeat="ccdaResult in ccdaReports">
+			<div ng-if="ccdaValidationType[$index] === 'CCDA Validation R1.1'" style="margin-top:10px;">
 				<ccda-r1-report data="ccdaResult.ccdaReport"></ccda-r1-report>
 			</div>
-			<div ng-if="ccdaValidationType[$index] === 'R2.1'" style="margin-top:10px;">
+			<div ng-if="ccdaValidationType[$index] === 'CCDA Validation R2.1'" style="margin-top:10px;">
 				<ccda-r2-report data="ccdaResult.ccdaReport"></ccda-r2-report>
+			</div>
+			<div ng-if="ccdaValidationType[$index] === 'CCDA Validation R2.1'" style="margin-top:10px;">
+				<ccda-r2-report data="ccdaResult.ccdaReport"></ccda-r2-report>
+			</div>
+			<div ng-if="ccdaValidationType[$index] === 'XDM Validation'" style="margin-top:10px;">
+				<h3>Validation of {{ccdaResult.filename.substring(4)}}</h3>
+				<pre>{{ccdaResult.ccdaReport.report}}</pre>
 			</div>
 		</uib-tab>
 		<uib-tab ng-repeat="content in partsRawContent" heading="{{content.filename}}" class="tabbable clickable not-selectable">

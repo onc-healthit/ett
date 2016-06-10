@@ -1,7 +1,8 @@
 var validators = angular.module('ttt.validators', [
     // Modules
     'ttt.direct.ccdar2Validator',
-    'ttt.direct.ccdaValidator'
+    'ttt.direct.ccdaValidator',
+    'ttt.direct.xdmValidator'
 ]);
 
 validators.config(['$stateProvider',
@@ -40,7 +41,7 @@ validators.config(['$stateProvider',
                 url: '/xdm',
                 views: {
                     "validators": {
-                        controller: 'DirectValidatorCtrl',
+                        controller: 'XDMValidatorCtrl',
                         templateUrl: 'message-validators/xdm-validator/xdm-validator.tpl.html'
                     }
                 }

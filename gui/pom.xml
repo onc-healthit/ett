@@ -10,7 +10,6 @@
 		<groupId>gov.nist.healthcare.ttt</groupId>
 		<artifactId>common-config</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath></relativePath>
 	</parent>
 	
     <packaging>pom</packaging>
@@ -32,7 +31,7 @@
                         </goals>
                         <configuration>
                             <nodeVersion>v5.3.0</nodeVersion>
-                            <npmVersion>3.3.12</npmVersion>
+                            <npmVersion>3.9.5</npmVersion>
                         </configuration>
                     </execution>
 
@@ -43,7 +42,7 @@
                         </goals>
                         <!-- Optional configuration which provides for running any npm command -->
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>install --no-bin-links</arguments>
                         </configuration>
                     </execution>
                    

@@ -20,6 +20,7 @@ public class DirectMessageProcessorTest {
 	public static String password = "";
 	public static String mdhtR1Endpoint = "http://devccda.sitenv.org/CCDAValidatorServices/r1.1/";
 	public static String mdhtR2Endpoint = "http://hit-dev.nist.gov:11080/referenceccdaservice/";
+	public static String toolkitUrl = "http://hit-dev.nist.gov:11080/xdstools2";
 	
 	public static void main(String args[]) {
 		File privateCert = new File(privateCertPath);
@@ -49,7 +50,7 @@ public class DirectMessageProcessorTest {
 		
 		DirectMessageProcessor processor = null;
 		try {
-			processor = new DirectMessageProcessor(messageStream, privateCertStream, password, mdhtR1Endpoint, mdhtR2Endpoint);
+			processor = new DirectMessageProcessor(messageStream, privateCertStream, password, mdhtR1Endpoint, mdhtR2Endpoint, toolkitUrl);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

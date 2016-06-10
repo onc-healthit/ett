@@ -2,12 +2,15 @@ package gov.nist.healthcare.ttt.direct.messageProcessor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,10 +24,12 @@ import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
@@ -46,6 +51,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.mail.smime.SMIMEEnveloped;
 import org.bouncycastle.mail.smime.SMIMESigned;
 import org.bouncycastle.util.Store;
+import org.json.JSONObject;
 
 import gov.nist.healthcare.ttt.database.log.CCDAValidationReportImpl;
 import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
@@ -75,19 +81,23 @@ public class PartValidation {
 	// MDHT Endpoint
 	private String mdhtR1Endpoint;
 	private String mdhtR2Endpoint;
+	
+	// Toolkit endpoint
+	private String toolkitUrl;
 
 	private String ccdaType;
 	private String ccdaR2Type;
 	private String ccdaR2ReferenceFilename;
 	private List<CCDAValidationReportInterface> ccdaReport = new ArrayList<CCDAValidationReportInterface>();
 
-	public PartValidation(boolean encrypted, boolean signed, boolean wrapped, String mdhtR1Endpoint, String mdhtR2Endpoint) {
+	public PartValidation(boolean encrypted, boolean signed, boolean wrapped, String mdhtR1Endpoint, String mdhtR2Endpoint, String toolkitUrl) {
 		this.encrypted = encrypted;
 		this.signed = signed;
 		this.wrapped = wrapped;
 		this.hasError = false;
 		this.mdhtR1Endpoint = mdhtR1Endpoint;
 		this.mdhtR2Endpoint = mdhtR2Endpoint;
+		this.toolkitUrl = toolkitUrl;
 	}
 
 	public void processMainPart(PartModel part) throws Exception {
@@ -255,6 +265,10 @@ public class PartValidation {
 		if(p.isMimeType("text/xml") || p.isMimeType("application/xml")) {
 			validateCCDAwithMDHT(part);
 		}
+		
+		if(p.isMimeType("application/zip")) {
+			validateXDM(part);
+		}
 	}
 
 	public String validateCCDAwithMDHT(PartModel part) throws Exception {
@@ -277,6 +291,64 @@ public class PartValidation {
 		} else {
 			return validateCCDA_R1(ccdaFile, ccdaFilename);
 		}
+	}
+	
+	public String validateXDM(PartModel part) throws Exception {
+		Part p = part.getContent();
+		String xdmFilename = "";
+		File xdmFile = null;
+		if(p.getFileName() != null) {
+			xdmFilename = getGoodFilename(p.getFileName());
+			if(part.isQuotedPrintable()) {
+				xdmFile = getCCDAFile(DirectMessageProcessor.decodeQPStream(p.getInputStream()), p.getFileName());
+			} else {
+				xdmFile = getCCDAFile(p.getInputStream(), p.getFileName());
+			}
+		} else {
+			xdmFilename = UUID.randomUUID().toString();
+		}
+		
+		xdmFilename = "XDM_" + xdmFilename;
+		
+		byte[] xdmByte = IOUtils.toByteArray(new FileInputStream(xdmFile));
+		
+		// Query toolkit endpoint
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost post = new HttpPost(this.toolkitUrl + "/rest/simulators/xdmValidation");
+		//
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+		String reqString = Base64.getEncoder().encodeToString(xdmByte);
+
+		JSONObject json = new JSONObject();
+		json.put("zip", reqString);
+		StringEntity params = null;
+		try {
+			params = new StringEntity(json.toString());
+		} catch (UnsupportedEncodingException e1) {
+			logger.error(e1.getMessage());
+		}
+
+		post.addHeader("content-type", "application/json");
+		post.setEntity(params);
+
+		String result = "";
+		try {
+			HttpResponse response = client.execute(post);
+			// CONVERT RESPONSE TO STRING
+			result = EntityUtils.toString(response.getEntity());
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+		}
+		
+		CCDAValidationReportImpl report = new CCDAValidationReportImpl();
+		report.setFilename(xdmFilename);
+		report.setValidationReport(result);
+
+		ccdaReport.add(report);
+
+		return result;
 	}
 
 	/**

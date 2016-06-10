@@ -35,6 +35,9 @@ private static Logger logger = Logger.getLogger(DirectMessageValidatorController
 	@Value('${ett.mdht.r1.url}')
 	String mdhtR1Url;
 	
+	@Value('${toolkit.url}')
+	String toolkitUrl;
+	
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
     LogModel validateDirectMessage(@RequestBody MessageValidator validator, HttpServletRequest request) throws Exception {
@@ -55,7 +58,7 @@ private static Logger logger = Logger.getLogger(DirectMessageValidatorController
 		
 		// Validate the message
 		logger.debug("Started validation of message");
-		DirectMessageProcessor processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword(), mdhtR1Url, mdhtR2Url);
+		DirectMessageProcessor processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword(), mdhtR1Url, mdhtR2Url, toolkitUrl);
 		processor.processDirectMessage();
 		logger.info("Validating message" + processor.getLogModel().getMessageId() + " done");
 		
