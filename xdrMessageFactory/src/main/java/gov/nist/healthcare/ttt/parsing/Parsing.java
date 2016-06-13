@@ -27,6 +27,7 @@ import javax.mail.internet.ContentType;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
+import javax.mail.util.SharedByteArrayInputStream;
 import javax.xml.bind.JAXB;
 
 import org.apache.commons.io.IOUtils;
@@ -236,7 +237,7 @@ public class Parsing {
         if (!documents.isEmpty()) {
             Document document = documents.get(0);
             byte[] documentByteArray = document.getValue();
-            
+
             String payload = new String(documentByteArray);
             if (Parsing.isBase64Encoded(payload)) {
                 return new String(Base64.getDecoder().decode(documentByteArray));
@@ -256,8 +257,8 @@ public class Parsing {
             return false;
         }
     }
-    
-/* Wrong
+
+    /* Wrong
     private static SimpleSoapOrMTOM isSoapOrMTOM(String incoming) throws IOException, MessagingException {
         SOAPWithAttachment swa = Parsing.parseMtom(incoming);
         if (swa.getAttachment() == null || swa.getAttachment().size() == 0) {
@@ -265,8 +266,7 @@ public class Parsing {
         }
         return SimpleSoapOrMTOM.MTOM;
     }
-*/
-    
+     */
     private static String findContentType(String mtom) throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(mtom));
         while (reader.ready()) {
@@ -305,6 +305,13 @@ public class Parsing {
 
     }
 
+    private static byte[] read(ByteArrayInputStream bais) throws IOException {
+        byte[] array = new byte[bais.available()];
+        bais.read(array);
+
+        return array;
+    }
+
     public static SOAPWithAttachment parseMtom(String mtom) throws MessagingException, IOException {
 
 //        Parsing.fixMissingEndBoundry(mtom);
@@ -324,8 +331,16 @@ public class Parsing {
                 swa.setSoap(IOUtils.toString(content));
 
             } else {
-                String content = (String) bp.getContent();
-                swa.getAttachment().add(content.getBytes());
+                Object contentRaw = bp.getContent();
+                if (contentRaw instanceof String) {
+                    String content = (String) bp.getContent();
+                    swa.getAttachment().add(content.getBytes());
+                } else if (contentRaw instanceof SharedByteArrayInputStream) {
+                    SharedByteArrayInputStream content = (SharedByteArrayInputStream) bp.getContent();
+                    swa.getAttachment().add(read(content));
+                } else {
+                    System.out.println("UNKNOWN ATTACHMENT TYPE = " + contentRaw.getClass().getName());
+                }
             }
 
             // System.out.println("contentype=" + bp.getContentType());
@@ -359,11 +374,6 @@ public class Parsing {
         return swa;
     }
 
-    private static byte[] read(ByteArrayInputStream bais) throws IOException {
-        byte[] array = new byte[bais.available()];
-        bais.read(array);
-        return array;
-    }
 
     public final static void main(String[] args) {
         String line = "content-type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"&lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"";
@@ -396,15 +406,15 @@ public class Parsing {
             //    System.out.println(Parsing.isRegistryResponseSuccess(xml));
 //          xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM2.txt", Charset.defaultCharset());  
             //xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/fromToolkit.txt", Charset.defaultCharset());
-            xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/simple.txt", Charset.defaultCharset());
-            
+            xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/xdr.txt", Charset.defaultCharset());
+
             System.out.println(Parsing.isRegistryResponseSuccessFullHeaders(xml));
 
             SOAPWithAttachment swa = Parsing.parseMtom(xml);
-            
+
             System.out.println(swa.getSoap());
             System.out.println(new String(swa.getAttachment().iterator().next()));
-            
+
             //     System.out.println(Parsing.isValidDirectDisposition(xml));
             /*
           
