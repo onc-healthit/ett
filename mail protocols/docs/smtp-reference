@@ -184,3 +184,5 @@ TURN
  502 Command not implemented 
  500 Syntax error, command unrecognised 
  503 Bad sequence of commands 
+ 
+ james-cli.sh -h localhost -p 9999 adduser user@domainname password
