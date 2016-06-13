@@ -340,8 +340,11 @@ class TestCaseExecutor {
 		if (record.criteriaMet != Status.PENDING) {
 
 			// Convert to json object
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode jsonObject = mapper.readTree(record.MDHTValidationReport)
+			JsonNode jsonObject = null;
+			if(record.MDHTValidationReport != null) {
+				ObjectMapper mapper = new ObjectMapper();
+				jsonObject = mapper.readTree(record.MDHTValidationReport)
+			}
 			content.ccdaReport = jsonObject;
 			
 			def step = record.getTestSteps().last()

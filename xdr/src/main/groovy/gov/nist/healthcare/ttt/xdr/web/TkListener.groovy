@@ -114,6 +114,7 @@ public class TkListener {
 			tkValidationReport.directFrom = directAdd.getDirectFrom();
 			tkValidationReport.directTo = directAdd.getDirectTo();
 		} catch(Exception e) {
+			e.printStackTrace();
 			log.error(e.getMessage());
 			tkValidationReport.messageId = (messageIDMatcher.find()) ? messageIDMatcher[0][1] : null
 			tkValidationReport.directFrom = (directFromMatcher.find()) ? directFromMatcher[0][1] : null
