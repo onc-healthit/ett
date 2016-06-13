@@ -18,3 +18,8 @@ gui/bower_components/
 gui/node/
 gui/vendor/
 webapp/src/main/resources/public/
+commons/bin/
+database/bin
+direct/bin/
+fakeToolkit/bin
+mail protocols/bin/
