@@ -25,6 +25,7 @@ public class ArtifactManagement {
 
         XDR_FULL_METADATA, // DONE
         XDR_MINIMAL_METADATA, // DONE
+        XDR_VANILLA, // DONE
         NEGATIVE_BAD_SOAP_HEADER,
         NEGATIVE_BAD_SOAP_BODY,
         NEGATIVE_MISSING_DIRECT_BLOCK, // DONE
@@ -71,6 +72,7 @@ public class ArtifactManagement {
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY = "Xdr_minimal_metadata_only.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP = "Xdr_minimal_metadata_only_no_soap.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP_NO_ROUTING = "Xdr_minimal_metadata_only_no_soap_no_routing.xml";
+    private static final String FILENAME_XDR_VANILLA ="Xdr_vanilla.xml";
    
     private static final String FILENAME_ENCODED_CCDA = "encodedCCDA.txt";
     private static final String FILENAME_CCDA = "CCDA.xml";
@@ -177,7 +179,10 @@ public class ArtifactManagement {
         return message;
     }
     
-    
+    private static String generateVanillaXDR(String message, Settings settings) {
+        message = message.replaceAll("#PATIENT_ID#", settings.getPatientId());
+        return message;
+    }
     
     // if messageId null or empty, creates one
     private static String getDeliveryStatusNotificationSuccess(Settings settings) {
@@ -588,7 +593,13 @@ public class ArtifactManagement {
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     artifacts.setDocument(getCCDA());
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
-                    break;                    
+                    break;                 
+                case XDR_VANILLA:
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
+                    //artifacts.setDocument(getCCDA());                    
+                    metadata = getTemplate(FILENAME_XDR_VANILLA);
+                    metadata = generateVanillaXDR(metadata,settings);
+                    break;                                     
                 case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
                     artifacts.setDocument(getDeliveryStatusNotificationSuccessStandalone(settings));
@@ -678,7 +689,10 @@ public class ArtifactManagement {
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_DIRECT_BLOCK, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_MINIMAL_METADATA, settings);
-Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+//Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
+settings.setPatientId("909");
+Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_VANILLA, settings);
+
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
             System.out.println("messageId = " + art.getMessageId());
