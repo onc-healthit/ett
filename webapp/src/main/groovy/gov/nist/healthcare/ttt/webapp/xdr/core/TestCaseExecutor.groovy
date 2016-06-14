@@ -341,9 +341,12 @@ class TestCaseExecutor {
 
 			// Convert to json object
 			JsonNode jsonObject = null;
-			if(record.MDHTValidationReport != null) {
+			log.info(record.MDHTValidationReport);
+			try{
 				ObjectMapper mapper = new ObjectMapper();
 				jsonObject = mapper.readTree(record.MDHTValidationReport)
+			} catch(Exception e) {
+				log.error(e.getMessage());
 			}
 			content.ccdaReport = jsonObject;
 			
