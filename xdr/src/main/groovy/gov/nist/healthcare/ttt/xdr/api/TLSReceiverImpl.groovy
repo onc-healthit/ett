@@ -89,13 +89,62 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         log.info("Request coming from a socket: \n" + socketInfo(connection))
 
-        try {
+        try {/*
             log.info("trying to send response to client...")
             w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
             String m = "TLS test : try to send stuff across"
             w.write(m, 0, m.length());
             w.flush();
+             */
 
+                        
+            if(connection.isClosed()) {
+                status = Status.PASSED
+            }
+            if(connection.isInputShutdown() && connection.isOutputShutdown()) {
+                status = Status.PASSED
+            }    
+                        
+            log.info("trying to send response to client...")
+            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));            
+            String m = "TLS test 1 : try to send stuff across."
+            w.write(m, 0, m.length());
+            log.info("sent " + m.length() +  " bytes to client...")
+            w.flush();
+            log.info("socket flushed")
+            String n = "TLS test 2 : try to send stuff across.."
+            w.write(n, 0, n.length());
+            log.info("sent " + n.length() +  " bytes to client...")
+            w.flush();
+            log.info("socket flushed")
+            String p = "TLS test 3 : try to send stuff across..."
+            w.write(p, 0, p.length());
+            log.info("sent " + p.length() +  " bytes to client...")
+            w.flush();
+            log.info("socket flushed")
+
+            BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
+            int incoming = is.read();            
+            
+            log.info("success opening inputstream from socket (error: should be closed!)")        
+            
+            if(incoming == -1) {
+                
+                log.info("nothing is being sent but socket is available for read")
+            } else {                
+                log.info("there is data available to read")
+                int i = is.read();
+                StringBuilder sb = new StringBuilder();
+                sb.append(i + " ");
+                while(i != -1) {
+                    i = is.read();
+                    sb.append(i + " ");
+                }
+                log.info("socket should have been closed but client has sent: " + sb.toString())
+            }
+
+            
+            
         } catch (Exception e) {
             //e.printStackTrace()
             System.err.println(e.toString());
@@ -103,7 +152,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             status = Status.PASSED
         } finally {
             w.close();
-//            r.close();
+            //            r.close();
             connection.close();
             String address = connection.inetAddress.hostAddress
             println "tls receiver notification for IP address $address"
@@ -125,7 +174,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             KeyStore ks = KeyStore.getInstance("JKS");
             ks.load(is, ksPass);
             KeyManagerFactory kmf =
-                    KeyManagerFactory.getInstance("SunX509");
+            KeyManagerFactory.getInstance("SunX509");
             kmf.init(ks, ctPass);
 
             SSLContext sc = SSLContext.getInstance("TLS");
@@ -161,14 +210,14 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
     private static void printServerSocketInfo(SSLServerSocket server) {
         System.out.println("Server socket class: " + server.getClass());
         System.out.println("   Socker address = "
-                + server.getInetAddress().toString());
+            + server.getInetAddress().toString());
         System.out.println("   Socker port = "
-                + server.getLocalPort());
+            + server.getLocalPort());
         System.out.println("   Need client authentication = "
-                + server.getNeedClientAuth());
+            + server.getNeedClientAuth());
         System.out.println("   Want client authentication = "
-                + server.getWantClientAuth());
+            + server.getWantClientAuth());
         System.out.println("   Use client mode = "
-                + server.getUseClientMode());
+            + server.getUseClientMode());
     }
 }
