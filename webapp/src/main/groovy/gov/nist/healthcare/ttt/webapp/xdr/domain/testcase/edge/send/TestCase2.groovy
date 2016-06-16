@@ -58,11 +58,14 @@ final class TestCase2 extends TestCaseSender {
 		try {
 			MetadataLevel level = Parsing.getMetadataLevel(report.request);
 			if(level.equals(MetadataLevel.MINIMAL)) {
+                                log.info("XDR Test Case 2: Metadata was minimal, should be XDS.  Failure.")
 				updatedRecord.status = Status.FAILED
 			} else {
 				if(Parsing.isRegistryResponseSuccessFullHeaders(report.response)) {
+                                        log.info("XDR Test Case 2: Metadata was XDS and NO errors detected by toolkit.")
 					updatedRecord.status = Status.PASSED
 				} else {
+                                        log.info("XDR Test Case 2: Metadata was correctly XDS but had errors detected by toolkit.  Failure.")
 					updatedRecord.status = Status.FAILED
 				}
 			}

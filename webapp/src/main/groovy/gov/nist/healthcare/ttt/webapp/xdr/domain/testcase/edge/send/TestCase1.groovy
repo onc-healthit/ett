@@ -92,7 +92,7 @@ final class TestCase1 extends TestCaseSender {
                                         log.info("XDR Test Case 1: Metadata was minimal and NO errors detected by toolkit.")
 					updatedRecord.status = Status.PASSED
 				} else {
-                                    log.info("XDR Test Case 1: Metadata was correctly minimal but had errors detected by toolkit.  Failure.")
+                                        log.info("XDR Test Case 1: Metadata was correctly minimal but had errors detected by toolkit.  Failure.")
 					updatedRecord.status = Status.FAILED
 				}
 			}
