@@ -7,6 +7,7 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.parsing.Parsing;
 import gov.nist.healthcare.ttt.parsing.Parsing.MetadataLevel
 import gov.nist.healthcare.ttt.parsing.SOAPWithAttachment;
+import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
@@ -55,10 +56,14 @@ final class TestCase1 extends TestCaseSender {
         executor.validateInputs(context,["direct_from"])
 		
 		// Set C-CDA variables
-		this.ccdaR2ReferenceFilename = context.payload.name;
-        ArrayList<String> path = context.payload.path;
-		if(path.size() > 1) {
-			this.ccdaR2Type = path.get(path.size() - 1);
+		try {
+			this.ccdaR2ReferenceFilename = context.payload.name;
+	        ArrayList<String> path = context.payload.path;
+			if(path.size() > 1) {
+				this.ccdaR2Type = path.get(path.size() - 1);
+			}
+		} catch(Exception e) {
+			throw new TTTCustomException("0x0080", "Could not get properties from C-CDA widget. Make sure you selected a Document type.");
 		}
 
         //correlate this test to a direct_from address and a simulator id so we can be notified
