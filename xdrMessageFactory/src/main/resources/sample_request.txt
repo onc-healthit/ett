@@ -81,7 +81,7 @@ Content-ID: <0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>
                     id="id_1">
                     <rim:Slot name="authorPerson">
                         <rim:ValueList>
-                            <rim:Value>7.6^Epic - Version 7.6</rim:Value>
+                            <rim:Value>7.6^GenericApplication - Version 7.6</rim:Value>
                         </rim:ValueList>
                     </rim:Slot>
                     <rim:Slot name="authorInstitution">
@@ -239,7 +239,7 @@ Content-ID: <0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>
                     id="id_13">
                     <rim:Slot name="authorPerson">
                         <rim:ValueList>
-                            <rim:Value>7.6^Epic - Version 7.6</rim:Value>
+                            <rim:Value>7.6^GenericApplication - Version 7.6</rim:Value>
                         </rim:ValueList>
                     </rim:Slot>
                     <rim:Slot name="authorInstitution">

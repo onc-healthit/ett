@@ -56,7 +56,7 @@
                             id="id_1">
                             <rim:Slot name="authorPerson">
                                 <rim:ValueList>
-                                    <rim:Value>7.6^Epic - Version 7.6</rim:Value>
+                                    <rim:Value>7.6^GenericApplication - Version 7.6</rim:Value>
                                 </rim:ValueList>
                             </rim:Slot>
                             <rim:Slot name="authorInstitution">
@@ -164,7 +164,7 @@
                             id="id_13">
                             <rim:Slot name="authorPerson">
                                 <rim:ValueList>
-                                    <rim:Value>7.6^Epic - Version 7.6</rim:Value>
+                                    <rim:Value>7.6^GenericApplication - Version 7.6</rim:Value>
                                 </rim:ValueList>
                             </rim:Slot>
                             <rim:Slot name="authorInstitution">
