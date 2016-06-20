@@ -35,6 +35,7 @@ import org.w3._2003._05.soap_envelope.Body;
 import org.w3._2003._05.soap_envelope.Envelope;
 import org.w3._2003._05.soap_envelope.Header;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -181,7 +182,23 @@ public class Parsing {
                 } else if (metadataLevel.equals(METADATA_LEVEL_XDS)) {
                     return MetadataLevel.XDS;
                 }
-
+            } else if (header.getLocalName().equals(ELEMENT_NAME_DIRECT_ADDRESS_BLOCK) && header.getNamespaceURI().equals(NAMESPACE_DIRECT)) {
+                Element directAddressBlock = header;
+                NodeList childrenDirectAddressBlock = directAddressBlock.getChildNodes();
+                for (int i = 0; i < childrenDirectAddressBlock.getLength(); i++) {
+                    Element child = null;
+                    if (childrenDirectAddressBlock.item(i) instanceof Element) {
+                        child = (Element) childrenDirectAddressBlock.item(i);
+                        if (child.getLocalName().equals(ELEMENT_NAME_METADATA_LEVEL) && child.getNamespaceURI().equals(NAMESPACE_DIRECT)) {
+                            String metadataLevel = child.getFirstChild().getTextContent();
+                            if (metadataLevel.equals(METADATA_LEVEL_MINIMAL)) {
+                                return MetadataLevel.MINIMAL;
+                            } else if (metadataLevel.equals(METADATA_LEVEL_XDS)) {
+                                return MetadataLevel.XDS;
+                            }
+                        }
+                    }
+                }
             }
         }
         return MetadataLevel.XDS;
@@ -340,6 +357,7 @@ public class Parsing {
                     swa.getAttachment().add(read(content));
                 } else {
                     System.out.println("UNKNOWN ATTACHMENT TYPE = " + contentRaw.getClass().getName());
+                    swa.getAttachment().add(new String().getBytes());
                 }
             }
 
@@ -374,7 +392,6 @@ public class Parsing {
         return swa;
     }
 
-
     public final static void main(String[] args) {
         String line = "content-type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"&lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"";
         int beginBoundry = line.indexOf("boundary=\"");
@@ -408,12 +425,12 @@ public class Parsing {
             //xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/fromToolkit.txt", Charset.defaultCharset());
             xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/xdr.txt", Charset.defaultCharset());
 
-            System.out.println(Parsing.isRegistryResponseSuccessFullHeaders(xml));
+       //    System.out.println(Parsing.isRegistryResponseSuccessFullHeaders(xml));
 
             SOAPWithAttachment swa = Parsing.parseMtom(xml);
 
-            System.out.println(swa.getSoap());
-            System.out.println(new String(swa.getAttachment().iterator().next()));
+         //   System.out.println(swa.getSoap());
+//            System.out.println(new String(swa.getAttachment().iterator().next()));
 
             //     System.out.println(Parsing.isValidDirectDisposition(xml));
             /*
