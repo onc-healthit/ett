@@ -102,7 +102,7 @@ public class ListenerProcessor implements Runnable {
 		// noaddressfailure9
 		def smtpAddressList = ['processedonly5', 'processeddispatched6', 'processdelayeddispatch7', 'nomdn8', 
 			'noaddressfailure9', 'goodaddress-plain',
-			'processedonly5-plain', 'processeddispatched6-plain', 'noaddressfailure9-plain', 'dispatchedonly-plain',
+			'processedonly5-plain', 'processdelayeddispatch30min', 'processeddispatched6-plain', 'noaddressfailure9-plain', 'dispatchedonly-plain',
 			'white_space_mdn', 'extra_line_break_mdn', 'extra_space_disposition', 'missing_disposition', 'null_sender',
 			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn', 'processedfailuretest']
 
@@ -804,6 +804,13 @@ public class ListenerProcessor implements Runnable {
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				logger.info("Thread will sleep for 1 hour 5 minutes and send dispatched mdn")
 				this.sleep(3900000);
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				break
+				
+			case 'processdelayeddispatch30min':
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				logger.info("Thread will sleep for 30 minutes and send dispatched mdn")
+				this.sleep(1800000);
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 
