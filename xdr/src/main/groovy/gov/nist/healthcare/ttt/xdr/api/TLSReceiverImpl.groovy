@@ -89,15 +89,9 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         log.info("Request coming from a socket: \n" + socketInfo(connection))
 
-        try {/*
-            log.info("trying to send response to client...")
-            w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            String m = "TLS test : try to send stuff across"
-            w.write(m, 0, m.length());
-            w.flush();
-             */
-
-                        
+        try {
+            
+            Thread.sleep(1000);                                    
             if(connection.isClosed()) {
                 status = Status.PASSED
             }
@@ -107,29 +101,25 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
                         
             log.info("trying to send response to client...")
             w = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));            
-            String m = "TLS test 1 : try to send stuff across."
+            String m = "TLS test 1: try to send stuff across."
             w.write(m, 0, m.length());
             log.info("sent " + m.length() +  " bytes to client...")
             w.flush();
             log.info("socket flushed")
-            String n = "TLS test 2 : try to send stuff across.."
+            String n = "TLS test 2: try to send stuff across.."
             w.write(n, 0, n.length());
             log.info("sent " + n.length() +  " bytes to client...")
             w.flush();
             log.info("socket flushed")
-            String p = "TLS test 3 : try to send stuff across..."
+            String p = "TLS test 3: try to send stuff across..."
             w.write(p, 0, p.length());
             log.info("sent " + p.length() +  " bytes to client...")
             w.flush();
             log.info("socket flushed")
-
             BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
-            int incoming = is.read();            
-            
-            log.info("success opening inputstream from socket (error: should be closed!)")        
-            
-            if(incoming == -1) {
-                
+            int incoming = is.read();                        
+            log.info("success opening inputstream from socket (error: should be closed!)")                    
+            if(incoming == -1) {                
                 log.info("nothing is being sent but socket is available for read")
             } else {                
                 log.info("there is data available to read")
@@ -140,15 +130,12 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
                     i = is.read();
                     sb.append(i + " ");
                 }
-                log.info("socket should have been closed but client has sent: " + sb.toString())
-            }
-
-            
-            
+                log.info("socket should have been closed but client has sent int/bytes: " + sb.toString())
+            }                      
         } catch (Exception e) {
             //e.printStackTrace()
-            System.err.println(e.toString());
-            System.out.println("client has dropped the connection.");
+            log.info(e.toString())
+            log.info("client has dropped the connection.")
             status = Status.PASSED
         } finally {
             w.close();
