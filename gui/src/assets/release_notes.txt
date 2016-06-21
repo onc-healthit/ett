@@ -1,3 +1,9 @@
+==Version 1.0.18#6/21/2016
+	* XDR
+		-The tool will now look for the metadata-level element as either a top-level element in the SOAP headers or within the Direct Address Block.
+		-Additional checking and logging of the socket in XDR Test Case 7. Also adds a delay.
+		-Minor metadata cleanup.
+
 ==Version 1.0.17#6/13/2016
 	* XDR
 		-Fixed display bug for XDR endpoints.
