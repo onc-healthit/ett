@@ -51,7 +51,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     @Value('${xdr.notification.prefix}')
     private String prefix
 	
-	@Value('${xdr.tls.test.port}')
+	@Value('${toolkit.tls.port}')
 	private String xdrTlsPort
 
 //    @Value('${toolkit.createSim.url}')
