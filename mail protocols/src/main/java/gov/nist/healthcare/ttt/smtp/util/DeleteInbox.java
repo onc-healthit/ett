@@ -19,23 +19,17 @@ public class DeleteInbox {
 		try{
 			Store store;
 			Properties props = System.getProperties();
-			Scanner reader = new Scanner(System.in);  // Reading from System.in
-			System.out.println("Enter hostname: ");
-			String hostname = reader.next();
-
-			System.out.println("Enter Protocol[Enter 'imap' if the server is unencypted. Enter 'imaps' if SSL/TLS is enabled.]:");
-			String protocol = reader.next().toLowerCase();
-
-			System.out.println("Enter port number:");
-			int port = reader.nextInt();
-
-			System.out.println("Enter Username[john.doe@hostname.com]: ");
-			String username = reader.next();
-
-			System.out.println("Enter Password: ");
-			String password = reader.next();
-
-			reader.close();
+		
+			String hostname = args[0];
+		
+			String protocol = args[1];
+		
+			int port = Integer.parseInt(args[2]);
+		
+			String username = args[3];
+		
+			String password = args[4];
+		
 			
 			Session session = Session.getDefaultInstance(props, null);
 			store = session.getStore(protocol);

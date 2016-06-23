@@ -50,6 +50,9 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
     @Value('${xdr.notification.prefix}')
     private String prefix
+	
+	@Value('${toolkit.tls.port}')
+	private String xdrTlsPort
 
 //    @Value('${toolkit.createSim.url}')
 //    private String tkSimCreationUrl
@@ -81,6 +84,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
 
         def createEndpointTkMsg =buildCreateEndpointRequest(config)
+   		XDRSimulatorInterface sim = new XDRSimulatorImpl();
         try {
             //For some reason, there response is empty and we need to do a get to retrieve the config!
 //            restClient.postXml(createEndpointTkMsg, tkSimCreationUrl+"/"+config.name, timeout)
@@ -88,7 +92,6 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 //            def sim = CreateEndpointResponseParser.parse(response, config.name)
 			
 			SimConfig conf = createDocRecipient(config);
-			XDRSimulatorInterface sim = new XDRSimulatorImpl();
 
 			sim.endpoint = getPropertyFromSim(conf, "PnR_endpoint");
 			sim.endpointTLS = getPropertyFromSim(conf, "PnR_TLS_endpoint");
@@ -97,14 +100,31 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
             return sim
         }
         catch (groovyx.net.http.HttpResponseException e) {
-            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
+			
+//            throw new RuntimeException("could not reach the toolkit or toolkit returned an error. Check response status code",e)
+			log.error("could not reach the toolkit or toolkit returned an error. Check response status code \n" + e.getMessage());
         }
         catch (java.net.SocketTimeoutException e) {
-            throw new RuntimeException("connection timeout when calling toolkit.",e)
+
+//            throw new RuntimeException("connection timeout when calling toolkit.",e)
+			log.error("connection timeout when calling toolkit. \n" + e.getMessage());
         }
         catch(groovyx.net.http.ResponseParseException e){
-            throw new RuntimeException("could not understand response from toolkit.",e)
+			
+//            throw new RuntimeException("could not understand response from toolkit.",e)
+			log.error("could not understand response from toolkit. \n" + e.getMessage());
         }
+		catch (Exception e) {
+			
+			//            throw e;
+			log.error("exception when calling toolkit. \n" + e.getMessage());
+		}
+        
+        // Hard code endpoint if toolkit is not reachable
+        sim.endpoint = toolkitUrl + "/sim/" + toolkitUser + "__" + config.name + "/rep/xdrpr";
+        sim.endpointTLS = toolkitUrl.replace("http", "https").replaceAll(":[0-9]+", ":" + xdrTlsPort) + "/sim/" + toolkitUser + "__" + config.name + "/rep/xdrpr";
+        sim.simulatorId = config.name;
+        return sim
     }
 
     @Override

@@ -61,7 +61,10 @@ public class DirectMessageProcessor {
 	// MDHT Endpoint
 	private String mdhtR1Endpoint;
 	private String mdhtR2Endpoint;
-
+	
+	// Toolkit url
+	private String toolkitUrl;
+	
 	public DirectMessageProcessor() {
 		super();
 		this.wrapped = false;
@@ -72,9 +75,10 @@ public class DirectMessageProcessor {
 		this.mainPart = new PartModel();
 		this.mdhtR1Endpoint = "";
 		this.mdhtR2Endpoint = "";
+		this.toolkitUrl = "";
 	}
 	
-	public DirectMessageProcessor(String mdhtR1Endpoint, String mdhtR2Endpoint) {
+	public DirectMessageProcessor(String mdhtR1Endpoint, String mdhtR2Endpoint, String toolkitUrl) {
 		super();
 		this.wrapped = false;
 		this.encrypted = false;
@@ -84,10 +88,11 @@ public class DirectMessageProcessor {
 		this.mainPart = new PartModel();
 		this.mdhtR1Endpoint = mdhtR1Endpoint;
 		this.mdhtR2Endpoint = mdhtR2Endpoint;
+		this.toolkitUrl = toolkitUrl;
 	}
 
 	public DirectMessageProcessor(InputStream directMessage,
-			InputStream certificate, String certificatePassword, String mdhtR1Endpoint, String mdhtR2Endpoint)
+			InputStream certificate, String certificatePassword, String mdhtR1Endpoint, String mdhtR2Endpoint, String toolkitUrl)
 			throws Exception {
 		this.directMessage = directMessage;
 		this.certificate = certificate;
@@ -101,6 +106,7 @@ public class DirectMessageProcessor {
 		this.mainPart = new PartModel();
 		this.mdhtR1Endpoint = mdhtR1Endpoint;
 		this.mdhtR2Endpoint = mdhtR2Endpoint;
+		this.toolkitUrl = toolkitUrl;
 	}
 
 	public void processDirectMessage() throws Exception {
@@ -118,7 +124,7 @@ public class DirectMessageProcessor {
 		// Process the message
 		this.mainPart = processPart(msg, null);
 
-		PartValidation validationPart = new PartValidation(this.encrypted, this.signed, this.wrapped, this.mdhtR1Endpoint, this.mdhtR2Endpoint);
+		PartValidation validationPart = new PartValidation(this.encrypted, this.signed, this.wrapped, this.mdhtR1Endpoint, this.mdhtR2Endpoint, this.toolkitUrl);
 		validationPart.processMainPart(this.mainPart);
 
 		// Set status to error if the part contains error

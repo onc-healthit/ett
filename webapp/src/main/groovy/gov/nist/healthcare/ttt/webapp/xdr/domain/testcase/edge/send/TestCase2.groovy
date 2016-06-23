@@ -3,12 +3,16 @@ package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
+import gov.nist.healthcare.ttt.parsing.Parsing
+import gov.nist.healthcare.ttt.parsing.Parsing.MetadataLevel;
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 /**
@@ -44,10 +48,32 @@ final class TestCase2 extends TestCaseSender {
     public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+		
+		FileUtils.writeStringToFile(new File("response.txt"), report.response);
 
         //we update the record
         XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
-        updatedRecord.status = Status.MANUAL
+		
+		// Parsing of the request
+		try {
+			MetadataLevel level = Parsing.getMetadataLevel(report.request);
+			if(level.equals(MetadataLevel.MINIMAL)) {
+                                log.info("XDR Test Case 2: Metadata was minimal, should be XDS.  Failure.")
+				updatedRecord.status = Status.FAILED
+			} else {
+				if(Parsing.isRegistryResponseSuccessFullHeaders(report.response)) {
+                                        log.info("XDR Test Case 2: Metadata was XDS and NO errors detected by toolkit.")
+					updatedRecord.status = Status.PASSED
+				} else {
+                                        log.info("XDR Test Case 2: Metadata was correctly XDS but had errors detected by toolkit.  Failure.")
+					updatedRecord.status = Status.FAILED
+				}
+			}
+		} catch(Exception e) {
+			log.error(e.getMessage())
+			updatedRecord.status = Status.MANUAL
+		}
+		
         executor.db.updateXDRRecord(updatedRecord)
 
     }

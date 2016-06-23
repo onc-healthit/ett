@@ -227,6 +227,7 @@ public class MU2ReceiverTests {
 												Header h1 = (Header) headers2.nextElement();
 												list.add(h1.getName());
 												list.add(h1.getValue());
+												
 
 											}
 											System.out.println(buffer);

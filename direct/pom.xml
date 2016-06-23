@@ -11,7 +11,6 @@
 		<groupId>gov.nist.healthcare.ttt</groupId>
 		<artifactId>common-config</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath></relativePath>
 	</parent>
 
 	<dependencies>
@@ -74,6 +73,12 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.3.6</version>
+		</dependency>
+
+		<dependency>
+    		<groupId>org.json</groupId>
+    		<artifactId>json</artifactId>
+    		<version>20160212</version>
 		</dependency>
 
 	</dependencies>

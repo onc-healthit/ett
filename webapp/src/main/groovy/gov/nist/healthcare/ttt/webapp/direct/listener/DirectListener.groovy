@@ -55,6 +55,9 @@ public class DirectListener implements Runnable {
 	@Value('${ett.starttls.address}')
 	String startTlsAddress = ""
 	
+	@Value('${toolkit.url}')
+	String toolkitUrl = ""
+	
 	// Emailer settings
 	@Autowired
 	EmailerModel emailerModel
@@ -89,7 +92,7 @@ public class DirectListener implements Runnable {
 				String logFilePath = this.tomcatDir + File.separator + "logs" + File.separator + "listener.log"
 				
 				// Set the processor
-				ListenerProcessor processor = new ListenerProcessor(server, db, this.mdhtR1Url, this.mdhtR2Url);
+				ListenerProcessor processor = new ListenerProcessor(server, db, this.mdhtR1Url, this.mdhtR2Url, this.toolkitUrl);
 				processor.setEmailer(new Emailer(this.emailerModel))
 				processor.setDomainName(this.domainName)
 				processor.setServletName(this.servletName)

@@ -36,7 +36,9 @@ public interface XDRRecordInterface {
      * @return the criteriaMet
      */
     Status getCriteriaMet();
-
+    
+    String getMDHTValidationReport();
+            
     
     void setXdrRecordDatabaseId(String databaseId);
     
@@ -44,6 +46,8 @@ public interface XDRRecordInterface {
      * @param status the status to set
      */
     void setStatus(Status status);
+    
+    Status getStatus();
 
     /**
      * @param testCaseNumber the testCaseNumber to set
@@ -65,4 +69,5 @@ public interface XDRRecordInterface {
      */
     void setUsername(String username);
 
+    void setMDHTValidationReport(String validationReport);
 }

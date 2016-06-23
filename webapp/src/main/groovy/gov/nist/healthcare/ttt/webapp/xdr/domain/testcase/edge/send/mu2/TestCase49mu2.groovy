@@ -3,6 +3,7 @@ package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send.mu2
 import gov.nist.healthcare.ttt.database.xdr.Status
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
+import gov.nist.healthcare.ttt.parsing.Parsing;
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
@@ -46,7 +47,17 @@ final class TestCase49mu2 extends TestCaseSender {
         XDRTestStepInterface step = executor.executeStoreXDRReport(report)
 
         record = new TestCaseBuilder(record).addStep(step).build()
-        record.status = Status.MANUAL
+		// Checking the Direct address block to set the status
+		try {
+			if(Parsing.isValidDirectAddressBlock(report.request)) {
+				record.status = Status.PASSED
+			} else {
+				record.status = Status.FAILED
+			}
+		} catch(Exception e) {
+			log.error(e.getMessage())
+			record.status = Status.MANUAL
+		}
         executor.db.updateXDRRecord(record)
     }
 
