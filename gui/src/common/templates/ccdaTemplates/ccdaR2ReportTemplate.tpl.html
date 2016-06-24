@@ -11,7 +11,7 @@
                 <td>
                     <strong>CCDA Document Type:</strong> {{data.resultsMetaData.ccdaDocumentType}}
                     <br>
-                    <strong>Service Error Message:</strong> {{data.resultsMetaData.serviceErrorMessage}}
+                    <strong ng-if="data.resultsMetaData.serviceErrorMessage">Service Error Message:</strong> {{data.resultsMetaData.serviceErrorMessage}}
                 </td>
                 <td class="pull-right" style="text-align: center;" ns-popover ns-popover-template="popover" ns-popover-trigger="mouseenter" ns-popover-placement="left" ns-popover-theme="ns-popover-tooltip-theme">
                     <i class="fa fa-info-circle fa-4x"></i>

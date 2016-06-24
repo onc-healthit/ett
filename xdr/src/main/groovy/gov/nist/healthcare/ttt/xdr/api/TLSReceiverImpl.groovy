@@ -85,13 +85,11 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
 
         BufferedWriter w = null;
         BufferedReader r = null;
-        Status status = Status.FAILED
+        Status status = Status.PENDING
 
         log.info("Request coming from a socket: \n" + socketInfo(connection))
 
-        try {
-            
-            Thread.sleep(1000);                                    
+        try {                                                           
             if(connection.isClosed()) {
                 status = Status.PASSED
             }
@@ -118,9 +116,11 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             log.info("socket flushed")
             BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
             int incoming = is.read();                        
-            log.info("success opening inputstream from socket (error: should be closed!)")                    
+            log.info("success opening inputstream from socket (potential issue?)")
+            Thread.sleep(10000)
             if(incoming == -1) {                
-                log.info("nothing is being sent but socket is available for read")
+                log.info("nothing is being sent but socket is available for read -- considered pass")
+                status = Status.PASSED
             } else {                
                 log.info("there is data available to read")
                 int i = is.read();
@@ -131,6 +131,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
                     sb.append(i + " ");
                 }
                 log.info("socket should have been closed but client has sent int/bytes: " + sb.toString())
+                status = Status.FAILED
             }                      
         } catch (Exception e) {
             //e.printStackTrace()
