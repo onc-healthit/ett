@@ -77,6 +77,13 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
                             message: data.data.message
                         };
                     });
+                }  else {
+                    $scope.laddaLoading = false;
+                    throw {
+                        code: "No code",
+                        url: "",
+                        message: "You need to select a C-CDA document name"
+                    };
                 }
             } else {
                 $scope.laddaLoading = false;

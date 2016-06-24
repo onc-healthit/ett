@@ -1,3 +1,7 @@
+==Version 1.0.19#6/24/2016
+	* XDR
+		-XDR 7: Additional testing of socket to verify no information is being sent across after bad certificate is provided.
+
 ==Version 1.0.18#6/21/2016
 	* XDR
 		-The tool will now look for the metadata-level element as either a top-level element in the SOAP headers or within the Direct Address Block.
