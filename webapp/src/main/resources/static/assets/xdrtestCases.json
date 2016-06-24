@@ -105,7 +105,7 @@
 }, {
     "name": "XDR Test 7",
     "id": 7,
-    "desc": "Verifies the ability of the sending system to reject a mutual TLS connection where the certificate provided by the ETT is invalid.",
+    "desc": "Verifies the ability of the sending system to reject a mutual TLS connection where the certificate provided by the ETT is invalid.  If you experience Pending Refresh or a Fail that you think is incorrect, please run this test again but wait 15 seconds after the connection has been dropped for the ETT to fully test the socket connection.",
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
