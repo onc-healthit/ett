@@ -1,33 +1,37 @@
 package gov.nist.healthcare.ttt.smtp.testcases;
 
+import gov.nist.healthcare.ttt.smtp.TestInput;
+import gov.nist.healthcare.ttt.smtp.TestResult;
+import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
+
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.util.ByteArrayDataSource;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.MimeHeaders;
+import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPConnection;
+import javax.xml.soap.SOAPConnectionFactory;
+import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-
-import gov.nist.healthcare.ttt.smtp.TestInput;
-import gov.nist.healthcare.ttt.smtp.TestResult;
-import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
 public class MU2SenderTests {
 
@@ -1585,6 +1589,137 @@ public class MU2SenderTests {
 
 		return tr;
 	}
+	
+	public TestResult uploadCertificate(TestInput ti) {
+		TestResult tr = new TestResult();
+		
+
+		try {
+			
+			// Create SOAP Connection
+            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+
+            // Send SOAP Message to SOAP Server
+            String url = "http://hit-testing.nist.gov:8081/config-service/ConfigurationService?wsdl";
+            SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(ti.getCertificate()), url);
+
+            // Process the SOAP Response
+          //  printSOAPResponse(soapResponse);
+
+            soapConnection.close();
+
+		
+		} catch (Exception e) {
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+			
+		}
+
+		return tr;
+	}
+	
+	private static SOAPMessage createSOAPRequest(byte[] cert) throws Exception {
+        MessageFactory messageFactory = MessageFactory.newInstance();
+        SOAPMessage soapMessage = messageFactory.createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
+
+        String serverURI = "http://nhind.org/config";
+
+        // SOAP Envelope
+        SOAPEnvelope envelope = soapPart.getEnvelope();
+        envelope.addNamespaceDeclaration("ns1", serverURI);
+
+        
+        /*<?xml version="1.0" encoding="UTF-8"?>
+        <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://nhind.org/config">
+         <SOAP-ENV:Body>
+           <ns1:addAnchor>
+             <anchor>
+               <certificateId>0</certificateId>
+               <createTime>2016-06-22T20:44:05.517Z</createTime>
+               <data>MIIFQzCCBCugAwIJ9WLf/jtz1Zlg==</data>
+               <id>0</id>
+               <incoming>true</incoming>
+               <outgoing>true</outgoing>
+               <owner>dsdev.sitenv.org</owner>
+               <status></status>
+               <thumbprint>193298f2b2b8e83c316fa512c1e481bf7ed37a9a</thumbprint>
+               <validEndDate>2026-03-16T17:30:06Z</validEndDate>
+               <validStartDate>2016-03-18T17:30:06Z</validStartDate>
+             </anchor>
+           </ns1:addAnchor>
+         </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>*/
+  
+        
+     // read key bytes
+    	FileInputStream fin = new FileInputStream("C:/Users/hit-dev.nist.gov.pem");
+    	FileInputStream fin2 = new FileInputStream("C:/Users/hit-dev.nist.gov.pem");
+    	byte[] targetArray = IOUtils.toByteArray(fin);
+	//	System.out.println(new String(targetArray));
+		
+		String s = new String(targetArray); //replace with cert
+		String s1 = s.replace("-----BEGIN CERTIFICATE-----","");
+		String s2 = s1.replace("-----END CERTIFICATE-----","");
+		String s3 = s2.replaceAll("\\s+","");
+		
+    	CertificateFactory f = CertificateFactory.getInstance("X.509");
+    	X509Certificate certificate = (X509Certificate)f.generateCertificate(fin2);
+    //	System.out.println(certificate);
+    	
+    	String thumbPrint = DigestUtils.sha1Hex(certificate.getEncoded());
+
+        // SOAP Body
+        SOAPBody soapBody = envelope.getBody();
+        SOAPElement soapBodyElem = soapBody.addChildElement("addAnchor", "ns1");
+        SOAPElement soapBodyElem1 = soapBodyElem.addChildElement("anchor");
+        
+        SOAPElement soapBodyElem2 = soapBodyElem1.addChildElement("certificateId");
+        soapBodyElem2.addTextNode("0");
+        
+        SOAPElement soapBodyElem3 = soapBodyElem1.addChildElement("createTime");
+        soapBodyElem3.addTextNode("2016-06-22T20:44:05.517Z");
+        
+        SOAPElement soapBodyElem4 = soapBodyElem1.addChildElement("data");
+        soapBodyElem4.addTextNode(s3);
+        
+        SOAPElement soapBodyElem5 = soapBodyElem1.addChildElement("id");
+        soapBodyElem5.addTextNode("0");
+        
+        SOAPElement soapBodyElem6 = soapBodyElem1.addChildElement("incoming");
+        soapBodyElem6.addTextNode("true");
+        
+        SOAPElement soapBodyElem7 = soapBodyElem1.addChildElement("outgoing");
+        soapBodyElem7.addTextNode("true");
+        
+        SOAPElement soapBodyElem8 = soapBodyElem1.addChildElement("owner");
+        soapBodyElem8.addTextNode("hit-testing.nist.gov");
+        
+        SOAPElement soapBodyElem9 = soapBodyElem1.addChildElement("status");
+        soapBodyElem9.addTextNode("ENABLED");
+        
+        SOAPElement soapBodyElem10 = soapBodyElem1.addChildElement("thumbprint");
+        soapBodyElem10.addTextNode(thumbPrint);
+        
+        SOAPElement soapBodyElem11 = soapBodyElem1.addChildElement("validEndDate");
+        soapBodyElem11.addTextNode("2026-03-16T18:30:06Z");
+        
+        SOAPElement soapBodyElem12 = soapBodyElem1.addChildElement("validStartDate");
+        soapBodyElem12.addTextNode("2016-03-18T17:30:06Z");
+
+
+        MimeHeaders headers = soapMessage.getMimeHeaders();
+        headers.addHeader("SOAPAction", serverURI  + "addDomain");
+
+        soapMessage.saveChanges();
+
+        /* Print the request message */
+        System.out.print("Request SOAP Message = ");
+        soapMessage.writeTo(System.out);
+        System.out.println();
+
+        return soapMessage;
+    }
 	
 	public TestResult testBadDispositionNotification(TestInput ti) {
 		TestResult tr = new TestResult();
