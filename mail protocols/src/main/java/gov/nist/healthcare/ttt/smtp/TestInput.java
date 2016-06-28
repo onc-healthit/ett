@@ -38,6 +38,7 @@ public class TestInput {
 	
 	public TestResult tr;
 	
+	public byte[] certificate;
 
 	public LinkedHashMap<String, byte[]> attachments = new LinkedHashMap<String, byte[]>();
 	
@@ -45,7 +46,7 @@ public class TestInput {
 			String _sutEmailAddress, String _tttEmailAddress, boolean _useTLS,
 			String _sutUserName, String _sutPassword,String _tttUserName, String _tttPassword, int _starTtlsPort,
 			int _sutCommandTimeoutInSeconds, 
-			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective) {
+			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective, byte[] _certificate) {
 		sutSmtpAddress = _sutSmtpAddress;
 		tttSmtpAddress = _tttSmtpAddress;
 		sutSmtpPort = _sutSmtpPort;
@@ -62,6 +63,7 @@ public class TestInput {
 		attachments = _attachments;
 		ccdaReferenceFilename = _ccdaReferenceFilename;
 		ccdaValidationObjective = _ccdaValidationObjective;
+		certificate = _certificate;
 	}
 
 	public TestInput(String _sutSmtpAddress, int _sutSmtpPort,
@@ -183,6 +185,14 @@ public class TestInput {
 
 	public void setCcdaReferenceFilename(String ccdaReferenceFilename) {
 		this.ccdaReferenceFilename = ccdaReferenceFilename;
+	}
+	
+	public byte[] getCertificate() {
+		return certificate;
+	}
+
+	public void setCertificate(byte[] certificate) {
+		this.certificate = certificate;
 	}
 	
 	public TestResult getTr() {
