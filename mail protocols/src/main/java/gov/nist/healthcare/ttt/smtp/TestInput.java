@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+// Test input class
 public class TestInput {
 	public String sutSmtpAddress;
 
