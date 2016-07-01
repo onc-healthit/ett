@@ -62,7 +62,6 @@ final class TestCase50bmu2 extends TestCaseSender {
         def context = new HashMap()
         XDRTestStepInterface step1 = executor.executeStoreXDRReport(report)
         context.targetEndpointTLS = storeStep.simulator.endpointTLS
-        sim = registerDocSrcEndpoint(record.username,context)
 
         // Send an xdr with the endpoint created above
         context.simId = id + "_" + record.username
