@@ -424,18 +424,15 @@ public class Parsing {
 //          xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM2.txt", Charset.defaultCharset());  
             //xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/fromToolkit.txt", Charset.defaultCharset());
             xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/xdr.txt", Charset.defaultCharset());
-
+            
        //    System.out.println(Parsing.isRegistryResponseSuccessFullHeaders(xml));
 
             SOAPWithAttachment swa = Parsing.parseMtom(xml);
 
          //   System.out.println(swa.getSoap());
 //            System.out.println(new String(swa.getAttachment().iterator().next()));
-
             //     System.out.println(Parsing.isValidDirectDisposition(xml));
-            /*
-          
-          
+            /*                    
              try {
                  SOAPWithAttachment swa = Parsing.parseMtom(xml);
                  
