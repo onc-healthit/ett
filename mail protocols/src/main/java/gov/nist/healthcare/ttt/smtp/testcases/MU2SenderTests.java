@@ -1819,7 +1819,7 @@ public class MU2SenderTests {
 			file.close();
 			
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
+			message.setFrom(new InternetAddress(prop.getProperty("dir.username")));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header");
@@ -1831,7 +1831,7 @@ public class MU2SenderTests {
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
-					: ti.sutSmtpPort,"sandeep@hit-testing.nist.gov", "sandeeppassword");
+					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
@@ -1891,7 +1891,7 @@ public class MU2SenderTests {
 			file.close();
 			
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
+			message.setFrom(new InternetAddress(prop.getProperty("dir.username")));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Mail to receivng HISP");
@@ -1902,7 +1902,7 @@ public class MU2SenderTests {
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
-					: ti.sutSmtpPort,"sandeep@hit-testing.nist.gov", "sandeeppassword");
+					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
@@ -1961,7 +1961,7 @@ public class MU2SenderTests {
 			file.close();
 			
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("sandeep@hit-testing.nist.gov"));
+			message.setFrom(new InternetAddress(prop.getProperty("dir.username")));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Mail to receivng HISP");
@@ -1973,7 +1973,7 @@ public class MU2SenderTests {
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
-					: ti.sutSmtpPort,"sandeep@hit-testing.nist.gov", "sandeeppassword");
+					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
