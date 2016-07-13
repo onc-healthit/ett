@@ -1554,7 +1554,7 @@ public class MU2SenderTests {
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
 			Transport transport = session.getTransport("smtp");
-			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
+			transport.connect(prop.getProperty("dir.hostname"), ti.useTLS ? ti.startTlsPort
 					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
@@ -1830,7 +1830,7 @@ public class MU2SenderTests {
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
 			Transport transport = session.getTransport("smtp");
-			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
+			transport.connect(prop.getProperty("dir.hostname"), ti.useTLS ? ti.startTlsPort
 					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
@@ -1901,7 +1901,7 @@ public class MU2SenderTests {
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
 			Transport transport = session.getTransport("smtp");
-			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
+			transport.connect(prop.getProperty("dir.hostname"), ti.useTLS ? ti.startTlsPort
 					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
@@ -1972,7 +1972,7 @@ public class MU2SenderTests {
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
 			Transport transport = session.getTransport("smtp");
-			transport.connect("hit-testing.nist.gov", ti.useTLS ? ti.startTlsPort
+			transport.connect(prop.getProperty("dir.hostname"), ti.useTLS ? ti.startTlsPort
 					: ti.sutSmtpPort,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();

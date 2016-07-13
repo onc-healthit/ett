@@ -452,8 +452,7 @@ public class MU2ReceiverTests {
 										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 									}
-
-
+									
 								}
 
 							}
@@ -535,6 +534,7 @@ public class MU2ReceiverTests {
 
 					}
 				}
+				
 			}
 
 
