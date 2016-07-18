@@ -551,9 +551,9 @@ public class TTTReceiverTests {
 
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
-			store.connect("hit-testing2.nist.gov", 143,
-					"vendor1smtpsmtp@hit-testing2.nist.gov",
-					"vendortesting123");
+			store.connect(prop.getProperty("ett.smtp.host"), 143,
+					prop.getProperty("ett.vendorsmtp.address"),
+					prop.getProperty("ett.vendorsmtp.password"));
 
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
