@@ -549,7 +549,15 @@
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"sutEdge": false
+		"sutEdge": false,
+		"fields": [{
+			"label": "C-CDA Document Type",
+			"name": "ccdaReferenceFilename",
+			"datatype": "CCDAWidget",
+			"value": "ccdaReferenceFilename",
+			"readOnly": false,
+			"display": true
+		}]
 	}, {
 		"name": "SMTP MT Test 40 (Message with Bad Header)",
 		"id": 140,
@@ -558,7 +566,15 @@
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"sutEdge": false
+		"sutEdge": false,
+		"fields": [{
+			"label": "C-CDA Document Type",
+			"name": "ccdaReferenceFilename",
+			"datatype": "CCDAWidget",
+			"value": "ccdaReferenceFilename",
+			"readOnly": false,
+			"display": true
+		}]
 	},{
 		"name": "SMTP MT Test 41 (Unable to deliver)",
 		"id": 142,
@@ -567,7 +583,15 @@
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"sutEdge": false
+		"sutEdge": false,
+		"fields": [{
+			"label": "C-CDA Document Type",
+			"name": "ccdaReferenceFilename",
+			"datatype": "CCDAWidget",
+			"value": "ccdaReferenceFilename",
+			"readOnly": false,
+			"display": true
+		}]
 	}, {
 		"name": "IMAP Test 1, 2, 3",
 		"id": 201,

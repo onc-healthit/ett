@@ -1,24 +1,26 @@
 package gov.nist.healthcare.ttt.smtp.testcases;
 
-import gov.nist.healthcare.ttt.smtp.TestInput;
-import gov.nist.healthcare.ttt.smtp.TestResult;
-import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
-
 import java.io.FileInputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
 import javax.xml.soap.SOAPBody;
@@ -32,6 +34,10 @@ import javax.xml.soap.SOAPPart;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+
+import gov.nist.healthcare.ttt.smtp.TestInput;
+import gov.nist.healthcare.ttt.smtp.TestResult;
+import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
 public class MU2SenderTests {
 
@@ -1341,7 +1347,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
@@ -1411,7 +1417,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
@@ -1481,7 +1487,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
@@ -1549,6 +1555,33 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart();
+
+			// Adding attachments
+			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
+
+				DataSource source = new ByteArrayDataSource(e.getValue(),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				if (e.getKey().contains("zip")){
+					DataSource source1 = new ByteArrayDataSource(e.getValue(),
+							"application/zip");
+					messageBodyPart.setDataHandler(new DataHandler(source1));
+				}
+				
+				messageBodyPart.setFileName(e.getKey());
+				aName += e.getKey();
+				multipart.addBodyPart(messageBodyPart);
+
+				// Send the complete message parts
+				message.setContent(multipart);
+			}
+			
 			
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -1755,7 +1788,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
@@ -1826,6 +1859,32 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
 
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart();
+
+			// Adding attachments
+			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
+
+				DataSource source = new ByteArrayDataSource(e.getValue(),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				if (e.getKey().contains("zip")){
+					DataSource source1 = new ByteArrayDataSource(e.getValue(),
+							"application/zip");
+					messageBodyPart.setDataHandler(new DataHandler(source1));
+				}
+				
+				messageBodyPart.setFileName(e.getKey());
+				aName += e.getKey();
+				multipart.addBodyPart(messageBodyPart);
+
+				// Send the complete message parts
+				message.setContent(multipart);
+			}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -1967,7 +2026,32 @@ public class MU2SenderTests {
 			message.setSubject("Mail to receivng HISP");
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			BodyPart messageBodyPart = new MimeBodyPart();
 
+			messageBodyPart.setText("This is message body");
+			String aName = "";
+
+			Multipart multipart = new MimeMultipart();
+
+			// Adding attachments
+			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
+
+				DataSource source = new ByteArrayDataSource(e.getValue(),
+						"text/html");
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				if (e.getKey().contains("zip")){
+					DataSource source1 = new ByteArrayDataSource(e.getValue(),
+							"application/zip");
+					messageBodyPart.setDataHandler(new DataHandler(source1));
+				}
+				
+				messageBodyPart.setFileName(e.getKey());
+				aName += e.getKey();
+				multipart.addBodyPart(messageBodyPart);
+
+				// Send the complete message parts
+				message.setContent(multipart);
+			}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 
@@ -2041,7 +2125,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
@@ -2116,7 +2200,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
@@ -2194,7 +2278,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
@@ -2277,7 +2361,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
@@ -2360,7 +2444,7 @@ public class MU2SenderTests {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("processeddispatched6@edge.nist.gov"));
+					InternetAddress.parse(prop.getProperty("processed.dispatched")));
 			message.setSubject("Testing sending mail to receive Positive Delivery Notification (Test Case MU2-29)!");
 			message.setText("This is a message to a badAddress!");
 			
