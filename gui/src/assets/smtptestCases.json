@@ -544,30 +544,54 @@
 	}, {
 		"name": "SMTP MT Test 39 (Message with Good Header)",
 		"id": 139,
-		"desc": "Verify the ability of the system to properly process the Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT to send a message with a well-formed Disposition-Notifications-Options Header. If the message is sent successfully 'Check MDN' will appear. Clicking that will check for the expected Processed and Dispatched MDN (Note that you may have to click multiple times due to lag.) The expected result is a Processed and Dispatched MDN.",
+		"desc": "Verify the ability of the system to properly process the Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT to send a message with a well-formed Disposition-Notifications-Options Header. If the message is sent successfully 'Check MDN' will appear. Clicking that will check for the expected Processed and Dispatched MDN (Note that you may have to click multiple times due to lag.) The expected result is a Processed and Dispatched MDN. The selection of a file is optional, if the system requires clinical information with the message.",
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"sutEdge": false
+		"sutEdge": false,
+		"fields": [{
+			"label": "C-CDA Document Type",
+			"name": "ccdaReferenceFilename",
+			"datatype": "CCDAWidget",
+			"value": "ccdaReferenceFilename",
+			"readOnly": false,
+			"display": true
+		}]
 	}, {
 		"name": "SMTP MT Test 40 (Message with Bad Header)",
 		"id": 140,
-		"desc": "Verify the ability of the system to process an invalid Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT to send a message with an incorrect Disposition-Notifications-Options Header. If the message is sent successfully 'Check MDN' will appear. Clicking that will check for the expected Processed MDN (Note that you may have to click multiple times due to lag.) The expected result is that the Vendor will be able to process the invalid Disposition-Notifications-Options Header and respond with a Processed MDN. Optionally, the test will accommodate systems that also respond with a Dispatched MDN--however the Dispatched MDN must NOT contain the X-DIRECT-FINAL-DESTINATION-DELIVERY header to pass.",
+		"desc": "Verify the ability of the system to process an invalid Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT to send a message with an incorrect Disposition-Notifications-Options Header. If the message is sent successfully 'Check MDN' will appear. Clicking that will check for the expected Processed MDN (Note that you may have to click multiple times due to lag.) The expected result is that the Vendor will be able to process the invalid Disposition-Notifications-Options Header and respond with a Processed MDN. Optionally, the test will accommodate systems that also respond with a Dispatched MDN--however the Dispatched MDN must NOT contain the X-DIRECT-FINAL-DESTINATION-DELIVERY header to pass. The selection of a file is optional, if the system requires clinical information with the message.",
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"sutEdge": false
+		"sutEdge": false,
+		"fields": [{
+			"label": "C-CDA Document Type",
+			"name": "ccdaReferenceFilename",
+			"datatype": "CCDAWidget",
+			"value": "ccdaReferenceFilename",
+			"readOnly": false,
+			"display": true
+		}]
 	},{
 		"name": "SMTP MT Test 41 (Unable to deliver)",
 		"id": 142,
-		"desc": "Verifies that when the system successfully validates security and trust, but cannot deliver the message to its final destination, the system generates an MDN failed or a failure DSN. ETT (as Sending HISP) sends a well-formed message to a destination address.  The system decrypts and trust validates the message, returning a Processed MDN. The system is unable to deliver the message (mail box full, unavailable, mailbox does not exist)  and returns either an MDN failed or a failure Delivery Status Notification.",
+		"desc": "Verifies that when the system successfully validates security and trust, but cannot deliver the message to its final destination, the system generates an MDN failed or a failure DSN. ETT (as Sending HISP) sends a well-formed message to a destination address.  The system decrypts and trust validates the message, returning a Processed MDN. The system is unable to deliver the message (mail box full, unavailable, mailbox does not exist)  and returns either an MDN failed or a failure Delivery Status Notification. The selection of a file is optional, if the system requires clinical information with the message.",
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"sutEdge": false
+		"sutEdge": false,
+		"fields": [{
+			"label": "C-CDA Document Type",
+			"name": "ccdaReferenceFilename",
+			"datatype": "CCDAWidget",
+			"value": "ccdaReferenceFilename",
+			"readOnly": false,
+			"display": true
+		}]
 	}, {
 		"name": "IMAP Test 1, 2, 3",
 		"id": 201,

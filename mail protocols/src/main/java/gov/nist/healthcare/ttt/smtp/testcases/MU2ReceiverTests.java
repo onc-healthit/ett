@@ -76,14 +76,14 @@ public class MU2ReceiverTests {
 			store = session.getStore("imap");
 
 			if (fetch.equals("smtp")){
-				store.connect(ti.tttSmtpAddress,993,"failure15@hit-testing2.nist.gov",prop.getProperty("ett.password"));
+				store.connect(ti.tttSmtpAddress,993,prop.getProperty("ett.smtpmu2.address"),prop.getProperty("ett.password"));
 			}
 			else if (fetch.equals("imap")) {
 				store.connect(ti.sutSmtpAddress,143,ti.sutUserName,ti.sutPassword);
 			}
 
 			else if (fetch.equals("imap1")) {
-				store.connect("hit-testing.nist.gov",143,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
+				store.connect(prop.getProperty("dir.hostname"),143,prop.getProperty("dir.username"), prop.getProperty("dir.password"));
 			}
 
 			else {
@@ -452,8 +452,7 @@ public class MU2ReceiverTests {
 										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 									}
-
-
+									
 								}
 
 							}
@@ -526,7 +525,7 @@ public class MU2ReceiverTests {
 				System.out.println(list1);
 				System.out.println(list);
 				if(list1.contains("automatic-action/MDN-sent-automatically;processed")){
-
+					
 					if(list.contains("in-reply-to") || list1.contains("automatic-action/MDN-sent-automatically;failure")){
 						ZonedDateTime endTime = ZonedDateTime.now();
 						result.putAll(buffer);
@@ -535,6 +534,7 @@ public class MU2ReceiverTests {
 
 					}
 				}
+				
 			}
 
 
