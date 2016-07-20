@@ -525,7 +525,7 @@ public class MU2ReceiverTests {
 				System.out.println(list1);
 				System.out.println(list);
 				if(list1.contains("automatic-action/MDN-sent-automatically;processed")){
-
+					
 					if(list.contains("in-reply-to") || list1.contains("automatic-action/MDN-sent-automatically;failure")){
 						ZonedDateTime endTime = ZonedDateTime.now();
 						result.putAll(buffer);
