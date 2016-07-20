@@ -1,0 +1,20 @@
+<h2><i class="fa fa-pie-chart"></i> XDR Validator with Toolkit</h2>
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="form-group">
+            <label class="control-label" for="directTo">
+                Patient ID&nbsp;
+                <i class="fa fa-question-circle" tooltips tooltip-title="Indicate the Patient ID" tooltip-side="right"></i>
+            </label>
+            <input type="text" placeholder="Patient ID" id="patientId" class="form-control" ng-model="patientId" name="patientId">
+        </div>
+    </div>
+</div>
+
+<button type="submit" class="btn btn-lg btn-primary center-block" ng-click="" ladda="laddaLoading" style="margin-bottom: 10px;" disabled>Validate</button>
+
+<div ng-if="xdmResult">
+    <hr>
+    <pre>{{xdmResult.report}}</pre>
+</div>

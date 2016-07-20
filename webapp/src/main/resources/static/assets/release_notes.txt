@@ -1,3 +1,7 @@
+==Version 1.0.20#7/20/2016
+	* MU2
+		-Added attachments for MU2 39, 40 and 41
+
 ==Version 1.0.19#6/24/2016
 	* XDR
 		-XDR 7: Additional testing of socket to verify no information is being sent across after bad certificate is provided.

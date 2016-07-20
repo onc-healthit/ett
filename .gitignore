@@ -60,3 +60,4 @@ xdrMessageFactory/.settings/org.eclipse.core.resources.prefs
 xdrMessageFactory/.settings/org.eclipse.jdt.core.prefs
 xdrMessageFactory/.settings/org.eclipse.m2e.core.prefs
 gui/vendor/
+webapp/src/main/resources/public/
