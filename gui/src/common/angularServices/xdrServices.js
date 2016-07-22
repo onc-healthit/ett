@@ -47,3 +47,9 @@ xdrService.factory('XDREndpoints', ['RESOURCES', 'CancelableResourceFactory',
         }, {});
     }
 ]);
+
+xdrService.factory('XDRValidatorEndpoints', ['RESOURCES', 'CancelableResourceFactory',
+    function(RESOURCES, CancelableResourceFactory) {
+        return CancelableResourceFactory.createResource(RESOURCES.USERS_API + 'xdrvalidator/endpoints', {}, {});
+    }
+]);

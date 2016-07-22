@@ -49,7 +49,7 @@ validators.config(['$stateProvider',
                 url: '/xdr',
                 views: {
                     "validators": {
-                        controller: 'DirectValidatorCtrl',
+                        controller: 'XDRValidatorCtrl',
                         templateUrl: 'message-validators/xdr-validator/xdr-validator.tpl.html'
                     }
                 }
