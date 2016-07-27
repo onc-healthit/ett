@@ -288,7 +288,21 @@ tttDirective.directive('ccdaR2Report', function() {
             data: '='
         },
         replace: true,
-        templateUrl: 'templates/ccdaTemplates/ccdaR2ReportTemplate.tpl.html'
+        templateUrl: 'templates/ccdaTemplates/ccdaR2ReportTemplate.tpl.html',
+        link: function(scope) {
+            scope.data.hasError = false;
+            if (scope.data.resultsMetaData) {
+                if (scope.data.resultsMetaData.resultMetaData) {
+                    scope.data.resultsMetaData.resultMetaData.forEach(function(item) {
+                        if (item.type.indexOf('Error') > 0) {
+                            if (item.count > 0) {
+                                scope.data.hasError = true;
+                            }
+                        }
+                    });
+                }
+            }
+        }
     };
 });
 

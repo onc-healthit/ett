@@ -11,39 +11,40 @@ import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement;
 import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
+import gov.nist.healthcare.ttt.webapp.xdr.domain.helper.MsgLabel;
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport;;
 
 @Component
-public class TestCaseXdrValidator extends TestCaseSender {
+public class TestCaseXdrVal extends TestCase {
 
 	@Autowired
-	public TestCaseXdrValidator(TestCaseExecutor executor) {
+	public TestCaseXdrVal(TestCaseExecutor executor) {
 		super(executor);
-	}
-	
-	@Override
-	Result configure(){
-		Content c = new Content()
-		c.endpoint = sim.endpoint
-		c.endpointTLS = sim.endpointTLS
-		new Result(Status.PENDING, c)
 	}
 
 	@Override
 	public Result run(Map context, String username) {
-		executor.validateInputs(context,["direct_from", "targetEndpointTLS"])
+		executor.validateInputs(context,["targetEndpointTLS"])
 
-        //correlate this test to a direct_from address and a simulator id so we can be notified
-        TestCaseBuilder builder = new TestCaseBuilder(id, username)
-        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from);
-		XDRTestStepInterface step2 = executor.recordSimulator(context.targetEndpointTLS);
-        executor.db.addNewXdrRecord(builder.addStep(step1).addStep(step2).build())
+        // Send an xdr with the endpoint created above
+        context.endpoint = context.targetEndpointTLS
+        context.simId = id + "_" + username
+        context.wsaTo = context.targetEndpointTLS
+        context.directTo = "xdrvalidator@$executor.hostname"
+        context.directFrom = "xdrvalidator@$executor.hostname"
+        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
 
-        def content = new Content()
-        content.endpoint = endpoints[0]
-        content.endpointTLS = endpoints[1]
-		
-        return new Result(Status.MANUAL, content)
+        XDRTestStepInterface step1 = executor.executeSendXDRStep(context)
+
+        // Create a new test record
+        XDRRecordInterface record = new TestCaseBuilder(id, username).addStep(step1).build()
+        record.setStatus(step1.status)
+        executor.db.addNewXdrRecord(record)
+
+        // Build the message to return to the gui
+        log.debug(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
+        def content = executor.buildSendXDRContent(step1)
+        return new Result(record.criteriaMet, content)
 	}
 	
 	@Override
@@ -64,7 +65,7 @@ public class TestCaseXdrValidator extends TestCaseSender {
 		context.endpoint = storeStep.simulator.endpointTLS
 		context.wsaTo = storeStep.simulator.endpointTLS
 		context.directTo = report.directFrom
-		context.directFrom = "testcase20a@$executor.hostname"
+		context.directFrom = "xdrvalidator@$executor.hostname"
 		context.messageType = ArtifactManagement.Type.DELIVERY_STATUS_NOTIFICATION_SUCCESS
 		context.relatesTo = report.messageId
 		// TODO

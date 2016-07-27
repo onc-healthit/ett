@@ -53,3 +53,15 @@ xdrService.factory('XDRValidatorEndpoints', ['RESOURCES', 'CancelableResourceFac
         return CancelableResourceFactory.createResource(RESOURCES.USERS_API + 'xdrvalidator/endpoints', {}, {});
     }
 ]);
+
+xdrService.factory('XDRValidatorRun', ['RESOURCES', 'CancelableResourceFactory',
+    function(RESOURCES, CancelableResourceFactory) {
+        return CancelableResourceFactory.createResource(RESOURCES.USERS_API + 'xdrvalidator/run', {}, {});
+    }
+]);
+
+xdrService.factory('XDRValidatorStatus', ['RESOURCES', 'CancelableResourceFactory',
+    function(RESOURCES, CancelableResourceFactory) {
+        return CancelableResourceFactory.createResource(RESOURCES.USERS_API + 'xdrvalidator/status', {}, {});
+    }
+]);
