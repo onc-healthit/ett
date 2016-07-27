@@ -1,3 +1,9 @@
+==Version 1.0.21#7/27/2016
+	* SMTP
+		-Fix whitespace issue in MDNs for 39, 40 , 41
+	*C-CDA R2.1 Validator
+		-Fix display issue: green check when there are errors with C-CDA validator
+
 ==Version 1.0.20#7/20/2016
 	* MU2
 		-Added attachments for MU2 39, 40 and 41
