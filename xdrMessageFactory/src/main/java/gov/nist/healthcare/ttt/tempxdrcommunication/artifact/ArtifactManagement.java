@@ -39,6 +39,19 @@ public class ArtifactManagement {
         NEGATIVE_MISSING_ASSOCIATION, // DONE
         DELIVERY_STATUS_NOTIFICATION_SUCCESS, //DONE
         DELIVERY_STATUS_NOTIFICATION_FAILURE, //DONE
+
+        C32_FULL_1,
+        C32_MINIMAL_1,
+        C32_FULL_2,
+        C32_MINIMAL_2,
+        CCDA_AMBULATORY_FULL,
+        CCDA_AMBULATORY_MINIMAL,
+        CCDA_INPATIENT_FULL,
+        CCDA_INPATIENT_MINIMAL,
+        CCR_FULL_1,
+        CCR_MINIMAL_1,
+        CCR_FULL_2,
+        CCR_MINIMAL_2,
         TESTING_ONLY
     };
 
@@ -72,8 +85,8 @@ public class ArtifactManagement {
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY = "Xdr_minimal_metadata_only.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP = "Xdr_minimal_metadata_only_no_soap.xml";
     private static final String FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP_NO_ROUTING = "Xdr_minimal_metadata_only_no_soap_no_routing.xml";
-    private static final String FILENAME_XDR_VANILLA ="Xdr_vanilla.xml";
-   
+    private static final String FILENAME_XDR_VANILLA = "Xdr_vanilla.xml";
+
     private static final String FILENAME_ENCODED_CCDA = "encodedCCDA.txt";
     private static final String FILENAME_CCDA = "CCDA.xml";
     private static final String FILENAME_IGNORE_PAYLOAD = "ignorePayload.txt";
@@ -83,7 +96,32 @@ public class ArtifactManagement {
     private static final String FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE_STANDALONE = "DeliveryStatusNotification_failure_standalone.xml";
 
     private static final String FILENAME_XDR_TESTING_ONLY = "XdrTestingOnly.xml";
-    
+
+    private static final String FILENAME_XDR_VANILLA_C32_FULL_1_DOC = "./vanilla_xdr/C32_sample1_full/C32_Sample1.xml";
+    private static final String FILENAME_XDR_VANILLA_C32_FULL_1_METADATA = "./vanilla_xdr/C32_sample1_full/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_C32_MINIMAL_1_DOC = "./vanilla_xdr/C32_sample1_minimal/C32_Sample1.xml";
+    private static final String FILENAME_XDR_VANILLA_C32_MINIMAL_1_METADATA = "./vanilla_xdr/C32_sample1_minimal/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_C32_FULL_2_DOC = "./vanilla_xdr/C32_sample2_full/C32_Sample2.xml";
+    private static final String FILENAME_XDR_VANILLA_C32_FULL_2_METADATA = "./vanilla_xdr/C32_sample2_full/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_C32_MINIMAL_2_DOC = "./vanilla_xdr/C32_sample2_minimal/C32_Sample2.xml";
+    private static final String FILENAME_XDR_VANILLA_C32_MINIMAL_2_METADATA = "./vanilla_xdr/C32_sample2_minimal/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_AMBULATORY_FULL_DOC = "./vanilla_xdr/CCDA_Ambulatory_full/CCDA_Ambulatory.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_AMBULATORY_FULL_METADATA = "./vanilla_xdr/CCDA_Ambulatory_full/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_AMBULATORY_MINIMAL_DOC = "./vanilla_xdr/CCDA_Ambulatory_minimal/CCDA_Ambulatory.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_AMBULATORY_MINIMAL_METADATA = "./vanilla_xdr/CCDA_Ambulatory_minimal/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_INPATIENT_FULL_DOC = "./vanilla_xdr/CCDA_Inpatient_full/CCDA_Inpatient.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_INPATIENT_FULL_METADATA = "./vanilla_xdr/CCDA_Inpatient_full/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_INPATIENT_MINIMAL_DOC = "./vanilla_xdr/CCDA_Inpatient_minimal/CCDA_Inpatient.xml";
+    private static final String FILENAME_XDR_VANILLA_CCDA_INPATIENT_MINIMAL_METADATA = "./vanilla_xdr/CCDA_Inpatient_minimal/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_FULL_1_DOC = "./vanilla_xdr/CCR_sample1_full/CCR_Sample1.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_FULL_1_METADATA = "./vanilla_xdr/CCR_sample1_full/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_MINIMAL_1_DOC = "./vanilla_xdr/CCR_sample1_minimal/CCR_Sample1.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_MINIMAL_1_METADATA = "./vanilla_xdr/CCR_sample1_minimal/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_FULL_2_DOC = "./vanilla_xdr/CCR_sample2_full/CCR_Sample2.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_FULL_2_METADATA = "./vanilla_xdr/CCR_sample2_full/single_doc.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_MINIMAL_2_DOC = "./vanilla_xdr/CCR_sample2_minimal/CCR_Sample2.xml";
+    private static final String FILENAME_XDR_VANILLA_CCR_MINIMAL_2_METADATA = "./vanilla_xdr/CCR_sample2_minimal/single_doc.xml";
+
     public static String getPayload(Type type, Settings settings) throws IOException {
         makeSettingsSafe(settings);
         String payload = null;
@@ -169,7 +207,7 @@ public class ArtifactManagement {
 
         return message;
     }
-    
+
     private static String getDeliveryStatusNotificationFailureStandalone(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_DELIVERY_STATUS_NOTIFICATION_FAILURE_STANDALONE);
@@ -178,12 +216,12 @@ public class ArtifactManagement {
 
         return message;
     }
-    
+
     private static String generateVanillaXDR(String message, Settings settings) {
         message = message.replaceAll("#PATIENT_ID#", settings.getPatientId());
         return message;
     }
-    
+
     // if messageId null or empty, creates one
     private static String getDeliveryStatusNotificationSuccess(Settings settings) {
         makeSettingsSafe(settings);
@@ -207,8 +245,8 @@ public class ArtifactManagement {
         message = setIds(message, settings.getMessageId());
 
         return message;
-    }    
-    
+    }
+
     public static String getXdrFullMetadata(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_XDR_FULL_METADATA);
@@ -248,6 +286,7 @@ public class ArtifactManagement {
 
         return message;
     }
+
     public static String getXdrTestingOnly(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_XDR_TESTING_ONLY);
@@ -258,8 +297,6 @@ public class ArtifactManagement {
         return message;
     }
 
-    
-    
     public static String getXdrBadSoap(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_BAD_SOAP);
@@ -389,14 +426,14 @@ public class ArtifactManagement {
         return out.toString();
     }
 
-    public static String getIgnorePayload(){
+    public static String getIgnorePayload() {
         return getTemplate(FILENAME_IGNORE_PAYLOAD);
     }
-    
+
     public static String getBaseEncodedCCDA() {
         return getTemplate(FILENAME_ENCODED_CCDA);
     }
-    
+
     public static String getCCDA() {
         return getTemplate(FILENAME_CCDA);
     }
@@ -490,11 +527,10 @@ public class ArtifactManagement {
             }
         }
         String relatesTo = settings.getDirectRelatesTo();
-        if(relatesTo != null && !relatesTo.isEmpty()) {            
-            directBlock.append("<direct:notification relatesTo=\"" + relatesTo + "\"/>");            
+        if (relatesTo != null && !relatesTo.isEmpty()) {
+            directBlock.append("<direct:notification relatesTo=\"" + relatesTo + "\"/>");
         }
-            
-        
+
         String finalDestinationDelivery = settings.getFinalDestinationDelivery();
         if (finalDestinationDelivery != null && !finalDestinationDelivery.equals("")) {
             directBlock.append("<direct:X-DIRECT-FINAL-DESTINATION-DELIVERY>" + finalDestinationDelivery + "</direct:X-DIRECT-FINAL-DESTINATION-DELIVERY> ");
@@ -508,25 +544,25 @@ public class ArtifactManagement {
 
     public static ArrayList<String> generateExtraHeaders(Settings settings, boolean full) {
 
-    	ArrayList<String> headers = new ArrayList<String>();
+        ArrayList<String> headers = new ArrayList<String>();
         if (full) {
             headers.add("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">XDS</direct:metadata-level>");
         } else {
             headers.add("<direct:metadata-level xmlns:direct=\"urn:direct:addressing\">minimal</direct:metadata-level>");
         }
         headers.add(generateDirectMessageBlock(settings));
-        
+
         // Add the relatesTo header
         String relatesTo = settings.getDirectRelatesTo();
-        if(relatesTo != null && !relatesTo.isEmpty()) {            
-        	headers.add("<direct:notification xmlns:direct=\"urn:direct:addressing\" relatesTo=\"" + relatesTo + "\"/>");            
+        if (relatesTo != null && !relatesTo.isEmpty()) {
+            headers.add("<direct:notification xmlns:direct=\"urn:direct:addressing\" relatesTo=\"" + relatesTo + "\"/>");
         }
         return headers;
 
     }
 
     public static String removeXmlDeclaration(String xml) {
-        
+
         int start = xml.indexOf("<?xml ");
         int end = xml.indexOf("?>");
         if (start != -1 && end != -1 && end > start) {
@@ -534,13 +570,73 @@ public class ArtifactManagement {
         }
         return xml;
     }
+
     public static String escapeXml(String xml) {
         xml = xml.replace("<", "&lt;");
         xml = xml.replace(">", "&gt;");
         return xml;
-    
-    
+
     }
+
+    public static Artifacts getVanillaXdr(Type type) {
+
+        Artifacts artifacts = new Artifacts();
+
+        switch (type) {
+            case C32_FULL_1:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_1_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_1_METADATA));
+                break;
+            case C32_MINIMAL_1:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_1_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_1_METADATA));
+                break;
+            case C32_FULL_2:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_2_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_2_METADATA));
+                break;
+            case C32_MINIMAL_2:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_2_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_2_METADATA));
+                break;
+            case CCDA_AMBULATORY_FULL:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_FULL_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_FULL_METADATA));
+                break;
+            case CCDA_AMBULATORY_MINIMAL:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_MINIMAL_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_MINIMAL_METADATA));
+                break;
+            case CCDA_INPATIENT_FULL:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_FULL_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_FULL_METADATA));
+                break;
+            case CCDA_INPATIENT_MINIMAL:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_MINIMAL_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_MINIMAL_METADATA));
+                break;
+            case CCR_FULL_1:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_1_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_1_METADATA));
+                break;
+            case CCR_MINIMAL_1:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_1_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_1_METADATA));
+                break;
+            case CCR_FULL_2:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_2_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_2_METADATA));
+                break;
+            case CCR_MINIMAL_2:
+                artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_2_DOC));
+                artifacts.setMetadata(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_2_METADATA));
+                break;
+            default:
+                break;
+        }
+        return artifacts;
+    }
+
     public static Artifacts generateArtifacts(Type type, Settings settings) {
 
         Artifacts artifacts = new Artifacts();
@@ -562,9 +658,9 @@ public class ArtifactManagement {
         System.out.println(formattedDate);
         if (payload != null && !payload.isEmpty()) {
             System.out.println("Payload is not empty " + formattedDate);
-     //       payload = ArtifactManagement.removeXmlDeclaration(payload);
-     //       payload = ArtifactManagement.escapeXml(payload);
-     /*
+            //       payload = ArtifactManagement.removeXmlDeclaration(payload);
+            //       payload = ArtifactManagement.escapeXml(payload);
+            /*
             if (!ArtifactManagement.isBase64Encoded(payload)) {
              //   System.out.println("!!!Payload is not base64encoded " + payload);                                                             
                 try {
@@ -576,7 +672,7 @@ public class ArtifactManagement {
             } else {
               //  System.out.println("!!! Payload IS base64 encoded " + payload);
             }
-*/
+             */
             artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
             artifacts.setDocument(payload);
             System.out.println("Setting doc to payload " + formattedDate);
@@ -593,24 +689,24 @@ public class ArtifactManagement {
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     artifacts.setDocument(getCCDA());
                     metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
-                    break;                 
+                    break;
                 case XDR_VANILLA:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     //artifacts.setDocument(getCCDA());                    
                     metadata = getTemplate(FILENAME_XDR_VANILLA);
-                    metadata = generateVanillaXDR(metadata,settings);
-                    break;                                     
+                    metadata = generateVanillaXDR(metadata, settings);
+                    break;
                 case DELIVERY_STATUS_NOTIFICATION_SUCCESS:
-                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     artifacts.setDocument(getDeliveryStatusNotificationSuccessStandalone(settings));
                     System.out.println("Setting artifact document to notification success");
-                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);                                        
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
                     break;
                 case DELIVERY_STATUS_NOTIFICATION_FAILURE:
-                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));                                                          
+                    artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
                     artifacts.setDocument(getDeliveryStatusNotificationFailureStandalone(settings));
                     System.out.println("Setting artifact document to notification failure");
-                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);                                        
+                    metadata = getTemplate(FILENAME_XDR_MINIMAL_METADATA_ONLY_NO_SOAP);
                     break;
                 case XDR_C32:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
@@ -666,7 +762,7 @@ public class ArtifactManagement {
             settings.setWsaTo("wsaTo");
             settings.setDirectRelatesTo("MESSAGEID1");
             //    settings.setPayload("THIS IS MY PAYLOAD IN BASE64!!!");
-          //  settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
+            //  settings.setPayload("VEhJUyBJUyBNWSBQQVlMT0FEIElOIEJBU0U2NCEhIQ==");
             String[] directTos = {};
             settings.setAdditionalDirectTo(directTos);
             //   String payload = getPayload(Type.XDR_MINIMAL_METADATA, settings);
@@ -682,7 +778,7 @@ public class ArtifactManagement {
              "wsaTo",
              null));
              */
-     //       Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
+            //       Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_MISSING_ASSOCIATION, settings);
 //            Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
 
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.DELIVERY_STATUS_NOTIFICATION_FAILURE, settings);
@@ -690,8 +786,8 @@ public class ArtifactManagement {
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_MINIMAL_METADATA, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
-settings.setPatientId("909");
-Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_VANILLA, settings);
+      /*      settings.setPatientId("909");
+            Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_VANILLA, settings);
 
             System.out.println("docId = " + art.getDocumentId());
             System.out.println("headers = " + art.getExtraHeaders());
@@ -700,20 +796,23 @@ Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_VANILLA, settings)
             System.out.println("mimetype = " + art.getMimeType());
             System.out.println("document = " + art.getDocument());
 
-            
-            String testXMl = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                            "<?xml-stylesheet type=\"text/xsl\" href=\"CDA.xsl\"?>\n" +
-                            "<ClinicalDocument>\n" +
-                            "hello world\n" +
-                            "</ClinicalDocument>";
-            
-            
-            
-       //     System.out.println(testXMl + "\n\n");
+            String testXMl = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<?xml-stylesheet type=\"text/xsl\" href=\"CDA.xsl\"?>\n"
+                    + "<ClinicalDocument>\n"
+                    + "hello world\n"
+                    + "</ClinicalDocument>";
+
+            //     System.out.println(testXMl + "\n\n");
 //            System.out.println(ArtifactManagement.escapeXml(testXMl));
-            
-            
-            
+*/
+      
+      Artifacts art = ArtifactManagement.getVanillaXdr(Type.CCR_MINIMAL_2);
+      
+      System.out.println(art.getDocument());
+      System.out.println("\n\n\n---------------------------\n\n\n");
+      System.out.println(art.getMetadata());
+      
+      
         } catch (Exception e) {
             e.printStackTrace();
         }
