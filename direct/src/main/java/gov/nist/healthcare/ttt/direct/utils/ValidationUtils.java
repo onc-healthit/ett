@@ -17,6 +17,7 @@ Authors: Frederic de Vaulx
 package gov.nist.healthcare.ttt.direct.utils;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -656,5 +657,14 @@ public class ValidationUtils {
 		}
 		return res;
 	}
+	
+	public static Properties getProp() throws Exception{
+		Properties prop = new Properties();
+		String path = "./application.properties";
+		FileInputStream file = new FileInputStream(path);
+		prop.load(file);
+		file.close();
+		return prop;
+		}
 
 }

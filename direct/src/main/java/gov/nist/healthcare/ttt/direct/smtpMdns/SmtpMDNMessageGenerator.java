@@ -2,6 +2,7 @@ package gov.nist.healthcare.ttt.direct.smtpMdns;
 
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGenerator;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
+import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -32,13 +33,15 @@ public class SmtpMDNMessageGenerator {
 		// Get the MimeMessage object
 		MimeMessage msg = new MimeMessage(session, originalMessage);
 
+		Properties prop = ValidationUtils.getProp();
+		
 		MDNGenerator generator = new MDNGenerator();
 		generator.setDisposition("automatic-action/MDN-sent-automatically;" + type);
 		generator.setFinal_recipient(to);
 		generator.setFromAddress(from);
 		generator.setOriginal_message_id(originalMsgId);
 		generator.setOriginal_recipient(from);
-		generator.setReporting_UA_name("smtp.nist.gov");
+		generator.setReporting_UA_name(prop.getProperty("direct.reporting.ua"));
 		generator.setReporting_UA_product("Security Agent");
 		generator.setSubject("Automatic MDN");
 		if(type.equals("dispatched")) {

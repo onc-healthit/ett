@@ -58,7 +58,7 @@ public class Emailer extends Authenticator {
 		props.put("mail.smtp.user", model.getSmtpUser());
 		props.put("mail.smtp.password", model.getSmtpPassword());
 		props.put("mail.smtp.debug", "false");
-
+	//	props.setProperty("mail.smtp.ssl.trust", "*");
 		// These lines are necesssary for connecting to gmail.com
 		// Don't know about hit-testing yet
 		if(model.getGmailStyle().equals("true")) {
@@ -93,7 +93,8 @@ public class Emailer extends Authenticator {
 		 */
 		Message msg = new MimeMessage(session);
 		if (model.getFrom() != null)
-			msg.setFrom(new InternetAddress(model.getFrom()));
+		//	msg.setFrom(new InternetAddress(model.getFrom()));
+			msg.setFrom(new InternetAddress(model.getSmtpUser()));
 		else
 			msg.setFrom();
 

@@ -1,8 +1,10 @@
 package gov.nist.healthcare.ttt.smtp.util;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.util.Date;
+import java.util.Properties;
 
 public class Utils {
 	public static void pause() {
@@ -24,4 +26,18 @@ public class Utils {
 	        return new Date().getTime();
 	    }
 	}
+	
+	
+	public static Properties getProp() {
+		Properties prop = new Properties();
+		try {
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+		} catch (Exception e) {
+		e.printStackTrace();
+		}
+		return prop;
+		}
 }

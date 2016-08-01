@@ -1728,7 +1728,7 @@ $popover-triangle-border-color: $popover-border-color !default;
   float: none;
   font-family: Verdana;
   font-weight: 700;
-  background-color: #021a4c;
+  background-image: url('img/ttp-header.jpg');
   margin-left: 0;
 }
 .navbar .brand {
@@ -2479,6 +2479,18 @@ For pdf
   text-decoration: underline;
 }
 /**
+ For XDR SAML
+*/
+.tab_saml > a {
+  border-color: #454644;
+  background-color: lightblue !important;
+}
+.tab_saml > a:hover,
+.tab_saml > a:focus {
+  border-color: #454644;
+  background-color: lightblue !important;
+}
+/**
  * Now that all app-wide styles have been applied, we can load the styles for
  * all the submodules and components we are using. 
  *
@@ -2499,7 +2511,7 @@ For pdf
   left: 0;
   top: 0;
   z-index: -1;
-  background-image: url('img/nist-background.jpg');
+  background-image: url('img/ttp-background.jpg');
   background-repeat: no-repeat;
   background-position: 50% 0;
   -ms-background-size: cover;
@@ -2513,7 +2525,7 @@ For pdf
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-image: linear-gradient(#005c97, #363795);
+  background-image: linear-gradient(#056db1, #363795);
 }
 .tools-title {
   color: #f3c50d;

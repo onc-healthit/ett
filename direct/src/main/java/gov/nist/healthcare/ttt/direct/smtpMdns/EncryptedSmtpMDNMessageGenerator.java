@@ -12,6 +12,7 @@ import gov.nist.healthcare.ttt.direct.messageGenerator.MDNGeneratorExtraLineBrea
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNMissingDisposition;
 import gov.nist.healthcare.ttt.direct.messageGenerator.MDNWhiteSpaces;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
+import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
 
 public class EncryptedSmtpMDNMessageGenerator {
 
@@ -27,6 +28,8 @@ public class EncryptedSmtpMDNMessageGenerator {
 		EXTRA_SPACE_DISPOSITION,
 		DIFF_MSG_ID,
 		DSN};
+	
+	
 	
 	public static void sendSmtpMDN(InputStream originalMessage, String originalMsgId, String from, String to, String type, String failure, InputStream signingCert, String signingCertPassword, MDNType mdntype) throws Exception {
 
@@ -64,13 +67,14 @@ public class EncryptedSmtpMDNMessageGenerator {
         	generator = new MDNGenerator();
         	break;
 		}
+		Properties prop = ValidationUtils.getProp();
 		
 		generator.setDisposition("automatic-action/MDN-sent-automatically;" + type);
 		generator.setFinal_recipient(to);
 		generator.setFromAddress(from);
 		generator.setOriginal_message_id(originalMsgId);
 		generator.setOriginal_recipient(from);
-		generator.setReporting_UA_name("smtp.nist.gov");
+		generator.setReporting_UA_name(prop.getProperty("direct.reporting.ua"));
 		generator.setReporting_UA_product("Security Agent");
 		generator.setSubject("Automatic MDN");
 		if(type.equals("dispatched")) {
