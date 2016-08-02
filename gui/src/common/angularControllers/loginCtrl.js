@@ -62,6 +62,8 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$timeout', 'CreateUser', 'Login', 
 					showAlert('danger', 'Passwords don\'t match');
 				} else if (!$scope.newUser.username || $scope.newUser.username === "") {
 					showAlert('danger', 'Username must be an email');
+				} else if ($scope.newUser.password === "") {
+					showAlert('danger', 'Please enter Password');
 				} else {
 					CreateUser.createUser($scope.newUser,
 
@@ -115,7 +117,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$timeout', 'CreateUser', 'Login', 
 				type: type,
 				msg: msg
 			});
-			$scope.timeout = $timeout($scope.closeAlert, 4000);
+			$scope.timeout = $timeout($scope.closeAlert, 60000);
 		}
 
 		$scope.hitEnter = function(evt) {

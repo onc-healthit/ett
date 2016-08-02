@@ -130,8 +130,33 @@ hisp.config(['$stateProvider',
                         templateUrl: 'edge/help/help.tpl.html'
                     }
                 }
+            })
+            .state('hisp.changePassword', {
+                url: '/changePassword',
+                views: {
+                    "hisp": {
+                        controller: 'ChangePasswordCtrl',
+                        templateUrl: 'templates/changePassword.tpl.html'
+                    }
+                }
+            })
+            .state('hisp.accountInfo', {
+                url: '/accountInfo',
+                views: {
+                    "hisp": {
+                        controller: 'AccountInfoCtrl',
+                        templateUrl: 'templates/accountInfo.tpl.html'
+                    }
+                }
+            }).state('hisp.releaseNotes', {
+                url: '/releaseNotes',
+                views: {
+                    "hisp": {
+                        controller: 'ReleaseNotesCtrl',
+                        templateUrl: 'templates/releaseNotes.tpl.html'
+                    }
+                }
             });
-
     }
 ]);
 
