@@ -271,7 +271,7 @@ public class ListenerProcessor implements Runnable {
 
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
-		String url = "http://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
+		String url = "https://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
 
 		// Generate report template
 		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
