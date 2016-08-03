@@ -641,17 +641,21 @@ public class ArtifactManagement {
 
         Artifacts artifacts = new Artifacts();
         artifacts.setDocumentId("id_extrinsicobject"); //TODO
-        if (settings.getMessageId() != null && !settings.getMessageId().isEmpty()) {
-            artifacts.setMessageId(settings.getMessageId());
-        } else {
-            String messageId = UUID.randomUUID().toString();
-            settings.setMessageId(messageId);
-            artifacts.setMessageId(messageId);
+        if(settings != null) {
+            if (settings.getMessageId() != null && !settings.getMessageId().isEmpty()) {
+                artifacts.setMessageId(settings.getMessageId());
+            } else {
+                String messageId = UUID.randomUUID().toString();
+                settings.setMessageId(messageId);
+                artifacts.setMessageId(messageId);
+            }
         }
         artifacts.setMimeType("text/xml"); // TODO: make this configurable
         String metadata = null;
         String payload = null;
-        payload = settings.getPayload();
+        if(settings != null) {
+            payload = settings.getPayload();
+        }
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
         String formattedDate = sdf.format(date);
@@ -732,6 +736,56 @@ public class ArtifactManagement {
                     //artifacts.setMimeType("text/plain");
                     metadata = getTemplate(FILENAME_MISSING_ASSOCIATION_NO_SOAP);
                     break;
+
+                case C32_FULL_1:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_1_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_1_METADATA);
+                    break;
+                case C32_MINIMAL_1:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_1_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_1_METADATA);
+                    break;
+                case C32_FULL_2:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_2_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_FULL_2_METADATA);
+                    break;
+                case C32_MINIMAL_2:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_2_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_C32_MINIMAL_2_METADATA);
+                    break;
+                case CCDA_AMBULATORY_FULL:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_FULL_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_FULL_METADATA);
+                    break;
+                case CCDA_AMBULATORY_MINIMAL:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_MINIMAL_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_AMBULATORY_MINIMAL_METADATA);
+                    break;
+                case CCDA_INPATIENT_FULL:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_FULL_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_FULL_METADATA);
+                    break;
+                case CCDA_INPATIENT_MINIMAL:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_MINIMAL_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCDA_INPATIENT_MINIMAL_METADATA);
+                    break;
+                case CCR_FULL_1:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_1_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_1_METADATA);
+                    break;
+                case CCR_MINIMAL_1:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_1_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_1_METADATA);
+                    break;
+                case CCR_FULL_2:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_2_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_FULL_2_METADATA);
+                    break;
+                case CCR_MINIMAL_2:
+                    artifacts.setDocument(ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_2_DOC));
+                    metadata = ArtifactManagement.getTemplate(FILENAME_XDR_VANILLA_CCR_MINIMAL_2_METADATA);
+                    break;
+
                 default:
                     throw new UnsupportedOperationException("not yet, guys");
             }
@@ -786,7 +840,7 @@ public class ArtifactManagement {
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_FULL_METADATA, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_MINIMAL_METADATA, settings);
 //Artifacts art = ArtifactManagement.generateArtifacts(Type.NEGATIVE_BAD_SOAP_HEADER, settings);
-      /*      settings.setPatientId("909");
+            /*      settings.setPatientId("909");
             Artifacts art = ArtifactManagement.generateArtifacts(Type.XDR_VANILLA, settings);
 
             System.out.println("docId = " + art.getDocumentId());
@@ -804,15 +858,15 @@ public class ArtifactManagement {
 
             //     System.out.println(testXMl + "\n\n");
 //            System.out.println(ArtifactManagement.escapeXml(testXMl));
-*/
-      
-      Artifacts art = ArtifactManagement.getVanillaXdr(Type.CCR_MINIMAL_2);
-      
-      System.out.println(art.getDocument());
-      System.out.println("\n\n\n---------------------------\n\n\n");
-      System.out.println(art.getMetadata());
-      
-      
+             */
+         //   Artifacts art = ArtifactManagement.getVanillaXdr(Type.CCR_MINIMAL_2);
+
+            Artifacts art = ArtifactManagement.generateArtifacts(Type.CCR_MINIMAL_2,null);
+         
+            System.out.println(art.getDocument());
+            System.out.println("\n\n\n---------------------------\n\n\n");
+            System.out.println(art.getMetadata());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

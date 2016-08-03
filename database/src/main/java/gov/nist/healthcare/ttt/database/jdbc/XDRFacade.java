@@ -10,6 +10,8 @@ import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorImpl;
 import gov.nist.healthcare.ttt.database.xdr.XDRSimulatorInterface;
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepImpl;
 import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface;
+import gov.nist.healthcare.ttt.database.xdr.XDRVanillaImpl;
+import gov.nist.healthcare.ttt.database.xdr.XDRVanillaInterface;
 import gov.nist.healthcare.ttt.misc.Configuration;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -60,8 +62,14 @@ public class XDRFacade extends DatabaseFacade {
     public final static String XDRREPORTITEM_REPORT = "Report";
     public final static String XDRREPORTITEM_REPORTTYPE = "ReportType";
 
-    // Placeholder for creation of validation report.
-    
+    public final static String XDRVANILLA_TABLE = "XDRVanilla";
+    public final static String XDRVANILLA_XDRVANILLAID = "XDRVanillaID";
+    public final static String XDRVANILLA_REQUEST = "Request";
+    public final static String XDRVANILLA_RESPONSE = "Response";
+    public final static String XDRVANILLA_SAMLREPORT = "SamlReport";
+    public final static String XDRVANILLA_SIMID = "SimId";
+    public final static String XDRVANILLA_TIMESTAMP = "Timestamp";
+
     public XDRFacade(Configuration config) throws DatabaseException {
         super(config);
     }
@@ -69,13 +77,13 @@ public class XDRFacade extends DatabaseFacade {
     // The unique constraint was removed in the database because it didn't allow
     // multiple "NULL" values.
     public String addNewXdrRecord(XDRRecordInterface xdr) throws DatabaseException {
-    	
-    	String validationReportString = "";
-    	if(xdr.getMDHTValidationReport() != null) {
-    		validationReportString = xdr.getMDHTValidationReport().replace("\\\"", "&quot;");
-    	}
-        
-        String recordID = UUID.randomUUID().toString();   
+
+        String validationReportString = "";
+        if (xdr.getMDHTValidationReport() != null) {
+            validationReportString = xdr.getMDHTValidationReport().replace("\\\"", "&quot;");
+        }
+
+        String recordID = UUID.randomUUID().toString();
         xdr.setXdrRecordDatabaseId(recordID);
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + XDRRECORD_TABLE + ' ');
@@ -197,7 +205,7 @@ public class XDRFacade extends DatabaseFacade {
         sql.append(", '");
         sql.append(DatabaseConnection.makeSafe(testStep.getDirectFrom()));
         sql.append("', '");
-        
+
         Status status = testStep.getStatus();
         if (status == Status.PASSED) {
             sql.append("1");
@@ -294,6 +302,49 @@ public class XDRFacade extends DatabaseFacade {
 
     }
 
+    public String addNewXdrVanilla(XDRVanillaInterface vanilla) throws DatabaseException {
+
+        String vanillaID = UUID.randomUUID().toString();
+        StringBuilder sql = new StringBuilder();
+        sql.append("INSERT INTO " + XDRVANILLA_TABLE + ' ');
+        sql.append("(" + XDRVANILLA_XDRVANILLAID);
+        sql.append(", ");
+        sql.append(XDRVANILLA_REQUEST);
+        sql.append(", ");
+        sql.append(XDRVANILLA_RESPONSE);
+        sql.append(", ");
+        sql.append(XDRVANILLA_SAMLREPORT);
+        sql.append(", ");
+        sql.append(XDRVANILLA_SIMID);
+        sql.append(", ");
+        sql.append(XDRVANILLA_TIMESTAMP);
+        sql.append(") VALUES ('");
+        sql.append(vanillaID);
+        sql.append("' , '");
+        sql.append(DatabaseConnection.makeSafe(vanilla.getRequest()));
+        sql.append("' , '");
+        sql.append(DatabaseConnection.makeSafe(vanilla.getResponse()));
+        sql.append("' , '");
+        sql.append(DatabaseConnection.makeSafe(vanilla.getSamlReport()));
+        sql.append("' , '");        
+        sql.append(DatabaseConnection.makeSafe(vanilla.getSimId()));
+        sql.append("' , '");
+        if (vanilla.getTimestamp() != null) {
+            sql.append(vanilla.getTimestamp());
+        } else {
+            sql.append(Calendar.getInstance().getTimeInMillis());
+        }
+        sql.append("');");
+                try {
+            this.getConnection().executeUpdate(sql.toString());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getMessage());
+        }
+        return vanillaID;
+        
+    }
+
     public String addNewReportItem(String xdrTestStepID, XDRReportItemInterface reportItem) throws DatabaseException {
 
         String reportItemID = UUID.randomUUID().toString();
@@ -342,6 +393,65 @@ public class XDRFacade extends DatabaseFacade {
         }
         return reportItemID;
     }
+
+    public List<XDRVanillaInterface> getXDRVanillaBySimId(String simId) throws DatabaseException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT van." + XDRVANILLA_XDRVANILLAID + ' ');
+        sql.append("FROM " + XDRVANILLA_TABLE + " van ");
+        sql.append("WHERE van." + XDRVANILLA_SIMID + " = '" + simId + "' ");
+        sql.append("ORDER BY van." + XDRVANILLA_TIMESTAMP + " DESC ");
+        
+        ResultSet result = null;
+        List<String> recordIds = new ArrayList<String>();
+        try {
+            result = this.getConnection().executeQuery(sql.toString());
+            while (result.next()) {
+                String recordId = result.getString(XDRVANILLA_XDRVANILLAID);
+                recordIds.add(recordId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+        
+        List<XDRVanillaInterface> records = new ArrayList<XDRVanillaInterface>();
+        Iterator<String> it = recordIds.iterator();
+        while (it.hasNext()) {
+            XDRVanillaInterface record = this.getXDRVanillaByVanillaRecordId(it.next());
+            records.add(record);
+        }
+        return records;
+        
+    }
+    
+
+    
+    public XDRVanillaInterface getLatestXDRVanillaBySimId(String simId) throws DatabaseException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT van." + XDRVANILLA_XDRVANILLAID + ' ');
+        sql.append("FROM " + XDRVANILLA_TABLE + " van ");
+        sql.append("WHERE van." + XDRVANILLA_SIMID + " = '" + simId + "' ");
+        sql.append("ORDER BY van." + XDRVANILLA_TIMESTAMP + " DESC ");
+        sql.append("LIMIT 1 ");
+        
+        ResultSet result = null;
+        XDRVanillaInterface vanilla = null;
+        try {
+            result = this.getConnection().executeQuery(sql.toString());
+            if (result.next()) {
+                
+                vanilla = this.getXDRVanillaByVanillaRecordId(result.getString(XDRVANILLA_XDRVANILLAID));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+        
+        return vanilla;
+        
+    }
+
+    
 
     public List<XDRRecordInterface> getXDRRecordsByHostname(String hostname) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
@@ -401,7 +511,6 @@ public class XDRFacade extends DatabaseFacade {
     }
 
     // TODO: A lot of redundency here.  Need to clean up.
-    
     public XDRRecordInterface getLatestXDRRecordByDirectFrom(String directFrom) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT rec." + XDRRECORD_XDRRECORDID + ' ');
@@ -427,8 +536,35 @@ public class XDRFacade extends DatabaseFacade {
             return null;
         }
         return this.getXDRRecordByRecordId(recordId);
-    }    
-    
+    }
+
+    private XDRVanillaInterface getXDRVanillaByVanillaRecordId(String vanillaRecordId) throws DatabaseException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * ");
+        sql.append("FROM " + XDRVANILLA_TABLE + ' ');
+        sql.append("WHERE " + XDRVANILLA_XDRVANILLAID + " = '" + vanillaRecordId + "';");
+
+        ResultSet result = null;
+        XDRVanillaImpl vanilla = null;
+
+        try {
+            result = this.getConnection().executeQuery(sql.toString());
+            if(result.next()) {
+                vanilla = new XDRVanillaImpl();
+                vanilla.setRequest(result.getString(XDRVANILLA_REQUEST));
+                vanilla.setResponse(result.getString(XDRVANILLA_RESPONSE));
+                vanilla.setSamlReport(result.getString(XDRVANILLA_SAMLREPORT));
+                vanilla.setSimId(result.getString(XDRVANILLA_SIMID));
+                vanilla.setTimestamp(result.getString(XDRVANILLA_TIMESTAMP));
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+        return vanilla;
+        
+    }
     
     public XDRRecordInterface getXDRRecordByRecordId(String xdrRecordId) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
@@ -463,10 +599,10 @@ public class XDRFacade extends DatabaseFacade {
                     record.setStatus(Status.PENDING);
                 }
 
-                if(result.getString(XDRRECORD_MDHTVALIDATIONREPORT) != null) {
-                	record.setMDHTValidationReport(result.getString(XDRRECORD_MDHTVALIDATIONREPORT).replace("&quot;", "\\\""));
+                if (result.getString(XDRRECORD_MDHTVALIDATIONREPORT) != null) {
+                    record.setMDHTValidationReport(result.getString(XDRRECORD_MDHTVALIDATIONREPORT).replace("&quot;", "\\\""));
                 }
-                
+
             } else {
                 return null;
             }
@@ -481,7 +617,6 @@ public class XDRFacade extends DatabaseFacade {
         sqlChildren.append("FROM " + XDRTESTSTEP_TABLE + ' ');
         sqlChildren.append("WHERE " + XDRRECORD_XDRRECORDID + " = '" + xdrRecordId + "' ");
         sqlChildren.append("ORDER BY " + XDRTESTSTEP_TIMESTAMP + " ASC;");
-
 
         ResultSet resultChildren = null;
         List<XDRTestStepInterface> testSteps = new ArrayList<XDRTestStepInterface>();
@@ -808,15 +943,14 @@ public class XDRFacade extends DatabaseFacade {
         }
         return records;
     }
-    
+
     // TODO: A lot of redundency here.  Need to clean up.
-    
     public List<XDRRecordInterface> getXDRRecordsByDirectFrom(String directFrom) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + XDRRECORD_XDRRECORDID + ' ');
         sql.append("FROM " + XDRTESTSTEP_TABLE + ' ');
         sql.append("WHERE " + XDRTESTSTEP_DIRECTFROM + " = '" + DatabaseConnection.makeSafe(directFrom) + "';");
-        
+
         ResultSet result = null;
         List<XDRRecordInterface> records = new ArrayList<XDRRecordInterface>();
         List<String> recordIds = new ArrayList<String>();
@@ -845,7 +979,7 @@ public class XDRFacade extends DatabaseFacade {
         sqlDirectFrom.append("SELECT " + XDRRECORD_XDRRECORDID + ' ');
         sqlDirectFrom.append("FROM " + XDRTESTSTEP_TABLE + ' ');
         sqlDirectFrom.append("WHERE " + XDRTESTSTEP_DIRECTFROM + " = '" + DatabaseConnection.makeSafe(directFrom) + "';");
-        
+
         ResultSet result = null;
         List<String> recordIdsByDirectFrom = new ArrayList<String>();
 
@@ -870,7 +1004,7 @@ public class XDRFacade extends DatabaseFacade {
         sqlSim.append("ORDER BY " + XDRRECORD_TIMESTAMP + " DESC;");
 
         ResultSet resultSim = null;
-        
+
         List<String> recordIdsBySim = new ArrayList<String>();
 
         try {
@@ -882,26 +1016,27 @@ public class XDRFacade extends DatabaseFacade {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
         }
-        
-        if (recordIdsBySim.size() == 0 || recordIdsByDirectFrom.size() == 0 )
+
+        if (recordIdsBySim.size() == 0 || recordIdsByDirectFrom.size() == 0) {
             return null;
-        
+        }
+
         Iterator<String> itSim = recordIdsBySim.iterator();
-        while(itSim.hasNext()) {
+        while (itSim.hasNext()) {
             String recordIdBySim = itSim.next();
-            if(recordIdsByDirectFrom.contains(recordIdBySim)) {
+            if (recordIdsByDirectFrom.contains(recordIdBySim)) {
                 return this.getXDRRecordByRecordId(recordIdBySim);
             }
         }
         return null;
     }
-    
+
     private String getXDRTestStepIdByMessageId(String messageId) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + XDRTESTSTEP_XDRTESTSTEPID + ' ');
         sql.append("FROM " + XDRTESTSTEP_TABLE + ' ');
         sql.append("WHERE " + XDRTESTSTEP_MESSAGEID + " = '" + DatabaseConnection.makeSafe(messageId) + "';");
-        
+
         ResultSet result = null;
         String xdrTestStepId = null;
         try {
@@ -1219,20 +1354,18 @@ public class XDRFacade extends DatabaseFacade {
     }
 
     //private String lookUpRecordId(XDRRecordImpl record) throws DatabaseException {
-        //StringBuilder sqlDirectFrom = new StringBuilder();
-        //sql.append("SELECT " + XDRRECORD_XDRRECORDID + " ");
-        //sql.append("FROM " + XDRRECORD_TABLE + " " );
-        //sql.append("WHERE ")
+    //StringBuilder sqlDirectFrom = new StringBuilder();
+    //sql.append("SELECT " + XDRRECORD_XDRRECORDID + " ");
+    //sql.append("FROM " + XDRRECORD_TABLE + " " );
+    //sql.append("WHERE ")
     //}
-
-    
     // returns void because I can't think of what should be returned if no exception run
     public void updateXDRRecord(XDRRecordInterface record) throws DatabaseException {
 
         // TODO: This should be done as a db roll-back instead of manually like this...
         //get a copy for safekeeping...
         String recordId = record.getXdrRecordDatabaseId();
-        if(recordId == null) {
+        if (recordId == null) {
             this.addNewXdrRecord(record);
             return;
         }
@@ -1294,6 +1427,7 @@ public class XDRFacade extends DatabaseFacade {
 
     public static void main(String[] args) {
         try {
+            /*
             XDRRecordImpl record = new XDRRecordImpl();
             record.setStatus(Status.PENDING);
             record.setTestCaseNumber("1");
@@ -1323,7 +1457,6 @@ public class XDRFacade extends DatabaseFacade {
 
             reportItem.setReportType(ReportType.REQUEST);
 
-
             List<XDRReportItemInterface> items = new ArrayList<XDRReportItemInterface>();
 
             items.add(reportItem);
@@ -1331,8 +1464,7 @@ public class XDRFacade extends DatabaseFacade {
 
             List<XDRTestStepInterface> steps = new ArrayList<XDRTestStepInterface>();
             steps.add(testStep);
-            
-
+*/
             Configuration config = new Configuration();
             config.setDatabaseHostname("localhost");
             config.setDatabaseName("direct");
@@ -1340,12 +1472,58 @@ public class XDRFacade extends DatabaseFacade {
 
             XDRFacade facade = new XDRFacade(config);
             
+            XDRVanillaImpl vanilla = new XDRVanillaImpl();
+            vanilla.setRequest("request report");
+            vanilla.setResponse("response report");
+            vanilla.setSamlReport("SAML report");
+            vanilla.setSimId("EDGE_VANILLA");
+            
+            //facade.addNewXdrVanilla(vanilla);
+            /*
+            List<XDRVanillaInterface> records = facade.getXDRVanillaBySimId("EDGE_VANILLA");
+            
+            Iterator<XDRVanillaInterface> it = records.iterator();
+            while(it.hasNext()) {
+                XDRVanillaInterface vanilla2 = it.next();
+                
+                System.out.println(" --- ");
+                System.out.println(vanilla2.getRequest());
+                System.out.println(vanilla2.getResponse());
+                System.out.println(vanilla2.getSamlReport());
+                System.out.println(vanilla2.getSimId());
+                System.out.println(vanilla2.getTimestamp());
+                System.out.println(" --- ");
+                
+            }
+            */
+            
+            
+            XDRVanillaInterface vanilla2 = facade.getLatestXDRVanillaBySimId("EDGE_VANILLA");
+            
+            
+            if(vanilla2 != null) {
+             //   XDRVanillaInterface vanilla2 = it.next();
+                
+                System.out.println(" --- ");
+                System.out.println(vanilla2.getRequest());
+                System.out.println(vanilla2.getResponse());
+                System.out.println(vanilla2.getSamlReport());
+                System.out.println(vanilla2.getSimId());
+                System.out.println(vanilla2.getTimestamp());
+                System.out.println(" --- ");
+                
+            }
+
+            
+            
+/*
             facade.addNewXdrRecord(record);
             record.setMDHTValidationReport("new report', guys");
             facade.updateXDRRecord(record);
-            System.out.println(facade.getXDRRecordByRecordId("30769be4-eaf2-48af-b705-ee9f65779260").getMDHTValidationReport());
-         //   facade.addNewXdrRecord(record);
             
+            System.out.println(facade.getXDRRecordByRecordId("30769be4-eaf2-48af-b705-ee9f65779260").getMDHTValidationReport());
+            //   facade.addNewXdrRecord(record);
+
             //XDRRecordInterface get = facade.getLatestXDRRecordBySimulatorAndDirectAddress("endpointstandalone", "from@direct.com");
             //System.out.println(get.getTimestamp());
             //facade.updateXDRRecord(record);
@@ -1355,10 +1533,8 @@ public class XDRFacade extends DatabaseFacade {
             //facade.updateXDRRecord(record);
             //facade.updateXDRRecord(record);
             //List<XDRRecordInterface> getRecord = facade.getXDRRecordsByDirectFrom("from@direct.com");
-            
             //System.out.append(Integer.toString(getRecord.size()));
-            
-/*
+            /*
             testStep.setName("NEW NAME!!!");
             facade.updateXDRTestStep(testStep);
 
@@ -1366,12 +1542,7 @@ public class XDRFacade extends DatabaseFacade {
 
             System.out.println("timestamp = " + facade.getLatestXDRRecordByHostname("localhost").getTimestamp());
 
-  */
-            
-            
-            
-            
-            
+             */
             //     facade.addNewSimulator(simulator);
             //  XDRRecordImpl getRecord = (XDRRecordImpl) facade.getXDRRecordByRecordId("76f47c21-dea3-475e-bc3f-51b2cc41eb2d");
 //            System.out.println(getRecord.getTimestamp() + "timestamp");
@@ -1385,8 +1556,6 @@ public class XDRFacade extends DatabaseFacade {
             //facade.removeXdrRecord("4b4157aa-dde9-4fa3-86c2-cfc4d031384d");
             // facade.removeAllByUsername("username2");
             //System.out.println(           facade.getXDRRecordByMessageId("message2").getTimestamp() + " hjere!");
-            
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
