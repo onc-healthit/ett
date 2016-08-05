@@ -180,7 +180,7 @@ public class TTTReceiverTests {
 									// CONVERT RESPONSE TO STRING
 									result1 = EntityUtils.toString(response.getEntity());
 									ObjectMapper mapper = new ObjectMapper();
-									JsonNode jsonObject = mapper.readTree(result1) ;     
+									JsonNode jsonObject = mapper.readTree(result1) ;
 									validationResult.put( bodyPart.getFileName() , jsonObject );
 								}
 
@@ -602,7 +602,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put("\nERROR", "No MDNs found\n");
 			}
-			
+
 		} catch (Exception e) {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
 			e.printStackTrace();
@@ -621,7 +621,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 
 		tr.getTestRequestResponses()
-		.put("\nAwating confirmation from proctor",
+		.put("\nAwaiting confirmation from proctor",
 				"Proctor needs to verify the failure message from invalid recipient.");
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 
@@ -894,8 +894,8 @@ public class TTTReceiverTests {
 	}
 
 	/*
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public TestResult imapFetchWrongPass(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -1129,12 +1129,12 @@ public class TTTReceiverTests {
 			/*
 			 * for (Map.Entry<String, byte[]> e :
 			 * ti.getAttachments().entrySet()) {
-			 * 
+			 *
 			 * DataSource source = new ByteArrayDataSource(e.getValue(),
 			 * "text/html"); messageBodyPart.setDataHandler(new
 			 * DataHandler(source)); messageBodyPart.setFileName(e.getKey());
 			 * aName += e.getKey(); multipart.addBodyPart(messageBodyPart);
-			 * 
+			 *
 			 * // Send the complete message parts message.setContent(multipart);
 			 * }
 			 */
@@ -1609,7 +1609,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR") || s.contains("-ERR")) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put("ERROR", "All commands are not implemented");
-			} 
+			}
 
 
 		}
@@ -1714,7 +1714,7 @@ public class TTTReceiverTests {
 			if (s.contains("ERR") || s.contains("-ERR")) {
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				//	result.put("ERROR", "Authentication Failure");
-			} 
+			}
 
 
 		}
@@ -1815,7 +1815,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("\nSUCCESS ",
 						"POP server rejects the command with bad syntax.");
-			} 
+			}
 
 		}
 
@@ -1917,7 +1917,7 @@ public class TTTReceiverTests {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("\nSUCCESS ",
 						"POP server rejects the command with bad syntax.");
-			} 
+			}
 
 		}
 
@@ -2089,7 +2089,7 @@ public class TTTReceiverTests {
 							byte[] targetArray = IOUtils.toByteArray(stream);
 							System.out.println(new String(targetArray));
 							int m = i + 1;
-							if (bodyPart.getFileName() != null) { 
+							if (bodyPart.getFileName() != null) {
 								bodyparts.put(bodyPart.getFileName(), new String(
 										targetArray));
 							} else {
@@ -2134,7 +2134,7 @@ public class TTTReceiverTests {
 		}
 
 		return tr;
-	} 
+	}
 
 	public TestResult popFetchWrongPass(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -2284,7 +2284,7 @@ public class TTTReceiverTests {
 									// CONVERT RESPONSE TO STRING
 									result1 = EntityUtils.toString(response.getEntity());
 									ObjectMapper mapper = new ObjectMapper();
-									JsonNode jsonObject = mapper.readTree(result1) ;     
+									JsonNode jsonObject = mapper.readTree(result1) ;
 									validationResult.put( bodyPart.getFileName() , jsonObject );
 								}
 
@@ -2419,7 +2419,7 @@ public class TTTReceiverTests {
 									// CONVERT RESPONSE TO STRING
 									result1 = EntityUtils.toString(response.getEntity());
 									ObjectMapper mapper = new ObjectMapper();
-									JsonNode jsonObject = mapper.readTree(result1) ;     
+									JsonNode jsonObject = mapper.readTree(result1) ;
 									validationResult.put( bodyPart.getFileName() , jsonObject );
 								}
 
