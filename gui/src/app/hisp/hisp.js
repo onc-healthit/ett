@@ -118,6 +118,7 @@ hisp.config(['$stateProvider',
                 url: '/documents',
                 views: {
                     "hisp": {
+						controller: 'DocumentsCtrl',
                         templateUrl: 'templates/documents.tpl.html'
                     }
                 }
