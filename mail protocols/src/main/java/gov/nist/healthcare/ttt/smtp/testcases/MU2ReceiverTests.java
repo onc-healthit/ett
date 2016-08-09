@@ -76,7 +76,7 @@ public class MU2ReceiverTests {
 			store = session.getStore("imap");
 
 			if (fetch.equals("smtp")){
-				store.connect(ti.tttSmtpAddress,993,prop.getProperty("ett.smtpmu2.address"),prop.getProperty("ett.password"));
+				store.connect(ti.tttSmtpAddress,143,prop.getProperty("ett.smtpmu2.address"),prop.getProperty("ett.password"));
 			}
 			else if (fetch.equals("imap")) {
 				store.connect(ti.sutSmtpAddress,143,ti.sutUserName,ti.sutPassword);
