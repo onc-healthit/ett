@@ -858,7 +858,7 @@
 		"id": 331,
 		"protocol": "pop",
 		"desc": "Verifies the ability of the SUT to accept different attachment types.",
-		"longDesc": "The credentials for authentication is b1-ambulatory@ttpds.sitenv.org, b1-inpatient@ttpds.sitenv.org, b2-ambulatory@ttpds.sitenv.org, b2-inpatient@ttpds.sitenv.org, b5-ambulatory@ttpds.sitenv.org, b5-inpatient@ttpds.sitenv.org, b9-ambulatory@ttpds.sitenv.org, b9-inpatient@ttpds.sitenv.org, negativetestccds@ttpds.sitenv.org, negativetestingcareplan@ttpds.sitenv.org. The password is smtptesting123 for all accounts. ",
+		"longDesc": "The credentials for authentication is b1-ambulatory@ttpds.sitenv.org, b1-inpatient@ttpds.sitenv.org, b2-ambulatory@ttpds.sitenv.org, b2-inpatient@ttpds.sitenv.org, b5-ambulatory@ttpds.sitenv.org, b5-inpatient@ttpds.sitenv.org, b9-ambulatory@ttpds.sitenv.org, b9-inpatient@ttpds.sitenv.org, negativetestingccds@ttpds.sitenv.org, negativetestingcareplan@ttpds.sitenv.org. The password is smtptesting123 for all accounts. ",
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true,
