@@ -270,7 +270,7 @@
 		"sutHisp": true,
 		"sutEdge": false
 	}, {
-		"name": "SMTP MT Test 3 (Receipient's Certificate Not Published)",
+		"name": "SMTP MT Test 3 (Recipient's Certificate Not Published)",
 		"id": 103,
 		"desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to a destination that does not have a published  certificate. Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
@@ -302,7 +302,7 @@
 		"sutHisp": true,
 		"sutEdge": false
 	}, {
-		"name": "SMTP/IMAP MT Test 7 (Receipient's Certificate Not Published)",
+		"name": "SMTP/IMAP MT Test 7 (Recipient's Certificate Not Published)",
 		"id": 107,
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate. Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
@@ -334,7 +334,7 @@
 		"sutHisp": true,
 		"sutEdge": false
 	}, {
-		"name": "SMTP/POP MT Test 11 (Receipient's Certificate Not Published)",
+		"name": "SMTP/POP MT Test 11 (Recipient's Certificate Not Published)",
 		"id": 111,
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate. Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
@@ -858,7 +858,7 @@
 		"id": 331,
 		"protocol": "pop",
 		"desc": "Verifies the ability of the SUT to accept different attachment types.",
-		"longDesc": "The credentials for authentication is b1-ambulatory@ttpds.sitenv.org, b1-inpatient@ttpds.sitenv.org, b2-ambulatory@ttpds.sitenv.org, b2-inpatient@ttpds.sitenv.org, b5-ambulatory@ttpds.sitenv.org, b5-inpatient@ttpds.sitenv.org, b9-ambulatory@ttpds.sitenv.org, b9-inpatient@ttpds.sitenv.org, negativetestccds@ttpds.sitenv.org, negativetestingcareplan@ttpds.sitenv.org. The password is smtptesting123 for all accounts. ",
+		"longDesc": "The credentials for authentication is b1-ambulatory@ttpds.sitenv.org, b1-inpatient@ttpds.sitenv.org, b2-ambulatory@ttpds.sitenv.org, b2-inpatient@ttpds.sitenv.org, b5-ambulatory@ttpds.sitenv.org, b5-inpatient@ttpds.sitenv.org, b9-ambulatory@ttpds.sitenv.org, b9-inpatient@ttpds.sitenv.org, negativetestingccds@ttpds.sitenv.org, negativetestingcareplan@ttpds.sitenv.org. The password is smtptesting123 for all accounts. ",
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true,
