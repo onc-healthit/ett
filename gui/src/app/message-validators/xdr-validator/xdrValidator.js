@@ -70,6 +70,7 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
                 $scope.properties.selected = $scope.sample.selected.value;
             }
             XDRValidatorRun.save($scope.properties, function(data) {
+                $scope.laddaLoading = false;
                 $scope.send.status = "loading";
                 $scope.send.results = data;
                 if (data.content !== null && data.content !== undefined) {
