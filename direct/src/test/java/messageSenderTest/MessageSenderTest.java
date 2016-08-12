@@ -68,7 +68,7 @@ public class MessageSenderTest {
 				messageInfo.getFromAddress(), messageInfo.getToAddress(),
 				attachmentFile, messageInfo.getAttachmentFile(),
 				signingCert, messageInfo.getSigningCertPassword(),
-				encryptionCert, messageInfo.isWrapped());
+				encryptionCert, messageInfo.isWrapped(), "SHA1withRSA");
 
 		MimeMessage msg = messageGenerator.generateMessage();
 		

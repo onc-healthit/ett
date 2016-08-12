@@ -63,10 +63,14 @@ public class PrivateCertificateLoader {
 	PrivateKey pkey;
 	Certificate[] chain;
 	String signDN;
+	String digestAlgo = "SHA1withRSA";
 
-	public PrivateCertificateLoader(InputStream certificate, String password) throws Exception {
+	public PrivateCertificateLoader(InputStream certificate, String password, String digestAlgo) throws Exception {
 
 		Security.addProvider(new BouncyCastleProvider());
+
+		// Set digest algorithm
+		this.digestAlgo = digestAlgo;
 		
 		// Copy InputStream in byte array so we can read it more than once
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -213,7 +217,7 @@ public class PrivateCertificateLoader {
 		gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder()
 				.setProvider("BC")
 				.setSignedAttributeGenerator(new AttributeTable(signedAttrs))
-				.build("SHA1withRSA", signCert.getPrivateKey(), signCert));
+				.build(digestAlgo, signCert.getPrivateKey(), signCert));
 
 		//
 		// add our pool of certs and cerls (if any) to go with the signature

@@ -117,6 +117,20 @@
 
                 <hr>
 
+                <div class="form-group" data-ng-init="digestAlgo = 'sha1'">
+                    <label class="control-label" for="algo">Signing Algorithm&nbsp;
+                        <i class="fa fa-question-circle" tooltips tooltip-title="This is the algorithm used to sign the message." tooltip-side="right"></i>
+                    </label>
+                    <div class="input-group">
+                        <div class="btn-group">
+                            <a class="btn btn-default" ng-class="{true: 'active'}[digestAlgo === 'sha1']" ng-click="digestAlgo = 'sha1'">SHA-1</a>
+                            <a class="btn btn-default" ng-class="{true: 'active'}[digestAlgo === 'sha256']" ng-click="digestAlgo = 'sha256'">SHA-256</a>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
                 <div class="form-group">
                     <label class="control-label" for="cert">Encyption Certificate&nbsp;
                         <i class="fa fa-question-circle" tooltips tooltip-title="Encryption certificate (optional) if not provided by DNS or LDAP lookup" tooltip-side="right"></i>

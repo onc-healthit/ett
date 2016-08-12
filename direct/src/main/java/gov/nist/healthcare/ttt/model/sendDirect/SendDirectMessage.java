@@ -21,6 +21,7 @@ public class SendDirectMessage {
 	// Wrapped or Unwrapped message
 	private boolean isWrapped;
 	private boolean invalidDigest;
+	private String digestAlgo;
 	
 	
 	public SendDirectMessage(String textMessage, String subject,
@@ -173,5 +174,13 @@ public class SendDirectMessage {
 			logger.log(Level.WARNING, "Signing cert is null using good cert");
 		}
 		return true;
+	}
+
+	public String getDigestAlgo() {
+		return digestAlgo;
+	}
+
+	public void setDigestAlgo(String digestAlgo) {
+		this.digestAlgo = digestAlgo;
 	}
 }
