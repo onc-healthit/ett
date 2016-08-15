@@ -152,7 +152,7 @@
 		"id": 120,
 		"protocol": "mu2",
 		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid one (dispatchedonly-plain@ttpedge.sitenv.org) and an invalid address (noaddressfailure9-plain@dnsops.ttpedge.sitenv.org ). Hitting 'Run' will cause the MDNs to be delivered using the account information specified in the profile using SMTP protocol with STARTTLS and SASL. The failure MDN for invalid recipient noaddressfailure9-plain@dnsops.ttpedge.sitenv.org  needs to be verified.",
-		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpds.sitenv.org / vendortesting123  ",
+		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP.  ",
 		"sutRole": "sender",
 		"sutHisp": false,
 		"sutEdge": true
