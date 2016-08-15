@@ -1146,7 +1146,7 @@ public class TTTReceiverTests {
 			log.info("SENDING FIRST EMAIL");
 
 			tr.getTestRequestResponses()
-			.put("\nAwating confirmation from proctor",
+			.put("\nAwaiting confirmation from proctor",
 					"Proctor needs to verify the Edge system for updates from the server.");
 			System.out.println("Email sent successfully");
 
@@ -2465,7 +2465,7 @@ public class TTTReceiverTests {
 		TestResult tr = new TestResult();
 
 		tr.getTestRequestResponses()
-		.put("\nAwating confirmation from proctor",
+		.put("\nAwaiting confirmation from proctor",
 				"Proctor needs to verify the messages retrieved from Edge Test Tool.");
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 
@@ -2476,7 +2476,7 @@ public class TTTReceiverTests {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
 		tr.getTestRequestResponses()
-		.put("\nAwating confirmation from proctor",
+		.put("\nAwaiting confirmation from proctor",
 				"Proctor needs to verify the messages retrieved from Edge Test Tool.");
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		return tr;
