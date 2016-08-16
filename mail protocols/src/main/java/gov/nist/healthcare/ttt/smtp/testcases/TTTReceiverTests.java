@@ -1350,7 +1350,7 @@ public class TTTReceiverTests {
 		}
 
 		if (response.size() > 1) {
-			if (response.get(1).contains("BAD") || response.get(1).contains("BYE") || response.get(1).contains("FAIL")) {
+			if (response.get(1).contains("BAD") || response.get(1).contains("BYE") || response.get(1).contains("FAIL") || response.get(1).contains("NO")) {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
 				result.put("\nSUCCESS ",
 						"The server rejects the command with bad syntax");
