@@ -24,7 +24,7 @@ public class TestCaseXdrVal extends TestCase {
 
 	@Override
 	public Result run(Map context, String username) {
-		executor.validateInputs(context,["targetEndpointTLS"])
+		executor.validateInputs(context,["targetEndpointTLS", "patientId", "selected"])
 
         // Send an xdr with the endpoint created above
         context.endpoint = context.targetEndpointTLS
@@ -32,7 +32,7 @@ public class TestCaseXdrVal extends TestCase {
         context.wsaTo = context.targetEndpointTLS
         context.directTo = "xdrvalidator@$executor.hostname"
         context.directFrom = "xdrvalidator@$executor.hostname"
-        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+        context.messageType = ArtifactManagement.Type.valueOf(context.selected)
 
         XDRTestStepInterface step1 = executor.executeSendXDRStep(context)
 

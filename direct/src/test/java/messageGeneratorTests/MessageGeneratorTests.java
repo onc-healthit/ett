@@ -32,7 +32,7 @@ public class MessageGeneratorTests {
 			InputStream attachmentFile = new FileInputStream(attachment);
 			generator = new DirectMessageGenerator(test, test, testFromAddress,
 					testToAddress, attachmentFile, attachment.getName(),
-					privateCertStream, "", publicCertStream, true);
+					privateCertStream, "", publicCertStream, true, "SHA1withRSA");
 			MimeMessage msg = generator.generateMessage();
 			msg.writeTo(new FileOutputStream(new File("TestGeneratedMessage.txt")));
 		} catch (Exception e) {

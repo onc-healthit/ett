@@ -54,7 +54,7 @@ public class SendDirectService {
 			DirectMessageGenerator messageGenerator = new DirectMessageGenerator(messageInfo.getTextMessage(),
 					messageInfo.getSubject(), messageInfo.getFromAddress(), messageInfo.getToAddress(), attachmentFile,
 					messageInfo.getAttachmentFile(), signingCert, messageInfo.getSigningCertPassword(), null,
-					messageInfo.isWrapped());
+					messageInfo.isWrapped(), "SHA1withRSA");
 
 			// Get encryption cert
 			InputStream encryptionCert = null;

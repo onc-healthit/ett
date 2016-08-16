@@ -3,20 +3,43 @@ var xdmValidator = angular.module('ttt.direct.xdrValidator', []);
 ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEndpoints', 'XDRValidatorRun', 'XDRValidatorStatus',
     function($scope, growl, XDRValidatorEndpoints, XDRValidatorRun, XDRValidatorStatus) {
 
-        $scope.xdrSamples = [
-            "C32_Sample1_full_metadata",
-            "C32_Sample1_minimal_metadata",
-            "C32_Sample2_full_metadata",
-            "C32_Sample2_minimal_metadata",
-            "CCDA_Ambulatory_full_metadata",
-            "CCDA_Ambulatory_minimal_metadata",
-            "CCDA_Inpatient_full_metadata",
-            "CCDA_Inpatient_minimal_metadata",
-            "CCR_Sample1_full_metadata",
-            "CCR_Sample1_minimal_metadata",
-            "CCR_Sample2_full_metadata",
-            "CCR_Sample2_minimal_metadata"
-        ];
+        $scope.xdrSamples = [{
+            "name": "C32_Sample1_full_metadata",
+            "value": "C32_FULL_1"
+        }, {
+            "name": "C32_Sample1_minimal_metadata",
+            "value": "C32_MINIMAL_1"
+        }, {
+            "name": "C32_Sample2_full_metadata",
+            "value": "C32_FULL_2"
+        }, {
+            "name": "C32_Sample2_minimal_metadata",
+            "value": "C32_MINIMAL_2"
+        }, {
+            "name": "CCDA_Ambulatory_full_metadata",
+            "value": "CCDA_AMBULATORY_FULL"
+        }, {
+            "name": "CCDA_Ambulatory_minimal_metadata",
+            "value": "CCDA_AMBULATORY_MINIMAL"
+        }, {
+            "name": "CCDA_Inpatient_full_metadata",
+            "value": "CCDA_INPATIENT_FULL"
+        }, {
+            "name": "CCDA_Inpatient_minimal_metadata",
+            "value": "CCDA_INPATIENT_MINIMAL"
+        }, {
+            "name": "CCR_Sample1_full_metadata",
+            "value": "CCR_FULL_1"
+        }, {
+            "name": "CCR_Sample1_minimal_metadata",
+            "value": "CCR_MINIMAL_1"
+        }, {
+            "name": "CCR_Sample2_full_metadata",
+            "value": "CCR_FULL_2"
+        }, {
+            "name": "CCR_Sample2_minimal_metadata",
+            "value": "CCR_MINIMAL_2"
+        }];
 
         $scope.sample = {};
         $scope.send = {};
@@ -43,7 +66,11 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
 
         $scope.sendXdr = function() {
             $scope.laddaLoading = true;
+            if ($scope.sample.selected) {
+                $scope.properties.selected = $scope.sample.selected.value;
+            }
             XDRValidatorRun.save($scope.properties, function(data) {
+                $scope.laddaLoading = false;
                 $scope.send.status = "loading";
                 $scope.send.results = data;
                 if (data.content !== null && data.content !== undefined) {
@@ -61,6 +88,7 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
                         $scope.send.status = "error";
                     }
                 } else {
+                    $scope.laddaLoading = false;
                     if (data.status.toLowerCase() === 'passed') {
                         $scope.send.status = "success";
                     } else {
@@ -72,9 +100,9 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
                         };
                     }
                 }
-                $scope.laddaLoading = false;
             }, function(data) {
                 $scope.send.status = 'error';
+                $scope.laddaLoading = false;
                 if (data.data) {
                     throw {
                         code: data.data.code,
@@ -82,7 +110,6 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
                         message: data.data.message
                     };
                 }
-                $scope.laddaLoading = false;
             });
         };
 

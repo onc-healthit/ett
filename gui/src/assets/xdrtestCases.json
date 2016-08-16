@@ -67,18 +67,6 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR Test 4c",
-    "id": "4c",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message.  This case is of a missing Direct Address Block.",
-    "sutEdge": true,
-    "sutHisp": false,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
     "name": "XDR Test 5",
     "id": 5,
     "desc": "Verify the ability of the receiving system to correctly receive a properly formatted XDR message with Full (XDS) metadata.",
@@ -196,6 +184,10 @@
         "name": "Endpoint",
         "key": "targetEndpointTLS",
         "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 13",
@@ -224,6 +216,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Direct From Address",
+        "key": "direct_from",
         "type": "string"
     }]
 }, {
@@ -259,18 +255,6 @@
     "name": "XDR Test 15b",
     "id": "15b",
     "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of an invalid SOAP body.",
-    "sutEdge": false,
-    "sutHisp": true,
-    "sutRole": "receiver",
-    "inputs": [{
-        "name": "Endpoint",
-        "key": "targetEndpointTLS",
-        "type": "string"
-    }]
-}, {
-    "name": "XDR Test 15c",
-    "id": "15c",
-    "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of a missing Direct Address Block.",
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",

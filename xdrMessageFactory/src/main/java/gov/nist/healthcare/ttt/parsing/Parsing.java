@@ -21,10 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.mail.BodyPart;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 import javax.mail.util.SharedByteArrayInputStream;
@@ -33,9 +30,7 @@ import javax.xml.bind.JAXB;
 import org.apache.commons.io.IOUtils;
 import org.w3._2003._05.soap_envelope.Body;
 import org.w3._2003._05.soap_envelope.Envelope;
-import org.w3._2003._05.soap_envelope.Header;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -53,6 +48,9 @@ public class Parsing {
     public static final String ELEMENT_NAME_WSA_MESSAGEID = "MessageID";
     public static final String NAMESPACE_WSA = "http://www.w3.org/2005/08/addressing";
 
+    public static final String ELEMENT_NAME_WSSE_SECURITY = "Security";
+    public static final String NAMESPACE_WSSE = "http://schemas.xmlsoap.org/ws/2002/12/secext";
+    
     public static final String METADATA_LEVEL_MINIMAL = "minimal";
     public static final String METADATA_LEVEL_XDS = "XDS";
 
@@ -71,6 +69,26 @@ public class Parsing {
         UNKNOWN
     }
 
+    public static String getWsseHeaderFromMTOM(String mtom) throws IOException, MessagingException {
+        
+        SOAPWithAttachment swa = Parsing.parseMtom(mtom);
+        String wsseHeader = null;
+        Envelope env = (Envelope) JAXB.unmarshal(new StringReader(swa.getSoap()), Envelope.class);
+        List<Object> headers = env.getHeader().getAny();
+        if (headers == null) {
+            return null;
+        }
+        Iterator it = headers.iterator();
+        while (it.hasNext()) {
+            Element header = (Element) it.next();
+            if (header.getLocalName().equals(ELEMENT_NAME_WSSE_SECURITY) && header.getNamespaceURI().equals(NAMESPACE_WSSE)) {              
+                wsseHeader = MiscUtil.xmlToString(header);
+                break;
+            }
+        }
+        return wsseHeader;        
+    }
+    
     public static boolean isValidDirectAddressBlock(String mtom) throws IOException, MessagingException {
 
         SOAPWithAttachment swa = Parsing.parseMtom(mtom);
@@ -392,7 +410,7 @@ public class Parsing {
         return swa;
     }
 
-    public final static void main(String[] args) {
+    public final static void main(String[] args) {/*
         String line = "content-type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"&lt;0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org&gt;\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"";
         int beginBoundry = line.indexOf("boundary=\"");
         String postBoundryBegin = line.substring(beginBoundry + 10);
@@ -401,7 +419,7 @@ public class Parsing {
         String boundryString = postBoundryBegin.substring(0, endBoundry);
 
         System.out.println(boundryString);
-
+*/
         // boundary="MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20"
         String xml;
         try {
@@ -410,7 +428,10 @@ public class Parsing {
 //              System.out.println(Parsing.getMetadataLevel(xml));
             //          System.out.println(Parsing.isValidDirectAddressBlock(xml));
             xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM.txt", Charset.defaultCharset());
-
+            
+            System.out.println(Parsing.getWsseHeaderFromMTOM(xml));
+            
+/*
             System.out.println(Parsing.isValidDirectAddressBlock(xml));
             //   System.out.println(Parsing.isRegistryResponseSuccess(xml));
             System.out.println(Parsing.getMetadataLevel(xml));
@@ -424,18 +445,15 @@ public class Parsing {
 //          xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM2.txt", Charset.defaultCharset());  
             //xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/fromToolkit.txt", Charset.defaultCharset());
             xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/xdr.txt", Charset.defaultCharset());
-
+            
        //    System.out.println(Parsing.isRegistryResponseSuccessFullHeaders(xml));
 
             SOAPWithAttachment swa = Parsing.parseMtom(xml);
 
          //   System.out.println(swa.getSoap());
 //            System.out.println(new String(swa.getAttachment().iterator().next()));
-
             //     System.out.println(Parsing.isValidDirectDisposition(xml));
-            /*
-          
-          
+            /*                    
              try {
                  SOAPWithAttachment swa = Parsing.parseMtom(xml);
                  
