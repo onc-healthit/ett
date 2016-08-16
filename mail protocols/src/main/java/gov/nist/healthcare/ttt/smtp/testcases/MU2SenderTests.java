@@ -2029,7 +2029,7 @@ public class MU2SenderTests {
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
-			String aName = "";
+			/*String aName = "";
 
 			Multipart multipart = new MimeMultipart();
 
@@ -2051,7 +2051,7 @@ public class MU2SenderTests {
 
 				// Send the complete message parts
 				message.setContent(multipart);
-			}
+			}*/
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 

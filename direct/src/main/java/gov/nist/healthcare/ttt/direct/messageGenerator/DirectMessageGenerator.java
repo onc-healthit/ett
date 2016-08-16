@@ -59,6 +59,8 @@ public class DirectMessageGenerator {
 
 	protected String wrappedMessageID;
 
+	protected String digestAlgo;
+
 	public DirectMessageGenerator() {
 
 	}
@@ -67,7 +69,7 @@ public class DirectMessageGenerator {
 			String fromAddress, String toAddress, InputStream attachmentFile,
 			String attachmentFileName, InputStream signingCert,
 			String signingCertPassword, InputStream encryptionCert,
-			boolean isWrapped) throws Exception {
+			boolean isWrapped, String digestAlgo) throws Exception {
 		super();
 		this.textMessage = textMessage;
 		this.subject = subject;
@@ -83,6 +85,7 @@ public class DirectMessageGenerator {
 				new SMTPAddress().properEmailAddr(this.fromAddress));
 		this.to = new InternetAddress(
 				new SMTPAddress().properEmailAddr(this.toAddress));
+		this.digestAlgo = digestAlgo;
 	}
 
 	public MimeMessage generateMessage() throws Exception {
@@ -191,7 +194,7 @@ public class DirectMessageGenerator {
 	public MimeBodyPart generateMultipartSigned(MimeBodyPart m)
 			throws Exception {
 		PrivateCertificateLoader loader = new PrivateCertificateLoader(
-				this.signingCert, this.signingCertPassword);
+				this.signingCert, this.signingCertPassword, this.digestAlgo);
 		SMIMESignedGenerator gen = loader.getSMIMESignedGenerator();
 
 		MimeMultipart mm = gen.generate(m);
@@ -586,4 +589,11 @@ public class DirectMessageGenerator {
 		this.wrappedMessageID = wrappedMessageID;
 	}
 
+	public String getDigestAlgo() {
+		return digestAlgo;
+	}
+
+	public void setDigestAlgo(String digestAlgo) {
+		this.digestAlgo = digestAlgo;
+	}
 }

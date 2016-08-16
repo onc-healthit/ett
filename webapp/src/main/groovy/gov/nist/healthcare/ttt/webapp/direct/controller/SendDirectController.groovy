@@ -51,6 +51,12 @@ public class SendDirectController {
 		// Set certificates values
 		listener.setCertificatesPath(this.certificatesPath)
 		listener.setCertPassword(this.certPassword)
+
+		// Get digest algo
+		String digestAlgo = "SHA1withRSA";
+		if(messageInfo.getDigestAlgo().equals("sha256")) {
+			digestAlgo = "SHA256withRSA";
+		}
 		
 		if (messageInfo.isValidSendEmail()) {
 			InputStream attachmentFile = null;
@@ -71,7 +77,7 @@ public class SendDirectController {
 					messageInfo.getFromAddress(), messageInfo.getToAddress(),
 					attachmentFile, messageInfo.getAttachmentFile(),
 					signingCert, messageInfo.getSigningCertPassword(),
-					null, messageInfo.isWrapped());
+					null, messageInfo.isWrapped(), digestAlgo);
 			
 			// Get encryption cert
 			InputStream encryptionCert = null;

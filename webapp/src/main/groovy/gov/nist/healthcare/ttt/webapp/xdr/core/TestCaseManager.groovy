@@ -3,6 +3,9 @@ package gov.nist.healthcare.ttt.webapp.xdr.core
 import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCase
+
+import java.util.Map;
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -67,6 +70,22 @@ class TestCaseManager implements ApplicationListener<ContextRefreshedEvent> {
 
         testcase.configure()
     }
+	
+	public Result configure(String id, Map context, String username) {
+
+		log.debug("run test case $id")
+
+		//Check if we have implemented this test case
+		TestCase testcase
+		try {
+			testcase = findTestCase(id)
+		}
+		catch (Exception e) {
+			throw new Exception("test case $id is not yet implemented", e)
+		}
+
+		testcase.configure(context, username)
+	}
 
     public Result run(String id, Map userInput, String username) {
         log.debug("run test case $id")

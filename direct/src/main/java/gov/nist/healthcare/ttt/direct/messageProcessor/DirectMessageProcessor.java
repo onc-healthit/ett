@@ -479,7 +479,7 @@ public class DirectMessageProcessor {
 		// Load certificate
 		try {
 			this.certLoader = new PrivateCertificateLoader(certificate,
-					certificatePassword);
+					certificatePassword, "");
 		} catch (KeyStoreException e1) {
 			logger.error(e1.getMessage());
 			throw e1;

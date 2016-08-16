@@ -1,10 +1,10 @@
 <div>
 
-    <div class="alert" ng-class="{true:'alert-danger', false:'alert-success'}[data.ccdaValidationResults[0].type.indexOf('Error') > 0 || data.resultsMetaData.serviceError]">
+    <div class="alert" ng-class="{true:'alert-danger', false:'alert-success'}[data.hasError || data.resultsMetaData.serviceError]">
 
         <table style="width:100%;">
             <tr>
-                <td style="padding-right: 10px;" ng-switch on="data.ccdaValidationResults[0].type.indexOf('Error') > 0 || data.resultsMetaData.serviceError">
+                <td style="padding-right: 10px;" ng-switch on="data.hasError || data.resultsMetaData.serviceError">
                     <i class="fa fa-times fa-4x" ng-switch-when="true"></i>
                     <i class="fa fa-check fa-4x" ng-switch-when="false"></i>
                 </td>

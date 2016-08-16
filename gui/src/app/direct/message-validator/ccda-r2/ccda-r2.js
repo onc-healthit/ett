@@ -77,7 +77,7 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
                             message: data.data.message
                         };
                     });
-                }  else {
+                } else {
                     $scope.laddaLoading = false;
                     throw {
                         code: "No code",

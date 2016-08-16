@@ -80,8 +80,12 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
         log.debug("notification url is :" + fullNotificationUrl)
     }
+	
+	public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
+		createEndpoints(config, fullNotificationUrl);
+	}
 
-    public XDRSimulatorInterface createEndpoints(EndpointConfig config) {
+    public XDRSimulatorInterface createEndpoints(EndpointConfig config, String notifUrl) {
 
         def createEndpointTkMsg =buildCreateEndpointRequest(config)
    		XDRSimulatorInterface sim = new XDRSimulatorImpl();
@@ -91,7 +95,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 //            GPathResult response = restClient.getXml(tkSimInfo + "/" + config.name, timeout)
 //            def sim = CreateEndpointResponseParser.parse(response, config.name)
 			
-			SimConfig conf = createDocRecipient(config);
+			SimConfig conf = createDocRecipient(config, notifUrl);
 
 			sim.endpoint = getPropertyFromSim(conf, "PnR_endpoint");
 			sim.endpointTLS = getPropertyFromSim(conf, "PnR_TLS_endpoint");
@@ -176,7 +180,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
     }
 	
 	
-	public def createDocRecipient(EndpointConfig config) {
+	public def createDocRecipient(EndpointConfig config, String notifUrl) {
 		SimulatorBuilder spi = new SimulatorBuilder(this.toolkitUrl);
 		BasicSimParameters recParams = new BasicSimParameters();
 
@@ -200,7 +204,7 @@ public class XdrReceiverImpl implements XdrReceiver, IObservable {
 
 //		System.out.println("This is un-verifiable since notifications are handled through the servlet filter chain which is not configured here");
 //		System.out.println("STEP - UPDATE - REGISTER NOTIFICATION");
-		documentRecipient.setProperty(SimulatorProperties.TRANSACTION_NOTIFICATION_URI, fullNotificationUrl);
+		documentRecipient.setProperty(SimulatorProperties.TRANSACTION_NOTIFICATION_URI, notifUrl);
 		documentRecipient.setProperty(SimulatorProperties.TRANSACTION_NOTIFICATION_CLASS, "gov.nist.healthcare.ttt.xdr.api.XDRServlet");
 		SimConfig withRegistration = documentRecipient.update(documentRecipient.getConfig());
 //		System.out.println("Updated Src Sim config is" + withRegistration.describe());

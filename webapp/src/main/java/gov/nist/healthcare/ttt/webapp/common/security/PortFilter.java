@@ -37,7 +37,8 @@ public class PortFilter extends OncePerRequestFilter {
     static {
         // static website content
         uriWhitelist.add("api/xdrNotification/.*");
-
+        uriWhitelist.add("api/xdrvalidator/receive/.*");
+        
         // public APIs
         // uriWhitelist.add("/public");
     }

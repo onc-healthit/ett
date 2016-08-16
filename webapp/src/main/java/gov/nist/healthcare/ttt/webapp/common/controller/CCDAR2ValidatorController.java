@@ -13,6 +13,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,8 +73,22 @@ public class CCDAR2ValidatorController {
 					e.printStackTrace();
 					throw e;
 				}
-					
-				return result;
+
+				JSONObject json = new JSONObject(result);
+				json.put("hasError", false);
+				// Check errors
+				JSONArray resultMetadata = json.getJSONObject("resultsMetaData").getJSONArray("resultMetaData");
+				for (int i = 0; i < resultMetadata.length(); i++) {
+					JSONObject metatada = resultMetadata.getJSONObject(i);
+					if(metatada.getString("type").toLowerCase().contains("error")) {
+						if(metatada.getInt("count") > 0) {
+							json.put("hasError", true);
+						}
+					}
+
+				}
+
+				return json.toString();
 				
 				
 				

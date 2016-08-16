@@ -797,7 +797,7 @@ public class ListenerProcessor implements Runnable {
 
 			case 'processedfailuretest':
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
-				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'failure', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, ' failed', 'Failure MDN', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
 				
 			case 'processdelayeddispatch7':
