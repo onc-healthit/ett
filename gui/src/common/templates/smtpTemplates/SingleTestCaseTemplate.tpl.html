@@ -14,7 +14,7 @@
 			<span class="refresh">MDN</span>
 		</time>
 
-		<time ui-sref="edge.{{edgeProtocol}}.logs" ng-click="displayLog(test); scrollTop()" ng-switch-when="manual">
+		<time ui-sref="{{testSystem}}.{{edgeProtocol}}.logs" ng-click="displayLog(test); scrollTop()" ng-switch-when="manual">
 			<span class="pending">Waiting</span>
 			<span class="refresh">Validation</span>
 		</time>

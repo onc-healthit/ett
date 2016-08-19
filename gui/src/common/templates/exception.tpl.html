@@ -6,16 +6,16 @@
 </div>
 <div class="modal-body">
     <div ng-hide="showdebug">
-        <p style="font-size: 20px;">
+        <p style="font-size: 20px; display: inline; width: 150px; word-break: break-all; word-wrap: break-word;">
             {{exceptionText}}
-        </p>
+        </p><br>
         <a href="" ng-click="showdebug=!showdebug"><i class="fa fa-caret-square-o-down"></i> Show debugging</a>
     </div>
     <div ng-show="showdebug">
         <p>
             <a href="" ng-click="showdebug=!showdebug"><i class="fa fa-caret-square-o-down"></i> Hide debugging</a>
         </p>
-        <p>Exception: {{exceptionText}}</p>
+        <p style="display: inline; width: 150px;  word-break: break-all; word-wrap: break-word;">Exception: {{exceptionText}}</p>
         <p>Caused by: {{cause}}</p>
         <p>Requesting: {{url}}</p>
     </div>

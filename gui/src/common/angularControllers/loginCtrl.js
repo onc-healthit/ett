@@ -96,13 +96,16 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$timeout', 'CreateUser', 'Login', 
 			$scope.buttonSuccess = "Send";
 			$scope.modalType = "forgotPass";
 			$scope.save = function() {
-				ForgotPassword.save($scope.forgot.username, function(data) {
-					growl.success("Email sent");
-					$scope.close("Ok");
-				}, function(data) {
-					showAlert('danger', data.data.message);
-				});
-
+				if (!$scope.forgot.username || $scope.forgot.username === "") {
+					showAlert('danger', 'Username must be an email');
+				} else {
+					ForgotPassword.save($scope.forgot.username, function(data) {
+						growl.success("Email sent");
+						$scope.close("Ok");
+					}, function(data) {
+						showAlert('danger', data.data.message);
+					});
+				}
 			};
 		};
 
