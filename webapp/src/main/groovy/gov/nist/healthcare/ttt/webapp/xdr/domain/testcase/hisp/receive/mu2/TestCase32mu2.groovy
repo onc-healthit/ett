@@ -41,7 +41,7 @@ final class TestCase32mu2 extends TestCaseSender {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context, ["targetEndpointTLS"])
+        executor.validateInputs(context, ["targetEndpointTLS", "outgoing_from"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -59,7 +59,7 @@ final class TestCase32mu2 extends TestCaseSender {
         context.wsaTo = context.endpointTLS
         //this address has not been registered in the tool
         context.directTo = "badaddress@gfail.com"
-        context.directFrom = "testcase32mu2@$executor.hostname"
+        context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)

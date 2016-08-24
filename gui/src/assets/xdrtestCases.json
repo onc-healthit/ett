@@ -185,8 +185,8 @@
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
-        "name": "Direct From Address",
-        "key": "direct_from",
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
@@ -218,8 +218,8 @@
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
-        "name": "Direct From Address",
-        "key": "direct_from",
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
@@ -279,6 +279,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR Test 16",
@@ -307,6 +311,10 @@
     }, {
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
@@ -416,6 +424,10 @@
         "name": "Direct To Address",
         "key": "direct_to",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 31",
@@ -427,6 +439,10 @@
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
+        "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
@@ -445,6 +461,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 33",
@@ -461,6 +481,10 @@
     }, {
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
@@ -479,6 +503,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 35",
@@ -495,6 +523,10 @@
     }, {
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
@@ -513,6 +545,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 37",
@@ -529,6 +565,10 @@
     }, {
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
@@ -547,6 +587,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 43",
@@ -564,6 +608,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR MT Test 44",
@@ -580,6 +628,10 @@
     }, {
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {

@@ -39,7 +39,7 @@ final class TestCase38mu2 extends TestCaseSender {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context, ["targetEndpointTLS"])
+        executor.validateInputs(context, ["targetEndpointTLS", "outgoing_from"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -57,7 +57,7 @@ final class TestCase38mu2 extends TestCaseSender {
         context.wsaTo = context.endpointTLS
         //an address that provides a processed MDN and a dispatched MDN after n seconds (n < sending hisp timeout)
         context.directTo = "processedonly@edge.nist.gov"
-        context.directFrom = "testcase38mu2@$executor.hostname"
+        context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)

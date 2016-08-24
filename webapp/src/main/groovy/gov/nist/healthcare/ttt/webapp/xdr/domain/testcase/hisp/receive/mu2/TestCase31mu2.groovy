@@ -27,7 +27,7 @@ final class TestCase31mu2 extends TestCase {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context, ["targetEndpointTLS"])
+        executor.validateInputs(context, ["targetEndpointTLS", "outgoing_from"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -42,7 +42,7 @@ final class TestCase31mu2 extends TestCase {
         context.wsaTo = context.endpointTLS
 
         context.directTo = "testcase31mu2@$executor.hostname"
-        context.directFrom = "testcase31mu2@$executor.hostname"
+        context.directFrom = context.outgoing_from
         //this header has an invalid value
         context.finalDestinationDelivery = "badHeaderValue"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
