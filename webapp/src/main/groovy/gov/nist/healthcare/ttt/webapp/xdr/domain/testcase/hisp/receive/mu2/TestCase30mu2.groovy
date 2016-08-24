@@ -28,7 +28,7 @@ final class TestCase30mu2 extends TestCase {
     Result run(Map context, String username) {
 
         //directTo : user registered this address in the tool
-        executor.validateInputs(context, ["direct_to","targetEndpointTLS"])
+        executor.validateInputs(context, ["direct_to","targetEndpointTLS", "outgoing_from"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -43,7 +43,7 @@ final class TestCase30mu2 extends TestCase {
         context.wsaTo = context.endpointTLS
         //the user registered this address and we send to it
         context.directTo = context.direct_to
-        context.directFrom = "testcase30mu2@$executor.hostname"
+        context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
