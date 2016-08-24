@@ -27,7 +27,7 @@ final class TestCase13 extends TestCase {
     @Override
     Result run(Map context, String username) {
 
-        executor.validateInputs(context, ["targetEndpointTLS", "direct_from"])
+        executor.validateInputs(context, ["targetEndpointTLS", "outgoing_from"])
 
         TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
@@ -41,7 +41,7 @@ final class TestCase13 extends TestCase {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         context.directTo = "testcase13@$executor.hostname"
-        context.directFrom = context.direct_from
+        context.directFrom = context.outgoing_from
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
 		
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
