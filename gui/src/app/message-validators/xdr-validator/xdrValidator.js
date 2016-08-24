@@ -4,18 +4,18 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
     function($scope, growl, XDRValidatorEndpoints) {
 
         $scope.xdrSamples = [
-            "C32_Sample1_full_metadata",
-            "C32_Sample1_minimal_metadata",
-            "C32_Sample2_full_metadata",
-            "C32_Sample2_minimal_metadata",
-            "CCDA_Ambulatory_full_metadata",
-            "CCDA_Ambulatory_minimal_metadata",
-            "CCDA_Inpatient_full_metadata",
-            "CCDA_Inpatient_minimal_metadata",
-            "CCR_Sample1_full_metadata",
-            "CCR_Sample1_minimal_metadata",
-            "CCR_Sample2_full_metadata",
-            "CCR_Sample2_minimal_metadata"
+            {name:"C32_Sample1_full_metadata"},
+            {name:"C32_Sample1_minimal_metadata"},
+            {name:"C32_Sample2_full_metadata"},
+            {name:"C32_Sample2_minimal_metadata"},
+            {name:"CCDA_Ambulatory_full_metadata"},
+            {name:"CCDA_Ambulatory_minimal_metadata"},
+            {name:"CCDA_Inpatient_full_metadata"},
+            {name:"CCDA_Inpatient_minimal_metadata"},
+            {name:"CCR_Sample1_full_metadata"},
+            {name:"CCR_Sample1_minimal_metadata"},
+            {name:"CCR_Sample2_full_metadata"},
+            {name:"CCR_Sample2_minimal_metadata"}
         ];
 
         $scope.sample = {};
