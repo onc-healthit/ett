@@ -149,6 +149,15 @@ hisp.config(['$stateProvider',
                         templateUrl: 'templates/accountInfo.tpl.html'
                     }
                 }
+            })
+            .state('hisp.announcement', {
+                url: '/announcement',
+                views: {
+                    "hisp": {
+                        controller: 'AnnouncementCtrl',
+                        templateUrl: 'templates/announcement.tpl.html'
+                    }
+                }
             }).state('hisp.releaseNotes', {
                 url: '/releaseNotes',
                 views: {

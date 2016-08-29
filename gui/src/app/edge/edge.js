@@ -153,6 +153,15 @@ edge.config(['$stateProvider',
                         templateUrl: 'templates/accountInfo.tpl.html'
                     }
                 }
+            })
+            .state('edge.announcement', {
+                url: '/announcement',
+                views: {
+                    "edge": {
+                        controller: 'AnnouncementCtrl',
+                        templateUrl: 'templates/announcement.tpl.html'
+                    }
+                }
             }).state('edge.releaseNotes', {
                 url: '/releaseNotes',
                 views: {
