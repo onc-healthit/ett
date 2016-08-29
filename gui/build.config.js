@@ -22,7 +22,7 @@ module.exports = {
   app_files: {
     js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
     jsunit: [ 'src/**/*.spec.js' ],
-    
+
     coffee: [ 'src/**/*.coffee', '!src/**/*.spec.coffee' ],
     coffeeunit: [ 'src/**/*.spec.coffee' ],
 
@@ -89,7 +89,8 @@ module.exports = {
 	  'vendor/angular-tooltips/dist/angular-tooltips.min.js',
 	  'vendor/findertree/dist/finder-tree.js',
 	  'vendor/ngDropover/dist/ngdropover.js',
-	  'vendor/angular-clipboard/angular-clipboard.js'
+	  'vendor/angular-clipboard/angular-clipboard.js',
+	  'vendor/markdown-js/lib/markdown.js',
     ],
     css: [
 	  'vendor/bootstrap/dist/css/bootstrap-theme.css',
