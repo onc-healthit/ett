@@ -5,10 +5,14 @@
 
 	* XDR
 	    -Removed XDR 4c and 15c.
-	    -Added Direct from field for XDR 13 and 14.
+	    -HISP, Your System As Receiver: Updates to allow the outgoing "Direct From" address to be configurable from the UI.  This affects: XDR 13, XDR 14, XDR MT Test 15, XDR MT Test 16, XDR MT Test 30, XDR MT Test 31, XDR MT Test 32, XDR MT Test 33, XDR MT Test 34, XDR MT Test 35, XDR MT Test 36, XDR MT Test 37, XDR MT Test 38, XDR MT Test 43, XDR MT Test 44.
+        -Removed XDR 4c and XDR 15c.  Full explanation is available here: https://groups.google.com/forum/#!topic/edge-test-tool/v7DTivWWdR8
 
-	*C-CDA R2.1 Validator
-		-Fix display issue: green check when there are errors with C-CDA validator
+	* C-CDA R2.1 Validator
+		-Corrected a display issue where a green check was in some situations showing when the XML contained errors.
+
+	* IMAP
+	    -HISP, Your System As Sender: IMAP 9 updated to allow a greater flexibility of error messages from SUT
 
 ==Version 1.0.21#7/27/2016
 	* SMTP
