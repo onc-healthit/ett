@@ -449,7 +449,7 @@
 	{
 		"name": "XDR Test MT 20a",
 		"id": "20amu2",
-		"desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a dispatch MDN.  The test lab will inspect the SUT’s logs and system to verify that the response was handled appropriately.",
+		"desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a positive (success) delivery status notification. The test lab will inspect the SUT logs and system to verify that the response was handled appropriately.",
 		"sutEdge": true,
 		"sutHisp": false,
 		"sutRole": "sender",
@@ -471,7 +471,7 @@
 	{
 		"name": "XDR MT Test 20b",
 		"id": "20bmu2",
-		"desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a failure MDN.  The test lab will inspect the SUT’s logs and system to verify that the response was handled appropriately.",
+		"desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive negative (failure) delivery status notification. The test lab will inspect the SUT logs and system to verify that the response was handled appropriately.",
 		"sutEdge": true,
 		"sutHisp": false,
 		"sutRole": "sender",
