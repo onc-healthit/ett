@@ -3,6 +3,7 @@ package gov.nist.healthcare.ttt.smtp.testcases;
 import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
 import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
+import gov.nist.healthcare.ttt.smtp.util.Utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -150,7 +151,7 @@ public class MU2ReceiverTests {
 													buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
 												}
 												System.out.println(buffer);
-												if(buffer.containsValue(id+"\n") && buffer.containsValue("automatic-action/MDN-sent-automatically;failure"+"\n")){
+												if(buffer.containsValue(id+"\n") && (buffer.containsValue("automatic-action/MDN-sent-automatically;failed"+"\n") || buffer.containsValue("automatic-action/MDN-sent-automatically; failed"+"\n"))){
 													//	buffer.get("\n"+"Disposition").toLowerCase().contains("fail");
 													ZonedDateTime endTime = ZonedDateTime.now();
 													result.putAll(buffer);
@@ -250,7 +251,7 @@ public class MU2ReceiverTests {
 
 												}
 												System.out.println(buffer);
-												if(list.contains(id) && list.contains("automatic-action/MDN-sent-automatically;dispatched")){
+												if(list.contains(id) && Utils.isDispatchedMDN(list)){
 													dispatchedFlag = 1;
 												}
 
@@ -320,7 +321,7 @@ public class MU2ReceiverTests {
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 										}
 
-										else if (list.contains("automatic-action/MDN-sent-automatically;processed")){
+										else if (Utils.isProcessedMDN(list)){
 											ZonedDateTime endTime = ZonedDateTime.now();
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
@@ -385,7 +386,7 @@ public class MU2ReceiverTests {
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 										}
 
-										else if (list.contains("automatic-action/MDN-sent-automatically;processed")){
+										else if (Utils.isProcessedMDN(list)){
 											ZonedDateTime endTime = ZonedDateTime.now();
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
@@ -427,7 +428,7 @@ public class MU2ReceiverTests {
 											buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
 										}
 										System.out.println(buffer);
-										if(buffer.containsValue(id+"\n") && buffer.containsValue("automatic-action/MDN-sent-automatically;dispatched"+"\n")){
+										if(buffer.containsValue(id+"\n") && (buffer.containsValue("automatic-action/MDN-sent-automatically;dispatched"+"\n") || buffer.containsValue("automatic-action/MDN-sent-automatically; dispatched"+"\n"))){
 											ZonedDateTime endTime = ZonedDateTime.now();
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
@@ -480,7 +481,7 @@ public class MU2ReceiverTests {
 
 										System.out.println(list);
 
-										if(list.contains("automatic-action/MDN-sent-automatically;processed") && list.contains("automatic-action/MDN-sent-automatically;dispatched")){
+										if(Utils.isProcessedMDN(list) && Utils.isDispatchedMDN(list)){
 
 											ZonedDateTime endTime = ZonedDateTime.now();
 											result.putAll(buffer);
@@ -564,9 +565,9 @@ public class MU2ReceiverTests {
 
 				System.out.println(list1);
 				System.out.println(list);
-				if(list1.contains("automatic-action/MDN-sent-automatically;processed")){
+				if(Utils.isProcessedMDN(list1)){
 
-					if(list.contains("in-reply-to") || list1.contains("automatic-action/MDN-sent-automatically;failure")){
+					if(list.contains("in-reply-to") || Utils.isFailureMDN(list1) || Utils.isFailedMDN(list1)){
 						ZonedDateTime endTime = ZonedDateTime.now();
 						result.putAll(buffer);
 						duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
