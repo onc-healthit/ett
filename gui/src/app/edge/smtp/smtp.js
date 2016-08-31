@@ -165,11 +165,15 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
             }
 
             var previousTR = null;
-            if (test.testResult.length > 0) {
-                if (test.testResult[0].criteriaMet !== "NA") {
-                    previousTR = test.testResult[0];
+            if (!angular.isUndefined(test.testResult)){
+                if (test.testResult.length > 0) {
+                    if (test.testResult[0].criteriaMet !== "NA") {
+                        previousTR = test.testResult[0];
+                    }
                 }
-            }
+             }
+
+
 
             // Get profile info
             $scope.inputForTest = {
@@ -199,6 +203,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
             test.status = "loading";
 
             test.testResult = SMTPTestCases.startTest($scope.inputForTest, function(data) {
+
                 // Set log result
                 test.testResult = data;
 

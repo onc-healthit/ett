@@ -96,6 +96,15 @@ validators.config(['$stateProvider',
                         templateUrl: 'templates/accountInfo.tpl.html'
                     }
                 }
+            })
+            .state('validators.announcement', {
+                url: '/announcement',
+                views: {
+                    "edge": {
+                        controller: 'AnnouncementCtrl',
+                        templateUrl: 'templates/announcement.tpl.html'
+                    }
+                }
             }).state('validators.releaseNotes', {
                 url: '/releaseNotes',
                 views: {
@@ -110,7 +119,7 @@ validators.config(['$stateProvider',
 
 validators.controller('MessageValidatorsCtrl', ['$scope', 'SettingsFactory', 'PropertiesFactory',
     function($scope, SettingsFactory, PropertiesFactory) {
-        
+
         SettingsFactory.getSettings(function(result) {
             $scope.settings = result.data;
         }, function(error) {

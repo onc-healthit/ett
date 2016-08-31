@@ -1,7 +1,10 @@
 package gov.nist.healthcare.ttt.webapp.common.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,11 +19,15 @@ public class PropertiesController {
 	@Value("${direct.listener.domainName}")
 	String domainName = "localhost";
 	
-	@Value("${ttt.lastUpdated}")
-	String lastUpdated = "";
+//	@Value("${ttt.lastUpdated}")
+	Calendar cal = Calendar.getInstance();
+	String date = new SimpleDateFormat("MMMM dd, YYYY").format(cal.getTime());
+	String lastUpdated = date;
 	
 	@Value("${ttt.version}")
 	String version = "1.0";
+	
+	
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody HashMap<String, String> getProperties() throws IOException {

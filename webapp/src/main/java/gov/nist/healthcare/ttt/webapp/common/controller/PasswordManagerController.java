@@ -22,16 +22,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("api/passwordManager")
 public class PasswordManagerController {
-	
+
 	private static Logger logger = Logger.getLogger(PasswordManagerController.class.getName());
-	
+
 	@Autowired
 	private DatabaseInstance db;
 
 	// Emailer settings
 	@Autowired
 	private EmailerModel emailerModel;
-	
+
 	@RequestMapping(value="/change", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody boolean changePassword(@RequestBody ChangePasswordModel changePassword, Principal principal) throws DatabaseException, TTTCustomException {
 		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
@@ -46,7 +46,7 @@ public class PasswordManagerController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value="/forgot", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody boolean forgotPassword(@RequestBody String username) throws DatabaseException, TTTCustomException {
 		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
@@ -56,7 +56,7 @@ public class PasswordManagerController {
 				logger.info("New password for user: " + username + " password: " + uuid);
 				Emailer emailer = new Emailer(emailerModel);
 				try {
-					emailer.sendEmail2(username, "ETT forgot password", "Your password for user: " + username + " is: " + uuid);
+					emailer.sendEmail2(username, "TTP forgot password", "Your password for user: " + username + " is: " + uuid);
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new TTTCustomException("0x0045", "Password changed but could not send email. Contact us.");

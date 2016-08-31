@@ -22,11 +22,13 @@ edgeSmtp.config(['$stateProvider',
                 url: '/logs',
                 views: {
                     "smtp": {
-                        templateUrl: 'edge/smtp/logs/testLog.tpl.html'
+                        templateUrl: 'hisp/smtp/logs/testLog.tpl.html'
                     }
-                }
+                },
+				data: {
+					sutEge: true
+				}
             });
-
     }
 ]);
 
@@ -47,7 +49,7 @@ edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescript
 
         SMTPTestCasesDescription.getTestCasesDescription(function(response) {
             var result = response.data;
-            
+
             $scope.testingMode = result.testingMode;
             angular.forEach(result.tests, function(test) {
                 test.status = 'na';

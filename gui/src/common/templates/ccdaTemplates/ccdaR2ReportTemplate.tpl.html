@@ -63,10 +63,14 @@
                             <strong>Error</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
+                    </div>
+                    <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Warning">
                             <strong>Warning</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
+                    </div>
+                    <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Info">
                             <strong>Info</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
