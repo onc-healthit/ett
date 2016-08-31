@@ -70,7 +70,9 @@ public class PrivateCertificateLoader {
 		Security.addProvider(new BouncyCastleProvider());
 
 		// Set digest algorithm
-		this.digestAlgo = digestAlgo;
+		if(digestAlgo != null && !digestAlgo.equals("")) {
+			this.digestAlgo = digestAlgo;
+		}
 		
 		// Copy InputStream in byte array so we can read it more than once
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
