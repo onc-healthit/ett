@@ -205,6 +205,10 @@
         "name": "Direct From Address",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
+        "type": "string"
     }]
 }, {
     "name": "XDR Test 14",
@@ -237,6 +241,10 @@
     }, {
         "name": "Direct From Address",
         "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Outgoing (ETT --> SUT) Direct From",
+        "key": "outgoing_from",
         "type": "string"
     }]
 }, {
