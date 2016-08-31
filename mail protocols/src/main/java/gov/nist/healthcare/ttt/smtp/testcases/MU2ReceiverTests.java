@@ -27,6 +27,7 @@ import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.mail.search.FlagTerm;
 
 import org.apache.commons.io.IOUtils;
@@ -77,7 +78,7 @@ public class MU2ReceiverTests {
 			store = session.getStore("imap");
 
 			if (fetch.equals("smtp")){
-				store.connect(ti.tttSmtpAddress,993,prop.getProperty("ett.smtpmu2.address"),prop.getProperty("ett.password"));
+				store.connect(ti.tttSmtpAddress,143,prop.getProperty("ett.smtpmu2.address"),prop.getProperty("ett.password"));
 			}
 			else if (fetch.equals("imap")) {
 				store.connect(ti.sutSmtpAddress,143,ti.sutUserName,ti.sutPassword);
@@ -95,9 +96,20 @@ public class MU2ReceiverTests {
 			inbox.open(Folder.READ_WRITE);
 
 
-			Flags seen = new Flags(Flags.Flag.SEEN);
+			/*Flags seen = new Flags(Flags.Flag.SEEN);
 			FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
-			Message messages[] = inbox.search(unseenFlagTerm);
+			Message messages[] = inbox.search(unseenFlagTerm);*/
+
+
+			int mcount = inbox.getMessageCount();
+			Message messages[] = inbox.getMessages(1, mcount);
+
+			if (mcount > 50){
+				messages = inbox.getMessages(mcount-49, mcount); // Search for last 50 emails.
+			}
+
+
+
 
 			if(type.equals("fail")){
 				System.out.println("Search in-reply-to or Failure MDN");
@@ -121,37 +133,41 @@ public class MU2ReceiverTests {
 						}
 
 						if (dsnFlag == 0){
-							Object m =  message.getContent();
-							if (message.getContent() instanceof Multipart){
-								Multipart multipart = (Multipart) message.getContent();
-								for (int i = 0; i < ((Multipart) m).getCount(); i++){
-									BodyPart bodyPart = multipart.getBodyPart(i);
-									if (!(bodyPart.isMimeType("text/*"))){
-										Object d =   bodyPart.getContent();
-										//d.getNotifications();
-										if (d instanceof DispositionNotification){
-											Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-											while (headers2.hasMoreElements()) {
-												Header h1 = (Header) headers2.nextElement();
-												buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
-											}
-											System.out.println(buffer);
-											if(buffer.containsValue(id+"\n") && (buffer.containsValue("automatic-action/MDN-sent-automatically;failed"+"\n") || buffer.containsValue("automatic-action/MDN-sent-automatically; failed"+"\n"))){
-												//	buffer.get("\n"+"Disposition").toLowerCase().contains("fail");
-												ZonedDateTime endTime = ZonedDateTime.now();
-												result.putAll(buffer);
-												duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-												result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+							MimeMessage mime = (MimeMessage) message;
+							Message message1 = new MimeMessage(mime);
+							if(!(message1.getContentType().contains("delivery-status"))){
+								Object m =  message.getContent();
+								if (message.getContent() instanceof Multipart){
+									Multipart multipart = (Multipart) message.getContent();
+									for (int i = 0; i < ((Multipart) m).getCount(); i++){
+										BodyPart bodyPart = multipart.getBodyPart(i);
+										if (!(bodyPart.isMimeType("text/*"))){
+											Object d =   bodyPart.getContent();
+											//d.getNotifications();
+											if (d instanceof DispositionNotification){
+												Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+												while (headers2.hasMoreElements()) {
+													Header h1 = (Header) headers2.nextElement();
+													buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+												}
+												System.out.println(buffer);
+												if(buffer.containsValue(id+"\n") && (buffer.containsValue("automatic-action/MDN-sent-automatically;failed"+"\n") || buffer.containsValue("automatic-action/MDN-sent-automatically; failed"+"\n"))){
+													//	buffer.get("\n"+"Disposition").toLowerCase().contains("fail");
+													ZonedDateTime endTime = ZonedDateTime.now();
+													result.putAll(buffer);
+													duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+													result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+
+												}
+
 
 											}
-
 
 										}
 
 									}
 
 								}
-
 							}
 						}
 					}
@@ -214,42 +230,46 @@ public class MU2ReceiverTests {
 						}
 
 						if (dsnFlag == 0){
-							Object m =  message.getContent();
-							if (message.getContent() instanceof Multipart){
-								Multipart multipart = (Multipart) message.getContent();
-								for (int i = 0; i < ((Multipart) m).getCount(); i++){
-									BodyPart bodyPart = multipart.getBodyPart(i);
-									if (!(bodyPart.isMimeType("text/*"))){
-										Object d =   bodyPart.getContent();
-										//d.getNotifications();
-										if (d instanceof DispositionNotification){
-											Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-											while (headers2.hasMoreElements()) {
-												Header h1 = (Header) headers2.nextElement();
-												list.add(h1.getName());
-												list.add(h1.getValue());
-												
+							MimeMessage mime = (MimeMessage) message;
+							Message message1 = new MimeMessage(mime);
+							if(!(message1.getContentType().contains("delivery-status"))){
+								Object m =  message.getContent();
+								if (message.getContent() instanceof Multipart){
+									Multipart multipart = (Multipart) message.getContent();
+									for (int i = 0; i < ((Multipart) m).getCount(); i++){
+										BodyPart bodyPart = multipart.getBodyPart(i);
+										if (!(bodyPart.isMimeType("text/*"))){
+											Object d =   bodyPart.getContent();
+											//d.getNotifications();
+											if (d instanceof DispositionNotification){
+												Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+												while (headers2.hasMoreElements()) {
+													Header h1 = (Header) headers2.nextElement();
+													list.add(h1.getName());
+													list.add(h1.getValue());
+
+
+												}
+												System.out.println(buffer);
+												if(list.contains(id) && Utils.isDispatchedMDN(list)){
+													dispatchedFlag = 1;
+												}
+
+												else{
+													ZonedDateTime endTime = ZonedDateTime.now();
+													duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+													result.putAll(buffer);
+													result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+												}
+
 
 											}
-											System.out.println(buffer);
-											if(list.contains(id) && Utils.isDispatchedMDN(list)){
-												dispatchedFlag = 1;
-											}
-
-											else{
-												ZonedDateTime endTime = ZonedDateTime.now();
-												duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-												result.putAll(buffer);
-												result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-											}
-
 
 										}
 
 									}
 
 								}
-
 							}
 						}
 					}
@@ -260,58 +280,62 @@ public class MU2ReceiverTests {
 				System.out.println("Search Original-Message-Id for Processed/Dispatched in DN with no X-Header");
 				int j = 1;
 				for (Message message : messages){
-					Object m =  message.getContent();
-					if (message.getContent() instanceof Multipart){
-						Multipart multipart = (Multipart) message.getContent();
-						for (int i = 0; i < ((Multipart) m).getCount(); i++){
-							BodyPart bodyPart = multipart.getBodyPart(i);
-							if (!(bodyPart.isMimeType("text/*"))){
-								Object d =   bodyPart.getContent();
-								//d.getNotifications();
-								if (d instanceof DispositionNotification){
-									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-									while (headers2.hasMoreElements()) {
-										Header h1 = (Header) headers2.nextElement();
-										if (id.equals(h1.getValue())){
-											Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-											while (headers3.hasMoreElements()) {
-												Header h2 = (Header) headers3.nextElement();
-												buffer.put("\n"+h2.getName()+" "+j, h2.getValue()+"\n");
-												list.add(h2.getValue());
-												list1.add(h2.getName());
-												j++;
+					MimeMessage mime = (MimeMessage) message;
+					Message message1 = new MimeMessage(mime);
+					if(!(message1.getContentType().contains("delivery-status"))){
+						Object m =  message.getContent();
+						if (message.getContent() instanceof Multipart){
+							Multipart multipart = (Multipart) message.getContent();
+							for (int i = 0; i < ((Multipart) m).getCount(); i++){
+								BodyPart bodyPart = multipart.getBodyPart(i);
+								if (!(bodyPart.isMimeType("text/*"))){
+									Object d =   bodyPart.getContent();
+									//d.getNotifications();
+									if (d instanceof DispositionNotification){
+										Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+										while (headers2.hasMoreElements()) {
+											Header h1 = (Header) headers2.nextElement();
+											if (id.equals(h1.getValue())){
+												Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+												while (headers3.hasMoreElements()) {
+													Header h2 = (Header) headers3.nextElement();
+													buffer.put("\n"+h2.getName()+" "+j, h2.getValue()+"\n");
+													list.add(h2.getValue());
+													list1.add(h2.getName());
+													j++;
+												}
 											}
-										}
 
-										/*else{
+											/*else{
 											message.setFlag(Flags.Flag.SEEN, false);
 										}*/
+										}
+
+										System.out.println(list);
+
+										if(list1.contains("X-DIRECT-FINAL-DESTINATION-DELIVERY")){
+											headerFlag = 1;
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+										}
+
+										else if (Utils.isProcessedMDN(list)){
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+										}
+
+
 									}
-
-									System.out.println(list);
-
-									if(list1.contains("X-DIRECT-FINAL-DESTINATION-DELIVERY")){
-										headerFlag = 1;
-										ZonedDateTime endTime = ZonedDateTime.now();
-										result.putAll(buffer);
-										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-									}
-
-									else if (Utils.isProcessedMDN(list)){
-										ZonedDateTime endTime = ZonedDateTime.now();
-										result.putAll(buffer);
-										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-									}
-
 
 								}
 
 							}
 
 						}
-
 					}
 				}
 
@@ -321,58 +345,62 @@ public class MU2ReceiverTests {
 				System.out.println("Search Original-Message-Id for Processed/Dispatched in DN with no X-Header");
 				int j = 1;
 				for (Message message : messages){
-					Object m =  message.getContent();
-					if (message.getContent() instanceof Multipart){
-						Multipart multipart = (Multipart) message.getContent();
-						for (int i = 0; i < ((Multipart) m).getCount(); i++){
-							BodyPart bodyPart = multipart.getBodyPart(i);
-							if (!(bodyPart.isMimeType("text/*"))){
-								Object d =   bodyPart.getContent();
-								//d.getNotifications();
-								if (d instanceof DispositionNotification){
-									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-									while (headers2.hasMoreElements()) {
-										Header h1 = (Header) headers2.nextElement();
-										if (id.equals(h1.getValue())){
-											Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-											while (headers3.hasMoreElements()) {
-												Header h2 = (Header) headers3.nextElement();
-												buffer.put("\n"+h2.getName()+" "+j, h2.getValue()+"\n");
-												list.add(h2.getValue());
-												list1.add(h2.getName());
-												j++;
+					MimeMessage mime = (MimeMessage) message;
+					Message message1 = new MimeMessage(mime);
+					if(!(message1.getContentType().contains("delivery-status"))){
+						Object m =  message.getContent();
+						if (message.getContent() instanceof Multipart){
+							Multipart multipart = (Multipart) message.getContent();
+							for (int i = 0; i < ((Multipart) m).getCount(); i++){
+								BodyPart bodyPart = multipart.getBodyPart(i);
+								if (!(bodyPart.isMimeType("text/*"))){
+									Object d =   bodyPart.getContent();
+									//d.getNotifications();
+									if (d instanceof DispositionNotification){
+										Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+										while (headers2.hasMoreElements()) {
+											Header h1 = (Header) headers2.nextElement();
+											if (id.equals(h1.getValue())){
+												Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+												while (headers3.hasMoreElements()) {
+													Header h2 = (Header) headers3.nextElement();
+													buffer.put("\n"+h2.getName()+" "+j, h2.getValue()+"\n");
+													list.add(h2.getValue());
+													list1.add(h2.getName());
+													j++;
+												}
 											}
-										}
 
-										/*else{
+											/*else{
 											message.setFlag(Flags.Flag.SEEN, false);
 										}*/
+										}
+
+										System.out.println(list);
+
+										if(list1.contains("X-DIRECT-FINAL-DESTINATION-DELIVERY")){
+											headerFlag = 1;
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+										}
+
+										else if (Utils.isProcessedMDN(list)){
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+										}
+
+
 									}
-
-									System.out.println(list);
-
-									if(list1.contains("X-DIRECT-FINAL-DESTINATION-DELIVERY")){
-										headerFlag = 1;
-										ZonedDateTime endTime = ZonedDateTime.now();
-										result.putAll(buffer);
-										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-									}
-
-									else if (Utils.isProcessedMDN(list)){
-										ZonedDateTime endTime = ZonedDateTime.now();
-										result.putAll(buffer);
-										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-									}
-
 
 								}
 
 							}
 
 						}
-
 					}
 				}
 
@@ -382,36 +410,40 @@ public class MU2ReceiverTests {
 				System.out.println("Search Original-Message-Id for Dispatched in DN");
 				String s = "";
 				for (Message message : messages){
-					Object m =  message.getContent();
-					if (message.getContent() instanceof Multipart){
-						Multipart multipart = (Multipart) message.getContent();
-						for (int i = 0; i < ((Multipart) m).getCount(); i++){
-							BodyPart bodyPart = multipart.getBodyPart(i);
-							if (!(bodyPart.isMimeType("text/*"))){
-								Object d =   bodyPart.getContent();
-								//d.getNotifications();
-								if (d instanceof DispositionNotification){
-									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-									while (headers2.hasMoreElements()) {
-										Header h1 = (Header) headers2.nextElement();
-										buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
-									}
-									System.out.println(buffer);
-									if(buffer.containsValue(id+"\n") && (buffer.containsValue("automatic-action/MDN-sent-automatically;dispatched"+"\n") || buffer.containsValue("automatic-action/MDN-sent-automatically; dispatched"+"\n"))){
-										ZonedDateTime endTime = ZonedDateTime.now();
-										result.putAll(buffer);
-										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+					MimeMessage mime = (MimeMessage) message;
+					Message message1 = new MimeMessage(mime);
+					if(!(message1.getContentType().contains("delivery-status"))){
+						Object m =  message.getContent();
+						if (message.getContent() instanceof Multipart){
+							Multipart multipart = (Multipart) message.getContent();
+							for (int i = 0; i < ((Multipart) m).getCount(); i++){
+								BodyPart bodyPart = multipart.getBodyPart(i);
+								if (!(bodyPart.isMimeType("text/*"))){
+									Object d =   bodyPart.getContent();
+									//d.getNotifications();
+									if (d instanceof DispositionNotification){
+										Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+										while (headers2.hasMoreElements()) {
+											Header h1 = (Header) headers2.nextElement();
+											buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+										}
+										System.out.println(buffer);
+										if(buffer.containsValue(id+"\n") && (buffer.containsValue("automatic-action/MDN-sent-automatically;dispatched"+"\n") || buffer.containsValue("automatic-action/MDN-sent-automatically; dispatched"+"\n"))){
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+
+										}
+
 
 									}
-
 
 								}
 
 							}
 
 						}
-
 					}
 				}
 
@@ -421,45 +453,49 @@ public class MU2ReceiverTests {
 				System.out.println("Search Original-Message-Id for Processed and Dispatched in DN");
 				int j = 1;
 				for (Message message : messages){
-					Object m =  message.getContent();
-					if (message.getContent() instanceof Multipart){
-						Multipart multipart = (Multipart) message.getContent();
-						for (int i = 0; i < ((Multipart) m).getCount(); i++){
-							BodyPart bodyPart = multipart.getBodyPart(i);
-							if (!(bodyPart.isMimeType("text/*"))){
-								Object d =   bodyPart.getContent();
-								//d.getNotifications();
-								if (d instanceof DispositionNotification){
-									Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-									while (headers2.hasMoreElements()) {
-										Header h1 = (Header) headers2.nextElement();
-										if (id.equals(h1.getValue())){
-											Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-											while (headers3.hasMoreElements()) {
-												Header h2 = (Header) headers3.nextElement();
-												buffer.put("\n"+h2.getName()+" "+j, h2.getValue()+"\n");
-												list.add(h2.getValue());
-												j++;
+					MimeMessage mime = (MimeMessage) message;
+					Message message1 = new MimeMessage(mime);
+					if(!(message1.getContentType().contains("delivery-status"))){
+						Object m =  message.getContent();
+						if (message.getContent() instanceof Multipart){
+							Multipart multipart = (Multipart) message.getContent();
+							for (int i = 0; i < ((Multipart) m).getCount(); i++){
+								BodyPart bodyPart = multipart.getBodyPart(i);
+								if (!(bodyPart.isMimeType("text/*"))){
+									Object d =   bodyPart.getContent();
+									//d.getNotifications();
+									if (d instanceof DispositionNotification){
+										Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+										while (headers2.hasMoreElements()) {
+											Header h1 = (Header) headers2.nextElement();
+											if (id.equals(h1.getValue())){
+												Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+												while (headers3.hasMoreElements()) {
+													Header h2 = (Header) headers3.nextElement();
+													buffer.put("\n"+h2.getName()+" "+j, h2.getValue()+"\n");
+													list.add(h2.getValue());
+													j++;
+												}
 											}
 										}
+
+										System.out.println(list);
+
+										if(Utils.isProcessedMDN(list) && Utils.isDispatchedMDN(list)){
+
+											ZonedDateTime endTime = ZonedDateTime.now();
+											result.putAll(buffer);
+											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+										}
+
 									}
 
-									System.out.println(list);
-
-									if(Utils.isProcessedMDN(list) && Utils.isDispatchedMDN(list)){
-
-										ZonedDateTime endTime = ZonedDateTime.now();
-										result.putAll(buffer);
-										duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-										result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-									}
-									
 								}
 
 							}
 
 						}
-
 					}
 				}
 
@@ -482,34 +518,39 @@ public class MU2ReceiverTests {
 								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
 								buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
 								list.add(h1.getName());
-							//	duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
-							//	result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+								//	duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+								//	result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
 
 							}
 							System.out.println(list);
 						}
 
 						if (dsnFlag == 0){
-							Object m =  message.getContent();
-							if (message.getContent() instanceof Multipart){
-								Multipart multipart = (Multipart) message.getContent();
-								for (int i = 0; i < ((Multipart) m).getCount(); i++){
-									BodyPart bodyPart = multipart.getBodyPart(i);
-									if (!(bodyPart.isMimeType("text/*"))){
-										Object d =   bodyPart.getContent();
-										//d.getNotifications();
-										if (d instanceof DispositionNotification){
-											Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-											while (headers2.hasMoreElements()) {
-												Header h1 = (Header) headers2.nextElement();
-												if (id.equals(h1.getValue())){
-													Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-													while (headers3.hasMoreElements()) {
-														Header h2 = (Header) headers3.nextElement();
-														buffer.put("\n"+h2.getName(), h2.getValue()+"\n");
-														list1.add(h2.getValue());
+							MimeMessage mime = (MimeMessage) message;
+							Message message1 = new MimeMessage(mime);
+							if(!(message1.getContentType().contains("delivery-status"))){
+								Object m =  message.getContent();
+								if (message.getContent() instanceof Multipart){
+									Multipart multipart = (Multipart) message.getContent();
+									for (int i = 0; i < ((Multipart) m).getCount(); i++){
+										BodyPart bodyPart = multipart.getBodyPart(i);
+										if (!(bodyPart.isMimeType("text/*"))){
+											Object d =   bodyPart.getContent();
+											//d.getNotifications();
+											if (d instanceof DispositionNotification){
+												Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+												while (headers2.hasMoreElements()) {
+													Header h1 = (Header) headers2.nextElement();
+													if (id.equals(h1.getValue())){
+														Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+														while (headers3.hasMoreElements()) {
+															Header h2 = (Header) headers3.nextElement();
+															buffer.put("\n"+h2.getName(), h2.getValue()+"\n");
+															list1.add(h2.getValue());
+														}
 													}
 												}
+
 											}
 
 										}
@@ -517,16 +558,15 @@ public class MU2ReceiverTests {
 									}
 
 								}
-
 							}
 						}
 					}
 				}
-				
+
 				System.out.println(list1);
 				System.out.println(list);
 				if(Utils.isProcessedMDN(list1)){
-					
+
 					if(list.contains("in-reply-to") || Utils.isFailureMDN(list1) || Utils.isFailedMDN(list1)){
 						ZonedDateTime endTime = ZonedDateTime.now();
 						result.putAll(buffer);
@@ -535,7 +575,7 @@ public class MU2ReceiverTests {
 
 					}
 				}
-				
+
 			}
 
 
