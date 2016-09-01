@@ -165,12 +165,10 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
             }
 
             var previousTR = null;
-            if (!angular.isUndefined(test.testResult)){
                 if (test.testResult.length > 0) {
                     if (test.testResult[0].criteriaMet !== "NA") {
                         previousTR = test.testResult[0];
                     }
-                }
              }
 
 
