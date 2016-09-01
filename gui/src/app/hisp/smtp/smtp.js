@@ -22,7 +22,7 @@ edgeSmtp.config(['$stateProvider',
                 url: '/logs',
                 views: {
                     "smtp": {
-                        templateUrl: 'hisp/smtp/logs/testLog.tpl.html'
+                        templateUrl: 'edge/smtp/logs/testLog.tpl.html'
                     }
                 },
 				data: {
