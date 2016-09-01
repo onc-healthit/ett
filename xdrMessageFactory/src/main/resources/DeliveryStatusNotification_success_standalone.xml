@@ -1,6 +1,0 @@
-<direct:messageDisposition xmlns:direct="urn:direct:addressing"> 
-   <direct:recipient>#DIRECT_RECIPIENT#</direct:recipient>
-   <direct:disposition>success</direct:disposition>
-</direct:messageDisposition>            
-
-

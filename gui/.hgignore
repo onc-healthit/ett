@@ -1,5 +1,0 @@
-syntax: glob
-build/
-node_modules/
-vendor/
-bin/
