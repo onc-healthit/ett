@@ -33,7 +33,7 @@ class TestCasesController {
 		MU2ReceiverTests fetchMail = new MU2ReceiverTests()
 		ArrayList<ITestResult> res = new ArrayList<ITestResult>()
 		def trs;
-		if(ti.status !=null && ti.status.toLowerCase().equals("fetching")) {
+		if(ti.status.toLowerCase().equals("fetching")) {
 			trs = fetchMail.fetchMail(ti.convert(domainName, smtpHost))
 		} else {
 			trs = smtpTestRunner.runTestCase(ti.getTestCaseNumber().toInteger(), ti.convert(domainName, smtpHost))
