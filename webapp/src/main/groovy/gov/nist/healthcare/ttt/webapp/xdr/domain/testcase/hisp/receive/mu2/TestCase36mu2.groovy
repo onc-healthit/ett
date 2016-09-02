@@ -58,7 +58,7 @@ final class TestCase36mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //an address that provides a processed MDN and dos not return a dispatched MDN
-        context.directTo = "processedonly@edge.nist.gov"
+        context.directTo = "processedonly@ttpedgetest.sitenv.org"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
