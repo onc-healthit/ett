@@ -1,11 +1,13 @@
-==Version 1.0#09/01/2016
+==Version 1.0#09/07/2016
 
 - All the changes from 1.0.22
 
 	* SMTP
  		- Receiving HISP MT case exception due to corrupt email in the RI inbox fixed; this also enhances the MT cases to be able to run simultaneously
 		- Announcements to the footer added
-		- Other UI enhancements
+		- Other fixes include new footers, release notes link in the footer, show all registered direct addresses list, 
+			validation result order, errors from more info, xdr validatror dropdown
+
 
 ==Version 1.0.22#8/15/2016
 	* Direct

@@ -184,8 +184,8 @@ tttDirective.directive('editInPlace', function() {
                 // We control display through a class on the directive itself. See the CSS.
                 element.addClass('active');
 
-                // And we must focus the element. 
-                // `angular.element()` provides a chainable array, like jQuery so to access a native DOM function, 
+                // And we must focus the element.
+                // `angular.element()` provides a chainable array, like jQuery so to access a native DOM function,
                 // we have to reference the first element in the array.
                 inputElement[0].focus();
             };
@@ -288,8 +288,29 @@ tttDirective.directive('ccdaR2Report', function() {
             data: '='
         },
         replace: true,
-        templateUrl: 'templates/ccdaTemplates/ccdaR2ReportTemplate.tpl.html'
-    };
+        templateUrl: 'templates/ccdaTemplates/ccdaR2ReportTemplate.tpl.html',
+                controller: ('CcdaR2WidgetCtrl', ['$scope','$location', '$anchorScroll', function($scope,$location,$anchorScroll) {
+                $scope.tabs = [{active:true},{active:false},{active:false}];
+                $scope.gotoLink = function(item) {
+                   if (item == "C-CDA MDHT Conformance Error" ||
+                       item == "C-CDA MDHT Conformance Warning" ||
+                       item == "C-CDA MDHT Conformance Info"){
+                            $scope.tabs[0].active =true;
+                   }else if(item == "ONC 2015 S&CC Vocabulary Validation Conformance Error" ||
+                       item == "ONC 2015 S&CC Vocabulary Validation Conformance Warning" ||
+                       item == "ONC 2015 S&CC Vocabulary Validation Conformance Info"){
+                           $scope.tabs[1].active =true;
+                   }else{
+                           $scope.tabs[2].active =true;
+                   }
+                  // set the location.hash to the id of
+                  // the element you wish to scroll to.
+                  $location.hash(item);
+                 // call anchorScroll()
+                 $anchorScroll();
+                };
+             }])
+   };
 });
 
 tttDirective.directive('ccdaWidget', ['$uibModal', function($uibModal) {
