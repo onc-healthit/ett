@@ -58,7 +58,7 @@ final class TestCase43mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //an address that provides a processed MDN and a failure MDN after n seconds (n < sending hisp timeout)
-        context.directTo = "processedtimeoutfailure@ttpedgetest.sitenv.org"
+        context.directTo = "processedtimeoutfailure@ttpedge.sitenv.org"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
