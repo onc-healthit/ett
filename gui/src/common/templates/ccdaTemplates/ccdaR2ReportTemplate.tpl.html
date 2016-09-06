@@ -28,7 +28,7 @@
                 <div class="list-group">
                     <div class="list-group-item col-xs-4" ng-repeat="item in data.resultsMetaData.resultMetaData">
                         <span class="badge {{item.type | ccdaClassFilter}}">{{item.count}}</span>
-                        <a href="">{{item.type}}</a>
+                        <a ng-click="gotoLink(item.type)">{{item.type}}</a>
                     </div>
                 </div>
             </div>
@@ -37,18 +37,18 @@
         <br>
 
         <uib-tabset>
-            <uib-tab heading="C-CDA IG" class="clickable not-selectable">
+            <uib-tab heading="C-CDA IG" active="tabs[0].active" class="clickable not-selectable">
                 <div class="error-notice">
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
-                        <div class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Error">
+                        <div id="C-CDA MDHT Conformance Error" class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Error">
                             <strong>Error</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
-                        <div class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Warning">
+                        <div id="C-CDA MDHT Conformance Warning" class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Warning">
                             <strong>Warning</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
-                        <div class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Info">
+                        <div  id="C-CDA MDHT Conformance Info" class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Info">
                             <strong>Info</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
@@ -56,22 +56,22 @@
                 </div>
             </uib-tab>
 
-            <uib-tab heading="C-CDA VOCAB" class="clickable not-selectable">
+            <uib-tab heading="C-CDA VOCAB" active="tabs[1].active" class="clickable not-selectable">
                 <div class="error-notice">
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
-                        <div class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Error">
+                        <div id="ONC 2015 S&CC Vocabulary Validation Conformance Error" class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Error">
                             <strong>Error</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
                     </div>
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
-                        <div class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Warning">
+                        <div id="ONC 2015 S&CC Vocabulary Validation Conformance Warning" class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Warning">
                             <strong>Warning</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
                     </div>
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
-                        <div class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Info">
+                        <div id="ONC 2015 S&CC Vocabulary Validation Conformance Info" class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Info">
                             <strong>Info</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
@@ -79,18 +79,18 @@
                 </div>
             </uib-tab>
 
-            <uib-tab heading="REF C-CDA" class="clickable not-selectable">
+            <uib-tab heading="REF C-CDA" active="tabs[2].active" class="clickable not-selectable">
                 <div class="error-notice">
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
-                        <div class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Error">
+                        <div id="ONC 2015 S&CC Reference C-CDA Validation Error" class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Error">
                             <strong>Error</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
-                        <div class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Warning">
+                        <div id="ONC 2015 S&CC Reference C-CDA Validation Warning" class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Warning">
                             <strong>Warning</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
-                        <div class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Info">
+                        <div id="ONC 2015 S&CC Reference C-CDA Validation Info" class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Info">
                             <strong>Info</strong> - {{item.description}}
                             <div ng-include="'error_display'"></div>
                         </div>
