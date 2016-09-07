@@ -1,1 +1,1 @@
-<b>This file will contain news and announcements for the <span stype="color:#EA1515> Transport Testing Platfom </span></b>. 
+<B>This file will contain news and announcements for the <FONT COLOR:#EA1515> Transport Testing Platfom </FONT></B>. 
