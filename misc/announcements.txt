@@ -1,1 +1,1 @@
-**This file will contain news and announcements for the Transport Testing Platfom**. 
+This file will contain news and announcements for the Transport Testing Platfom. 
