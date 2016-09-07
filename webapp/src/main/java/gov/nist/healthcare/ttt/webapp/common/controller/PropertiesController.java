@@ -19,10 +19,11 @@ public class PropertiesController {
 	@Value("${direct.listener.domainName}")
 	String domainName = "localhost";
 	
-//	@Value("${ttt.lastUpdated}")
-	Calendar cal = Calendar.getInstance();
+	@Value("${ttt.lastUpdated}")
+	String lastUpdated = ""; 
+	/*Calendar cal = Calendar.getInstance();
 	String date = new SimpleDateFormat("MMMM dd, YYYY").format(cal.getTime());
-	String lastUpdated = date;
+	String lastUpdated = date;*/
 	
 	@Value("${ttt.version}")
 	String version = "1.0";
