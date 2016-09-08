@@ -68,6 +68,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -179,8 +181,24 @@ public class TTTReceiverTests {
 									HttpResponse response = client.execute(post);
 									// CONVERT RESPONSE TO STRING
 									result1 = EntityUtils.toString(response.getEntity());
+								
+									JSONObject json = new JSONObject(result1);
+									json.put("hasError", false);
+									// Check errors
+									JSONArray resultMetadata = json.getJSONObject("resultsMetaData").getJSONArray("resultMetaData");
+									for (int k = 0; k < resultMetadata.length(); k++) {
+									   JSONObject metatada = resultMetadata.getJSONObject(k);
+									   if(metatada.getString("type").toLowerCase().contains("error")) {
+									      if(metatada.getInt("count") > 0) {
+									         json.put("hasError", true);
+									      }
+									   }
+
+									}
+								String newresult = json.toString();
+									
 									ObjectMapper mapper = new ObjectMapper();
-									JsonNode jsonObject = mapper.readTree(result1) ;
+									JsonNode jsonObject = mapper.readTree(newresult) ;
 									validationResult.put( bodyPart.getFileName() , jsonObject );
 								}
 
