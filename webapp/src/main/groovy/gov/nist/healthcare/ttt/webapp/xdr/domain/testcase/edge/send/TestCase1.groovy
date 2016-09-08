@@ -14,6 +14,8 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+import org.json.JSONArray
+import org.json.JSONObject
 
 import java.io.File;
 
@@ -144,8 +146,22 @@ final class TestCase1 extends TestCaseSender {
 			log.error("Error validation CCDA " + e.getMessage());
 			e.printStackTrace();
 		}
-		
-		return result;
+
+		JSONObject json = new JSONObject(result);
+		json.put("hasError", false);
+		// Check errors
+		JSONArray resultMetadata = json.getJSONObject("resultsMetaData").getJSONArray("resultMetaData");
+		for (int i = 0; i < resultMetadata.length(); i++) {
+			JSONObject metatada = resultMetadata.getJSONObject(i);
+			if(metatada.getString("type").toLowerCase().contains("error")) {
+				if(metatada.getInt("count") > 0) {
+					json.put("hasError", true);
+				}
+			}
+
+		}
+
+		return json.toString();
 	}
 
     public Result getReport(XDRRecordInterface record) {
