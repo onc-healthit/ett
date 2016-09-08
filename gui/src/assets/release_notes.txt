@@ -4,7 +4,7 @@
  		- Receiving HISP MT case exception due to corrupt email in the RI inbox fixed; this also enhances the MT cases to be able to run simultaneously
 		- Announcements to the footer added
 		- Other fixes include new footers, release notes link in the footer, show all registered direct addresses list, 
-			validation result order, errors from more info, xdr validatror dropdown
+			validation result order, errors from more info, xdr validator dropdown
 		- Displaying the correct validation status (passed/failed) for SMTP and XDR cases
 	* Baselines all the changes from the NIST 1.0.22 release
 	
