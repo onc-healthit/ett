@@ -47,15 +47,15 @@
                 <div class="error-notice">
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div id="C-CDA MDHT Conformance Error" class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Error">
-                            <strong>Error</strong> - {{item.description}}
+                            <strong>Error</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                         <div id="C-CDA MDHT Conformance Warning" class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Warning">
-                            <strong>Warning</strong> - {{item.description}}
+                            <strong>Warning</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                         <div  id="C-CDA MDHT Conformance Info" class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Info">
-                            <strong>Info</strong> - {{item.description}}
+                            <strong>Info</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                     </div>
@@ -66,19 +66,19 @@
                 <div class="error-notice">
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div id="ONC 2015 S&CC Vocabulary Validation Conformance Error" class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Error">
-                            <strong>Error</strong> - {{item.description}}
+                            <strong>Error</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                     </div>
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div id="ONC 2015 S&CC Vocabulary Validation Conformance Warning" class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Warning">
-                            <strong>Warning</strong> - {{item.description}}
+                            <strong>Warning</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                     </div>
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div id="ONC 2015 S&CC Vocabulary Validation Conformance Info" class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Vocabulary Validation Conformance Info">
-                            <strong>Info</strong> - {{item.description}}
+                            <strong>Info</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                     </div>
@@ -89,15 +89,15 @@
                 <div class="error-notice">
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div id="ONC 2015 S&CC Reference C-CDA Validation Error" class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Error">
-                            <strong>Error</strong> - {{item.description}}
+                            <strong>Error</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                         <div id="ONC 2015 S&CC Reference C-CDA Validation Warning" class="oaerror warning" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Warning">
-                            <strong>Warning</strong> - {{item.description}}
+                            <strong>Warning</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                         <div id="ONC 2015 S&CC Reference C-CDA Validation Info" class="oaerror info" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="ONC 2015 S&CC Reference C-CDA Validation Info">
-                            <strong>Info</strong> - {{item.description}}
+                            <strong>Info</strong> - <p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.description}}</p>
                             <div ng-include="'error_display'"></div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
     </script>
 
     <script type="text/ng-template" id="error_display">
-        <strong style="color: black;">{{item.xPath}}</strong>
+        <strong style="color: black;"><p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.xPath}}</p></strong>
         <div>
             <u>Line number:</u>
             <strong style="color: black;"> {{item.documentLineNumber}}</strong>
