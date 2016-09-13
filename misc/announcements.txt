@@ -11,3 +11,5 @@ The current release schedule for usabilty improvements is as follows:
 
 * Release 1.1.2 October 19
 
+C-CDA Validator updates will be provided on the last Monday of each month. 
+
