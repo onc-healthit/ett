@@ -178,3 +178,13 @@ tttService.factory('CCDADocumentsFactory', ['$resource', 'RESOURCES',
         return $resource(RESOURCES.USERS_API + 'ccdadocuments', {}, {});
     }
 ]);
+
+
+/**
+ *  DIRECT RI Cert Upload
+ */
+tttService.factory('DirectRICertFactory', ['$resource', 'RESOURCES',
+    function($resource, RESOURCES) {
+        return $resource(RESOURCES.USERS_API + 'directricert', {}, {});
+    }
+]);
