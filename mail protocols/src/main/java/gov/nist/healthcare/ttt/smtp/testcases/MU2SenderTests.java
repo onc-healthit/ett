@@ -3,6 +3,7 @@ package gov.nist.healthcare.ttt.smtp.testcases;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
@@ -36,6 +37,7 @@ import javax.xml.soap.SOAPPart;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.bouncycastle.openssl.PEMWriter;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
@@ -1666,6 +1668,7 @@ public class MU2SenderTests {
 		FileInputStream file = new FileInputStream(path);
 		prop.load(file);
 		file.close();
+		byte[] finalCert;
 		
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
@@ -1699,17 +1702,28 @@ public class MU2SenderTests {
          </SOAP-ENV:Body>
         </SOAP-ENV:Envelope>*/
         
+        if (new String(cert).contains("BEGIN CERTIFICATE")){
+        	finalCert = cert;
+        }
+        
+        else {
+        	InputStream is = new ByteArrayInputStream(cert);
+        	CertificateFactory f = CertificateFactory.getInstance("X.509");
+        	X509Certificate certificate = (X509Certificate)f.generateCertificate(is);
+        	finalCert = convertCertToPem(certificate);
+        }
+        
     	InputStream is = new ByteArrayInputStream(cert);
-		String s = new String(cert); 
+    	CertificateFactory f = CertificateFactory.getInstance("X.509");
+    	X509Certificate certificate = (X509Certificate)f.generateCertificate(is);
+    	String thumbPrint = DigestUtils.sha1Hex(certificate.getEncoded());
+    	
+    	
+		String s = new String(finalCert);
 		String s1 = s.replace("-----BEGIN CERTIFICATE-----","");
 		String s2 = s1.replace("-----END CERTIFICATE-----","");
 		String s3 = s2.replaceAll("\\s+","");
 		
-    	CertificateFactory f = CertificateFactory.getInstance("X.509");
-    	X509Certificate certificate = (X509Certificate)f.generateCertificate(is);
-    //	System.out.println(certificate);
-    	
-    	String thumbPrint = DigestUtils.sha1Hex(certificate.getEncoded());
 
         // SOAP Body
         SOAPBody soapBody = envelope.getBody();
@@ -1763,6 +1777,15 @@ public class MU2SenderTests {
         return soapMessage;
     }
 	
+	//converts cert to pem to bytearray
+	private static byte[] convertCertToPem(X509Certificate certificate) throws Exception {
+		StringWriter sw = new StringWriter();
+		try (PEMWriter pw = new PEMWriter(sw)) {
+			pw.writeObject(certificate);
+		}
+		return sw.toString().getBytes();
+		
+	}
 	
 	public TestResult testBadDispositionNotification(TestInput ti) {
 		TestResult tr = new TestResult();
