@@ -23,8 +23,15 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
             $scope.ccdaDataReceiver = data.data.receiver;
         });
 
+        $scope.ccdaSenderData = {};
         CCDADocumentsFactory.get(function(data) {
-            $scope.ccdaDocuments = data;
+          $scope.ccdaDocuments = data;
+            if (data !== null) {
+                $scope.ccdaSenderData = $scope.ccdaDocuments[Object.keys(data)[0]];
+            }
+        });
+        CCDADocumentsFactory.get(function(data) {
+          $scope.ccdaDocuments = data;
             if (data !== null) {
                 $scope.sutRole = Object.keys(data)[0];
                 $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];

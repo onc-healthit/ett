@@ -45,7 +45,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
@@ -553,7 +553,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
@@ -570,7 +570,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
@@ -587,7 +587,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
