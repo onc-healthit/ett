@@ -51,7 +51,11 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 			$scope.fileInfo = angular.fromJson(message);
 			var certFilePath = $scope.fileInfo.flowRelativePath;
 			DirectRICertFactory.save(certFilePath, function(data) {
-				growl.success("Certificate Uploaded", {});
+				if (data.criteriaMet == "FALSE"){
+					growl.error("Failed to Upload Certificate", {});
+				}else{
+					growl.success("Certificate Uploaded", {});
+				}
 			}, function(data) {
 				throw {
 					code: data.data.code,
