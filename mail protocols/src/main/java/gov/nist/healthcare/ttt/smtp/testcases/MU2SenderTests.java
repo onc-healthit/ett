@@ -1651,10 +1651,11 @@ public class MU2SenderTests {
           //  printSOAPResponse(soapResponse);
 
             soapConnection.close();
-
+            System.out.println("Upload Successful");
 		
 		} catch (Exception e) {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
 			
 		}
 
