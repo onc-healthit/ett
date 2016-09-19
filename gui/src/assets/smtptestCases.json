@@ -19,7 +19,7 @@
 		}]
 	}, {
 		"name": "SMTP Test 1-8, 14 (Send)",
-		"id": 1,
+		"id": 2,
 		"protocol": "smtp",
 		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS. The SUT will send an email to wellformed1@ttpedgetest.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@ttpedgetest.sitenv.org from the email address entered in Profile window.",
 		"longDesc": "The credentials for SASL authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123 ",
