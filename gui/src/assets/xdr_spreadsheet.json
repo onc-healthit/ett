@@ -264,4 +264,46 @@
     "Required / Conditional per Direct Edge Protocol Guide": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
+}, {   
+    "ID": "19mu2",
+    "Test Focus": "",
+    "Data Flow in Direct": "",
+    "Metadata Included": "N/A",
+    "Direct Address Block": "N/A",
+    "SUT: Sender/ Receiver": "Server (HISP - SUT)",
+    "Test Tool: Sender / Receiver": "",
+    "Purpose/Description": "Test to validate that the Edge system is able to create messages with unique message id for XDR profile.",
+    "Conformance  Test Details": "",
+    "Expected Test Results": "Edge system creates each message with a unique message id with no duplicates.",
+    "Required / Conditional per Direct Edge Protocol Guide": "R",
+    "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
+    "Test Data IDs": null
+}, {
+    "ID": "48bmu2",
+    "Test Focus": "",
+    "Data Flow in Direct": "",
+    "Metadata Included": "N/A",
+    "Direct Address Block": "N/A",
+    "SUT: Sender/ Receiver": "Server (HISP - SUT)",
+    "Test Tool: Sender / Receiver": "",
+    "Purpose/Description": "Test to validate that the Edge system is able to create messages with unique message id.",
+    "Conformance  Test Details": "",
+    "Expected Test Results": "Edge system creates each message with a unique message id with no duplicates.",
+    "Required / Conditional per Direct Edge Protocol Guide": "R",
+    "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
+    "Test Data IDs": null
+}, {
+    "ID": "49mu2",
+    "Test Focus": "",
+    "Data Flow in Direct": "",
+    "Metadata Included": "N/A",
+    "Direct Address Block": "N/A",
+    "SUT: Sender/ Receiver": "Server (HISP - SUT)",
+    "Test Tool: Sender / Receiver": "",
+    "Purpose/Description": "Test to validate that the Edge system is able to generate the direct address block header including delivery notifications element.",
+    "Conformance  Test Details": "",
+    "Expected Test Results": "Edge system creates the direct address block including the disposition notifications header.",
+    "Required / Conditional per Direct Edge Protocol Guide": "R",
+    "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
+    "Test Data IDs": null
 }]
