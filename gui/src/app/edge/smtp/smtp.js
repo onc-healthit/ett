@@ -49,20 +49,26 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 
 		$scope.successUpload = function(message) {
 			$scope.fileInfo = angular.fromJson(message);
-			var certFilePath = $scope.fileInfo.flowRelativePath;
-			DirectRICertFactory.save(certFilePath, function(data) {
-				if (data.criteriaMet == "FALSE"){
-					growl.error("Failed to Upload Certificate", {});
-				}else{
-					growl.success("Certificate Uploaded", {});
-				}
-			}, function(data) {
-				throw {
-					code: data.data.code,
-					url: data.data.url,
-					message: data.data.message
-				};
-			});
+			var validExts = new Array(".der", ".per");
+			var fileExt = $scope.fileInfo.flowFilename.substring($scope.fileInfo.flowFilename.lastIndexOf('.'));
+			if (validExts.indexOf(fileExt) >= 0) {
+				var certFilePath = $scope.fileInfo.flowRelativePath;
+				DirectRICertFactory.save(certFilePath, function(data) {
+					if (data.criteriaMet == "FALSE"){
+						growl.error("Failed to Upload Certificate", {});
+					}else{
+						growl.success("Certificate Uploaded", {});
+					}
+				}, function(data) {
+					throw {
+						code: data.data.code,
+						url: data.data.url,
+						message: data.data.message
+					};
+				});
+			}else{
+				growl.error("Invalid file selected, valid files are "+validExts.toString()+" types.", {});
+			}
 		};
 
 		// Smtp
