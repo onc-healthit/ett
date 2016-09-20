@@ -11,7 +11,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <distributionManagement>
+   <!--  <distributionManagement>
         <snapshotRepository>
             <id>deployment</id>
             <name>Internal Releases</name>
@@ -22,7 +22,7 @@
             <name>Internal Releases</name>
             <url>http://vm-070.nist.gov:8081/nexus/content/repositories/releases/</url>
         </repository>
-    </distributionManagement>
+    </distributionManagement> -->
     <dependencies>
 
      <!--

@@ -17,7 +17,7 @@
             <version>5.1.32</version>
         </dependency>
     </dependencies>
-    <distributionManagement>
+   <!--  <distributionManagement>
 
         <snapshotRepository>
             <id>deployment</id>
@@ -30,7 +30,7 @@
             <url>http://vm-070.nist.gov:8081/nexus/content/repositories/releases/</url>
         </repository>
 
-    </distributionManagement>
+    </distributionManagement> -->
 
         <build>
         <plugins>

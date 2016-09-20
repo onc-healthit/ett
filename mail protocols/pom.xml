@@ -165,7 +165,7 @@
 		</pluginManagement>
 	</build>
 
-	<distributionManagement>
+	<!-- <distributionManagement>
 
 		<repository>
 
@@ -183,6 +183,6 @@
 			<url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots</url>
 
 		</snapshotRepository>
-	</distributionManagement>
+	</distributionManagement> -->
 
 </project>
