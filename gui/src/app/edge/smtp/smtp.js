@@ -49,7 +49,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 
 		$scope.successUpload = function(message) {
 			$scope.fileInfo = angular.fromJson(message);
-			var validExts = new Array(".der", ".per");
+			var validExts = new Array(".der", ".pem");
 			var fileExt = $scope.fileInfo.flowFilename.substring($scope.fileInfo.flowFilename.lastIndexOf('.'));
 			if (validExts.indexOf(fileExt) >= 0) {
 				var certFilePath = $scope.fileInfo.flowRelativePath;
