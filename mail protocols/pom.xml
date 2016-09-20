@@ -40,6 +40,15 @@
 		</dependency>
 
 
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcmail-jdk14 -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcmail-jdk14</artifactId>
+			<version>1.55</version>
+		</dependency>
+
+
+
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>dsn</artifactId>
@@ -156,7 +165,7 @@
 		</pluginManagement>
 	</build>
 
-	<distributionManagement>
+	<!-- <distributionManagement>
 
 		<repository>
 
@@ -174,6 +183,6 @@
 			<url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots</url>
 
 		</snapshotRepository>
-	</distributionManagement>
+	</distributionManagement> -->
 
 </project>

@@ -74,13 +74,7 @@
                     <label class="control-label" for="sutRole">Message format&nbsp;
                         <i class="fa fa-question-circle" tooltips tooltip-title="The role of the System under Test" tooltip-side="right"></i>
                     </label>
-                    <div class="input-group">
-                        <div class="btn-group">
-                            <a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType}}</a>
-                            <!-- <a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="sutRole='sender'">Sender</a>
-                            <a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="sutRole='receiver'">Receiver</a> -->
-                        </div>
-                    </div>
+
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -107,7 +101,7 @@
                                             <input type="text" class="form-control" placeholder="Search..." ng-model="ccdaDocSearch" style="margin-bottom: 10px;">
                                         </div>
                                     </form>
-                                    <finder-tree data="ccdaData" ng-model="ccdaDocument" search-filter="ccdaDocSearch"></finder-tree>
+                                    <finder-tree data="ccdaSenderData" ng-model="ccdaDocument" search-filter="ccdaDocSearch"></finder-tree>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +147,7 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-lg btn-primary center-block" ng-click="validate()" ladda="laddaLoading" style="margin-bottom: 10px;">Validate</button>
+    <button type="submit" class="btn btn-lg btn-primary center-block" ng-click="validate()" ng-disabled="!ccdaDocument.name"  ladda="laddaLoading" style="margin-bottom: 10px;">Validate</button>
 
     <div ng-if="ccdaResult">
         <hr>

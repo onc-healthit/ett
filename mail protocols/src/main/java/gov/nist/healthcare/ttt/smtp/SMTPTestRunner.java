@@ -123,6 +123,23 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			}
 			log.info("*****************   END  Testcase 1 *******************************");
 			break;
+			
+		case 2:
+			log.info("*****************   BEGIN  Testcase 2 *******************************");
+
+			TestResult tr2;
+			try {
+				ti.tttUserName = "wellformed1";
+				ti.tttPassword = "smtptesting123";
+				tr2 = tTest.fetchMail(ti);
+				tr2.id = 2;
+				res.add(tr2);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 2 *******************************");
+			break;
 
 		case 91:
 

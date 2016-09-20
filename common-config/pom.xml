@@ -26,7 +26,7 @@
     <!-- Publication to our internal nexus -->
     <!-- ================================================================================ -->
 
-    <distributionManagement>
+   <!--  <distributionManagement>
         <repository>
             <id>releases</id>
             <name>Releases</name>
@@ -37,7 +37,7 @@
             <name>Snapshots</name>
             <url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
-    </distributionManagement>
+    </distributionManagement> -->
 
 
     <!-- ================================================================================ -->

@@ -9,7 +9,7 @@ public class TestInput {
 	public String sutSmtpAddress;
 
 	public int sutSmtpPort;
-	
+
 	public int tttSmtpPort;
 
 	public String sutEmailAddress;
@@ -27,25 +27,25 @@ public class TestInput {
 	public String tttUserName;
 
 	public String tttPassword;
-	
+
 	public String tttSmtpAddress;
-	
+
 	public int startTlsPort;
-	
+
     public String ccdaReferenceFilename;
-	
+
 	public String ccdaValidationObjective;
-	
+
 	public TestResult tr;
-	
+
 	public byte[] certificate;
 
 	public LinkedHashMap<String, byte[]> attachments = new LinkedHashMap<String, byte[]>();
-	
+
 	public TestInput(String _sutSmtpAddress,String _tttSmtpAddress,int _sutSmtpPort, int _tttSmtpPort,
 			String _sutEmailAddress, String _tttEmailAddress, boolean _useTLS,
 			String _sutUserName, String _sutPassword,String _tttUserName, String _tttPassword, int _starTtlsPort,
-			int _sutCommandTimeoutInSeconds, 
+			int _sutCommandTimeoutInSeconds,
 			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective, byte[] _certificate) {
 		sutSmtpAddress = _sutSmtpAddress;
 		tttSmtpAddress = _tttSmtpAddress;
@@ -74,7 +74,11 @@ public class TestInput {
 		tttEmailAddress = _tttEmailAddress;
 		useTLS = _useTLS;
 	}
-	
+
+	public TestInput(byte[] cert) {
+		this.certificate = cert;
+	}
+
 	public String getSutSmtpAddress() {
 		return sutSmtpAddress;
 	}
@@ -82,7 +86,7 @@ public class TestInput {
 	public void setSutSmtpAddress(String sutSmtpAddress) {
 		this.sutSmtpAddress = sutSmtpAddress;
 	}
-	
+
 	public int getSutSmtpPort() {
 		return sutSmtpPort;
 	}
@@ -90,7 +94,7 @@ public class TestInput {
 	public void setSutSmtpPort(int sutSmtpPort) {
 		this.sutSmtpPort = sutSmtpPort;
 	}
-	
+
 	public int getTttSmtpPort() {
 		return tttSmtpPort;
 	}
@@ -170,7 +174,7 @@ public class TestInput {
 	public void setTttSmtpAddress(String tttSmtpAddress) {
 		this.tttSmtpAddress = tttSmtpAddress;
 	}
-	
+
 	public String getCcdaValidationObjective() {
 		return ccdaValidationObjective;
 	}
@@ -186,7 +190,7 @@ public class TestInput {
 	public void setCcdaReferenceFilename(String ccdaReferenceFilename) {
 		this.ccdaReferenceFilename = ccdaReferenceFilename;
 	}
-	
+
 	public byte[] getCertificate() {
 		return certificate;
 	}
@@ -194,7 +198,7 @@ public class TestInput {
 	public void setCertificate(byte[] certificate) {
 		this.certificate = certificate;
 	}
-	
+
 	public TestResult getTr() {
 		return tr;
 	}
@@ -202,5 +206,5 @@ public class TestInput {
 	public void setTr(TestResult tr) {
 		this.tr = tr;
 	}
-	
+
 }

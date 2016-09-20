@@ -1,6 +1,9 @@
 package gov.nist.healthcare.ttt.smtp.testcases;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
@@ -34,6 +37,7 @@ import javax.xml.soap.SOAPPart;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.bouncycastle.openssl.PEMWriter;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
 import gov.nist.healthcare.ttt.smtp.TestResult;
@@ -1625,26 +1629,33 @@ public class MU2SenderTests {
 	
 	public TestResult uploadCertificate(TestInput ti) {
 		TestResult tr = new TestResult();
-		
+		tr.setCriteriamet(CriteriaStatus.TRUE);
 
 		try {
+			
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
 			
 			// Create SOAP Connection
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
             // Send SOAP Message to SOAP Server
-            String url = "http://hit-testing.nist.gov:8081/config-service/ConfigurationService?wsdl";
+            String url = prop.getProperty("dir.soap");
             SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(ti.getCertificate()), url);
 
             // Process the SOAP Response
           //  printSOAPResponse(soapResponse);
 
             soapConnection.close();
-
+            System.out.println("Upload Successful");
 		
 		} catch (Exception e) {
 			tr.setCriteriamet(CriteriaStatus.FALSE);
+			e.printStackTrace();
 			
 		}
 
@@ -1652,6 +1663,14 @@ public class MU2SenderTests {
 	}
 	
 	private static SOAPMessage createSOAPRequest(byte[] cert) throws Exception {
+		
+		Properties prop = new Properties();
+		String path = "./application.properties";
+		FileInputStream file = new FileInputStream(path);
+		prop.load(file);
+		file.close();
+		byte[] finalCert;
+		
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -1674,7 +1693,7 @@ public class MU2SenderTests {
                <id>0</id>
                <incoming>true</incoming>
                <outgoing>true</outgoing>
-               <owner>dsdev.sitenv.org</owner>
+               <owner>hit-testing.nist.gov</owner>
                <status></status>
                <thumbprint>193298f2b2b8e83c316fa512c1e481bf7ed37a9a</thumbprint>
                <validEndDate>2026-03-16T17:30:06Z</validEndDate>
@@ -1683,24 +1702,29 @@ public class MU2SenderTests {
            </ns1:addAnchor>
          </SOAP-ENV:Body>
         </SOAP-ENV:Envelope>*/
-  
         
-     // read key bytes
-    	FileInputStream fin = new FileInputStream("C:/Users/hit-dev.nist.gov.pem");
-    	FileInputStream fin2 = new FileInputStream("C:/Users/hit-dev.nist.gov.pem");
-    	byte[] targetArray = IOUtils.toByteArray(fin);
-	//	System.out.println(new String(targetArray));
-		
-		String s = new String(targetArray); //replace with cert
+        if (new String(cert).contains("BEGIN CERTIFICATE")){
+        	finalCert = cert;
+        }
+        
+        else {
+        	InputStream is = new ByteArrayInputStream(cert);
+        	CertificateFactory f = CertificateFactory.getInstance("X.509");
+        	X509Certificate certificate = (X509Certificate)f.generateCertificate(is);
+        	finalCert = convertCertToPem(certificate);
+        }
+        
+    	InputStream is = new ByteArrayInputStream(cert);
+    	CertificateFactory f = CertificateFactory.getInstance("X.509");
+    	X509Certificate certificate = (X509Certificate)f.generateCertificate(is);
+    	String thumbPrint = DigestUtils.sha1Hex(certificate.getEncoded());
+    	
+    	
+		String s = new String(finalCert);
 		String s1 = s.replace("-----BEGIN CERTIFICATE-----","");
 		String s2 = s1.replace("-----END CERTIFICATE-----","");
 		String s3 = s2.replaceAll("\\s+","");
 		
-    	CertificateFactory f = CertificateFactory.getInstance("X.509");
-    	X509Certificate certificate = (X509Certificate)f.generateCertificate(fin2);
-    //	System.out.println(certificate);
-    	
-    	String thumbPrint = DigestUtils.sha1Hex(certificate.getEncoded());
 
         // SOAP Body
         SOAPBody soapBody = envelope.getBody();
@@ -1726,7 +1750,7 @@ public class MU2SenderTests {
         soapBodyElem7.addTextNode("true");
         
         SOAPElement soapBodyElem8 = soapBodyElem1.addChildElement("owner");
-        soapBodyElem8.addTextNode("hit-testing.nist.gov");
+        soapBodyElem8.addTextNode(prop.getProperty("dir.hostname"));
         
         SOAPElement soapBodyElem9 = soapBodyElem1.addChildElement("status");
         soapBodyElem9.addTextNode("ENABLED");
@@ -1753,6 +1777,16 @@ public class MU2SenderTests {
 
         return soapMessage;
     }
+	
+	//converts cert to pem to bytearray
+	private static byte[] convertCertToPem(X509Certificate certificate) throws Exception {
+		StringWriter sw = new StringWriter();
+		try (PEMWriter pw = new PEMWriter(sw)) {
+			pw.writeObject(certificate);
+		}
+		return sw.toString().getBytes();
+		
+	}
 	
 	public TestResult testBadDispositionNotification(TestInput ti) {
 		TestResult tr = new TestResult();

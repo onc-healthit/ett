@@ -11,13 +11,9 @@
             <label class="control-label" for="sutRole">Message format&nbsp;
                 <i class="fa fa-question-circle" tooltips tooltip-title="The role of the System under Test" tooltip-side="right"></i>
             </label>
-            <div class="input-group">
-                <div class="btn-group">
-                    <a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)" ng-disabled="displayType(docType, documentType)">{{docType}}</a>
-                    <!-- <a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="sutRole='sender'">Sender</a>
-							<a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="sutRole='receiver'">Receiver</a> -->
-                </div>
-            </div>
+                                <!-- <a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="sutRole='sender'">Sender</a>
+										<a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="sutRole='receiver'">Receiver</a> -->
+
         </div>
         <div class="row">
             <div class="form-group">
@@ -46,5 +42,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="close()">Cancel</button>
-    <button type="submit" class="btn btn-primary" ng-click="save()">{{buttonSuccess}}</button>
+    <button type="submit" class="btn btn-primary" ng-disabled="!ccdaDocument.name" ng-click="save()">{{buttonSuccess}}</button>
 </div>

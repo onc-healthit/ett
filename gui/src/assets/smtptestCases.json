@@ -4,7 +4,7 @@
 		"name": "SMTP Test 1-8, 14, 18 (Send)",
 		"id": 1,
 		"protocol": "smtp",
-		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS and PLAIN SASL Authentication. The SUT will send an email to wellformed1@ttpedge.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@ttpedge.sitenv.org from the email address entered in Profile window.",
+		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS and PLAIN SASL Authentication. The SUT will send an email to wellformed1@ttpedgetest.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@ttpedgetest.sitenv.org from the email address entered in Profile window. The validation result of C-CDA Document Type selected, will not affect the test result.",
 		"longDesc": "The credentials for SASL authentication is vendoraccount@ttpds.sitenv.org / vendortesting123 ",
 		"sutRole": "sender",
 		"sutHisp": false,
@@ -19,9 +19,10 @@
 		}]
 	}, {
 		"name": "SMTP Test 1-8, 14 (Send)",
-		"id": 1,
+		"id": 2,
 		"protocol": "smtp",
-		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS. The SUT will send an email to wellformed1@ttpedge.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@ttpedge.sitenv.org from the email address entered in Profile window.",
+
+		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS. The SUT will send an email to wellformed1@ttpedgetest.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@ttpedgetest.sitenv.org from the email address entered in Profile window. The validation result of C-CDA Document Type selected, will not affect the test result.",
 		"longDesc": "The credentials for SASL authentication is vendoraccount@ttpds.sitenv.org / vendortesting123 ",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -45,7 +46,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
@@ -553,7 +554,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
@@ -570,7 +571,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
@@ -587,7 +588,7 @@
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
-			"datatype": "CCDAWidget",
+			"datatype": "CCDAWidgetReceiver",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
 			"display": true
