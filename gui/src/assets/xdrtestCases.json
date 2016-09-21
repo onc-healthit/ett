@@ -40,7 +40,7 @@
     }, {
         "name": "C-CDA Document Type",
         "key": "payload",
-        "type": "ccdaWidgetreceiver"
+        "type": "CCDAWidgetReceiver"
     }]
 }, {
     "name": "XDR Test 4a",
