@@ -57,7 +57,7 @@ final class TestCase16mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //an address that does not return a processed MDN
-        context.directTo = "nomdn8@hit-dev.nist.gov"
+        context.directTo = "nomdn8@ttpedge.sitenv.org"
         context.directFrom = context.outgoing_from
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
