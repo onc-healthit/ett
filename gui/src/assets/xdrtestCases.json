@@ -382,7 +382,7 @@
         "type": "string"
     }]
 }, {
-    "name": "XDR Test MT 20a",
+    "name": "XDR MT Test 20a",
     "id": "20amu2",
     "desc": "Verifies the ability of the sending system to initiate an XDR transaction to ETT and to receive a positive (success) delivery status notification. The test lab will inspect the SUT logs and system to verify that the response was handled appropriately.",
     "sutEdge": true,
