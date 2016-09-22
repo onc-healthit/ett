@@ -1,3 +1,21 @@
+
+==Version 1.1.0#09/22/2016
+
+	1.     For SUT Receiver Test Cases: XDR Test 3, SMTP MT-39, SMTP MT-40 and SMTP MT-41,  the C-CDA Document Selection dialog has now been added to enable SUT’s to select documents required for testing.
+		a.     https://ttpedge.sitenv.org/ttp/#/edge/xdr (XDR Test 3)
+		b.     https://ttpedge.sitenv.org/ttp/#/hisp/mu2 (SMTP MT-39, SMTP MT-40 and SMTP MT-41)
+	2.     Changed the TTP Footer notice about browsers from "Recommended Browsers: For best result use, Firefox 3.x and Chrome" to “Tested with Firefox 3.x and Chrome browsers.”
+	3.     Resolved TEXT WRAP Issues for C-CDA vocabulary results where the results were not wrapping earlier and will get wrapped properly.
+	4.     Added descriptions to XDR Test Cases 19, 48, 49, 20a/20b, 50a/50b which is available when “More Info” is clicked.
+	5.     Message Validator UI changes:
+		a.     Removed the Sender / Receiver selection for Step 3 of the validation.
+		b.     Added checks to ensure context is set (Validation Objective and Reference File Name) before allowing documents to be validated.
+	6.     C-CDA Document Selection Dialog
+		a.     Removed the Sender/Receiver selection button since the test cases provide the necessary context of Sender or Receiver. As a result, the files that need to be used are shown based on a Sender or Receiver Test Case.
+	7.     For HISP Sender SMTP Tests 1-8, 14 (Send), added clarification to the narrative to indicate that the C-CDA document type selected for validation does not affect the test result.
+	8.     For Edge Sender SMTP Tests 1-8, 14, 18 (Send), added clarification to the narrative to indicate that the C-CDA document type selected for validation does not affect the test result.
+	9.     Also corrected the test cases in the description for Edge Sender SMTP Tests 1-8, 14,18 (Send) to include all the test case numbers.
+
 ==Version 1.0.23#09/08/2016
 
 	* SMTP
