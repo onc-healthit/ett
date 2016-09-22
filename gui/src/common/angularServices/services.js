@@ -46,7 +46,7 @@ tttService.factory('ReleaseNotesFactory', function($http) {
 tttService.factory('SMTPTestCasesDescription', function($http) {
     return {
         getTestCasesDescription: function(callback, error) {
-            $http.get('assets/smtptestCases.json').then(callback, error);
+            $http.get('api/smtpcasesjson').then(callback, error);
         }
     };
 });
