@@ -1,7 +1,7 @@
 
 ==Version 1.1.0#09/22/2016
 
-	1.     For SUT Receiver Test Cases: XDR Test 3, SMTP MT-39, SMTP MT-40 and SMTP MT-41,  the C-CDA Document Selection dialog has now been added to enable SUT’s to select documents required for testing.
+	1.     For SUT Receiver Test Cases: XDR Test 3, SMTP MT-39, SMTP MT-40 and SMTP MT-41, the C-CDA Document Selection dialog now automatically sets the context to select documents required for testing.
 		a.     https://ttpedge.sitenv.org/ttp/#/edge/xdr (XDR Test 3)
 		b.     https://ttpedge.sitenv.org/ttp/#/hisp/mu2 (SMTP MT-39, SMTP MT-40 and SMTP MT-41)
 	2.     Changed the TTP Footer notice about browsers from "Recommended Browsers: For best result use, Firefox 3.x and Chrome" to “Tested with Firefox 3.x and Chrome browsers.”
