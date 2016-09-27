@@ -172,7 +172,11 @@ public class MU2ReceiverTests {
 														buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
 													}
 													System.out.println(buffer);
-													if(buffer.containsValue(id+"\n") && (buffer.containsValue("automatic-action/MDN-sent-automatically;failed"+"\n") || buffer.containsValue("automatic-action/MDN-sent-automatically; failed"+"\n"))){
+													if(buffer.containsValue(id+"\n")
+															&& (buffer.containsValue("automatic-action/MDN-sent-automatically;failed"+"\n") || 
+																buffer.containsValue("automatic-action/MDN-sent-automatically; failed"+"\n") ||
+																buffer.containsValue("automatic-action/MDN-sent-automatically;failure"+"\n") ||
+																buffer.containsValue("automatic-action/MDN-sent-automatically; failure"+"\n"))){
 														//	buffer.get("\n"+"Disposition").toLowerCase().contains("fail");
 														ZonedDateTime endTime = ZonedDateTime.now();
 														result.putAll(buffer);
