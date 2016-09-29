@@ -1,4 +1,10 @@
-
+==Version 1.1.0.1#09/29/2016
+	*1.   UI change: XDR TLS certificates from the UI now point to the github location:    https://github.com/siteadmin/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip
+	*2.   Direct send decryption issue reported has been fixed which involves
+	      - the encryption library points to the right version
+	      - jce key strength update in the environment
+	*3.   Environment updated so that the TTP mail server allows MAIL FROM differing from AUTH information.
+	
 ==Version 1.1.0#09/22/2016
 
 	*1.     For SUT Receiver Test Cases: XDR Test 3, SMTP MT-39, SMTP MT-40 and SMTP MT-41, the C-CDA Document Selection dialog now automatically sets the context to select documents required for testing.
