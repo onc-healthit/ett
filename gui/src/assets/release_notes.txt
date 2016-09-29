@@ -1,5 +1,6 @@
 ==Version 1.1.0.1#09/29/2016
-	*1.   UI change: XDR TLS certificates from the UI now point to the github location:    https://github.com/siteadmin/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip
+	*1.   UI change: XDR TLS certificates from the UI now point to the github location:    
+	      -https://github.com/siteadmin/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip
 	*2.   Direct send decryption issue reported has been fixed which involves
 	      - the encryption library points to the right version
 	      - jce key strength update in the environment
