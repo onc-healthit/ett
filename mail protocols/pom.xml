@@ -43,8 +43,8 @@
 		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcmail-jdk14 -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcmail-jdk14</artifactId>
-			<version>1.55</version>
+			<artifactId>bcmail-jdk15on</artifactId>
+			<version>1.50</version>
 		</dependency>
 
 
