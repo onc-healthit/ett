@@ -1,6 +1,0 @@
-Version 1.0.23 - Sep 8, 2016
-SMTP
-Receiving HISP MT case exception due to corrupt email in the RI inbox fixed; this also enhances the MT cases to be able to run simultaneously
-Announcements to the footer added
-Other fixes include new footers, release notes link in the footer, show all registered direct addresses list,
-Baselines all the changes from the NIST 1.0.22 release
