@@ -41,11 +41,14 @@
 		</repository>
 
 		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+
+		<repository>
 			<id>oss-jfrog-artifactory</id>
 			<name>oss-jfrog-artifactory-releases</name>
 			<url>http://oss.jfrog.org/artifactory/oss-release-local</url>
-
-
 		</repository>
 
 		<repository>
@@ -131,6 +134,12 @@
 			<groupId>org.unix4j</groupId>
 			<artifactId>unix4j-command</artifactId>
 			<version>0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.usnistgov</groupId>
+			<artifactId>saml-lib</artifactId>
+			<version>1.0-pre</version>
 		</dependency>
 
 	</dependencies>
