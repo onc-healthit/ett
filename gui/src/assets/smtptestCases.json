@@ -256,7 +256,7 @@
 	}, {
 		"name": "SMTP MT Test 1 (Message to Bad Address)",
 		"id": 101,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address. Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid.If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address. Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -264,7 +264,7 @@
 	}, {
 		"name": "SMTP MT Test 2 (Receiving HISP Not Trusted)",
 		"id": 102,
-		"desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to an untrusted address. Hitting ‘Run’ will cause ETT  to send a message to an untrusted final address. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to an untrusted address. Hitting ‘Run’ will cause ETT  to send a message to an untrusted final address. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -272,7 +272,7 @@
 	}, {
 		"name": "SMTP MT Test 3 (Recipient's Certificate Not Published)",
 		"id": 103,
-		"desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to a destination that does not have a published  certificate. Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to a destination that does not have a published  certificate. Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -280,7 +280,7 @@
 	}, {
 		"name": "SMTP MT Test 4 (No Processed MDN)",
 		"id": 104,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN. Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN. Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -352,7 +352,7 @@
 	}, {
 		"name": "SMTP MT Test 21(a) (Message with Good Header)",
 		"id": 521,
-		"desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag).The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+		"desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message.The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -376,7 +376,7 @@
 	}, {
 		"name": "SMTP MT Test 23(a) (Message to Bad Address)",
 		"id": 523,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address. Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address. Hitting ‘Run’ will cause  ETT to send a message with a final destination that is not valid. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -400,7 +400,7 @@
 	}, {
 		"name": "SMTP MT Test 24(a) (Receiving HISP Not Trusted)",
 		"id": 524,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -424,7 +424,7 @@
 	}, {
 		"name": "SMTP MT Test 25(a) (Recipient's Certificate Not Published)",
 		"id": 525,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate. Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not have a published  certificate. Hitting ‘Run’ will cause ETT to send a message with a  final destination that does not have a published certificate. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -448,7 +448,7 @@
 	}, {
 		"name": "SMTP MT Test 26(a) (No Processed MDN)",
 		"id": 526,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN. Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a processed  MDN. Hitting ‘Run’ will cause ETT to send a message with a final  destination that will not provide a processed MDN. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -472,7 +472,7 @@
 	}, {
 		"name": "SMTP MT Test 27(a) (No Dispatched MDN)",
 		"id": 527,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN. Hitting ‘Run’ will cause ETT to send a message with a  final destination that will not provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN. Hitting ‘Run’ will cause ETT to send a message with a  final destination that will not provide a dispatched MDN. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -496,7 +496,7 @@
 	}, {
 		"name": "SMTP MT Test 28(a) (Delayed Dispatched MDN)",
 		"id": 528,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -520,7 +520,7 @@
 	}, {
 		"name": "SMTP MT Test 29(a) (Positive Notification)",
 		"id": 529,
-		"desc": "Verify the ability of the system to provide a final positive delivery  notification when a message is sent to a destination that has responding  appropriately. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate final positive delivery notification will be returned.",
+		"desc": "Verify the ability of the system to provide a final positive delivery  notification when a message is sent to a destination that has responding  appropriately. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate final positive delivery notification will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -575,7 +575,7 @@
 			"readOnly": false,
 			"display": true
 		}]
-	},{
+	}, {
 		"name": "SMTP MT Test 41 (Unable to deliver)",
 		"id": 142,
 		"desc": "Verifies that when the system successfully validates security and trust, but cannot deliver the message to its final destination, the system generates an MDN failed or a failure DSN. ETT (as Sending HISP) sends a well-formed message to a destination address.  The system decrypts and trust validates the message, returning a Processed MDN. The system is unable to deliver the message (mail box full, unavailable, mailbox does not exist)  and returns either an MDN failed or a failure Delivery Status Notification. The selection of a file is optional, if the system requires clinical information with the message.",
