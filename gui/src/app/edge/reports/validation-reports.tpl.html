@@ -51,7 +51,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="report in validation_report">
+                    <tr ng-repeat="report in validation_report | orderBy:'-timestamp' ">
                         <td>{{report.testCaseNumber}}</td>
                         <td>{{report.timestamp | date:'medium'}}</td>
                         <td val="{{report.criteriaMet}}" check-or-cross></td>
