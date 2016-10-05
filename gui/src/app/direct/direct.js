@@ -6,6 +6,7 @@ var direct = angular.module('ttt.direct', [
 	'ttt.direct.validator',
 	'ttt.direct.ccdaValidator',
 	'ttt.direct.ccdar2Validator',
+	'ttt.direct.dcdtValidator',
 	'ttt.direct.status',
 	'ttt.direct.report',
 	'ttt.direct.help'
@@ -80,6 +81,15 @@ direct.config(['$stateProvider',
 					}
 				}
 			})
+			.state('direct.dcdt', {
+				url: '/certdiscovery',
+				views: {
+					"direct": {
+						controller: 'DCDTValidatorCtrl',
+						templateUrl: 'direct/cert-discovery/dcdt.tpl.html'
+					}
+				}
+			})
 			.state('direct.status', {
 				url: '/status',
 				views: {
@@ -150,5 +160,5 @@ direct.controller('DirectCtrl', ['$scope', 'SettingsFactory', 'PropertiesFactory
 			$scope.properties = result;
 		});
 
-	}
+   }
 ]);

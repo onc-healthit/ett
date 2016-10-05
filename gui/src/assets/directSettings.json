@@ -66,11 +66,11 @@
     "certificates": [{
         "description": "ETT Public Cert",
         "icon": "key",
-        "name": ""
+        "name": "ttpedge.sitenv.org.der"
     }, {
         "description": "ETT Trust Anchor",
         "icon": "anchor",
-        "name": "nist.gov.der"
+        "name": "intermediate.sitenv.org.der"
     }, {
         "description": "Invalid Trust Anchor",
         "icon": "anchor",
