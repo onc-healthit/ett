@@ -70,7 +70,7 @@ final class TestCase38mu2 extends TestCaseSender {
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
-        return new Result(record.criteriaMet, content)
+        return new Result(Status.PENDING, content)
     }
 	
 	@Override
