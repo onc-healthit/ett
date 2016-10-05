@@ -352,7 +352,7 @@
 	}, {
 		"name": "SMTP MT Test 21(a) (Message with Good Header)",
 		"id": 521,
-		"desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message.The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
+		"desc": "Verify the ability of the system to properly process the  Disposition-Notifications-Options Header. Hitting ‘Run’ will cause ETT  to send a message with an appropriate Disposition-Notifications-Options  Header. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the positive delivery status notification message.The expectation is that the Vendor will handle the header appropriately and provide a processed MDN.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -520,7 +520,7 @@
 	}, {
 		"name": "SMTP MT Test 29(a) (Positive Notification)",
 		"id": 529,
-		"desc": "Verify the ability of the system to provide a final positive delivery  notification when a message is sent to a destination that has responding  appropriately. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate final positive delivery notification will be returned.",
+		"desc": "Verify the ability of the system to provide a final positive delivery  notification when a message is sent to a destination that has responding  appropriately. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the positive delivery status notification message. The expectation is that an appropriate final positive delivery notification will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
