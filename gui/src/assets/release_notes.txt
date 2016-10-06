@@ -21,6 +21,14 @@
 	*10. DCDT is accessible from the menu inside Direct component.
 	
 	*11. The direct validation report link URL port reference removed.
+	
+==Version 1.1.0.1#09/30/2016
+	*1.   UI change: XDR TLS certificates from the UI now point to the github location:    
+	      -https://github.com/siteadmin/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip
+	*2.   Direct send decryption issue reported has been fixed which involves
+	      - Java Cryptography Extension (JCE) key strength update in the environment
+	      - the encryption library points to the right version
+	*3.   Environment updated so that the TTP mail server allows MAIL FROM differing from AUTH information.		
 
 ==Version 1.1.0#09/22/2016
 
