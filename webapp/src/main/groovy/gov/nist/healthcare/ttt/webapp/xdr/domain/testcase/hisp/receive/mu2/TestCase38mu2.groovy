@@ -56,7 +56,8 @@ final class TestCase38mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //an address that provides a processed MDN and a dispatched MDN after n seconds (n < sending hisp timeout)
-        context.directTo = "processedonly@ttpedge.sitenv.org"
+
+        context.directTo = "processeddispatched6@ttpedge.sitenv.org"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
@@ -70,7 +71,7 @@ final class TestCase38mu2 extends TestCaseSender {
         // Build the message to return to the gui
         log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
         def content = executor.buildSendXDRContent(step2)
-        return new Result(record.criteriaMet, content)
+        return new Result(Status.PENDING, content)
     }
 	
 	@Override

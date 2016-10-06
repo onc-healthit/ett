@@ -150,5 +150,5 @@ direct.controller('DirectCtrl', ['$scope', 'SettingsFactory', 'PropertiesFactory
 			$scope.properties = result;
 		});
 
-	}
+   }
 ]);
