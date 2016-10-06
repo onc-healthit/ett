@@ -1,3 +1,28 @@
+
+==Version 1.1.1#10/06/2016
+
+	*1. ETT User guide updated and is available from the github repository.
+	
+	*2. ETT Public Root CA download from the Direct component fixed to point to sitenv.org.der.
+	
+	*3. SMTP HISP MT tests use X-Original-Message-ID  (earlier used In-Reply-To, now only as a fallback) header for failure DSNs
+	
+	*4. SMTP test case descriptions are configurable from a JSON file in the application directory.
+	
+	*5. XDR MT 38: referenced endpoint updated from processedonly to processeddispatched for correct behavior and the logs show the asynchronous notification.
+	
+	*6. References to previous ETT Instruction/Demonstration Videos have been dropped
+	
+	*7. HISP MT SMTP/SMTP cases description changed to reflect the limitation
+	
+	*8. Direct Page ETT Certificate tool tips updated to relevant names
+	
+	*9. Validation report for profile now lists the test result in a sorted order by date
+	
+	*10. DCDT is accessible from the menu inside Direct component.
+	
+	*11. The direct validation report link URL port reference removed.
+	
 ==Version 1.1.0.1#09/30/2016
 	*1.   UI change: XDR TLS certificates from the UI now point to the github location:    
 	      -https://github.com/siteadmin/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip
@@ -5,7 +30,7 @@
 	      - Java Cryptography Extension (JCE) key strength update in the environment
 	      - the encryption library points to the right version
 	*3.   Environment updated so that the TTP mail server allows MAIL FROM differing from AUTH information.
-	
+
 ==Version 1.1.0#09/22/2016
 
 	*1.     For SUT Receiver Test Cases: XDR Test 3, SMTP MT-39, SMTP MT-40 and SMTP MT-41, the C-CDA Document Selection dialog now automatically sets the context to select documents required for testing.
