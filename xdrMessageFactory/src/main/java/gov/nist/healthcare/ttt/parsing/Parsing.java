@@ -49,7 +49,7 @@ public class Parsing {
     public static final String NAMESPACE_WSA = "http://www.w3.org/2005/08/addressing";
 
     public static final String ELEMENT_NAME_WSSE_SECURITY = "Security";
-    public static final String NAMESPACE_WSSE = "http://schemas.xmlsoap.org/ws/2002/12/secext";
+    public static final String NAMESPACE_WSSE = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"; //"http://schemas.xmlsoap.org/ws/2002/12/secext";
     
     public static final String METADATA_LEVEL_MINIMAL = "minimal";
     public static final String METADATA_LEVEL_XDS = "XDS";
