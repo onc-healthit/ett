@@ -4,7 +4,7 @@
 	
 	*2. ETT Public Root CA download from the Direct component fixed to point to sitenv.org.der.
 	
-	*3. SMTP HISP MT tests use X-ORIGINAL-MESSAGE-ID  (earlier used IN-REPLY-TO, now only as a fallback) header for failure DSNs
+	*3. SMTP HISP MT tests use X-Original-Message-ID  (earlier used In-Reply-To, now only as a fallback) header for failure DSNs
 	
 	*4. SMTP test case descriptions are configurable from a JSON file in the application directory.
 	
