@@ -1,22 +1,23 @@
-package gov.nist.healthcare.ttt.webapp.misc;
-
-import org.w3c.dom.Document;
+package gov.nist.healthcare.ttt.webapp.api;
 
 import gov.nist.hit.ds.wsseTool.api.config.ContextFactory;
 import gov.nist.hit.ds.wsseTool.api.config.GenContext;
 import gov.nist.hit.ds.wsseTool.api.config.KeystoreAccess;
+import gov.nist.hit.ds.wsseTool.api.exceptions.GenerationException;
 import gov.nist.hit.ds.wsseTool.generation.opensaml.OpenSamlWsseSecurityGenerator;
 import gov.nist.hit.ds.wsseTool.util.MyXmlUtils;
-
+import gov.nist.hit.xdrsamlhelper.SamlHeaderApiImpl;
+import org.w3c.dom.Document;
 
 /**
- * Hello world!
- *
+ * Created by jnp3 on 9/12/16.
  */
 public class SamlTest {
-    public static void main( String[] args ) {
 
-        String keystoreFileWithPath = "C:\\Users\\jnp3\\Desktop\\ett_git\\ett\\xdr\\src\\main\\resources\\goodKeystore\\goodKeystore";
+    public static void main(String[] args) {
+        System.out.println("Test SAML");
+
+        String keystoreFileWithPath = "/Users/jnp3/ett/ett/xdr/src/main/resources/goodKeystore/goodKeystore";
         String keyStorePass = "changeit";
         String alias = "1";
         String privateKeyPass = "changeit";
@@ -31,8 +32,8 @@ public class SamlTest {
             //new WsseHeaderValidator().validate(doc.getDocumentElement(),context);
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e);
         }
-        System.out.println(MyXmlUtils.DomToString(doc));
+        System.out.printf(MyXmlUtils.DomToString(doc));
     }
 }

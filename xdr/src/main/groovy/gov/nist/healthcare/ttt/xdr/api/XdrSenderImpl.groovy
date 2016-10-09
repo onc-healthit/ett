@@ -6,6 +6,12 @@ import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
+import gov.nist.hit.ds.wsseTool.api.config.GenContext
+import gov.nist.hit.ds.wsseTool.api.config.ContextFactory
+import gov.nist.hit.ds.wsseTool.api.config.KeystoreAccess
+import gov.nist.hit.ds.wsseTool.api.exceptions.GenerationException
+import gov.nist.hit.ds.wsseTool.generation.opensaml.OpenSamlWsseSecurityGenerator
+import gov.nist.hit.xdrsamlhelper.SamlHeaderApiImpl.SamlHeaderExceptionImpl
 import gov.nist.toolkit.toolkitApi.BasicSimParameters
 import gov.nist.toolkit.toolkitApi.DocumentSource
 import gov.nist.toolkit.toolkitApi.SimulatorBuilder
@@ -149,6 +155,30 @@ class XdrSenderImpl implements XdrSender{
 		for (String block : art.getExtraHeaders()) {
 			req.addExtraHeader(block);
 		}
+		
+		// Add saml if saml boolean is present
+		if(config.saml) {
+			GenContext context = ContextFactory.getInstance();
+			Document doc = null;
+			
+			try {
+				context.setKeystore(new KeystoreAccess(this.getClass().getClassLoader().getResource("goodKeystore/goodKeystore").toString(), "changeit", "1", "changeit"));
+				if(context.patientId) {
+					context.setParam("patientId", context.patientId);
+				} else {
+					throw new Exception("You need a patient ID");
+				}
+				doc = new OpenSamlWsseSecurityGenerator().generateWsseHeader(context);
+				//new WsseHeaderValidator().validate(doc.getDocumentElement(),context);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				throw new SamlHeaderExceptionImpl(e instanceof GenerationException ? (GenerationException)e : new GenerationException(e));
+			}
+			String saml = MyXmlUtils.DomToString(doc);
+			
+			req.addExtraHeader(saml);
+		}
+		
 		req.setMetadata(art.metadata);
 		
 		// CCDA attachment
