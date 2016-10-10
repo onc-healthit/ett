@@ -162,7 +162,7 @@ class XdrSenderImpl implements XdrSender{
 			Document doc = null;
 			
 			try {
-				context.setKeystore(new KeystoreAccess(this.getClass().getClassLoader().getResource("goodKeystore/goodKeystore").toString(), "changeit", "1", "changeit"));
+				context.setKeystore(new KeystoreAccess(getClass().getClassLoader().getResource("goodKeystore/goodKeystore").toString(), "changeit", "1", "changeit"));
 				if(context.patientId) {
 					context.setParam("patientId", context.patientId);
 				} else {
@@ -171,8 +171,9 @@ class XdrSenderImpl implements XdrSender{
 				doc = new OpenSamlWsseSecurityGenerator().generateWsseHeader(context);
 				//new WsseHeaderValidator().validate(doc.getDocumentElement(),context);
 			} catch (Exception e) {
+				log.error(e.getMessage());
 				// TODO Auto-generated catch block
-				throw new SamlHeaderExceptionImpl(e instanceof GenerationException ? (GenerationException)e : new GenerationException(e));
+				throw new Exception("Error while sending XDR");
 			}
 			String saml = MyXmlUtils.DomToString(doc);
 			
