@@ -36,7 +36,7 @@ public class GetCCDADocumentsController {
 	String ccdaFileDirectory;
 
 	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md");
-	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3}$";
+	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3,4}$";
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody HashMap<String, Object> getDocuments() throws Exception {
@@ -48,20 +48,20 @@ public class GetCCDADocumentsController {
 		File ccdaObjectivesFile = new File(ccdaFilePath);
 
 		if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
-			JsonFactory factory = new JsonFactory(); 
-			ObjectMapper mapper = new ObjectMapper(factory); 
+			JsonFactory factory = new JsonFactory();
+			ObjectMapper mapper = new ObjectMapper(factory);
 			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
 
 			resultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
 		} else {
 			String sha = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/branches/master")
 					.getJSONObject("commit").get("sha").toString();
-			JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/" 
+			JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/"
 					+ sha + "?recursive=1").getJSONArray("tree");
 
 			for(int i=0; i < filesArray.length(); i++) {
 				JSONObject file = filesArray.getJSONObject(i);
-				if(!files2ignore.contains(file.get("path"))) {				
+				if(!files2ignore.contains(file.get("path"))) {
 					// Get path array
 					String[] path = file.get("path").toString().split("/");
 					buildJson(resultMap, path);
@@ -76,7 +76,7 @@ public class GetCCDADocumentsController {
 				logger.error("Could not create ccda cache file: " + e.getMessage());
 				e.printStackTrace();
 			}
-		}	
+		}
 		return resultMap;
 	}
 
@@ -110,7 +110,7 @@ public class GetCCDADocumentsController {
 						dirsList.add(newObj);
 					}
 				}
-			}			
+			}
 		}
 	}
 
