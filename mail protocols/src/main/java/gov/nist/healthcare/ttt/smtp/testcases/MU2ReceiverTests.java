@@ -419,6 +419,7 @@ public class MU2ReceiverTests {
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+											log.info("Processed MDN found with ID " + id);
 										}
 
 
@@ -461,7 +462,7 @@ public class MU2ReceiverTests {
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-											log.info("dispatched MDN found with ID " + id);
+											log.info("Dispatched MDN found with ID " + id);
 										}
 
 
@@ -515,7 +516,7 @@ public class MU2ReceiverTests {
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-											log.info("Processed & Diapatched MDNs found with ID " + id);
+											log.info("Processed & Dispatched MDNs found with ID " + id);
 										}
 
 									}
@@ -552,6 +553,7 @@ public class MU2ReceiverTests {
 							list.add(searchString);
 							list.add("X-Original-Message-ID Found");
 							System.out.println("\nX-Original-Message-ID Found\n");
+							log.info("Failure DSN with X-header found with ID " + id);
 						}
 					}
 					if (xHeaderFlag == 0){
@@ -570,6 +572,7 @@ public class MU2ReceiverTests {
 									list.add(h1.getName());
 									//	duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 									//	result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+									log.info("Failure DSN with in-reply-to found with ID " + id);
 
 								}
 								System.out.println(list);
