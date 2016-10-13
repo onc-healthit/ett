@@ -89,6 +89,51 @@ public class Parsing {
         return wsseHeader;        
     }
     
+    
+    public static String getPatientIDFromWsse(String mtom) throws IOException, MessagingException, SAXException, ParserConfigurationException {
+        String wsseHeader = Parsing.getWsseHeaderFromMTOM(mtom);
+        String patientId = null;
+      //  Node security = JAXB.unmarshal(new StringReader(wsseHeader), Node.class);
+        Node securityDoc = MiscUtil.stringToDom(wsseHeader);
+        
+        Node security = securityDoc.getFirstChild();        
+        
+        NodeList securityChildren = security.getChildNodes();
+        for (int i = 0; i < securityChildren.getLength(); i++) {
+            Node securityChild = securityChildren.item(i);           
+            if (securityChild.getLocalName() != null && securityChild.getLocalName().equals("Assertion") && securityChild.getNamespaceURI().equals("urn:oasis:names:tc:SAML:2.0:assertion")) {
+                Node assertion = securityChild;
+                NodeList assertionChildren = assertion.getChildNodes();
+                for (int j = 0; j < assertionChildren.getLength(); j++) {
+                    Node assertionChild = assertionChildren.item(j);
+
+                    if (assertionChild.getLocalName().equals("AttributeStatement") && assertionChild.getNamespaceURI().equals("urn:oasis:names:tc:SAML:2.0:assertion")) {
+                        Node attributeStatement = assertionChild;
+                        NodeList attributeStatementChildren = attributeStatement.getChildNodes();
+                        for (int k = 0; k < attributeStatementChildren.getLength(); k++) {
+                            Node attributeStatementChild = attributeStatementChildren.item(k);
+                            if (attributeStatementChild.getLocalName().equals("Attribute") && attributeStatementChild.getNamespaceURI().equals("urn:oasis:names:tc:SAML:2.0:assertion")) {
+                                Element attribute = (Element) attributeStatementChild;
+                                if(attribute.getAttribute("Name").equals("urn:oasis:names:tc:xacml:2.0:resource:resource-id")) {
+                                    NodeList attributeChildren = attribute.getChildNodes();
+                                    for(int l = 0; l < attributeChildren.getLength(); l++){
+                                        Node attributeChild = attributeChildren.item(l);
+                                        if (attributeChild.getLocalName().equals("AttributeValue") && attributeChild.getNamespaceURI().equals("urn:oasis:names:tc:SAML:2.0:assertion")) {
+                                            Node attributeValue = attributeChild;
+                                            return attributeValue.getFirstChild().getNodeValue();
+                                        }     
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return patientId;
+    }
+
+    
     public static boolean isValidDirectAddressBlock(String mtom) throws IOException, MessagingException {
 
         SOAPWithAttachment swa = Parsing.parseMtom(mtom);
