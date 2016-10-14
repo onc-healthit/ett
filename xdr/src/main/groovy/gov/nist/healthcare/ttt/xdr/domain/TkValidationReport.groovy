@@ -35,5 +35,6 @@ class TkValidationReport {
 
     String directTo
 
+    String samlReport
 
 }

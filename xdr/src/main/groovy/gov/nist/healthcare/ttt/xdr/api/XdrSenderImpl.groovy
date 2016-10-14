@@ -11,7 +11,9 @@ import gov.nist.hit.ds.wsseTool.api.config.ContextFactory
 import gov.nist.hit.ds.wsseTool.api.config.KeystoreAccess
 import gov.nist.hit.ds.wsseTool.api.exceptions.GenerationException
 import gov.nist.hit.ds.wsseTool.generation.opensaml.OpenSamlWsseSecurityGenerator
+import org.w3c.dom.Document;
 import gov.nist.hit.xdrsamlhelper.SamlHeaderApiImpl.SamlHeaderExceptionImpl
+import gov.nist.hit.ds.wsseTool.util.MyXmlUtils
 import gov.nist.toolkit.toolkitApi.BasicSimParameters
 import gov.nist.toolkit.toolkitApi.DocumentSource
 import gov.nist.toolkit.toolkitApi.SimulatorBuilder
@@ -52,8 +54,8 @@ class XdrSenderImpl implements XdrSender{
     @Value('${toolkit.url}')
     private String tkSendXdrUrl
 	
-	@Value('${toolkit.user}')
-	private String toolkitUser
+    @Value('${toolkit.user}')
+    private String toolkitUser
 
     @Value('${toolkit.testName}')
     private String testName
@@ -159,12 +161,12 @@ class XdrSenderImpl implements XdrSender{
 		// Add saml if saml boolean is present
 		if(config.saml) {
 			GenContext context = ContextFactory.getInstance();
-			Document doc = null;
+			org.w3c.dom.Document doc = null;
 			
 			try {
-				context.setKeystore(new KeystoreAccess(getClass().getClassLoader().getResource("goodKeystore/goodKeystore").toString(), "changeit", "1", "changeit"));
-				if(context.patientId) {
-					context.setParam("patientId", context.patientId);
+				context.setKeystore(new KeystoreAccess(Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "changeit", "1", "changeit"));
+				if(config.patientId) {
+				    	context.setParam("patientId", config.patientId);
 				} else {
 					throw new Exception("You need a patient ID");
 				}

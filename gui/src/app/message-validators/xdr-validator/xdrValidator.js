@@ -117,14 +117,10 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
             $scope.receive.status = "loading";
             $scope.receive.results = XDRValidatorStatus.get(function(data) {
                 $scope.receive.results = data;
-                if (data.content.criteriaMet.toLowerCase() === "passed") {
+                if (data.samlReport.toLowerCase() === "passed") {
                     $scope.receive.status = "success";
-                } else if (data.content.criteriaMet.toLowerCase() === "failed") {
+                } else if (data.samlReport.toLowerCase() === "failed") {
                     $scope.receive.status = "error";
-                } else if (data.content.criteriaMet.toLowerCase() === "pending") {
-                    $scope.receive.status = "pending";
-                } else if (data.content.criteriaMet.toLowerCase() === "manual") {
-                    $scope.receive.status = "manual";
                 } else {
                     $scope.receive.status = "error";
                 }
