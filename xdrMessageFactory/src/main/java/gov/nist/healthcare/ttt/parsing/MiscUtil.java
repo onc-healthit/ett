@@ -44,7 +44,14 @@ public class MiscUtil {
         return null;
     }
 
-    
+    public static Document stringToDom(String xmlSource) throws SAXException, ParserConfigurationException, IOException {
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setIgnoringElementContentWhitespace(true);
+        factory.setNamespaceAware(true); 
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        return builder.parse(new InputSource(new StringReader(xmlSource)));
+    }
     
     static String readFile(String path, Charset encoding) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
