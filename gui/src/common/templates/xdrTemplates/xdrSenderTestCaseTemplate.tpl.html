@@ -69,7 +69,7 @@
 			</div>
 			<div ng-if="test.inputs">
 				<div class="col-md-8 col-md-offset-2">
-					<p><strong>Step 1:</strong> Provide your <span ng-repeat="input in test.inputs">{{input.name}} and </span>{{runText}}</p>
+					<p><strong>Step 1:</strong> Provide your <span ng-repeat="input in test.inputs">{{input.name}}{{$last ? '. ':($index==test.inputs.length-2) ? ', and ':', a '}}</span>{{runText}}</p>
 				</div>
 				<div ng-repeat="input in test.inputs">
 					<label for="{{input.key}}" class="col-md-1 small-padding control-label">
@@ -131,7 +131,7 @@
 	<div class="social">
 		<ul>
 			<li class="facebook vcenter" style="width:100%;">
-				<a ui-sref="{{testSystem}}.xdr.description({id: test.id})" ng-click="scrollTop()">
+				<a ui-sref="{{testSystem}}.xdr.description({id: test.id,testObj: test})" ng-click="scrollTop()">
 					<span>More Info.</span>
 				</a>
 			</li>

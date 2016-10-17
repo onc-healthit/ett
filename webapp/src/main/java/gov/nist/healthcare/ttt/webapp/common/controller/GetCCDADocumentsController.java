@@ -35,8 +35,9 @@ public class GetCCDADocumentsController {
 	@Value("${server.tomcat.basedir}")
 	String ccdaFileDirectory;
 
-	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md");
-	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3}$";
+	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md","README.MD");
+	public List<String> extension2ignore = Arrays.asList("txt");
+	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3,4}$";
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody HashMap<String, Object> getDocuments() throws Exception {
@@ -48,20 +49,20 @@ public class GetCCDADocumentsController {
 		File ccdaObjectivesFile = new File(ccdaFilePath);
 
 		if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
-			JsonFactory factory = new JsonFactory(); 
-			ObjectMapper mapper = new ObjectMapper(factory); 
+			JsonFactory factory = new JsonFactory();
+			ObjectMapper mapper = new ObjectMapper(factory);
 			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
 
 			resultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
 		} else {
 			String sha = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/branches/master")
 					.getJSONObject("commit").get("sha").toString();
-			JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/" 
+			JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/"
 					+ sha + "?recursive=1").getJSONArray("tree");
 
 			for(int i=0; i < filesArray.length(); i++) {
 				JSONObject file = filesArray.getJSONObject(i);
-				if(!files2ignore.contains(file.get("path"))) {				
+				if(!files2ignore.contains(file.get("path"))) {
 					// Get path array
 					String[] path = file.get("path").toString().split("/");
 					buildJson(resultMap, path);
@@ -76,12 +77,12 @@ public class GetCCDADocumentsController {
 				logger.error("Could not create ccda cache file: " + e.getMessage());
 				e.printStackTrace();
 			}
-		}	
+		}
 		return resultMap;
 	}
 
 	public void buildJson(HashMap<String, Object> json, String[] path) {
-		if(path.length == 1) {
+		if(path.length == 1 && !files2ignore.contains(path[0].toUpperCase())) {
 			HashMap<String, Object> newObj = new HashMap<>();
 			newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
 			newObj.put("files", new ArrayList<HashMap<String, Object>>());
@@ -89,19 +90,28 @@ public class GetCCDADocumentsController {
 
 		} else {
 			HashMap<String, Object> current = (HashMap<String, Object>) json.get(path[0]);
-			for(int i = 1 ; i < path.length ; i++) {
-				String currentName = path[i];
-				if(Pattern.matches(extensionRegex, currentName)) {
-					HashMap<String, Object> newFile = new HashMap<>();
-					newFile.put("name", currentName);
-					newFile.put("link", getLink(path));
-					List filesList = (List) current.get("files");
-					filesList.add(newFile);
-				} else {
+			String fileName = path[path.length-1];
+			String fileExtnAry[] = fileName.split("\\.");
+			String fileExtn = "";
+			if (fileExtnAry.length > 0){
+				fileExtn = fileExtnAry[fileExtnAry.length-1];
+		    }
+			//create directory only when at least one valid file exist
+			if(Pattern.matches(extensionRegex, fileName) && !files2ignore.contains(fileName) && !extension2ignore.contains(fileExtn) ) {
+				for(int i = 1 ; i < path.length-1 ; i++) {
+					String  currentName = path[i];
+					boolean firstFile = false;
+					//For the first filename the direcotry is not found
 					if(containsName((List<Map>) current.get("dirs"), currentName)) {
 						List<Map> directories = (List<Map>) current.get("dirs");
 						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
+						HashMap<String, Object> newFile = new HashMap<>();
+						newFile.put("name", fileName);
+						newFile.put("link", getLink(path));
+						List filesList = (List) current.get("files");
+						filesList.add(newFile);
 					} else {
+						firstFile = true;
 						HashMap<String, Object> newObj = new HashMap<>();
 						newObj.put("name", currentName);
 						newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
@@ -109,8 +119,19 @@ public class GetCCDADocumentsController {
 						List dirsList = (List) current.get("dirs");
 						dirsList.add(newObj);
 					}
-				}
-			}			
+					//For the first filename the when direcotry is not found and the files
+					if(firstFile && containsName((List<Map>) current.get("dirs"), currentName)) {
+						current = (HashMap<String, Object>) json.get(path[0]);
+						List<Map> directories = (List<Map>) current.get("dirs");
+						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
+						HashMap<String, Object> newFile = new HashMap<>();
+						newFile.put("name", fileName);
+						newFile.put("link", getLink(path));
+						List filesList = (List) current.get("files");
+						filesList.add(newFile);
+					}
+				} // end of For loop
+			}
 		}
 	}
 

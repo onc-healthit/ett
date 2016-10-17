@@ -400,7 +400,7 @@
 	}, {
 		"name": "SMTP MT Test 24(a) (Receiving HISP Not Trusted)",
 		"id": 524,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted HISP. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -408,7 +408,7 @@
 	}, {
 		"name": "SMTP/IMAP MT Test 24(b) (Receiving HISP Not Trusted)",
 		"id": 124,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted HISP. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -416,7 +416,7 @@
 	}, {
 		"name": "SMTP/POP MT Test 24(c) (Receiving HISP Not Trusted)",
 		"id": 624,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted HISP. Hitting ‘Run’ will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
