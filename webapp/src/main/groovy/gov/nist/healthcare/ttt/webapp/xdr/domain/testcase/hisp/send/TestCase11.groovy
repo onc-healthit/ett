@@ -46,7 +46,7 @@ final class TestCase11 extends TestCaseSender {
         context.direct_from = "testcase11@$executor.hostname"
 
         //We send a direct+XDM
-        String msgType = "XDM_LIM.zip"
+        String msgType = "XDM_LIM.ZIP"
         XDRTestStepInterface step2 = executor.executeSendDirectStep(context, msgType)
 
         //We create the record
