@@ -33,7 +33,7 @@ import com.sun.mail.util.MailSSLSocketFactory;
 
 public class TTTSenderTests {
 
-	public static Logger log = Logger.getLogger("TTTSenderTests");
+	public static Logger log = Logger.getLogger(TTTSenderTests.class.getName());
 	Properties config;
 
 	/**
@@ -182,7 +182,8 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING STARTTLS & PLAIN SASL AUTHENTICATION EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + aName);
 			result.put("\n2","Email sent Successfully");
 
@@ -294,7 +295,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Text.txt and CCDA_Ambulatory.xml");
 			result.put("\n2","Email sent Successfully");
 
@@ -412,7 +413,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Sample.pdf and CCDA_Ambulatory.xml ");
 			result.put("\n2","Email sent Successfully");
 
@@ -533,7 +534,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_Ambulatory_in_XDM.zip and Text.txt");
 			result.put("\n2","Email sent Successfully");
 
@@ -660,7 +661,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_Ambulatory.xml and Text.txt");
 			result.put("\n2","Email sent Successfully");
 
@@ -780,7 +781,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_Ambulatory.xml and Sample.pdf");
 			result.put("\n2","Email sent Successfully");
 
@@ -900,7 +901,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Text.txt and CCDA_Ambulatory_in_XDM.zip");
 			result.put("\n2","Email sent Successfully");
 
@@ -1003,7 +1004,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "BadXHTML.zip");
 			result.put("\n2","Email sent Successfully");
 
@@ -1211,7 +1212,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "ToC_Ambulatory.xml");
 			result.put("\n2","Email sent Successfully");
 
@@ -1315,7 +1316,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "CCDA_Ambulatory_XDM.zip");
 			result.put("\n2","Email sent Successfully");
 
@@ -1419,7 +1420,7 @@ public class TTTSenderTests {
 			transport.close();
 
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent to " + ti.sutEmailAddress);
 			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENT " + "CCDA_Ambulatory_XDM.zip");
 			result.put("\n2","Email sent Successfully");
 
