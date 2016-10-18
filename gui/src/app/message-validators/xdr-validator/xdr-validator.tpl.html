@@ -118,6 +118,10 @@
 
         <button type="submit" class="btn btn-lg btn-primary" ng-click="resetReceive()" style="margin-bottom: 10px;"><span class="glyphicon glyphicon-trash"></span>&nbsp;Reset</button>
 
+        <div class="alert" ng-if="statusMessage">
+            {{statusMessage}}
+        </div>
+
         <uib-tabset ng-if="receive.results">
             <div class="alert alert-success" ng-if="receive.status === 'success'">
                 Success

@@ -46,231 +46,231 @@ import groovy.util.slurpersupport.GPathResult
 @RequestMapping("api/xdrvalidator")
 public class XdrValidatorController {
 
-    private static Logger log = LoggerFactory.getLogger(XdrValidatorController.class);
+	private static Logger log = LoggerFactory.getLogger(XdrValidatorController.class);
 
-    private final TestCaseManager testCaseManager
-    private final XdrReceiverImpl receiverImpl
+	private final TestCaseManager testCaseManager
+	private final XdrReceiverImpl receiverImpl
 
-    @Value('${toolkit.user}')
-    private String toolkitUser
+	@Value('${toolkit.user}')
+	private String toolkitUser
 
-    @Value('${xdr.notification.prefix}')
-    private String prefix
+	@Value('${xdr.notification.prefix}')
+	private String prefix
 
-    @Value('${server.contextPath}')
-    private String contextPath
+	@Value('${server.contextPath}')
+	private String contextPath
 
-    @Value('${toolkit.endpoint.port}')
-    private String port
+	@Value('${toolkit.endpoint.port}')
+	private String port
 
-    @Value('${direct.listener.domainName}')
-    private String hostname
+	@Value('${direct.listener.domainName}')
+	private String hostname
 
-    private String fullNotificationUrl
+	private String fullNotificationUrl
 
-    @Autowired
-    private DatabaseInstance db;
+	@Autowired
+	private DatabaseInstance db;
 
-    @Autowired
-    public XdrValidatorController(TestCaseManager manager, XdrReceiverImpl receiverImpl) {
-	testCaseManager = manager
-	this.receiverImpl = receiverImpl
-    }
-
-    @PostConstruct
-    def buildUrls(){
-	fullNotificationUrl = prefix+"://"+hostname+":"+port+contextPath+"/api/xdrvalidator/receive"
-
-	log.debug("notification url is :" + fullNotificationUrl)
-    }
-
-    @RequestMapping(value = "/endpoints", method = RequestMethod.GET)
-    @ResponseBody
-    XDRSimulatorInterface configure(Principal principal) throws Exception {
-
-	//User must be authenticated in order to run a test case=
-	if (principal == null) {
-	    throw new TTTCustomException("0x0080", "User not identified");
+	@Autowired
+	public XdrValidatorController(TestCaseManager manager, XdrReceiverImpl receiverImpl) {
+		testCaseManager = manager
+		this.receiverImpl = receiverImpl
 	}
 
-	log.debug("received configure request for xdr validator")
-	def username = principal.getName()
+	@PostConstruct
+	def buildUrls(){
+		fullNotificationUrl = prefix+"://"+hostname+":"+port+contextPath+"/api/xdrvalidator/receive"
 
-	EndpointConfig config = new EndpointConfig();
-	config.name = "XdrVal_" + username;
-
-	return receiverImpl.createEndpoints(config, fullNotificationUrl);
-    }
-
-    @RequestMapping(value = 'receive/{id}', consumes = "application/xml")
-    @ResponseBody
-    public void receiveBySimulatorId(@RequestBody String httpBody) {
-
-	log.debug("receive a new validation report: $httpBody")
-
-	try {
-
-	    def tkValidationReport = new TkValidationReport()
-	    def report = new XmlSlurper().parseText(httpBody)
-
-	    parseReportFormat(tkValidationReport, report)
-	    parseRequest(tkValidationReport , report.requestMessageBody)
-	    parseResponse(tkValidationReport, report.responseMessageBody)
-	    
-	    handleSAML(tkValidationReport)
-
-	}
-	catch(Exception e) {
-	    e.printStackTrace();
-//	    log.error("receive an invalid validation report. Bad payload rejected :\n $httpBody")
-	}
-    }
-
-    @RequestMapping(value = "/run", method = RequestMethod.POST)
-    @ResponseBody
-    UIResponse run(@RequestBody HashMap config, Principal principal) {
-
-	String id = "XdrVal";
-
-	//User must be authenticated in order to run a test case
-	if (principal == null) {
-	    return new UIResponse(UIResponse.UIStatus.ERROR, "user not identified")
+		log.debug("notification url is :" + fullNotificationUrl)
 	}
 
-	//rename variables to make their semantic more obvious
-	def tcid = id
-	def username = principal.getName()
+	@RequestMapping(value = "/endpoints", method = RequestMethod.GET)
+	@ResponseBody
+	XDRSimulatorInterface configure(Principal principal) throws Exception {
 
-	log.debug("received run request for tc$tcid from $username")
+		//User must be authenticated in order to run a test case=
+		if (principal == null) {
+			throw new TTTCustomException("0x0080", "User not identified");
+		}
 
-	try {
-	    Result event = testCaseManager.run(id, config, username)
-	    return new UIResponse(UIResponse.UIStatus.SUCCESS,"ran tc $tcid", event)
-	}
-	catch(Exception e){
-	    e.printStackTrace() //TODO flag so it is not logged in production
-	    return new UIResponse(UIResponse.UIStatus.ERROR, e.getMessage(), null)
-	}
+		log.debug("received configure request for xdr validator")
+		def username = principal.getName()
 
+		EndpointConfig config = new EndpointConfig();
+		config.name = "XdrVal_" + username;
 
-    }
-
-    @RequestMapping(value = "/status", method = RequestMethod.GET)
-    @ResponseBody
-    XDRVanillaInterface status(Principal principal) {
-	
-	if (principal == null) {
-	    throw new Exception("user not identified")
+		return receiverImpl.createEndpoints(config, fullNotificationUrl);
 	}
 
-	String id = "XdrVal";
+	@RequestMapping(value = 'receive/{id}', consumes = "application/xml")
+	@ResponseBody
+	public void receiveBySimulatorId(@RequestBody String httpBody) {
 
-	String simId = toolkitUser + "__" + id + "_" + principal.getName();
+		log.debug("receive a new validation report: $httpBody")
 
-	if (principal == null) {
-	    throw new Exception("user not identified")
+		try {
+
+			def tkValidationReport = new TkValidationReport()
+			def report = new XmlSlurper().parseText(httpBody)
+
+			parseReportFormat(tkValidationReport, report)
+			parseRequest(tkValidationReport , report.requestMessageBody)
+			parseResponse(tkValidationReport, report.responseMessageBody)
+
+			handleSAML(tkValidationReport)
+
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			//	    log.error("receive an invalid validation report. Bad payload rejected :\n $httpBody")
+		}
 	}
 
-	log.info("Getting latest XDR for sim " + simId)
+	@RequestMapping(value = "/run", method = RequestMethod.POST)
+	@ResponseBody
+	UIResponse run(@RequestBody HashMap config, Principal principal) {
 
-	//rename variables to make their semantic more obvious
-	def tcid = id
-	def username = principal.getName()
-	def status
-	String msg
-	Result result
+		String id = "XdrVal";
 
-	log.debug("received status request for tc$id from $username")
+		//User must be authenticated in order to run a test case
+		if (principal == null) {
+			return new UIResponse(UIResponse.UIStatus.ERROR, "user not identified")
+		}
 
-	try {
-	    return db.xdrFacade.getLatestXDRVanillaBySimId(simId)
-	} catch(Exception e){
-	    throw e
+		//rename variables to make their semantic more obvious
+		def tcid = id
+		def username = principal.getName()
+
+		log.debug("received run request for tc$tcid from $username")
+
+		try {
+			Result event = testCaseManager.run(id, config, username)
+			return new UIResponse(UIResponse.UIStatus.SUCCESS,"ran tc $tcid", event)
+		}
+		catch(Exception e){
+			e.printStackTrace() //TODO flag so it is not logged in production
+			return new UIResponse(UIResponse.UIStatus.ERROR, e.getMessage(), null)
+		}
+
+
 	}
-    }
 
-    def parseStatus(String registryResponseStatus) {
-	if (registryResponseStatus.contains("Failure")) {
-	    return Status.FAILED
-	} else if (registryResponseStatus.contains("Success")) {
-	    return Status.PASSED
+	@RequestMapping(value = "/status", method = RequestMethod.GET)
+	@ResponseBody
+	XDRVanillaInterface status(Principal principal) {
+
+		if (principal == null) {
+			throw new Exception("user not identified")
+		}
+
+		String id = "XdrVal";
+
+		String simId = toolkitUser + "__" + id + "_" + principal.getName();
+
+		if (principal == null) {
+			throw new Exception("user not identified")
+		}
+
+		log.info("Getting latest XDR for sim " + simId)
+
+		//rename variables to make their semantic more obvious
+		def tcid = id
+		def username = principal.getName()
+		def status
+		String msg
+		Result result
+
+		log.debug("received status request for tc$id from $username")
+
+		try {
+			return db.xdrFacade.getLatestXDRVanillaBySimId(simId)
+		} catch(Exception e){
+			throw e
+		}
 	}
-    }
 
-    def parseResponse(TkValidationReport tkValidationReport, GPathResult response){
-
-	//TODO modify : all that to extract registryResponseStatus info!
-	String content = response.text()
-	def registryResponse = content.split("<.?S:Body>")
-	def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
-	def registryResponseStatus = registryResponseXml.@status.text()
-	def criteriaMet = parseStatus(registryResponseStatus)
-	tkValidationReport.status = criteriaMet
-    }
-
-    def parseRequest(TkValidationReport tkValidationReport, GPathResult request){
-	String text = request.text()
-	String unescapeXml = StringEscapeUtils.unescapeXml(text)
-
-	// Get Patient ID
-	def patientId = Parsing.getPatientIDFromWsse(text)
-
-	// Parse it to see if it is SAML message
-	String saml = Parsing.getWsseHeaderFromMTOM(text)
-	if(saml != null) {
-	    try {
-		ValidationResult samlRes = validateSAMLHeader(saml, patientId)
-		tkValidationReport.samlReport = "PASSED";
-	    } catch(Exception e) {
-		tkValidationReport.samlReport = "FAILED";
-		throw new Exception(e.getMessage())
-	    }
-	} else {
-	    tkValidationReport.samlReport = "NOSAML";
+	def parseStatus(String registryResponseStatus) {
+		if (registryResponseStatus.contains("Failure")) {
+			return Status.FAILED
+		} else if (registryResponseStatus.contains("Success")) {
+			return Status.PASSED
+		}
 	}
-    }
 
-    def stripMailTo(String address) {
-	if(address!=null) {
-	    if(address.toLowerCase().startsWith("mailto:")) {
-		return address.split("mailto:")[1];
-	    }
+	def parseResponse(TkValidationReport tkValidationReport, GPathResult response){
+
+		//TODO modify : all that to extract registryResponseStatus info!
+		String content = response.text()
+		def registryResponse = content.split("<.?S:Body>")
+		def registryResponseXml = new XmlSlurper().parseText(registryResponse[1])
+		def registryResponseStatus = registryResponseXml.@status.text()
+		def criteriaMet = parseStatus(registryResponseStatus)
+		tkValidationReport.status = criteriaMet
 	}
-	return address;
-    }
 
-    def parseReportFormat(TkValidationReport tkValidationReport,  GPathResult report){
-	tkValidationReport.request = report.requestMessageHeader.text() + "\r\n\r\n" + report.requestMessageBody.text()
-	tkValidationReport.response = report.responseMessageHeader.text() + "\r\n\r\n" + report.responseMessageBody.text()
-	tkValidationReport.simId = report.simulatorUser.text() + "__" + report.simulatorId.text()
-    }
+	def parseRequest(TkValidationReport tkValidationReport, GPathResult request){
+		String text = request.text()
+		String unescapeXml = StringEscapeUtils.unescapeXml(text)
 
-    def validateSAMLHeader(String document, String patientId) {
-	GenContext context = ContextFactory.getInstance();
-	try {
-	    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-		    .parse(new InputSource(new StringReader(document)));
+		// Get Patient ID
+		def patientId = Parsing.getPatientIDFromWsse(text)
 
-	    //System.in.read();
-	    context.setKeystore(new KeystoreAccess(Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "changeit", "1", "changeit"));
-	    context.setParam("patientId", patientId);
-	    new WsseHeaderValidator().validate(doc.getDocumentElement(), context);
-	} catch (Exception e) {
-	    // TODO Auto-generated catch block
-	    throw new SamlHeaderExceptionImpl(e instanceof ValidationException ? (ValidationException)e : new ValidationException(e));
+		// Parse it to see if it is SAML message
+		String saml = Parsing.getWsseHeaderFromMTOM(text)
+		if(saml != null) {
+			try {
+				ValidationResult samlRes = validateSAMLHeader(saml, patientId)
+				tkValidationReport.samlReport = "PASSED";
+			} catch(Exception e) {
+				tkValidationReport.samlReport = "FAILED";
+				throw new Exception(e.getMessage())
+			}
+		} else {
+			tkValidationReport.samlReport = "NOSAML";
+		}
 	}
-    }
-    
-    private void handleSAML(TkValidationReport report) {
-	log.info("handle toolkit saml report for sim id: " + report.simId)
-	    
-	XDRVanillaImpl xdr = new XDRVanillaImpl()
-	xdr.setRequest(report.request)
-	xdr.setResponse(report.response)
-	xdr.setSamlReport(report.samlReport)
-	xdr.setSimId(report.simId)
-	
-	db.getXdrFacade().addNewXdrVanilla(xdr);
 
-    }
+	def stripMailTo(String address) {
+		if(address!=null) {
+			if(address.toLowerCase().startsWith("mailto:")) {
+				return address.split("mailto:")[1];
+			}
+		}
+		return address;
+	}
+
+	def parseReportFormat(TkValidationReport tkValidationReport,  GPathResult report){
+		tkValidationReport.request = report.requestMessageHeader.text() + "\r\n\r\n" + report.requestMessageBody.text()
+		tkValidationReport.response = report.responseMessageHeader.text() + "\r\n\r\n" + report.responseMessageBody.text()
+		tkValidationReport.simId = report.simulatorUser.text() + "__" + report.simulatorId.text()
+	}
+
+	def validateSAMLHeader(String document, String patientId) {
+		GenContext context = ContextFactory.getInstance();
+		try {
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+					.parse(new InputSource(new StringReader(document)));
+
+			//System.in.read();
+			context.setKeystore(new KeystoreAccess(Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "changeit", "1", "changeit"));
+			context.setParam("patientId", patientId);
+			new WsseHeaderValidator().validate(doc.getDocumentElement(), context);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new SamlHeaderExceptionImpl(e instanceof ValidationException ? (ValidationException)e : new ValidationException(e));
+		}
+	}
+
+	private void handleSAML(TkValidationReport report) {
+		log.info("handle toolkit saml report for sim id: " + report.simId)
+
+		XDRVanillaImpl xdr = new XDRVanillaImpl()
+		xdr.setRequest(report.request)
+		xdr.setResponse(report.response)
+		xdr.setSamlReport(report.samlReport)
+		xdr.setSimId(report.simId)
+
+		db.getXdrFacade().addNewXdrVanilla(xdr);
+
+	}
 }

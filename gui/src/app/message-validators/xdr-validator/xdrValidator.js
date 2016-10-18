@@ -1,7 +1,7 @@
 var xdmValidator = angular.module('ttt.direct.xdrValidator', []);
 
 ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEndpoints', 'XDRValidatorRun', 'XDRValidatorStatus',
-    function($scope, growl, XDRValidatorEndpoints, XDRValidatorRun, XDRValidatorStatus) {
+    function ($scope, growl, XDRValidatorEndpoints, XDRValidatorRun, XDRValidatorStatus) {
 
         $scope.xdrSamples = [{
             "name": "C32_Sample1_full_metadata",
@@ -48,14 +48,14 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
 
         $scope.properties = {};
 
-        $scope.configure = function() {
-            XDRValidatorEndpoints.get(function(data) {
+        $scope.configure = function () {
+            XDRValidatorEndpoints.get(function (data) {
                 if (data.endpoint) {
                     $scope.receive.endpoint = data.endpoint;
                     $scope.receive.endpointTLS = data.endpointTLS;
                 }
                 $scope.receive.status = "success";
-            }, function(data) {
+            }, function (data) {
                 throw {
                     code: data.data.code,
                     url: data.data.url,
@@ -64,12 +64,12 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
             });
         };
 
-        $scope.sendXdr = function() {
+        $scope.sendXdr = function () {
             $scope.laddaLoading = true;
             if ($scope.sample.selected) {
                 $scope.properties.selected = $scope.sample.selected.value;
             }
-            XDRValidatorRun.save($scope.properties, function(data) {
+            XDRValidatorRun.save($scope.properties, function (data) {
                 $scope.laddaLoading = false;
                 $scope.send.status = "loading";
                 $scope.send.results = data;
@@ -100,7 +100,7 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
                         };
                     }
                 }
-            }, function(data) {
+            }, function (data) {
                 $scope.send.status = 'error';
                 $scope.laddaLoading = false;
                 if (data.data) {
@@ -113,18 +113,23 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
             });
         };
 
-        $scope.checkXdrStatus = function() {
+        $scope.checkXdrStatus = function () {
             $scope.receive.status = "loading";
-            $scope.receive.results = XDRValidatorStatus.get(function(data) {
+            $scope.statusMessage = "";
+            $scope.receive.results = XDRValidatorStatus.get(function (data) {
                 $scope.receive.results = data;
-                if (data.samlReport.toLowerCase() === "passed") {
-                    $scope.receive.status = "success";
-                } else if (data.samlReport.toLowerCase() === "failed") {
-                    $scope.receive.status = "error";
+                if (data.samlReport) {
+                    if (data.samlReport.toLowerCase() === "passed") {
+                        $scope.receive.status = "success";
+                    } else if (data.samlReport.toLowerCase() === "failed") {
+                        $scope.receive.status = "error";
+                    } else {
+                        $scope.receive.status = "error";
+                    }
                 } else {
-                    $scope.receive.status = "error";
+                    $scope.statusMessage = "No XDR received yet";
                 }
-            }, function(data) {
+            }, function (data) {
                 $scope.receive.status = "error";
                 if (data.data) {
                     throw {
@@ -136,16 +141,17 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
             });
         };
 
-        $scope.displayGrowl = function(text) {
+        $scope.displayGrowl = function (text) {
             growl.success(text);
         };
 
-        $scope.resetReceive = function() {
+        $scope.resetReceive = function () {
             $scope.receive = {};
+            $scope.statusMessage = "";
             $scope.receive.status = "na";
         };
 
-        $scope.resetSend = function() {
+        $scope.resetSend = function () {
             $scope.send = {};
         };
     }
