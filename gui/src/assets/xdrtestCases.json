@@ -102,7 +102,7 @@
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
     "Purpose/Description": "Verify that the Edge system throws an error when an incorrect message is received.",
     "Conformance  Test Details": "Create incorrect messages which include Bad SOAP Envelope Details",
-    "Expected Test Results ": "Edge system is rejecting the various bad messages sent from the test tool.",
+    "Expected Test Results": "Edge system is rejecting the various bad messages sent from the test tool.",
     "Required / Conditional per Direct Edge Protocol Guide ": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference ": 1.1,
     "Test Data IDs ": null
@@ -127,7 +127,7 @@
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
     "Purpose/Description": "Verify that the Edge system throws an error when an incorrect message is received.",
     "Conformance  Test Details": "Create incorrect messages which include Bad SOAP Body Details",
-    "Expected Test Results ": "Edge system is rejecting the various bad messages sent from the test tool.",
+    "Expected Test Results": "Edge system is rejecting the various bad messages sent from the test tool.",
     "Required / Conditional per Direct Edge Protocol Guide ": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference ": 1.1,
     "Test Data IDs ": null
@@ -489,7 +489,7 @@
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
     "Purpose/Description": "Verify that the HISP system throws an error when an incorrect message is received.",
     "Conformance  Test Details": "Create an incorrect message with invalid SOAP envelope details",
-    "Expected Test Results ": "HISP should validate the messages per the specification and reject the bad messages",
+    "Expected Test Results": "HISP should validate the messages per the specification and reject the bad messages",
     "Required / Conditional per Direct Edge Protocol Guide ": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference ": 1.1,
     "Test Data IDs ": null
@@ -514,7 +514,7 @@
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
     "Purpose/Description": "Verify that the HISP system throws an error when an incorrect message is received.",
     "Conformance  Test Details": "Create an incorrect message with invalid SOAP body details",
-    "Expected Test Results ": "HISP should validate the messages per the specification and reject the bad messages",
+    "Expected Test Results": "HISP should validate the messages per the specification and reject the bad messages",
     "Required / Conditional per Direct Edge Protocol Guide ": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference ": 1.1,
     "Test Data IDs ": null
