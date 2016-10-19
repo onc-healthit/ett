@@ -45,7 +45,7 @@ import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
 public class MU2SenderTests {
 
-	public static Logger log = Logger.getLogger("MU2SenderTests");
+	public static Logger log = Logger.getLogger(MU2SenderTests.class.getName());
 	
 	/**
 	 * Implements  a Testcase to send an email to a Bad Address. Authenticates with SUT and sends a mail from SUT Server to a end point using STARTTLS.
@@ -114,7 +114,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 		//	tr.setMessageId(message.getHeader("Message-ID")[0]);
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("bad.address")+" from "+fromAddress );
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -202,7 +202,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("not.trusted")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -286,7 +286,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("not.published")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -368,7 +368,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("no.processedmdn")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -457,7 +457,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("bad.address")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -543,7 +543,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("not.trusted")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -629,7 +629,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("not.published")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -711,7 +711,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("no.processedmdn")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -800,7 +800,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("bad.address")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -887,7 +887,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("not.trusted")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -973,7 +973,7 @@ public class MU2SenderTests {
 			
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("not.published")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1055,7 +1055,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("no.processedmdn")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1098,7 +1098,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
-		tr.setSearchType("timeout");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1139,7 +1139,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + Address+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO  "+ Address + "\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1171,7 +1171,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
-		tr.setSearchType("timeout");
+		tr.setSearchType("fail");
 
 		Session session = Session.getInstance(props, null);
 
@@ -1213,7 +1213,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + Address+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO  "+ Address + "\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1245,7 +1245,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
-		tr.setSearchType("timeout");
+		tr.setSearchType("fail");
 
 		Session session = Session.getInstance(props, null);
 
@@ -1287,7 +1287,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + Address+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO  "+ Address + "\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1367,7 +1367,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL WITH MESSAGE DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1437,7 +1437,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL WITH MESSAGE DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1507,7 +1507,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL WITH MESSAGE DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1597,7 +1597,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + ti.sutEmailAddress);
 			result.put("1","SENDING EMAIL WITH MESSAGE DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1838,7 +1838,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 			
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL WITH BAD DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1930,7 +1930,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 			
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + ti.sutEmailAddress);
 			result.put("1","SENDING EMAIL WITH BAD DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -1974,7 +1974,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.starttls.required","true");
 		props.put("mail.smtp.ssl.trust", "*");
 		tr.setFetchType("imap1");
-		tr.setSearchType("timeout");
+		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
 		try {
 			Properties prop = new Properties();
@@ -2001,7 +2001,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 			
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + ti.sutEmailAddress);
 			result.put("1","Sending email\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -2097,7 +2097,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 			
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + ti.sutEmailAddress);
 			result.put("1","Sending email\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -2175,7 +2175,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 			
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL WITH BAD DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -2250,7 +2250,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 			
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL WITH BAD DISPOSITION NOTIFICATION HEADER\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -2334,7 +2334,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO ADDRESS  " + ti.sutEmailAddress + "\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -2417,7 +2417,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO ADDRESS  " + ti.sutEmailAddress + "\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -2500,7 +2500,7 @@ public class MU2SenderTests {
 			transport.close();
 			String MessageId = message.getHeader("Message-ID")[0];
 			System.out.println("Done");
-			log.info("Message Sent");
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("processed.dispatched")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO ADDRESS  " + ti.sutEmailAddress + "\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);

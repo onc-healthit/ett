@@ -54,7 +54,7 @@ tttService.factory('SMTPTestCasesDescription', function($http) {
 tttService.factory('XDRTestCasesDescription', function($http) {
     return {
         getTestCasesDescription: function(callback, error) {
-            $http.get('assets/xdr_spreadsheet.json').then(callback, error);
+            $http.get('assets/xdrtestCases.json').then(callback, error);
         }
     };
 });

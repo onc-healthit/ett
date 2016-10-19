@@ -6,7 +6,7 @@
             </a>
         </div>
         <div class="col-md-10">
-            <h2 style="margin:0;">Test #{{specificTest.ID}}</h2>
+            <h2 style="margin:0;">{{testObj.name}}</h2>
         </div>
     </div>
     <div class="row">
@@ -20,14 +20,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{specificTest['Purpose/Description']}}</td>
-                        <td>{{specificTest['Expected Test Results']}}</td>
+                        <td>{{testObj['Purpose/Description']}}</td>
+                        <td>{{testObj['Expected Test Results']}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
             <table class="table table-striped">
@@ -39,12 +39,12 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{specificTest['SUT: Sender/ Receiver']}}</td>
-                        <td>{{specificTest['Metadata Included']}}</td>
+                        <td>{{testObj['SUT: Sender/ Receiver']}}</td>
+                        <td>{{testObj['Metadata Included']}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    
+
 </div>
