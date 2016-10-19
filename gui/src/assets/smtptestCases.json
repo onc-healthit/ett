@@ -496,7 +496,7 @@
 	}, {
 		"name": "SMTP MT Test 28(a) (Delayed Dispatched MDN)",
 		"id": 528,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN after the expected wait time is exceeded. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -504,7 +504,7 @@
 	}, {
 		"name": "SMTP/IMAP MT Test 28(b) (Delayed Dispatched MDN)",
 		"id": 128,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN after the expected wait time is exceeded. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -512,7 +512,7 @@
 	}, {
 		"name": "SMTP/POP MT Test 28(c) (Delayed Dispatched MDN)",
 		"id": 158,
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN within an appropriate time frame. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to a destination that does not return a  dispatched MDN after the expected wait time is exceeded. Hitting ‘Run’ will  cause ETT to send a message with a final destination that will not  provide a dispatched MDN. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message indicating a timeout will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
