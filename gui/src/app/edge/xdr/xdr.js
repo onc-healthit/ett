@@ -75,10 +75,10 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 		$scope.$watch('transactionType', function() {
 			if ($scope.transactionType === 'sender') {
 				$scope.testBench = $scope.senderTests;
-				$scope.runText = 'Hit Run to generate your endpoint';
+				$scope.runText = 'Hit Run to generate your endpoint.';
 			} else {
 				$scope.testBench = $scope.receiverTests;
-				$scope.runText = 'Hit Run to send XDR message';
+				$scope.runText = 'Hit Run to send a XDR message.';
 			}
 		});
 
