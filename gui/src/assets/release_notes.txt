@@ -1,3 +1,18 @@
+==Version 1.1.2#10/20/2016
+
+	*1. HISP XDR Sender Tests 11 and 12: XDM metadata sent by ETT is now conformant
+	
+	*2. File selection dialog display fixed to show html as files instead of folders.
+	
+	*3. 'More Info.' section missing description for XDR test cases now added.
+	
+	*4. The back button from the "More Info" now takes to the corresponding test case intstead of scrolling to the top.
+	
+	*5. The "Step 1" instruction in the XDR test case has been fixed to have increased clarity.
+	
+	*6. Server configured for running the mdht validator on a separate instance for better performance.
+
+
 ==Version 1.1.1#10/06/2016
 
 	*1. ETT User guide updated and is available from the github repository.
