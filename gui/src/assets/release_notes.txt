@@ -8,7 +8,7 @@
 		
 	*4. The "Step 1" instruction in the XDR test case has been fixed to have increased clarity.
 	
-	*5. Server configured for running the mdht validator on a separate instance for better performance.
+	*5. Server configured to run the MDHT validator on a separate instance for better performance.
 
 
 ==Version 1.1.1#10/06/2016
