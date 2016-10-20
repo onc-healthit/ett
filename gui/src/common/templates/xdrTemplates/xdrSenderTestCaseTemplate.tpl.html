@@ -45,7 +45,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="info" ng-class="{ runningInfo: test.status !== 'na'}">
+	<div id="test_{{test.id}}" class="info" ng-class="{ runningInfo: test.status !== 'na'}">
 		<h2 class="title">{{test.name}}</h2>
 		<p class="desc">{{test.desc}}</p>
 
