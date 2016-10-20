@@ -26,12 +26,18 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 import javax.mail.util.SharedByteArrayInputStream;
 import javax.xml.bind.JAXB;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.w3._2003._05.soap_envelope.Body;
 import org.w3._2003._05.soap_envelope.Envelope;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -50,7 +56,7 @@ public class Parsing {
 
     public static final String ELEMENT_NAME_WSSE_SECURITY = "Security";
     public static final String NAMESPACE_WSSE = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"; //"http://schemas.xmlsoap.org/ws/2002/12/secext";
-    
+
     public static final String METADATA_LEVEL_MINIMAL = "minimal";
     public static final String METADATA_LEVEL_XDS = "XDS";
 
@@ -70,7 +76,7 @@ public class Parsing {
     }
 
     public static String getWsseHeaderFromMTOM(String mtom) throws IOException, MessagingException {
-        
+
         SOAPWithAttachment swa = Parsing.parseMtom(mtom);
         String wsseHeader = null;
         Envelope env = (Envelope) JAXB.unmarshal(new StringReader(swa.getSoap()), Envelope.class);
@@ -81,15 +87,14 @@ public class Parsing {
         Iterator it = headers.iterator();
         while (it.hasNext()) {
             Element header = (Element) it.next();
-            if (header.getLocalName().equals(ELEMENT_NAME_WSSE_SECURITY) && header.getNamespaceURI().equals(NAMESPACE_WSSE)) {              
+            if (header.getLocalName().equals(ELEMENT_NAME_WSSE_SECURITY) && header.getNamespaceURI().equals(NAMESPACE_WSSE)) {
                 wsseHeader = MiscUtil.xmlToString(header);
                 break;
             }
         }
-        return wsseHeader;        
+        return wsseHeader;
     }
-    
-    
+
     public static String getPatientIDFromWsse(String mtom) throws IOException, MessagingException, SAXException, ParserConfigurationException {
         String wsseHeader = Parsing.getWsseHeaderFromMTOM(mtom);
         String patientId = null;
@@ -133,7 +138,6 @@ public class Parsing {
         return patientId;
     }
 
-    
     public static boolean isValidDirectAddressBlock(String mtom) throws IOException, MessagingException {
 
         SOAPWithAttachment swa = Parsing.parseMtom(mtom);
@@ -464,7 +468,7 @@ public class Parsing {
         String boundryString = postBoundryBegin.substring(0, endBoundry);
 
         System.out.println(boundryString);
-*/
+         */
         // boundary="MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20"
         String xml;
         try {
@@ -472,11 +476,12 @@ public class Parsing {
 
 //              System.out.println(Parsing.getMetadataLevel(xml));
             //          System.out.println(Parsing.isValidDirectAddressBlock(xml));
-            xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM.txt", Charset.defaultCharset());
-            
-            System.out.println(Parsing.getWsseHeaderFromMTOM(xml));
-            
-/*
+            //   xml = MiscUtil.readFile("/home/mccaffrey/ett/parsingSamples/MTOM.txt", Charset.defaultCharset());
+            xml = MiscUtil.readFile("/home/mccaffrey/git/ett/artifacts/saml.txt", Charset.defaultCharset());
+
+            //System.out.println(Parsing.getWsseHeaderFromMTOM(xml));
+            System.out.println(Parsing.getPatientIDFromWsse(xml));
+            /*
             System.out.println(Parsing.isValidDirectAddressBlock(xml));
             //   System.out.println(Parsing.isRegistryResponseSuccess(xml));
             System.out.println(Parsing.getMetadataLevel(xml));
