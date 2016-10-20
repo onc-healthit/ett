@@ -34,10 +34,8 @@ edgeXdr.config(['$stateProvider',
 	}
 ]);
 
-edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRRunTestCases', 'XDRCheckStatus',
-'XDRTestCasesTemplate', '$state', '$window','$location','$anchorScroll',
-	function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRRunTestCases, XDRCheckStatus,
-	XDRTestCasesTemplate, $state, $window,$location,$anchorScroll) {
+edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRRunTestCases', 'XDRCheckStatus', 'XDRTestCasesTemplate', '$state', '$window',
+	function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRRunTestCases, XDRCheckStatus, XDRTestCasesTemplate, $state, $window) {
 
 		$scope.senderTests = [];
 		$scope.receiverTests = [];
@@ -49,7 +47,7 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 		} else {
 			$scope.testSystem = "hisp";
 		}
-        $scope.edgeProtocol = "xdr";
+
 		XDRTestCasesTemplate.getTestCasesDescription(function(response) {
 			var result = response.data;
 
@@ -73,19 +71,6 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 		$scope.displayGrowl = function(text) {
 			growl.success(text);
 		};
-
-        $scope.scrollToId = function(testcaseid) {
-             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main').then(function() {
-              // We need to wait for the animation to finish
-               $timeout(function() {
-               // set the location.hash to the id of
-               // the element you wish to scroll to.
-                      $location.hash("test_" + testcaseid.id);
-                      // call anchorScroll()
-                       $anchorScroll();
-                }, 800);
-             });
-        };
 
 		$scope.$watch('transactionType', function() {
 			if ($scope.transactionType === 'sender') {
