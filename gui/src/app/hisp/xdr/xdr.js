@@ -11,7 +11,11 @@ edgeXdr.config(['$stateProvider',
             }
         })
         .state('hisp.xdr.description', {
-            url: '/description/:id',
+            url: '/description',
+			params: {
+				id: null,
+				testObj: null
+			},
             views: {
                 "xdr": {
                     templateUrl: 'edge/xdr/description/xdrTestDescription.tpl.html'

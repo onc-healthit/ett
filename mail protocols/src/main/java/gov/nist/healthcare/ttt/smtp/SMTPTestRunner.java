@@ -868,7 +868,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				ti.useTLS = true;
 				TestResult tr128;
 				tr128 = mu2senderTests.testMu2TwoEight(ti,prop.getProperty("process.delaydispatched"));
-				tr128.id = 127;
+				tr128.id = 128;
 				res.add(tr128);
 			} catch (Exception e3) {
 				// TODO Auto-generated catch block
@@ -889,7 +889,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				ti.useTLS = true;
 				TestResult tr528;
 				tr528 = mu2senderTests.testMu2TwoEightSmtp(ti,prop.getProperty("process.delaydispatched"));
-				tr528.id = 527;
+				tr528.id = 528;
 				res.add(tr528);
 			} catch (Exception e3) {
 				// TODO Auto-generated catch block

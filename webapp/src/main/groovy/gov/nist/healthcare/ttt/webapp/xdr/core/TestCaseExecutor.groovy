@@ -133,7 +133,7 @@ class TestCaseExecutor {
 	protected XDRTestStepInterface executeSendDirectStep(def context, String msgType) {
 
 		String subject = "hisp testing"
-		if(msgType.endsWith(".zip")) {
+		if(msgType.toLowerCase().endsWith(".zip")) {
 			subject = "XDM/1.0/DDM"
 		}
 		SendDirectMessage msg = new SendDirectMessage("hisp testing", subject, context.direct_from,

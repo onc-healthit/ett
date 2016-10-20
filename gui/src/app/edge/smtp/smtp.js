@@ -30,8 +30,9 @@ edgeSmtp.config(['$stateProvider',
 	}
 ]);
 
-edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory', 'SMTPLogFactory', 'growl', '$state', '$uibModal', 'ApiUrl', 'DirectRICertFactory',
-	function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory, SMTPLogFactory, growl, $state, $uibModal, ApiUrl, DirectRICertFactory) {
+
+edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory', 'SMTPLogFactory', 'growl', '$state', '$uibModal', 'ApiUrl', 'DirectRICertFactory','$location','$anchorScroll','$interval',
+	function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory, SMTPLogFactory, growl, $state, $uibModal, ApiUrl, DirectRICertFactory,$location,$anchorScroll,$interval) {
 
 		// Certificate upload
 		$scope.fileInfo = {
@@ -137,6 +138,22 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 
 		$scope.scrollTop = function() {
 			$window.scrollTo(0, 0);
+		};
+
+
+//$interval( function(){ $scope.scrollToId(91); }, 5000);
+
+		$scope.scrollToId = function(testcaseid) {
+			$state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main').then(function() {
+				// We need to wait for the animation to finish
+				$timeout(function() {
+					// set the location.hash to the id of
+					// the element you wish to scroll to.
+					$location.hash("test_" + testcaseid.id);
+					// call anchorScroll()
+					$anchorScroll();
+				}, 800);
+			});
 		};
 
 		$scope.displayLog = function(test) {

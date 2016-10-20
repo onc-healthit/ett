@@ -37,7 +37,7 @@ import com.sun.mail.dsn.DispositionNotification;
 
 
 public class MU2ReceiverTests {
-	public static Logger log = Logger.getLogger("MU2ReceiverTests");
+	public static Logger log = Logger.getLogger(MU2ReceiverTests.class.getName());
 
 	public TestResult fetchMail(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -115,7 +115,7 @@ public class MU2ReceiverTests {
 			if(type.equals("fail")){
 				System.out.println("Search in-reply-to or Failure MDN");
 				for (Message message : messages){
-
+					if(message.getContent() instanceof Multipart){
 					MimeMessage mime = (MimeMessage) message;
 					Message message1 = new MimeMessage(mime);
 					Multipart multipart1 = (Multipart) message1.getContent();
@@ -131,6 +131,7 @@ public class MU2ReceiverTests {
 							xHeaderFlag = 1;
 							result.put("\nNotification Type", "DSN"+"\n"+searchString);
 							System.out.println("\nX-Original-Message-ID Found\n");
+							log.info("Failure DSN with X-header found with ID " + id);
 						}
 					}
 
@@ -149,7 +150,7 @@ public class MU2ReceiverTests {
 									result.put("\n"+h1.getName(), h1.getValue()+"\n");
 									duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 									result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-
+									log.info("Failure DSN with in-reply-to found with ID " + id);
 								}
 							}
 
@@ -182,7 +183,7 @@ public class MU2ReceiverTests {
 														result.putAll(buffer);
 														duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 														result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-
+														log.info("Failure MDN found with ID " + id);
 													}
 
 
@@ -197,6 +198,7 @@ public class MU2ReceiverTests {
 							}
 						}
 					}
+				}
 				}
 			}
 
@@ -417,6 +419,7 @@ public class MU2ReceiverTests {
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+											log.info("Processed MDN found with ID " + id);
 										}
 
 
@@ -459,7 +462,7 @@ public class MU2ReceiverTests {
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-
+											log.info("Dispatched MDN found with ID " + id);
 										}
 
 
@@ -513,6 +516,7 @@ public class MU2ReceiverTests {
 											result.putAll(buffer);
 											duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 											result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+											log.info("Processed & Dispatched MDNs found with ID " + id);
 										}
 
 									}
@@ -549,6 +553,7 @@ public class MU2ReceiverTests {
 							list.add(searchString);
 							list.add("X-Original-Message-ID Found");
 							System.out.println("\nX-Original-Message-ID Found\n");
+							log.info("Failure DSN with X-header found with ID " + id);
 						}
 					}
 					if (xHeaderFlag == 0){
@@ -567,6 +572,7 @@ public class MU2ReceiverTests {
 									list.add(h1.getName());
 									//	duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 									//	result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+									log.info("Failure DSN with in-reply-to found with ID " + id);
 
 								}
 								System.out.println(list);
@@ -620,7 +626,7 @@ public class MU2ReceiverTests {
 						result.putAll(buffer);
 						duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 						result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-
+						log.info("Processed & Failure Notifications found with ID " + id);
 					}
 				}
 
@@ -632,27 +638,32 @@ public class MU2ReceiverTests {
 			if (result.size() == 0) {
 				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("ERROR","No messages found with Message ID: " + id);
+				log.error("No messages found with Message ID: " + id);
 			}
 
 			else if(timeout!=null && (timeout.toMinutes() > timeoutConstant)){
 
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses().put("ERROR","MDN received after timeout");
+				log.error("MDN received after timeout");
 
 			}
 
 			else if (headerFlag == 1){
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses().put("\n"+"ERROR","Dispatched MDN contains X-DIRECT-FINAL-DESTINATION-DELIVERY header");
+				log.error("Dispatched MDN contains X-DIRECT-FINAL-DESTINATION-DELIVERY header");
 			}
 
 			else if (dispatchedFlag == 1){
 				tr.setCriteriamet(CriteriaStatus.FALSE);
 				tr.getTestRequestResponses().put("\n"+"ERROR","Dispatched MDN is sent from SUT");
+				log.error("Dispatched MDN is sent from SUT");
 			}
 
 			else {
 				tr.setCriteriamet(CriteriaStatus.TRUE);
+				log.info("Test Passed for ID " + id);
 			}
 
 		} catch (Exception e) {

@@ -3,7 +3,7 @@ var smtpDescription = angular.module('ttt.edge.xdr.description', []);
 smtpDescription.controller('XdrDescriptionCtrl', ['$scope', '$stateParams',  'XDRTestCasesDescription',
 	function($scope, $stateParams, XDRTestCasesDescription) {
 		$scope.test_id = $stateParams.id;
-
+		$scope.testObj =  $stateParams.testObj;
 		$scope.fieldInput = {};
 
 		XDRTestCasesDescription.getTestCasesDescription(function(response) {
