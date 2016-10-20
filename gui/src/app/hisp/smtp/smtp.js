@@ -100,6 +100,19 @@ edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescript
             $window.scrollTo(0, 0);
         };
 
+        $scope.scrollToId = function(testcaseid) {
+             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main').then(function() {
+              // We need to wait for the animation to finish
+               $timeout(function() {
+               // set the location.hash to the id of
+               // the element you wish to scroll to.
+                      $location.hash("test_" + testcaseid.id);
+                      // call anchorScroll()
+                       $anchorScroll();
+                }, 800);
+             });
+        };
+
         $scope.displayLog = function(test) {
             $scope.logToDisplay = test;
         };
