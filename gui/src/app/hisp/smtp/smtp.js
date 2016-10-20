@@ -32,10 +32,8 @@ edgeSmtp.config(['$stateProvider',
     }
 ]);
 
-edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory',
-'SMTPLogFactory', 'growl','$location','$anchorScroll',
-    function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory,
-    SMTPLogFactory, growl,$location,$anchorScroll) {
+edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory', 'SMTPLogFactory', 'growl',
+    function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory, SMTPLogFactory, growl) {
 
         $scope.senderTests = [];
         $scope.receiverTests = [];
@@ -100,19 +98,6 @@ edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescript
 
         $scope.scrollTop = function() {
             $window.scrollTo(0, 0);
-        };
-
-        $scope.scrollToId = function(testcaseid) {
-             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main').then(function() {
-              // We need to wait for the animation to finish
-               $timeout(function() {
-               // set the location.hash to the id of
-               // the element you wish to scroll to.
-                      $location.hash("test_" + testcaseid.id);
-                      // call anchorScroll()
-                       $anchorScroll();
-                }, 800);
-             });
         };
 
         $scope.displayLog = function(test) {
