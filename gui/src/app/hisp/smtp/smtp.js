@@ -32,8 +32,10 @@ edgeSmtp.config(['$stateProvider',
     }
 ]);
 
-edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory', 'SMTPLogFactory', 'growl',
-    function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory, SMTPLogFactory, growl) {
+edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory',
+'SMTPLogFactory', 'growl','$location','$anchorScroll',
+    function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory,
+    SMTPLogFactory, growl,$location,$anchorScroll) {
 
         $scope.senderTests = [];
         $scope.receiverTests = [];

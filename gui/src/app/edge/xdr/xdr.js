@@ -34,8 +34,10 @@ edgeXdr.config(['$stateProvider',
 	}
 ]);
 
-edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRRunTestCases', 'XDRCheckStatus', 'XDRTestCasesTemplate', '$state', '$window',
-	function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRRunTestCases, XDRCheckStatus, XDRTestCasesTemplate, $state, $window) {
+edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRRunTestCases', 'XDRCheckStatus',
+'XDRTestCasesTemplate', '$state', '$window','$location','$anchorScroll',
+	function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRRunTestCases, XDRCheckStatus,
+	XDRTestCasesTemplate, $state, $window,$location,$anchorScroll) {
 
 		$scope.senderTests = [];
 		$scope.receiverTests = [];
