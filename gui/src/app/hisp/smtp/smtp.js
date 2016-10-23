@@ -93,8 +93,10 @@ edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescript
         $scope.$watch('transactionType', function() {
             if ($scope.transactionType === 'sender') {
                 $scope.testBench = $scope.senderTests;
-            } else {
-                $scope.testBench = $scope.receiverTests;
+            } else if($scope.transactionType === 'receiver'){
+				$scope.testBench = $scope.receiverTests;
+			} else {
+                $scope.testBench =  [];
             }
         });
 
@@ -103,16 +105,15 @@ edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescript
         };
 
         $scope.scrollToId = function(testcaseid) {
-             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main').then(function() {
+             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main');
               // We need to wait for the animation to finish
                $timeout(function() {
                // set the location.hash to the id of
                // the element you wish to scroll to.
-                      $location.hash("test_" + testcaseid.id);
+                      $location.hash("test_" + testcaseid.name);
                       // call anchorScroll()
                        $anchorScroll();
-                }, 800);
-             });
+                }, 0);
         };
 
         $scope.displayLog = function(test) {
