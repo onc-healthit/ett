@@ -6,6 +6,14 @@ import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
+import gov.nist.hit.ds.wsseTool.api.config.GenContext
+import gov.nist.hit.ds.wsseTool.api.config.ContextFactory
+import gov.nist.hit.ds.wsseTool.api.config.KeystoreAccess
+import gov.nist.hit.ds.wsseTool.api.exceptions.GenerationException
+import gov.nist.hit.ds.wsseTool.generation.opensaml.OpenSamlWsseSecurityGenerator
+import org.w3c.dom.Document;
+import gov.nist.hit.xdrsamlhelper.SamlHeaderApiImpl.SamlHeaderExceptionImpl
+import gov.nist.hit.ds.wsseTool.util.MyXmlUtils
 import gov.nist.toolkit.toolkitApi.BasicSimParameters
 import gov.nist.toolkit.toolkitApi.DocumentSource
 import gov.nist.toolkit.toolkitApi.SimulatorBuilder
@@ -46,8 +54,8 @@ class XdrSenderImpl implements XdrSender{
     @Value('${toolkit.url}')
     private String tkSendXdrUrl
 	
-	@Value('${toolkit.user}')
-	private String toolkitUser
+    @Value('${toolkit.user}')
+    private String toolkitUser
 
     @Value('${toolkit.testName}')
     private String testName
@@ -149,6 +157,31 @@ class XdrSenderImpl implements XdrSender{
 		for (String block : art.getExtraHeaders()) {
 			req.addExtraHeader(block);
 		}
+		
+		// Add saml if saml boolean is present
+		if(config.saml) {
+			GenContext context = ContextFactory.getInstance();
+			org.w3c.dom.Document doc = null;
+			
+			try {
+				context.setKeystore(new KeystoreAccess(Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "changeit", "1", "changeit"));
+				if(config.patientId) {
+				    	context.setParam("patientId", config.patientId);
+				} else {
+					throw new Exception("You need a patient ID");
+				}
+				doc = new OpenSamlWsseSecurityGenerator().generateWsseHeader(context);
+				//new WsseHeaderValidator().validate(doc.getDocumentElement(),context);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				// TODO Auto-generated catch block
+				throw new Exception("Error while sending XDR");
+			}
+			String saml = MyXmlUtils.DomToString(doc);
+			
+			req.addExtraHeader(saml);
+		}
+		
 		req.setMetadata(art.metadata);
 		
 		// CCDA attachment
