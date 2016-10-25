@@ -47,7 +47,7 @@ final class TestCase12 extends TestCaseSender {
 
         //We send a direct+XDM
         String msgType = "XDM_FULL.ZIP"
-        XDRTestStepInterface step2 = executor.executeSendDirectStep(context, msgType)
+        XDRTestStepInterface step2 = executor.executeSendDirectStep(context, msgType, true)
 
         //We create the record
         def record = builder.addStep(step2).build()
