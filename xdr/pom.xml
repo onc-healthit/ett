@@ -19,7 +19,7 @@
 			<name>Internal Releases</name>
 			<url>https://gazelle.ihe.net/nexus/content/repositories/snapshots/</url>
 		</repository>
-		
+
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
@@ -80,17 +80,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.github.usnistgov</groupId>
 			<artifactId>saml-lib</artifactId>
-			<version>1.0.1-pre</version>
+			<version>1.0.5.1</version>
 			<exclusions>
-        		<exclusion>
-            		<groupId>javax.servlet</groupId>
-            		<artifactId>servlet-api</artifactId>
-        		</exclusion>
-    		</exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

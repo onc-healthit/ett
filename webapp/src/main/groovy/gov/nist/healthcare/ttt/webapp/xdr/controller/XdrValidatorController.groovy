@@ -38,6 +38,8 @@ import gov.nist.hit.ds.wsseTool.api.config.KeystoreAccess
 import gov.nist.hit.ds.wsseTool.api.exceptions.ValidationException
 import gov.nist.hit.ds.wsseTool.validation.ValidationResult
 import gov.nist.hit.ds.wsseTool.validation.WsseHeaderValidator
+import gov.nist.hit.xdrsamlhelper.SamlHeaderApi
+import gov.nist.hit.xdrsamlhelper.SamlHeaderApi.SamlHeaderValidationResults
 import gov.nist.hit.xdrsamlhelper.SamlHeaderApiImpl.SamlHeaderExceptionImpl
 import groovy.util.slurpersupport.GPathResult
 
@@ -165,7 +167,8 @@ public class XdrValidatorController {
 
 		String id = "XdrVal";
 
-		String simId = toolkitUser + "__" + id + "_" + principal.getName();
+		String simId = toolkitUser + "__" + id + "_" + principal.getName().replace('.', '_');
+		simId = simId.toLowerCase();
 
 		if (principal == null) {
 			throw new Exception("user not identified")
@@ -219,8 +222,11 @@ public class XdrValidatorController {
 		String saml = Parsing.getWsseHeaderFromMTOM(text)
 		if(saml != null) {
 			try {
-				ValidationResult samlRes = validateSAMLHeader(saml, patientId)
-				tkValidationReport.samlReport = "PASSED";
+				SamlHeaderValidationResults samlRes = validateSAMLHeader(saml, patientId)
+				String samlReport = "Errors: " + String.join("\n", samlRes.getErrors());
+				samlReport += "Warnings: " + String.join("\n", samlRes.getWarnings());
+				samlReport += "Info: " + String.join("\n", samlRes.getDetails());
+				tkValidationReport.samlReport = samlReport;
 			} catch(Exception e) {
 				tkValidationReport.samlReport = "FAILED";
 				throw new Exception(e.getMessage())
@@ -247,30 +253,32 @@ public class XdrValidatorController {
 
 	def validateSAMLHeader(String document, String patientId) {
 		GenContext context = ContextFactory.getInstance();
-		try {
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-					.parse(new InputSource(new StringReader(document)));
-
-			//System.in.read();
-			context.setKeystore(new KeystoreAccess(Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "changeit", "1", "changeit"));
-			context.setParam("patientId", patientId);
-			new WsseHeaderValidator().validate(doc.getDocumentElement(), context);
+		try{
+			SamlHeaderApi samlApi = SamlHeaderApi.getInstance();
+			
+			return samlApi.validate(document, patientId, Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "1", "changeit", "changeit");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			throw new SamlHeaderExceptionImpl(e instanceof ValidationException ? (ValidationException)e : new ValidationException(e));
+			throw e;
 		}
 	}
 
 	private void handleSAML(TkValidationReport report) {
 		log.info("handle toolkit saml report for sim id: " + report.simId)
+		
+		try {
 
-		XDRVanillaImpl xdr = new XDRVanillaImpl()
-		xdr.setRequest(report.request)
-		xdr.setResponse(report.response)
-		xdr.setSamlReport(report.samlReport)
-		xdr.setSimId(report.simId)
+			XDRVanillaImpl xdr = new XDRVanillaImpl()
+			xdr.setRequest(report.request)
+			xdr.setResponse(report.response)
+			xdr.setSamlReport(report.samlReport)
+			xdr.setSimId(report.simId)
 
-		db.getXdrFacade().addNewXdrVanilla(xdr);
-
+			db.getXdrFacade().addNewXdrVanilla(xdr);
+		} catch(Exception e) {
+			log.error("Could not store the XDR to the database");
+			e.printStackTrace();
+		}
 	}
 }
