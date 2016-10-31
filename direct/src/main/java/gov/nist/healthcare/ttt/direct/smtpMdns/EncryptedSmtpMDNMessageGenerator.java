@@ -70,7 +70,7 @@ public class EncryptedSmtpMDNMessageGenerator {
 		Properties prop = ValidationUtils.getProp();
 		
 		generator.setDisposition("automatic-action/MDN-sent-automatically;" + type);
-		generator.setFinal_recipient(to);
+		generator.setFinal_recipient(from);
 		generator.setFromAddress(from);
 		generator.setOriginal_message_id(originalMsgId);
 		generator.setOriginal_recipient(from);
