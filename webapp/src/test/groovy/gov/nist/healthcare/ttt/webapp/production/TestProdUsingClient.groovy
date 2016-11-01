@@ -23,8 +23,8 @@ class TestProdUsingClient extends Specification{
         def context = [:]
         context.directTo = "mailto:test@test.com"
         context.directFrom = "mailto:test@test.com"
-        context.wsaTo = "http://localhost:8080/xdstools2/sim/local-ett__1/rep/xdrpr"
-        context.targetEndpointTLS = "http://localhost:8080/xdstools2/sim/local-ett__1/rep/xdrpr"
+        context.wsaTo = "http://localhost:8080/xdstools4/sim/local-ett__1/rep/xdrpr"
+        context.targetEndpointTLS = "http://localhost:8080/xdstools4/sim/local-ett__1/rep/xdrpr"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
         def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
@@ -335,6 +335,26 @@ class TestProdUsingClient extends Specification{
 		context.wsaTo = "http://localhost:8080/xdstools2/sim/local-ett__37mu2/rep/xdrpr"
 		context.targetEndpointTLS = "http://localhost:8080/xdstools2/sim/local-ett__37mu2/rep/xdrpr"
 		context.messageType = ArtifactManagement.Type.NEGATIVE_BAD_SOAP_HEADER
+		def response = new CannedXdrSenderImpl(manager).sendXdr(context)
+
+		then :
+
+		println response
+		assert true
+	}
+	
+	@Test
+	def testSaml(){
+
+		when :
+		def manager = new SSLContextManager()
+		def TLSclient = new TLSClientImpl(manager)
+		def context = [:]
+		context.directTo = "mailto:test@test.com"
+		context.directFrom = "mailto:test@test.com"
+		context.wsaTo = "http://localhost:8080/xdstools4/sim/local-ett__xdrval_nist/rep/xdrpr"
+		context.targetEndpointTLS = "http://localhost:8080/xdstools4/sim/local-ett__xdrval_nist/rep/xdrpr"
+		context.messageType = ArtifactManagement.Type.XDR_SAML_METADATA
 		def response = new CannedXdrSenderImpl(manager).sendXdr(context)
 
 		then :
