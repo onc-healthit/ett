@@ -34,8 +34,10 @@ edgeXdr.config(['$stateProvider',
 	}
 ]);
 
-edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRRunTestCases', 'XDRCheckStatus', 'XDRTestCasesTemplate', '$state', '$window',
-	function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRRunTestCases, XDRCheckStatus, XDRTestCasesTemplate, $state, $window) {
+edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRRunTestCases', 'XDRCheckStatus',
+'XDRTestCasesTemplate', '$state', '$window','$location','$anchorScroll',
+	function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRRunTestCases, XDRCheckStatus,
+	XDRTestCasesTemplate, $state, $window,$location,$anchorScroll) {
 
 		$scope.senderTests = [];
 		$scope.receiverTests = [];
@@ -47,7 +49,7 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 		} else {
 			$scope.testSystem = "hisp";
 		}
-
+        $scope.edgeProtocol = "xdr";
 		XDRTestCasesTemplate.getTestCasesDescription(function(response) {
 			var result = response.data;
 
@@ -72,13 +74,28 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 			growl.success(text);
 		};
 
+        $scope.scrollToId = function(testcaseid) {
+             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main');
+              // We need to wait for the animation to finish
+               $timeout(function() {
+               // set the location.hash to the id of
+               // the element you wish to scroll to.
+                      $location.hash("test_" + testcaseid.name);
+                      // call anchorScroll()
+                       $anchorScroll();
+                }, 0);
+        };
+
 		$scope.$watch('transactionType', function() {
 			if ($scope.transactionType === 'sender') {
 				$scope.testBench = $scope.senderTests;
 				$scope.runText = 'Hit Run to generate your endpoint.';
-			} else {
+			} else if($scope.transactionType === 'receiver'){
 				$scope.testBench = $scope.receiverTests;
 				$scope.runText = 'Hit Run to send a XDR message.';
+			} else {
+				$scope.testBench =  [];
+				$scope.runText = '';
 			}
 		});
 

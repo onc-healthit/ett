@@ -34,11 +34,20 @@ edgeXdr.config(['$stateProvider',
     }
 ]);
 
-edgeXdr.controller('HispXdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRCheckStatus',
-    function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRCheckStatus) {
+edgeXdr.controller('HispXdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRCheckStatus','$location','$anchorScroll',
+    function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRCheckStatus,$location,$anchorScroll) {
 
         $scope.senderTests = [];
         $scope.receiverTests = [];
+
+        // Check type Edge or Hisp
+        $scope.isEdge = $state.current.data.sutEge;
+        if ($scope.isEdge) {
+            $scope.testSystem = "edge";
+        } else {
+             $scope.testSystem = "hisp";
+        }
+        $scope.edgeProtocol = "xdr";
 
         XDRTestCasesDescription.getTestCasesDescription(function(response) {
             var result = response.data;
@@ -58,11 +67,25 @@ edgeXdr.controller('HispXdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl',
             growl.success(text);
         };
 
+        $scope.scrollToId = function(testcaseid) {
+             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main');
+              // We need to wait for the animation to finish
+               $timeout(function() {
+               // set the location.hash to the id of
+               // the element you wish to scroll to.
+                      $location.hash("test_" + testcaseid.name);
+                      // call anchorScroll()
+                       $anchorScroll();
+                }, 0);
+        };
+
         $scope.$watch('transactionType', function() {
             if ($scope.transactionType === 'sender') {
                 $scope.testBench = $scope.senderTests;
-            } else {
-                $scope.testBench = $scope.receiverTests;
+            }else if($scope.transactionType === 'receiver'){
+				$scope.testBench = $scope.receiverTests;
+			}else {
+                $scope.testBench =  [];
             }
         });
 
