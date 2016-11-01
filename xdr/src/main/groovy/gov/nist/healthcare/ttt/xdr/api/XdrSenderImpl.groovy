@@ -12,6 +12,7 @@ import gov.nist.hit.ds.wsseTool.api.config.KeystoreAccess
 import gov.nist.hit.ds.wsseTool.api.exceptions.GenerationException
 import gov.nist.hit.ds.wsseTool.generation.opensaml.OpenSamlWsseSecurityGenerator
 import org.w3c.dom.Document;
+import gov.nist.hit.xdrsamlhelper.SamlHeaderApi
 import gov.nist.hit.xdrsamlhelper.SamlHeaderApiImpl.SamlHeaderExceptionImpl
 import gov.nist.hit.ds.wsseTool.util.MyXmlUtils
 import gov.nist.toolkit.toolkitApi.BasicSimParameters
@@ -160,24 +161,14 @@ class XdrSenderImpl implements XdrSender{
 		
 		// Add saml if saml boolean is present
 		if(config.saml) {
-			GenContext context = ContextFactory.getInstance();
-			org.w3c.dom.Document doc = null;
-			
-			try {
-				context.setKeystore(new KeystoreAccess(Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "changeit", "1", "changeit"));
-				if(config.patientId) {
-				    	context.setParam("patientId", config.patientId);
-				} else {
-					throw new Exception("You need a patient ID");
-				}
-				doc = new OpenSamlWsseSecurityGenerator().generateWsseHeader(context);
-				//new WsseHeaderValidator().validate(doc.getDocumentElement(),context);
-			} catch (Exception e) {
-				log.error(e.getMessage());
-				// TODO Auto-generated catch block
-				throw new Exception("Error while sending XDR");
+			String patientId = "";
+			if(config.patientId) {
+				patientId = config.patientId;
+			} else {
+				throw new Exception("You need a patient ID");
 			}
-			String saml = MyXmlUtils.DomToString(doc);
+			SamlHeaderApi samlApi = SamlHeaderApi.getInstance();
+			String saml = samlApi.generate(patientId, Thread.currentThread().getContextClassLoader().getResourceAsStream("goodKeystore/goodKeystore"), "1", "changeit", "changeit");
 			
 			req.addExtraHeader(saml);
 		}
