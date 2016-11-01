@@ -217,6 +217,8 @@ public class PrivateCertificateLoader {
 		// will be generated as part of the signature. The encryption algorithm
 		// used is taken from the key - in this RSA with PKCS1Padding
 		//
+		logger.info("Creating message with algorithm " + digestAlgo);
+
 		gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder()
 				.setProvider("BC")
 				.setSignedAttributeGenerator(new AttributeTable(signedAttrs))

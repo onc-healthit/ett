@@ -129,8 +129,11 @@ class TestCaseExecutor {
 		}
 	}
 
-
 	protected XDRTestStepInterface executeSendDirectStep(def context, String msgType) {
+		executeSendDirectStep(context, msgType, false)
+	}
+	
+	protected XDRTestStepInterface executeSendDirectStep(def context, String msgType, boolean usegithub) {
 
 		String subject = "hisp testing"
 		if(msgType.toLowerCase().endsWith(".zip")) {
@@ -138,7 +141,7 @@ class TestCaseExecutor {
 		}
 		SendDirectMessage msg = new SendDirectMessage("hisp testing", subject, context.direct_from,
 				context.direct_to, msgType, "good", "", "", true, false)
-		directService.sendDirect(msg)
+		directService.sendDirect(msg, usegithub)
 
 
 		XDRTestStepInterface step = new XDRTestStepImpl()
