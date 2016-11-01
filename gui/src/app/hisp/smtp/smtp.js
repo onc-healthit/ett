@@ -32,8 +32,10 @@ edgeSmtp.config(['$stateProvider',
     }
 ]);
 
-edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory', 'SMTPLogFactory', 'growl',
-    function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory, SMTPLogFactory, growl) {
+edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory',
+'SMTPLogFactory', 'growl','$location','$anchorScroll',
+    function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory,
+    SMTPLogFactory, growl,$location,$anchorScroll) {
 
         $scope.senderTests = [];
         $scope.receiverTests = [];
@@ -91,13 +93,27 @@ edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescript
         $scope.$watch('transactionType', function() {
             if ($scope.transactionType === 'sender') {
                 $scope.testBench = $scope.senderTests;
-            } else {
-                $scope.testBench = $scope.receiverTests;
+            } else if($scope.transactionType === 'receiver'){
+				$scope.testBench = $scope.receiverTests;
+			} else {
+                $scope.testBench =  [];
             }
         });
 
         $scope.scrollTop = function() {
             $window.scrollTo(0, 0);
+        };
+
+        $scope.scrollToId = function(testcaseid) {
+             $state.go($scope.testSystem + '.' + $scope.edgeProtocol + '.main');
+              // We need to wait for the animation to finish
+               $timeout(function() {
+               // set the location.hash to the id of
+               // the element you wish to scroll to.
+                      $location.hash("test_" + testcaseid.name);
+                      // call anchorScroll()
+                       $anchorScroll();
+                }, 0);
         };
 
         $scope.displayLog = function(test) {

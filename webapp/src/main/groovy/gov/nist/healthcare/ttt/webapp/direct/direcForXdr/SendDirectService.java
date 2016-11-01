@@ -9,8 +9,10 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator;
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender;
+import gov.nist.healthcare.ttt.model.sendDirect.FetchGitHubData;
 import gov.nist.healthcare.ttt.model.sendDirect.SendDirectMessage;
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor;
 
@@ -33,9 +35,15 @@ public class SendDirectService {
 	}
 
 	public boolean sendDirect(SendDirectMessage messageInfo) throws Exception {
+		return sendDirect(messageInfo, false);
+	}
+	
+	public boolean sendDirect(SendDirectMessage messageInfo, boolean usegithub) throws Exception {
 		// Set certificates values
 		listener.setCertificatesPath(this.certificatesPath);
 		listener.setCertPassword(this.certPassword);
+		
+		FetchGitHubData f = new FetchGitHubData();
 
 		if (messageInfo.isValidSendEmail()) {
 			InputStream attachmentFile = null;
@@ -44,7 +52,13 @@ public class SendDirectService {
 				messageInfo.setAttachmentFile(ownCcda.getName());
 				attachmentFile = new FileInputStream(ownCcda);
 			} else if (!messageInfo.getAttachmentFile().equals("")) {
-				attachmentFile = getClass().getResourceAsStream("/cda-samples/" + messageInfo.getAttachmentFile());
+				if (!usegithub)
+					attachmentFile = getClass().getResourceAsStream("/cda-samples/" + messageInfo.getAttachmentFile());
+				else {
+					attachmentFile = f.fetch(messageInfo.getAttachmentFile());
+					logger.info("Data pulled from GITHUB");
+				}
+							
 			}
 			if (messageInfo.getSigningCert().toLowerCase().equals("")) {
 				messageInfo.setSigningCert("good");
