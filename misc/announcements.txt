@@ -1,5 +1,9 @@
 ONC's Transport Testing Platform provides transport and content validation for the 2014-2015 Edition health IT certification program. The initial version includes the Edge Testing Tool developed by NIST. Future versions of the platform will include API testing, FHIR, and other transport validation tools.
 
+Maintenance Notification:
+ETT will be unavailable from Friday, November 4, 2016 at 8 PM EDT until Saturday, November 5, 2016 at 12 AM EDT for scheduled maintenance. The ETT team apologizes for any inconvenience this outage may cause.
+
+
 The current release schedule for usability improvements is as follows:
 
 
