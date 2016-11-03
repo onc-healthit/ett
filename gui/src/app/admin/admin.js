@@ -14,7 +14,8 @@ admin.config(['$stateProvider',
                     }
                 },
                 data: {
-                    pageTitle: 'Admin'
+                    pageTitle: 'Admin',
+                     requireLogin: true
                 }
             })
             .state('admin.logs', {
@@ -37,6 +38,19 @@ admin.config(['$stateProvider',
     }
 ]);
 
+admin.run(function ($rootScope,$state, LoginModal) {
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    var requireLogin = toState.data.requireLogin;
+    if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
+      event.preventDefault();
+      new LoginModal()
+        .then(function () {
+           return $state.go(toState.name, toParams);
+        });
+    }
+  });
+
+});
 admin.controller('AdminCtrl', ['$scope', 'SettingsFactory', 'PropertiesFactory', 'LogViewFactory', 'LogViewLevelFactory',
     function($scope, SettingsFactory, PropertiesFactory, LogViewFactory, LogViewLevelFactory) {
 
@@ -51,6 +65,16 @@ admin.controller('AdminCtrl', ['$scope', 'SettingsFactory', 'PropertiesFactory',
         });
     }
 ]);
+
+admin.controller('LoginModalCtrl', function ($scope, UsersApi) {
+  this.cancel = $scope.$dismiss;
+  this.submit = function (email, password) {
+    UsersApi.login(email, password).then(function (user) {
+      $scope.$close(user);
+    });
+  };
+
+});
 
 admin.controller('LogsViewCtrl', ['$scope', 'LogViewFactory', 'LogViewLevelFactory', 'AllLogFilesFactory',
     function($scope, LogViewFactory, LogViewLevelFactory, AllLogFilesFactory) {

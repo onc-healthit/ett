@@ -19,6 +19,7 @@ var ttt = angular.module('ttt', [
     'ttt.xdrServices',
     'ttt.directives',
     'ttt.loginCtrl',
+    'ttt.adminLoginCtrl',
     'ttt.headerCtrl',
     'ttt.changePassword',
     'ttt.accountInfo',
