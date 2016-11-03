@@ -142,6 +142,21 @@ tttService.service('Login', ['$http', 'RESOURCES',
     }
 ]);
 
+tttService.service('AdminLogin', ['$http', 'RESOURCES',
+    function($http, RESOURCES) {
+
+        this.adminlogin = function(credentials) {
+            var data = "username=" + credentials.username + "&password=" + credentials.password + "&AdminLogin=Yes&submit=Login";
+
+            return $http.post(RESOURCES.USERS_DOMAIN + 'login', data, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+        };
+    }
+]);
+
 tttService.service('Logout', ['$http', 'RESOURCES',
     function($http, RESOURCES) {
 
@@ -150,6 +165,22 @@ tttService.service('Logout', ['$http', 'RESOURCES',
         };
     }
 ]);
+
+tttService.service('LoginModal', function ($uibModal, $rootScope) {
+  function assignCurrentUser (user) {
+    $rootScope.currentUser = user;
+    return user;
+  }
+  return function() {
+    var instance = $uibModal.open({
+      templateUrl: 'templates/loginModalTemplate.tpl.html',
+      controller: 'AdminLoginCtrl',
+      controllerAs: 'AdminLoginCtrl'
+    });
+    return instance.result.then(assignCurrentUser);
+  };
+
+});
 
 /**
  *   PASSWORD SERVICES
