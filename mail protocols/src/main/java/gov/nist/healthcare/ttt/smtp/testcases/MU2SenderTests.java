@@ -1098,7 +1098,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
-		tr.setSearchType("fail");
+		tr.setSearchType("timeout");
 		Session session = Session.getInstance(props, null);
 
 		try {
@@ -1171,7 +1171,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("smtp");;
-		tr.setSearchType("fail");
+		tr.setSearchType("timeout");
 
 		Session session = Session.getInstance(props, null);
 
@@ -1245,7 +1245,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
-		tr.setSearchType("fail");
+		tr.setSearchType("timeout");
 
 		Session session = Session.getInstance(props, null);
 
