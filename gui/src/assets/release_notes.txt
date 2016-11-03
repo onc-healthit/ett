@@ -1,6 +1,6 @@
 ==Version 1.1.2.1#11/03/2016
 
-	*1. Sender/Receiver Test data now shows all the choices from the repository.
+	*1. ETT UI: Sender/Receiver Test data File Dialog now show all the corresponding choices from the repository - empty folder filters removed.
 	
 	*2. Server maintenance and CCDA-Validator updates on 11/3/2016.
 	
