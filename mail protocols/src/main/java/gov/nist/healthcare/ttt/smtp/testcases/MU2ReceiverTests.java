@@ -193,22 +193,77 @@ public class MU2ReceiverTests {
 
 
 			else if (type.equals("timeout")){
-				System.out.println("Search X-Original-Message-ID on Timeout");
+				System.out.println("Search X-Original-Message-ID or Failure MDN on timeout");
 				for (Message message : messages){
-					Enumeration headers = message.getAllHeaders();
-					while(headers.hasMoreElements()) {
-						Header h = (Header) headers.nextElement();
-						String x = h.getValue();
-						if (id.equals(x)){
-							ZonedDateTime endTime = ZonedDateTime.now();
-							Enumeration headers1 = message.getAllHeaders();
-							while (headers1.hasMoreElements()) {
-								Header h1 = (Header) headers1.nextElement();
-								//	result.put(h.getName() + " " +  "[" + j +"]", h.getValue());
-								result.put("\n"+h1.getName(), h1.getValue()+"\n");
-								timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
-								result.put("\nElapsed Time", timeout.toString().substring(3)+"\n");
+					if(message.getContent() instanceof Multipart){
+						MimeMessage mime = (MimeMessage) message;
+						Message message1 = new MimeMessage(mime);
+						Multipart multipart1 = (Multipart) message1.getContent();
+						for (int i = 0; i < multipart1.getCount(); i++) {
+							BodyPart bodyPart = multipart1.getBodyPart(i);
+							InputStream stream = bodyPart.getInputStream();
+							byte[] targetArray = IOUtils.toByteArray(stream);
+						//	System.out.println(new String(targetArray));
 
+							String searchString = new String(targetArray);
+
+							if (searchString.contains(id) && searchString.contains("X-Original-Message-ID")){
+								dsnFlag = 1;
+								result.put("\nNotification Type", "DSN"+"\n"+searchString);
+								System.out.println("\nX-Original-Message-ID Found\n");
+								log.info("Failure DSN with X-header found with ID " + id);
+								
+								ZonedDateTime endTime = ZonedDateTime.now();
+								duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+								timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
+							}
+						}
+
+
+
+
+						if (dsnFlag == 0){
+							//		MimeMessage mime = (MimeMessage) message;
+							//		Message message1 = new MimeMessage(mime);
+							if(!(message1.getContentType().contains("delivery-status"))){
+								Object m =  message.getContent();
+								if (message.getContent() instanceof Multipart){
+									Multipart multipart = (Multipart) message.getContent();
+									for (int i = 0; i < ((Multipart) m).getCount(); i++){
+										BodyPart bodyPart = multipart.getBodyPart(i);
+										if (!(bodyPart.isMimeType("text/*"))){
+											Object d =   bodyPart.getContent();
+											//d.getNotifications();
+											if (d instanceof DispositionNotification){
+												Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+												while (headers2.hasMoreElements()) {
+													Header h1 = (Header) headers2.nextElement();
+													buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
+												}
+											//	System.out.println(buffer);
+												if(buffer.containsValue(id+"\n")
+														&& (buffer.containsValue("automatic-action/MDN-sent-automatically;failed"+"\n") || 
+																buffer.containsValue("automatic-action/MDN-sent-automatically; failed"+"\n") ||
+																buffer.containsValue("automatic-action/MDN-sent-automatically;failure"+"\n") ||
+																buffer.containsValue("automatic-action/MDN-sent-automatically; failure"+"\n"))){
+													//	buffer.get("\n"+"Disposition").toLowerCase().contains("fail");
+													ZonedDateTime endTime = ZonedDateTime.now();
+													result.putAll(buffer);
+													duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
+													result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
+													timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
+													log.info("Failure MDN found with ID " + id);
+												}
+
+
+											}
+
+										}
+
+									}
+
+								}
 							}
 						}
 					}
