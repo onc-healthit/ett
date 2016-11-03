@@ -118,14 +118,8 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
             $scope.statusMessage = "";
             $scope.receive.results = XDRValidatorStatus.get(function (data) {
                 $scope.receive.results = data;
-                if (data.samlReport) {
-                    if (data.samlReport.toLowerCase() === "passed") {
-                        $scope.receive.status = "success";
-                    } else if (data.samlReport.toLowerCase() === "failed") {
-                        $scope.receive.status = "error";
-                    } else {
-                        $scope.receive.status = "error";
-                    }
+                if (data.request) {
+                    $scope.receive.status = "success";
                 } else {
                     $scope.statusMessage = "No XDR received yet";
                 }

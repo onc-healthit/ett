@@ -137,6 +137,9 @@
             <uib-tab heading="Response" class="tabbable clickable not-selectable">
                 <pre><code class="language-markup" prism>{{receive.results.response}}</code></pre>
             </uib-tab>
+            <uib-tab heading="SAML" class="tabbable clickable not-selectable" ng-if="receive.results.samlReport">
+                <pre><code class="language-markup" prism>{{receive.results.samlReport}}</code></pre>
+            </uib-tab>
         </uib-tabset>
 
     </uib-tab>
