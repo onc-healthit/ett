@@ -97,7 +97,7 @@ public class GetCCDADocumentsController {
 				fileExtn = fileExtnAry[fileExtnAry.length-1];
 		    }
 			//create directory only when at least one valid file exist
-			if(Pattern.matches(extensionRegex, fileName) && !files2ignore.contains(fileName) && !extension2ignore.contains(fileExtn) ) {
+			if(Pattern.matches(extensionRegex, fileName) && !files2ignore.contains(fileName) ) {
 				for(int i = 1 ; i < path.length-1 ; i++) {
 					String  currentName = path[i];
 					boolean firstFile = false;
