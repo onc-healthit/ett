@@ -58,7 +58,8 @@ final class TestCase35mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //an address that does not return a processed MDN
-        context.directTo = "nomdn8@ttpedgetest.sitenv.org"
+      //  context.directTo = "nomdn8@ttpedgetest.sitenv.org"
+		context.directTo = "$executor.noprocessedmdn"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA

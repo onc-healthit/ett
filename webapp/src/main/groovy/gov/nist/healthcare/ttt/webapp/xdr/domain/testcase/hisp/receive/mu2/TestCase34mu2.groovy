@@ -58,7 +58,8 @@ final class TestCase34mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //certs for this address are not published
-        context.directTo = "failure15@ttpdstest.sitenv.org"
+    //    context.directTo = "failure15@ttpdstest.sitenv.org"
+		context.directTo = "$executor.notpublished"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA

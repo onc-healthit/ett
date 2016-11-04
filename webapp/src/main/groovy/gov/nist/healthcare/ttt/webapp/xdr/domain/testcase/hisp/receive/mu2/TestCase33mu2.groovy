@@ -58,7 +58,8 @@ final class TestCase33mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //address attached to a hisp that is not trusted
-        context.directTo = "Provider1@direct2.sitenv.org"
+     //   context.directTo = "Provider1@direct2.sitenv.org"
+		context.directTo = "$executor.nottrusted"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA

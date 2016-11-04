@@ -43,7 +43,36 @@ class TestCaseExecutor {
 
 	@Value('${direct.listener.domainName}')
 	public String hostname
-
+	
+	@Value('${bad.address}')
+	public String badaddress
+	
+	@Value('${not.trusted}')
+	public String nottrusted
+	
+	@Value('${not.published}')
+	public String notpublished
+	
+	@Value('${no.processedmdn}')
+	public String noprocessedmdn
+	
+	@Value('${processed.only}')
+	public String processedonly
+	
+	@Value('${process.delaydispatched}')
+	public String processdelaydispatched
+	
+	@Value('${processed.dispatched}')
+	public String processeddispatched
+	
+	@Value('${processed.timoutfailure}')
+	public String processedtimoutfailure
+	
+	@Value('${processed.failure}')
+	public String processedfailure
+	
+	
+	
 	public final DatabaseProxy db
 	private final XdrReceiver receiver
 	private final XdrSender sender
