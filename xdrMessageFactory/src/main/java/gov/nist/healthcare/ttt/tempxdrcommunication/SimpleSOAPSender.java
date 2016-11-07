@@ -162,6 +162,9 @@ public class SimpleSOAPSender {
             case XDR_FULL_METADATA:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;
+            case XDR_SAML_METADATA:
+                metadata = ArtifactManagement.getMtomSoap(type, settings);
+                break;
             case XDR_MINIMAL_METADATA:
                 metadata = ArtifactManagement.getMtomSoap(type, settings);
                 break;

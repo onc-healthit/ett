@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +27,7 @@ public class ArtifactManagement {
         XDR_FULL_METADATA, // DONE
         XDR_MINIMAL_METADATA, // DONE
         XDR_VANILLA, // DONE
+        XDR_SAML_METADATA,
         NEGATIVE_BAD_SOAP_HEADER,
         NEGATIVE_BAD_SOAP_BODY,
         NEGATIVE_MISSING_DIRECT_BLOCK, // DONE
@@ -60,6 +62,7 @@ public class ArtifactManagement {
     private static final String FILENAME_XDR_FULL_METADATA = "Xdr_full_metadata.xml";
     private static final String FILENAME_XDR_FULL_METADATA_ONLY = "Xdr_full_metadata_only.xml";
     private static final String FILENAME_XDR_FULL_METADATA_ONLY_NO_SOAP = "Xdr_full_metadata_only_no_soap.xml";
+    private static final String FILENAME_XDR_SAML_METADATA = "Xdr_saml_metadata.xml";
     private static final String FILENAME_BAD_SOAP = "negative_bad_soap.xml";
     private static final String FILENAME_BAD_SOAP_BODY = "negative_bad_soap_body.xml";
     private static final String FILENAME_MISSING_DIRECT_BLOCK = "negative_missing_direct_block.xml";
@@ -129,6 +132,9 @@ public class ArtifactManagement {
             case XDR_FULL_METADATA:
                 payload = getXdrFullMetadata(settings);
                 break;
+            case XDR_SAML_METADATA:
+                payload = getXdrSamlMetadata(settings);
+                break;
             case XDR_MINIMAL_METADATA:
                 payload = getXdrMinimalMetadata(settings);
                 break;
@@ -153,6 +159,9 @@ public class ArtifactManagement {
         switch (type) {
             case XDR_FULL_METADATA:
                 payload = getXdrFullMetadataOnly(settings);
+                break;
+            case XDR_SAML_METADATA:
+                payload = getXdrSamlMetadata(settings);
                 break;
             case XDR_MINIMAL_METADATA:
                 payload = getXdrMinimalMetadataOnly(settings);
@@ -250,6 +259,16 @@ public class ArtifactManagement {
     public static String getXdrFullMetadata(Settings settings) {
         makeSettingsSafe(settings);
         String message = getTemplate(FILENAME_XDR_FULL_METADATA);
+        message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
+        message = setSOAPHeaders(message, settings.getWsaTo());
+        message = setIds(message, settings.getMessageId());
+
+        return message;
+    }
+    
+    public static String getXdrSamlMetadata(Settings settings) {
+        makeSettingsSafe(settings);
+        String message = getTemplate(FILENAME_XDR_SAML_METADATA);
         message = setDirectAddressBlock(message, settings.getDirectTo(), settings.getDirectFrom());
         message = setSOAPHeaders(message, settings.getWsaTo());
         message = setIds(message, settings.getMessageId());
@@ -560,6 +579,10 @@ public class ArtifactManagement {
         return headers;
 
     }
+    
+    public static String generateSamlHeaders(Settings settings) {
+    	return getTemplate("SamlHeaders.xml");
+    }
 
     public static String removeXmlDeclaration(String xml) {
 
@@ -688,6 +711,13 @@ public class ArtifactManagement {
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, true));
                     artifacts.setDocument(getCCDA());
                     metadata = getTemplate(FILENAME_XDR_FULL_METADATA_ONLY_NO_SOAP);
+                    break;
+                case XDR_SAML_METADATA:
+                	ArrayList<String> samlHeaders = new ArrayList<String>();
+                	samlHeaders.add(generateSamlHeaders(settings));
+                    artifacts.setExtraHeaders(samlHeaders);
+                    artifacts.setDocument(getCCDA());
+                    metadata = getTemplate(FILENAME_XDR_SAML_METADATA);
                     break;
                 case XDR_MINIMAL_METADATA:
                     artifacts.setExtraHeaders(generateExtraHeaders(settings, false));
