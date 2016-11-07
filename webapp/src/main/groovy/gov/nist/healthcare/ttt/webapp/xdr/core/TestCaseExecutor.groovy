@@ -43,7 +43,7 @@ class TestCaseExecutor {
 
 	@Value('${direct.listener.domainName}')
 	public String hostname
-
+	
 	public final DatabaseProxy db
 	private final XdrReceiver receiver
 	private final XdrSender sender
