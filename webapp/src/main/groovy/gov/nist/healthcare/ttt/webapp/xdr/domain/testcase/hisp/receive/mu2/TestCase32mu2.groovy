@@ -58,8 +58,7 @@ final class TestCase32mu2 extends TestCaseSender {
         context.simId = id + "_" + username
         context.wsaTo = context.endpointTLS
         //this address has not been registered in the tool
-        //   context.directTo = "badaddress@gfail.com"
-		context.directTo = "$executor.badaddress"
+        context.directTo = "badaddress@gfail.com"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
