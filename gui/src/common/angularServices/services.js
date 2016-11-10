@@ -38,7 +38,7 @@ tttService.factory('SettingsFactory', function($http) {
 tttService.factory('ReleaseNotesFactory', function($http) {
     return {
         get: function(callback, error) {
-            $http.get('assets/release_notes.txt').then(callback, error);
+            $http.get('api/releasenotes').then(callback, error);
         }
     };
 });
