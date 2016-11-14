@@ -24,7 +24,7 @@ var ttt = angular.module('ttt', [
     'ttt.changePassword',
     'ttt.accountInfo',
     'ttt.releaseNotes',
-    'ttt.announcement',
+    'ttt.markdown',
     'cancelableService',
 
     // Libs

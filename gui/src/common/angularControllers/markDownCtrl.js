@@ -1,11 +1,12 @@
-var announcementCtrl = angular.module('ttt.announcement', []);
+var markDownCtrl = angular.module('ttt.markdown', []);
 
-announcementCtrl.controller('AnnouncementCtrl', ['$scope','$http', '$sce',
-    function($scope,$http, $sce) {
+markDownCtrl.controller('MarkDownCtrl', ['$scope','$http', '$sce','$state',
+    function($scope,$http, $sce,$state) {
              $scope.accouncments = "";
-             $http({
+             $scope.moduleinfo  = $state.current.data.moduleInfo;
+            $http({
                     method: 'GET',
-                    url: 'api/announcement',
+                    url: 'api/markdown?moduleInfo=' + $scope.moduleinfo,
                     data: {},
                     transformResponse: function (data, headersGetter, status) {
                                        $scope.accouncments = data;
