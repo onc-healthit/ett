@@ -154,7 +154,7 @@ hisp.config(['$stateProvider',
                 url: '/announcement',
                 views: {
                     "hisp": {
-                        controller: 'AnnouncementCtrl',
+                        controller: 'MarkDownCtrl',
                         templateUrl: 'templates/announcement.tpl.html'
                     }
                 }
