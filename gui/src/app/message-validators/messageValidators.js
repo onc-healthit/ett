@@ -101,7 +101,7 @@ validators.config(['$stateProvider',
                 url: '/announcement',
                 views: {
                     "edge": {
-                        controller: 'AnnouncementCtrl',
+                        controller: 'MarkDownCtrl',
                         templateUrl: 'templates/announcement.tpl.html'
                     }
                 }
