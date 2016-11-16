@@ -132,11 +132,11 @@ public class MU2ReceiverTests {
 								result.put("\nNotification Type", "DSN"+"\n"+searchString);
 								System.out.println("\nX-Original-Message-ID Found\n");
 								log.info("Failure DSN with X-header found with ID " + id);
-								
+
 								ZonedDateTime endTime = ZonedDateTime.now();
 								duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-							//	timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
+								//	timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
 							}
 						}
 
@@ -172,7 +172,7 @@ public class MU2ReceiverTests {
 													result.putAll(buffer);
 													duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 													result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
-												//	timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
+													//	timeout = Duration.between(endTime, ZonedDateTime.parse(startTime));
 													log.info("Failure MDN found with ID " + id);
 												}
 
@@ -203,7 +203,7 @@ public class MU2ReceiverTests {
 							BodyPart bodyPart = multipart1.getBodyPart(i);
 							InputStream stream = bodyPart.getInputStream();
 							byte[] targetArray = IOUtils.toByteArray(stream);
-						//	System.out.println(new String(targetArray));
+							//	System.out.println(new String(targetArray));
 
 							String searchString = new String(targetArray);
 
@@ -212,7 +212,7 @@ public class MU2ReceiverTests {
 								result.put("\nNotification Type", "DSN"+"\n"+searchString);
 								System.out.println("\nX-Original-Message-ID Found\n");
 								log.info("Failure DSN with X-header found with ID " + id);
-								
+
 								ZonedDateTime endTime = ZonedDateTime.now();
 								duration = Duration.between(endTime, ZonedDateTime.parse(startTime));
 								result.put("\nElapsed Time", duration.toString().substring(3)+"\n");
@@ -241,7 +241,7 @@ public class MU2ReceiverTests {
 													Header h1 = (Header) headers2.nextElement();
 													buffer.put("\n"+h1.getName(), h1.getValue()+"\n");
 												}
-											//	System.out.println(buffer);
+												//	System.out.println(buffer);
 												if(buffer.containsValue(id+"\n")
 														&& (buffer.containsValue("automatic-action/MDN-sent-automatically;failed"+"\n") || 
 																buffer.containsValue("automatic-action/MDN-sent-automatically; failed"+"\n") ||
@@ -570,54 +570,57 @@ public class MU2ReceiverTests {
 				System.out.println("Search X-Original-Message-ID or Failure MDN and Processed MDN");
 				int j = 1;
 				for (Message message : messages){
-					if(message.getContent() instanceof Multipart){
-						MimeMessage mime = (MimeMessage) message;
-						Message message1 = new MimeMessage(mime);
-						Multipart multipart1 = (Multipart) message1.getContent();
-						for (int i = 0; i < multipart1.getCount(); i++) {
-							BodyPart bodyPart = multipart1.getBodyPart(i);
-							InputStream stream = bodyPart.getInputStream();
-							byte[] targetArray = IOUtils.toByteArray(stream);
-							System.out.println(new String(targetArray));
+					MimeMessage mime = (MimeMessage) message;
+					Message message1 = new MimeMessage(mime);
+					if(!(message1.getSubject().contains("Re"))){
+						if(message1.getContent() instanceof Multipart){
+							Multipart multipart1 = (Multipart) message1.getContent();
+							for (int i = 0; i < multipart1.getCount(); i++) {
+								BodyPart bodyPart = multipart1.getBodyPart(i);
+								InputStream stream = bodyPart.getInputStream();
+								byte[] targetArray = IOUtils.toByteArray(stream);
+								System.out.println(new String(targetArray));
 
-							searchString = new String(targetArray);
+								searchString = new String(targetArray);
 
-							if (searchString.contains(id) && searchString.contains("X-Original-Message-ID")){
-								dsnFlag = 1;
-								list.add(searchString);
-								list.add("X-Original-Message-ID Found");
-								System.out.println("\nX-Original-Message-ID Found\n");
-								log.info("Failure DSN with X-header found with ID " + id);
+								if (searchString.contains(id) && searchString.contains("X-Original-Message-ID")){
+									dsnFlag = 1;
+									list.add(searchString);
+									list.add("X-Original-Message-ID Found");
+									System.out.println("\nX-Original-Message-ID Found\n");
+									log.info("Failure DSN with X-header found with ID " + id);
+								}
 							}
-						}
 
 
 
 
-						if (dsnFlag == 0){
-							//	MimeMessage mime = (MimeMessage) message;
-							//	Message message1 = new MimeMessage(mime);
-							if(!(message1.getContentType().contains("delivery-status"))){
-								Object m =  message.getContent();
-								if (message.getContent() instanceof Multipart){
-									Multipart multipart = (Multipart) message.getContent();
-									for (int i = 0; i < ((Multipart) m).getCount(); i++){
-										BodyPart bodyPart = multipart.getBodyPart(i);
-										if (!(bodyPart.isMimeType("text/*"))){
-											Object d =   bodyPart.getContent();
-											//d.getNotifications();
-											if (d instanceof DispositionNotification){
-												Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-												while (headers2.hasMoreElements()) {
-													Header h1 = (Header) headers2.nextElement();
-													if (id.equals(h1.getValue())){
-														Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
-														while (headers3.hasMoreElements()) {
-															Header h2 = (Header) headers3.nextElement();
-															buffer.put("\n"+h2.getName(), h2.getValue()+"\n");
-															list1.add(h2.getValue());
+							if (dsnFlag == 0){
+								//	MimeMessage mime = (MimeMessage) message;
+								//	Message message1 = new MimeMessage(mime);
+								if(!(message1.getContentType().contains("delivery-status"))){
+									Object m =  message.getContent();
+									if (message.getContent() instanceof Multipart){
+										Multipart multipart = (Multipart) message.getContent();
+										for (int i = 0; i < ((Multipart) m).getCount(); i++){
+											BodyPart bodyPart = multipart.getBodyPart(i);
+											if (!(bodyPart.isMimeType("text/*"))){
+												Object d =   bodyPart.getContent();
+												//d.getNotifications();
+												if (d instanceof DispositionNotification){
+													Enumeration headers2 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+													while (headers2.hasMoreElements()) {
+														Header h1 = (Header) headers2.nextElement();
+														if (id.equals(h1.getValue())){
+															Enumeration headers3 = ((DispositionNotification) d).getNotifications().getAllHeaders();
+															while (headers3.hasMoreElements()) {
+																Header h2 = (Header) headers3.nextElement();
+																buffer.put("\n"+h2.getName(), h2.getValue()+"\n");
+																list1.add(h2.getValue());
+															}
 														}
 													}
+
 												}
 
 											}
@@ -625,11 +628,9 @@ public class MU2ReceiverTests {
 										}
 
 									}
-
 								}
 							}
 						}
-
 					}
 				}
 
