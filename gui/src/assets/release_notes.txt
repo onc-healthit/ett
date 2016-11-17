@@ -7,9 +7,7 @@
 	*3. XDM limited metadata fixed for the issue reported and is referenced from github now.
 	
         *4. UI Enhancements: 
-
                    - After clicking More Info/Log links from the test case, the back button navigates back to the corresponding test case.
-
                    - Labels changed to "XDM Validator" & "XDR Validator".
 
 	*5. FAQ page added [https://ttpedge.sitenv.org/ttp/#/edge/faq] (can also be accessed directly from here: https://github.com/siteadmin/ett/wiki/FAQ)
