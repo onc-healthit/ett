@@ -5,7 +5,7 @@
 	*2. The failure message tracking cases now pass only if X-Original-Message-ID can be correlated and do not fallback to In-Reply-To anymore
 
 	*3. UI Enhancements: 
-          - Upon visit More Info/Log links from the test case, the back button navigates to the corresponding test case.
+          - After clicking More Info/Log links from the test case, the back button navigates back to the corresponding test case.
           - Labels changed to "XDM Validator" & "XDR Validator".
 
 	*4. FAQ page added (can also be accessed directly from here: https://github.com/siteadmin/ett/wiki/FAQ)
