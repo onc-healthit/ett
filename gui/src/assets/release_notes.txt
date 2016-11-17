@@ -12,6 +12,8 @@
 
 	*5. FAQ page added [https://ttpedge.sitenv.org/ttp/#/edge/faq] (can also be accessed directly from here: https://github.com/siteadmin/ett/wiki/FAQ)
 	
+	*6. CCDA validator updated to 1.0.7 [https://github.com/siteadmin/referenceccdavalidator/releases]
+	
 	
 ==Version 1.1.2#10/20/2016
 
