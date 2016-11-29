@@ -223,9 +223,9 @@ public class XdrValidatorController {
 		if(saml != null) {
 			try {
 				SamlHeaderValidationResults samlRes = validateSAMLHeader(saml, patientId)
-				String samlReport = "Errors: " + String.join("\n", samlRes.getErrors());
-				samlReport += "Warnings: " + String.join("\n", samlRes.getWarnings());
-				samlReport += "Info: " + String.join("\n", samlRes.getDetails());
+				String samlReport = samlRes.getErrors() == 0 ? "No Errors" : ("Errors: " + String.join("\n", samlRes.getErrors()));
+				//samlReport += "Warnings: " + String.join("\n", samlRes.getWarnings());
+				//samlReport += "Info: " + String.join("\n", samlRes.getDetails());
 				tkValidationReport.samlReport = samlReport;
 			} catch(Exception e) {
 				tkValidationReport.samlReport = "FAILED";
