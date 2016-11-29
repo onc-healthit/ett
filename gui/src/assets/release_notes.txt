@@ -1,3 +1,12 @@
+==Version 1.1.3.1#11/28/2016
+
+	*1. XDR SAML validation is available at ETT - migrated from TTT.
+
+	*2. HISP XDR Sender Test 12: XDM metadata now conformant
+
+	*3. XDS toolkit updated to version 4.
+	
+
 ==Version 1.1.3#11/17/2016
 
 	*1. Final-Recipient field for MDNs returned by ETT now conform per RFC 3798 Section 3.2.4 to use message recipient (earlier it was pointing to the sender).
