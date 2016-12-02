@@ -8,7 +8,7 @@
 # Description: <DESCRIPTION>
 ### END INIT INFO
 
-ETT_PATH=/sites/ttp
+ETT_PATH=/opt/ttp
 JAR_NAME=ttp.jar
 SCRIPT='nohup java -jar '$ETT_PATH/$JAR_NAME
 RUNAS=root
@@ -22,8 +22,8 @@ logDate=`date +"%m-%d-%Y-%H%M"`
 
 cd $ETT_PATH
 
-#chown tomcat.www /sites/ttp/logs/*
-chmod 755 /sites/ttp/logs/*
+#chown tomcat.www /ttp/logs/*
+chmod 755 /opt/ttp/logs/*
 
 start() {
  if [ -f $PIDFILE ] && kill -0 $(cat $PIDFILE); then
