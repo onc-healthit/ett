@@ -1,0 +1,40 @@
+[
+    {
+        "description": "ETT Public Cert",
+        "icon": "key",
+        "name": "ttpedge.sitenv.org.der",
+        "link": "https://github.com/siteadmin/ett/raw/resources/certificates/ttpedge.sitenv.org/ttpedgedev.sitenv.org.der"
+    },
+    {
+        "description": "ETT Trust Anchor",
+        "icon": "anchor",
+        "name": "intermediate.sitenv.org.der",
+        "link": "https://github.com/siteadmin/ett/raw/resources/certificates/common/sitenv.org/intermediate.sitenv.org.der"
+    },
+    {
+        "description": "Invalid Trust Anchor",
+        "icon": "anchor",
+        "name": "invalid_trust_rel.direct.sitenv.org_ca.der",
+        "link": "https://github.com/siteadmin/ett/raw/resources/certificates/common/sitenv.org/invalid_trust_rel.direct.sitenv.org_ca.der"
+    },
+    {
+        "description": "ETT Public Root CA",
+        "icon": "key",
+        "name": "sitenv.org.der",
+        "link": "https://github.com/siteadmin/ett/raw/resources/certificates/common/sitenv.org/sitenv.org.der"
+    },
+    {
+        "description": "Human readable CDA/CCR",
+        "icon": "file-code-o",
+        "name": "ccda-samples",
+        "link": "https://sourceforge.net/projects/mutransporttesting/files/certificates/ccda-samples"
+    },
+    {
+
+       "description": "2015 Certification C-CDA Test Data",
+        "icon": "file-code-o",
+        "name": "ccda-samples",
+        "link": "https://github.com/siteadmin/2015-Certification-C-CDA-Test-Data/tree/master"
+    }
+]
+
