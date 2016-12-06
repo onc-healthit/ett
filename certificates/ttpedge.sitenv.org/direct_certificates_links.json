@@ -3,7 +3,7 @@
         "description": "ETT Public Cert",
         "icon": "key",
         "name": "ttpedge.sitenv.org.der",
-        "link": "https://github.com/siteadmin/ett/raw/resources/certificates/ttpedge.sitenv.org/ttpedgedev.sitenv.org.der"
+        "link": "https://github.com/siteadmin/ett/raw/resources/certificates/ttpedge.sitenv.org/ttpedge.sitenv.org.der"
     },
     {
         "description": "ETT Trust Anchor",
