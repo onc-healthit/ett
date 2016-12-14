@@ -95,6 +95,7 @@ public class MU2SenderTests {
 			
 			if (header){
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+            message.addHeader("Disposition-Notification-To", fromAddress);
 			}
 
 			BodyPart messageBodyPart = new MimeBodyPart();
@@ -114,7 +115,7 @@ public class MU2SenderTests {
 			String MessageId = message.getHeader("Message-ID")[0];
 		//	tr.setMessageId(message.getHeader("Message-ID")[0]);
 			System.out.println("Done");
-			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("bad.address")+" from "+fromAddress );
+			log.info("Message Sent with ID " + MessageId +" to " + prop.getProperty("bad.address")+" from "+fromAddress);
 			result.put("1","SENDING EMAIL TO BAD ADDRESS\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
@@ -191,6 +192,7 @@ public class MU2SenderTests {
 			messageBodyPart.setText("This is message body");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -275,6 +277,7 @@ public class MU2SenderTests {
 			messageBodyPart.setText("This is message body");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -353,6 +356,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a badAddress!");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -444,6 +448,7 @@ public class MU2SenderTests {
 			messageBodyPart.setText("This is message body");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -528,6 +533,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a badAddress!");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -614,6 +620,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a badAddress!");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -700,6 +707,7 @@ public class MU2SenderTests {
 			messageBodyPart.setText("This is message body");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -783,6 +791,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a badAddress!");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -876,6 +885,7 @@ public class MU2SenderTests {
 			messageBodyPart.setText("This is message body");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -961,6 +971,7 @@ public class MU2SenderTests {
 			messageBodyPart.setText("This is message body");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -1040,6 +1051,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a badAddress!");
 			if (header){
 				message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+				message.addHeader("Disposition-Notification-To", fromAddress);
 				}
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1124,6 +1136,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1198,6 +1211,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1272,6 +1286,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail to " + Address);
 			message.setText("This is a message to "+ Address);
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1355,6 +1370,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
 
 			
 			log.info("Sending Message");
@@ -1425,6 +1441,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
 
 			
 			log.info("Sending Message");
@@ -1495,6 +1512,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail with Disposition Notification Header (Test Case MU2-21)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
 
 			
 			log.info("Sending Message");
@@ -1558,6 +1576,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail with Disposition Notification Header!");
 			message.setText("This is a message to a SUT");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -1892,6 +1911,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header");
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
+			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -2060,6 +2080,7 @@ public class MU2SenderTests {
 			message.setSubject("Mail to receivng HISP");
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
