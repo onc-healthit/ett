@@ -548,6 +548,7 @@
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
+		"criteria":"['h1-1']",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
@@ -565,6 +566,7 @@
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
+		"criteria":"['h1-1']",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
@@ -582,6 +584,7 @@
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
+		"criteria":"['h1-1']",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
