@@ -39,18 +39,32 @@
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <div class="field field-tight">
-                                <label ng-show="currentProfile.sutSMTPAddress" class="show-hide">Vendor {{edgeProtocol | uppercase}} Hostname/IP</label>
-                                <i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Hostname/IP address of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
-                                <input type="text" class="form-control" ng-model="currentProfile.sutSMTPAddress" placeholder="Vendor {{edgeProtocol | uppercase}} Hostname/IP" />
+                            	<div ng-if="edgeProtocol !== 'mu2'">
+									<label ng-show="currentProfile.sutSMTPAddress" class="show-hide">Vendor {{edgeProtocol | uppercase}} Hostname/IP</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Hostname/IP address of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutSMTPAddress" placeholder="Vendor {{edgeProtocol | uppercase}} Hostname/IP" />
+                            	</div>
+                            	<div ng-if="edgeProtocol === 'mu2'">
+									<label ng-show="currentProfile.sutSMTPAddress" class="show-hide">Vendor Hostname/IP</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Hostname/IP address of the vendor system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutSMTPAddress" placeholder="Vendor Hostname/IP" />
+								</div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <div class="field field-tight">
-                                <label ng-show="currentProfile.sutEmailAddress" class="show-hide">Vendor {{edgeProtocol | uppercase}} Email Address</label>
-                                <i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Email address of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
-                                <input type="text" class="form-control" ng-model="currentProfile.sutEmailAddress" placeholder="Vendor {{edgeProtocol | uppercase}} Email Address" />
+                            	<div ng-if="edgeProtocol !== 'mu2'">
+									<label ng-show="currentProfile.sutEmailAddress" class="show-hide">Vendor {{edgeProtocol | uppercase}} Email Address</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Email address of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutEmailAddress" placeholder="Vendor {{edgeProtocol | uppercase}} Email Address" />
+                            	</div>
+                            	<div ng-if="edgeProtocol === 'mu2'">
+									<label ng-show="currentProfile.sutEmailAddress" class="show-hide">Vendor Email Address</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Email address of the vendor system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutEmailAddress" placeholder="Vendor Email Address" />
+                            	</div>
                             </div>
                         </div>
                     </div>
@@ -64,16 +78,30 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="field field-tight">
-                                <label ng-show="currentProfile.sutUsername" class="show-hide">Vendor {{edgeProtocol | uppercase}} Username</label>
-                                <i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Username of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
-                                <input type="text" class="form-control" ng-model="currentProfile.sutUsername" placeholder="Vendor {{edgeProtocol | uppercase}} Username" />
+                            	<div ng-if="edgeProtocol !== 'mu2'">
+									<label ng-show="currentProfile.sutUsername" class="show-hide">Vendor {{edgeProtocol | uppercase}} Username</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Username of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutUsername" placeholder="Vendor {{edgeProtocol | uppercase}} Username" />
+                            	</div>
+                            	<div ng-if="edgeProtocol === 'mu2'">
+									<label ng-show="currentProfile.sutUsername" class="show-hide">Vendor Username</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Username of the vendor system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutUsername" placeholder="Vendor Username" />
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="field field-tight">
-                                <label ng-show="currentProfile.sutPassword" class="show-hide">Vendor Password</label>
-                                <i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Password of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
-                                <input type="password" class="form-control" ng-model="currentProfile.sutPassword" placeholder="Vendor {{edgeProtocol | uppercase}} Password" />
+                            	<div ng-if="edgeProtocol !== 'mu2'">
+									<label ng-show="currentProfile.sutPassword" class="show-hide">Vendor Password</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Password of the vendor {{edgeProtocol | uppercase}} system" tooltip-side="top"></i>
+									<input type="password" class="form-control" ng-model="currentProfile.sutPassword" placeholder="Vendor {{edgeProtocol | uppercase}} Password" />
+                            	</div>
+                            	<div ng-if="edgeProtocol === 'mu2'">
+									<label ng-show="currentProfile.sutPassword" class="show-hide">Vendor Password</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Password of the vendor system" tooltip-side="top"></i>
+									<input type="password" class="form-control" ng-model="currentProfile.sutPassword" placeholder="Vendor Password" />
+                              </div>
                             </div>
                         </div>
                     </div>
