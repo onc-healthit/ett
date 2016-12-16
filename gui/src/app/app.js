@@ -7,6 +7,7 @@ var ttt = angular.module('ttt', [
     'ttt.direct',
     'ttt.edge',
     'ttt.hisp',
+    'ttt.certification',
     'ttt.documents',
     'ttt.validators',
     'ttt.admin',
