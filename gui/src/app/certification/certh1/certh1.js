@@ -111,10 +111,12 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 			});
 		});
 
-           $scope.criteriaSelection= [            {  name: "Please select ", xdrTest:false, testList:['h1'], criteria:['h1-1']},
-            {  name: "Criteria (ii)  Message Disposition Notification: Processed", xdrTest:false, testList:['h1', 'B'], criteria:['h1-1']}
+           $scope.criteriaSelection= [            {  name: "Please select ",value: 'Please select', xdrTest:false, testList:['h1'], criteria:['h1-1']},
+            {  name: "Criteria (ii)  Message Disposition Notification: Processed",value: 'criteria (ii)', xdrTest:false, testList:['h1', 'B'], criteria:['h1-1']}
          //  { name: "Criteria (i)(C) Send Using Edge Protocol XDR", xdrTest:true, testList:['h2'], criteria:['h2-1']}
             ];
+
+            $scope.selectCrit =  $scope.criteriaSelection[0];
 
             $scope.checkTestProc = function(value, index) {
                     return $filter('filter')($scope.criteriaSelection, {testList: 'h1'});
@@ -274,7 +276,6 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 						test.status = 'fetching';
 					}
 				});
-			console.log("$test result !!!!!"+angular.toJson(test, true));
 				$scope.logTestData(test);
 
 			}, function(data) {
