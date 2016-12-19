@@ -1,3 +1,24 @@
+==Version 1.1.3.1#12/19/2016
+
+*1. New panel to the ETT Home page "Test By Criteria" has been added - allowing
+   a better way to navigate the tests cases in a logical way. This release addresses a part of 
+   criteria § 170.315(h)(1) and the remaining criteria in the upcoming releases.
+
+*2. XDR Validator - Turning SAML off now shows "No SAML" instead of "No Errors" in the SAML tab.
+*3. Certificate discovery in ETT (for Direct Send) now uses the certificate that has not expired if multiple certificates are encountered.
+*4. ETT now adds the Disposition-Notification-To header in the Message Tracking HISP cases.
+*5. The tool skips malformed or corrupted messages in the ETT mailstore folder which cause issues when fetching emails.
+*6. Documentation updates:
+      - Add link to FAQ in the Help Page
+      - Host Training Videos on ETT
+      - Removed Section 3, Local Install from the User Guide. This will be included in the Installation Guide.
+	  - CCR/C32 samples from the documents page are now linked to the github repository.
+	  
+*7. UI changes: Tool tip indicator for 'Message format' on File section pop up and "MU2" label text from profile dialog removed.
+
+
+
+
 ==Version 1.1.3.1#11/28/2016
 
 	*1. XDR SAML validation is available at ETT - migrated from TTT.
