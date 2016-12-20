@@ -14,7 +14,7 @@
 	
 	*6. Documentation updates:
 		- Added link to FAQ in the Help Page
-		- Hosting Training Videos on ETT again - please note that the references to nist.gov server names in the vidoes need to modified accordingly (to sitenv.org equivalent).
+		- Hosting Training Videos on ETT again - please note that the references to nist.gov server names in the videos need to modified accordingly (to sitenv.org equivalent).
 		- Removed Section 3, Local Install from the User Guide. This will be included in the Installation Guide.
 		- CCR/C32 samples from the documents page are now linked to the github repository.
 	  
