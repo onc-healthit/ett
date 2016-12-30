@@ -1,3 +1,10 @@
+<div ng-if="paramsObj">
+<div class="row">
+	<a href ui-sref={{paramsObj.goBackTo}}>
+		<span>Back to &#167; {{paramsObj.prevPage}}</span>
+	</a>
+</div>
+</div>
 <h3><i class="fa fa-file-text-o"></i> Validation report of message {{message_id}}</h3>
 
 <div class="reportTab">

@@ -112,26 +112,35 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 		});
 
            $scope.criteriaSelection= [            {  name: "Please select ",value: 'Please select', xdrTest:false, testList:['h1'], criteria:['h1-1']},
-            {  name: "Criteria (ii)  Message Disposition Notification: Processed",value: 'criteria (ii)', xdrTest:false, testList:['h1', 'B'], criteria:['h1-1']}
-         //  { name: "Criteria (i)(C) Send Using Edge Protocol XDR", xdrTest:true, testList:['h2'], criteria:['h2-1']}
+            {  name: "Criteria (ii)  Message Disposition Notification: Processed",value: 'criteria (ii)', xdrTest:false, testList:['h1','h2', 'B'], criteria:['h1-1']},
+            { name: "Direct Certificates", testList:['h1'], redirect:{hrefvalue: "direct.home", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
+            { name: "Register Direct Address", testList:['h1'], redirect:{hrefvalue: "direct.register", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
+            { name: "ETT Validation Report", testList:['h1'], redirect:{hrefvalue: "direct.status", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}}
             ];
 
             $scope.selectCrit =  $scope.criteriaSelection[0];
 
             $scope.checkTestProc = function(value, index) {
                     return $filter('filter')($scope.criteriaSelection, {testList: 'h1'});
-            };});
+            };
 
+            $scope.selectedItem = $scope.criteriaSelection[0];
+
+            });
             $scope.onCategoryChange= function(selectedItem) {
                  $scope.testBench =  [];
                  $scope.isXdrTest = selectedItem.xdrTest;
+                 $scope.redirectLink = selectedItem.redirect;
+//                 console.log("$selectedItem redirect hrefvalue....."+angular.toJson($scope.redirectLink, true));
                  if ($scope.isXdrTest){
                      $scope.testchange = $filter('filter')($scope.xdrTests, {criteria: "'"+selectedItem.criteria+"'"});
                  }else{
                    $scope.testchange = $filter('filter')($scope.smtpTests, {criteria: "'"+selectedItem.criteria+"'"});
                  }
                  $scope.testBench = $scope.testchange;
-                $state.go('certification.certh1.main');
+               if (selectedItem.redirect){
+                    $state.go(selectedItem.redirect.hrefvalue, {paramsObj:{"prevPage":selectedItem.redirect.hreflabel,"goBackTo":selectedItem.redirect.hrefback}});
+               }
              };
 
 

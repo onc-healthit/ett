@@ -154,7 +154,9 @@
     	<div class="col-sm-8">
     		<div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-8 col-lg-8 text-center">
-      				<tr><td><select ng-model='selectCrit.value' required ng-options='option.value as option.name for option in criteriaSelection | filter:checkTestProc' ng-change="onCategoryChange(selectCrit)"></select></td></tr>
+      				<tr><td>
+      				<select ng-model="selectedItem" ng-options="criteriaSel.name for criteriaSel in criteriaSelection | filter:checkTestProc" ng-change="onCategoryChange(selectedItem)">
+      				</select></td></tr>
                 </div>
             </div>
 		</div>
