@@ -111,11 +111,13 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 			});
 		});
 
-           $scope.criteriaSelection= [            {  name: "Please select ",value: 'Please select', xdrTest:false, testList:['h1'], criteria:['h1-1']},
-            {  name: "Criteria (ii)  Message Disposition Notification: Processed",value: 'criteria (ii)', xdrTest:false, testList:['h1','h2', 'B'], criteria:['h1-1']},
-            { name: "Direct Certificates", testList:['h1'], redirect:{hrefvalue: "direct.home", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
-            { name: "Register Direct Address", testList:['h1'], redirect:{hrefvalue: "direct.register", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
-            { name: "ETT Validation Report", testList:['h1'], redirect:{hrefvalue: "direct.status", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}}
+           $scope.criteriaSelection= [
+            {  name: "Please select", xdrTest:false, testList:['h1'], criteria:['h1-1']},
+            {  name: "Criteria (i) Certificate Discovery / Hosting - 2015 DCDT", testList:['h1'], redirect:{hrefvalue: "https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",newWindow: true}},
+            {  name: "Criteria (i) Register Direct", testList:['h1'], redirect:{hrefvalue: "direct.register",  hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
+            {  name: "Criteria (i) Send Direct Message", testList:['h1'], redirect:{hrefvalue: "direct.send", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
+            {  name: "Criteria (i) Receive - Message Status", testList:['h1','h2', 'B'], redirect:{hrefvalue: "direct.status", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
+            {  name: "Criteria (ii) Delivery Notifications", xdrTest:false, testList:['h1','h2', 'B'], criteria:['h1-1']}
             ];
 
             $scope.selectCrit =  $scope.criteriaSelection[0];
@@ -131,6 +133,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
                  $scope.testBench =  [];
                  $scope.isXdrTest = selectedItem.xdrTest;
                  $scope.redirectLink = selectedItem.redirect;
+                 $scope.openInNewWindow = "";
 //                 console.log("$selectedItem redirect hrefvalue....."+angular.toJson($scope.redirectLink, true));
                  if ($scope.isXdrTest){
                      $scope.testchange = $filter('filter')($scope.xdrTests, {criteria: "'"+selectedItem.criteria+"'"});
@@ -139,7 +142,12 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
                  }
                  $scope.testBench = $scope.testchange;
                if (selectedItem.redirect){
-                    $state.go(selectedItem.redirect.hrefvalue, {paramsObj:{"prevPage":selectedItem.redirect.hreflabel,"goBackTo":selectedItem.redirect.hrefback}});
+                    $scope.openInNewWindow  = selectedItem.redirect.newWindow;
+                    if ($scope.openInNewWindow){
+                           window.open(selectedItem.redirect.hrefvalue, '_blank');
+                     }else{
+                            $state.go(selectedItem.redirect.hrefvalue, {paramsObj:{"prevPage":selectedItem.redirect.hreflabel,"goBackTo":selectedItem.redirect.hrefback}});
+                     }
                }
              };
 
