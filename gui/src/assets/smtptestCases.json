@@ -508,7 +508,15 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"sutEdge": false
+		"sutEdge": false,
+		"fields": [{
+			"label": "Timeout in minutes",
+			"name": "TimeoutInMinutes",
+			"datatype": "String",
+			"value": "TimeoutInMinutes",
+			"readOnly": false,
+			"display": true
+		}]
 	}, {
 		"name": "SMTP/POP MT Test 28(c) (Delayed Dispatched MDN)",
 		"id": 158,

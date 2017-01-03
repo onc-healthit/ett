@@ -1129,6 +1129,7 @@ public class MU2SenderTests {
 				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
 			}
 
+			System.out.println("TimeOUTTTTT---->" + ti.TimeoutInMinutes);
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
