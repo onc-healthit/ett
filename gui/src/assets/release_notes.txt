@@ -1,3 +1,7 @@
+==Version 1.2.0.1#12/23/2016
+
+	*1. Fix broken URL calls.
+	
 ==Version 1.2.0#12/19/2016
 
 	*1. New panel to the ETT Home page "Test By Criteria" has been added - allowing
