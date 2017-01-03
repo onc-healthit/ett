@@ -104,6 +104,7 @@ tttDirective.directive('smtpSingleTest', function() {
                 "tttEmailAddress": "",
                 "useTLS": false,
                 "sutCommandTimeoutInSeconds": 0,
+                "TimeoutInMinutes": 0,
                 "sutUserName": "",
                 "sutPassword": "",
                 "tttUserName": "",
