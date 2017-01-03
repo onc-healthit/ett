@@ -18,7 +18,7 @@ The current release schedule for usability improvements is as follows:
 * Release 2.0 Update Style Sheets (SITE) May 22, 2017
 
 
-* Release 2.0.1 Clean-up UI May 22, 2017
+ * Release 2.0.1 Clean-up UI June 15, 2017
 
 
 C-CDA Validator updates will be provided on the last Monday of each month. 
