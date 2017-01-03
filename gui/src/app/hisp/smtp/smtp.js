@@ -169,6 +169,7 @@ edgeSmtp.controller('HispSmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescript
                 "tttEmailAddress": $scope.tttEmailAddress,
                 "useTLS": true,
                 "sutCommandTimeoutInSeconds": fieldInput.sutCommandTimeoutInSeconds,
+                "TimeoutInMinutes": fieldInput.TimeoutInMinutes,
                 "sutUserName": $scope.currentProfile.sutUsername,
                 "sutPassword": $scope.currentProfile.sutPassword,
                 "tttUserName": "",
