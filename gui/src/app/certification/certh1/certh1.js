@@ -244,6 +244,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 				"tttEmailAddress": $scope.tttEmailAddress,
 				"useTLS": true,
 				"sutCommandTimeoutInSeconds": fieldInput.sutCommandTimeoutInSeconds,
+				"TimeoutInMinutes": fieldInput.TimeoutInMinutes,
 				"sutUserName": $scope.currentProfile.sutUsername,
 				"sutPassword": $scope.currentProfile.sutPassword,
 				"tttUserName": "",
