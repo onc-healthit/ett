@@ -113,6 +113,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 
            $scope.criteriaSelection= [
             {  name: "Please select", xdrTest:false, testList:['h1'], criteria:['h1-1']},
+            {  name: "Criteria (i) Direct Home - Certificates", testList:['h1'], redirect:{hrefvalue: "direct.home",  hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
             {  name: "Criteria (i) Certificate Discovery / Hosting - 2015 DCDT", testList:['h1'], redirect:{hrefvalue: "https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",newWindow: true}},
             {  name: "Criteria (i) Register Direct", testList:['h1'], redirect:{hrefvalue: "direct.register",  hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
             {  name: "Criteria (i) Send Direct Message", testList:['h1'], redirect:{hrefvalue: "direct.send", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
