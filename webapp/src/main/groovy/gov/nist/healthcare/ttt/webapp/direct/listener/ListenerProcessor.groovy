@@ -113,6 +113,10 @@ public class ListenerProcessor implements Runnable {
 			logger.info("MDN address found $smtpFrom sending back appropriate MDN")
 			manageMDNAddresses(smtpFrom, directTo?.get(0), directFrom, messageStream)
 			return
+		} else if(smtpFrom.startsWith("delaydispatched")) {
+			logger.info("MDN address found $smtpFrom sending back appropriate MDN")
+			manageMDNAddressesTimeout(smtpFrom, directTo?.get(0), directFrom, messageStream)
+			return
 		} else if(smtpFrom.equals("wellformed1")) {
 			// Get the session variable
 			Properties props = System.getProperties();
@@ -775,7 +779,24 @@ public class ListenerProcessor implements Runnable {
 			return getClasspathPrivateCert("/signing-certificates/good/", ".p12")
 		}
 	}
+	public void manageMDNAddressesTimeout(String smtpFrom, String from, String to, InputStream message) {
+		// Get the session variable
+		Properties props = System.getProperties();
+		Session session = Session.getDefaultInstance(props, null);
+		// Get the MimeMessage object
+		MimeMessage msg = new MimeMessage(session, message);
+		String originalMsgId = msg.getMessageID()
 
+		String t = smtpFrom.charAt(15); //get time in minutes from address
+		int timeout = Integer.parseInt(t)
+		int sleepTime = timeout*60000;
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				logger.info("Thread will sleep for $timeout minutes and send dispatched mdn")
+				this.sleep(sleepTime);
+				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
+				
+		}
+	
 	public void manageMDNAddresses(String smtpFrom, String from, String to, InputStream message) {
 		// Get the session variable
 		Properties props = System.getProperties();
@@ -813,7 +834,7 @@ public class ListenerProcessor implements Runnable {
 				this.sleep(1800000);
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'dispatched', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
 				break
-
+				
 			case 'nomdn8':
 				logger.info("Found address $smtpFrom so no mdn sent")
 				break
