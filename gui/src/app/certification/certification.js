@@ -7,6 +7,9 @@ certMod.config(['$stateProvider',
     function($stateProvider) {
         $stateProvider.state('certification', {
             url: '/certification',
+				params: {
+					paramCri: null
+				},
             abstract: true,
             views: {
                 "main": {
@@ -42,23 +45,26 @@ certMod.config(['$stateProvider',
                 views: {
                     "certification": {
                         controller: 'Certh1Ctrl',
-                        //controller: 'SmtpCtrl',
-                        //templateUrl: 'edge/smtp/smtp.tpl.html'
                         templateUrl: 'certification/certificationCriteriah1.tpl.html'
                     }
                 },
                 data: {
-                    sutEge: true,
-                    protocol: "smtp"
+                    filterCrit: 'h1',
+                    pageTitle:' 170.315(h)(1)'
                 }
             })
             .state('certification.certh2', {
                 url: '/certh2',
+                abstract: true,
                 views: {
                     "certification": {
-                        controller: 'CertificationCriteriaCtrl',
+                        controller: 'Certh1Ctrl',
                         templateUrl: 'certification/certificationCriteriah2.tpl.html'
                     }
+                },
+                data: {
+                    filterCrit: 'h2',
+                    pageTitle:' 170.315(h)(2)'
                 }
             })
             .state('certification.documents', {

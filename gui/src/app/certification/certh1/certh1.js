@@ -10,6 +10,14 @@ certCerth1.config(['$stateProvider',
 					}
 				}
 			})
+			.state('certification.certh2.main', {
+				url: '',
+				views: {
+					"certh2": {
+						templateUrl: 'edge/smtp/smtpMain.tpl.html'
+					}
+				}
+			})
 			.state('certification.certh1.description', {
 				url: '/description/:id',
 				views: {
@@ -30,8 +38,11 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory','SMTPTestCasesDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
-	function($scope, LogInfo,growl,SMTPLogFactory, SMTPTestCasesDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
+certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','SMTPTestCasesDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, SMTPTestCasesDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
+         $scope.paramCri =  $stateParams.paramCri;
+         $scope.pageTitle= $state.current.data.pageTitle;
+		$scope.filterCrit = $state.current.data.filterCrit;
 
 		$scope.properties = PropertiesFactory.get(function(data) {
 		// Smtp
@@ -40,6 +51,8 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 		$scope.isXdrTest = false;
 		$scope.testSystem = "certification";
 		$scope.edgeProtocol = "certh1";
+		$scope.backToCriteria = 0;
+
 
 		XDRTestCasesTemplate.getTestCasesDescription(function(response) {
 			var result = response.data;
@@ -112,7 +125,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
 		});
 
            $scope.criteriaSelection= [
-            {  name: "Please select", xdrTest:false, testList:['h1'], criteria:['h1-1']},
+            {  name: "Please select", xdrTest:false, testList:['h1','h2'], criteria:['h1-1']},
             {  name: "Criteria (i) Direct Home - Certificates", testList:['h1'], redirect:{hrefvalue: "direct.home",  hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
             {  name: "Criteria (i) Certificate Discovery / Hosting - 2015 DCDT", testList:['h1'], redirect:{hrefvalue: "https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",newWindow: true}},
             {  name: "Criteria (i) Register Direct", testList:['h1'], redirect:{hrefvalue: "direct.register",  hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
@@ -121,21 +134,26 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
             {  name: "Criteria (ii) Delivery Notifications", xdrTest:false, testList:['h1','h2', 'B'], criteria:['h1-1']}
             ];
 
-            $scope.selectCrit =  $scope.criteriaSelection[0];
-
-            $scope.checkTestProc = function(value, index) {
-                    return $filter('filter')($scope.criteriaSelection, {testList: 'h1'});
-            };
-
-            $scope.selectedItem = $scope.criteriaSelection[0];
+            if ($scope.filterCrit == "h1"){
+				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {testList: 'h1'});
+			}
+            if ($scope.filterCrit == "h2"){
+				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {testList: 'h2'});
+			}
+            if ($scope.paramCri !=null){
+                $scope.backToCriteria = $scope.paramCri;
+             }else{
+                $scope.backToCriteria = 0;
+             }
+            $scope.selectedItem = $scope.filterObj[$scope.backToCriteria];
 
             });
             $scope.onCategoryChange= function(selectedItem) {
+                 $scope.selectedCrit = $scope.filterObj.indexOf( selectedItem );
                  $scope.testBench =  [];
                  $scope.isXdrTest = selectedItem.xdrTest;
                  $scope.redirectLink = selectedItem.redirect;
                  $scope.openInNewWindow = "";
-//                 console.log("$selectedItem redirect hrefvalue....."+angular.toJson($scope.redirectLink, true));
                  if ($scope.isXdrTest){
                      $scope.testchange = $filter('filter')($scope.xdrTests, {criteria: "'"+selectedItem.criteria+"'"});
                  }else{
@@ -147,7 +165,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', 'LogInfo','growl','SMTPLogFactory
                     if ($scope.openInNewWindow){
                            window.open(selectedItem.redirect.hrefvalue, '_blank');
                      }else{
-                            $state.go(selectedItem.redirect.hrefvalue, {paramsObj:{"prevPage":selectedItem.redirect.hreflabel,"goBackTo":selectedItem.redirect.hrefback}});
+                            $state.go(selectedItem.redirect.hrefvalue, {paramsObj:{"prevPage":selectedItem.redirect.hreflabel,"goBackTo":selectedItem.redirect.hrefback,"backToCriteria":$scope.selectedCrit}});
                      }
                }
              };

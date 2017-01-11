@@ -4,7 +4,7 @@
         <!-- <h2 style="margin-top:0px;"><i class="fa fa-line-chart"></i> SMTP Test Cases</h2> -->
         <div class="row" style="margin-bottom: 30px;">
             <div class="col-md-12 col-lg-12 text-center">
-           	 	<tr><td><h4 style="margin-top:0px;"><i class="fa fa-certificate"></i>&nbsp;&nbsp;&nbsp;&nbsp;Select Criteria for &#167; 170.315(h)(1)</h4></td></tr>
+           	 	<tr><td><h4 style="margin-top:0px;"><i class="fa fa-certificate"></i>&nbsp;&nbsp;&nbsp;&nbsp;Select Criteria for &#167; {{pageTitle}}</h4></td></tr>
              </div>
         </div>
          <div ng-if="isXdrTest==false"> <!-- begin xdrTest-->
@@ -154,9 +154,11 @@
     	<div class="col-sm-8">
     		<div class="row" style="margin-bottom: 10px;">
                 <div class="col-md-8 col-lg-8 text-center">
-      				<tr><td>
-      				<select ng-model="selectedItem" ng-options="criteriaSel.name for criteriaSel in criteriaSelection | filter:checkTestProc" ng-change="onCategoryChange(selectedItem)">
-      				</select></td></tr>
+      				<tr>
+      				<td>
+      				<select ng-model="selectedItem" ng-options="criteriaSel.name for criteriaSel in filterObj" ng-change="onCategoryChange(selectedItem)">
+      				</select></td>
+      				</tr>
                 </div>
             </div>
 		</div>

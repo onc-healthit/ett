@@ -31,9 +31,6 @@ direct.config(['$stateProvider',
 			})
 			.state('direct.home', {
 				url: '',
-				params: {
-					paramsObj: null
-				},
 				views: {
 					"direct": {
 						controller: 'DirectHomeCtrl',
@@ -146,7 +143,11 @@ direct.config(['$stateProvider',
 direct.controller('DirectCtrl', ['$scope', '$stateParams', 'SettingsFactory', 'PropertiesFactory',
 	function($scope, $stateParams, SettingsFactory, PropertiesFactory) {
     $scope.paramsObj =  $stateParams.paramsObj;
-console.log("DirectCtrl ....."+angular.toJson($scope.paramsObj,true));
+
+		$scope.backTo = null;
+		if ($stateParams.paramsObj !=null){
+			$scope.backTo = $scope.paramsObj.goBackTo+"({paramCri:"+$scope.paramsObj.backToCriteria+"})";
+		}
 
 		SettingsFactory.getSettings(function(result) {
 			$scope.settings = result.data;
