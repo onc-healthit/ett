@@ -787,7 +787,7 @@ public class ListenerProcessor implements Runnable {
 		MimeMessage msg = new MimeMessage(session, message);
 		String originalMsgId = msg.getMessageID()
 
-		String t = smtpFrom.charAt(15); //get time in minutes from address
+		String t = smtpFrom.replaceAll("[^0-9]", ""); //get time in minutes from address
 		int timeout = Integer.parseInt(t)
 		int sleepTime = timeout*60000;
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.GOOD)
