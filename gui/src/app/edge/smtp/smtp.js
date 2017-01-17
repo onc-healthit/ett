@@ -215,6 +215,13 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 			var ccdaReferenceFilename = "";
 			var ccdaValidationObjective = "";
 			var fileLink = "";
+			if (test.ccdaFileRequired && (!fieldInput.ccdaDocument)){
+				throw {
+					code: "Error",
+					url: "",
+					message: "Please select C-CDA Document Type"
+               };
+			}
 			if (fieldInput.ccdaDocument) {
 				ccdaReferenceFilename = fieldInput.ccdaDocument.name || "";
 				fileLink = fieldInput.ccdaDocument.link || "";
