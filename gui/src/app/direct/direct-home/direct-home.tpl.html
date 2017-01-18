@@ -80,7 +80,7 @@
                 <span ng-if="ccdaDocument.path && !ccdaDocument.name">{{"r2_" + ccdaDocument.path[ccdaDocument.path.length - 1] + "@" + properties.domainName}}</span>
             </td>
             <td align="right">
-                <button class="btn btn-default" clipboard text="copyCcdaEmail(ccdaDocument.name, properties.domainName)" on-copied="displayGrowl('Data copied')" title="Copy to clipboard">
+                <button class="btn btn-default" clipboard text="copyCcdaEmail('r2_'+ccdaDocument.name, properties.domainName)" on-copied="displayGrowl('Data copied')" title="Copy to clipboard">
                     <i class="fa fa-clipboard"></i>
                 </button>
             </td>
