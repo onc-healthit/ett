@@ -9,6 +9,7 @@
 		"sutRole": "sender",
 		"sutHisp": false,
 		"sutEdge": true,
+		"ccdaFileRequired": true,
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
@@ -26,6 +27,7 @@
 		"sutRole": "sender",
 		"sutHisp": true,
 		"sutEdge": false,
+		"ccdaFileRequired": true,
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
@@ -811,6 +813,7 @@
 		"sutRole": "sender",
 		"sutHisp": true,
 		"sutEdge": false,
+		"ccdaFileRequired": true,
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
@@ -907,6 +910,7 @@
 			"datatype": "CCDAWidget",
 			"value": "ccdaReferenceFilename",
 			"readOnly": false,
+			"ccdaFileRequired": true,
 			"display": true
 		}]
 	}]
