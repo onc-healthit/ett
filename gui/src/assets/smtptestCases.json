@@ -44,6 +44,7 @@
 		"sutRole": "receiver",
 		"sutHisp": true,
 		"sutEdge": true,
+		"ccdaFileRequired": true,
 		"fields": [{
 			"label": "C-CDA Document Type",
 			"name": "ccdaReferenceFilename",
