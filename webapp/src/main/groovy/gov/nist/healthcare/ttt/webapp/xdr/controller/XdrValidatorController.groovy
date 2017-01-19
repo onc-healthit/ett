@@ -233,7 +233,7 @@ public class XdrValidatorController {
 				throw new Exception(e.getMessage())
 			}
 		} else {
-			tkValidationReport.samlReport = "NOSAML";
+			tkValidationReport.samlReport = "No SAML";
 		}
 	}
 
