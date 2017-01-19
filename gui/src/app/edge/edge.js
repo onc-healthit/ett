@@ -176,6 +176,17 @@ edge.config(['$stateProvider',
                 data: {
                     moduleInfo: "faq"
                 }
+            }).state('edge.localinstall', {
+                url: '/localinstall',
+                views: {
+                    "localinstall": {
+                        controller: 'MarkDownCtrl',
+                        templateUrl: 'templates/localinstall.tpl.html'
+                    }
+                },
+                data: {
+                    moduleInfo: "faq"
+                }
             }).state('edge.releaseNotes', {
                 url: '/releaseNotes',
                 views: {
