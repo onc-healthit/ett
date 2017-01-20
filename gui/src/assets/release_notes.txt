@@ -1,3 +1,15 @@
+==Version 1.2.1#12/23/2016
+
+    *1. Select by criteria 170.315(h)(1) now lists all the steps needed for the test
+    
+    *2. The file dialog selection of ccda-documents are mandatory for all the cases except the SMTP MT 39/40/41.
+    
+    *3. Descriptions on EDGE MT - SMTP MT Tests 18a and 47a updated.
+    
+    *4. Included XDS Toolkit 4.2.
+    
+    *5. UI changes: all the footers now consistent, profile user input is also consistent, dd copy "widget" to the CCDA R2.1 Direct (to) address section
+
 ==Version 1.2.0.1#12/23/2016
 
 	*1. Fix broken URL calls.
