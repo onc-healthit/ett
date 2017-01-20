@@ -179,13 +179,13 @@ edge.config(['$stateProvider',
             }).state('edge.localinstall', {
                 url: '/localinstall',
                 views: {
-                    "localinstall": {
+                    "edge": {
                         controller: 'MarkDownCtrl',
                         templateUrl: 'templates/localinstall.tpl.html'
                     }
                 },
                 data: {
-                    moduleInfo: "faq"
+                    moduleInfo: "localinstall"
                 }
             }).state('edge.releaseNotes', {
                 url: '/releaseNotes',
