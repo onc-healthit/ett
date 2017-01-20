@@ -25,6 +25,9 @@ public class MarkDownController {
 	@Value("${faq.path}")
 	String faqPath;
 
+	@Value("${localinstall.path}")
+	String localInstallPath;
+
 	private static Logger logger = Logger.getLogger(MarkDownController.class.getName());
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -45,6 +48,8 @@ public class MarkDownController {
 			fileName = announcementPath;
 		}else if(moduleInfo.equalsIgnoreCase("faq")){
 			fileName = faqPath;
+		}else if(moduleInfo.equalsIgnoreCase("localinstall")){
+			fileName = localInstallPath;
 		}
 		return fileName;
 	}
