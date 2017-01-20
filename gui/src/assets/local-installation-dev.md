@@ -58,7 +58,6 @@ For the below case the java home is : /usr/lib/jvm/java-8-openjdk-amd64
      sudo cp jce/US_export_policy.jar $JAVA_HOME/jre/lib/security
      sudo cp jce/local_policy.jar $JAVA_HOME/jre/lib/security
      ```
-<TODO: ETT Direct requires a different strength file>
 
 3. There is an issue with the Direct RI derby column size when importing private key in the above step. The following workaround can be used:
 
