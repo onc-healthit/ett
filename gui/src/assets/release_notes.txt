@@ -6,10 +6,17 @@
     
     *3. Descriptions on EDGE MT - SMTP MT Tests 18a and 47a updated.
     
-    *4. Included XDS Toolkit 4.2.
-    
-    *5. UI changes: all the footers now consistent, profile user input is also consistent, dd copy "widget" to the CCDA R2.1 Direct (to) address section
+    *4. Included XDS Toolkit 4.2 (allows multiple patient IDs within a sourcePatientInfo)
 
+    *5. UI changes: all the footers now consistent, profile user input is also consistent, dd copy "widget" to the 
+        CCDA R2.1 Direct (to) address section, XDR validation changed from "NOSAML" to "No SAML", XDR "Link to Certificates"
+        to "Click to download XDR TLS certificates".
+    
+    *6. Documentation updates: User Manual inclues the section "Test By Criteria", Local installation guide and installing from 
+        AMI guide  included in the github and as a link from the Documents page.
+	
+    *7. Updated the XDM_LIM.zip in the github testdata which fixes a validation issue with the slot (used by XDR MT 11).
+    
 ==Version 1.2.0.1#12/23/2016
 
 	*1. Fix broken URL calls.
