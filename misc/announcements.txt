@@ -3,9 +3,6 @@ ONC's Transport Testing Platform provides transport and content validation for t
 The current release schedule for usability improvements is as follows:
 
 
-* Release 1.2.1 - Test by Criteria (h)(1) January 19, 2017
-
-
 * Release 1.2.2 - Test by Criteria (h)(1) February 16, 2017
 
 
