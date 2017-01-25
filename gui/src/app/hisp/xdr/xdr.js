@@ -10,7 +10,7 @@ edgeXdr.config(['$stateProvider',
                 }
             }
         })
-        .state('hisp.xdr.description', {
+        .state('hisp.xdr.xdrdescription', {
             url: '/description',
 			params: {
 				id: null,
@@ -22,7 +22,7 @@ edgeXdr.config(['$stateProvider',
                 }
             }
         })
-        .state('hisp.xdr.logs', {
+        .state('hisp.xdr.xdrlogs', {
             url: '/logs',
             views: {
                 "xdr": {
@@ -47,7 +47,7 @@ edgeXdr.controller('HispXdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl',
         } else {
              $scope.testSystem = "hisp";
         }
-        $scope.edgeProtocol = "xdr";
+        $scope.edgeProtocol =  $state.current.data.protocol;
 
         XDRTestCasesDescription.getTestCasesDescription(function(response) {
             var result = response.data;

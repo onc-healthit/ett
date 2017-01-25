@@ -9,6 +9,9 @@ validators.config(['$stateProvider',
     function($stateProvider) {
         $stateProvider.state('validators', {
                 url: '/validators',
+				params: {
+					paramsObj: null
+				},
                 abstract: true,
                 views: {
                     "main": {
@@ -117,8 +120,14 @@ validators.config(['$stateProvider',
     }
 ]);
 
-validators.controller('MessageValidatorsCtrl', ['$scope', 'SettingsFactory', 'PropertiesFactory',
-    function($scope, SettingsFactory, PropertiesFactory) {
+validators.controller('MessageValidatorsCtrl', ['$scope', '$stateParams', 'SettingsFactory', 'PropertiesFactory',
+    function($scope,$stateParams, SettingsFactory, PropertiesFactory) {
+    $scope.paramsObj =  $stateParams.paramsObj;
+
+		$scope.backTo = null;
+		if ($stateParams.paramsObj !=null){
+			$scope.backTo = $scope.paramsObj.goBackTo+"({paramCri:"+$scope.paramsObj.backToCriteria+"})";
+		}
 
         SettingsFactory.getSettings(function(result) {
             $scope.settings = result.data;

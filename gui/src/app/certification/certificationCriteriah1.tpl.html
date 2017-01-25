@@ -164,12 +164,12 @@
 		</div>
 <div ng-if="isXdrTest==true">
     <div class="col-sm-12">
-        <div ui-view="certh1" class="basic-fade-animation" ng-cloak></div>
+        <div ui-view="{{viewObj}}_xdr" class="basic-fade-animation" ng-cloak></div>
     </div>
 </div>
 <div ng-if="isXdrTest==false">
     <div class="col-sm-8">
-        <div ui-view="certh1" class="basic-fade-animation" ng-cloak></div>
+        <div ui-view="{{viewObj}}" class="basic-fade-animation" ng-cloak></div>
     </div>
 </div>
     </div>

@@ -272,6 +272,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "sender",
+    "criteria":"['h2-1','h2-3']",    
     "status": "configure",
     "inputs": [{
         "name": "Direct To Address",
@@ -298,6 +299,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "sender",
+    "criteria":"['h2-1','h2-3']",    
     "status": "configure",
     "inputs": [{
         "name": "Direct To Address",
@@ -324,6 +326,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "sender",
+    "criteria":"['h2-1','h2-3']",    
     "status": "configure",
     "inputs": [{
         "name": "Direct To Address",
@@ -350,6 +353,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "criteria":"['h2-2','h2-7']",    
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -379,6 +383,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "criteria":"['h2-3']",    
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
@@ -413,6 +418,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "criteria":"['h2-2','h2-7']",    
     "inputs": [{
         "name": "Endpoint",
         "key": "targetEndpointTLS",
@@ -442,6 +448,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "criteria":"['h2-3']",    
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
@@ -474,6 +481,7 @@
     "ID": "15a",
     "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of an invalid SOAP header.",
     "sutEdge": false,
+    "criteria":"['h2-7']",    
     "sutHisp": true,
     "sutRole": "receiver",
     "inputs": [{
@@ -499,6 +507,7 @@
     "ID": "15b",
     "desc": "Verify the ability of the receiving system to appropriately respond to a malformed message. This case is of an invalid SOAP body.",
     "sutEdge": false,
+    "criteria":"['h2-7']",    
     "sutHisp": true,
     "sutRole": "receiver",
     "inputs": [{
@@ -526,6 +535,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "criteria":"['h2-3']",    
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
@@ -558,6 +568,7 @@
     "ID": "16",
     "desc": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data.",
     "sutEdge": false,
+    "criteria":"['h2-3']",
     "sutHisp": true,
     "sutRole": "sender",
     "inputs": [{
@@ -585,6 +596,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "receiver",
+    "criteria":"['h2-3']",    
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
@@ -619,6 +631,7 @@
     "sutEdge": false,
     "sutHisp": true,
     "sutRole": "sender",
+    "criteria":"['h2-3']",    
     "inputs": [{
         "name": "IP Address",
         "key": "ip_address",
@@ -642,6 +655,7 @@
     "ID": "18",
     "desc": "Test Tool authenticates with the HISP using Mutual TLS correctly. Certificates for this testing tool can be downloaded from the top of this page.  This is a socket-level test and therefore a full endpoint is not necessary.",
     "sutEdge": false,
+    "criteria":"['h2-7']",    
     "sutHisp": true,
     "sutRole": "receiver",
     "inputs": [{
@@ -672,6 +686,7 @@
     "desc": "Test Tool authenticates with the HISP using bad certificates. The SUT is expected to disconnect before any meaningful data is sent. Certificates for this testing tool can be downloaded from the top of this page.  This is a socket-level test and therefore a full endpoint is not necessary.",
     "sutEdge": false,
     "sutHisp": true,
+    "criteria":"['h2-7']",    
     "sutRole": "receiver",
     "inputs": [{
         "name": "IP Address",
@@ -787,6 +802,7 @@
     "ID": "30mu2",
     "desc": "Verify the ability of the receiving system to appropriately handle a VALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include the X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT.",
     "sutEdge": false,
+    "criteria":"['h2-10']",    
     "sutHisp": true,
     "sutRole": "receiver",
     "inputs": [{
@@ -820,6 +836,7 @@
     "ID": "31mu2",
     "desc": "Verify the ability of the receiving system to appropriately handle an INVALID delivery notifications request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data. ETT will create the Direct address block Header following section 4.1 of the XDR and XDM for Direct Messaging v1.0 and include INVALID X-DIRECT-FINAL-DESTINATION-DELIVERY data following section 1.3 of Implementation Guide for Delivery Notification in Direct v1.0 and send it to the SUT.",
     "sutEdge": false,
+    "criteria":"['h2-10']",    
     "sutHisp": true,
     "sutRole": "receiver",
     "inputs": [{
@@ -849,6 +866,7 @@
     "ID": "32mu2",
     "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a non-existent address.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
@@ -883,6 +901,7 @@
     "ID": "33mu2",
     "desc": "Verify the ability of the SUT to appropriately respond to a delivery to an untrusted HISP.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
@@ -917,6 +936,7 @@
     "ID": "34mu2",
     "desc": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP which does not have a published certificate.  ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response. This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
@@ -951,6 +971,7 @@
     "ID": "35mu2",
     "desc": "Verify the ability of the SUT to appropriately respond in the event of a lack of a Processed MDN. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
@@ -985,6 +1006,7 @@
     "ID": "36mu2",
     "desc": "Verify the ability of the SUT to appropriately respond in the event of a lack of a Dispatched MDN. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
@@ -1019,6 +1041,7 @@
     "ID": "37mu2",
     "desc": "Verify the ability of the SUT to appropriately respond in the event of a message timeout failure. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
+    "criteria":"['h2-10']",   
     "sutHisp": true,
     "status": "configure",
     "sutRole": "receiver",
@@ -1053,6 +1076,7 @@
     "ID": "38mu2",
     "desc": "Verify the ability of the SUT to appropriately respond in the event of positive delivery notification. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.  This test is part of the Implementation Guide for Delivery Notification test suite.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
@@ -1087,6 +1111,7 @@
     "ID": "43mu2",
     "desc": "Verify the ability of the SUT to appropriately provide a delivery failure message if it is unable to deliver the message to the destination. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
@@ -1121,6 +1146,7 @@
     "ID": "44mu2",
     "desc": "Verify the ability of the receiving system to appropriately respond in the event of a message timeout failure. ETT will send a message via XDR to the SUT.  If the SUT's final response is delivered synchronously, that message will be saved in the logs (click 'Logs').  If the SUT's final response is delivered asynchronously: 1) wait until the SUT's message has been sent and the ETT's response has been received, 2) click the button to continue, 3) the logs for the asynchronous communication will then be available.  The proctor will read the logs for the synchronous communication or the asynchronous communication for an appropriate response.",
     "sutEdge": false,
+    "criteria":"['h2-10']",
     "sutHisp": true,
     "sutRole": "receiver",
     "status": "configure",
