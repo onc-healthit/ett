@@ -103,7 +103,8 @@ edge.config(['$stateProvider',
                     }
                 },
                 data: {
-                    sutEge: true
+                    sutEge: true,
+                    protocol: "xdr"
                 }
             })
             .state('edge.reports', {
@@ -175,17 +176,6 @@ edge.config(['$stateProvider',
                 },
                 data: {
                     moduleInfo: "faq"
-                }
-            }).state('edge.localinstall', {
-                url: '/localinstall',
-                views: {
-                    "edge": {
-                        controller: 'MarkDownCtrl',
-                        templateUrl: 'templates/localinstall.tpl.html'
-                    }
-                },
-                data: {
-                    moduleInfo: "localinstall"
                 }
             }).state('edge.releaseNotes', {
                 url: '/releaseNotes',
