@@ -866,8 +866,9 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				prop.load(file);
 				file.close();
 				ti.useTLS = true;
+				String address = "delaydispatched"+ti.sutCommandTimeoutInSeconds+"@"+prop.getProperty("direct.listener.domainName");
 				TestResult tr128;
-				tr128 = mu2senderTests.testMu2TwoEight(ti,prop.getProperty("process.delaydispatched"));
+				tr128 = mu2senderTests.testMu2TwoEight(ti,address);
 				tr128.id = 128;
 				res.add(tr128);
 			} catch (Exception e3) {

@@ -553,9 +553,9 @@
     		"sutEdge": false,
 		"fields": [{
 			"label": "Timeout in minutes",
-			"name": "TimeoutInMinutes",
+			"name": "sutCommandTimeoutInSeconds",
 			"datatype": "String",
-			"value": "TimeoutInMinutes",
+			"value": "Timeout In Minutes",
 			"readOnly": false,
 			"display": true
 		}]

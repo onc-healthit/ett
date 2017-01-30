@@ -1110,7 +1110,7 @@ public class MU2SenderTests {
 		props.put("mail.smtp.ssl.trust", "*");
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
-		tr.setSearchType("timeout");
+		tr.setSearchType("timeout28");
 		Session session = Session.getInstance(props, null);
 
 		try {
