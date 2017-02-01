@@ -818,8 +818,8 @@
 		"name": "IMAP Test 29(a)",
 		"id": 2291,
 		"protocol": "imap",
-		"desc": "Test for the ability of the Vendor to accept C-CDA even when the CCDA document includes a broken reference to a style-sheet. The Vendor should fetch an email from 'badrefstylesheet@ttpdstest.sitenv.org'.",
-		"longDesc": "The credentials for authentication is badrefstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
+		"desc": "Test for the ability of the Vendor to accept C-CDA even when the CCDA document includes a broken reference to a style-sheet. The Vendor should fetch an email from 'brokenrefstylesheet@ttpdstest.sitenv.org'.",
+		"longDesc": "The credentials for authentication is brokenrefstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true
@@ -919,8 +919,8 @@
 		"name": "POP Test 29(a)",
 		"id": 3291,
 		"protocol": "pop",
-		"desc": "Test for the ability of the Vendor to accept C-CDA even when the CCDA document includes a broken reference to a style-sheet. The Vendor should fetch an email from 'badrefstylesheet@ttpdstest.sitenv.org'.",
-		"longDesc": "The credentials for authentication is badrefstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
+		"desc": "Test for the ability of the Vendor to accept C-CDA even when the CCDA document includes a broken reference to a style-sheet. The Vendor should fetch an email from 'brokenrefstylesheet@ttpdstest.sitenv.org'.",
+		"longDesc": "The credentials for authentication is brokenrefstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"sutEdge": true
