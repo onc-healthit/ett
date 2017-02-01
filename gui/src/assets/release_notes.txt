@@ -15,6 +15,8 @@
 	
     *7. Updated the XDM_LIM.zip in the github testdata which fixes a validation issue with the slot (used by XDR MT 11).
     
+    *Update: 1/31/2017 -  Updated the XDM_LIM.zip/XDM_FULL.zip - https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!msg/edge-test-tool/YrgbgRix5vo/e6FZQukhDAAJ
+    
 ==Version 1.2.0.1#12/23/2016
 
 	*1. Fix broken URL calls.
