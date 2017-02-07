@@ -126,7 +126,8 @@ validators.controller('MessageValidatorsCtrl', ['$scope', '$stateParams', 'Setti
 
 		$scope.backTo = null;
 		if ($stateParams.paramsObj !=null){
-			$scope.backTo = $scope.paramsObj.goBackTo+"({paramCri:"+$scope.paramsObj.backToCriteria+"})";
+			$scope.parmobj = "{paramCri:{'backToCriteria':"+$scope.paramsObj.backToCriteria+",'backToOption':"+$scope.paramsObj.backToOption+"}}";
+			$scope.backTo = $scope.paramsObj.goBackTo+"("+$scope.parmobj +")";
 		}
 
         SettingsFactory.getSettings(function(result) {
