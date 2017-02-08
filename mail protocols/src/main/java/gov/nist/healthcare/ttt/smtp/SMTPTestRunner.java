@@ -805,7 +805,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				file.close();
 				ti.useTLS = true;
 				TestResult tr127;
-				tr127 = mu2senderTests.testMu2TwoEight(ti,prop.getProperty("processed.only"));
+				tr127 = mu2senderTests.testMu2TwoSeven(ti,prop.getProperty("processed.only"));
 				tr127.id = 127;
 				res.add(tr127);
 			} catch (Exception e3) {
@@ -826,7 +826,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				file.close();
 				ti.useTLS = true;
 				TestResult tr527;
-				tr527 = mu2senderTests.testMu2TwoEightSmtp(ti,prop.getProperty("processed.only"));
+				tr527 = mu2senderTests.testMu2TwoSevenSmtp(ti,prop.getProperty("processed.only"));
 				tr527.id = 527;
 				res.add(tr527);
 			} catch (Exception e3) {
@@ -847,7 +847,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				file.close();
 				ti.useTLS = true;
 				TestResult tr157;
-				tr157 = mu2senderTests.testMu2TwoEightPop(ti,prop.getProperty("processed.only"));
+				tr157 = mu2senderTests.testMu2TwoSevenPop(ti,prop.getProperty("processed.only"));
 				tr157.id = 157;
 				res.add(tr157);
 			} catch (Exception e3) {
@@ -889,7 +889,8 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				file.close();
 				ti.useTLS = true;
 				TestResult tr528;
-				tr528 = mu2senderTests.testMu2TwoEightSmtp(ti,prop.getProperty("process.delaydispatched"));
+				String address = "delaydispatched"+ti.sutCommandTimeoutInSeconds+"@"+prop.getProperty("direct.listener.domainName");
+				tr528 = mu2senderTests.testMu2TwoEightSmtp(ti,address);
 				tr528.id = 528;
 				res.add(tr528);
 			} catch (Exception e3) {
@@ -910,7 +911,8 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				file.close();
 				ti.useTLS = true;
 				TestResult tr158;
-				tr158 = mu2senderTests.testMu2TwoEightPop(ti,prop.getProperty("process.delaydispatched"));
+				String address = "delaydispatched"+ti.sutCommandTimeoutInSeconds+"@"+prop.getProperty("direct.listener.domainName");
+				tr158 = mu2senderTests.testMu2TwoEightPop(ti,address);
 				tr158.id = 158;
 				res.add(tr158);
 			} catch (Exception e3) {
