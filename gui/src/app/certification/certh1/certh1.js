@@ -30,8 +30,8 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','SMTPTestCasesDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
-	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, SMTPTestCasesDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
+certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
@@ -40,12 +40,15 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 		// Smtp
 		$scope.smtpTests = [];
 		$scope.xdrTests = [];
+		$scope.criterFilterObj = [];
+		$scope.criteriaSelection  = null;
 		$scope.isXdrTest = false;
 		$scope.testSystem = "certification";
 		$scope.viewObj = "certh1";
 		$scope.edgeProtocol = "certh1";
 		$scope.backToCriteria = 0;
-
+		$scope.backToOption = 0;
+		$scope.optionchange = 0;
 		if ($scope.filterCrit == "h1"){
 			$scope.edgeProtocol = "certh1";
 			$scope.viewObj = "certh1";
@@ -114,6 +117,29 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			}
 		};
 
+		CriteriaDescription.getCriteriaOptions(function(response) {
+			var result = response.data;
+            $scope.criteriaSelection = result;
+			$scope.firstCriteriaSelection = $filter('filter')($scope.firstCriteriaSelection,  {"testList": 'h2'});
+            if ($scope.filterCrit == "h1"){
+				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {"testList": 'h1'});
+			}
+            if ($scope.filterCrit == "h2"){
+				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {"testList": 'h2'});
+			}
+            $scope.backToCriteria = 0;
+
+            if ($scope.paramCri !=null){
+                $scope.backToCriteria = $scope.paramCri.backToCriteria;
+                $scope.backToOption  = $scope.paramCri.backToOption;
+            }
+
+            $scope.criterFilterObj = $scope.filterObj;
+            $scope.firstSelectedItem = $scope.firstCriteriaSelection[$scope.backToOption];
+            $scope.onOptionChange($scope.firstSelectedItem);
+            $scope.selectedItem = $scope.filterObj[$scope.backToCriteria];
+		});
+
 		SMTPTestCasesDescription.getTestCasesDescription(function(response) {
 			var result = response.data;
 			$scope.testingMode = result.testingMode;
@@ -126,58 +152,43 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			});
 		});
 
-           $scope.criteriaSelection= [
-            {  name: "Please select", xdrTest:false, testList:['h1','h2'], criteria:['h1-1']},
-            {  name: "Criteria (i) Direct Home - Certificates", testList:['h1'], redirect:{hrefvalue: "direct.home",  hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
-            {  name: "Criteria (i) Certificate Discovery / Hosting - 2015 DCDT", testList:['h1'], redirect:{hrefvalue: "https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",newWindow: true}},
-            {  name: "Criteria (i) Register Direct", testList:['h1'], redirect:{hrefvalue: "direct.register",  hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
-            {  name: "Criteria (i) Send Direct Message", testList:['h1'], redirect:{hrefvalue: "direct.send", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
-            {  name: "Criteria (i) Receive - Message Status", testList:['h1'], redirect:{hrefvalue: "direct.status", hreflabel: "170.315(h)(1)",hrefback:"certification.certh1.main"}},
-            {  name: "Criteria (ii) Delivery Notifications", xdrTest:false, testList:['h1'], criteria:['h1-1']},
-            {  name: "Criteria (i) Certificate Discovery / Hosting - 2015 DCDT", testList:['h2'], redirect:{hrefvalue: "https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",newWindow: true}},
-            {  name: "Criteria (i) Direct Home - Certificates", testList:['h2'], redirect:{hrefvalue: "direct.home",  hreflabel: "170.315(h)(2)",hrefback:"certification.certh2.main"}},
-            {  name: "Criteria (i) Register Direct", testList:['h2'], redirect:{hrefvalue: "direct.register",  hreflabel: "170.315(h)(2)",hrefback:"certification.certh2.main"}},
-            {  name: "Criteria (i) Send Direct Message", testList:['h2'], redirect:{hrefvalue: "direct.send", hreflabel: "170.315(h)(2)",hrefback:"certification.certh2.main"}},
-            {  name: "Criteria (i) Receive - Message Status", testList:['h2'], redirect:{hrefvalue: "direct.status", hreflabel: "170.315(h)(2)",hrefback:"certification.certh2.main"}},
-            {  name: "Criteria (i) C-CDA R2.1 Validator", testList:['h2'], redirect:{hrefvalue: "direct.ccdar2", hreflabel: "170.315(h)(2)",hrefback:"certification.certh2.main"}},
-            {  name: "Criteria (i) XDR Validator", testList:['h2'], redirect:{hrefvalue: "validators.xdr", hreflabel: "170.315(h)(2)",hrefback:"certification.certh2.main"}},
-            {  name: "Criteria (i) XDM Validator", testList:['h2'], redirect:{hrefvalue: "validators.xdm", hreflabel: "170.315(h)(2)",hrefback:"certification.certh2.main"}},
-            {  name: "Criteria (i)(B) Send Using SOAP+XDR", xdrTest:true, testList:['h2'], criteria:['h2-1']},
-            {  name: "Criteria (i)(B) Receive Using SOAP+XDR", xdrTest:true, testList:['h2'], criteria:['h2-2']},
-            {  name: "Criteria (i)(C) Send Using Edge Protocol - XDR", xdrTest:true, testList:['h2'], criteria:['h2-3']},
-            {  name: "Criteria (i)(C) Send Using Edge Protocol - SMTP", xdrTest:false, testList:['h2'], criteria:['h2-4']},
-            {  name: "Criteria (i)(C) Send Using Edge Protocol - IMAP", xdrTest:false, testList:['h2'], criteria:['h2-5']},
-            {  name: "Criteria (i)(C) Send Using Edge Protocol - POP", xdrTest:false, testList:['h2'], criteria:['h2-6']},
-            {  name: "Criteria (i)(C) Receive Using Edge Protocol - XDR", xdrTest:true, testList:['h2'], criteria:['h2-7']},
-            {  name: "Criteria (i)(C) Receive Using Edge Protocol - SMTP", xdrTest:false, testList:['h2'], criteria:['h2-8']},
-            {  name: "Criteria (ii) Delivery Notification in Direct - SMTP", xdrTest:false, testList:['h2'], criteria:['h2-9']},
-            {  name: "Criteria (ii) Delivery Notification in Direct - XDR", xdrTest:true, testList:['h2'], criteria:['h2-10']}
+           $scope.firstCriteriaSelection= [
+            {  name: "All", testList:['h2'],selectOption:'ALL'},
+            {  name: "Send", testList:['h2'],selectOption:'1'},
+            {  name: "Send using Direct+XDM", testList:['h2'],selectOption:'2'},
+            {  name: "Send using SOAP+XDR", testList:['h2'],selectOption:'3'},
+            {  name: "Send using Edge Protocol",testList:['h2'],selectOption:'4'},
+            {  name: "Receive", testList:['h2'],selectOption:'5'},
+            {  name: "Receive using Direct+XDM",testList:['h2'],selectOption:'6'},
+            {  name: "Receive using SOAP+XDR",testList:['h2'],selectOption:'7'},
+            {  name: "Receive using Edge Protocol",testList:['h2'],selectOption:'8'}
             ];
 
-            if ($scope.filterCrit == "h1"){
-				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {testList: 'h1'});
-			}
-            if ($scope.filterCrit == "h2"){
-				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {testList: 'h2'});
-			}
-            if ($scope.paramCri !=null){
-                $scope.backToCriteria = $scope.paramCri;
-             }else{
-                $scope.backToCriteria = 0;
-             }
-            $scope.selectedItem = $scope.filterObj[$scope.backToCriteria];
-
             });
+
+            $scope.onOptionChange= function(selectedItem) {
+                 $scope.optionchange = $scope.firstCriteriaSelection.indexOf( selectedItem );
+                 $scope.filterObj = $filter('filter')($scope.criterFilterObj, {selectOption: selectedItem.selectOption});
+
+                 if (selectedItem.selectOption === "ALL"){
+                    $scope.filterObj = $scope.criterFilterObj;
+                 }
+                 $scope.selectedItem = $scope.filterObj[0];
+             };
+
+
             $scope.onCategoryChange= function(selectedItem) {
                  $scope.selectedCrit = $scope.filterObj.indexOf( selectedItem );
                  $scope.testBench =  [];
+                 $scope.isXdrTest = false;
+                 console.log("Criteria selectedItem :::::"+angular.toJson(selectedItem, true));
                  $scope.isXdrTest = selectedItem.xdrTest;
                  $scope.redirectLink = selectedItem.redirect;
                  $scope.openInNewWindow = "";
                  if ($scope.isXdrTest){
-                     $scope.testchange = $filter('filter')($scope.xdrTests, {criteria: "'"+selectedItem.criteria+"'"});
+                     $scope.testchange = $filter('filter')($scope.xdrTests, {criteria: selectedItem.criteria});
                  }else{
-                     $scope.testchange = $filter('filter')($scope.smtpTests, {criteria: "'"+selectedItem.criteria+"'"});
+                     $scope.testchange = $filter('filter')($scope.smtpTests, {criteria: selectedItem.criteria});
                  }
                  $scope.testBench = $scope.testchange;
                if (selectedItem.redirect){
@@ -185,7 +196,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
                     if ($scope.openInNewWindow){
                            window.open(selectedItem.redirect.hrefvalue, '_blank');
                      }else{
-                            $state.go(selectedItem.redirect.hrefvalue, {paramsObj:{"prevPage":selectedItem.redirect.hreflabel,"goBackTo":selectedItem.redirect.hrefback,"backToCriteria":$scope.selectedCrit}});
+                            $state.go(selectedItem.redirect.hrefvalue, {paramsObj:{"prevPage":selectedItem.redirect.hreflabel,"goBackTo":selectedItem.redirect.hrefback,"backToCriteria":$scope.selectedCrit,"backToOption":$scope.optionchange}});
                      }
                }
              };
