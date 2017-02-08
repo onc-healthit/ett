@@ -765,10 +765,11 @@ public class MU2ReceiverTests {
 
 			}
 			
-			else if(timeout!=null && dispatchedFlag == 0 && failureFlag ==1 && timeout.toMinutes() > ti.sutCommandTimeoutInSeconds && timeout.toMinutes() < ti.sutCommandTimeoutInSeconds+5){
+			else if(timeout!=null && dispatchedFlag == 0 && failureFlag ==1 && timeout.toMinutes()+1 > ti.sutCommandTimeoutInSeconds && timeout.toMinutes() < ti.sutCommandTimeoutInSeconds+5){
 
 				tr.setCriteriamet(CriteriaStatus.STEP2);
 				tr.getTestRequestResponses().put("INFO","Failure Notification received");
+				System.out.println(timeout.toMinutes());
 				log.info("Failure Notification received");
 
 			}
