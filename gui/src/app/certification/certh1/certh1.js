@@ -35,6 +35,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
+		$scope.uploadOption = false;
 
 		$scope.properties = PropertiesFactory.get(function(data) {
 		// Smtp
@@ -182,6 +183,9 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
                  $scope.testBench =  [];
                  $scope.isXdrTest = false;
                  console.log("Criteria selectedItem :::::"+angular.toJson(selectedItem, true));
+                 if (selectedItem.criteria === "'h1-1'"){
+                        $scope.uploadOption = true;
+                 }
                  $scope.isXdrTest = selectedItem.xdrTest;
                  $scope.redirectLink = selectedItem.redirect;
                  $scope.openInNewWindow = "";
