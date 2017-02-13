@@ -30,8 +30,8 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
-	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
+certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
@@ -95,12 +95,17 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			});
 		};
 		$scope.successUpload = function(message) {
+			console.log("successUpload......."+message);
 			$scope.fileInfo = angular.fromJson(message);
 			var validExts = new Array(".der", ".pem");
 			var fileExt = $scope.fileInfo.flowFilename.substring($scope.fileInfo.flowFilename.lastIndexOf('.'));
+					console.log("fileExt......."+fileExt);
+					console.log("validExts......."+validExts);
+					console.log("validExts.indexOf(fileExt)......."+validExts.indexOf(fileExt));
 			if (validExts.indexOf(fileExt) >= 0) {
 				var certFilePath = $scope.fileInfo.flowRelativePath;
 				DirectRICertFactory.save(certFilePath, function(data) {
+					console.log("data.criteriaMet.......");
 					if (data.criteriaMet == "FALSE"){
 						growl.error("Failed to Upload Certificate", {});
 					}else{
@@ -183,9 +188,9 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
                  $scope.testBench =  [];
                  $scope.isXdrTest = false;
                  console.log("Criteria selectedItem :::::"+angular.toJson(selectedItem, true));
-                 if (selectedItem.criteria === "'h1-1'"){
+                /* if (selectedItem.criteria === "'h1-1'"){
                         $scope.uploadOption = true;
-                 }
+                 }*/
                  $scope.isXdrTest = selectedItem.xdrTest;
                  $scope.redirectLink = selectedItem.redirect;
                  $scope.openInNewWindow = "";

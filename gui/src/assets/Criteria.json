@@ -123,7 +123,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['2','6']"
+      "selectOption":"['2']"
    },
    {
       "name":"Criteria (i) XDM Validator",
@@ -136,56 +136,56 @@
       "selectOption":"['6','4']"
    },
    {
-      "name":"Criteria (i)(B) Send Using SOAP+XDR",
+      "name":"Criteria (i)(B) Send using SOAP+XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-1'",
       "selectOption":"['3']"
    },
    {
-      "name":"Criteria (i)(B) Receive Using SOAP+XDR",
+      "name":"Criteria (i)(B) Receive using SOAP+XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-2'",
       "selectOption":"['5','7']"
    },
    {
-      "name":"Criteria (i)(C) Send Using Edge Protocol - XDR",
+      "name":"Criteria (i)(C) Send using Edge Protocol - XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-3'",
       "selectOption":"['2','1','3','4']"
    },
    {
-      "name":"Criteria (i)(C) Send Using Edge Protocol - SMTP",
+      "name":"Criteria (i)(C) Send using Edge Protocol - SMTP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-4'",
       "selectOption":"['1','4']"
    },
    {
-      "name":"Criteria (i)(C) Send Using Edge Protocol - IMAP",
+      "name":"Criteria (i)(C) Send using Edge Protocol - IMAP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-5'",
       "selectOption":"['1','4']"
    },
    {
-      "name":"Criteria (i)(C) Send Using Edge Protocol - POP",
+      "name":"Criteria (i)(C) Send using Edge Protocol - POP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-6'",
       "selectOption":"['1','4']"
    },
    {
-      "name":"Criteria (i)(C) Receive Using Edge Protocol - XDR",
+      "name":"Criteria (i)(C) Receive using Edge Protocol - XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-7'",
       "selectOption":"['5','8']"
    },
    {
-      "name":"Criteria (i)(C) Receive Using Edge Protocol - SMTP",
+      "name":"Criteria (i)(C) Receive using Edge Protocol - SMTP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-8'",
@@ -199,10 +199,25 @@
       "selectOption":"['5']"
    },
    {
-      "name":"Criteria (ii) Delivery Notification in Direct - XDR",
-      "xdrTest":true,
+      "name":"Criteria (ii) Receive – SMTP: Disposition-Notification",
+      "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-10'",
       "selectOption":"['5']"
+   },
+   {
+      "name":"Criteria (ii) Delivery Notification in Direct - XDR",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-11'",
+      "selectOption":"['5']"
+   },
+   {
+      "name":"Criteria (ii)Receive – XDR: Disposition-Notification",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-12'",
+      "selectOption":"['5']"
    }
+
 ]
