@@ -199,7 +199,7 @@
       "selectOption":"['5']"
    },
    {
-      "name":"Criteria (ii) Receive – SMTP: Disposition-Notification",
+      "name":"Criteria (ii) Receive SMTP: Disposition-Notification",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-10'",
@@ -213,7 +213,7 @@
       "selectOption":"['5']"
    },
    {
-      "name":"Criteria (ii)Receive – XDR: Disposition-Notification",
+      "name":"Criteria (ii)Receive XDR: Disposition-Notification",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-12'",
