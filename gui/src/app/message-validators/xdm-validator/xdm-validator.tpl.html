@@ -1,3 +1,10 @@
+<div ng-if="paramsObj">
+<div class="row">
+	<a href ui-sref={{backTo}}>
+		<span>Back to &#167; {{paramsObj.prevPage}}</span>
+	</a>
+</div>
+</div>
 <div flow-prevent-drop flow-drag-enter="dropClass='drag-over'" flow-drag-leave="dropClass=''">
 
     <h2><i class="fa fa-pie-chart"></i> XDM Validator</h2>

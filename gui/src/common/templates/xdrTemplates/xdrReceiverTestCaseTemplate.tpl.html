@@ -8,7 +8,7 @@
 		<div us-spinner></div>
 	</time>
 
-	<time ng-if="test.status === 'manual'" ui-sref="edge.xdr.logs" ng-click="displayLog(test); scrollTop()">
+	<time ng-if="test.status === 'manual'" ui-sref="{{testSystem}}.{{edgeProtocol}}.xdrlogs" ng-click="displayLog(test); scrollTop()">
 		<span class="pending">Waiting</span>
 		<span class="refresh">Validation</span>
 	</time>
@@ -54,12 +54,12 @@
 	<div class="social">
 		<ul>
 			<li class="facebook vcenter" style="width:100%;">
-				<a ui-sref="edge.xdr.description({id: test.ID})" ng-click="scrollTop()">
+				<a ui-sref="{{testSystem}}.{{edgeProtocol}}.xdrdescription({id: test.ID})" ng-click="scrollTop()">
 					<span>Description</span>
 				</a>
 			</li>
 			<li class="twitter" style="width:100%;">
-				<a ui-sref="edge.xdr.logs" ng-click="displayLog(test); scrollTop()">
+				<a ui-sref="{{testSystem}}.{{edgeProtocol}}.xdrlogs" ng-click="displayLog(test); scrollTop()">
 					<span>Logs</span>
 				</a>
 			</li>
