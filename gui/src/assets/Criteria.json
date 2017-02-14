@@ -4,7 +4,7 @@
       "xdrTest":false,
       "testList":"['h1','h2']",
       "criteria":"'h1-1'",
-      "selectOption":"['1','2','3','4','5','6','7','8']"
+      "selectOption":"['A','B','2','3','4','5','6','7','8','9','10']"
    },
    {
       "name":"Criteria (i) Direct Home - Certificates",
@@ -63,7 +63,7 @@
          "hrefvalue":"https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",
          "newWindow":true
       },
-      "selectOption":"['1','2','5','6']"
+      "selectOption":"['A','B','2','9','5','6','10']"
    },
    {
       "name":"Criteria (i) Register Direct",
@@ -73,7 +73,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['1','2']"
+      "selectOption":"['A','B','2','9']"
    },
    {
       "name":"Criteria (i) Direct Home - Certificates",
@@ -83,7 +83,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['1']"
+      "selectOption":"['A','B']"
    },
    {
       "name":"Criteria (i) Send Direct Message",
@@ -93,7 +93,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['1']"
+      "selectOption":"['A','B']"
    },
    {
       "name":"Criteria (i) Receive - Message Status",
@@ -103,7 +103,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['5']"
+      "selectOption":"['A','5']"
    },
    {
       "name":"Criteria (i) C-CDA R2.1 Validator",
@@ -113,7 +113,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['1']"
+      "selectOption":"['B']"
    },
    {
       "name":"Criteria (i) XDR Validator",
@@ -154,28 +154,28 @@
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-3'",
-      "selectOption":"['2','1','3','4']"
+      "selectOption":"['2','B','3','4']"
    },
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - SMTP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-4'",
-      "selectOption":"['1','4']"
+      "selectOption":"['B','4','9']"
    },
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - IMAP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-5'",
-      "selectOption":"['1','4']"
+      "selectOption":"['B','4']"
    },
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - POP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-6'",
-      "selectOption":"['1','4']"
+      "selectOption":"['B','4']"
    },
    {
       "name":"Criteria (i)(C) Receive using Edge Protocol - XDR",
@@ -189,21 +189,21 @@
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-8'",
-      "selectOption":"['5','8']"
+      "selectOption":"['5','8','10']"
    },
    {
       "name":"Criteria (ii) Delivery Notification in Direct - SMTP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-9'",
-      "selectOption":"['5']"
+      "selectOption":"['5','10']"
    },
    {
       "name":"Criteria (ii) Receive SMTP: Disposition-Notification",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-10'",
-      "selectOption":"['5']"
+      "selectOption":"['5','10']"
    },
    {
       "name":"Criteria (ii) Delivery Notification in Direct - XDR",
@@ -213,7 +213,7 @@
       "selectOption":"['5']"
    },
    {
-      "name":"Criteria (ii)Receive XDR: Disposition-Notification",
+      "name":"Criteria (ii) Receive XDR: Disposition-Notification",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-12'",

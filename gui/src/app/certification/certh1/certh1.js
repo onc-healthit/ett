@@ -160,20 +160,28 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 
            $scope.firstCriteriaSelection= [
             {  name: "All", testList:['h2'],selectOption:'ALL'},
-            {  name: "Send", testList:['h2'],selectOption:'1'},
+            {  name: "Setup", testList:['h2'],selectOption:'A'},
+            {  name: "Send", testList:['h2'],selectOption:'B'},
+            {  name: "Send using Direct", testList:['h2'],selectOption:'9'},
             {  name: "Send using Direct+XDM", testList:['h2'],selectOption:'2'},
             {  name: "Send using SOAP+XDR", testList:['h2'],selectOption:'3'},
             {  name: "Send using Edge Protocol",testList:['h2'],selectOption:'4'},
             {  name: "Receive", testList:['h2'],selectOption:'5'},
+            {  name: "Receive using Direct",testList:['h2'],selectOption:'10'},
             {  name: "Receive using Direct+XDM",testList:['h2'],selectOption:'6'},
             {  name: "Receive using SOAP+XDR",testList:['h2'],selectOption:'7'},
             {  name: "Receive using Edge Protocol",testList:['h2'],selectOption:'8'}
             ];
 
+           $scope.secondCriteriaSelection= [
+            {  name: "Direct", testList:['h2'],selectOption:'ALL'},
+            {  name: "Edge", testList:['h2'],selectOption:'1'}
+            ];
             });
 
             $scope.onOptionChange= function(selectedItem) {
                  $scope.optionchange = $scope.firstCriteriaSelection.indexOf( selectedItem );
+                 $scope.testBench =  [];
                  $scope.filterObj = $filter('filter')($scope.criterFilterObj, {selectOption: selectedItem.selectOption});
 
                  if (selectedItem.selectOption === "ALL"){
