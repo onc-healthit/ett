@@ -7,7 +7,7 @@
            	 	<tr><td><h4 style="margin-top:0px;"><i class="fa fa-certificate"></i>&nbsp;&nbsp;&nbsp;&nbsp;Select Criteria for &#167; {{pageTitle}}</h4></td></tr>
              </div>
         </div>
-         <div ng-if="isXdrTest==false"> <!-- begin xdrTest-->
+        <div ng-if="isXdrTest==false"> <!-- begin xdrTest-->
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading profile-no-padding">
@@ -118,8 +118,8 @@
             </div>
         </div>
 
-        <div class="form-group" ng-if="!isEdge && edgeProtocol === 'mu2' && transactionType === 'receiver'">
-            <label class="control-label" for="cert">Upload your certificate&nbsp;
+        <div class="form-group" ng-if="uploadOption">
+            <label class="control-label" for="cert">Upload your certificate(binary or PEM encoded)&nbsp;
                 <i class="fa fa-question-circle" tooltips tooltip-title="You only need to upload your certificate once" tooltip-side="right"></i>
             </label>
 
@@ -153,24 +153,32 @@
     <div>
     	<div class="col-sm-8">
     		<div class="row" style="margin-bottom: 10px;">
+    			<div ng-if="filterCrit==='h2'">
+					<div class="col-md-4 col-lg-4 text-center">
+						<tr>
+						<td>
+						<select ng-model="firstSelectedItem" ng-options="criteriaSel.name for criteriaSel in firstCriteriaSelection" ng-change="onOptionChange(firstSelectedItem)">
+						</select></td>
+						</tr>
+					</div>
+             </div>
                 <div class="col-md-8 col-lg-8 text-center">
-      				<tr>
-      				<td>
-      				<select ng-model="selectedItem" ng-options="criteriaSel.name for criteriaSel in filterObj" ng-change="onCategoryChange(selectedItem)">
-      				</select></td>
-      				</tr>
+ 					<tr><td>
+ 					<select ng-model="selectedItem" ng-options="criteriaSel.name for criteriaSel in filterObj" ng-change="onCategoryChange(selectedItem)">
+ 					</select>
+ 					</td></tr>
                 </div>
             </div>
 		</div>
-<div ng-if="isXdrTest==true">
-    <div class="col-sm-12">
-        <div ui-view="certh1" class="basic-fade-animation" ng-cloak></div>
-    </div>
-</div>
-<div ng-if="isXdrTest==false">
-    <div class="col-sm-8">
-        <div ui-view="certh1" class="basic-fade-animation" ng-cloak></div>
-    </div>
-</div>
-    </div>
+		<div ng-if="isXdrTest==true">
+			<div class="col-sm-12">
+				<div ui-view="{{viewObj}}_xdr" class="basic-fade-animation" ng-cloak></div>
+			</div>
+		</div>
+		<div ng-if="isXdrTest==false">
+			<div class="col-sm-8">
+				<div ui-view="{{viewObj}}" class="basic-fade-animation" ng-cloak></div>
+			</div>
+		</div>
+	</div>
 </div>

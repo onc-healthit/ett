@@ -102,7 +102,8 @@ hisp.config(['$stateProvider',
                     }
                 },
                 data: {
-                    sutEge: false
+                    sutEge: false,
+                    protocol: "xdr"
                 }
             })
             .state('hisp.reports', {

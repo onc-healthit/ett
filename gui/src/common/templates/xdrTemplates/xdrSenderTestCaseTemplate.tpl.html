@@ -18,7 +18,7 @@
 			<span class="refresh">Refresh</span>
 		</time>
 
-		<time ui-sref="{{testSystem}}.xdr.logs" ng-click="displayLog(test); scrollTop()" ng-switch-when="manual">
+		<time ui-sref="{{testSystem}}.{{edgeProtocol}}.xdrlogs" ng-click="displayLog(test); scrollTop()" ng-switch-when="manual">
 			<span class="pending">Waiting</span>
 			<span class="refresh">Validation</span>
 		</time>
@@ -131,12 +131,12 @@
 	<div class="social">
 		<ul>
 			<li class="facebook vcenter" style="width:100%;">
-				<a ui-sref="{{testSystem}}.xdr.description({id: test.id,testObj: test})" ng-click="scrollTop()">
+				<a ui-sref="{{testSystem}}.{{edgeProtocol}}.xdrdescription({id: test.id,testObj: test})" ng-click="scrollTop()">
 					<span>More Info.</span>
 				</a>
 			</li>
 			<li class="twitter" style="width:100%;">
-				<a ui-sref="{{testSystem}}.xdr.logs" ng-click="displayLog(test); scrollTop()">
+				<a ui-sref="{{testSystem}}.{{edgeProtocol}}.xdrlogs" ng-click="displayLog(test); scrollTop()">
 					<span>Logs</span>
 				</a>
 			</li>

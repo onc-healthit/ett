@@ -1,6 +1,7 @@
 var certMod = angular.module('ttt.certification', [
     // Modules
-    'ttt.certification.certh1'
+    'ttt.certification.certh1',
+    'ttt.certification.certh2'
 ]);
 
 certMod.config(['$stateProvider',
@@ -59,7 +60,7 @@ certMod.config(['$stateProvider',
                 views: {
                     "certification": {
                         controller: 'Certh1Ctrl',
-                        templateUrl: 'certification/certificationCriteriah2.tpl.html'
+                        templateUrl: 'certification/certificationCriteriah1.tpl.html'
                     }
                 },
                 data: {

@@ -67,6 +67,14 @@ tttService.factory('XDRTestCasesTemplate', function($http) {
     };
 });
 
+tttService.factory('CriteriaDescription', function($http) {
+    return {
+        getCriteriaOptions: function(callback, error) {
+            $http.get('assets/Criteria.json').then(callback, error);
+        }
+    };
+});
+
 tttService.factory('CCDAR21Documents', function($http) {
     return {
         getCcdaDocuments: function(callback, error) {

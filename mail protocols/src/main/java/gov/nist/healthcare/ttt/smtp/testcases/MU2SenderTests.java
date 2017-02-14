@@ -750,7 +750,7 @@ public class MU2SenderTests {
 	public TestResult testBadAddressSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.STEP2);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		//	String dsn = "SUCCESS,FAILURE,DELAY,ORCPT=rfc1891";
 
@@ -843,7 +843,7 @@ public class MU2SenderTests {
 	public TestResult testMu2TwoSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.STEP2);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -930,7 +930,7 @@ public class MU2SenderTests {
 	public TestResult testMu2ThreeSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.STEP2);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -1014,7 +1014,7 @@ public class MU2SenderTests {
 	public TestResult testMu2FourSmtp(TestInput ti, boolean header) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.STEP2);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -1174,7 +1174,7 @@ public class MU2SenderTests {
 	public TestResult testMu2TwoEightSmtp(TestInput ti, String Address) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.STEP2);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -1476,7 +1476,7 @@ public class MU2SenderTests {
 	public TestResult testDispositionNotificationSmtp(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.STEP2);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		Properties props = new Properties();
@@ -2466,7 +2466,7 @@ public class MU2SenderTests {
 	public TestResult testPositiveDeliveryNotificationSmtp(TestInput ti) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.STEP2);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		
 		Properties props = new Properties();
