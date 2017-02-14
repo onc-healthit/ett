@@ -112,9 +112,13 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr;
 			try {
-				ti.tttUserName = "wellformed1";
-				ti.tttPassword = "smtptesting123";
-				tr = tTest.fetchMail(ti);
+					Properties prop = new Properties();
+					String path = "./application.properties";
+					FileInputStream file;
+					file = new FileInputStream(path);
+					prop.load(file);
+					file.close();
+				tr = tTest.fetchMail(ti,prop.getProperty("ett.starttls.address"));
 				tr.id = 1;
 				res.add(tr);
 			} catch (IOException e) {
@@ -129,9 +133,13 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr2;
 			try {
-				ti.tttUserName = "wellformed1";
-				ti.tttPassword = "smtptesting123";
-				tr2 = tTest.fetchMail(ti);
+				Properties prop = new Properties();
+				String path = "./application.properties";
+				FileInputStream file;
+				file = new FileInputStream(path);
+				prop.load(file);
+				file.close();
+				tr2 = tTest.fetchMail(ti,prop.getProperty("ett.starttls.hisp.address"));
 				tr2.id = 2;
 				res.add(tr2);
 			} catch (IOException e) {
@@ -354,7 +362,13 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr18;
 			try {
-				tr18 = tTest.fetchMail(ti);
+				Properties prop = new Properties();
+				String path = "./application.properties";
+				FileInputStream file;
+				file = new FileInputStream(path);
+				prop.load(file);
+				file.close();
+				tr18 = tTest.fetchMail(ti,prop.getProperty("ett.hisp.address"));
 				tr18.id = 18;
 				res.add(tr18);
 			} catch (IOException e) {

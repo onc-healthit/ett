@@ -84,7 +84,7 @@ public class TTTReceiverTests {
 	 * Fetches a unread mail from the inbox. The mail is set as read after it's
 	 * fetched.
 	 */
-	public TestResult fetchMail(TestInput ti) throws IOException {
+	public TestResult fetchMail(TestInput ti, String address) throws IOException {
 
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		TestResult tr = new TestResult();
@@ -108,7 +108,7 @@ public class TTTReceiverTests {
 			Store store = session.getStore("imap");
 			store.close();
 			store.connect(prop.getProperty("ett.smtp.host"), Integer.parseInt(prop.getProperty("ett.imap.port")),
-					prop.getProperty("ett.starttls.address"),
+					address,
 					prop.getProperty("ett.password"));
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
