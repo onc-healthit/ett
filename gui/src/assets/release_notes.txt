@@ -7,12 +7,14 @@
    *3. XDS Toolkit updated - which in particular addresses, [XDR validation of sourcePatientInfo does not permit PID-3 identifier list](https://github.com/usnistgov/iheos-toolkit2/issues/193)
 
    *4. CCDA Validator updated - [1.0.2](https://github.com/siteadmin/referenceccdavalidator/releases/tag/1.0.12)
+   
+    *5. Test Data XDM_LIM.zip updated - details [here](https://groups.google.com/d/msgid/edge-test-tool/cfc85156-c6d5-447e-96a4-170f2c895911%40googlegroups.com)
 
-   *5. SMTP HISP Test 1-8, 14 (Send) Test - endpoint changed to edge-receiver@ttpds.sitenv.org to enable local delivery (AUTH not required).
+   *6. SMTP HISP Test 1-8, 14 (Send) Test - endpoint changed to edge-receiver@ttpds.sitenv.org to enable local delivery (AUTH not required).
 
-    *6. SMTP MT 45 Description updated.
+    *7. SMTP MT 45 Description updated.
 
-    *7. UI changes: Certificate upload text for SMTP MT Tests now indicates that a .der file is required., download page shows external links.
+    *8. UI changes: Certificate upload text for SMTP MT Tests now indicates that a .der file is required., download page shows external links.
 
 
 
