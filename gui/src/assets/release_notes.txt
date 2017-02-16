@@ -1,3 +1,21 @@
+==Version 1.2.2#2/16/2017
+
+  *1. "Test By Criteria" - h(2) has been added for easier navigation for this criteria.
+
+  *2. SMTP HISP MT tests for SMTP receiver 1-5, 21(a), 23(a), 24(a), 25(a), 26(a), 27(a), 28(a), 29(a) and Edge MT tests 18(a), 47(a) incorporate the workflow for manual verification of the MDN.
+
+   *3. XDS Toolkit updated - which in particular addresses, (XDR validation of sourcePatientInfo does not permit PID-3 identifier list)[https://github.com/usnistgov/iheos-toolkit2/issues/193]
+
+   *4. CCDA Validator updated - (1.0.2)[https://github.com/siteadmin/referenceccdavalidator/releases/tag/1.0.12]
+
+   *5. SMTP HISP Test 1-8, 14 (Send) Test - endpoint changed to edge-receiver@ttpds.sitenv.org to enable local delivery (AUTH not required).
+
+    *6. SMTP MT 45 Description updated.
+
+    *7. UI changes: Certificate upload text for SMTP MT Tests now indicates that a .der file is required., download page shows external links.
+
+
+
 ==Version 1.2.1#1/19/2017
 
     *1. Select by criteria 170.315(h)(1) now lists all the steps needed for the test
