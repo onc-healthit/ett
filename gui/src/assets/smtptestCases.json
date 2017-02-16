@@ -22,9 +22,7 @@
 		"name": "SMTP Test 1-8, 14 (Send)",
 		"id": 2,
 		"protocol": "smtp",
-
-		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS. The SUT will send an email to wellformed1@ttpedge.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@ttpedge.sitenv.org from the email address entered in Profile window. The validation result of C-CDA Document Type selected, will not affect the test result.",
-		"longDesc": "The credentials for SASL authentication is vendoraccount@ttpds.sitenv.org / vendortesting123 ",
+		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS. The SUT will send an email to edge-receiver@ttpds.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to edge-receiver@ttpds.sitenv.org from the email address entered in Profile window. The validation result of C-CDA Document Type selected, will not affect the test result.",
 		"sutRole": "sender",
 		"sutHisp": true,
 		"criteria":"['h2-4']",
@@ -134,8 +132,13 @@
 		"name": "SMTP MT Test 45 - Generate Unique Message-ID (IG for Delivery Notification Suite)",
 		"id": 145,
 		"protocol": "mu2",
+<<<<<<< HEAD
 		"desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@ttpds.sitenv.org. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Implementation Guide for Delivery Notification').",
 		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123  ",
+=======
+		"desc": "Verifies the ability of the sending system to send messages with unique message-IDs and a properly formed Disposition Notification Options Header. The sending system will send multiple messages (at least 3) to wellformed14@ttpds.sitenv.org. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (2014 Edition Note: use this case if you opt for 'Message tracking using Implementation Guide for Delivery Notification').",
+		"longDesc": "The credentials for authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123  ",
+>>>>>>> 6ddce0cf13c30b4e48096d72400210c990855252
 		"sutRole": "sender",
 		"sutHisp": false,
 		"sutEdge": true

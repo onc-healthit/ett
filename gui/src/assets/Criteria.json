@@ -83,7 +83,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['A','B']"
+      "selectOption":"['A','B','6','5']"
    },
    {
       "name":"Criteria (i) Send Direct Message",
@@ -93,17 +93,17 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['A','B']"
+      "selectOption":"['A','B','5','6']"
    },
    {
-      "name":"Criteria (i) Receive - Message Status",
+      "name":"Criteria (i) Message Status",
       "testList":"['h2']",
       "redirect":{
          "hrefvalue":"direct.status",
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['A','5']"
+      "selectOption":"['A','B','5','6']"
    },
    {
       "name":"Criteria (i) C-CDA R2.1 Validator",
@@ -122,8 +122,7 @@
          "hrefvalue":"validators.xdr",
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
-      },
-      "selectOption":"['2']"
+      }
    },
    {
       "name":"Criteria (i) XDM Validator",
@@ -133,14 +132,14 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['6','4']"
+      "selectOption":"['6','4','B','5']"
    },
    {
       "name":"Criteria (i)(B) Send using SOAP+XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-1'",
-      "selectOption":"['3']"
+      "selectOption":"['3','B']"
    },
    {
       "name":"Criteria (i)(B) Receive using SOAP+XDR",
@@ -154,14 +153,14 @@
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-3'",
-      "selectOption":"['2','B','3','4']"
+      "selectOption":"['B','3','4']"
    },
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - SMTP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-4'",
-      "selectOption":"['B','4','9']"
+      "selectOption":"['B','4']"
    },
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - IMAP",
@@ -189,14 +188,14 @@
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-8'",
-      "selectOption":"['5','8','10']"
+      "selectOption":"['5','8']"
    },
    {
       "name":"Criteria (ii) Delivery Notification in Direct - SMTP",
       "xdrTest":false,
       "testList":"['h2']",
       "criteria":"'h2-9'",
-      "selectOption":"['5','10']"
+      "selectOption":"['9','B']"
    },
    {
       "name":"Criteria (ii) Receive SMTP: Disposition-Notification",
@@ -206,18 +205,18 @@
       "selectOption":"['5','10']"
    },
    {
-      "name":"Criteria (ii) Delivery Notification in Direct - XDR",
+      "name":"Criteria (ii)(C) Delivery Notification in Direct - XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-11'",
-      "selectOption":"['5']"
+      "selectOption":"['9','B']"
    },
    {
-      "name":"Criteria (ii) Receive XDR: Disposition-Notification",
+      "name":"Criteria (ii)(C) Receive XDR: Disposition-Notification",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-12'",
-      "selectOption":"['5']"
+      "selectOption":"['5','10']"
    }
 
 ]
