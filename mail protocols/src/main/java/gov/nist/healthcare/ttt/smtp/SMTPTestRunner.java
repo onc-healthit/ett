@@ -112,9 +112,13 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr;
 			try {
-				ti.tttUserName = "wellformed1";
-				ti.tttPassword = "smtptesting123";
-				tr = tTest.fetchMail(ti);
+					Properties prop = new Properties();
+					String path = "./application.properties";
+					FileInputStream file;
+					file = new FileInputStream(path);
+					prop.load(file);
+					file.close();
+				tr = tTest.fetchMail(ti,prop.getProperty("ett.starttls.address"));
 				tr.id = 1;
 				res.add(tr);
 			} catch (IOException e) {
@@ -129,9 +133,13 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr2;
 			try {
-				ti.tttUserName = "wellformed1";
-				ti.tttPassword = "smtptesting123";
-				tr2 = tTest.fetchMail(ti);
+				Properties prop = new Properties();
+				String path = "./application.properties";
+				FileInputStream file;
+				file = new FileInputStream(path);
+				prop.load(file);
+				file.close();
+				tr2 = tTest.fetchMail(ti,prop.getProperty("ett.starttls.hisp.address"));
 				tr2.id = 2;
 				res.add(tr2);
 			} catch (IOException e) {
@@ -354,7 +362,13 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr18;
 			try {
-				tr18 = tTest.fetchMail(ti);
+				Properties prop = new Properties();
+				String path = "./application.properties";
+				FileInputStream file;
+				file = new FileInputStream(path);
+				prop.load(file);
+				file.close();
+				tr18 = tTest.fetchMail(ti,prop.getProperty("ett.hisp.address"));
 				tr18.id = 18;
 				res.add(tr18);
 			} catch (IOException e) {
@@ -579,7 +593,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr119;
 			try {
-				tr119 = tTest.fetchandSendMDN(ti);
+				tr119 = tTest.fetchManualTest(ti);
 				tr119.id = 119;
 				res.add(tr119);
 			} catch (IOException e) {
@@ -594,7 +608,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr120;
 			try {
-				tr120 = tTest.fetchandSendMDN(ti);
+				tr120 = tTest.fetchManualTest(ti);
 				tr120.id = 120;
 				res.add(tr120);
 			} catch (IOException e) {
@@ -1227,19 +1241,33 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			}
 			log.info("*****************   END  Testcase 228 *******************************");
 			break;
-		case 229:
-			log.info("*****************   BEGIN  Testcase 229 *******************************");
+		case 2291:
+			log.info("*****************   BEGIN  Testcase 2291 *******************************");
 
-			TestResult tr229;
+			TestResult tr2291;
 			try {
-				tr229 = tTest.fetchTestMailboxNames(ti);
-				tr229.id = 229;
-				res.add(tr229);
+				tr2291 = tTest.fetchTestMailboxNames(ti);
+				tr2291.id = 2291;
+				res.add(tr2291);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			log.info("*****************   END  Testcase 229 *******************************");
+			log.info("*****************   END  Testcase 2291 *******************************");
+			break;
+		case 2292:
+			log.info("*****************   BEGIN  Testcase 2292 *******************************");
+
+			TestResult tr2292;
+			try {
+				tr2292 = tTest.fetchTestMailboxNames(ti);
+				tr2292.id = 2292;
+				res.add(tr2292);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 2292 *******************************");
 			break;
 		case 230:
 			log.info("*****************   BEGIN  Testcase 230 *******************************");
@@ -1501,19 +1529,34 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 328 *******************************");
 			break;
 
-		case 329:
-			log.info("*****************   BEGIN  Testcase 329 *******************************");
+		case 3291:
+			log.info("*****************   BEGIN  Testcase 3291 *******************************");
 
-			TestResult tr329;
+			TestResult tr3291;
 			try {
-				tr329 = tTest.fetchTestMailboxNames(ti);
-				tr329.id = 227;
-				res.add(tr329);
+				tr3291 = tTest.fetchTestMailboxNames(ti);
+				tr3291.id = 3291;
+				res.add(tr3291);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			log.info("*****************   END  Testcase 329 *******************************");
+			log.info("*****************   END  Testcase 3291 *******************************");
+			break;
+			
+		case 3292:
+			log.info("*****************   BEGIN  Testcase 3292 *******************************");
+
+			TestResult tr3292;
+			try {
+				tr3292 = tTest.fetchTestMailboxNames(ti);
+				tr3292.id = 3292;
+				res.add(tr3292);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("*****************   END  Testcase 3292 *******************************");
 			break;
 
 		case 330:

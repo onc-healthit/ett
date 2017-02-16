@@ -1,0 +1,222 @@
+[
+   {
+      "name":"Please select",
+      "xdrTest":false,
+      "testList":"['h1','h2']",
+      "criteria":"'h1-1'",
+      "selectOption":"['A','B','2','3','4','5','6','7','8','9','10']"
+   },
+   {
+      "name":"Criteria (i) Direct Home - Certificates",
+      "testList":"['h1']",
+      "redirect":{
+         "hrefvalue":"direct.home",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"certification.certh1.main"
+      }
+   },
+   {
+      "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
+      "testList":"['h1']",
+      "redirect":{
+         "hrefvalue":"https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",
+         "newWindow":true
+      }
+   },
+   {
+      "name":"Criteria (i) Register Direct",
+      "testList":"['h1']",
+      "redirect":{
+         "hrefvalue":"direct.register",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"certification.certh1.main"
+      }
+   },
+   {
+      "name":"Criteria (i) Send Direct Message",
+      "testList":"['h1']",
+      "redirect":{
+         "hrefvalue":"direct.send",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"certification.certh1.main"
+      }
+   },
+   {
+      "name":"Criteria (i) Receive - Message Status",
+      "testList":"['h1']",
+      "redirect":{
+         "hrefvalue":"direct.status",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"certification.certh1.main"
+      }
+   },
+   {
+      "name":"Criteria (ii) Delivery Notifications",
+      "xdrTest":false,
+      "testList":"['h1']",
+      "criteria":"'h1-1'"
+   },
+   {
+      "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",
+         "newWindow":true
+      },
+      "selectOption":"['A','B','2','9','5','6','10']"
+   },
+   {
+      "name":"Criteria (i) Register Direct",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"direct.register",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
+      },
+      "selectOption":"['A','B','2','9']"
+   },
+   {
+      "name":"Criteria (i) Direct Home - Certificates",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"direct.home",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
+      },
+      "selectOption":"['A','B','6','5']"
+   },
+   {
+      "name":"Criteria (i) Send Direct Message",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"direct.send",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
+      },
+      "selectOption":"['A','B','5','6']"
+   },
+   {
+      "name":"Criteria (i) Message Status",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"direct.status",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
+      },
+      "selectOption":"['A','B','5','6']"
+   },
+   {
+      "name":"Criteria (i) C-CDA R2.1 Validator",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"direct.ccdar2",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
+      },
+      "selectOption":"['B']"
+   },
+   {
+      "name":"Criteria (i) XDR Validator",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"validators.xdr",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
+      }
+   },
+   {
+      "name":"Criteria (i) XDM Validator",
+      "testList":"['h2']",
+      "redirect":{
+         "hrefvalue":"validators.xdm",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
+      },
+      "selectOption":"['6','4','B','5']"
+   },
+   {
+      "name":"Criteria (i)(B) Send using SOAP+XDR",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-1'",
+      "selectOption":"['3','B']"
+   },
+   {
+      "name":"Criteria (i)(B) Receive using SOAP+XDR",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-2'",
+      "selectOption":"['5','7']"
+   },
+   {
+      "name":"Criteria (i)(C) Send using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-3'",
+      "selectOption":"['B','3','4']"
+   },
+   {
+      "name":"Criteria (i)(C) Send using Edge Protocol - SMTP",
+      "xdrTest":false,
+      "testList":"['h2']",
+      "criteria":"'h2-4'",
+      "selectOption":"['B','4']"
+   },
+   {
+      "name":"Criteria (i)(C) Send using Edge Protocol - IMAP",
+      "xdrTest":false,
+      "testList":"['h2']",
+      "criteria":"'h2-5'",
+      "selectOption":"['B','4']"
+   },
+   {
+      "name":"Criteria (i)(C) Send using Edge Protocol - POP",
+      "xdrTest":false,
+      "testList":"['h2']",
+      "criteria":"'h2-6'",
+      "selectOption":"['B','4']"
+   },
+   {
+      "name":"Criteria (i)(C) Receive using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-7'",
+      "selectOption":"['5','8']"
+   },
+   {
+      "name":"Criteria (i)(C) Receive using Edge Protocol - SMTP",
+      "xdrTest":false,
+      "testList":"['h2']",
+      "criteria":"'h2-8'",
+      "selectOption":"['5','8']"
+   },
+   {
+      "name":"Criteria (ii) Delivery Notification in Direct - SMTP",
+      "xdrTest":false,
+      "testList":"['h2']",
+      "criteria":"'h2-9'",
+      "selectOption":"['9','B']"
+   },
+   {
+      "name":"Criteria (ii) Receive SMTP: Disposition-Notification",
+      "xdrTest":false,
+      "testList":"['h2']",
+      "criteria":"'h2-10'",
+      "selectOption":"['5','10']"
+   },
+   {
+      "name":"Criteria (ii)(C) Delivery Notification in Direct - XDR",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-11'",
+      "selectOption":"['9','B']"
+   },
+   {
+      "name":"Criteria (ii)(C) Receive XDR: Disposition-Notification",
+      "xdrTest":true,
+      "testList":"['h2']",
+      "criteria":"'h2-12'",
+      "selectOption":"['5','10']"
+   }
+
+]

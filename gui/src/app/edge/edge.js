@@ -103,7 +103,8 @@ edge.config(['$stateProvider',
                     }
                 },
                 data: {
-                    sutEge: true
+                    sutEge: true,
+                    protocol: "xdr"
                 }
             })
             .state('edge.reports', {
