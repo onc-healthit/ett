@@ -572,7 +572,7 @@ public class MU2ReceiverTests {
 				for (Message message : messages){
 					MimeMessage mime = (MimeMessage) message;
 					Message message1 = new MimeMessage(mime);
-					if(!(message1.getSubject().equals("Re:"))){
+					if(!(message1.getSubject()!=null && message1.getSubject().equals("Re:"))){
 						if(message1.getContent() instanceof Multipart){
 							Multipart multipart1 = (Multipart) message1.getContent();
 							for (int i = 0; i < multipart1.getCount(); i++) {
