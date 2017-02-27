@@ -54,7 +54,8 @@
       "name":"Criteria (ii) Delivery Notifications",
       "xdrTest":false,
       "testList":"['h1']",
-      "criteria":"'h1-1'"
+      "criteria":"'h1-1'",
+      "uploadOption":true
    },
    {
       "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
