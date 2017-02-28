@@ -72,10 +72,19 @@
 					<p><strong>Step 1:</strong> Provide your <span ng-repeat="input in test.inputs">{{input.name}}{{$last ? '. ':($index==test.inputs.length-2) ? ', and ':', a '}}</span>{{runText}}</p>
 				</div>
 				<div ng-repeat="input in test.inputs">
-					<label for="{{input.key}}" class="col-md-1 small-padding control-label">
-						{{input.name}}:
-						<i class="glyphicon glyphicon-question-sign" tooltips tooltip-title="{{input.name}}" tooltip-side="top"></i>
-					</label>
+					<div ng-if="input.hoverlabel">
+						<label for="{{input.key}}" class="col-md-1 small-padding control-label">
+							{{input.name}}:
+						      <i class="glyphicon glyphicon-question-sign" tooltips tooltip-title="{{input.hoverlabel}}" tooltip-side="top"></i>
+						</label>
+					</div>
+					<div ng-if="!input.hoverlabel">
+						<label for="{{input.key}}" class="col-md-1 small-padding control-label">
+							{{input.name}}:
+						      <i class="glyphicon glyphicon-question-sign" tooltips tooltip-title="{{input.name}}" tooltip-side="top"></i>
+						</label>
+					</div>
+
 					<div ng-switch on="input.type">
 
 						<div ng-switch-when="string">

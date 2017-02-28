@@ -276,6 +276,7 @@
     "status": "configure",
     "inputs": [{
         "name": "Direct To Address",
+        "hoverlabel":"Direct To Address: SUT's receiving email endpoint for Direct/XDR translation, ETT to SUT workflow.",
         "key": "direct_to",
         "type": "string"
     }],
@@ -285,7 +286,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Sender (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Receiver (Test Tool)",
-    "Purpose/Description": "Test Tool sends a Direct Message, which is translated to an XDR message and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.",
+    "Purpose/Description": "Test Tool sends a Direct Message, which is translated to an XDR message and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The validation report will be sent to the email address registered with the Direct address enter during setup. Direct To Address: SUT's receiving email endpoint for Direct/XDR translation, ETT to SUT workflow.",
     "Conformance  Test Details": "XDR Message Checklist + XDS Metadata Checklist for Limited Metadata Document Source + Direct XDR Checklist",
     "Expected Test Results": "HISP generates an XDR message with Limited Metadata from a Direct Message and forwards to Edge.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -303,6 +304,7 @@
     "status": "configure",
     "inputs": [{
         "name": "Direct To Address",
+        "hoverlabel":"Direct To Address: SUT's receiving email endpoint for Direct/XDR translation, ETT to SUT workflow.",
         "key": "direct_to",
         "type": "string"
     }],
@@ -312,7 +314,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Sender (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Receiver (Test Tool)",
-    "Purpose/Description": "Test Tool sends a Direct Message + XDM, which is translated to an XDR message with Limited Metadata and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.",
+    "Purpose/Description": "Test Tool sends a Direct Message + XDM, which is translated to an XDR message with Limited Metadata and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The validation report will be sent to the email address registered with the Direct address enter during setup. Direct To Address: SUT's receiving email endpoint for Direct/XDR translation, ETT to SUT workflow.",
     "Conformance  Test Details": "XDR Message Checklist + XDS Metadata Checklist for Limited Metadata Document Source + Direct XDR Checklist",
     "Expected Test Results": "HISP generates an XDR message with Limited Metadata from a Direct Message and forwards to Edge.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -330,6 +332,7 @@
     "status": "configure",
     "inputs": [{
         "name": "Direct To Address",
+        "hoverlabel":"Direct To Address: SUT's receiving email endpoint for Direct/XDR translation, ETT to SUT workflow.",
         "key": "direct_to",
         "type": "string"
     }],
@@ -339,7 +342,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Sender (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Receiver (Test Tool)",
-    "Purpose/Description": "Test Tool sends a Direct Message + XDM, which is translated to an XDR message with Full Metadata and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge.",
+    "Purpose/Description": "Test Tool sends a Direct Message + XDM, which is translated to an XDR message with Full Metadata and sent to the Edge.\nVerify that the HISP system can create an XDR message per the specification and forward to Edge. The validation report will be sent to the email address registered with the Direct address enter during setup. Direct To Address: SUT's receiving email endpoint for Direct/XDR translation, ETT to SUT workflow.",
     "Conformance  Test Details": "XDR Message Checklist + XDS Metadata Checklist for Full Metadata Document Source + Direct XDR Checklist",
     "Expected Test Results": "HISP generates an XDR message with Full Metadata from a Direct Message and forwards to Edge.",
     "Required / Conditional per Direct Edge Protocol Guide": "O",
@@ -356,10 +359,12 @@
     "criteria":"['h2-2','h2-7']",    
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"*Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Outgoing (ETT --> SUT) Direct From Address",
+        "hoverlabel":"* SUT (HISP) outgoing SMTP address.",
         "key": "outgoing_from",
         "type": "string"
     }],
@@ -369,7 +374,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "Test Tool sends an XDR Message to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "Purpose/Description": "Test Tool sends an XDR Message to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.\nNote: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed.",
     "Conformance  Test Details": "XDR Message Checklist + XDS Metadata Checklist for Limited Metadata Document Source + Direct XDR Checklist",
     "Expected Test Results": "HISP receives an XDR message and converts to a Direct + XDM Message.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -387,10 +392,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -404,7 +411,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The ETT (as Edge) sends a message to the Health IT Module using a bad address, such that the Health IT Module is unable to deliver the message. The Health IT Module delivers a failure message to the ETT (as Edge) using the XDR profile due to a bad address",
+    "Purpose/Description": "The ETT (as Edge) sends a message to the Health IT Module using a bad address, such that the Health IT Module is unable to deliver the message. The Health IT Module delivers a failure message to the ETT (as Edge) using the XDR profile due to a bad address. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "Conforms to section 1.5.2.1.1 of the Direct Edge Protocol Implementation Guide 1.1, including an appropriately filled <direct:disposition> element in the XML payload",
     "Expected Test Results": "The message disposition must indicate a failure.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -421,10 +428,12 @@
     "criteria":"['h2-2','h2-7']",    
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"*Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Outgoing (ETT --> SUT) Direct From Address",
+        "hoverlabel":"* SUT (HISP) outgoing SMTP address.",
         "key": "outgoing_from",
         "type": "string"
     }],
@@ -434,7 +443,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "Test Tool sends an XDR Message with Full Metadata to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.",
+    "Purpose/Description": "Test Tool sends an XDR Message with Full Metadata to the HSIP which then translates the message to Direct and sends to the other HISP.\nVerify that an HISP system can receive a properly formatted XDR message and translate to Direct Message.\nNote: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed.",
     "Conformance  Test Details": "XDR Message Checklist + XDS Metadata Checklist for Full Metadata Document Source + Direct XDR Checklist",
     "Expected Test Results": "HISP receives an XDR message and converts to a Direct Message.",
     "Required / Conditional per Direct Edge Protocol Guide": "O",
@@ -452,10 +461,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -469,7 +480,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The ETT (as Edge) sends a message to the Health IT Module using a valid address, but the ETT (as Destination HISP) is not trusted.",
+    "Purpose/Description": "The ETT (as Edge) sends a message to the Health IT Module using a valid address, but the ETT (as Destination HISP) is not trusted. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "Conforms to section 1.5.2.1.1 of the Direct Edge Protocol Implementation Guide 1.1",
     "Expected Test Results": "The Health IT Module delivers a failure message to the ETT (as Edge) using the XDR profile due to an untrusted HISP (ETT as Destination HISP)",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -539,10 +550,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -556,7 +569,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP which does not have a published certificate.",
+    "Purpose/Description": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP which does not have a published certificate. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "Create and send a valid XDR message, with a valid destination with an unpublished certificate",
     "Expected Test Results": "The SUT will respond with a message that conforms to section 1.5.2.1.1 of the Direct Edge Protocol Implementation Guide 1.1",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -600,10 +613,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -617,7 +632,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP due to an extended wait period using an XDR profile.",
+    "Purpose/Description": "Verify the ability of the SUT to appropriately respond to a delivery to a HISP due to an extended wait period using an XDR profile. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "Create and send a valid XDR message, with a valid destination with an extended wait period, time-out scenario, failure message.",
     "Expected Test Results": "The SUT will respond with a message that conforms to section 1.5.2.1.1 of the Direct Edge Protocol Implementation Guide 1.1",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -807,10 +822,12 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct To Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_to",
         "type": "string"
     }, {
@@ -824,7 +841,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a valid message from the ETT",
+    "Purpose/Description": "The Health IT Module is able to successfully process a valid message from the ETT. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "HISP should appropriately handle a VALID delivery notification request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data.",
     "Expected Test Results": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge)",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -841,10 +858,12 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"*Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Outgoing (ETT --> SUT) Direct From Address",
+        "hoverlabel":"* SUT (HISP) outgoing SMTP address.",
         "key": "outgoing_from",
         "type": "string"
     }],
@@ -854,7 +873,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process an invalid message from the ETT, message contains a valid address block and invalid destination.",
+    "Purpose/Description": "The Health IT Module is able to successfully process an invalid message from the ETT, message contains a valid address block and invalid destination.\nNote: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed.",
     "Conformance  Test Details": "HISP should appropriately handle an INVALID delivery notification request, including X-DIRECT-FINAL-DESTINATION-DELIVERY data.",
     "Expected Test Results": "The Health IT Module is able to process the header handle an invalid delivery notification request",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -872,10 +891,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -889,7 +910,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) that includes an invalid (non-existent) address.",
+    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) that includes an invalid (non-existent) address. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "HISP should appropriately handle an INVALID address and send the negative delivery notification back to the EDGE.",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -907,10 +928,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -924,7 +947,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) is not trusted.",
+    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) is not trusted. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "XDR Message Checklist + XDS Metadata Checklist for Limited Metadata Document Source + Direct XDR Checklist",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -942,10 +965,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -959,7 +984,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) does not have published certificates, and security and trust processing fails.",
+    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) does not have published certificates, and security and trust processing fails. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "The HISP sends a negative delivery status notification message back to the EDGE.",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -977,10 +1002,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -994,7 +1021,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) does not respond with a Processed MDN.",
+    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) does not respond with a Processed MDN. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "The HISP sends a negative delivery status notification message back to the EDGE.",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -1012,10 +1039,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1029,7 +1058,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) responds with a Processed MDN, but no Dispatched MDN.",
+    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) responds with a Processed MDN, but no Dispatched MDN. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "The HISP sends a negative delivery status notification message back to the EDGE.",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -1047,10 +1076,12 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1064,7 +1095,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) responds with a Processed MDN, but the Dispatched MDN is received after the expected wait time has exceeded.",
+    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) responds with a Processed MDN, but the Dispatched MDN is received after the expected wait time has exceeded. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "The HISP sends a negative delivery status notification message back to the EDGE.",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -1082,10 +1113,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1099,7 +1132,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) responds with a Processed MDN and Dispatched MDN within the expected time period.",
+    "Purpose/Description": "The Health IT Module is able to successfully process a message from the ETT (as Sending Edge) to a valid address. The ETT (as Destination HISP) responds with a Processed MDN and Dispatched MDN within the expected time period. \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "The HISP sends only one positive delivery status notification message back to the EDGE.",
     "Expected Test Results": "The Health IT Module sends a positive delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -1117,10 +1150,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1134,7 +1169,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module receives a message from the ETT (as Sending HISP) and is unable to deliver the message to its final destination (ETT as Destination Edge).",
+    "Purpose/Description": "The Health IT Module receives a message from the ETT (as Sending HISP) and is unable to deliver the message to its final destination (ETT as Destination Edge). \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "The Health IT Module delivers a Processed MDN to the ETT (as Sending HISP) followed by a delivery failure message to the ETT (as Sending HISP) after the wait time has exceeded",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
@@ -1152,10 +1187,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Direct From Address",
+        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
