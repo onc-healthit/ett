@@ -629,7 +629,7 @@ public class TTTReceiverTests {
 			}
 
 			if (messages.length == 0){
-				tr.setCriteriamet(CriteriaStatus.FALSE);
+			//	tr.setCriteriamet(CriteriaStatus.FALSE);
 				result.put("\nERROR", "No MDNs found\n");
 			}
 

@@ -593,7 +593,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr119;
 			try {
-				tr119 = tTest.fetchManualTest(ti);
+				tr119 = tTest.fetchandSendMDN(ti);
 				tr119.id = 119;
 				res.add(tr119);
 			} catch (IOException e) {
@@ -608,7 +608,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 			TestResult tr120;
 			try {
-				tr120 = tTest.fetchManualTest(ti);
+				tr120 = tTest.fetchandSendMDN(ti);
 				tr120.id = 120;
 				res.add(tr120);
 			} catch (IOException e) {

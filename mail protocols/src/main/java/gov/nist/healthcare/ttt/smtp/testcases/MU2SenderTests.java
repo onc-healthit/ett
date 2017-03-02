@@ -2119,7 +2119,7 @@ public class MU2SenderTests {
 			
 			System.out.println("Done");
 			log.info("Message Sent with ID " + MessageId +" to " + ti.sutEmailAddress);
-			result.put("1","Sending email\n");
+			result.put("1","Sending email to "+ti.sutEmailAddress+"\n");
 			result.put("2","Email sent Successfully\n");
 			result.put("3", "Message-ID of the email sent: " + MessageId);
 			
