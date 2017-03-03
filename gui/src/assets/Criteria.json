@@ -54,7 +54,8 @@
       "name":"Criteria (ii) Delivery Notifications",
       "xdrTest":false,
       "testList":"['h1']",
-      "criteria":"'h1-1'"
+      "criteria":"'h1-1'",
+      "uploadOption":true
    },
    {
       "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
@@ -132,7 +133,7 @@
          "hreflabel":"170.315(h)(2)",
          "hrefback":"certification.certh2.main"
       },
-      "selectOption":"['6','4','B','5']"
+      "selectOption":"['2','6','4','B','5']"
    },
    {
       "name":"Criteria (i)(B) Send using SOAP+XDR",
