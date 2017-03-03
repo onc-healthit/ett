@@ -5,7 +5,7 @@
 		"id": 1,
 		"protocol": "smtp",
 		"desc": "Verifies the ability of the sending system to send an email to ETT using the SMTP protocol with STARTTLS and PLAIN SASL Authentication. The SUT will send an email to wellformed1@ttpedgetest.sitenv.org. Hitting 'Run' will cause ETT to search for an email sent to wellformed1@ttpedgetest.sitenv.org from the email address entered in Profile window. The validation result of C-CDA Document Type selected, will not affect the test result.",
-		"longDesc": "The credentials for SASL authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123 ",
+		"longDesc": "1-8 tests for basic commands (HELO, MAIL FROM, RCPT TO..). 14 tests for STARTTLS. 18 tests for SASL AUTH. The SUT has to connect to the ETT James server and send an email to the email address listed on the UI. If a vendor successfully sends an email, it has been demonstrated that all the above cases are validated. The credentials for SASL authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123 ",
 		"sutRole": "sender",
 		"sutHisp": false,
 		"sutEdge": true,
