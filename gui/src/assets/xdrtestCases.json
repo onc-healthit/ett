@@ -649,6 +649,7 @@
     "criteria":"['h2-3']",    
     "inputs": [{
         "name": "IP Address",
+        "hoverlabel":"IP Address (eg: 202.255.24.62)",
         "key": "ip_address",
         "type": "string"
     }],
@@ -675,6 +676,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "IP Address",
+        "hoverlabel":"IP Address (eg: 202.255.24.62)",
         "key": "ip_address",
         "type": "string"
     }, {
@@ -705,6 +707,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "IP Address",
+        "hoverlabel":"IP Address (eg: 202.255.24.62)",
         "key": "ip_address",
         "type": "string"
     }, {
