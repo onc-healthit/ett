@@ -1096,8 +1096,7 @@ public class MU2SenderTests {
 		return tr;
 	}
 
-
-	public TestResult testMu2TwoEight(TestInput ti, String Address) {
+	public TestResult testMu2TwoSeven(TestInput ti, String Address) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -1169,9 +1168,80 @@ public class MU2SenderTests {
 
 		return tr;
 	}
+	public TestResult testMu2TwoEight(TestInput ti, String Address) {
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
+		HashMap<String, String> result = tr.getTestRequestResponses();
 
-	
-	public TestResult testMu2TwoEightSmtp(TestInput ti, String Address) {
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.ssl.trust", "*");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		tr.setFetchType("imap");
+		tr.setSearchType("timeout28");
+		Session session = Session.getInstance(props, null);
+
+		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			  
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(fromAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(Address));
+			message.setSubject("Testing sending mail to " + Address);
+			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+			String MessageId = message.getHeader("Message-ID")[0];
+			System.out.println("Done");
+			log.info("Message Sent with ID " + MessageId +" to " + Address+" from "+fromAddress);
+			result.put("1","SENDING EMAIL TO  "+ Address + "\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + MessageId);
+			
+			tr.setMessageId(MessageId);
+			tr.setStartTime(ZonedDateTime.now().toString());
+
+		} catch (Exception e) {
+			log.info("Error in MU2 -27/28");
+			result.put("ERROR", "Cannot send message to " + Address + ": " +  e.getLocalizedMessage());
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+
+	public TestResult testMu2TwoSevenSmtp(TestInput ti, String Address) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
@@ -1244,9 +1314,81 @@ public class MU2SenderTests {
 
 		return tr;
 	}
+	public TestResult testMu2TwoEightSmtp(TestInput ti, String Address) {
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.MANUAL);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.ssl.trust", "*");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		tr.setFetchType("smtp");;
+		tr.setSearchType("timeout28");
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(fromAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(Address));
+			message.setSubject("Testing sending mail to " + Address);
+			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+			String MessageId = message.getHeader("Message-ID")[0];
+			System.out.println("Done");
+			log.info("Message Sent with ID " + MessageId +" to " + Address+" from "+fromAddress);
+			result.put("1","SENDING EMAIL TO  "+ Address + "\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + MessageId);
+			
+			tr.setMessageId(MessageId);
+			tr.setStartTime(ZonedDateTime.now().toString());
+
+		} catch (Exception e) {
+			log.info("Error in MU2 -27/28");
+			result.put("ERROR", "Cannot send message to " + Address + ": " +  e.getLocalizedMessage());
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
 	
-	
-	public TestResult testMu2TwoEightPop(TestInput ti, String Address) {
+	public TestResult testMu2TwoSevenPop(TestInput ti, String Address) {
 		TestResult tr = new TestResult();
 		tr.setProctored(true);
 		tr.setCriteriamet(CriteriaStatus.STEP2);
@@ -1260,6 +1402,79 @@ public class MU2SenderTests {
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("pop");
 		tr.setSearchType("timeout");
+
+		Session session = Session.getInstance(props, null);
+
+		try {
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			
+			String fromAddress = "";
+			if (ti.sutUserName.contains("@")){
+				fromAddress = ti.sutUserName;
+			}
+
+			else {
+				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
+			}
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(fromAddress));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(Address));
+			message.setSubject("Testing sending mail to " + Address);
+			message.setText("This is a message to "+ Address);
+			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
+			message.addHeader("Disposition-Notification-To", fromAddress);
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+			messageBodyPart.setText("This is message body");
+
+			log.info("Sending Message");
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(ti.sutSmtpAddress, ti.useTLS ? ti.startTlsPort
+					: ti.sutSmtpPort, ti.sutUserName, ti.sutPassword);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+			String MessageId = message.getHeader("Message-ID")[0];
+			System.out.println("Done");
+			log.info("Message Sent with ID " + MessageId +" to " + Address+" from "+fromAddress);
+			result.put("1","SENDING EMAIL TO  "+ Address + "\n");
+			result.put("2","Email sent Successfully\n");
+			result.put("3", "Message-ID of the email sent: " + MessageId);
+			
+			tr.setMessageId(MessageId);
+			tr.setStartTime(ZonedDateTime.now().toString());
+
+		} catch (Exception e) {
+			log.info("Error in MU2 -27/28");
+			result.put("ERROR", "Cannot send message to " + Address + ": " +  e.getLocalizedMessage());
+			e.printStackTrace();
+			tr.setCriteriamet(CriteriaStatus.FALSE);
+		}
+
+		return tr;
+	}
+	public TestResult testMu2TwoEightPop(TestInput ti, String Address) {
+		TestResult tr = new TestResult();
+		tr.setProctored(true);
+		tr.setCriteriamet(CriteriaStatus.STEP2);
+		HashMap<String, String> result = tr.getTestRequestResponses();
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required","true");
+		props.put("mail.smtp.ssl.trust", "*");
+	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		tr.setFetchType("pop");
+		tr.setSearchType("timeout28");
 
 		Session session = Session.getInstance(props, null);
 

@@ -570,8 +570,17 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-9']",
-		"sutEdge": false
+    	"criteria":"['h2-9']",
+    	"sutEdge": false,
+		"fields": [{
+			"label": "Timeout in minutes",
+			"name": "sutCommandTimeoutInSeconds",
+			"datatype": "String",
+			"placeHolder": "Timeout In Minutes",
+			"value": "Timeout In Minutes",
+			"readOnly": false,
+			"display": true
+		}]
 	}, {
 		"name": "SMTP/IMAP MT Test 28(b) (Delayed Dispatched MDN)",
 		"id": 128,
@@ -584,9 +593,10 @@
 		"sutEdge": false,
 		"fields": [{
 			"label": "Timeout in minutes",
-			"name": "TimeoutInMinutes",
+			"name": "sutCommandTimeoutInSeconds",
+			 "placeHolder": "Timeout In Minutes",
 			"datatype": "String",
-			"value": "TimeoutInMinutes",
+			"value": "Timeout In Minutes",
 			"readOnly": false,
 			"display": true
 		}]
@@ -598,8 +608,17 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-9']",
-		"sutEdge": false
+    	"criteria":"['h2-9']",
+    	"sutEdge": false,
+		"fields": [{
+			"label": "Timeout in minutes",
+			"name": "sutCommandTimeoutInSeconds",
+			"placeHolder": "Timeout In Minutes",
+			"datatype": "String",
+			"value": "Timeout In Minutes",
+			"readOnly": false,
+			"display": true
+		}]
 	}, {
 		"name": "SMTP MT Test 29(a) (Positive Notification)",
 		"id": 529,
