@@ -763,10 +763,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }, {
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -794,10 +796,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }, {
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -1276,10 +1280,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }, {
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -1307,10 +1313,12 @@
     "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }, {
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
