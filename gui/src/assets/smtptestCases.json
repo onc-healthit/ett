@@ -242,6 +242,7 @@
 		"desc": " Verifies the ability of SUT to receive a CCDA document that includes a broken reference to a style-sheet",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 26(b) (Receive bad CCDA)",
@@ -250,6 +251,7 @@
 		"desc": " Verifies the ability of SUT to receive a CCDA document with good reference to an invalid style-sheet",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 27 (Receive XDM with bad XHTML)",
