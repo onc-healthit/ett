@@ -266,7 +266,7 @@ public class PartValidation {
 			validateCCDAwithMDHT(part);
 		}
 		
-		if(p.isMimeType("application/zip")) {
+		if(p.isMimeType("application/zip") || p.isMimeType("application/octet-stream") || p.isMimeType("application/x-zip-compressed")) {
 			validateXDM(part);
 		}
 	}
