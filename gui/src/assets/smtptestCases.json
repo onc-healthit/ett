@@ -8,6 +8,7 @@
 		"longDesc": "The credentials for SASL authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123 ",
 		"sutRole": "sender",
 		"sutHisp": false,
+		"criteria":"['b1-2']",
 		"sutEdge": true,
 		"ccdaFileRequired": true,
 		"fields": [{
@@ -43,7 +44,7 @@
 		"desc": "Verifies the ability of the receiving system to accept a STARTTLS connection with PLAIN SASL authentication. Hitting 'Run' will cause ETT to send an email. Verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION'.",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    		"criteria":"['h2-8']",    		
+    		"criteria":"['h2-8','b1-4','b1-7']",    		
 		"sutEdge": true,
 		"ccdaFileRequired": true,
 		"fields": [{
@@ -62,7 +63,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects data sent from a HISP (e.g., ETT), acting as the sender, as a component of a successfully established and active session. Successful establishment of an end-point to end-point connection between the SUT and ETT is a necessary function for SMTP Test Case 10 execution.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT and attempt to send an invalid data via the DATA command (e.g., bad line feeds).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the 'Implementation Guide for Direct Edge Protocols' document. \n The test correlates to Test ID 10 of the SMTP Test Cases (tab) within the 'DirectEdgeProtocols' spreadsheet.",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    		"criteria":"['h2-8']",    		
+    		"criteria":"['h2-8','b1-4']",    		
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 11 (Reject Bad Commands)",
@@ -72,7 +73,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects as invalid the commands sent from a HISP (e.g., ETT), acting as the sender./n The details for conformance testing flow are as follows: The ETT attempts to initiate a session with the SUT by sending an invalid SMTP command following identified exception paths. The test attempts to determine if the SUT rejects the command sent by the Edge Testing Tool as invalid and responds using the appropriate mechanisms. This is conducted in accordance with RFC 2811, Section 4.1.1 and 4.1.4 (e.g., closing the session abruptly).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the 'Implementation Guide for Direct Edge Protocols' document. \nThe test correlates to Test ID 11 of the SMTP Test Cases (tab) within the 'DirectEdgeProtocols' spreadsheet. ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    		"criteria":"['h2-8']",    		
+    		"criteria":"['h2-8','b1-4']",    		
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 13 (Command Timeout)",
@@ -82,7 +83,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, can successfully establish an active session with a HISP (e.g., ETT), acting as the sender, and conform to the specific timeout requirements within the RFC and SMTP command.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT. The SUT will attempt to keep a transaction open with the ETT for beyond the specified time constraints found within RFC 2821, Section 4.5.3.2. \nThis is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the 'Implementation Guide for Direct Edge Protocols' document. ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    		"criteria":"['h2-8']",    		
+    		"criteria":"['h2-8','b1-4']",    		
 		"sutEdge": true,
 		"fields": [{
 			"label": "Command timeout in seconds",
@@ -99,7 +100,7 @@
 		"desc": "Verifies the ability of the receiving system to reject invalid STARTTLS commands.Hitting 'Run' will cause ETT to begin an invalid STARTTLS session. This session SHALL end before a message can be sent.",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    		"criteria":"['h2-8']",    		
+    		"criteria":"['h2-8','b1-4']",    		
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 17 - Generate Unique Message-ID (Processed MDN suite)",
@@ -109,6 +110,7 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
+		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 18 - Accept failure message for invalid recipient (Processed MDN suite - IMAP/POP Receiver)",
@@ -118,6 +120,7 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
+		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 18(a) - Accept failure message for invalid recipient (Processed MDN suite - SMTP Receiver)",
@@ -127,6 +130,7 @@
 		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpdstest.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP. Note that 18a/47a are to be executed only for SMTP Receive configurations with pre-configured accounts.",
 		"sutRole": "sender",
 		"sutHisp": false,
+		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 45 - Generate Unique Message-ID (IG for Delivery Notification Suite)",
@@ -145,6 +149,7 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
+		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 47 - Accept failure message for invalid recipient (IG for Delivery Notification Suite - IMAP/POP Receiver)",
@@ -154,6 +159,7 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpdstest.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP.  ",
 		"sutRole": "sender",
 		"sutHisp": false,
+		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 47(a) - Accept failure message for invalid recipient (IG for Delivery Notification Suite - SMTP Receiver)",
@@ -163,6 +169,7 @@
 		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpdstest.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP. Note that 18a/47a are to be executed only for SMTP Receive configurations with pre-configured accounts.",
 		"sutRole": "sender",
 		"sutHisp": false,
+		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 22 (Reject invalid username/password)",
@@ -172,7 +179,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, will reject and fail to authenticate an invalid PLAIN SASL request sent from a HISP (e.g., ETT), acting as the sender.\nThe details for conformance testing flow are as follows: The ETT will send an invalid PLAIN SASL username/password authentication scheme to the SUT. The SUT will receive the invalid PLAIN SASL username/password, reject the credentials, and fail to established authentication to the ETT. The PLAIN SASL connection mechanisms will conform to the specified requirements within RFC 4616, Section 2.\n This is conditional test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.4 of the 'Implementation Guide for Direct Edge Protocols' document.\n The test correlates to Test ID 22 of the SMTP Test Cases (tab) within the 'DirectEdgeProtocols' spreadsheet. ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    		"criteria":"['h2-8']",    		
+    		"criteria":"['h2-8','b1-4']",    		
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(a) (Receive Text and CCDA)",
@@ -181,6 +188,7 @@
 		"desc": " Verifies the ability of SUT to receive text and CCDA attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(b) (Receive PDF and CCDA)",
@@ -189,6 +197,7 @@
 		"desc": " Verifies the ability of SUT to receive PDF and CCDA attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(c) (Receive Text and XDM)",
@@ -197,6 +206,7 @@
 		"desc": " Verifies the ability of SUT to receive text and XDM attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(d) (Receive CCDA and Text)",
@@ -205,6 +215,7 @@
 		"desc": " Verifies the ability of SUT to receive CCDA and text attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(e) (Receive CCDA and Pdf)",
@@ -213,6 +224,7 @@
 		"desc": " Verifies the ability of SUT to receive CCDA and PDF attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(f) (Receive XDM and Text)",
@@ -221,6 +233,7 @@
 		"desc": " Verifies the ability of SUT to receive XDM and text attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 26(a) (Receive bad CCDA)",
@@ -245,6 +258,7 @@
 		"desc": " Verifies the ability of SUT to receive an XDM package containing a bad XHTML file",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 28 (Receive XDM with MIME type 'application/octet-stream')",
@@ -253,6 +267,7 @@
 		"desc": " Verifies the ability of SUT to receive an XDM package with MIME-type 'application/octet-stream' at the SMTP layer",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 29 (Receive XDM with MIME type 'application/xml')",
@@ -261,6 +276,7 @@
 		"desc": " Verifies the ability of Vendor to receive an XDM package with MIME-type 'application/xml' at the XDM layer (in METADATA.XML)",
 		"sutRole": "receiver",
 		"sutHisp": true,
+		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 1 (Message to Bad Address)",
@@ -776,6 +792,7 @@
 		"longDesc": "The credentials for authentication is imaptesting@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
 		"name": "IMAP Test 21",
@@ -785,6 +802,7 @@
 		"longDesc": "The credentials for authentication is imaptesting@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
 		"name": "IMAP Test 25",
@@ -794,6 +812,7 @@
 		"longDesc": "The proctor needs to send an email to the Vendor and should verify that the Vendor system is able to show size and status updates (e.g change in the number of emails in inbox) when new email is received ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
 		"name": "IMAP Test 27",
@@ -803,6 +822,7 @@
 		"longDesc": "The credentials for authentication is xdmmimetypes@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
 		"name": "IMAP Test 28",
@@ -812,6 +832,7 @@
 		"longDesc": "The credentials for authentication is multipleattachments@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
 		"name": "IMAP Test 29(a)",
@@ -821,6 +842,7 @@
 		"longDesc": "The credentials for authentication is brokenrefstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	},{
 		"name": "IMAP Test 29(b)",
@@ -830,6 +852,7 @@
 		"longDesc": "The credentials for authentication is invalidstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
 		"name": "IMAP Test 30",
@@ -839,6 +862,7 @@
 		"longDesc": "The credentials for authentication is xdmbadxhtml@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
 		"name": "IMAP 31 (Receive)",
@@ -848,6 +872,7 @@
 		"longDesc": "The credentials for authentication is b1-ambulatory@ttpdstest.sitenv.org, b1-inpatient@ttpdstest.sitenv.org, b2-ambulatory@ttpdstest.sitenv.org, b2-inpatient@ttpdstest.sitenv.org, b5-ambulatory@ttpdstest.sitenv.org, b5-inpatient@ttpdstest.sitenv.org, b9-ambulatory@ttpdstest.sitenv.org, b9-inpatient@ttpdstest.sitenv.org, negativetestingccds@ttpdstest.sitenv.org, negativetestingcareplan@ttpdstest.sitenv.org. The password is smtptesting123 for all accounts. ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-5']",
 		"sutEdge": true,
 		"fields": [{
 			"label": "Attachment type",
@@ -895,6 +920,7 @@
 		"longDesc": "The credentials for authentication is poptesting@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-6']",
 		"sutEdge": true
 	}, {
 		"name": "POP Test 27",
@@ -904,6 +930,7 @@
 		"longDesc": "The credentials for authentication is xdmmimetypes@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-6']",
 		"sutEdge": true
 	}, {
 		"name": "POP Test 28",
@@ -913,6 +940,7 @@
 		"longDesc": "The credentials for authentication is multipleattachments@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-6']",
 		"sutEdge": true
 	}, {
 		"name": "POP Test 29(a)",
@@ -922,6 +950,7 @@
 		"longDesc": "The credentials for authentication is brokenrefstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-6']",
 		"sutEdge": true
 	}, {
 		"name": "POP Test 29(b)",
@@ -931,6 +960,7 @@
 		"longDesc": "The credentials for authentication is invalidstylesheet@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-6']",
 		"sutEdge": true
 	},{
 		"name": "POP Test 30",
@@ -940,6 +970,7 @@
 		"longDesc": "The credentials for authentication is xdmbadxhtml@ttpdstest.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-6']",
 		"sutEdge": true
 	}, {
 		"name": "POP 31 (Receive)",
@@ -949,6 +980,7 @@
 		"longDesc": "The credentials for authentication is b1-ambulatory@ttpdstest.sitenv.org, b1-inpatient@ttpdstest.sitenv.org, b2-ambulatory@ttpdstest.sitenv.org, b2-inpatient@ttpdstest.sitenv.org, b5-ambulatory@ttpdstest.sitenv.org, b5-inpatient@ttpdstest.sitenv.org, b9-ambulatory@ttpdstest.sitenv.org, b9-inpatient@ttpdstest.sitenv.org, negativetestingccds@ttpdstest.sitenv.org, negativetestingcareplan@ttpdstest.sitenv.org. The password is smtptesting123 for all accounts. ",
 		"sutRole": "receiver",
 		"sutHisp": false,
+		"criteria":"['b1-6']",
 		"sutEdge": true,
 		"fields": [{
 			"label": "Attachment type",
