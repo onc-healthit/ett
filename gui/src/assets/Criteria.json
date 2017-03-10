@@ -2,8 +2,8 @@
    {
       "name":"Please select",
       "xdrTest":false,
-      "testList":"['h1','h2']",
-      "criteria":"'h1-1'",
+      "testList":"['h1','h2','b1']",
+      "criteria":"''",
       "selectOption":"['A','B','2','3','4','5','6','7','8','9','10']"
    },
    {
@@ -218,6 +218,47 @@
       "testList":"['h2']",
       "criteria":"'h2-12'",
       "selectOption":"['5','10']"
+   },
+   {
+      "name":"Criteria (i)(A) Send using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['b1']",
+      "criteria":"'b1-1'"
+   },
+   {
+         "name":"Criteria (i)(A) Send using Edge Protocol - SMTP",
+         "xdrTest":false,
+         "testList":"['b1']",
+         "criteria":"'b1-2'"
+   },
+   {
+      "name":"Criteria (i)(A) Receive using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['b1']",
+      "criteria":"'b1-3'"
+   },
+   {
+         "name":"Criteria (i)(A) Receive using Edge Protocol - SMTP",
+         "xdrTest":false,
+         "testList":"['b1']",
+         "criteria":"'b1-4'"
+   },
+   {
+      "name":"Criteria (i)(A) Receive using Edge Protocol - IMAP",
+      "xdrTest":false,
+      "testList":"['b1']",
+      "criteria":"'b1-5'"
+   },
+   {
+         "name":"Criteria (i)(A) Receive using Edge Protocol - POP3",
+         "xdrTest":false,
+         "testList":"['b1']",
+         "criteria":"'b1-6'"
+   },
+   {
+         "name":"Criteria (i)(A) XDM Processing(Received via Edge Protocol)",
+         "xdrTest":false,
+         "testList":"['b1']",
+         "criteria":"'b1-7'"
    }
-
 ]

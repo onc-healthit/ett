@@ -15,8 +15,8 @@
             <li ui-sref-active="active">
                 <a ui-sref=".home">Home</a>
             </li>
-            <li ui-sref-active="active">
-                <a ui-sref=".certb1">&#167; 170.315 (b)(1)</a>
+            <li ng-class="{active: $state.includes('certification.certb1')}">
+                <a ui-sref=".certb1.main" ui-sref-opts="{inherit: false}">&#167; 170.315(b)(1)</a>
             </li>
             <li ng-class="{active: $state.includes('certification.certh1')}">
                 <a ui-sref=".certh1.main" ui-sref-opts="{inherit: false}">&#167; 170.315(h)(1)</a>
