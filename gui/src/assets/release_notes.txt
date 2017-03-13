@@ -1,3 +1,99 @@
+==Version 1.2.2.1#2/28/2017
+
+  *1. C-CDA Validator Updated to version [1.0.14](https://github.com/siteadmin/referenceccdavalidator/releases/tag/1.0.14)
+
+==Version 1.2.2#2/16/2017
+
+  *1. "Test By Criteria" - h(2) has been added for easier navigation for this criteria.
+
+  *2. SMTP HISP MT tests for SMTP receiver 1-4, 21(a), 23(a), 24(a), 25(a), 26(a), 27(a), 28(a), 29(a) and Edge MT tests 18(a), 47(a) incorporate the workflow for manual verification of the MDN.
+
+   *3. XDS Toolkit updated - which in particular addresses, [XDR validation of sourcePatientInfo does not permit PID-3 identifier list](https://github.com/usnistgov/iheos-toolkit2/issues/193)
+
+   *4. CCDA Validator updated - [1.0.12](https://github.com/siteadmin/referenceccdavalidator/releases/tag/1.0.12)
+   
+    *5. Test Data XDM_LIM.zip updated - details [here](https://groups.google.com/d/msgid/edge-test-tool/cfc85156-c6d5-447e-96a4-170f2c895911%40googlegroups.com)
+
+   *6. SMTP HISP Test 1-8, 14 (Send) Test - endpoint changed to edge-receiver@ttpds.sitenv.org to enable local delivery (AUTH not required).
+
+    *7. SMTP MT 45 Description updated.
+
+    *8. UI changes: Certificate upload text for SMTP MT Tests now indicates that a .der file is required., download page shows external links.
+
+
+
+==Version 1.2.1#1/19/2017
+
+    *1. Select by criteria 170.315(h)(1) now lists all the steps needed for the test
+    
+    *2. The file dialog selection of ccda-documents are mandatory for all the cases except the SMTP MT 39/40/41.
+    
+    *3. Descriptions on EDGE MT - SMTP MT Tests 18a and 47a updated.
+    
+    *4. Included XDS Toolkit 4.2 (allows multiple patient IDs within a sourcePatientInfo)
+
+    *5. UI changes: all the footers now consistent, profile user input is also consistent, added copy "widget" to the CCDA R2.1 Direct (to) address section, XDR validation changed from "NOSAML" to "No SAML", XDR "Link to Certificates"
+        to "Click to download XDR TLS certificates".
+    
+    *6. Documentation updates: User Manual inclues the section "Test By Criteria", Local installation guide and installing from       AMI guide  included in the github and as a link from the Documents page.
+	
+    *7. Updated the XDM_LIM.zip in the github testdata which fixes a validation issue with the slot (used by XDR MT 11).
+    
+    *Update: 1/31/2017 -  Updated the XDM_LIM.zip/XDM_FULL.zip - https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!msg/edge-test-tool/YrgbgRix5vo/e6FZQukhDAAJ
+    
+==Version 1.2.0.1#12/23/2016
+
+	*1. Fix broken URL calls.
+	
+==Version 1.2.0#12/19/2016
+
+	*1. New panel to the ETT Home page "Test By Criteria" has been added - allowing logical navigation of the test cases. This release addresses a part of criteria § 170.315(h)(1) and the remaining criteria to be addressed in the upcoming releases.
+
+	*2. Certificate discovery in ETT (for Direct Send) now uses the certificate that has not expired if multiple certificates are encountered.
+
+	*3. ETT now adds the Disposition-Notification-To header in the Message Tracking HISP cases.
+	
+	*4. XDR Validator - Turning SAML off now shows "No SAML" instead of "No Errors" in the SAML tab.
+	
+	*5. The tool has been fixed to skip malformed or corrupted messages in the ETT mailstore folder which cause issues when fetching emails.
+	
+	*6. Documentation updates:
+		- Added link to FAQ in the Help Page
+		- Hosting Training Videos on ETT again - please note that the references to nist.gov server names in the videos need to modified accordingly (to sitenv.org equivalent).
+		- Removed Section 3, Local Install from the User Guide. This will be included in the Installation Guide.
+		- CCR/C32 samples from the documents page are now linked to the github repository.
+	  
+	*7. UI changes: Tool tip indicator for 'Message format' on File section pop up and "MU2" label text from profile dialog removed.
+
+
+
+
+==Version 1.1.3.1#11/28/2016
+
+	*1. XDR SAML validation is available at ETT - migrated from TTT.
+
+	*2. HISP XDR Sender Test 12: XDM metadata now conformant
+
+	*3. XDS toolkit updated to version 4.
+	
+
+==Version 1.1.3#11/17/2016
+
+	*1. Final-Recipient field for MDNs returned by ETT now conform per RFC 3798 Section 3.2.4 to use message recipient (earlier it was pointing to the sender).
+
+	*2. The failure message tracking cases now pass only if X-Original-Message-ID can be correlated and do not fallback to In-Reply-To anymore
+
+	*3. XDM limited metadata fixed for the issue reported and is referenced from github now.
+	
+        *4. UI Enhancements
+             - After clicking More Info/Log links from the test case, the back button navigates back to the corresponding test case.
+             - Labels changed to "XDM Validator" & "XDR Validator".
+
+	*5. FAQ page added [https://ttpedge.sitenv.org/ttp/#/edge/faq] (can also be accessed directly from here: https://github.com/siteadmin/ett/wiki/FAQ)
+	
+	*6. CCDA validator updated to 1.0.7 [https://github.com/siteadmin/referenceccdavalidator/releases]
+	
+	
 ==Version 1.1.2#10/20/2016
 
 	*1. HISP XDR Sender Tests 11 and 12: XDM metadata sent by ETT is now conformant

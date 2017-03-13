@@ -4,6 +4,10 @@ smtpDescription.controller('XdrDescriptionCtrl', ['$scope', '$stateParams',  'XD
 	function($scope, $stateParams, XDRTestCasesDescription) {
 		$scope.test_id = $stateParams.id;
 		$scope.testObj =  $stateParams.testObj;
+		$scope.testObjDesc = $stateParams.testObj['Purpose/Description'];
+		if ($scope.testObjDesc){
+			$scope.testObjDesc =  $stateParams.testObj['Purpose/Description'].replace(/[\r\n]+/g, '</p><p>');
+		}
 		$scope.fieldInput = {};
 
 		XDRTestCasesDescription.getTestCasesDescription(function(response) {
