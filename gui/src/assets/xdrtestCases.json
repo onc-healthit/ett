@@ -9,6 +9,7 @@
     "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -39,6 +40,7 @@
     "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }],
@@ -65,6 +67,7 @@
     "criteria":"['b1-3']",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
@@ -95,6 +98,7 @@
     "criteria":"['b1-3']",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -121,6 +125,7 @@
     "criteria":"['b1-3']",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -147,6 +152,7 @@
     "criteria":"['b1-3']",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -173,6 +179,7 @@
     "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }],
@@ -507,6 +514,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -533,6 +541,7 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
         "key": "targetEndpointTLS",
         "type": "string"
     }],
@@ -596,6 +605,7 @@
     "sutRole": "sender",
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }],
@@ -748,6 +758,7 @@
     "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }],
@@ -1243,6 +1254,7 @@
     "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }],
@@ -1269,6 +1281,7 @@
     "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
     }],
