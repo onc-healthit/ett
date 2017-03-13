@@ -1237,7 +1237,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (HISP - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "The Health IT Module receives a message from the ETT (as Sending HISP), and is unable to deliver the message to its final destination (ETT as Destination Edge) due to a bad address.",
+    "Purpose/Description": "The Health IT Module receives a message from the ETT (as Sending HISP) and is unable to deliver the message to its final destination (ETT as Destination Edge). \n Note: When the SUT (HISP) receives the MDN (from the <direct:to> and hence RCPT TO from the Direct communication), the MAIL FROM of the MDN will be <direct:to> - since the <direct:to> endpoint is sending the MAIL FROM. The ETT hardcodes <direct:to> based on the test case, normally is not needed. \n Outgoing (ETT --> SUT) Direct From Address:Note: MDN Direct from address in the <direct:from> address the XDR MDN. ETT will use in creating the SOAP XDR transaction for this test. In turn this is destined to become the SMTP MAIL FROM for the ensuing Direct Communication between the SUT HISP to the ETT HISP (the <direct:to> becomes the RCPT TO).",
     "Conformance  Test Details": "The Health IT Module delivers a Processed MDN to the ETT (as Sending HISP) followed by a delivery failure message to the ETT (as Sending HISP) due to the bad address",
     "Expected Test Results": "The Health IT Module sends a negative delivery status notification message to the ETT (as Sending Edge) using XDR profile",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
