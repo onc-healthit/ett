@@ -232,31 +232,31 @@
          "criteria":"'b1-2'"
    },
    {
-      "name":"Criteria (i)(A) Receive using Edge Protocol - XDR",
+      "name":"Criteria (i)(B) Receive using Edge Protocol - XDR",
       "xdrTest":true,
       "testList":"['b1']",
       "criteria":"'b1-3'"
    },
    {
-         "name":"Criteria (i)(A) Receive using Edge Protocol - SMTP",
+         "name":"Criteria (i)(B) Receive using Edge Protocol - SMTP",
          "xdrTest":false,
          "testList":"['b1']",
          "criteria":"'b1-4'"
    },
    {
-      "name":"Criteria (i)(A) Receive using Edge Protocol - IMAP",
+      "name":"Criteria (i)(B) Receive using Edge Protocol - IMAP",
       "xdrTest":false,
       "testList":"['b1']",
       "criteria":"'b1-5'"
    },
    {
-         "name":"Criteria (i)(A) Receive using Edge Protocol - POP3",
+         "name":"Criteria (i)(B) Receive using Edge Protocol - POP3",
          "xdrTest":false,
          "testList":"['b1']",
          "criteria":"'b1-6'"
    },
    {
-         "name":"Criteria (i)(A) XDM Processing(Received via Edge Protocol)",
+         "name":"Criteria (i)(B) XDM Processing(Received via Edge Protocol)",
          "xdrTest":false,
          "testList":"['b1']",
          "criteria":"'b1-7'"
