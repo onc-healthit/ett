@@ -1025,7 +1025,6 @@
 		"protocol": "pop",
 		"desc": "Verifies the ability of the SUT to accept XDM package even in the case where the required XHTML is bad. The Vendor should fetch emails from 'xdmbadxhtml@ttpds.sitenv.org'.",
 		"longDesc": "The user is to establish or configure an email account on the SUT in order to retrieve messages using the credentials. The credentials for authentication is xdmbadxhtml@ttpds.sitenv.org / smtptesting123 ",
-		"longDesc": "The credentials for authentication is xdmbadxhtml@ttpds.sitenv.org / smtptesting123 ",
 		"sutRole": "receiver",
 		"sutHisp": false,
 		"criteria":"['b1-6']",
