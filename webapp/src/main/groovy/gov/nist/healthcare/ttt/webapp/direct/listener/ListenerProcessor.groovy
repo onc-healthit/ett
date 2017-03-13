@@ -23,6 +23,7 @@ import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -276,7 +277,9 @@ public class ListenerProcessor implements Runnable {
 		// Generate validation report URL
 		// String reportId = new DirectActorFactory().getNewId();
 	//	String url = "https://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
-		String url = "https://${domainName}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
+	//	String url = "https://${domainName}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
+		String urlappend = "${this.processor.getLogModel().getMessageId()}";
+		String url = "https://${domainName}${servletName}/#/direct/report/" + URLEncoder.encode(urlappend,"UTF-8");
 		// Generate report template
 		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
 
