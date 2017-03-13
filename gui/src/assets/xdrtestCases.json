@@ -191,7 +191,7 @@
     "Test Tool: Sender / Receiver": "Server (Test Tool)",
     "Purpose/Description": "Verify that Mutual TLS session is established between the Sender and the Receiver before transimitting data. The Tester (i.e., Vendor) assures that the appropriate XDR Certificates have been downloaded from the ETT and imported into the SUT trust store before executing the test.",
     "Conformance  Test Details": "Require Mutual TLS in the configuration",
-    "Expected Test Results": "Edge Sysem is capable of establishing the Mutual TLS connection priort to transmitting the data.",
+    "Expected Test Results": "Edge Sysem is capable of establishing the Mutual TLS connection prior to transmitting the data.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
