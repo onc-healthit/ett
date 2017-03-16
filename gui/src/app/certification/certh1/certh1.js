@@ -297,6 +297,10 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 				};
 			});
 		};
+		$scope.validateManual = function(test, validation) {
+			test.status = validation;
+			$scope.logTestData(test);
+		};
 
 		$scope.startTest = function(test, fieldInput) {
 			// Get CCDA R2 validation objectives if exists
