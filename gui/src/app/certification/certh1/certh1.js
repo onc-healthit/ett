@@ -30,8 +30,8 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
-	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
+certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
@@ -58,7 +58,10 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			$scope.edgeProtocol = "certh2";
 			$scope.viewObj = "certh2";
 		}
-
+		if ($scope.filterCrit == "b1"){
+			$scope.edgeProtocol = "certb1";
+			$scope.viewObj = "certb1";
+		}
 
 		XDRTestCasesTemplate.getTestCasesDescription(function(response) {
 			var result = response.data;
@@ -94,18 +97,16 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 				}
 			});
 		};
+				$scope.apiUrl = ApiUrl.get();
+
+
 		$scope.successUpload = function(message) {
-			console.log("successUpload......."+message);
 			$scope.fileInfo = angular.fromJson(message);
 			var validExts = new Array(".der", ".pem");
 			var fileExt = $scope.fileInfo.flowFilename.substring($scope.fileInfo.flowFilename.lastIndexOf('.'));
-					console.log("fileExt......."+fileExt);
-					console.log("validExts......."+validExts);
-					console.log("validExts.indexOf(fileExt)......."+validExts.indexOf(fileExt));
 			if (validExts.indexOf(fileExt) >= 0) {
 				var certFilePath = $scope.fileInfo.flowRelativePath;
 				DirectRICertFactory.save(certFilePath, function(data) {
-					console.log("data.criteriaMet.......");
 					if (data.criteriaMet == "FALSE"){
 						growl.error("Failed to Upload Certificate", {});
 					}else{
@@ -127,12 +128,9 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			var result = response.data;
             $scope.criteriaSelection = result;
 			$scope.firstCriteriaSelection = $filter('filter')($scope.firstCriteriaSelection,  {"testList": 'h2'});
-            if ($scope.filterCrit == "h1"){
-				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {"testList": 'h1'});
-			}
-            if ($scope.filterCrit == "h2"){
-				$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {"testList": 'h2'});
-			}
+
+			$scope.filterObj = $filter('filter')($scope.criteriaSelection,  {"testList": $scope.filterCrit});
+
             $scope.backToCriteria = 0;
 
             if ($scope.paramCri !=null){
@@ -195,10 +193,11 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
                  $scope.selectedCrit = $scope.filterObj.indexOf( selectedItem );
                  $scope.testBench =  [];
                  $scope.isXdrTest = false;
-                 console.log("Criteria selectedItem :::::"+angular.toJson(selectedItem, true));
                 /* if (selectedItem.criteria === "'h1-1'"){
                         $scope.uploadOption = true;
                  }*/
+                 //console.log("selectedItem :::"+angular.toJson(selectedItem, true));
+                 $scope.uploadOption = selectedItem.uploadOption;
                  $scope.isXdrTest = selectedItem.xdrTest;
                  $scope.redirectLink = selectedItem.redirect;
                  $scope.openInNewWindow = "";
@@ -208,6 +207,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
                      $scope.testchange = $filter('filter')($scope.smtpTests, {criteria: selectedItem.criteria});
                  }
                  $scope.testBench = $scope.testchange;
+                 //console.log("$scope.testBench :::"+angular.toJson($scope.testBench, true));
                if (selectedItem.redirect){
                     $scope.openInNewWindow  = selectedItem.redirect.newWindow;
                     if ($scope.openInNewWindow){
