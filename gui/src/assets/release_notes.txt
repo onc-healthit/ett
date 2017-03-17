@@ -18,7 +18,7 @@
 
 *9. UI fixes: documents page links shown with right icons, read version numbers from github
 
-*10. Also, the ccda-validator has been update with these changes :
+*10. The ccda-validator has been updated with these changes :
        - 1. Updated the Negative Test XML Files for (b)(9) Care Plan criteria to include the US Realm Header Template Id.
        - 2. Update the Administrative Gender value set to include the "UN" code.
 
