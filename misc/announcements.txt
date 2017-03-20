@@ -5,7 +5,7 @@ The current release schedule for usability improvements is as follows:
 * Release 1.2.3.1 - C-CDA Validator Updates: March 27th, 2017
 
 
-* Release 1.2.4 - Test by Criteria (b)(1): April 20, 2017
+* Release 1.2.4 - Validator Release/Fixes: April 20, 2017
 
 
 * Release 2.0 - Update Style Sheets (SITE): May 22, 2017
