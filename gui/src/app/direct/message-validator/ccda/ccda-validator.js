@@ -1,7 +1,7 @@
 var ccdaValidator = angular.module('ttt.direct.ccdaValidator', []);
 
-ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl',
-	function($scope, CCDAR2ValidatorFactory, $state, ApiUrl) {
+ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAValidatorFactory', '$state', 'ApiUrl',
+	function($scope, CCDAValidatorFactory, $state, ApiUrl) {
 
 		$scope.fileInfo = {
 			"flowChunkNumber": "",
@@ -80,13 +80,11 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 			$scope.validator.messageFilePath = "";
 		};
 
-
-
 		$scope.validate = function() {
 			if ($scope.selectedItem.length > 0) {
 				$scope.laddaLoading = true;
 				$scope.validator.ccdaType = $scope.selectedItem[0].code;
-				CCDAR2ValidatorFactory.save($scope.validator, function(data) {
+				CCDAValidatorFactory.save($scope.validator, function(data) {
 					$scope.laddaLoading = false;
 					$scope.ccdaResult = data;
 				}, function(data) {
