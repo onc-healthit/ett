@@ -81,7 +81,7 @@ public class PartValidation {
 	// MDHT Endpoint
 	private String mdhtR1Endpoint;
 	private String mdhtR2Endpoint;
-	
+
 	// Toolkit endpoint
 	private String toolkitUrl;
 
@@ -155,7 +155,7 @@ public class PartValidation {
 
 	/**
 	 * Validates the envelope of the message
-	 * @throws Exception 
+	 * @throws Exception
 	 * */
 	public void processEnvelope(PartModel part) throws Exception {
 		Part p = part.getContent();
@@ -265,7 +265,7 @@ public class PartValidation {
 		if(p.isMimeType("text/xml") || p.isMimeType("application/xml")) {
 			validateCCDAwithMDHT(part);
 		}
-		
+
 		if(p.isMimeType("application/zip") || p.isMimeType("application/octet-stream") || p.isMimeType("application/x-zip-compressed")) {
 			validateXDM(part);
 		}
@@ -289,10 +289,10 @@ public class PartValidation {
 		if(this.ccdaType.equals("r2")) {
 			return validateCCDA_R2(ccdaFile, ccdaFilename);
 		} else {
-			return validateCCDA_R1(ccdaFile, ccdaFilename);
+			return validateCCDA_R2(ccdaFile, ccdaFilename);
 		}
 	}
-	
+
 	public String validateXDM(PartModel part) throws Exception {
 		Part p = part.getContent();
 		String xdmFilename = "";
@@ -307,11 +307,11 @@ public class PartValidation {
 		} else {
 			xdmFilename = UUID.randomUUID().toString();
 		}
-		
+
 		xdmFilename = "XDM_" + xdmFilename;
-		
+
 		byte[] xdmByte = IOUtils.toByteArray(new FileInputStream(xdmFile));
-		
+
 		// Query toolkit endpoint
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost post = new HttpPost(this.toolkitUrl + "/rest/simulators/xdmValidation");
@@ -341,7 +341,7 @@ public class PartValidation {
 		} catch(Exception e) {
 			logger.error(e.getMessage());
 		}
-		
+
 		CCDAValidationReportImpl report = new CCDAValidationReportImpl();
 		report.setFilename(xdmFilename);
 		report.setValidationReport(result);
@@ -549,12 +549,12 @@ public class PartValidation {
 
 		HashMap<String, String> types = new HashMap<String, String>();
 		types.put("direct-clinical-summary", "ClinicalOfficeVisitSummary");
-		types.put("direct-ambulatory2", "TransitionsOfCareAmbulatorySummaryb2");
-		types.put("direct-ambulatory7", "TransitionsOfCareAmbulatorySummaryb7");
-		types.put("direct-ambulatory1", "TransitionsOfCareAmbulatorySummaryb1");
-		types.put("direct-inpatient2", "TransitionsOfCareInpatientSummaryb2");
-		types.put("direct-inpatient7", "TransitionsOfCareInpatientSummaryb7");
-		types.put("direct-inpatient1", "TransitionsOfCareInpatientSummaryb1");
+		types.put("direct-ambulatory2", "TransitionsOfCareAmbulatorySummary");
+		types.put("direct-ambulatory7", "TransitionsOfCareAmbulatorySummary");
+		types.put("direct-ambulatory1", "TransitionsOfCareAmbulatorySummary");
+		types.put("direct-inpatient2", "TransitionsOfCareInpatientSummary");
+		types.put("direct-inpatient7", "TransitionsOfCareInpatientSummary");
+		types.put("direct-inpatient1", "TransitionsOfCareInpatientSummary");
 		types.put("direct-vdt-ambulatory", "VDTAmbulatorySummary");
 		types.put("direct-vdt-inpatient", "VDTInpatientSummary");
 		types.put("ccda", "NonSpecificCCDA");
