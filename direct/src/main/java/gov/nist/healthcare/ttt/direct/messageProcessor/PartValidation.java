@@ -289,7 +289,7 @@ public class PartValidation {
 		if(this.ccdaType.equals("r2")) {
 			return validateCCDA_R2(ccdaFile, ccdaFilename);
 		} else {
-			return validateCCDA_R2(ccdaFile, ccdaFilename);
+			return validateCCDA_R1(ccdaFile, ccdaFilename);
 		}
 	}
 
@@ -627,8 +627,12 @@ public class PartValidation {
 
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-			builder.addPart("file", fileBody);
-			builder.addTextBody("type_val", this.ccdaType);
+		    builder.addTextBody("validationObjective", this.ccdaType);
+		    builder.addTextBody("referenceFileName", ccdaFilename);
+		    builder.addPart("ccdaFile", fileBody);
+
+			//builder.addPart("file", fileBody);
+			//builder.addTextBody("type_val", this.ccdaType);
 			HttpEntity entity = builder.build();
 
 			post.setEntity(entity);
