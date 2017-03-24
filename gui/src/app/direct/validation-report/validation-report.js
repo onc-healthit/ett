@@ -36,6 +36,7 @@ directReport.controller('DirectReportCtrl', ['$scope', '$stateParams', 'Validati
                             $scope.ccdaValidationType = [];
                             // Check if it is CCDA R2 validation
                             $scope.ccdaValidationType.push("CCDA Validation R1.1");
+                            console.log("data.ccdaRType ::::"+angular.toJson(data.ccdaRType, true));
                             if (data.ccdaRType = "r1"){
                                 $scope.ccdaValidationType[i] = "CCDA Validation R1.1";
                             }else if (data.ccdaRType = "r2"){
