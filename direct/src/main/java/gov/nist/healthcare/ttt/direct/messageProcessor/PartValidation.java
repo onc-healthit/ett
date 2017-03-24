@@ -52,6 +52,7 @@ import org.bouncycastle.mail.smime.SMIMEEnveloped;
 import org.bouncycastle.mail.smime.SMIMESigned;
 import org.bouncycastle.util.Store;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import gov.nist.healthcare.ttt.database.log.CCDAValidationReportImpl;
 import gov.nist.healthcare.ttt.database.log.CCDAValidationReportInterface;
@@ -639,9 +640,6 @@ public class PartValidation {
 			HttpResponse response = client.execute(post);
 			// CONVERT RESPONSE TO STRING
 			String result = EntityUtils.toString(response.getEntity());
-			JSONObject jsonObj = new JSONObject(result);
-			  jsonObj.put("ccdaRType", "r1");
-			result = jsonObj.toString();
 
 			CCDAValidationReportImpl report = new CCDAValidationReportImpl();
 			report.setFilename(ccdaFilename);
@@ -649,7 +647,7 @@ public class PartValidation {
 
 			this.ccdaReport.add(report);
 
-			return result;
+			return convertToJson(result,"r1");
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
@@ -657,6 +655,28 @@ public class PartValidation {
 		return "";
 	}
 
+    private String convertToJson(String resultobj,String ccdarType){
+		logger.info("convertToJson ccdarType " + ccdarType);
+		JSONObject json = new JSONObject(resultobj);
+		try{
+			json.put("hasError", false);
+			// Check errors
+			JSONArray resultMetadata = json.getJSONObject("resultsMetaData").getJSONArray("resultMetaData");
+			for (int i = 0; i < resultMetadata.length(); i++) {
+				JSONObject metatada = resultMetadata.getJSONObject(i);
+				if(metatada.getString("type").toLowerCase().contains("error")) {
+					if(metatada.getInt("count") > 0) {
+						json.put("hasError", true);
+					}
+				}
+			}
+			json.put("ccdaRType",ccdarType);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return json.toString();
+	}
 	public String validateCCDA_R2(File ccdaFile, String ccdaFilename) {
 		logger.info("Validating CCDA " + ccdaFilename + " with validation objective " + this.ccdaR2Type + " and reference filename " + this.ccdaR2ReferenceFilename);
 
@@ -678,9 +698,6 @@ public class PartValidation {
 			HttpResponse response = client.execute(post);
 			// CONVERT RESPONSE TO STRING
 			result = EntityUtils.toString(response.getEntity());
-			  JSONObject jsonObj = new JSONObject(result);
-			  jsonObj.put("ccdaRType", "r2");
-			result = jsonObj.toString();
 		} catch(Exception e) {
 			logger.error("Error validation CCDA " + e.getMessage());
 			e.printStackTrace();
@@ -692,7 +709,8 @@ public class PartValidation {
 
 		ccdaReport.add(report);
 
-		return result;
+
+		return convertToJson(result,"r2");
 
 
 
