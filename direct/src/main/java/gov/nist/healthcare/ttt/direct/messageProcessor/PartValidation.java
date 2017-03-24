@@ -639,6 +639,9 @@ public class PartValidation {
 			HttpResponse response = client.execute(post);
 			// CONVERT RESPONSE TO STRING
 			String result = EntityUtils.toString(response.getEntity());
+			JSONObject jsonObj = new JSONObject(result);
+			  jsonObj.put("ccdaRType", "r1");
+			result = jsonObj.toString();
 
 			CCDAValidationReportImpl report = new CCDAValidationReportImpl();
 			report.setFilename(ccdaFilename);
@@ -675,6 +678,9 @@ public class PartValidation {
 			HttpResponse response = client.execute(post);
 			// CONVERT RESPONSE TO STRING
 			result = EntityUtils.toString(response.getEntity());
+			  JSONObject jsonObj = new JSONObject(result);
+			  jsonObj.put("ccdaRType", "r2");
+			result = jsonObj.toString();
 		} catch(Exception e) {
 			logger.error("Error validation CCDA " + e.getMessage());
 			e.printStackTrace();
