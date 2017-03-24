@@ -42,8 +42,8 @@ directReport.controller('DirectReportCtrl', ['$scope', '$stateParams', 'Validati
                                   if (data[i].ccdaReport.ccdaRType = "r1") {
                                       $scope.ccdaValidationType[i] = "CCDA Validation R1.1";
                                    } else if (data[i].ccdaReport.ccdaRType ="r2"){
-									   $scope.ccdaValidationType[i] = "CCDA Validation R2.1";
-								   }else if (data[i].filename.startsWith("XDM_")) {
+                                       $scope.ccdaValidationType[i] = "CCDA Validation R2.1";
+                                   }else if (data[i].filename.startsWith("XDM_")) {
                                       $scope.ccdaValidationType[i] = "XDM Validation";
                                    }
                                 }
