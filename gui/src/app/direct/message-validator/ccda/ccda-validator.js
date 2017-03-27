@@ -1,7 +1,7 @@
 var ccdaValidator = angular.module('ttt.direct.ccdaValidator', []);
 
-ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAValidatorFactory', '$state', 'ApiUrl',
-	function($scope, CCDAValidatorFactory, $state, ApiUrl) {
+ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl',
+	function($scope, CCDAR2ValidatorFactory, $state, ApiUrl) {
 
 		$scope.fileInfo = {
 			"flowChunkNumber": "",
@@ -23,27 +23,27 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAValidatorFactory',
 		}, {
 			"selected": false,
 			"desc": "Transitions Of Care Ambulatory Summary - ONC 2014 Edition 170.314(b)(2) Transition of Care/Referral Summary - For Ambulatory Care",
-			"code": "TransitionsOfCareAmbulatorySummaryb2"
+			"code": "TransitionsOfCareAmbulatorySummary"
 		}, {
 			"selected": false,
 			"desc": "Transitions Of Care Ambulatory Summary - ONC 2014 Edition 170.314(b)(7) Data Portability - For Ambulatory Care",
-			"code": "TransitionsOfCareAmbulatorySummaryb7"
+			"code": "TransitionsOfCareAmbulatorySummary"
 		}, {
 			"selected": false,
 			"desc": "Transitions Of Care Ambulatory Summary - ONC 2014 Edition 170.314(b)(1) Transition of Care Receive - For Ambulatory Care",
-			"code": "TransitionsOfCareAmbulatorySummaryb1"
+			"code": "TransitionsOfCareAmbulatorySummary"
 		}, {
 			"selected": false,
 			"desc": "Transitions Of Care Inpatient Summary - ONC 2014 Edition 170.314(b)(2) Transition of Care/Referral Summary - For Inpatient Care",
-			"code": "TransitionsOfCareInpatientSummaryb2"
+			"code": "TransitionsOfCareInpatientSummary"
 		}, {
 			"selected": false,
 			"desc": "Transitions Of Care Inpatient Summary - ONC 2014 Edition 170.314(b)(7) Data Portability - For Inpatient Care",
-			"code": "TransitionsOfCareInpatientSummaryb7"
+			"code": "TransitionsOfCareInpatientSummary"
 		}, {
 			"selected": false,
 			"desc": "Transitions Of Care Inpatient Summary - ONC 2014 Edition 170.314(b)(1) Transition of Care Receive - For Inpatient Care",
-			"code": "TransitionsOfCareInpatientSummaryb1"
+			"code": "TransitionsOfCareInpatientSummary"
 		}, {
 			"selected": false,
 			"desc": "VDT Ambulatory Summary - ONC 2014 Edition 170.314 (e)(1) Ambulatory Summary",
@@ -67,7 +67,9 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAValidatorFactory',
 
 		$scope.validator = {
 			"messageFilePath": "",
-			"ccdaType": ""
+			"ccdaType": "",
+            "validationObjective": "",
+            "referenceFileName": "noscenariofile"
 		};
 
 		$scope.successMessage = function(message) {
@@ -80,11 +82,15 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAValidatorFactory',
 			$scope.validator.messageFilePath = "";
 		};
 
+
+
 		$scope.validate = function() {
 			if ($scope.selectedItem.length > 0) {
 				$scope.laddaLoading = true;
 				$scope.validator.ccdaType = $scope.selectedItem[0].code;
-				CCDAValidatorFactory.save($scope.validator, function(data) {
+                $scope.validator.validationObjective = $scope.selectedItem[0].code;
+                $scope.validator.referenceFileName = $scope.fileInfo.flowFilename;
+				CCDAR2ValidatorFactory.save($scope.validator, function(data) {
 					$scope.laddaLoading = false;
 					$scope.ccdaResult = data;
 				}, function(data) {
