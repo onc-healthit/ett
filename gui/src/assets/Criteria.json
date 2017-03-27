@@ -256,7 +256,7 @@
          "criteria":"'b1-6'"
    },
    {
-         "name":"Criteria (i)(B) XDM Processing(Received via Edge Protocol)",
+         "name":"Criteria (i)(C) XDM Processing(Received via Edge Protocol)",
          "xdrTest":false,
          "testList":"['b1']",
          "criteria":"'b1-7'"
