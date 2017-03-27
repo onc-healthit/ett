@@ -48,7 +48,7 @@ public class CCDAValidatorController {
 				
 				CloseableHttpClient client = HttpClients.createDefault();
 				File file = new File(filePath.get("messageFilePath"));
-				HttpPost post = new HttpPost("http://devccda.sitenv.org/CCDAValidatorServices/r1.1/");
+				HttpPost post = new HttpPost("http://ttpdstest.sitenv.org:8080/referenceccdaservice/");
 				FileBody fileBody = new FileBody(file);
 				//
 				MultipartEntityBuilder builder = MultipartEntityBuilder.create();

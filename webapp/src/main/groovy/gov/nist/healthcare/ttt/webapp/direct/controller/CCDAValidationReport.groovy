@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.fasterxml.jackson.core.JsonParser;
 
 @Controller
 @RequestMapping("/api/ccdaReport")
@@ -34,6 +35,7 @@ public class CCDAValidationReport {
 		List<CCDAReport> ccdaReports = new ArrayList<CCDAReport>() 
 		db.getLogFacade().getCCDAValidationReportByMessageId(messageId).each { 
 				ObjectMapper mapper = new ObjectMapper();
+				mapper.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
 				String report = it.getValidationReport();
 				// Escape new lines
 				if(report.contains("\n")) {

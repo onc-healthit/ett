@@ -118,7 +118,7 @@ public class SimpleSOAPSender {
         httpHeaders.append("POST " + endpoint + " HTTP/1.1\r\n");
         httpHeaders.append("content-type: application/xml\r\n");
         httpHeaders.append("user-agent: TempXDRSender\r\n");
-        httpHeaders.append("host: edge.nist.gov:8080\r\n");
+        httpHeaders.append("host: ttpedge.sitenv.org\r\n");
         // httpHeaders.append("transfer-encoding: chunked\r\n\r\n");
         httpHeaders.append("Content-Length: " + payload.length() + "\r\n");
         httpHeaders.append("\r\n");
@@ -139,7 +139,7 @@ public class SimpleSOAPSender {
         httpHeaders.append("Content-Type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"<0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"\r\n");
 
         httpHeaders.append("User-Agent: TempXDRSender\r\n");
-        httpHeaders.append("Host: edge.nist.gov:8080\r\n");
+        httpHeaders.append("Host: ttpedge.sitenv.org\r\n");
         httpHeaders.append("Content-Length: " + (payload.length()) + "\r\n");
 
         httpHeaders.append("\r\n");
@@ -277,7 +277,7 @@ public class SimpleSOAPSender {
             // String endpoint = "http://transport-testing.nist.gov:12080/ttt/sim/ecb4e054-9581-439f-9f12-de2d052a3132/rep/prb";
             // String endpoint = "http://ihexds.nist.gov:12090/tf6/services/xdsregistryb";
             //  String endpoint = "http://hit-dev.nist.gov:12090/xdstools2/sim/811fd97a-6ea3-437e-bf42-e0a8a505ba98/rec/xdrpr";
-            String endpoint = "http://edge.nist.gov:11080/xdstools2/sim/edge-ett__1/rep/xdrpr";
+            String endpoint = "http://ttpedge.sitenv.org:11080/xdstools2/sim/edge-ett__1/rep/xdrpr";
 
          //   String endpoint = "https://vs-wsproxy.epic.com:443/Interconnect-CE-2016/wcf/epic.community.hie/provideandregister.svc/mtom";
             

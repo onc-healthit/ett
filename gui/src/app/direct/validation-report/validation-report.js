@@ -35,14 +35,17 @@ directReport.controller('DirectReportCtrl', ['$scope', '$stateParams', 'Validati
                             // Success
                             $scope.ccdaValidationType = [];
                             // Check if it is CCDA R2 validation
-                            for (var i = 0; i < data.length; i++) {
-                                $scope.ccdaValidationType.push("CCDA Validation R1.1");
-                                if (data[i].ccdaReport.resultsMetaData) {
-                                    $scope.ccdaValidationType[i] = "CCDA Validation R2.1";
-                                } else if (data[i].filename.startsWith("XDM_")) {
-                                    $scope.ccdaValidationType[i] = "XDM Validation";
+                            $scope.ccdaValidationType.push("CCDA Validation R1.1");
+                               for (var i = 0; i < data.length; i++) {
+                                  $scope.ccdaValidationType.push("CCDA Validation R1.1");
+                                  if (data[i].ccdaReport.ccdaRType === "r1") {
+                                      $scope.ccdaValidationType[i] = "CCDA Validation R1.1";
+                                   } else if (data[i].ccdaReport.ccdaRType  ==="r2"){
+                                       $scope.ccdaValidationType[i] = "CCDA Validation R2.1";
+                                   }else if (data[i].filename.startsWith("XDM_")) {
+                                      $scope.ccdaValidationType[i] = "XDM Validation";
+                                   }
                                 }
-                            }
                         }, function(data) {
                             // Error handling
                             throw {

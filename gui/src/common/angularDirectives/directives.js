@@ -277,7 +277,27 @@ tttDirective.directive('ccdaR1Report', function() {
             data: '='
         },
         replace: true,
-        templateUrl: 'templates/ccdaTemplates/ccdaR1ReportTemplate.tpl.html'
+        templateUrl: 'templates/ccdaTemplates/ccdaR1ReportTemplate.tpl.html',                controller: ('CcdaR2WidgetCtrl', ['$scope','$location', '$anchorScroll', function($scope,$location,$anchorScroll) {
+                $scope.tabs = [{active:true},{active:false},{active:false}];
+                $scope.gotoLink = function(item) {
+                   if (item == "C-CDA MDHT Conformance Error" ||
+                       item == "C-CDA MDHT Conformance Warning" ||
+                       item == "C-CDA MDHT Conformance Info"){
+                            $scope.tabs[0].active =true;
+                   }else if(item == "ONC 2015 S&CC Vocabulary Validation Conformance Error" ||
+                       item == "ONC 2015 S&CC Vocabulary Validation Conformance Warning" ||
+                       item == "ONC 2015 S&CC Vocabulary Validation Conformance Info"){
+                           $scope.tabs[1].active =true;
+                   }else{
+                           $scope.tabs[2].active =true;
+                   }
+                  // set the location.hash to the id of
+                  // the element you wish to scroll to.
+                  $location.hash(item);
+                 // call anchorScroll()
+                 $anchorScroll();
+                };
+             }])
     };
 });
 
