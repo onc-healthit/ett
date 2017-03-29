@@ -376,12 +376,12 @@
     "criteria":"['h2-2','h2-7']",    
     "inputs": [{
         "name": "Endpoint",
-        "hoverlabel":"*Receiving endpoint of the SUT for XDR SOAP messages.",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Outgoing (ETT --> SUT) Direct From Address",
-        "hoverlabel":"* SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "outgoing_from",
         "type": "string"
     }],
@@ -414,7 +414,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -445,12 +445,12 @@
     "criteria":"['h2-2','h2-7']",    
     "inputs": [{
         "name": "Endpoint",
-        "hoverlabel":"*Receiving endpoint of the SUT for XDR SOAP messages.",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Outgoing (ETT --> SUT) Direct From Address",
-        "hoverlabel":"* SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "outgoing_from",
         "type": "string"
     }],
@@ -483,7 +483,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -574,7 +574,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -638,7 +638,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -858,7 +858,7 @@
         "type": "string"
     }, {
         "name": "Direct To Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_to",
         "type": "string"
     }, {
@@ -889,12 +889,12 @@
     "sutRole": "receiver",
     "inputs": [{
         "name": "Endpoint",
-        "hoverlabel":"*Receiving endpoint of the SUT for XDR SOAP messages.",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
     }, {
         "name": "Outgoing (ETT --> SUT) Direct From Address",
-        "hoverlabel":"* SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "outgoing_from",
         "type": "string"
     }],
@@ -927,7 +927,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -964,7 +964,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1001,7 +1001,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1038,7 +1038,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1075,7 +1075,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1112,7 +1112,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1149,7 +1149,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1186,7 +1186,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
@@ -1223,7 +1223,7 @@
         "type": "string"
     }, {
         "name": "Direct From Address",
-        "hoverlabel":"*:SUT (HISP) outgoing SMTP address.",
+        "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
         "type": "string"
     }, {
