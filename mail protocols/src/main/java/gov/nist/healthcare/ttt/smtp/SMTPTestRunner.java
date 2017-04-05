@@ -391,11 +391,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 20 *******************************");
 			break;
 
-		case 21:
-			log.warn("------------------------->    Test case (MD5)" + i
-					+ " not tested!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			sTest.testDigestMd5(ti);
-			break;
 
 		case 22:
 			log.info("*****************   BEGIN  Testcase 22 *******************************");
@@ -405,12 +400,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 			log.info("*****************   END  Testcase 22 *******************************");
 			break;
 
-		case 23:
-			log.warn("------------------------->    Test case (MD5)" + i
-					+ " not tested!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			sTest.testDigestMd5(ti); // take another param useBadPass
-			return null;
-
+		
 
 
 		case 101:

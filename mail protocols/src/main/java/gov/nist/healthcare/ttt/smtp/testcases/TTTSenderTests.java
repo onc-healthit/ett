@@ -34,79 +34,29 @@ import com.sun.mail.util.MailSSLSocketFactory;
 public class TTTSenderTests {
 
 	public static Logger log = Logger.getLogger(TTTSenderTests.class.getName());
-	Properties config;
+	
+	public Properties getStarttlsProps() {
 
-	/**
-	 * Implements Testcase #9. Sends a mail from TTT James to SUT.
-	 * 
-	 * @return
-	 */
-
-	public TestResult testSendMail(TestInput ti) {
-
-		TestResult tr = new TestResult();
-		tr.setProctored(true);
-		tr.setCriteriamet(CriteriaStatus.TRUE); 
-		HashMap<String, String> result = tr.getTestRequestResponses();
-
-
-		// Create a mail session
-		Properties properties = new Properties();
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.starttls.enable", ti.useTLS ? "true" : "false");
-		properties.put("mail.smtp.quitwait", "false");
-		properties.put("mail.smtp.userset", "true");
-		properties.put("mail.smtp.ssl.trust", "*");
-		try {
-			Session session = Session.getInstance(properties, null);
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(ti.sutUserName));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(ti.sutEmailAddress));
-
-			message.setSubject("Email from TTT (Test Case 9)");
-			message.setText("This is a mail from JAMES Server");
-
-			BodyPart messageBodyPart = new MimeBodyPart();
-
-			messageBodyPart.setText("This is message body");
-
-			Multipart multipart = new MimeMultipart();
-			String aName = "";
-			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
-
-				DataSource source = new ByteArrayDataSource(e.getValue(),
-						"text/html");
-				messageBodyPart.setDataHandler(new DataHandler(source));
-				messageBodyPart.setFileName(e.getKey());
-				aName += e.getKey();
-				multipart.addBodyPart(messageBodyPart);
-
-				// Send the complete message parts
-				message.setContent(multipart);
-			}
-			Transport transport = session.getTransport("smtp");
-			transport.connect (ti.tttSmtpAddress, ti.useTLS ? ti.startTlsPort : ti.tttSmtpPort, ti.tttUserName, ti.tttPassword);
-			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();
-
-			log.info("SENDING FIRST EMAIL");
-			result.put("1","SENDING FIRST EMAIL TO " + ti.sutEmailAddress + " FROM " + ti.tttEmailAddress + " WITH ATTACHMENT " + aName);
-			result.put("2","Email sent Successfully");
-			System.out.println("Email sent successfully");
-
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			log.info("Error in Testcase 9" );
-			result.put("1", "Error Sending Email " +  e.getLocalizedMessage() + new String(e.getMessage()));
-			tr.setCriteriamet(CriteriaStatus.FALSE);
-		}
-
-		return tr;
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.setProperty("mail.smtp.ssl.trust", "*");
+		
+		return props;
+	
 	}
+	
+	public Properties getProps() {
 
-
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "false");
+		
+		return props;
+	
+	}
+	
 	/**
 	 * Implements Testcase #16. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
 	 * 
@@ -121,12 +71,13 @@ public class TTTSenderTests {
 
 		try{
 
-			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.starttls.enable","true");
-			props.put("mail.smtp.starttls.required", "true");
-			props.put("mail.smtp.auth.mechanisms", "PLAIN");
-			props.setProperty("mail.smtp.ssl.trust", "*");
+			Properties props;
+			if(ti.useTLS){
+			props = getStarttlsProps();
+			}
+			else {
+				props = getProps();
+			}
 
 			Session session = Session.getInstance(props, null);
 			String fromAddress = "";
@@ -230,12 +181,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -349,12 +295,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -468,12 +409,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -596,12 +532,7 @@ public class TTTSenderTests {
 			socketFactory.setTrustAllHosts(true);
 
 
-			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.starttls.enable","true");
-			props.put("mail.smtp.starttls.required", "true"); 
-			props.put("mail.smtp.auth.mechanisms", "PLAIN");
-			props.put("mail.smtp.ssl.trust", "*");
+			Properties props = getStarttlsProps();
 
 
 			Session session = Session.getInstance(props, null);
@@ -716,12 +647,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -836,12 +762,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -949,12 +870,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -1156,12 +1072,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -1260,12 +1171,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -1364,12 +1270,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getStarttlsProps();
 
 
 		Session session = Session.getInstance(props, null);
@@ -1460,49 +1361,7 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	public void testDigestMd5(TestInput ti) {
-
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", ti.useTLS);
-		props.put("mail.smtp.host", ti.sutSmtpAddress);
-		props.put("mail.smtp.port", ti.startTlsPort);
-		props.put("mail.smtp.auth.mechanisms", "DIGEST-MD5");
-
-		Session session = Session.getInstance(props, null);
-
-		try {
-
-			String fromAddress = "";
-			if (ti.sutUserName.contains("@")){
-				fromAddress = ti.sutUserName;
-			}
-
-			else {
-				fromAddress = ti.sutUserName + "@" + ti.sutSmtpAddress;;
-			}
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(fromAddress));
-
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(ti.sutEmailAddress));
-			message.setSubject("Testing DIGEST-MD5");
-			message.setText("This is a message to test DIGEST-MD5!");
-
-			log.info("Sending Message");
-			Transport transport = session.getTransport("smtp");
-			transport.connect(ti.sutSmtpAddress, ti.sutSmtpPort,
-					ti.sutUserName, ti.sutPassword);
-			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();
-			System.out.println("Done");
-
-		} catch (MessagingException e) {
-			log.info("Error in DigestMD5");
-			throw new RuntimeException(e);
-		}
-	}
+	
 
 
 }
