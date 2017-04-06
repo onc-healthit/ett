@@ -245,7 +245,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 				"tttSmtpPort": $scope.tttSmtpPort,
 				"sutEmailAddress": $scope.currentProfile.sutEmailAddress,
 				"tttEmailAddress": $scope.tttEmailAddress,
-				"useTLS": true,
+				"useTLS": $scope.currentProfile.tlsRequired,
 				"sutCommandTimeoutInSeconds": fieldInput.sutCommandTimeoutInSeconds,
 				"sutUserName": $scope.currentProfile.sutUsername,
 				"sutPassword": $scope.currentProfile.sutPassword,
