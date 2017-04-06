@@ -2,9 +2,6 @@ ONC's Transport Testing Platform provides transport and content validation for t
 
 The current release schedule for usability improvements is as follows:
 
-* Release 1.2.3.1 - C-CDA Validator Updates: March 27th, 2017
-
-
 * Release 1.2.4 - TechLab Style Prototype: April 20, 2017
 
 
