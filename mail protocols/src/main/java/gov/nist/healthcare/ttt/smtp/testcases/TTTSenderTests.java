@@ -34,29 +34,30 @@ import com.sun.mail.util.MailSSLSocketFactory;
 public class TTTSenderTests {
 
 	public static Logger log = Logger.getLogger(TTTSenderTests.class.getName());
-	
-	public Properties getStarttlsProps() {
 
+	public Properties getProps(TestInput ti) {
 		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
-		props.setProperty("mail.smtp.ssl.trust", "*");
+		if(ti.useTLS){
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable","true");
+			props.put("mail.smtp.starttls.required", "true");
+			props.put("mail.smtp.auth.mechanisms", "PLAIN");
+			props.setProperty("mail.smtp.ssl.trust", "*");
+		}
 		
-		return props;
-	
-	}
-	
-	public Properties getProps() {
+		if(ti.sutUserName.equals("red") && ti.sutPassword.equals("red")){
+			props.put("mail.smtp.auth", "false");
+		}
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "false");
-		
+		else {
+			props.put("mail.smtp.auth", "false");
+		}
+
 		return props;
-	
+
 	}
-	
+
+
 	/**
 	 * Implements Testcase #16. Authenticates with SUT and sends a mail from SUT Server to a user on SUT using STARTTLS.
 	 * 
@@ -70,14 +71,11 @@ public class TTTSenderTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
 		try{
-
-			Properties props;
-			if(ti.useTLS){
-			props = getStarttlsProps();
-			}
-			else {
-				props = getProps();
-			}
+			System.out.println("TLS Value---->"+ti.useTLS);
+			System.out.println("username--->"+ti.sutUserName);
+			System.out.println("password--->"+ti.sutPassword);
+			Properties props = getProps(ti);
+			
 
 			Session session = Session.getInstance(props, null);
 			String fromAddress = "";
@@ -114,7 +112,7 @@ public class TTTSenderTests {
 							"application/zip");
 					messageBodyPart.setDataHandler(new DataHandler(source1));
 				}
-				
+
 				messageBodyPart.setFileName(e.getKey());
 				aName += e.getKey();
 				multipart.addBodyPart(messageBodyPart);
@@ -181,7 +179,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -295,7 +293,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -409,7 +407,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -532,7 +530,7 @@ public class TTTSenderTests {
 			socketFactory.setTrustAllHosts(true);
 
 
-			Properties props = getStarttlsProps();
+			Properties props = getProps(ti);
 
 
 			Session session = Session.getInstance(props, null);
@@ -647,7 +645,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -762,7 +760,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -870,7 +868,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -1072,7 +1070,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -1171,7 +1169,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -1270,7 +1268,7 @@ public class TTTSenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getStarttlsProps();
+		Properties props = getProps(ti);
 
 
 		Session session = Session.getInstance(props, null);
@@ -1361,7 +1359,7 @@ public class TTTSenderTests {
 
 		return tr;
 	}
-	
+
 
 
 }
