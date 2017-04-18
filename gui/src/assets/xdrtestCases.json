@@ -755,7 +755,6 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
-    "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
         "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
@@ -1251,7 +1250,6 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
-    "criteria":"['b1-1']", 
     "inputs": [{
         "name": "Direct From Address",
         "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
@@ -1305,7 +1303,6 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
-    "criteria":"['b1-1']", 
     "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
@@ -1339,7 +1336,6 @@
     "sutEdge": true,
     "sutHisp": false,
     "sutRole": "sender",
-    "criteria":"['b1-1']", 
     "status": "configure",
     "inputs": [{
         "name": "Direct From Address",
