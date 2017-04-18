@@ -433,7 +433,7 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 
 		case 102:
 			log.info("*****************   BEGIN  Testcase 102 *******************************");
-			ti.useTLS = true;
+		//	ti.useTLS = true;
 			TestResult tr102;
 			tr102 = mu2senderTests.testMu2TwoSmtp(ti,false);
 			tr102.id = 102;
@@ -1142,36 +1142,6 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				e.printStackTrace();
 			}
 			log.info("*****************   END  Testcase 312 *******************************");
-			break;
-
-		case 213:
-			log.info("*****************   BEGIN  Testcase 213 *******************************");
-
-			TestResult tr213;
-			try {
-				tr213 = tTest.imapFetch13(ti);
-				tr213.id = 213;
-				res.add(tr213);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 213 *******************************");
-			break;
-
-		case 214:
-			log.info("*****************   BEGIN  Testcase 214 *******************************");
-
-			TestResult tr214;
-			try {
-				tr214 = tTest.imapFetch14(ti);
-				tr214.id = 214;
-				res.add(tr214);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("*****************   END  Testcase 214 *******************************");
 			break;
 
 
