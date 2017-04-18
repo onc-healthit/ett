@@ -63,7 +63,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects data sent from a HISP (e.g., ETT), acting as the sender, as a component of a successfully established and active session. Successful establishment of an end-point to end-point connection between the SUT and ETT is a necessary function for SMTP Test Case 10 execution.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT and attempt to send an invalid data via the DATA command (e.g., bad line feeds).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the 'Implementation Guide for Direct Edge Protocols' document. \n The test correlates to Test ID 10 of the SMTP Test Cases (tab) within the 'DirectEdgeProtocols' spreadsheet.",
 		"sutRole": "receiver",
 		"sutHisp": true,
- 		"criteria":"['h2-8','b1-4']",
+ 		"criteria":"['h2-8']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 11 (Reject Bad Commands)",
@@ -73,7 +73,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, rejects as invalid the commands sent from a HISP (e.g., ETT), acting as the sender./n The details for conformance testing flow are as follows: The ETT attempts to initiate a session with the SUT by sending an invalid SMTP command following identified exception paths. The test attempts to determine if the SUT rejects the command sent by the Edge Testing Tool as invalid and responds using the appropriate mechanisms. This is conducted in accordance with RFC 2811, Section 4.1.1 and 4.1.4 (e.g., closing the session abruptly).\n This is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the 'Implementation Guide for Direct Edge Protocols' document. \nThe test correlates to Test ID 11 of the SMTP Test Cases (tab) within the 'DirectEdgeProtocols' spreadsheet. ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    "criteria":"['h2-8','b1-4']", 
+    "criteria":"['h2-8']", 
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 13 (Command Timeout)",
@@ -83,7 +83,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, can successfully establish an active session with a HISP (e.g., ETT), acting as the sender, and conform to the specific timeout requirements within the RFC and SMTP command.\n The details for conformance testing flow are as follows: The ETT will initiate a connected session with the SUT. The SUT will attempt to keep a transaction open with the ETT for beyond the specified time constraints found within RFC 2821, Section 4.5.3.2. \nThis is required test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.1 and 1.2.2 of the 'Implementation Guide for Direct Edge Protocols' document. ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    "criteria":"['h2-8','b1-4']",
+    "criteria":"['h2-8']",
 		"sutEdge": true,
 		"fields": [{
 			"label": "Command timeout in seconds",
@@ -110,7 +110,6 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
-		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 18 - Accept failure message for invalid recipient (Processed MDN suite - IMAP/POP Receiver)",
@@ -120,7 +119,6 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
-		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 18(a) - Accept failure message for invalid recipient (Processed MDN suite - SMTP Receiver)",
@@ -130,7 +128,6 @@
 		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP. Note that 18a/47a are to be executed only for SMTP Receive configurations with pre-configured accounts.",
 		"sutRole": "sender",
 		"sutHisp": false,
-		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 45 - Generate Unique Message-ID (IG for Delivery Notification Suite)",
@@ -159,7 +156,6 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP.  ",
 		"sutRole": "sender",
 		"sutHisp": false,
-		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 47(a) - Accept failure message for invalid recipient (IG for Delivery Notification Suite - SMTP Receiver)",
@@ -169,7 +165,6 @@
 		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP. Note that 18a/47a are to be executed only for SMTP Receive configurations with pre-configured accounts.",
 		"sutRole": "sender",
 		"sutHisp": false,
-		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 22 (Reject invalid username/password)",
@@ -179,7 +174,7 @@
 		"longDesc": "The objective of this test sequence is to determine if an Edge System (e.g., SUT), acting as the receiver, will reject and fail to authenticate an invalid PLAIN SASL request sent from a HISP (e.g., ETT), acting as the sender.\nThe details for conformance testing flow are as follows: The ETT will send an invalid PLAIN SASL username/password authentication scheme to the SUT. The SUT will receive the invalid PLAIN SASL username/password, reject the credentials, and fail to established authentication to the ETT. The PLAIN SASL connection mechanisms will conform to the specified requirements within RFC 4616, Section 2.\n This is conditional test and maintains compliance with the secure health data transport messaging formats, processing requirements, and communication standards for Direct Edge message exchanges. See Section 1.2.4 of the 'Implementation Guide for Direct Edge Protocols' document.\n The test correlates to Test ID 22 of the SMTP Test Cases (tab) within the 'DirectEdgeProtocols' spreadsheet. ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    "criteria":"['h2-8','b1-4']",
+    "criteria":"['h2-8']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(a) (Receive Text and CCDA)",
