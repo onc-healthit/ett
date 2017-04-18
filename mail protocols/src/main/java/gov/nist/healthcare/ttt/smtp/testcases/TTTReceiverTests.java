@@ -699,7 +699,7 @@ public class TTTReceiverTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		Properties props = getImapProps(ti);
-
+		System.out.println("UseTLS-->"+ti.useTLS);
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("imap");
@@ -1929,7 +1929,7 @@ public class TTTReceiverTests {
 		HashMap<String, String> bodyparts = tr.getAttachments();
 		// int j = 0;
 		Properties props = getPopProps(ti);
-
+		System.out.println("UseTLS-->"+ti.useTLS);
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			Store store = session.getStore("pop3");
