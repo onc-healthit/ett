@@ -28,6 +28,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     private static final String SMTPEDGEPROFILE_SUTEMAILADDRESS = "SUTEmailAddress";
     private static final String SMTPEDGEPROFILE_SUTUSERNAME = "SUTUsername";
     private static final String SMTPEDGEPROFILE_SUTPASSWORD = "SUTPassword";
+    private static final String SMTPEDGEPROFILE_USETLS = "USETls";
 
     private static final String SMTPEDGELOG_TABLE = "SmtpEdgeLog";
     private static final String SMTPEDGELOG_SMTPEDGELOGID = "SmtpEdgeLogID";
@@ -47,7 +48,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     }
 
     public String addNewGroupSmtpLog(List<SmtpEdgeLogInterface> smtpLogs, String username, String profileName) throws DatabaseException {
-        
+
         Iterator<SmtpEdgeLogInterface> it = smtpLogs.iterator();
         String transaction = UUID.randomUUID().toString();
         while(it.hasNext()) {
@@ -57,7 +58,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         }
         return transaction;
     }
-    
+
     /**
      * Method adds a new log to the database associated with a username /
      * profile name combination. If
@@ -84,7 +85,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(", ");
         sql.append(SMTPEDGEPROFILE_SMTPEDGEPROFILEID);
         sql.append(", ");
-        sql.append(SMTPEDGELOG_TIMESTAMP);        
+        sql.append(SMTPEDGELOG_TIMESTAMP);
         sql.append(", ");
         sql.append(SMTPEDGELOG_TRANSACTIONID);
         sql.append(", ");
@@ -106,10 +107,10 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append("' ,'");
         if(smtpLog.getTransaction() != null) {
             sql.append(smtpLog.getTransaction());
-        } else { 
+        } else {
             sql.append(UUID.randomUUID().toString());
         }
-        sql.append("','");        
+        sql.append("','");
         sql.append(smtpLog.getTestCaseNumber());
         sql.append("' , '");
         if (smtpLog.isCriteriaMet()) {
@@ -119,7 +120,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         }
         sql.append("' , '");
         sql.append(smtpLog.getTestRequestsResponse());
-        sql.append("');");                
+        sql.append("');");
         try {
             this.getConnection().executeUpdate(sql.toString());
         } catch (SQLException ex) {
@@ -142,16 +143,17 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         String existingProfileID = this.getProfileId(profile.getUsername(), profile.getProfileName());
         if(existingProfileID == null || "".equals(existingProfileID))
             return this.addNewSmtpProfile(profile);
-        
+
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE " + SMTPEDGEPROFILE_TABLE + ' ');
         sql.append("SET ");
         sql.append(SMTPEDGEPROFILE_SUTSMTPADDRESS + " = '" + profile.getSutSMTPAddress() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTEMAILADDRESS + " = '" + profile.getSutEmailAddress() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTUSERNAME + " = '" + profile.getSutUsername() + "', ");
-        sql.append(SMTPEDGEPROFILE_SUTPASSWORD + " = '" + profile.getSutPassword() + "' ");
+        sql.append(SMTPEDGEPROFILE_SUTPASSWORD + " = '" + profile.getSutPassword() + "' ,");
+        sql.append(SMTPEDGEPROFILE_USETLS + " =  "+ profile.getUseTls() +" ");
         sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + existingProfileID + "';");
-        
+
         try {
             this.getConnection().executeUpdate(sql.toString());
         } catch (SQLException ex) {
@@ -160,11 +162,11 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         }
         return existingProfileID;
 
-        
+
     }
-    
+
     private String addNewSmtpProfile(SmtpEdgeProfileInterface profile) throws DatabaseException {
-        
+
         String smtpProfileID = UUID.randomUUID().toString();
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + SMTPEDGEPROFILE_TABLE + ' ');
@@ -181,6 +183,8 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(SMTPEDGEPROFILE_SUTUSERNAME);
         sql.append(", ");
         sql.append(SMTPEDGEPROFILE_SUTPASSWORD);
+        sql.append(", ");
+        sql.append(SMTPEDGEPROFILE_USETLS);
         sql.append(") VALUES ('");
         sql.append(smtpProfileID);
         sql.append("' , '");
@@ -195,7 +199,9 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(DatabaseConnection.makeSafe(profile.getSutUsername()));
         sql.append("' , '");
         sql.append(DatabaseConnection.makeSafe(profile.getSutPassword()));
-        sql.append("');");
+        sql.append("' , ");
+        sql.append(profile.getUseTls());
+        sql.append(");");
         try {
             this.getConnection().executeUpdate(sql.toString());
         } catch (SQLException ex) {
@@ -206,33 +212,33 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         return smtpProfileID;
 
     }
-            
+
     public int removeSmtpProfile(String username, String profileName) throws DatabaseException {
 
         String profileId = this.getProfileId(username, profileName);
         if(profileId == null || "".equals(profileId))
             return 0;
-        
+
         StringBuilder sqlRemoveLog = new StringBuilder();
         sqlRemoveLog.append("DELETE ");
         sqlRemoveLog.append("FROM " + SMTPEDGELOG_TABLE + ' ');
         sqlRemoveLog.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + profileId + "';");
-        
+
         try {
             this.getConnection().executeUpdate(sqlRemoveLog.toString());
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
         }
-        
+
         StringBuilder sqlRemoveProfile = new StringBuilder();
         sqlRemoveProfile.append("DELETE ");
         sqlRemoveProfile.append("FROM " + SMTPEDGEPROFILE_TABLE + ' ');
         sqlRemoveProfile.append("WHERE " + USERS_USERNAME + " = '" + username + "' AND ");
         sqlRemoveProfile.append(SMTPEDGEPROFILE_PROFILENAME + " = '" + profileName + "';");
-        
+
         int result = 0;
-        
+
         try {
             result = this.getConnection().executeUpdate(sqlRemoveProfile.toString());
         } catch (SQLException ex) {
@@ -263,7 +269,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(SMTPEDGELOG_TESTCASENUMBER + " = '" + DatabaseConnection.makeSafe(testcasenumber) + "' ");
         sql.append("ORDER BY " + SMTPEDGELOG_TIMESTAMP + " DESC ");
         sql.append("LIMIT 1;");
-                               
+
         ResultSet result = null;
         SmtpEdgeLogInterface log = null;
         try {
@@ -328,28 +334,28 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         return testCaseNumbers;
     }
 
-   
+
     public Map<String, List<SmtpEdgeLogInterface>> getSmtpEdgeValidationReport(String username, String profileName) throws DatabaseException {
-        
+
         String profileId = this.getProfileId(username, profileName);
         List<String> testCaseNumbers = this.getAllTestCaseNumbers(profileId);
-        
+
         Map<String, List<SmtpEdgeLogInterface>> validation = new HashMap<String, List<SmtpEdgeLogInterface>>();
         Iterator<String> it = testCaseNumbers.iterator();
         while(it.hasNext()) {
             String testCaseNumber = it.next();
             String interactionID = this.getLatestInteractionIDByProfileAndTestCase(profileId, testCaseNumber);
-            
+
             List<SmtpEdgeLogInterface> logs = this.getLogsByInteraction(interactionID);
             validation.put(testCaseNumber, logs);
         }
 
         return validation;
-        
+
     }
-  
+
     private String getLatestInteractionIDByProfileAndTestCase(String profileId, String testCaseNumber) throws DatabaseException {
-        
+
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + SMTPEDGELOG_TRANSACTIONID + ' ');
         sql.append("FROM " + SMTPEDGELOG_TABLE + ' ');
@@ -364,7 +370,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         try {
             result = this.getConnection().executeQuery(sql.toString());
             if (result.next()) {
-                interactionID = result.getString(SMTPEDGELOG_TRANSACTIONID);               
+                interactionID = result.getString(SMTPEDGELOG_TRANSACTIONID);
             }
         }  catch (Exception e) {
             e.printStackTrace();
@@ -372,14 +378,14 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         }
         return interactionID;
     }
-    
+
     private List<SmtpEdgeLogInterface> getLogsByInteraction(String interactionID) throws DatabaseException {
-        
+
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + SMTPEDGELOG_TABLE + ' ');
         sql.append("WHERE " + SMTPEDGELOG_TRANSACTIONID + " = '" + interactionID + "';" );
-        
+
         ResultSet result = null;
         List<SmtpEdgeLogInterface> logs = new ArrayList<SmtpEdgeLogInterface>();
 
@@ -395,8 +401,8 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         }
         return logs;
     }
-            
-            
+
+
     private String getProfileId(String username, String profileName) throws DatabaseException {
 
         StringBuilder sql = new StringBuilder();
@@ -534,7 +540,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
             log3.setTestCaseNumber("SMTP2");
             log3.setTestRequestsResponse("RRRRRRRRRRRRRRR THING");
 
-            
+
             List<SmtpEdgeLogInterface> logs = new ArrayList<SmtpEdgeLogInterface>();
             logs.add(log);
             logs.add(log2);
@@ -542,20 +548,20 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
            // lf.addNewGroupSmtpLog(logs, "Username", "Profile1");
             long begin = Calendar.getInstance().getTimeInMillis();
           //  for(int i = 0; i <= 100; i++) {
-                
+
                 lf.addNewGroupSmtpLog(logs, "Username1", "Profile1");
                 lf.addNewSmtpLog(log, "Username", "Profile1");
-            
+
                Map<String, List<SmtpEdgeLogInterface>> report = lf.getSmtpEdgeValidationReport("Username1", "Profile1");
              //   System.out.println(report.get("SMTP2").get(0).getTestRequestsResponse());
-                
+
 //            }
                 long end = Calendar.getInstance().getTimeInMillis();
-                
-                
+
+
                 System.out.println("Time elasped (milliseconds): " + (end - begin));
           //  Map<String, List<SmtpEdgeLogInterface>> report = lf.getSmtpEdgeValidationReport("Username", "Profile1");
-            
+
          //   System.out.println(report.get("SMTP2").size());
             // lf.addNewSmtpLog(log, "Username", "Profile1");
         //    SmtpEdgeLogInterface log2 = lf.getLatestSmtpEdgeLogInterface("Username", "Profile1", "SMTP1");
@@ -570,9 +576,9 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     //            System.out.println(readLog.getTestCaseNumber() + " " + readLog.getTestRequestsResponse());
       //      }
 
-            
+
         //    lf.removeSmtpProfile("Username", "Profile1");
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }

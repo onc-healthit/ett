@@ -39,7 +39,10 @@ public interface SmtpEdgeProfileInterface {
     String getSutUsername();
 
     String getUsername();
-    
+
+    boolean getUseTls();
+
+
     /**
      * @param profileName the profileName to set
      */
@@ -69,6 +72,8 @@ public interface SmtpEdgeProfileInterface {
      * @param sutUsername the sutUsername to set
      */
     void setSutUsername(String sutUsername);
-    
+
     void setUsername(String username);
+
+    void setUseTls(boolean useTls);
 }
