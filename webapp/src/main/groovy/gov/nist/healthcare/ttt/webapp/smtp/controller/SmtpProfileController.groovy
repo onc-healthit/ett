@@ -56,17 +56,16 @@ class SmtpProfileController {
 			String username = principal.getName()
 			smtpProfile.setUsername(username)
 		}
-		boolean useTls = false;
-		
+		boolean useTLS = false;
 		if ((profile?.get("useTLS")) == "true"){
-		    useTls = true;
+		    useTLS = true;
 		}
 		smtpProfile.setProfileName(profile?.get("profileName"))
 		smtpProfile.setSutEmailAddress(profile?.get("sutEmailAddress"))
 		smtpProfile.setSutSMTPAddress(profile?.get("sutSMTPAddress"))
 		smtpProfile.setSutUsername(profile?.get("sutUsername"))
 		smtpProfile.setSutPassword(profile?.get("sutPassword"))
-		smtpProfile.setUseTls(useTls)
+		smtpProfile.setUseTLS(useTLS)
 		db.getSmtpEdgeLogFacade().saveSmtpProfile(smtpProfile)
 	}
 	
