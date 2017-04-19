@@ -40,7 +40,7 @@ public interface SmtpEdgeProfileInterface {
 
     String getUsername();
 
-    boolean getUseTls();
+    boolean getUseTLS();
 
 
     /**
@@ -75,5 +75,5 @@ public interface SmtpEdgeProfileInterface {
 
     void setUsername(String username);
 
-    void setUseTls(boolean useTls);
+    void setUseTLS(boolean useTls);
 }

@@ -14,7 +14,7 @@ public class SmtpEdgeProfileImpl implements SmtpEdgeProfileInterface {
     private String sutUsername;
     private String sutPassword;
     private String username;
-    private boolean useTls;
+    private boolean useTLS;
 
     /**
      * @return the smtpEdgeProfileID
@@ -129,14 +129,14 @@ public class SmtpEdgeProfileImpl implements SmtpEdgeProfileInterface {
     /**
      * @return the username
      */
-    public boolean getUseTls() {
-        return useTls;
+    public boolean getUseTLS() {
+        return useTLS;
     }
 
     /**
      * @param username the username to set
      */
-    public void setUseTls(boolean useTls) {
-        this.useTls = useTls;
+    public void setUseTLS(boolean useTLS) {
+        this.useTLS = useTLS;
     }
 }

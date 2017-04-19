@@ -28,7 +28,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     private static final String SMTPEDGEPROFILE_SUTEMAILADDRESS = "SUTEmailAddress";
     private static final String SMTPEDGEPROFILE_SUTUSERNAME = "SUTUsername";
     private static final String SMTPEDGEPROFILE_SUTPASSWORD = "SUTPassword";
-    private static final String SMTPEDGEPROFILE_USETLS = "USETls";
+    private static final String SMTPEDGEPROFILE_USETLS = "useTLS";
 
     private static final String SMTPEDGELOG_TABLE = "SmtpEdgeLog";
     private static final String SMTPEDGELOG_SMTPEDGELOGID = "SmtpEdgeLogID";
@@ -151,7 +151,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(SMTPEDGEPROFILE_SUTEMAILADDRESS + " = '" + profile.getSutEmailAddress() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTUSERNAME + " = '" + profile.getSutUsername() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTPASSWORD + " = '" + profile.getSutPassword() + "' ,");
-        sql.append(SMTPEDGEPROFILE_USETLS + " =  "+ profile.getUseTls() +" ");
+        sql.append(SMTPEDGEPROFILE_USETLS + " =  "+ profile.getUseTLS() +" ");
         sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + existingProfileID + "';");
 
         try {
@@ -200,7 +200,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append("' , '");
         sql.append(DatabaseConnection.makeSafe(profile.getSutPassword()));
         sql.append("' , ");
-        sql.append(profile.getUseTls());
+        sql.append(profile.getUseTLS());
         sql.append(");");
         try {
             this.getConnection().executeUpdate(sql.toString());
@@ -473,6 +473,9 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
             profile.setSutSMTPAddress(result.getString(SMTPEDGEPROFILE_SUTSMTPADDRESS));
             profile.setSutUsername(result.getString(SMTPEDGEPROFILE_SUTUSERNAME));
             profile.setUsername(result.getString(USERS_USERNAME));
+            if (result.getObject(SMTPEDGEPROFILE_USETLS) !=null){
+	            profile.setUseTLS(result.getBoolean(SMTPEDGEPROFILE_USETLS));
+			}
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
