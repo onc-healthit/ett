@@ -114,7 +114,9 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 			SMTPProfileFactory.query(function(data) {
 				if (data.length > 0) {
 					$scope.currentProfile = current || data[0];
-					$scope.currentProfile.useTLS = true;
+					if ($scope.currentProfile.useTLS === null){
+                        $scope.currentProfile.useTLS = true;
+					}
 				} else {
 					$scope.currentProfile = {};
 					$scope.currentProfile.profileName = "Default Profile";
