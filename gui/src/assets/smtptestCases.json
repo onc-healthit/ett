@@ -102,7 +102,7 @@
 		"desc": "Verifies the ability of the receiving system to reject invalid STARTTLS commands.Hitting 'Run' will cause ETT to begin an invalid STARTTLS session. This session SHALL end before a message can be sent.",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    "criteria":"['h2-8','b1-4']",    		
+    "criteria":"['h2-8']",    		
     "sutEdge": true
 	}, {
 		"name": "SMTP MT Test 17 - Generate Unique Message-ID (Processed MDN suite)",
