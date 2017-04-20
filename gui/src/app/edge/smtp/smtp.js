@@ -114,9 +114,13 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 			SMTPProfileFactory.query(function(data) {
 				if (data.length > 0) {
 					$scope.currentProfile = current || data[0];
+					if ($scope.currentProfile.useTLS === null){
+                        $scope.currentProfile.useTLS = true;
+					}
 				} else {
 					$scope.currentProfile = {};
 					$scope.currentProfile.profileName = "Default Profile";
+					$scope.currentProfile.useTLS = true;
 				}
 				$scope.profileList = data;
 			});
@@ -173,6 +177,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 			$scope.currentProfile.sutEmailAddress = "";
 			$scope.currentProfile.sutUsername = "";
 			$scope.currentProfile.sutPassword = "";
+			$scope.currentProfile.useTLS = true;
 			$scope.currentProfile.profileName = "Default Profile " + $scope.profileList.length;
 			$scope.refreshProfile($scope.currentProfile);
 		};
@@ -245,7 +250,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 				"tttSmtpPort": $scope.tttSmtpPort,
 				"sutEmailAddress": $scope.currentProfile.sutEmailAddress,
 				"tttEmailAddress": $scope.tttEmailAddress,
-				"useTLS": true,
+				"useTLS": $scope.currentProfile.useTLS,
 				"sutCommandTimeoutInSeconds": fieldInput.sutCommandTimeoutInSeconds,
 				"sutUserName": $scope.currentProfile.sutUsername,
 				"sutPassword": $scope.currentProfile.sutPassword,
