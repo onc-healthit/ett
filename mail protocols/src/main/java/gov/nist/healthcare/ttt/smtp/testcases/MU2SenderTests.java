@@ -47,6 +47,27 @@ public class MU2SenderTests {
 
 	public static Logger log = Logger.getLogger(MU2SenderTests.class.getName());
 	
+	public Properties getProps(TestInput ti) {
+		Properties props = new Properties();
+		if(ti.useTLS){
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable","true");
+			props.put("mail.smtp.starttls.required", "true");
+			props.setProperty("mail.smtp.ssl.trust", "*");
+		}
+		
+		if(ti.sutUserName.equals("red") && ti.sutPassword.equals("red")){
+			props.put("mail.smtp.auth", "false");
+		}
+
+		else {
+			props.put("mail.smtp.auth", "false");
+		}
+
+		return props;
+
+	}
+	
 	/**
 	 * Implements  a Testcase to send an email to a Bad Address. Authenticates with SUT and sends a mail from SUT Server to a end point using STARTTLS.
 	 * 
@@ -59,11 +80,7 @@ public class MU2SenderTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		//	String dsn = "SUCCESS,FAILURE,DELAY,ORCPT=rfc1891";
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required",true);
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		tr.setFetchType("imap");
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -152,11 +169,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("fail");
@@ -237,11 +250,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("fail");
@@ -322,11 +331,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
 		tr.setFetchType("imap");
 		tr.setSearchType("fail");
@@ -407,14 +412,7 @@ public class MU2SenderTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		//	String dsn = "SUCCESS,FAILURE,DELAY,ORCPT=rfc1891";
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required",true);
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.dsn.ret", "HDRS");
-		//	props.put("mail.smtp.notify", dsn);
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -498,12 +496,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 
@@ -584,12 +577,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 
@@ -669,12 +657,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -754,14 +737,7 @@ public class MU2SenderTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		//	String dsn = "SUCCESS,FAILURE,DELAY,ORCPT=rfc1891";
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable",true);
-		props.put("mail.smtp.starttls.required",true);
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.dsn.ret", "HDRS");
-		//	props.put("mail.smtp.notify", dsn);
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -846,12 +822,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 
@@ -933,12 +904,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -1017,12 +983,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -1102,12 +1063,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("imap");
 		tr.setSearchType("timeout");
 		Session session = Session.getInstance(props, null);
@@ -1174,12 +1130,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("imap");
 		tr.setSearchType("timeout28");
 		Session session = Session.getInstance(props, null);
@@ -1247,12 +1198,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("timeout");
 
@@ -1320,12 +1266,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("timeout28");
 
@@ -1394,12 +1335,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("timeout");
 
@@ -1467,12 +1403,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-	//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("timeout28");
 
@@ -1552,12 +1483,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("imap");
 		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
@@ -1623,12 +1549,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
@@ -1694,12 +1615,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
@@ -1766,12 +1682,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.from", prop.getProperty("not.published"));
+		Properties props = getProps(ti);
 		tr.setFetchType("imap1");
 		tr.setSearchType("both");
 		Session session = Session.getInstance(props, null);
@@ -2028,11 +1939,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		tr.setFetchType("imap");
 		tr.setSearchType("pass");
 		Session session = Session.getInstance(props, null);
@@ -2104,11 +2011,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		tr.setFetchType("imap1");
 		tr.setSearchType("either");
 		Session session = Session.getInstance(props, null);
@@ -2203,11 +2106,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		tr.setFetchType("imap1");
 		tr.setSearchType("fail");
 		Session session = Session.getInstance(props, null);
@@ -2273,11 +2172,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		tr.setFetchType("imap1");
 		tr.setSearchType("processedandfailure");
 		Session session = Session.getInstance(props, null);
@@ -2368,11 +2263,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("pass");
 		Session session = Session.getInstance(props, null);
@@ -2442,11 +2333,7 @@ public class MU2SenderTests {
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("pass");
 
@@ -2518,11 +2405,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		Properties props = getProps(ti);
 		//	props.put("mail.smtp.dsn.ret", "HDRS");
 		//	props.put("mail.smtp.notify", dsn);
 		tr.setFetchType("imap");
@@ -2601,13 +2484,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.dsn.ret", "HDRS");
-		//	props.put("mail.smtp.notify", dsn);
+		Properties props = getProps(ti);
 		tr.setFetchType("pop");
 		tr.setSearchType("dispatched");
 		Session session = Session.getInstance(props, null);
@@ -2684,13 +2561,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.MANUAL);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 		
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.starttls.required","true");
-		props.put("mail.smtp.ssl.trust", "*");
-		//	props.put("mail.smtp.dsn.ret", "HDRS");
-		//	props.put("mail.smtp.notify", dsn);
+		Properties props = getProps(ti);
 		Session session = Session.getInstance(props, null);
 		tr.setFetchType("smtp");;
 		tr.setSearchType("dispatched");
