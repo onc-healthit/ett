@@ -1,5 +1,5 @@
 
-==Version 1.2.41#4/20/2017
+==Version 1.2.4#4/20/2017
 
  *1.  Added option to selectively use STARTTLS (default selected) for SMTP/IMAP/POP profiles for systems demonstrating security through other means such as secure networks.
  
