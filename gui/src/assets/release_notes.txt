@@ -1,3 +1,14 @@
+
+==Version 1.2.41#4/20/2017
+
+ *1.  Added option to selectively use STARTTLS (default selected) for SMTP/IMAP/POP profiles for systems demonstrating security through other means such as secure networks.
+ 
+ *2.  Testing by Criteria § 170.315(b)(1) updated for accuracy.
+ 
+ *3.  Content type for SMTP 25d order updated to reflect the correct types.
+ 
+ *4.  UI fixes:  timeout field in SMTP MT 28 removed, endpoint listed for XDR Test 7 fixed,  removed *: from the XDR MT Direct From Address hover over
+
 ==Version 1.2.3.1#3/27/2017
 
  *1.  CCDA validator (2.1 and 1.1) updated to 1.0.5.  Release notes can be accessed here : https://github.com/siteadmin/referenceccdavalidator/releases
