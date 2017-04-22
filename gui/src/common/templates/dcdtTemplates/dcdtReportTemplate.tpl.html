@@ -18,14 +18,19 @@
 	   <div><span><strong>Underlying Specification References</strong>: </span>
 	   	    <ul>
 	   	       <div ng-if="data.RFC_4398"><li>RFC 4398: {{data.RFC_4398}}</li></div>
+	   	       <div ng-if="data.RFC_4298"><li>RFC 4298: {{data.RFC_4298}}</li></div>
+	   	       <div ng-if="data.RFC_5280"><li>RFC 5280: {{data.RFC_5280}}</li></div>
 	   	       <div ng-if="data.Direct_SHT"><li>Direct Applicability Statement for Secure Health Transport:{{data.Direct_SHT}}</li></div>
 	   	       <div ng-if="data.RFC_2798"><li>RFC 2798: {{data.RFC_2798}}</li></div>
+	   	       <div ng-if="data.RFC_2782"><li>RFC 2782: {{data.RFC_2782}}</li></div>
+	   	       <div ng-if="data.RFC_1035"><li>RFC 1035: {{data.RFC_1035}}</li></div>
 	   	    </ul>
 	   </div>
 	   <p>
 	   <div><span><strong>Instructions</strong>: {{data.Instructions}}</span>
 	   </div>
-	   <div><span><strong>Target Certificate(s)</strong>: </span></div>
+	       <div><span><strong>Target Certificate(s)</strong>: </span></div>
+
 	   <div ng-repeat="field in data.Target_Certificate">
 	       <ul>
 	         <li><div><span><strong>{{field.name}}</strong>:</span></div></li>
