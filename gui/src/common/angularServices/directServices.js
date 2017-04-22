@@ -95,6 +95,13 @@ directService.factory('CCDAR2ValidatorFactory', ['$resource', 'RESOURCES',
     }
 ]);
 
+directService.factory('DCDTValidatorFactory', ['$resource', 'RESOURCES',
+    function($resource, RESOURCES) {
+        return $resource(RESOURCES.USERS_API + 'dcdt', {}, {
+        });
+    }
+]);
+
 directService.factory('DirectCertsLinkFactory', ['$resource', 'RESOURCES',
     function($resource, RESOURCES) {
         return $resource(RESOURCES.USERS_API + 'directcertlinks', {}, {

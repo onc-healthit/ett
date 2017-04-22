@@ -1,0 +1,67 @@
+<div id="hosting-results" class="input-group-small" >
+	<div class="form-group">
+		<div class="">
+			<span class="form-cell form-cell-label"> <span
+				class="glyphicon glyphicon-certificate glyphicon-type-info"></span>Results
+			</span>
+		</div>
+	</div>
+
+	<div ng-if="data.status ==='success'">	
+	<div id="testcase-results-accordion"
+		class="ui-accordion ui-widget ui-helper-reset" role="tablist">
+		<h3>
+			<div>
+				<span><strong>Testcase</strong>: {{data.testcase.testcase}}</span>
+			</div>
+			<div>
+				<span><strong>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+			</div>
+		</h3>
+		<div>
+			<div>
+				<span><strong>Success</strong>: {{data.status}}</span>
+			</div>
+			<!-- item loop -->
+            <div ng-repeat="item in data.items">
+
+            <div ng-repeat="procMsg in item.procMsgs">
+                <strong></strong>
+            </div>	
+      <div ng-if="item.procMsgs | isEmpty">
+        <strong>Processing Message(s): None</strong>
+      </div>
+		<span><strong>Processed Step(s)</strong>:
+            <div ng-repeat="procStep in item.procSteps">
+				   <div><span>{{$index+1}}. <strong>{{procStep.desc.text}}</strong></span></div>
+			        <ul><li><div><span><strong>Success</strong>:{{procStep.success}} </span></div></li>
+			         <div ng-repeat="msg in procStep.msgs">
+			         <div ng-if="msg.level==='INFO' || msg.level==='ERROR'">
+			            <li><div><span><strong>Message(s)</strong>: </span></div></li>
+			            <ul><li><p style="display: inline; width: 150px; word-break: break-all; word-wrap: break-word;">
+			                    {{msg.text}}
+			                    </p></li>
+			            </ul>
+			         </div>   
+			         </div>
+			            <li><div><span><strong>Binding Type</strong>:{{procStep.bindingType}} </span></div></li>
+			            <li><div><span><strong>Location Type</strong>:{{procStep.locType}} </span></div></li>
+			        </ul>
+              </div>		
+				<div>
+					<strong>Discovered Valid Certificate</strong>: 
+					<div ng-if="item.discoveredCertInfo.cert">		
+					  <pre>{{item.discoveredCertInfo.cert | json}}</pre>
+					</div>
+				</div>
+				<div>
+					<strong>Discovered Invalid Certificate(s)</strong>:
+					<div ng-if="item.invalidDiscoveredCertInfos.cert">		
+					  <pre>{{item.invalidDiscoveredCertInfos.cert | json}}</pre>
+					</div>					
+				</div>
+		</div>
+	</div>
+	</div>
+   </div>
+</div>
