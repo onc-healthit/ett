@@ -1,5 +1,5 @@
-<div id="hosting-results" style="font-size:70%;background:white" >
-	<div ng-if="data.status ==='success'">	
+<div id="hosting-results" >
+	<div ng-if="data.status ==='success'">
 	<div class="form-group">
 		<div class="">
 			<span class="form-cell form-cell-label"> <span
@@ -9,27 +9,44 @@
 	</div>
 
 
-	<div id="testcase-results-accordion"
-		class="ui-accordion ui-widget ui-helper-reset" role="tablist">
-		<div class="cancel" ng-click="showhidediv()"><h3 style="font-size:100%"><uib-alert type="danger">
-			<div>
-				<span><strong>Testcase</strong>: {{data.testcase.testcase}}</span>
-			</div>
-			<div>
-				<span><strong>Direct Address</strong>: {{data.testcase.directAddr}}</span>
-			</div>
-		</uib-alert></h3>
-		</div>
+	<div id="testcase-results-accordion" style="font-size:70%;background:white">
+
 		<div>
-			<div>
-				<span><strong>Success</strong>: {{data.status}}</span>
-			</div>
+
 			<!-- item loop -->
             <div ng-repeat="item in data.items">
 
+		<div class="cancel" ng-click="showhidediv()"><h3 style="font-size:100%">
+		<div ng-if="item.success==false">
+			<uib-alert type="danger">
+				<div>
+					<span><strong><i class="a fa fa-close fa-2x"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+				</div>
+				<div>
+					<span><strong>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+				</div>
+			</uib-alert>
+		</div>
+		<div ng-if="item.success==true">
+			<uib-alert type="success">
+				<div>
+					<span><strong><i class="a fa fa-check-circle-o fa-3x"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+				</div>
+				<div>
+					<span><strong>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+				</div>
+			</uib-alert>
+		</div>		
+		</h3>
+		</div>
+		
+			<div>
+				<span><strong>Success</strong>: {{item.success}}</span>
+			</div>
+			
             <div ng-repeat="procMsg in item.procMsgs">
                 <strong></strong>
-            </div>	
+            </div>
       <div ng-if="item.procMsgs | isEmpty">
         <strong>Processing Message(s): None</strong>
       </div>
@@ -44,23 +61,23 @@
 			                    {{msg.text}}
 			                    </p></li>
 			            </ul>
-			         </div>   
+			         </div>
 			         </div>
 			            <li><div><span><strong>Binding Type</strong>:{{procStep.bindingType}} </span></div></li>
 			            <li><div><span><strong>Location Type</strong>:{{procStep.locType}} </span></div></li>
 			        </ul>
-              </div>		
+              </div>
 				<div>
-					<strong>Discovered Valid Certificate</strong>: 
-					<div ng-if="item.discoveredCertInfo.cert">		
-					  <pre style="font-size:100%;background:white">{{item.discoveredCertInfo.cert | json}}</pre>
+					<strong>Discovered Valid Certificate</strong>:
+					<div ng-if="item.discoveredCertInfo.cert">
+					  <pre style="font-size:100%; white-space:pre-wrap; background:white">{{item.discoveredCertInfo.cert | json}}</pre>
 					</div>
 				</div>
 				<div>
 					<strong>Discovered Invalid Certificate(s)</strong>:
-					<div ng-if="item.invalidDiscoveredCertInfos.cert">		
+					<div ng-if="item.invalidDiscoveredCertInfos.cert">
 					  <pre>{{item.invalidDiscoveredCertInfos.cert | json}}</pre>
-					</div>					
+					</div>
 				</div>
 		</div>
 	</div>

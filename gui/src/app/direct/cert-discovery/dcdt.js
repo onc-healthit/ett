@@ -566,7 +566,6 @@ console.log("showhidediv.....");
 	}
 
         $scope.restdata = function() {
-console.log("hostingProcess reset......" );
              $scope.dcdtResult = null;
              $scope.selectedItem = $scope.processes[0];
              $scope.directAddress ="";
@@ -574,7 +573,6 @@ console.log("hostingProcess reset......" );
              $scope.alerts = [];
         };
 $scope.resetDiscData = function() {
-console.log("discoveryProcess reset......" );
  $scope.discResultEmailAddr = "";
  $scope.discEmailAddr = "";
 $scope.discoveryReport  =[];
@@ -586,8 +584,6 @@ $scope.ignoreTestcase = function(testcaseid) {
 };
 
 $scope.discValidate = function() {
-    console.log(" $scope.discEmailAddr ::::"+ angular.toJson($scope.discEmailAddr,true));
-    console.log(" $scope.discResultEmailAddr ::::"+ angular.toJson($scope.discResultEmailAddr,true));
 if (!$scope.discEmailAddr || $scope.discEmailAddr === "") {
 showDiscAlert('danger', 'Direct Address must be an email');
 }else if (!$scope.discResultEmailAddr || $scope.discResultEmailAddr === "") {
@@ -616,8 +612,6 @@ $scope.discalerts = [];
 }
 };
         $scope.validate = function() {
-             console.log(" $scope.directAddress ::::"+ angular.toJson($scope.directAddress,true));
-             console.log(" $scope.testcase ::::"+ angular.toJson($scope.testcase,true));
       if (!$scope.directAddress || $scope.directAddress === "") {
       showAlert('danger', 'Direct Address must be an email');
       }else if ($scope.testcase === "") {
@@ -632,7 +626,7 @@ $scope.alerts = [];
                     "hostingcase":"YES"
                    };
                     DCDTValidatorFactory.save($scope.validator, function(data) {
-                       console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));
+                       console.log(" $scope.response hostingTestcaseSubmission dcdt::::"+ angular.toJson(data,true));
                       // $scope.hostingResults = angular.extend($scope.hostingResults, data);
                          $scope.hostingReport = data;
                      }, function(data) {
