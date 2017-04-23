@@ -3,6 +3,15 @@ var dcdtValidator = angular.module('ttt.direct.dcdtValidator', []);
 dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory', '$state', 'ApiUrl','$http','CCDADocumentsFactory','$timeout', 'growl',
 	function($scope, DCDTValidatorFactory, $state, ApiUrl,$http,CCDADocumentsFactory,$timeout ,growl) {
 	$scope.pageTitle= $state.current.data.pageTitle;
+	$scope.year2015 = ($scope.pageTitle === "2015");
+	$scope.year2014 = ($scope.pageTitle === "2014");
+	$scope.emailDomain2014 = "dcdt30prod";
+	$scope.emailDomain2015 = "dcdt31prod";
+	if ($scope.year2015){
+         $scope.emailDomain = $scope.emailDomain2015;
+	}else{
+         $scope.emailDomain = $scope.emailDomain2014;
+	}
 		$scope.fileInfo = {
 			"flowChunkNumber": "",
 			"flowChunkSize": "",
@@ -26,7 +35,7 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
  $scope.discResultEmailAddr="";
 $scope.discoveryTestCase = [
     { code: "", name: "--No testcase selected--" },
-    { code: "D1_DNS_AB_Valid", name: "D1 - Valid address-bound certificate discovery in DNS",
+    { code: "D1_DNS_AB_Valid", testcaseid:"1" , name: "D1 - Valid address-bound certificate discovery in DNS",
       Negative: "false",
       Optional: "false",
       Description: "This test case verifies that your system can query DNS for address-bound CERT records and discover a valid address-bound X.509 certificate for a Direct address.",
@@ -39,7 +48,7 @@ $scope.discoveryTestCase = [
                             "Description": "Valid address-bound certificate in a DNS CERT record containing the Direct address in the rfc822Name of the SubjectAlternativeName extension.",
                             "Binding_Type": "ADDRESS",
                             "Locaton": [{"Type": "DNS",
-                                 "Mail_Addres": "d1@domain1.dcdt30prod.sitenv.org"
+                                 "Mail_Address": "d1@domain1.dcdt30prod.sitenv.org"
                              }]
                          }],
       Background_Certificate: [{"name": "D1_invB",
@@ -47,7 +56,7 @@ $scope.discoveryTestCase = [
           "Description": "Invalid domain-bound certificate for the Direct address in a DNS CERT record.",
           "Binding_Type": "DOMAIN",
           "Locaton": [{"Type": "DNS",
-               "Mail_Addres": "d1@domain1.dcdt30prod.sitenv.org"
+               "Mail_Address": "domain1.dcdt30prod.sitenv.org"
            }]
        },
        {"name": "D1_invC",
@@ -55,7 +64,7 @@ $scope.discoveryTestCase = [
            "Description": "Invalid address-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
            "Binding_Type": "ADDRESS",
            "Locaton": [{"Type": "DNS",
-                "Mail_Addres": "d1@domain1.dcdt30prod.sitenv.org",
+                "Mail_Address": "d1@domain1.dcdt30prod.sitenv.org",
                 "Host":"0.0.0.0",
                 "Port":"10389"
             }]
@@ -65,13 +74,13 @@ $scope.discoveryTestCase = [
             "Description": "Invalid domain-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
             "Binding_Type": "DOMAIN",
             "Locaton": [{"Type": "DNS",
-                 "Mail_Addres": "d1@domain1.dcdt30prod.sitenv.org",
+                 "Mail_Address": "domain1.dcdt30prod.sitenv.org",
                      "Host":"0.0.0.0",
                      "Port":"10389"            }]
          }
          ]
      },
-     { code: "D2_DNS_DB_Valid", name: "D2 - Valid domain-bound certificate discovery in DNS",
+     { code: "D2_DNS_DB_Valid", testcaseid:"2",  name: "D2 - Valid domain-bound certificate discovery in DNS",
          Negative: "false",
          Optional: "false",
          Description: "This test case verifies that your system can query DNS for address-bound CERT records and discover a valid address-bound X.509 certificate for a Direct address.",
@@ -84,7 +93,7 @@ $scope.discoveryTestCase = [
                                "Description": "Valid address-bound certificate in a DNS CERT record containing the Direct address in the rfc822Name of the SubjectAlternativeName extension.",
                                "Binding_Type": "DOMAIN",
                                "Locaton": [{"Type": "DNS",
-                                    "Mail_Addres": "domain1.dcdt30prod.sitenv.org"
+                                    "Mail_Address": "domain1.dcdt30prod.sitenv.org"
                                 }]
                             }],
          Background_Certificate: [
@@ -93,7 +102,7 @@ $scope.discoveryTestCase = [
               "Description": "Invalid address-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
               "Binding_Type": "ADDRESS",
               "Locaton": [{"Type": "DNS",
-                   "Mail_Addres": "d2@domain1.dcdt30prod.sitenv.org",
+                   "Mail_Address": "d2@domain1.dcdt30prod.sitenv.org",
                    "Host":"0.0.0.0",
                    "Port":"10389"
                }]
@@ -103,13 +112,13 @@ $scope.discoveryTestCase = [
                "Description": "Invalid domain-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
                "Binding_Type": "DOMAIN",
                "Locaton": [{"Type": "DNS",
-                    "Mail_Addres": "domain1.dcdt30prod.sitenv.org",
+                    "Mail_Address": "domain1.dcdt30prod.sitenv.org",
                         "Host":"0.0.0.0",
                         "Port":"10389"            }]
             }
             ]
         },
-        { code: "D3_LDAP_AB_Valid", name: "D3 - Valid address-bound certificate discovery in LDAP",
+        { code: "D3_LDAP_AB_Valid",  testcaseid:"3", name: "D3 - Valid address-bound certificate discovery in LDAP",
             Negative: "false",
             Optional: "false",
             Description: "This test case verifies that your system can query DNS for SRV records and discover a valid address-bound X.509 certificate for a Direct address in the associated LDAP server.",
@@ -121,9 +130,9 @@ $scope.discoveryTestCase = [
                                   "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 0.",
                                   "Binding_Type": "ADDRESS",
                                   "Locaton": [{"Type": "DNS",
-                                       "Mail_Addres": "d3@domain1.dcdt30prod.sitenv.org",
+                                       "Mail_Address": "d3@domain1.dcdt30prod.sitenv.org",
                                        "Host":"0.0.0.0",
-                                       "Port":"10389"                                    
+                                       "Port":"10389"
                                   }]
                                }],
             Background_Certificate: [{"name": "D3_invD",
@@ -131,14 +140,14 @@ $scope.discoveryTestCase = [
                 "Description": "Invalid domain-bound certificate for the Direct address in an LDAP server with an associated SRV record",
                 "Binding_Type": "DOMAIN",
                 "Locaton": [{"Type": "DNS",
-                     "Mail_Addres": "domain2.dcdt30prod.sitenv.org",
+                     "Mail_Address": "domain2.dcdt30prod.sitenv.org",
                      "Host":"0.0.0.0",
-                     "Port":"10389"                                    
+                     "Port":"10389"
                 }]
              }
                ]
            },
-           { code: "D4_LDAP_DB_Valid", name: "D4 - Valid domain-bound certificate discovery in LDAP",
+           { code: "D4_LDAP_DB_Valid", testcaseid:"4", name: "D4 - Valid domain-bound certificate discovery in LDAP",
                Negative: "false",
                Optional: "false",
                Description: "This test case verifies that your system can query DNS for SRV records and discover a valid domain-bound X.509 certificate for a Direct address in the associated LDAP server.",
@@ -150,15 +159,15 @@ $scope.discoveryTestCase = [
                                      "Description": "Valid domain-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 0.",
                                      "Binding_Type": "DOMAIN",
                                      "Locaton": [{"Type": "DNS",
-                                          "Mail_Addres": "domain2.dcdt30prod.sitenv.org",
+                                          "Mail_Address": "domain2.dcdt30prod.sitenv.org",
                                           "Host":"0.0.0.0",
-                                          "Port":"10389"                                    
+                                          "Port":"10389"
                                       }]
                                   }],
                Background_Certificate: [
                   ]
               },
-              { code: "D5_DNS_AB_Invalid", name: "D5 - Invalid address-bound certificate discovery in DNS",
+              { code: "D5_DNS_AB_Invalid",  testcaseid:"5", name: "D5 - Invalid address-bound certificate discovery in DNS",
                   Negative: "false",
                   Optional: "false",
                   Description: "This test case verifies that your system can query DNS for address-bound CERT records and finds, but does not select the associated invalid address-bound X.509 certificate.",
@@ -169,13 +178,13 @@ $scope.discoveryTestCase = [
                                         "Description": "An invalid address-bound certificate for the Direct address in a DNS CERT record.",
                                         "Binding_Type": "ADDRESS",
                                         "Locaton": [{"Type": "DNS",
-                                             "Mail_Addres": "d5@domain1.dcdt30prod.sitenv.org"
+                                             "Mail_Address": "d5@domain1.dcdt30prod.sitenv.org"
                                          }]
                                      }],
                   Background_Certificate: [
                      ]
                  },
-                 { code: "D6_DNS_DB_Invalid", name: "D6 - Invalid domain-bound certificate discovery in DNS",
+                 { code: "D6_DNS_DB_Invalid",  testcaseid:"6", name: "D6 - Invalid domain-bound certificate discovery in DNS",
                      Negative: "true",
                      Optional: "false",
                      Description: "This test case verifies that your system can query DNS for domain-bound CERT records and finds, but does not select the associated invalid domain-bound X.509 certificate.",
@@ -186,13 +195,13 @@ $scope.discoveryTestCase = [
                                            "Description": "An invalid domain-bound certificate for the Direct address in a DNS CERT record.",
                                            "Binding_Type": "DOMAIN",
                                            "Locaton": [{"Type": "DNS",
-                                                "Mail_Addres": "domain4.dcdt30prod.sitenv.org"
+                                                "Mail_Address": "domain4.dcdt30prod.sitenv.org"
                                             }]
                                         }],
                      Background_Certificate: [
                         ]
                     },
-                { code: "D7_LDAP_AB_Invalid", name: "D7 - Invalid address-bound certificate discovery in LDAP",
+                { code: "D7_LDAP_AB_Invalid",  testcaseid:"7", name: "D7 - Invalid address-bound certificate discovery in LDAP",
                     Negative: "true",
                     Optional: "false",
                     Description: "This test case verifies that your system can query DNS for SRV records and finds, but does not select the invalid address-bound X.509 certificate in the associated LDAP server.",
@@ -203,15 +212,15 @@ $scope.discoveryTestCase = [
                                           "Description": "Invalid address-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
                                           "Binding_Type": "ADDRESS",
                                           "Locaton": [{"Type": "LDAP",
-                                               "Mail_Addres": "d7@domain2.dcdt30prod.sitenv.org",
+                                               "Mail_Address": "d7@domain2.dcdt30prod.sitenv.org",
                                                "Host":"0.0.0.0",
-                                               "Port":"10389"                                    
+                                               "Port":"10389"
                                            }]
                                        }],
                     Background_Certificate: [
                        ]
                    },
-                   { code: "D8_LDAP_DB_Invalid", name: "D8 - Invalid domain-bound certificate discovery in LDAP",
+                   { code: "D8_LDAP_DB_Invalid", testcaseid:"8", name: "D8 - Invalid domain-bound certificate discovery in LDAP",
                        Negative: "true",
                        Optional: "false",
                        Description: "This test case verifies that your system can query DNS for SRV records and finds, but does not select the invalid domain-bound X.509 certificate in the associated LDAP server.",
@@ -222,15 +231,15 @@ $scope.discoveryTestCase = [
                                              "Description": " Invalid domain-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
                                              "Binding_Type": "DOMAIN",
                                              "Locaton": [{"Type": "LDAP",
-                                                  "Mail_Addres": "d1@domain1.dcdt30prod.sitenv.org",
+                                                  "Mail_Address": "domain5.dcdt30prod.sitenv.org",
                                                   "Host":"0.0.0.0",
-                                                  "Port":"10389"                                    
+                                                  "Port":"10389"
                                               }]
                                           }],
                        Background_Certificate: [
                           ]
                       },
-                      { code: "D9_DNS_AB_SelectValid", name: "D9 - Select valid address-bound certificate over invalid certificate in DNS",
+                      { code: "D9_DNS_AB_SelectValid",  testcaseid:"9", name: "D9 - Select valid address-bound certificate over invalid certificate in DNS",
                           Negative: "false",
                           Optional: "false",
                           Description: "This test case verifies that your system can query DNS for address-bound CERT records and select the valid address-bound X.509 certificate instead of the invalid address-bound X.509 certificate.",
@@ -241,7 +250,7 @@ $scope.discoveryTestCase = [
                                                 "Description": "Valid address-bound certificate in a DNS CERT record containing the Direct address in the rfc822Name of the SubjectAlternativeName extension.",
                                                 "Binding_Type": "ADDRESS",
                                                 "Locaton": [{"Type": "DNS",
-                                                     "Mail_Addres": "d9@domain1.dcdt30prod.sitenv.org"
+                                                     "Mail_Address": "d9@domain1.dcdt30prod.sitenv.org"
                                                  }]
                                              },
                           {"name": "D9_invA",
@@ -249,13 +258,13 @@ $scope.discoveryTestCase = [
                               "Description": "Invalid address-bound certificate for the Direct address in a DNS CERT record.",
                               "Binding_Type": "ADDRESS",
                               "Locaton": [{"Type": "DNS",
-                                   "Mail_Addres": "d9@domain1.dcdt30prod.sitenv.org"
+                                   "Mail_Address": "d9@domain1.dcdt30prod.sitenv.org"
                                }]
                            }],
                           Background_Certificate: [
                              ]
                          },
-                         { code: "D10_LDAP_AB_UnavailableLDAPServer", name: "D10 - Certificate discovery in LDAP with one unavailable LDAP server",
+                         { code: "D10_LDAP_AB_UnavailableLDAPServer",  testcaseid:"10", name: "D10 - Certificate discovery in LDAP with one unavailable LDAP server",
                              Negative: "false",
                              Optional: "false",
                              Description: "This test case verifies that your system can query DNS for SRV records and attempts to connect to an LDAP server based on the priority value specified in the SRV records until a successful connection is made. Your system should first attempt to connect to an LDAP server associated with an SRV record containing the lowest priority value (highest priority). Since this LDAP server is unavailable, your system should then attempt to connect to the LDAP server associated with an SRV record containing the second lowest priority value (second highest priority) and discover the valid address-bound X.509 certificate in the available LDAP server.",
@@ -268,15 +277,15 @@ $scope.discoveryTestCase = [
                                                    "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 1.",
                                                    "Binding_Type": "ADDRESS",
                                                    "Locaton": [{"Type": "LDAP",
-                                                        "Mail_Addres": "d10@domain1.dcdt30prod.sitenv.org",
+                                                        "Mail_Address": "d10@domain1.dcdt30prod.sitenv.org",
                                                         "Host":"0.0.0.0",
-                                                        "Port":"11389"                                    
+                                                        "Port":"11389"
                                                     }]
                                                 }],
                              Background_Certificate: [
                                 ]
                             },
-                            { code: "D11_DNS_NB_NoDNSCertsorSRV", name: "D11 - No certificates discovered in DNS CERT records and no SRV records",
+                            { code: "D11_DNS_NB_NoDNSCertsorSRV",  testcaseid:"11", name: "D11 - No certificates discovered in DNS CERT records and no SRV records",
                                 Negative: "true",
                                 Optional: "false",
                                 Description: "This test case verifies that your system does not find any certificates when querying DNS for CERT records and does not find any SRV records in DNS.",
@@ -286,7 +295,7 @@ $scope.discoveryTestCase = [
                                 Background_Certificate: [
                                    ]
                                },
-                               { code: "D12_LDAP_NB_UnavailableLDAPServer", name: "D12 - No certificates found in DNS CERT records and no available LDAP servers",
+                               { code: "D12_LDAP_NB_UnavailableLDAPServer",  testcaseid:"12", name: "D12 - No certificates found in DNS CERT records and no available LDAP servers",
                                    Negative: "true",
                                    Optional: "false",
                                    Description: "This test case verifies that your system can query DNS for SRV records and attempts to connect to an LDAP server associated with the only SRV record that should be found. Since this LDAP server is unavailable or does not exist and no additional SRV records should have been found, your system should not discover any X.509 certificates in either DNS CERT records or LDAP servers.",
@@ -296,7 +305,7 @@ $scope.discoveryTestCase = [
                                    Background_Certificate: [
                                       ]
                                   },
-                                  { code: "D13_LDAP_NB_NoCerts", name: "D13 - No certificates discovered in DNS CERT records or LDAP servers",
+                                  { code: "D13_LDAP_NB_NoCerts",  testcaseid:"13", name: "D13 - No certificates discovered in DNS CERT records or LDAP servers",
                                       Negative: "true",
                                       Optional: "false",
                                       Description: "This test case verifies that your system does not discover any certificates in DNS CERT records or LDAP servers when no certificates should be found.",
@@ -306,7 +315,7 @@ $scope.discoveryTestCase = [
                                       Background_Certificate: [
                                          ]
                                      },
-                                     { code: "D14_DNS_AB_TCPLargeCert", name: "D14 - Discovery of certificate larger than 512 bytes in DNS",
+                                     { code: "D14_DNS_AB_TCPLargeCert",  testcaseid:"14", name: "D14 - Discovery of certificate larger than 512 bytes in DNS",
                                          Negative: "false",
                                          Optional: "false",
                                          Description: "This test case verifies that your system can query DNS for address-bound CERT records and discover a valid address-bound X.509 certificate that is larger than 512 bytes using a TCP connection.",
@@ -320,13 +329,13 @@ $scope.discoveryTestCase = [
                                                                "Description": "Valid address-bound certificate that is larger than 512 bytes in a DNS CERT record containing the Direct address in the rfc822Name of the SubjectAlternativeName extension.",
                                                                "Binding_Type": "ADDRESS",
                                                                "Locaton": [{"Type": "DNS",
-                                                                    "Mail_Addres": "d14@domain1.dcdt30prod.sitenv.org"
+                                                                    "Mail_Address": "d14@domain1.dcdt30prod.sitenv.org"
                                                                 }]
                                                             }],
                                          Background_Certificate: [
                                             ]
                                         },
-                                    { code: "D15_LDAP_AB_SRVPriority", name: "D15 - Certificate discovery in LDAP based on SRV priority value",
+                                    { code: "D15_LDAP_AB_SRVPriority",  testcaseid:"15", name: "D15 - Certificate discovery in LDAP based on SRV priority value",
                                         Negative: "false",
                                         Optional: "false",
                                         Description: "This test case verifies that your system can query DNS for SRV records and discover a valid address-bound X.509 certificate in the LDAP server associated with an SRV record containing the lowest priority value (highest priority).",
@@ -338,9 +347,9 @@ $scope.discoveryTestCase = [
                                                               "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 0.",
                                                               "Binding_Type": "ADDRESS",
                                                               "Locaton": [{"Type": "LDAP",
-                                                                   "Mail_Addres": "d15@domain1.dcdt30prod.sitenv.org",
+                                                                   "Mail_Address": "d15@domain2.dcdt30prod.sitenv.org",
                                                                    "Host":"0.0.0.0",
-                                                                   "Port":"10389"                                    
+                                                                   "Port":"10389"
                                                                }]
                                                            }],
                                         Background_Certificate: [{"name": "D15_invE",
@@ -348,12 +357,12 @@ $scope.discoveryTestCase = [
                                             "Description": "Invalid address-bound certificate for the Direct address in an LDAP server. The associated SRV record has Priority = 1.",
                                             "Binding_Type": "ADDRESS",
                                             "Locaton": [{"Type": "LDAP",
-                                                 "Mail_Addres": "d15@domain1.dcdt30prod.sitenv.org"
+                                                 "Mail_Address": "d15@domain2.dcdt30prod.sitenv.org"
                                              }]
                                          }
                                            ]
                                        },
-                                       { code: "D16_LDAP_AB_SRVWeight", name: "D16 - Certificate discovery in LDAP based on SRV weight value",
+                                       { code: "D16_LDAP_AB_SRVWeight",  testcaseid:"16", name: "D16 - Certificate discovery in LDAP based on SRV weight value",
                                            Negative: "false",
                                            Optional: "false",
                                            Description: "This test case verifies that your system can query DNS for SRV records and discover a valid address-bound X.509 certificate in the LDAP server associated with an SRV record containing the lowest priority value (highest priority) and the highest weight value when SRV records with the same priority value exist.",
@@ -365,9 +374,9 @@ $scope.discoveryTestCase = [
                                                                  "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 0 and Weight = 100.",
                                                                  "Binding_Type": "ADDRESS",
                                                                  "Locaton": [{"Type": "LDAP",
-                                                                      "Mail_Addres": "d16@domain1.dcdt30prod.sitenv.org",
+                                                                      "Mail_Address": "d16@domain5.dcdt30prod.sitenv.org",
                                                                       "Host":"0.0.0.0",
-                                                                      "Port":"10389"                                    
+                                                                      "Port":"10389"
                                                                   }]
                                                               }],
                                            Background_Certificate: [{"name": "D16_valE",
@@ -375,14 +384,14 @@ $scope.discoveryTestCase = [
                                                "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 0 and Weight = 0.",
                                                "Binding_Type": "ADDRESS",
                                                "Locaton": [{"Type": "LDAP",
-                                                "Mail_Addres": "d16@domain1.dcdt30prod.sitenv.org",
+                                                "Mail_Address": "d16@domain5.dcdt30prod.sitenv.org",
                                                 "Host":"0.0.0.0",
-                                                "Port":"10389"                                    
+                                                "Port":"10389"
                                                 }]
                                             }
                                               ]
                                           },
-                                          { code: "D17_DNS_AB_CRLRevocation", name: "D17 - CRL-based revocation checking for address-bound certificate discovery in DNS",
+                                          { code: "D17_DNS_AB_CRLRevocation",  testcaseid:"17", name: "D17 - CRL-based revocation checking for address-bound certificate discovery in DNS",
                                               Negative: "false",
                                               Optional: "false",
                                               Description: "This test case verifies that your system can query DNS for address-bound CERT records and discover a valid X.509 certificate whose CRL-based revocation status indicates that it has not been revoked.",
@@ -395,7 +404,7 @@ $scope.discoveryTestCase = [
                                                                     "Description": "Valid, non-revoked address-bound certificate for the Direct address in a DNS CERT record.",
                                                                     "Binding_Type": "ADDRESS",
                                                                     "Locaton": [{"Type": "DNS",
-                                                                         "Mail_Addres": "d17@domain1.dcdt30prod.sitenv.org"
+                                                                         "Mail_Address": "d17@domain9.dcdt30prod.sitenv.org"
                                                                      }]
                                                                  }],
                                               Background_Certificate: [{"name": "D17_invB",
@@ -403,7 +412,7 @@ $scope.discoveryTestCase = [
                                                   "Description": "An invalid, revoked address-bound certificate for the Direct address in a DNS CERT record.",
                                                   "Binding_Type": "ADDRESS",
                                                   "Locaton": [{"Type": "DNS",
-                                                       "Mail_Addres": "d17@domain1.dcdt30prod.sitenv.org"
+                                                       "Mail_Address": "d17@domain9.dcdt30prod.sitenv.org"
                                                    }]
                                                },
                                                {"name": "D17_invC",
@@ -411,7 +420,7 @@ $scope.discoveryTestCase = [
                                                    "Description": " An invalid, revoked address-bound certificate for the Direct address in a DNS CERT record.",
                                                    "Binding_Type": "ADDRESS",
                                                    "Locaton": [{"Type": "DNS",
-                                                        "Mail_Addres": "d17@domain1.dcdt30prod.sitenv.org"
+                                                        "Mail_Address": "d17@domain9.dcdt30prod.sitenv.org"
                                                     }]
                                                 },
                                                 {"name": "D17_invD",
@@ -419,11 +428,11 @@ $scope.discoveryTestCase = [
                                                     "Description": "Invalid domain-bound certificate for the Direct address in a DNS CERT record.",
                                                     "Binding_Type": "DOMAIN",
                                                     "Locaton": [{"Type": "DNS",
-                                                         "Mail_Addres": "domain9.dcdt30prod.sitenv.org"
+                                                         "Mail_Address": "domain9.dcdt30prod.sitenv.org"
                                                      }]
                                                  }
                                                  ]
-                                             },           { code: "D18_DNS_AB_AIAIntermediateIssuer", name: "D18 - AIA-based intermediate issuer certificate retrieval for address-bound certificate discovery in DNS",
+                                             },           { code: "D18_DNS_AB_AIAIntermediateIssuer",  testcaseid:"18", name: "D18 - AIA-based intermediate issuer certificate retrieval for address-bound certificate discovery in DNS",
             Negative: "false",
             Optional: "false",
             Description: "This test case verifies that your system can query DNS for an address-bound CERT record and discover a valid X.509 certificate whose path to the trusted root CA certificate must be retrieved via Authority Information Access (AIA) X.509v3 extension caIssuers HTTP URIs.",
@@ -436,7 +445,7 @@ $scope.discoveryTestCase = [
                                   "Description": "Valid address-bound certificate issued by an intermediate CA for the Direct address in a DNS CERT record.",
                                   "Binding_Type": "ADDRESS",
                                   "Locaton": [{"Type": "DNS",
-                                       "Mail_Addres": "d18@domain1.dcdt30prod.sitenv.org"
+                                       "Mail_Address": "d18@domain10.dcdt30prod.sitenv.org"
                                    }]
                                }],
             Background_Certificate: [{"name": "D18_invB",
@@ -444,7 +453,7 @@ $scope.discoveryTestCase = [
                 "Description": "Invalid domain-bound certificate for the Direct address in a DNS CERT record.",
                 "Binding_Type": "DOMAIN",
                 "Locaton": [{"Type": "DNS",
-                     "Mail_Addres": "d1@domain18.dcdt30prod.sitenv.org"
+                     "Mail_Address": "domain10.dcdt30prod.sitenv.org"
                  }]
              }
                ]
@@ -510,12 +519,21 @@ $scope.testCaseType = {'Hosting':true};
 $scope.dcdtResult = angular.extend(selectedItem, $scope.testCaseType);
 }else{
 $scope.discalerts = [];
+$scope.testCaseType = {'Discovery':true};
+if ($scope.year2015){
+var replaceJson = JSON.stringify(selectedItem);
+var jsonReplacedObj = replaceJson.split($scope.emailDomain2014).join($scope.emailDomain2015);
+$scope.dcdtDiscoveryResult = JSON.parse(jsonReplacedObj);
+}else{
 $scope.dcdtDiscoveryResult = selectedItem;
+}
+$scope.dcdtDiscoveryResult = angular.extend($scope.dcdtDiscoveryResult, $scope.testCaseType);
 }
 }else{
 $scope.dcdtResult = null;
 $scope.dcdtDiscoveryResult=null;
 }
+$scope.testCaseId = selectedItem.testcaseid;
 console.log(" selectedItem...... "+angular.toJson(selectedItem,true));
 
 };
@@ -559,6 +577,12 @@ console.log("hostingProcess......" );
  $scope.discEmailAddr = "";
 $scope.discoveryReport  =[];
 };
+
+$scope.ignoreTestcase = function(testcaseid) {
+   return (testcaseid.testcaseid !== "17" &&
+  testcaseid.testcaseid !== "18" );
+};
+
 $scope.discValidate = function() {
     console.log(" $scope.discEmailAddr ::::"+ angular.toJson($scope.discEmailAddr,true));
     console.log(" $scope.discResultEmailAddr ::::"+ angular.toJson($scope.discResultEmailAddr,true));

@@ -182,12 +182,18 @@
 		<p> </p>
 		<div class="form-group">
 			<label for="testcase-hosting-select">Select a Discovery Test Case:</label>
+			<div  class="directions" ng-if="year2015">
 			<select class="form-control" name="testcase-hosting-select" ng-model="discorySelectedItem" required
 			      ng-options="criteriaSel.name for criteriaSel in discoveryTestCase" ng-change="onSelectionChange(discorySelectedItem,'discovery')">
 			</select>
-
+			</div>
+            <div  class="directions" ng-if="year2014">
+			<select class="form-control" name="testcase-hosting-select" ng-model="discorySelectedItem" required
+			      ng-options="criteriaSel.name for criteriaSel in discoveryTestCase | filter: ignoreTestcase" ng-change="onSelectionChange(discorySelectedItem,'discovery')">
+			</select>
+            </div>
 			<div  class="directions" ng-if="dcdtDiscoveryResult">
-			    <strong>Direct Address</strong>: <span><span>d1@domain1.dcdt30prod.sitenv.org</span></span>
+			    <strong>Direct Address</strong>: <span><span>d{{testCaseId}}@domain1.{{emailDomain}}.sitenv.org</span></span>
 			</div>
 		</div>
 		<div  class="directions" ng-if="dcdtDiscoveryResult">

@@ -1,6 +1,6 @@
 <div id="hosting-testcase-desc" class="field field-tight">
 	<div>
-	
+
 	<div ng-if="data.Hosting">
 	   <div><span><strong>Binding Type</strong>: {{data.Binding_Type}}</span>
 	   </div>
@@ -29,8 +29,9 @@
 	   <p>
 	   <div><span><strong>Instructions</strong>: {{data.Instructions}}</span>
 	   </div>
-	       <div><span><strong>Target Certificate(s)</strong>: </span></div>
-
+	   <div ng-if="data.Discovery">
+	   <div><span><strong>Target Certificate(s)</strong>: </span></div>
+       </div>
 	   <div ng-repeat="field in data.Target_Certificate">
 	       <ul>
 	         <li><div><span><strong>{{field.name}}</strong>:</span></div></li>
@@ -41,7 +42,7 @@
 			        <li><div><span><strong>Location</strong>:</span></div></li>
 			           <ul>
 			              <li><div><span><strong>Type</strong>:{{fieldloc.Type}}</span></div></li>
-			              <li><div><span><strong>Mail Address</strong>:{{fieldloc.Mail_Addres}}</span></div></li>
+			              <li><div><span><strong>Mail Address</strong>:{{fieldloc.Mail_Address}}</span></div></li>
                        </ul>
 			        </div>
 			         <li><div><span><strong>Description</strong>:{{field.Description}}</span></div></li>
@@ -61,7 +62,7 @@
 			        <li><div><span><strong>Location</strong>:</span></div></li>
 			           <ul>
 			              <li><div><span><strong>Type</strong>:{{fieldloc.Type}}</span></div></li>
-			              <li><div><span><strong>Mail Address</strong>:{{fieldloc.Mail_Addres}}</span></div></li>
+			              <li><div><span><strong>Mail Address</strong>:{{fieldloc.Mail_Address}}</span></div></li>
 			              <div ng-if="fieldloc.Host">
 			                  <li><div><span><strong>Host</strong>:{{fieldloc.Host}}</span></div></li>
 			              </div>
@@ -73,7 +74,7 @@
 			         <li><div><span><strong>Description</strong>:{{field.Description}}</span></div></li>
 	         </ul>
 	       </ul>
-	   </div>	   
+	   </div>
 
 	</div>
 
