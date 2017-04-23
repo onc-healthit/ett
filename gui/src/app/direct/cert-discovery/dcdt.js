@@ -537,7 +537,9 @@ $scope.testCaseId = selectedItem.testcaseid;
 console.log(" selectedItem...... "+angular.toJson(selectedItem,true));
 
 };
-
+$scope.showhidediv = function() {
+console.log("showhidediv.....");
+};
 	$scope.closeAlert = function() {
 		$scope.alerts = [];
 		$timeout.cancel($scope.timeout);
@@ -564,7 +566,7 @@ console.log(" selectedItem...... "+angular.toJson(selectedItem,true));
 	}
 
         $scope.restdata = function() {
-console.log("hostingProcess......" );
+console.log("hostingProcess reset......" );
              $scope.dcdtResult = null;
              $scope.selectedItem = $scope.processes[0];
              $scope.directAddress ="";
@@ -572,7 +574,7 @@ console.log("hostingProcess......" );
              $scope.alerts = [];
         };
 $scope.resetDiscData = function() {
-console.log("hostingProcess......" );
+console.log("discoveryProcess reset......" );
  $scope.discResultEmailAddr = "";
  $scope.discEmailAddr = "";
 $scope.discoveryReport  =[];
@@ -600,7 +602,7 @@ $scope.discalerts = [];
            "hostingcase":"NO"
            };
            DCDTValidatorFactory.save($scope.discValidateRequest, function(data) {
-              console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));
+              console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));                   
              // $scope.hostingResults = angular.extend($scope.hostingResults, data);
               $scope.discoveryReport = data;
             }, function(data) {
@@ -632,7 +634,7 @@ $scope.alerts = [];
                     DCDTValidatorFactory.save($scope.validator, function(data) {
                        console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));
                       // $scope.hostingResults = angular.extend($scope.hostingResults, data);
-                       $scope.hostingReport = data;
+                         $scope.hostingReport = data;
                      }, function(data) {
                         $scope.laddaLoading = false;
                         throw {
