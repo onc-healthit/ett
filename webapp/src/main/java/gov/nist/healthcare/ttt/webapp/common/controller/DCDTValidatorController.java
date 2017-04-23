@@ -84,7 +84,6 @@ public class DCDTValidatorController {
 
 		message = mainJosnObject.toString();
 
-		logger.info("message " + message);
 
 		try {
 			post.setEntity(new StringEntity(message));
@@ -93,7 +92,6 @@ public class DCDTValidatorController {
 			post.setProtocolVersion(HttpVersion.HTTP_1_0);
 
 			HttpResponse response = client.execute(post);
-			logger.info("Status Code DCDT " + response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() != 200) {
 				throw new TTTCustomException("0x0077",
 						"Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
@@ -114,7 +112,6 @@ public class DCDTValidatorController {
 					"An error occured while creating json from file UnsupportedEncodingException");
 		}
 
-		logger.info("response json " + result);
 		return result;
 	}
 }
