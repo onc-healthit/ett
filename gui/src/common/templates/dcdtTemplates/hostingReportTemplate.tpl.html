@@ -70,12 +70,14 @@
 				<div>
 					<strong>Discovered Valid Certificate</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.discoveredCertInfo.cert)"></span>
 					<div ng-if="item.discoveredCertInfo.cert">
-					  <pre style="font-size:80%;"><div class="panel-heading" ng-bind-html="renderHtml(item.discoveredCertInfo.cert)"></pre>
+					  <pre style="font-size:100%;"><div class="panel-heading" ng-bind-html="renderHtml(item.discoveredCertInfo.cert)"></pre>
 					</div>
 				</div>
 				<div>
+				  <div ng-if="renderHtml(item.invalidDiscoveredCertInfos.cert)">
 					<strong>Discovered Invalid Certificate(s)</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.invalidDiscoveredCertInfos.cert)"></span>
-					<pre style="font-size:80%;"><div class="panel-heading" ng-bind-html="renderHtml(item.invalidDiscoveredCertInfos.cert)"></pre>
+					<pre style="font-size:100%;"><div class="panel-heading" ng-bind-html="renderHtml(item.invalidDiscoveredCertInfos.cert)"></pre>
+			      </div>
 				</div>
 		</div>
 	</div>
