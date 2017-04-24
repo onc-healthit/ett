@@ -9,37 +9,37 @@
 	</div>
 
 
-	<div id="testcase-results-accordion" style="font-size:70%;background:white">
+	<div ng-controller="DCDTValidatorCtrl" id="testcase-results-accordion" style="font-size:70%;background:white">
 
 		<div>
 
 			<!-- item loop -->
             <div ng-repeat="item in data.items">
 
-		<div class="cancel" ng-click="showhidediv()"><h3 style="font-size:100%">
+		<div><h3 style="font-size:100%">
 		<div ng-if="item.success==false">
 			<uib-alert type="danger">
 				<div>
-					<span><strong><i class="a fa fa-close fa-2x"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+					<span><strong><i class="a fa fa-close fa-2x" ng-click="showhidediv(data.testcase)"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
 				</div>
 				<div>
-					<span><strong>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+					<span><strong><i></i>Direct Address</strong>: {{data.testcase.directAddr}}</span>
 				</div>
 			</uib-alert>
 		</div>
 		<div ng-if="item.success==true">
 			<uib-alert type="success">
 				<div>
-					<span><strong><i class="a fa fa-check-circle-o fa-3x"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+					<span><strong><i class="a fa fa-check-circle-o fa-3x" ng-click="showhidediv(data.testcase)"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
 				</div>
 				<div>
-					<span><strong>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+					<span><strong><i></i>Direct Address</strong>: {{data.testcase.directAddr}}</span>
 				</div>
 			</uib-alert>
 		</div>		
 		</h3>
 		</div>
-		
+		<div ng-show="data.testcase.expandResult" >
 			<div>
 				<span><strong>Success</strong>: {{item.success}}</span>
 			</div>
@@ -47,8 +47,8 @@
             <div ng-repeat="procMsg in item.procMsgs">
                 <strong></strong>
             </div>
+      <div><strong>Processing Message(s): </strong>None</div>
       <div ng-if="item.procMsgs | isEmpty">
-        <strong>Processing Message(s): None</strong>
       </div>
 		<span><strong>Processed Step(s)</strong>:
             <div ng-repeat="procStep in item.procSteps">
@@ -68,18 +68,17 @@
 			        </ul>
               </div>
 				<div>
-					<strong>Discovered Valid Certificate</strong>:
+					<strong>Discovered Valid Certificate</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.discoveredCertInfo.cert)"></span>
 					<div ng-if="item.discoveredCertInfo.cert">
-					  <pre style="font-size:100%; white-space:pre-wrap; background:white">{{item.discoveredCertInfo.cert | json}}</pre>
+					  <pre style="font-size:80%;"><div class="panel-heading" ng-bind-html="renderHtml(item.discoveredCertInfo.cert)"></pre>
 					</div>
 				</div>
 				<div>
-					<strong>Discovered Invalid Certificate(s)</strong>:
-					<div ng-if="item.invalidDiscoveredCertInfos.cert">
-					  <pre>{{item.invalidDiscoveredCertInfos.cert | json}}</pre>
-					</div>
+					<strong>Discovered Invalid Certificate(s)</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.invalidDiscoveredCertInfos.cert)"></span>
+					<pre style="font-size:80%;"><div class="panel-heading" ng-bind-html="renderHtml(item.invalidDiscoveredCertInfos.cert)"></pre>
 				</div>
 		</div>
+	</div>
 	</div>
 	</div>
    </div>
