@@ -103,6 +103,7 @@ public class DCDTValidatorController {
 				result = EntityUtils.toString(entity);
 				//create json object
 				JSONObject jsonObj = new JSONObject(result);
+				jsonObjTestcase.put("expandResult", true);
 				jsonObj.put("testcase", jsonObjTestcase);
 				result = jsonObj.toString();
 			}
