@@ -277,7 +277,8 @@ tttDirective.directive('ccdaR1Report', function() {
             data: '='
         },
         replace: true,
-        templateUrl: 'templates/ccdaTemplates/ccdaR1ReportTemplate.tpl.html',                controller: ('CcdaR2WidgetCtrl', ['$scope','$location', '$anchorScroll', function($scope,$location,$anchorScroll) {
+        templateUrl: 'templates/ccdaTemplates/ccdaR1ReportTemplate.tpl.html',
+        controller: ('CcdaR2WidgetCtrl', ['$scope','$location', '$anchorScroll', function($scope,$location,$anchorScroll) {
                 $scope.tabs = [{active:true},{active:false},{active:false}];
                 $scope.gotoLink = function(item) {
                    if (item == "C-CDA MDHT Conformance Error" ||
@@ -298,6 +299,28 @@ tttDirective.directive('ccdaR1Report', function() {
                  $anchorScroll();
                 };
              }])
+    };
+});
+
+tttDirective.directive('dcdtReport', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            data: '='
+        },
+        replace: true,
+        templateUrl: 'templates/dcdtTemplates/dcdtReportTemplate.tpl.html'
+    };
+});
+
+tttDirective.directive('hostingReport', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            data: '='
+        },
+        replace: true,
+        templateUrl: 'templates/dcdtTemplates/hostingReportTemplate.tpl.html'
     };
 });
 
