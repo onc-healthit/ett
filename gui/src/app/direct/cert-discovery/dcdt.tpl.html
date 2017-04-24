@@ -19,8 +19,8 @@
       <div class="panel-heading" ng-style="{backgroundColor:blue}">The tool is divided into two main testing areas:</a></div>
       	<div class="panel-body">
         	<div class="list-group">
-          		<a ng-repeat="item in data" ng-href="#{{item.hreflink}}" class="list-group-item">
-            		<div>{{item.name}}</div>
+          		<a ng-repeat="toolitem in datatool" ng-href="#{{item.hreflink}}" class="list-group-item">
+            		<div>{{toolitem.name}}</div>
           		</a>
         	</div>
       	</div>
@@ -82,8 +82,8 @@
 			</span>
 		</div>
 	</div>
-		<div class="hostingresult" ng-if="hostingReport">
-			<hosting-report data="hostingReport"></dcdt-report>
+		<div ng-if="hostingResult">
+			<hosting-report data="hostingResult"></hosting-report>
 		</div>
 </form>
 </div>
@@ -101,7 +101,7 @@
 			<h2 style="font-size: 18px;"> DCDT Information</h2>
 			<div class="row">
 				<div class="col-sm-12 btn-group-vertical" style="width:100%">
-					 <a class="btn btn-default" href="http://dcdt31prod.sitenv.org:8080/dcdt/version" style="width: 100%;" tabindex="1" target="_blank">DCDT Version Information<i align="right" class="fa fa-external-link"></i></a>
+					 <a class="btn btn-default" href="http://{{emailDomain}}.sitenv.org/dcdt/version" style="width: 100%;" tabindex="1" target="_blank">DCDT Version Information<i align="right" class="fa fa-external-link"></i></a>
 					 <a class="btn btn-default" href="https://groups.google.com/forum/#!forum/directtesttool" style="width: 100%;" tabindex="1" target="_blank">DCDT Forum<i align="right" class="fa fa-external-link"></i></a>
 					 <a class="btn btn-default" href="https://github.com/esacinc/dcdt/tree/master" style="width: 100%;" tabindex="1" target="_blank">DCDT Project Repository<i align="right" class="fa fa-external-link"></i></a>
 					 <a class="btn btn-default" href="http://confluence.siframework.org/display/DCDT" style="width: 100%;" tabindex="1" target="_blank">DCDT Documentation<i align="right" class="fa fa-external-link"></i></a>
@@ -132,7 +132,7 @@
 		<div class="panel-body">
 			<div class="directions">Directions</div>
 			<p>Step 1: Download the Testing Tool's trust anchor.</p>
-			<p style="margin-left: 15px;"> <a href="http://dcdt31prod.sitenv.org:8080/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
+			<p style="margin-left: 15px;"> <a href="http://{{emailDomain}}.sitenv.org/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
 			<p>Step 2: Upload the anchor to your Direct instance. This will allow you to send messages to our tool.</p>
 			<p>Step 3: Using the form below, map the Direct email address from which you will be sending messages to a
 			non-Direct email address that will receive a regular email containing test results. This email address should be

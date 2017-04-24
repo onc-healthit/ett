@@ -1,7 +1,7 @@
 var dcdtValidator = angular.module('ttt.direct.dcdtValidator', []);
 
-dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory', '$state', 'ApiUrl','$http','CCDADocumentsFactory','$timeout', 'growl',
-	function($scope, DCDTValidatorFactory, $state, ApiUrl,$http,CCDADocumentsFactory,$timeout ,growl) {
+dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory', '$state', 'ApiUrl','$http','CCDADocumentsFactory','$timeout', 'growl','$sce',
+	function($scope, DCDTValidatorFactory, $state, ApiUrl,$http,CCDADocumentsFactory,$timeout ,growl,$sce) {
 	$scope.pageTitle= $state.current.data.pageTitle;
 	$scope.year2015 = ($scope.pageTitle === "2015");
 	$scope.year2014 = ($scope.pageTitle === "2014");
@@ -24,7 +24,7 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
 		};
 		$scope.alerts = [];
 		$scope.discalerts = [];
-    $scope.data = [
+    $scope.datatool = [
       {name:"Hosting allows a System Under Test (SUT) to verify that their certificates are hosted correctly, and discoverable by other Direct implementations.", hreflink:"panel_hosting",children:0},
       {name:"Discovery allows a SUT to verify that they can discover certificates in other Direct implementations by using them to send Direct messages.",  hreflink:"panel_discovery",children:1}
     ];
@@ -508,7 +508,16 @@ Instructions: "Enter a Direct address corresponding to a domain-bound X.509 cert
 
 $scope.selectedItem = $scope.processes[0];
 $scope.discorySelectedItem = $scope.discoveryTestCase[0];
+$scope.renderHtml = function (htmlCode) {
+    return $sce.trustAsHtml(htmlCode);
+};
 
+$scope.checkEmpty = function(testObject){
+	if(testObject || testObject === null){
+		return "";
+	}
+	return "None";
+};
    $scope.onSelectionChange= function(selectedItem,testcase) {
 
       $scope.testcase = selectedItem.code;
@@ -537,8 +546,11 @@ $scope.testCaseId = selectedItem.testcaseid;
 console.log(" selectedItem...... "+angular.toJson(selectedItem,true));
 
 };
-$scope.showhidediv = function() {
-console.log("showhidediv.....");
+
+$scope.showhidediv = function(dataobj) {
+var tmpobj = dataobj;
+dataobj.expandResult = !dataobj.expandResult;
+return dataobj.expandResult;
 };
 	$scope.closeAlert = function() {
 		$scope.alerts = [];
@@ -628,7 +640,7 @@ $scope.alerts = [];
                     DCDTValidatorFactory.save($scope.validator, function(data) {
                        console.log(" $scope.response hostingTestcaseSubmission dcdt::::"+ angular.toJson(data,true));
                       // $scope.hostingResults = angular.extend($scope.hostingResults, data);
-                         $scope.hostingReport = data;
+                         $scope.hostingResult = data;
                      }, function(data) {
                         $scope.laddaLoading = false;
                         throw {
