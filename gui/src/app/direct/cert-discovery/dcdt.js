@@ -298,7 +298,7 @@ $scope.discoveryTestCase = [
                                                    "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 1.",
                                                    "Binding_Type": "ADDRESS",
                                                    "Locaton": [{"Type": "LDAP",
-                                                        "Mail_Address": "d10@domain1.dcdt30prod.sitenv.org",
+                                                        "Mail_Address": "d10@domain3.dcdt30prod.sitenv.org",
                                                         "Host":"0.0.0.0",
                                                         "Port":"11389"
                                                     }]

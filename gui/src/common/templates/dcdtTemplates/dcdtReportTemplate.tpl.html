@@ -46,27 +46,31 @@
 	   <div ng-if="data.Discovery">
 	   <div><span><strong>Target Certificate(s)</strong>: </span></div>
        </div>
-	   <div ng-repeat="field in data.Target_Certificate">
+	   <div ng-repeat="fieldTarget in data.Target_Certificate">
 	       <ul>
-	         <li><div><span><strong>{{field.name}}</strong>:</span></div></li>
+	         <li><div><span><strong>{{fieldTarget.name}}</strong>:</span></div></li>
 	         <ul>
-	            <li><div><span><strong>Valid</strong>:{{field.Valid}}</span></div></li>
-	            <li><div><span><strong>Binding Type</strong>:{{field.Binding_Type}}</span></div></li>
-			        <div ng-repeat="fieldloc in field.Locaton">
+	            <li><div><span><strong>Valid</strong>:{{fieldTarget.Valid}}</span></div></li>
+	            <li><div><span><strong>Binding Type</strong>:{{fieldTarget.Binding_Type}}</span></div></li>
+			        <div ng-repeat="fieldlocTarget in fieldTarget.Locaton">
 			        <li><div><span><strong>Location</strong>:</span></div></li>
 			           <ul>
-			              <li><div><span><strong>Type</strong>:{{fieldloc.Type}}</span></div></li>
-			              <li><div><span><strong>Mail Address</strong>:{{fieldloc.Mail_Address}}</span></div></li>
+			              <li><div><span><strong>Type</strong>:{{fieldlocTarget.Type}}</span></div></li>
+			              <li><div><span><strong>Mail Address</strong>:{{fieldlocTarget.Mail_Address}}</span></div></li>
+			              <div ng-if="fieldlocTarget.Host">
+			                  <li><div><span><strong>Host</strong>:{{fieldlocTarget.Host}}</span></div></li>
+			              </div>
+			              <div ng-if="fieldlocTarget.Port">
+			                  <li><div><span><strong>Port</strong>:{{fieldlocTarget.Port}}</span></div></li>
+                          </div>			              
                        </ul>
 			        </div>
-			         <li><div><span><strong>Description</strong>:{{field.Description}}</span></div></li>
+			         <li><div><span><strong>Description</strong>:{{fieldTarget.Description}}</span></div></li>
 	         </ul>
 	       </ul>
 	   </div>
-	   <div ng-repeat="field in data.Background_Certificate">
-	   <div ng-if="$index == 0">
-	   	   <div><span><strong>Background Certificate(s):</strong>: </span></div>
-	   </div>
+	   	<div><strong>Background Certificate(s):</strong>:</div>
+	   <div ng-controller="DCDTValidatorCtrl" ng-repeat="field in data.Background_Certificate">
 	       <ul>
 	         <li><div><span><strong>{{field.name}}</strong>:</span></div></li>
 	         <ul>
