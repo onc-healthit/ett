@@ -63,6 +63,16 @@
 			            </ul>
 			         </div>
 			         </div>
+	    <div ng-if="year2014">
+			         <div ng-if="item.msgs">
+			            <li><div><span><strong>Message(s)</strong>: </span></div></li>
+			            <ul><li><p style="display: inline; width: 150px; word-break: break-all; word-wrap: break-word;">
+			                    {{item.msgs[0].toString()}}
+			                    </p></li>
+			            </ul>
+			         </div>
+        </div>
+			         		         
 			            <li><div><span><strong>Binding Type</strong>:{{procStep.bindingType}} </span></div></li>
 			            <li><div><span><strong>Location Type</strong>:{{procStep.locType}} </span></div></li>
 			        </ul>
@@ -74,8 +84,8 @@
 					</div>
 				</div>
 				<div>
+				<strong>Discovered Invalid Certificate(s)</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.invalidDiscoveredCertInfos.cert)"></span>
 				  <div ng-if="renderHtml(item.invalidDiscoveredCertInfos.cert)">
-					<strong>Discovered Invalid Certificate(s)</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.invalidDiscoveredCertInfos.cert)"></span>
 					<pre style="font-size:100%;"><div class="panel-heading" ng-bind-html="renderHtml(item.invalidDiscoveredCertInfos.cert)"></pre>
 			      </div>
 				</div>
