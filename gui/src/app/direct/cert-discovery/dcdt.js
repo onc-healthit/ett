@@ -8,6 +8,13 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
 	$scope.emailDomain2014 = "dcdt30prod";
 	$scope.emailDomain2015 = "dcdt31prod";
 	$scope.disclaimerLink ="https://www.hhs.gov/disclaimer.html";
+	$scope.alerts = [];
+	$scope.discalerts = [];
+	$scope.directAddress ="";
+	$scope.testcase="";
+	$scope.discEmailAddr ="";
+	$scope.discResultEmailAddr="";
+	 
 	if ($scope.year2015){
          $scope.emailDomain = $scope.emailDomain2015;
 	}else{
@@ -23,17 +30,13 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
 			"flowRelativePath": "",
 			"flowTotalChunks": ""
 		};
-		$scope.alerts = [];
-		$scope.discalerts = [];
+// need to move to .json file
     $scope.datatool = [
       {name:"Hosting allows a System Under Test (SUT) to verify that their certificates are hosted correctly, and discoverable by other Direct implementations.", hreflink:"panel_hosting",children:0},
       {name:"Discovery allows a SUT to verify that they can discover certificates in other Direct implementations by using them to send Direct messages.",  hreflink:"panel_discovery",children:1}
     ];
 
- $scope.directAddress ="";
- $scope.testcase="";
- $scope.discEmailAddr ="";
- $scope.discResultEmailAddr="";
+ // need to move to .json file
 $scope.discoveryTestCase = [
     { code: "", name: "--No testcase selected--" },
     { code: "D1_DNS_AB_Valid", testcaseid:"1" , name: "D1 - Valid address-bound certificate discovery in DNS",
@@ -461,7 +464,7 @@ $scope.discoveryTestCase = [
            }];
 
 
-
+//need to move to .json file
 $scope.processes= [
     { code: "", name: "--No testcase selected--" },
     { code: "H1_DNS_AB_Normal", name: "H1 - Normal address-bound certificate search in DNS",
@@ -508,69 +511,74 @@ Instructions: "Enter a Direct address corresponding to a domain-bound X.509 cert
 }];
 
 
-$scope.selectedItem = $scope.processes[0];
-$scope.discorySelectedItem = $scope.discoveryTestCase[0];
-$scope.hostingResultsStack=[];
-$scope.renderHtml = function (htmlCode) {
-    return $sce.trustAsHtml(htmlCode);
-};
+           $scope.selectedItem = $scope.processes[0];
+           $scope.discorySelectedItem = $scope.discoveryTestCase[0];
+           $scope.hostingResultsStack=[];
+          
+           $scope.renderHtml = function (htmlCode) {
+                return $sce.trustAsHtml(htmlCode);
+           };
 
-$scope.checkEmpty = function(testObject){
-	if(testObject || testObject === null){
-		return "";
-	}
-	return "None";
-};
-   $scope.onSelectionChange= function(selectedItem,testcase) {
+           $scope.checkEmpty = function(testObject){
+               if(testObject || testObject === null){
+                  return "";
+               }
+                   return "None";
+           };
+   
+           $scope.onSelectionChange= function(selectedItem,testcase) {
+                $scope.testcase = selectedItem.code;
+                if ($scope.testcase !==""){ // nothing selected
+                    if (testcase === "process"){ // is it Process or Discovery
+                        $scope.alerts = [];
+                        $scope.testCaseType = {'Hosting':true};
+                        $scope.dcdtResult = angular.extend(selectedItem, $scope.testCaseType);
+                    }else{
+                        $scope.discalerts = [];
+                        $scope.testCaseType = {'Discovery':true};
+                        if ($scope.year2015){
+                              var replaceJson = JSON.stringify(selectedItem);
+                              var jsonReplacedObj = replaceJson.split($scope.emailDomain2014).join($scope.emailDomain2015);
+                              $scope.dcdtDiscoveryResult = JSON.parse(jsonReplacedObj);
+                         }else{
+                              $scope.dcdtDiscoveryResult = selectedItem;
+                         }
+                         $scope.dcdtDiscoveryResult = angular.extend($scope.dcdtDiscoveryResult, $scope.testCaseType);
+                    }
+                }else{
+                     $scope.dcdtResult = null;
+                     $scope.dcdtDiscoveryResult=null;
+                }
+                $scope.testCaseId = selectedItem.testcaseid;
+            };
+            
+            
+            $scope.gotodiv = function(anchor) {	
+                $location.hash(anchor);
+               // call $anchorScroll()
+               $anchorScroll();
+             };
 
-      $scope.testcase = selectedItem.code;
-if ($scope.testcase !==""){
-if (testcase === "process"){
-$scope.alerts = [];
-$scope.testCaseType = {'Hosting':true};
-$scope.dcdtResult = angular.extend(selectedItem, $scope.testCaseType);
-}else{
-$scope.discalerts = [];
-$scope.testCaseType = {'Discovery':true};
-if ($scope.year2015){
-var replaceJson = JSON.stringify(selectedItem);
-var jsonReplacedObj = replaceJson.split($scope.emailDomain2014).join($scope.emailDomain2015);
-$scope.dcdtDiscoveryResult = JSON.parse(jsonReplacedObj);
-}else{
-$scope.dcdtDiscoveryResult = selectedItem;
-}
-$scope.dcdtDiscoveryResult = angular.extend($scope.dcdtDiscoveryResult, $scope.testCaseType);
-}
-}else{
-$scope.dcdtResult = null;
-$scope.dcdtDiscoveryResult=null;
-}
-$scope.testCaseId = selectedItem.testcaseid;
-};
-$scope.gotodiv = function(anchor) {	
-    $location.hash(anchor);
-   // call $anchorScroll()
-    $anchorScroll();
-};
-$scope.showhidediv = function(dataobj) {
-var tmpobj = dataobj;
-dataobj.expandResult = !dataobj.expandResult;
-return dataobj.expandResult;
-};
-	$scope.closeAlert = function() {
-		$scope.alerts = [];
-		$timeout.cancel($scope.timeout);
-	};
-	$scope.closeDiscAlert = function() {
-		$scope.discalerts = [];
-		$timeout.cancel($scope.timeout);
-	};
-	function showAlert(type, msg) {
-		$scope.alerts = [];
-		$scope.alerts.push({
-			type: type,
-			msg: msg
-		});
+             $scope.showhidediv = function(dataobj) {
+                dataobj.expandResult = !dataobj.expandResult;
+                return dataobj.expandResult;
+             };
+          
+              $scope.closeAlert = function() {
+                  $scope.alerts = [];
+                   $timeout.cancel($scope.timeout);
+               };
+               $scope.closeDiscAlert = function() {
+                   $scope.discalerts = [];
+                   $timeout.cancel($scope.timeout);
+               };
+
+               function showAlert(type, msg) {
+                    $scope.alerts = [];
+                    $scope.alerts.push({
+                         type: type,
+                         msg: msg
+                    });
 		$scope.timeout = $timeout($scope.closeAlert, 60000);
 	}
 	function showDiscAlert(type, msg) {
@@ -588,54 +596,55 @@ return dataobj.expandResult;
              $scope.directAddress ="";
              $scope.testcase =$scope.selectedItem.code;
              $scope.alerts = [];
+             $scope.hostingResultError =[];
         };
-$scope.resetDiscData = function() {
- $scope.discResultEmailAddr = "";
- $scope.discEmailAddr = "";
-$scope.discoveryReport  =[];
-};
+        $scope.resetDiscData = function() {
+           $scope.discResultEmailAddr = "";
+           $scope.discEmailAddr = "";
+           $scope.discoveryReport  =[];
+           $scope.discalerts = [];
+        };
 
-$scope.ignoreTestcase = function(testcaseid) {
-   return (testcaseid.testcaseid !== "17" &&
-  testcaseid.testcaseid !== "18" );
-};
+        $scope.ignoreTestcase = function(testcaseid) {
+           return (testcaseid.testcaseid !== "17" &&
+              testcaseid.testcaseid !== "18" );
+         };
 
-$scope.discValidate = function() {
-if (!$scope.discEmailAddr || $scope.discEmailAddr === "") {
-showDiscAlert('danger', 'Direct Address must be an email');
-}else if (!$scope.discResultEmailAddr || $scope.discResultEmailAddr === "") {
-showDiscAlert('danger', 'Result Address must be an email');
-}else{
-$scope.discalerts = [];
-   $scope.discValidateRequest = {
-           "@type": "discoveryTestcaseMailMapping",
-           "directAddr": $scope.discEmailAddr,
-           "resultsAddr": $scope.discResultEmailAddr,
-           "year": $scope.pageTitle,
-           "hostingcase":"NO"
-           };
-           DCDTValidatorFactory.save($scope.discValidateRequest, function(data) {
-              console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));                   
-             // $scope.hostingResults = angular.extend($scope.hostingResults, data);
-              $scope.discoveryReport = data;
-            }, function(data) {
-               $scope.laddaLoading = false;
-               throw {
-                   code: data.data.code,
-                   url: data.data.url,
-                   message: data.data.message
+         $scope.discValidate = function() {
+           if (!$scope.discEmailAddr || $scope.discEmailAddr === "") {
+              showDiscAlert('danger', 'Direct Address must be an email');
+           }else if (!$scope.discResultEmailAddr || $scope.discResultEmailAddr === "") {
+              showDiscAlert('danger', 'Result Address must be an email');
+           }else{
+               $scope.discalerts = [];
+                $scope.discValidateRequest = {
+                    "@type": "discoveryTestcaseMailMapping",
+                     "directAddr": $scope.discEmailAddr,
+                     "resultsAddr": $scope.discResultEmailAddr,
+                     "year": $scope.pageTitle,
+                     "hostingcase":"NO"
                };
+               DCDTValidatorFactory.save($scope.discValidateRequest, function(data) {
+                console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));                   
+                $scope.discoveryReport = data;
+              }, function(data) {
+                   $scope.laddaLoading = false;
+                   throw {
+                      code: data.data.code,
+                      url: data.data.url,
+                   message: data.data.message
+                  };
            });
 }
 };
         $scope.validate = function() {
-      if (!$scope.directAddress || $scope.directAddress === "") {
-      showAlert('danger', 'Direct Address must be an email');
-      }else if ($scope.testcase === "") {
-      showAlert('danger', 'Please Select a Hosting Testcase');
-      }else{
-$scope.alerts = [];
-            $scope.validator = {
+           if (!$scope.directAddress || $scope.directAddress === "") {
+              showAlert('danger', 'Direct Address must be an email');
+           }else if ($scope.testcase === "") {
+             showAlert('danger', 'Please Select a Hosting Testcase');
+           }else{
+              $scope.alerts = [];
+             $scope.validator = {
                     "@type": "hostingTestcaseSubmission",
                     "directAddr": $scope.directAddress,
                     "testcase": $scope.testcase,
@@ -643,11 +652,21 @@ $scope.alerts = [];
                     "hostingcase":"YES"
                    };
                     DCDTValidatorFactory.save($scope.validator, function(data) {
-                       console.log(" $scope.response hostingTestcaseSubmission dcdt::::"+ angular.toJson(data,true));
+                     console.log(" $scope.response hostingResult dcdt::::"+ angular.toJson(data,true));
+                      if (data.status !=='error'){
+                          angular.forEach($scope.hostingResult, function(test) {
+                              angular.forEach($scope.hostingResult[$scope.hostingResult.indexOf(test)].itemloop, function(itemloopobj) {
+                                  itemloopobj.testcase.expandResult =false;
+                              });
+                           });
+                      }
                          $scope.hostingResult = data;
-                         $scope.hostingResultError = data;
+                         $scope.hostingResultError= data;
+             
                          $scope.hostingResultsStack.push({'itemloop' : [data]});
                          $scope.hostingResult = $scope.hostingResultsStack;   
+
+                       
                    }, function(data) {
                         $scope.laddaLoading = false;
                         throw {
@@ -658,10 +677,6 @@ $scope.alerts = [];
                     });
       }
         };
-
-
-
      $scope.apiUrl = ApiUrl.get();
-
     }
 ]);
