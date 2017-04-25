@@ -522,8 +522,7 @@ $scope.checkEmpty = function(testObject){
 	return "None";
 };
    $scope.onSelectionChange= function(selectedItem,testcase) {
-
-      $scope.testcase = selectedItem.code;
+    $scope.testcase = selectedItem.code;
 if ($scope.testcase !==""){
 if (testcase === "process"){
 $scope.alerts = [];
@@ -586,7 +585,7 @@ return dataobj.expandResult;
              $scope.dcdtResult = null;
              $scope.selectedItem = $scope.processes[0];
              $scope.directAddress ="";
-             $scope.testcase =$scope.selectedItem.code;
+            //$scope.testcase =$scope.selectedItem.code;
              $scope.alerts = [];
              $scope.hostingResultError =[];
         };
