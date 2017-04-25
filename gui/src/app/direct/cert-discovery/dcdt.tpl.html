@@ -65,9 +65,9 @@
 				<input id="testcase-hosting-direct-addr" class="form-control" name="directAddress" ng-model="directAddress" placeholder="direct email address" type="email">
 			</p>
 		</div>
-		<div ng-if=hostingResult>
-			<div ng-if="hostingResult.status ==='error'">	
-			       <div ng-repeat="errorobj in hostingResult.errors.fields">
+		<div ng-if=hostingResultError>
+			<div ng-if="hostingResultError.status ==='error'">	
+			       <div ng-repeat="errorobj in hostingResultError.errors.fields">
 			         <uib-alert type="danger">{{errorobj[0].messages.toString()}}</uib-alert>
 			      </div>
 			</div>	

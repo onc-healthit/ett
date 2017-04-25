@@ -510,6 +510,7 @@ Instructions: "Enter a Direct address corresponding to a domain-bound X.509 cert
 
 $scope.selectedItem = $scope.processes[0];
 $scope.discorySelectedItem = $scope.discoveryTestCase[0];
+$scope.hostingResultsStack=[];
 $scope.renderHtml = function (htmlCode) {
     return $sce.trustAsHtml(htmlCode);
 };
@@ -545,15 +546,10 @@ $scope.dcdtResult = null;
 $scope.dcdtDiscoveryResult=null;
 }
 $scope.testCaseId = selectedItem.testcaseid;
-console.log(" selectedItem...... "+angular.toJson(selectedItem,true));
-
 };
-$scope.gotodiv = function(anchor) {
-	console.log(" anchor...... "+angular.toJson(anchor,true));
-	
+$scope.gotodiv = function(anchor) {	
     $location.hash(anchor);
-
-    // call $anchorScroll()
+   // call $anchorScroll()
     $anchorScroll();
 };
 $scope.showhidediv = function(dataobj) {
@@ -648,9 +644,11 @@ $scope.alerts = [];
                    };
                     DCDTValidatorFactory.save($scope.validator, function(data) {
                        console.log(" $scope.response hostingTestcaseSubmission dcdt::::"+ angular.toJson(data,true));
-                      // $scope.hostingResults = angular.extend($scope.hostingResults, data);
                          $scope.hostingResult = data;
-                     }, function(data) {
+                         $scope.hostingResultError = data;
+                         $scope.hostingResultsStack.push({'itemloop' : [data]});
+                         $scope.hostingResult = $scope.hostingResultsStack;   
+                   }, function(data) {
                         $scope.laddaLoading = false;
                         throw {
                             code: data.data.code,
@@ -667,10 +665,3 @@ $scope.alerts = [];
 
     }
 ]);
-
-dcdtValidator.filter('isEmpty', [function() {
-return function(object) {
-console.log("object empty...."+angular.equals({}, object));
-return (angular.equals({}, object) || angular.equals([], object));
-};
-}]);
