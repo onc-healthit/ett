@@ -19,8 +19,9 @@
       "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
       "testList":"['h1']",
       "redirect":{
-         "hrefvalue":"https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",
-         "newWindow":true
+         "hrefvalue":"direct.dcdt2",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"certification.certh1.main"      
       }
    },
    {
@@ -61,8 +62,9 @@
       "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
       "testList":"['h2']",
       "redirect":{
-         "hrefvalue":"https://sitenv.org/web/site/direct-certificate-discovery-tool-2015",
-         "newWindow":true
+         "hrefvalue":"direct.dcdt2",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"certification.certh2.main"
       },
       "selectOption":"['A','B','2','9','5','6','10']"
    },
