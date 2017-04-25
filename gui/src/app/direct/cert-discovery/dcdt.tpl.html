@@ -19,8 +19,8 @@
       <div class="panel-heading" ng-style="{backgroundColor:blue}">The tool is divided into two main testing areas:</a></div>
       	<div class="panel-body">
         	<div class="list-group">
-          		<a ng-repeat="toolitem in datatool" ng-href="#{{item.hreflink}}" class="list-group-item">
-            		<div>{{toolitem.name}}</div>
+          		<a ng-repeat="toolitem in datatool"  class="list-group-item">
+            		<div ng-click="gotodiv(toolitem.hreflink)">{{toolitem.name}}</div>
           		</a>
         	</div>
       	</div>
@@ -28,7 +28,7 @@
 	</div>
 <div>
 <div class="col-sm-8">
-		<div class="panel panel-default" id="#panel_hosting">
+		<div class="panel panel-default" id="panel_hosting">
 			<div class="panel-heading">
 				<h2 class="panel-title">Hosting - Verify your certificate can be discovered</h2>
 			</div>
@@ -101,11 +101,16 @@
 			<h2 style="font-size: 18px;"> DCDT Information</h2>
 			<div class="row">
 				<div class="col-sm-12 btn-group-vertical" style="width:100%">
-					 <a class="btn btn-default" href="http://{{emailDomain}}.sitenv.org/dcdt/version" style="width: 100%;" tabindex="1" target="_blank">DCDT Version Information<i align="right" class="fa fa-external-link"></i></a>
-					 <a class="btn btn-default" href="https://groups.google.com/forum/#!forum/directtesttool" style="width: 100%;" tabindex="1" target="_blank">DCDT Forum<i align="right" class="fa fa-external-link"></i></a>
-					 <a class="btn btn-default" href="https://github.com/esacinc/dcdt/tree/master" style="width: 100%;" tabindex="1" target="_blank">DCDT Project Repository<i align="right" class="fa fa-external-link"></i></a>
-					 <a class="btn btn-default" href="http://confluence.siframework.org/display/DCDT" style="width: 100%;" tabindex="1" target="_blank">DCDT Documentation<i align="right" class="fa fa-external-link"></i></a>
-					 <a class="btn btn-default" href="http://jira.oncprojectracking.org/browse/DCDT" style="width: 100%;" tabindex="1" target="_blank">DCDT Issue Tracker<i align="right" class="fa fa-external-link"></i></a>
+				<p class="btn btn-default" ><a href="http://{{emailDomain}}.sitenv.org/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a> 
+			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
+				<p class="btn btn-default" ><a href="https://groups.google.com/forum/#!forum/directtesttool" target="_blank" style="color: black">DCDT Forum</a> 
+			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
+				<p class="btn btn-default" ><a href="https://github.com/esacinc/dcdt/tree/master" target="_blank" style="color: black">DCDT Project Repository</a> 
+			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
+				<p class="btn btn-default" ><a href="http://confluence.siframework.org/display/DCDT" target="_blank" style="color: black">DCDT Documentation</a> 
+			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
+				<p class="btn btn-default" ><a href="http://jira.oncprojectracking.org/browse/DCDT" target="_blank" style="color: black">DCDT Issue Tracker</a> 
+			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="left" class="fa fa-external-link"></i></a></p>
 				</div>
 			</div>
 		</div>
@@ -113,8 +118,10 @@
 			<h2 style="font-size:18px;"> Links to Direct Reference Information</h2>
 			<div class="row">
 				<div class="col-sm-12 btn-group-vertical" style="width:100%">
-					<a class="btn btn-default" href="http://wiki.directproject.org/" style="width: 100%;" tabindex="1" target="_blank">Direct Project Wiki <i class="fa fa-external-link"></i></a>
-					<a class="btn btn-default" href="https://github.com/aviars/getdc" style="width: 100%;" tabindex="1" target="_blank">Direct Certificate Download Utility<i class="fa fa-external-link"></i></a>
+					<p class="btn btn-default" ><a href="http://wiki.directproject.org/" target="_blank" style="color: black">Direct Project Wiki</a> 
+				    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
+					<p class="btn btn-default" ><a href="https://github.com/aviars/getdc" target="_blank" style="color: black">Direct Certificate Download Utility</a> 
+				    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
 				</div>
 			</div>
 		</div>
@@ -125,7 +132,7 @@
 
 
 <div class="col-sm-8">
-	<div class="panel panel-default" id="#panel_discovery">
+	<div class="panel panel-default" id="panel_discovery">
 		<div class="panel-heading">
 			<h2 class="panel-title">Discover DCDT's Certificates</h2>
 		</div>

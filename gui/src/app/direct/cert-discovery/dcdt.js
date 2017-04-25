@@ -1,12 +1,13 @@
 var dcdtValidator = angular.module('ttt.direct.dcdtValidator', []);
 
-dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory', '$state', 'ApiUrl','$http','CCDADocumentsFactory','$timeout', 'growl','$sce',
-	function($scope, DCDTValidatorFactory, $state, ApiUrl,$http,CCDADocumentsFactory,$timeout ,growl,$sce) {
+dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory', '$state', 'ApiUrl','$http','CCDADocumentsFactory','$timeout', 'growl','$sce','$location', '$anchorScroll',
+	function($scope, DCDTValidatorFactory, $state, ApiUrl,$http,CCDADocumentsFactory,$timeout ,growl,$sce,$location,$anchorScroll) {
 	$scope.pageTitle= $state.current.data.pageTitle;
 	$scope.year2015 = ($scope.pageTitle === "2015");
 	$scope.year2014 = ($scope.pageTitle === "2014");
 	$scope.emailDomain2014 = "dcdt30prod";
 	$scope.emailDomain2015 = "dcdt31prod";
+	$scope.disclaimerLink ="https://www.hhs.gov/disclaimer.html";
 	if ($scope.year2015){
          $scope.emailDomain = $scope.emailDomain2015;
 	}else{
@@ -460,6 +461,7 @@ $scope.discoveryTestCase = [
            }];
 
 
+
 $scope.processes= [
     { code: "", name: "--No testcase selected--" },
     { code: "H1_DNS_AB_Normal", name: "H1 - Normal address-bound certificate search in DNS",
@@ -546,7 +548,14 @@ $scope.testCaseId = selectedItem.testcaseid;
 console.log(" selectedItem...... "+angular.toJson(selectedItem,true));
 
 };
+$scope.gotodiv = function(anchor) {
+	console.log(" anchor...... "+angular.toJson(anchor,true));
+	
+    $location.hash(anchor);
 
+    // call $anchorScroll()
+    $anchorScroll();
+};
 $scope.showhidediv = function(dataobj) {
 var tmpobj = dataobj;
 dataobj.expandResult = !dataobj.expandResult;
