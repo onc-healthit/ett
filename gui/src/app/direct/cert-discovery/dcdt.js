@@ -48,7 +48,7 @@ $scope.discoveryTestCase = [
       Instructions: "You should have received an email indicating the test case results for your system. Examine the results to see if your system passed the test case. If you do not receive a message for the test case, then you should assume that the test case failed.",
       Target_Certificate: [{"name": "D1_valA",
                             "Valid": "true",
-                            "Description": "Valid address-bound certificate in a DNS CERT record containing the Direct address in the rfc822Name of the SubjectAlternativeName extension.",
+                            "Description": "Valid address-bound certificate for the Direct address in a DNS CERT record.",
                             "Binding_Type": "ADDRESS",
                             "Locaton": [{"Type": "DNS",
                                  "Mail_Address": "d1@domain1.dcdt30prod.sitenv.org"
@@ -58,7 +58,7 @@ $scope.discoveryTestCase = [
           "Valid": "false",
           "Description": "Invalid domain-bound certificate for the Direct address in a DNS CERT record.",
           "Binding_Type": "DOMAIN",
-          "Locaton": [{"Type": "DNS",
+          "Locaton": [{"Type": "LDAP",
                "Mail_Address": "domain1.dcdt30prod.sitenv.org"
            }]
        },
@@ -66,7 +66,7 @@ $scope.discoveryTestCase = [
            "Valid": "false",
            "Description": "Invalid address-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
            "Binding_Type": "ADDRESS",
-           "Locaton": [{"Type": "DNS",
+           "Locaton": [{"Type": "LDAP",
                 "Mail_Address": "d1@domain1.dcdt30prod.sitenv.org",
                 "Host":"0.0.0.0",
                 "Port":"10389"
@@ -76,7 +76,7 @@ $scope.discoveryTestCase = [
             "Valid": "false",
             "Description": "Invalid domain-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
             "Binding_Type": "DOMAIN",
-            "Locaton": [{"Type": "DNS",
+            "Locaton": [{"Type": "LDAP",
                  "Mail_Address": "domain1.dcdt30prod.sitenv.org",
                      "Host":"0.0.0.0",
                      "Port":"10389"            }]
@@ -106,7 +106,7 @@ $scope.discoveryTestCase = [
               "Valid": "false",
               "Description": "Invalid address-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
               "Binding_Type": "ADDRESS",
-              "Locaton": [{"Type": "DNS",
+              "Locaton": [{"Type": "LDAP",
                    "Mail_Address": "d2@domain1.dcdt30prod.sitenv.org",
                    "Host":"0.0.0.0",
                    "Port":"10389"
@@ -116,7 +116,7 @@ $scope.discoveryTestCase = [
                "Valid": "false",
                "Description": "Invalid domain-bound certificate for the Direct address in an LDAP server with an associated SRV record.",
                "Binding_Type": "DOMAIN",
-               "Locaton": [{"Type": "DNS",
+               "Locaton": [{"Type": "LDAP",
                     "Mail_Address": "domain1.dcdt30prod.sitenv.org",
                         "Host":"0.0.0.0",
                         "Port":"10389"            }]
@@ -130,13 +130,13 @@ $scope.discoveryTestCase = [
             Direct_address_2015: "d3@domain2.dcdt31prod.sitenv.org",              
             Description: "This test case verifies that your system can query DNS for SRV records and discover a valid address-bound X.509 certificate for a Direct address in the associated LDAP server.",
             RTM_Sections: "2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22",
-            RFC_4398:  "Section 9.1.2",
+            RFC_2798:  "Section 9.1.2",
             Instructions: "You should have received an email indicating the test case results for your system. Examine the results to see if your system passed the test case. If you do not receive a message for the test case, then you should assume that the test case failed.",
             Target_Certificate: [{"name": "D3_valC",
                                   "Valid": "true",
                                   "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 0.",
                                   "Binding_Type": "ADDRESS",
-                                  "Locaton": [{"Type": "DNS",
+                                  "Locaton": [{"Type": "LDAP",
                                        "Mail_Address": "d3@domain2.dcdt30prod.sitenv.org",
                                        "Host":"0.0.0.0",
                                        "Port":"10389"
@@ -146,7 +146,7 @@ $scope.discoveryTestCase = [
                 "Valid": "false",
                 "Description": "Invalid domain-bound certificate for the Direct address in an LDAP server with an associated SRV record",
                 "Binding_Type": "DOMAIN",
-                "Locaton": [{"Type": "DNS",
+                "Locaton": [{"Type": "LDAP",
                      "Mail_Address": "domain2.dcdt30prod.sitenv.org",
                      "Host":"0.0.0.0",
                      "Port":"10389"
@@ -161,13 +161,13 @@ $scope.discoveryTestCase = [
                Direct_address_2015: "d4@domain2.dcdt31prod.sitenv.org",                 
                Description: "This test case verifies that your system can query DNS for SRV records and discover a valid domain-bound X.509 certificate for a Direct address in the associated LDAP server.",
                RTM_Sections: "2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22",
-               RFC_4398:  "Section 9.1.2",
+               RFC_2798:  "Section 9.1.2",
                Instructions: "You should have received an email indicating the test case results for your system. Examine the results to see if your system passed the test case. If you do not receive a message for the test case, then you should assume that the test case failed.",
                Target_Certificate: [{"name": "D4_valD",
                                      "Valid": "true",
                                      "Description": "Valid domain-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 0.",
                                      "Binding_Type": "DOMAIN",
-                                     "Locaton": [{"Type": "DNS",
+                                     "Locaton": [{"Type": "LDAP",
                                           "Mail_Address": "domain2.dcdt30prod.sitenv.org",
                                           "Host":"0.0.0.0",
                                           "Port":"10389"
@@ -250,7 +250,7 @@ $scope.discoveryTestCase = [
                                              "Locaton": [{"Type": "LDAP",
                                                   "Mail_Address": "domain5.dcdt30prod.sitenv.org",
                                                   "Host":"0.0.0.0",
-                                                  "Port":"10389"
+                                                  "Port":"12389"
                                               }]
                                           }],
                        Background_Certificate: [
@@ -389,7 +389,9 @@ $scope.discoveryTestCase = [
                                             "Binding_Type": "ADDRESS",
                                             "Locaton": [{"Type": "LDAP",
                                                  "Mail_Address": "d15@domain2.dcdt30prod.sitenv.org"
-                                             }]
+                                                     "Host":"0.0.0.0",
+                                                     "Port":"11389"
+                                            }]
                                          }
                                            ]
                                        },
@@ -409,7 +411,7 @@ $scope.discoveryTestCase = [
                                                                  "Locaton": [{"Type": "LDAP",
                                                                       "Mail_Address": "d16@domain5.dcdt30prod.sitenv.org",
                                                                       "Host":"0.0.0.0",
-                                                                      "Port":"10389"
+                                                                      "Port":"12389"
                                                                   }]
                                                               }],
                                            Background_Certificate: [{"name": "D16_valE",
