@@ -1,5 +1,19 @@
-<div id="hosting-testcase-desc" style="font-size:70%;background:white">
-	<div>
+
+
+<div>		
+   <div ng-if="data.Discovery">
+       <div ng-if="data.year2014">
+			<div id="direct_address">
+			   <div><span> <strong><i class="a fa fa-envelope"></i>&nbsp;&nbsp;Direct Address</strong>:{{data.Direct_address_2014}}</span></div>
+			</div>
+	   </div>
+	    <div ng-if="data.year2015">
+			<div id="direct_address1">
+			   <div><span> <strong><i class="a fa fa-envelope"></i>&nbsp;&nbsp;Direct Address</strong>:{{data.Direct_address_2015}}</span></div>
+			</div>
+		</div>
+    </div>
+	<div id="hosting-testcase-desc" style="font-size:70%;background:white">
 
 	<div ng-if="data.Hosting">
 	   <div><span><strong>Binding Type</strong>: {{data.Binding_Type}}</span>
