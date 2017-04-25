@@ -292,7 +292,7 @@ $scope.discoveryTestCase = [
                              RTM_Sections: " 15, 18",
                              RFC_2782:  "Page 3, Priority Section",
                              Direct_SHT: "Direct Applicability Statement for Secure Health Transport: Sections 4.0 and 5.3",
-                             Instructions: "YYou should have received an email indicating the test case results for your system. Examine the results to see if your system passed the test case. If you do not receive a message for the test case, then you should assume that the test case failed.",
+                             Instructions: "You should have received an email indicating the test case results for your system. Examine the results to see if your system passed the test case. If you do not receive a message for the test case, then you should assume that the test case failed.",
                              Target_Certificate: [{"name": "D10_valE",
                                                    "Valid": "true",
                                                    "Description": "Valid address-bound certificate in an LDAP server with the appropriate mail attribute and InetOrgPerson schema. The associated SRV record has Priority = 1.",
