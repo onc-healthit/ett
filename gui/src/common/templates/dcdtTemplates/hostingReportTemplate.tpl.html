@@ -1,5 +1,4 @@
 <div id="hosting-results" >
-	<div ng-if="data.status ==='success'">
 	<div class="form-group">
 		<div class="">
 			<span class="form-cell form-cell-label"> <span
@@ -7,39 +6,39 @@
 			</span>
 		</div>
 	</div>
-
+   <div ng-repeat="dataobj in data">
+            <div ng-repeat="itemtObj in data[data.indexOf(dataobj)].itemloop">
+	<div ng-if="itemtObj.status ==='success'">
 
 	<div ng-controller="DCDTValidatorCtrl" id="testcase-results-accordion" style="font-size:70%;background:white">
 
-		<div>
-
 			<!-- item loop -->
-            <div ng-repeat="item in data.items">
+            <div ng-repeat="item in itemtObj.items">
 
 		<div><h3 style="font-size:100%">
 		<div ng-if="item.success==false">
-			<uib-alert type="danger">
+			<uib-alert type="danger" ng-click="showhidediv(itemtObj.testcase)">
 				<div>
-					<span><strong><i class="a fa fa-close fa-2x" ng-click="showhidediv(data.testcase)"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+					<span><strong><i class="a fa fa-close fa-2x"></i>Testcase</strong>: {{itemtObj.testcase.testcase}}</span>
 				</div>
 				<div>
-					<span><strong><i></i>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+					<span><strong><i class="a fa fa-close fa-2x"  style="display:none">&nbsp;</i>Direct Address</strong>: {{itemtObj.testcase.directAddr}}</span>
 				</div>
 			</uib-alert>
 		</div>
 		<div ng-if="item.success==true">
-			<uib-alert type="success">
+			<uib-alert type="success" ng-click="showhidediv(itemtObj.testcase)">
 				<div>
-					<span><strong><i class="a fa fa-check-circle-o fa-3x" ng-click="showhidediv(data.testcase)"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+					<span><strong><i class="a fa fa-check-circle-o fa-3x"></i>Testcase</strong>: {{itemtObj.testcase.testcase}}</span>
 				</div>
 				<div>
-					<span><strong><i></i>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+					<span><strong><i></i>Direct Address</strong>: {{itemtObj.testcase.directAddr}}</span>
 				</div>
 			</uib-alert>
 		</div>		
 		</h3>
 		</div>
-		<div ng-show="data.testcase.expandResult" >
+		<div ng-show="itemtObj.testcase.expandResult" >
 			<div>
 				<span><strong>Success</strong>: {{item.success}}</span>
 			</div>
@@ -63,6 +62,16 @@
 			            </ul>
 			         </div>
 			         </div>
+	    <div ng-if="year2014">
+			         <div ng-if="item.msgs">
+			            <li><div><span><strong>Message(s)</strong>: </span></div></li>
+			            <ul><li><p style="display: inline; width: 150px; word-break: break-all; word-wrap: break-word;">
+			                    {{item.msgs[0].toString()}}
+			                    </p></li>
+			            </ul>
+			         </div>
+        </div>
+			         		         
 			            <li><div><span><strong>Binding Type</strong>:{{procStep.bindingType}} </span></div></li>
 			            <li><div><span><strong>Location Type</strong>:{{procStep.locType}} </span></div></li>
 			        </ul>
@@ -70,17 +79,21 @@
 				<div>
 					<strong>Discovered Valid Certificate</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.discoveredCertInfo.cert)"></span>
 					<div ng-if="item.discoveredCertInfo.cert">
-					  <pre style="font-size:80%;"><div class="panel-heading" ng-bind-html="renderHtml(item.discoveredCertInfo.cert)"></pre>
+					  <pre style="font-size:100%;"><div class="panel-heading" ng-bind-html="renderHtml(item.discoveredCertInfo.cert)"></pre>
 					</div>
 				</div>
 				<div>
-					<strong>Discovered Invalid Certificate(s)</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.invalidDiscoveredCertInfos.cert)"></span>
-					<pre style="font-size:80%;"><div class="panel-heading" ng-bind-html="renderHtml(item.invalidDiscoveredCertInfos.cert)"></pre>
+				<strong>Discovered Invalid Certificate(s)</strong>:<span class="panel-heading" ng-bind-html="checkEmpty(item.invalidDiscoveredCertInfos.cert)"></span>
+				  <div ng-if="renderHtml(item.invalidDiscoveredCertInfos.cert)">
+					<pre style="font-size:100%;"><div class="panel-heading" ng-bind-html="renderHtml(item.invalidDiscoveredCertInfos.cert)"></pre>
+			      </div>
 				</div>
 		</div>
 	</div>
-	</div>
+
 	</div>
    </div>
+   </div>
 
+ </div>
 </div>
