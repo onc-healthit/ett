@@ -1,5 +1,4 @@
 <div id="hosting-results" >
-	<div ng-if="data.status ==='success'">
 	<div class="form-group">
 		<div class="">
 			<span class="form-cell form-cell-label"> <span
@@ -7,39 +6,39 @@
 			</span>
 		</div>
 	</div>
-
+   <div ng-repeat="dataobj in data">
+            <div ng-repeat="itemtObj in data[data.indexOf(dataobj)].itemloop">
+	<div ng-if="itemtObj.status ==='success'">
 
 	<div ng-controller="DCDTValidatorCtrl" id="testcase-results-accordion" style="font-size:70%;background:white">
 
-		<div>
-
 			<!-- item loop -->
-            <div ng-repeat="item in data.items">
+            <div ng-repeat="item in itemtObj.items">
 
 		<div><h3 style="font-size:100%">
 		<div ng-if="item.success==false">
 			<uib-alert type="danger">
 				<div>
-					<span><strong><i class="a fa fa-close fa-2x" ng-click="showhidediv(data.testcase)"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+					<span><strong><i class="a fa fa-close fa-2x" ng-click="showhidediv(itemtObj.testcase)"></i>Testcase</strong>: {{itemtObj.testcase.testcase}}</span>
 				</div>
 				<div>
-					<span><strong><i></i>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+					<span><strong><i class="a fa fa-close fa-2x"  style="display:none">&nbsp;</i>Direct Address</strong>: {{itemtObj.testcase.directAddr}}</span>
 				</div>
 			</uib-alert>
 		</div>
 		<div ng-if="item.success==true">
 			<uib-alert type="success">
 				<div>
-					<span><strong><i class="a fa fa-check-circle-o fa-3x" ng-click="showhidediv(data.testcase)"></i>Testcase</strong>: {{data.testcase.testcase}}</span>
+					<span><strong><i class="a fa fa-check-circle-o fa-3x" ng-click="showhidediv(itemtObj.testcase)"></i>Testcase</strong>: {{itemtObj.testcase.testcase}}</span>
 				</div>
 				<div>
-					<span><strong><i></i>Direct Address</strong>: {{data.testcase.directAddr}}</span>
+					<span><strong><i></i>Direct Address</strong>: {{itemtObj.testcase.directAddr}}</span>
 				</div>
 			</uib-alert>
 		</div>		
 		</h3>
 		</div>
-		<div ng-show="data.testcase.expandResult" >
+		<div ng-show="itemtObj.testcase.expandResult" >
 			<div>
 				<span><strong>Success</strong>: {{item.success}}</span>
 			</div>
@@ -91,8 +90,10 @@
 				</div>
 		</div>
 	</div>
-	</div>
+
 	</div>
    </div>
+   </div>
 
+ </div>
 </div>
