@@ -218,9 +218,6 @@
 			      ng-options="criteriaSel.name for criteriaSel in discoveryTestCase | filter: ignoreTestcase" ng-change="onSelectionChange(discorySelectedItem,'discovery')">
 			</select>
             </div>
-			<div  class="directions" ng-if="dcdtDiscoveryResult">
-			    <strong>Direct Address</strong>: <span><span>d{{testCaseId}}@domain1.{{emailDomain}}.sitenv.org</span></span>
-			</div>
 		</div>
 		<div  class="directions" ng-if="dcdtDiscoveryResult">
 			<dcdt-report data="dcdtDiscoveryResult"></dcdt-report>
