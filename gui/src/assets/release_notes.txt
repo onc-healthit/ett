@@ -1,4 +1,16 @@
+==Version 1.2.4.1#4/25/2017
 
+ *1. The Direct Certificate Discovery Tool has been updated to use the ETT UI framework.
+
+ *2. As a result, the new links to the tool are :
+     -2014 DCDT: https://ttpedge.sitenv.org/ttp/#/direct/certdiscovery/dcdt1
+     -2015 DCDT: https://ttpedge.sitenv.org/ttp/#/direct/certdiscovery/dcdt2
+     
+ *3. The old links will not be accessible going forward.
+
+ *4. The C-CDA Validator was updated to Release 1.0.16 and it can be accessed here :    
+        -https://github.com/siteadmin/referenceccdavalidator/releases
+ 
 ==Version 1.2.4#4/20/2017
 
  *1.  Added option to selectively use STARTTLS (default selected) for SMTP/IMAP/POP profiles for systems demonstrating security through other means such as secure networks.
