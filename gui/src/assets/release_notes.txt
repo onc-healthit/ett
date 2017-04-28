@@ -1,5 +1,6 @@
 ==Version 1.2.4.2#4/28/2017
-*1. Fixes the issue with the XDR tests adding extraneous "http" in the endpoint.
+
+  *1. Fixes the issue with the XDR tests adding extraneous "http" in the endpoint.
 
 
 ==Version 1.2.4.1#4/25/2017
