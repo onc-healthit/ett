@@ -103,13 +103,19 @@ public class TTTSenderTests {
 
 			// Adding attachments
 			for (Map.Entry<String, byte[]> e : ti.getAttachments().entrySet()) {
-
+				
 				DataSource source = new ByteArrayDataSource(e.getValue(),
-						"text/html");
+						"application/xml");
 				messageBodyPart.setDataHandler(new DataHandler(source));
-				if (e.getKey().contains("zip")){
+				if (e.getKey().contains(".zip")){
 					DataSource source1 = new ByteArrayDataSource(e.getValue(),
 							"application/zip");
+					messageBodyPart.setDataHandler(new DataHandler(source1));
+				}
+				
+				if (e.getKey().contains(".html")){
+					DataSource source1 = new ByteArrayDataSource(e.getValue(),
+							"text/html");
 					messageBodyPart.setDataHandler(new DataHandler(source1));
 				}
 
