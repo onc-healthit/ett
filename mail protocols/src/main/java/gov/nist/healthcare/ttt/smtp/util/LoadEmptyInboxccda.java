@@ -65,10 +65,13 @@ public class LoadEmptyInboxccda {
 
 				// Adding attachments
 				FileInputStream input;
+				DataSource source;
 				input = new FileInputStream(listOfFiles[i]);
 				byte[] b =  IOUtils.toByteArray(input);
-
-				DataSource source = new ByteArrayDataSource(b,"application/xml");
+				 source = new ByteArrayDataSource(b,"application/xml");
+				if(listOfFiles[i].getName().contains(".zip")){
+				 source = new ByteArrayDataSource(b,"application/zip");
+				}
 				messageBodyPart.setDataHandler(new DataHandler(source));
 				messageBodyPart.setFileName(listOfFiles[i].getName());
 				multipart.addBodyPart(messageBodyPart);
@@ -76,7 +79,7 @@ public class LoadEmptyInboxccda {
 				// Send the complete message parts
 				message.setContent(multipart);
 				Transport transport = session1.getTransport("smtp");
-				transport.connect("smtp.gmail.com","sut.example@gmail.com","***");
+				transport.connect("smtp.gmail.com","sut.example@gmail.com","smtptesting123");
 				transport.sendMessage(message, message.getAllRecipients());
 				transport.close();
 				System.out.println("Message Sent");
@@ -95,7 +98,10 @@ public class LoadEmptyInboxccda {
 				"b2-ambulatory@ttpds.sitenv.org","b2-inpatient@ttpds.sitenv.org",
 				"b5-ambulatory@ttpds.sitenv.org","b5-inpatient@ttpds.sitenv.org",
 				"b9-ambulatory@ttpds.sitenv.org","b9-inpatient@ttpds.sitenv.org",
-				"negativetestingcareplan@ttpds.sitenv.org","negativetestingccds@ttpds.sitenv.org");
+				"negativetestingcareplan@ttpds.sitenv.org","negativetestingccds@ttpds.sitenv.org",
+				"imaptesting@ttpds.sitenv.org","poptesting@ttpds.sitenv.org",
+				"xdmbadxhtml@ttpds.sitenv.org","xdmmimetypes@ttpds.sitenv.org",
+				"multipleattachments@ttpds.sitenv.org");
 		
 		Store store;
 		Properties props = new Properties();
