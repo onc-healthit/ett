@@ -24,12 +24,6 @@
         "link": "https://sourceforge.net/projects/mutransporttesting/files/certificates/sampleca.nist.gov.pem"
     },
     {
-        "description": "Human readable CDA/CCR",
-        "icon": "file-code-o",
-        "name": "ccda-samples",
-        "link": "https://sourceforge.net/projects/mutransporttesting/files/certificates/ccda-samples"
-    },
-    {
         "description": "2015 Certification C-CDA Test Data",
         "icon": "file-code-o",
         "name": "ccda-samples",
