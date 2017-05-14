@@ -81,7 +81,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Receiver (Edge - SUT)",
     "Test Tool: Sender / Receiver": "Sender (Test Tool)",
-    "Purpose/Description": "Verify that an Edge system can receive a properly formatted XDR message. The SUT will receive the XDR message with a 'direct:from' and 'direct:to' address of testcase3@ttpedge.sitenv.org. This was designed to require the SUT's endpoint as the only input parameter.",
+    "Purpose/Description": "Verify that an Edge system can receive a properly formatted XDR message. The SUT will receive the XDR message with a 'direct:from' and 'direct:to' address of testcase3add@ttpedge.sitenv.org. This was designed to require the SUT's endpoint as the only input parameter.",
     "Conformance  Test Details": "",
     "Expected Test Results": "Edge system is capable of receiving and processing a valid message, test procedure may include other details for verification. Test Tool is satisfied with a good response.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
