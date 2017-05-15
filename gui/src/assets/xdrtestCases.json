@@ -23,7 +23,7 @@
     "Direct Address Block": "Included",
     "SUT: Sender/ Receiver": "Sender (Edge - SUT)",
     "Test Tool: Sender / Receiver": "Receiver (Test Tool)",
-    "Purpose/Description": "Verify that the Edge system can create an XDR message per the specification",
+    "Purpose/Description": "Verify that the Edge system can create an XDR message per the specification. Per the Test Procedure, the user is to select a payload for transmission that meets the test scenario with regard to 170_b1_ToC_Amb or 170.315_b1_ToC_Inp. The user should select the C-CDA document type that matches the architecture for the document they are sending.",
     "Conformance  Test Details": "XDR Message Checklist + XDS Metadata Checklist for Limited Metadata Document Source + Direct Address Block",
     "Expected Test Results": "Edge System produces the right message and conforms to the specification.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
