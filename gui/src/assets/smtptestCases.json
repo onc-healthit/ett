@@ -95,43 +95,7 @@
 			"readOnly": false,
 			"display": true
 		}]
-	}, {
-		"name": "SMTP Test 17 (Reject Invalid STARTTLS)",
-		"id": 17,
-		"protocol": "smtp",
-		"desc": "Verifies the ability of the receiving system to reject invalid STARTTLS commands.Hitting 'Run' will cause ETT to begin an invalid STARTTLS session. This session SHALL end before a message can be sent.",
-		"sutRole": "receiver",
-		"sutHisp": true,
-    "criteria":"['h2-8']",    		
-    "sutEdge": true
-	}, {
-		"name": "SMTP MT Test 17 - Generate Unique Message-ID (Processed MDN suite)",
-		"id": 117,
-		"protocol": "mu2",
-		"desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@ttpds.sitenv.org. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Processed MDN').",
-		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123  ",
-		"sutRole": "sender",
-		"sutHisp": false,
-		"sutEdge": true
-	}, {
-		"name": "SMTP MT Test 18 - Accept failure message for invalid recipient (Processed MDN suite - IMAP/POP Receiver)",
-		"id": 118,
-		"protocol": "mu2",
-		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid one (goodaddress-plain@ttpedge.sitenv.org) and an invalid address (noaddressfailure9-plain@dnsops.ttpedge.sitenv.org ). The MDNs are delivered to the 'Mail From' address. The failure MDN for invalid recipient noaddressfailure9-plain@dnsops.ttpedge.sitenv.org  needs to be verified.",
-		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123  ",
-		"sutRole": "sender",
-		"sutHisp": false,
-		"sutEdge": true
-	}, {
-		"name": "SMTP MT Test 18(a) - Accept failure message for invalid recipient (Processed MDN suite - SMTP Receiver)",
-		"id": 119,
-		"protocol": "mu2",
-		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid one (goodaddress-plain@ttpedge.sitenv.org) and an invalid address (noaddressfailure9-plain@dnsops.ttpedge.sitenv.org ). Hitting 'Run' will cause the MDNs to be delivered using the account information specified in the profile using SMTP protocol with STARTTLS and SASL.The failure MDN for invalid recipient noaddressfailure9-plain@dnsops.ttpedge.sitenv.org  needs to be verified.",
-		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP. Note that 18a/47a are to be executed only for SMTP Receive configurations with pre-configured accounts.",
-		"sutRole": "sender",
-		"sutHisp": false,
-		"sutEdge": true
-	}, {
+	},{
 		"name": "SMTP MT Test 45 - Generate Unique Message-ID (IG for Delivery Notification Suite)",
 		"id": 145,
 		"protocol": "mu2",
@@ -151,24 +115,6 @@
 		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
-		"name": "SMTP MT Test 47 - Accept failure message for invalid recipient (IG for Delivery Notification Suite - IMAP/POP Receiver)",
-		"id": 147,
-		"protocol": "mu2",
-		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid one (dispatchedonly-plain@ttpedge.sitenv.org) and an invalid address (noaddressfailure9-plain@dnsops.ttpedge.sitenv.org ). The MDNs are delivered to the 'Mail From' address. The failure MDN for invalid recipient noaddressfailure9-plain@dnsops.ttpedge.sitenv.org  needs to be verified.",
-		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP.  ",
-		"sutRole": "sender",
-		"sutHisp": false,
-		"sutEdge": true
-	}, {
-		"name": "SMTP MT Test 47(a) - Accept failure message for invalid recipient (IG for Delivery Notification Suite - SMTP Receiver)",
-		"id": 120,
-		"protocol": "mu2",
-		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid one (dispatchedonly-plain@ttpedge.sitenv.org) and an invalid address (noaddressfailure9-plain@dnsops.ttpedge.sitenv.org ). Hitting 'Run' will cause the MDNs to be delivered using the account information specified in the profile using SMTP protocol with STARTTLS and SASL. The failure MDN for invalid recipient noaddressfailure9-plain@dnsops.ttpedge.sitenv.org  needs to be verified.",
-		"longDesc": "The credentials for authentication is vendor1smtpsmtp@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP. Note that 18a/47a are to be executed only for SMTP Receive configurations with pre-configured accounts.",
-		"sutRole": "sender",
-		"sutHisp": false,
-		"sutEdge": true
-	}, {
 		"name": "SMTP Test 22 (Reject invalid username/password)",
 		"id": 22,
 		"protocol": "smtp",
@@ -178,7 +124,7 @@
 		"sutHisp": true,
     "criteria":"['h2-8']",
 		"sutEdge": true
-	}, {
+	},  {
 		"name": "SMTP Test 25(a) (Receive Text and CCDA)",
 		"id": 91,
 		"protocol": "smtp",
@@ -278,7 +224,7 @@
 		"criteria":"['b1-4']",
 		"sutEdge": true
 	}, {
-		"name": "SMTP MT Test 1 (Message to Bad Address)",
+		"name": "SMTP MT Test 1 (Message to Non-Existent Address)",
 		"id": 101,
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an invalid address. Hitting 'Run' will cause  ETT to send a message with a final destination that is not valid. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
 		"longDesc": "The email is sent to badaddresst@ttpds2.siten.org",
@@ -739,7 +685,7 @@
 		"criteria": "['h2-6']",
 		"sutEdge": false
 	}, {
-		"name": "POP Test 3-5, 11, 15",
+		"name": "POP Test 5, 11, 15",
 		"id": 303,
 		"protocol": "pop",
 		"desc": "Verifies POP3 STAT, STLS, RETR, LIST, RSET and QUIT commands are implemented",
@@ -769,16 +715,6 @@
 		"criteria": "['h2-6']",
 		"sutEdge": false
 	}, {
-		"name": "POP Test 12",
-		"id": 312,
-		"protocol": "pop",
-		"desc": "Verifies the ability of the Vendor HISP(POP Server) to produce Unique identifiers(UIDs).",
-		"longDesc": "The proctor has to send two emails to the vendor one after another and see that each message has a different UID. ",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"criteria": "['h2-6']",
-		"sutEdge": false
-	}, {
 		"name": "POP Test 17",
 		"id": 317,
 		"protocol": "pop",
@@ -789,7 +725,7 @@
 		"criteria": "['h2-6']",
 		"sutEdge": false
 	}, {
-		"name": "IMAP Test 4-8, 11, 15",
+		"name": "IMAP Test 8, 11, 15",
 		"id": 205,
 		"protocol": "imap",
 		"desc": "Verifies the ability of the Vendor HISP to implement imap commands.(AUTHENTICATE, STARTTLS, LOGIN, SELECT, FETCH)",
@@ -818,17 +754,7 @@
 		"sutHisp": true,
 		"criteria": "['h2-5']",
 		"sutEdge": false
-	}, {
-		"name": "IMAP Test 12",
-		"id": 212,
-		"protocol": "imap",
-		"desc": "Verifies the ability of the Vendor HISP to generate Unique Identifiers(UIDs) for each message.",
-		"longDesc": "The proctor has to send two emails to the vendor one after another and see that each message has a different UID. ",
-		"sutRole": "sender",
-		"sutHisp": true,
-		"criteria": "['h2-5']",
-		"sutEdge": false
-	}, {
+	},  {
 		"name": "IMAP Test 17",
 		"id": 217,
 		"protocol": "imap",
@@ -919,7 +845,7 @@
 		"criteria":"['b1-5']",
 		"sutEdge": true
 	}, {
-		"name": "IMAP 31 (Receive)",
+		"name": "IMAP Test 31 (Receive)",
 		"id": 231,
 		"protocol": "imap",
 		"desc": "Verifies the ability of the SUT to accept different attachment types.",
@@ -1027,7 +953,7 @@
 		"criteria":"['b1-6']",
 		"sutEdge": true
 	}, {
-		"name": "POP 31 (Receive)",
+		"name": "POP Test 31 (Receive)",
 		"id": 331,
 		"protocol": "pop",
 		"desc": "Verifies the ability of the SUT to accept different attachment types.",

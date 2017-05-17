@@ -138,14 +138,14 @@
       "selectOption":"['2','6','4','B','5']"
    },
    {
-      "name":"Criteria (i)(B) Send using SOAP+XDR",
+      "name":"Criteria (i)(B) Send conversion XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-1'",
       "selectOption":"['3','B']"
    },
    {
-      "name":"Criteria (i)(B) Receive using SOAP+XDR",
+      "name":"Criteria (i)(B)  Receive conversion XDR",
       "xdrTest":true,
       "testList":"['h2']",
       "criteria":"'h2-2'",

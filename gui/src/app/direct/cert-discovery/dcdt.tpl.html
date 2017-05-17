@@ -19,9 +19,9 @@
       <div class="panel-heading" ng-style="{backgroundColor:blue}">The tool is divided into two main testing areas:</a></div>
       	<div class="panel-body">
         	<div class="list-group">
-          		<a ng-repeat="toolitem in datatool"  class="list-group-item">
-            		<div ng-click="gotodiv(toolitem.hreflink)">{{toolitem.name}}</div>
-          		</a>
+          		<div ng-repeat="toolitem in datatool"  class="list-group-item">
+            		<a href="" style="color: black" ng-click="gotodiv(toolitem.hreflink)">{{toolitem.name}}</a>
+          		</div>
         	</div>
       	</div>
       </div>
@@ -66,11 +66,11 @@
 			</p>
 		</div>
 		<div ng-if=hostingResultError>
-			<div ng-if="hostingResultError.status ==='error'">	
+			<div ng-if="hostingResultError.status ==='error'">
 			       <div ng-repeat="errorobj in hostingResultError.errors.fields">
 			         <uib-alert type="danger">{{errorobj[0].messages.toString()}}</uib-alert>
 			      </div>
-			</div>	
+			</div>
 		</div>
 		<div class="form-group form-group-buttons">
 			<span class="btn-group btn-group-sm">
@@ -101,15 +101,15 @@
 			<h2 style="font-size: 18px;"> DCDT Information</h2>
 			<div class="row">
 				<div class="col-sm-12 btn-group-vertical" style="width:100%">
-				<p class="btn btn-default" ><a href="http://{{emailDomain}}.sitenv.org/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a> 
+				<p class="btn btn-default" ><a href="http://{{emailDomain}}.sitenv.org/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
-				<p class="btn btn-default" ><a href="https://groups.google.com/forum/#!forum/directtesttool" target="_blank" style="color: black">DCDT Forum</a> 
+				<p class="btn btn-default" ><a href="https://groups.google.com/forum/#!forum/directtesttool" target="_blank" style="color: black">DCDT Forum</a>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
-				<p class="btn btn-default" ><a href="https://github.com/esacinc/dcdt/tree/master" target="_blank" style="color: black">DCDT Project Repository</a> 
+				<p class="btn btn-default" ><a href="https://github.com/esacinc/dcdt/tree/master" target="_blank" style="color: black">DCDT Project Repository</a>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
-				<p class="btn btn-default" ><a href="http://confluence.siframework.org/display/DCDT" target="_blank" style="color: black">DCDT Documentation</a> 
+				<p class="btn btn-default" ><a href="http://confluence.siframework.org/display/DCDT" target="_blank" style="color: black">DCDT Documentation</a>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
-				<p class="btn btn-default" ><a href="http://jira.oncprojectracking.org/browse/DCDT" target="_blank" style="color: black">DCDT Issue Tracker</a> 
+				<p class="btn btn-default" ><a href="http://jira.oncprojectracking.org/browse/DCDT" target="_blank" style="color: black">DCDT Issue Tracker</a>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="left" class="fa fa-external-link"></i></a></p>
 				</div>
 			</div>
@@ -118,9 +118,9 @@
 			<h2 style="font-size:18px;"> Links to Direct Reference Information</h2>
 			<div class="row">
 				<div class="col-sm-12 btn-group-vertical" style="width:100%">
-					<p class="btn btn-default" ><a href="http://wiki.directproject.org/" target="_blank" style="color: black">Direct Project Wiki</a> 
+					<p class="btn btn-default" ><a href="http://wiki.directproject.org/" target="_blank" style="color: black">Direct Project Wiki</a>
 				    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
-					<p class="btn btn-default" ><a href="https://github.com/aviars/getdc" target="_blank" style="color: black">Direct Certificate Download Utility</a> 
+					<p class="btn btn-default" ><a href="https://github.com/aviars/getdc" target="_blank" style="color: black">Direct Certificate Download Utility</a>
 				    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
 				</div>
 			</div>
@@ -164,13 +164,13 @@
 					<hr>
 	<uib-alert ng-repeat="alert in discalerts" type="{{alert.type}}" close="closeAlert()">{{alert.msg}}</uib-alert>
 			<div ng-if=discoveryReport>
-			<div ng-if="discoveryReport.status ==='error'">	
+			<div ng-if="discoveryReport.status ==='error'">
 			       <div ng-repeat="errorobj in discoveryReport.errors.fields">
 			         <uib-alert type="danger">{{errorobj[0].messages.toString()}}</uib-alert>
 			      </div>
-			</div>	
+			</div>
 		</div>
-	
+
 					<div class="form-group form-group-buttons">
 						<button id="discovery-mail-mapping-submit" type="button" class="btn btn-primary start" ng-click="discValidate()"> <i class="glyphicon glyphicon-ok"></i> <span>Submit</span> </button>
 						<button id="discovery-mail-mapping-reset" type="reset" class="btn btn-default start" ng-click="resetDiscData()"> <i class="glyphicon glyphicon-refresh"></i> <span>Reset</span> </button>
@@ -180,7 +180,7 @@
 		    <div ng-repeat="item in discoveryReport.items">
 
      <div>
-       
+
         <uib-alert type="success">{{errorobj[0].messages.toString()}}
         <strong> <span class="glyphicon glyphicon-ok-sign"></span>Discovery mail mapping modified</strong>:
              <li><p style="font-size:70%; display: inline; width: 150px; word-break: break-all; word-wrap: break-word;">{{item.msg}}</p></li>
