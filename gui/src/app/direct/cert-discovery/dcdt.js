@@ -623,7 +623,7 @@ return dataobj.expandResult;
              $scope.dcdtResult = null;
              $scope.selectedItem = $scope.processes[0];
              $scope.directAddress ="";
-            //$scope.testcase =$scope.selectedItem.code;
+             $scope.testcase ="";
              $scope.alerts = [];
              $scope.hostingResultError =[];
         };
