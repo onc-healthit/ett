@@ -93,30 +93,30 @@
     "cdaSamples": [{
         "name": "CCDA_Ambulatory.xml"
     }, {
-        "name": "CCDA_Ambulatory_In_XDM.zip"
+        "name": "CCDA_AMBULATORY_In_XDM.ZIP"
     }, {
         "name": "CCDA_Inpatient.xml"
     }, {
-        "name": "CCDA_Inpatient_In_XDM.zip"
+        "name": "CCDA_INPATIENT_IN_XDM.ZIP"
     }, {
         "name": "CCR_Sample1.xml"
     }, {
-        "name": "CCR_Sample1_In_XDM.zip"
+        "name": "CCR_SAMPLE1_IN_XDM.ZIP"
     }, {
         "name": "C32_Sample1.xml"
     }, {
-        "name": "C32_Sample1_In_XDM.zip"
+        "name": "C32_SAMPLE1_IN_XDM.ZIP"
     }, {
         "name": "CCR_Sample2.xml"
     }, {
-        "name": "CCR_Sample2_In_XDM.zip"
+        "name": "CCR_SAMPLE2_IN_XDM.ZIP"
     }, {
         "name": "C32_Sample2.xml"
     }, {
-        "name": "C32_Sample2_In_XDM.zip"
+        "name": "C32_SAMPLE2_IN_XDM.ZIP"
     }, {
-        "name": "ToC_XDM_Full_Metadata.zip"
+        "name": "ToC_XDM_FULL_METADATA.ZIP"
     }, {
-        "name": "ToC_XDM_Limited_Metadata.zip"
+        "name": "ToC_XDM_LIMITED_METADATA.ZIP"
     }]
 }
