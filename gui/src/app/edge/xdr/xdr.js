@@ -155,7 +155,11 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 					if (data.content.criteriaMet.toLowerCase() === 'pending') {
 						test.status = "pending";
 						if(data.content) {
-							test.endpoint = data.content.value.endpoint;
+							if (data.message ==="ran tc 7"){
+								test.endpoint = "http://"+data.content.value.endpoint;
+							}else{
+								test.endpoint = data.content.value.endpoint;
+							}
 							test.endpointTLS = data.content.value.endpointTLS;
 						}
 					} else if (data.content.criteriaMet.toLowerCase() === 'manual') {

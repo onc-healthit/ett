@@ -45,6 +45,7 @@ public class DirectMimeEntityValidator {
 	// DTS 190, All Mime Header Fields, Required
 	public DetailModel validateAllMimeHeaderFields(String header) {
 		String rfc = "RFC 2045: Section 1, 3, 5;http://tools.ietf.org/html/rfc2045;RFC 5322: Section 2.2, 3.2.2;http://tools.ietf.org/html/rfc5322";
+		header = header.replaceAll("\"[^\"]*\"", "");
 		if(header.contains("(") || header.contains(")")) {
 			return new DetailModel("190", "All MIME Headers", header, "Content-Disposition must not contain comment", rfc, Status.ERROR);					
 		}
