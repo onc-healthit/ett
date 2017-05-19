@@ -1,3 +1,14 @@
+==Version 1.2.5#5/18/2017
+
+*1. IMAP/POP folders populated periodically.
+
+*2. UI updataes: More info XDR Test 1, MT Test 20a/b, Rename HISP IMAP/POP Tests, Update Test by Criteria drop-dwon labels (h)(2),
+   Labels for IMAP/POP 31, XDR 3 address corrected, SMTP Test 1 text changed to "non-existent address", DCDT accordian hyperlink at the top fix.
+   
+*3. XDMs used in the tests changed to uppercase.
+
+*4. Content Disposition check ignores comment check for quoted strings for Direct Message Validation.
+
 ==Version 1.2.4.3#5/09/2017
 
   *1. Fixes the issue with attachments in the b(1) due to encoding
