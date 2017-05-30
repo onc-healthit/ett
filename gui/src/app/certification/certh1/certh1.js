@@ -30,8 +30,8 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll',
-	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll) {
+certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll','XDRCheckStatus',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll,XDRCheckStatus) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
@@ -265,7 +265,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			$scope.currentProfile = profile;
 		};
 
-		$scope.reset = function() {
+		$scope.resetProfile = function() {
 			$scope.currentProfile.sutSMTPAddress = "";
 			$scope.currentProfile.sutEmailAddress = "";
 			$scope.currentProfile.sutUsername = "";
@@ -446,6 +446,17 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			});
 		};
 
+		$scope.validateXdr = function(test, validation) {
+			test.status = validation;
+		};
+
+		$scope.reset = function(test) {
+			console.log("inside reset for xdr......");
+			if (!test.results.$resolved) {
+				test.results.cancel();
+			}
+			test.status = 'na';
+		};
 
 		$scope.runXdr = function(test) {
 			test.status = "loading";
@@ -485,6 +496,35 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 				}
 			}, function(data) {
 				test.status = 'error';
+				if (data.data) {
+					throw {
+						code: data.data.code,
+						url: data.data.url,
+						message: data.data.message
+					};
+				}
+			});
+		};
+
+		$scope.checkXdrStatus = function(test) {
+			test.status = "loading";
+			test.results = XDRCheckStatus.checkStatus({
+				id: test.id
+			}, function(data) {
+				test.results = data;
+				if (data.content.criteriaMet.toLowerCase() === "passed") {
+					test.status = "success";
+				} else if (data.content.criteriaMet.toLowerCase() === "failed") {
+					test.status = "error";
+				} else if (data.content.criteriaMet.toLowerCase() === "pending") {
+					test.status = "pending";
+				} else if (data.content.criteriaMet.toLowerCase() === "manual") {
+					test.status = "manual";
+				} else {
+					test.status = "error";
+				}
+			}, function(data) {
+				test.status = "error";
 				if (data.data) {
 					throw {
 						code: data.data.code,
