@@ -446,10 +446,10 @@ public class TTTSenderTests {
 
 			// Adding attachments
 
-			DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
+			DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_AMBULATORY_IN_XDM.ZIP")),
 					"application/zip");
 			messageBodyPart1.setDataHandler(new DataHandler(source1));
-			messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
+			messageBodyPart1.setFileName("CCDA_AMBULATORY_IN_XDM.ZIP");
 			multipart.addBodyPart(messageBodyPart1);
 
 			DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/Text.txt")),
@@ -475,7 +475,7 @@ public class TTTSenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent to " + ti.sutEmailAddress);
-			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_Ambulatory_in_XDM.zip and Text.txt");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "CCDA_AMBULATORY_IN_XDM.ZIP and Text.txt");
 			result.put("\n2","Email sent Successfully");
 
 		} catch (SendFailedException e) {
@@ -805,10 +805,10 @@ public class TTTSenderTests {
 			messageBodyPart.setFileName("Text.txt");
 			multipart.addBodyPart(messageBodyPart);
 
-			DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_Ambulatory_in_XDM.zip")),
+			DataSource source1 =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream("/cda-samples/CCDA_AMBULATORY_IN_XDM.ZIP")),
 					"application/zip");
 			messageBodyPart1.setDataHandler(new DataHandler(source1));
-			messageBodyPart1.setFileName("CCDA_Ambulatory_in_XDM.zip");
+			messageBodyPart1.setFileName("CCDA_AMBULATORY_IN_XDM.ZIP");
 			multipart.addBodyPart(messageBodyPart1);
 
 
@@ -827,7 +827,7 @@ public class TTTSenderTests {
 
 			System.out.println("Done");
 			log.info("Message Sent to " + ti.sutEmailAddress);
-			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Text.txt and CCDA_Ambulatory_in_XDM.zip");
+			result.put("\n1","SENDING EMAIL TO " + ti.sutEmailAddress + " WITH ATTACHMENTS " + "Text.txt and CCDA_AMBULATORY_IN_XDM.ZIP");
 			result.put("\n2","Email sent Successfully");
 
 		} catch (SendFailedException e) {
