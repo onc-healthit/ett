@@ -1,3 +1,12 @@
+==Version 1.2.5.1#5/31/2017
+
+  *1.  The C-CDA Validator was updated to Release 1.0.17 and it can be accessed here :                                    https://github.com/siteadmin/referenceccdavalidator/releases
+				     
+  *2.  Select by Criteria b(1) issues have been corrected.
+  
+  *3.  Miscellaneous documents links to 2014 certification samples from github.
+  
+
 ==Version 1.2.5#5/18/2017
 
 *1. IMAP/POP folders populated periodically.
