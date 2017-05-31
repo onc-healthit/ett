@@ -172,7 +172,7 @@ public class TTTReceiverTests {
 						}
 
 						result.put("\n" + "Delivered-To", "********" + "\n");
-
+						inbox.setFlags(new Message[] {message}, new Flags(Flags.Flag.SEEN), true);
 						// Storing the Message Body Parts
 						if(message.getContent() instanceof Multipart){
 							Multipart multipart = (Multipart) message.getContent();
