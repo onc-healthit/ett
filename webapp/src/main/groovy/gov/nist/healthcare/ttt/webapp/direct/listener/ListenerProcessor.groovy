@@ -105,7 +105,7 @@ public class ListenerProcessor implements Runnable {
 			'noaddressfailure9', 'goodaddress-plain',
 			'processedonly5-plain', 'processdelayeddispatch30min', 'processeddispatched6-plain', 'noaddressfailure9-plain', 'dispatchedonly-plain',
 			'white_space_mdn', 'extra_line_break_mdn', 'extra_space_disposition', 'missing_disposition', 'null_sender',
-			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn', 'processedfailuretest']
+			'different_sender', 'different_msgid', 'white_space_822', 'different_cases_822', 'dsn', 'processedfailuretest', 'processedfailure','processedtimeoutfailure']
 
 		String smtpFrom = directTo?.get(0)
 		logger.info("To " + smtpFrom)
