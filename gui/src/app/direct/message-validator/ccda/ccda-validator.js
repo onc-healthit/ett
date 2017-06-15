@@ -92,7 +92,8 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
                 $scope.validator.referenceFileName = $scope.fileInfo.flowFilename;
 				CCDAR2ValidatorFactory.save($scope.validator, function(data) {
 					$scope.laddaLoading = false;
-					$scope.ccdaResult = data;
+                    $scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
+					$scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
 				}, function(data) {
 					$scope.laddaLoading = false;
 					throw {
