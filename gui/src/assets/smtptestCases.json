@@ -95,7 +95,16 @@
 			"readOnly": false,
 			"display": true
 		}]
-	},{
+	}, {
+		"name": "SMTP MT Test 17 - Generate Unique Message-ID (Processed MDN suite)",
+		"id": 117,
+		"protocol": "mu2",
+		"desc": "Verifies the ability of the sending system to send messages with unique message-IDs. The sending system will send multiple messages (at least 3) to wellformed14@ttpds.sitenv.org. Hitting 'Run' will cause ETT to check the message IDs for uniqueness (use this case if you opt for 'Message tracking using Processed MDN').",
+		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123  ",
+		"sutRole": "sender",
+		"sutHisp": false,
+		"sutEdge": true
+	}, {
 		"name": "SMTP MT Test 45 - Generate Unique Message-ID (IG for Delivery Notification Suite)",
 		"id": 145,
 		"protocol": "mu2",
@@ -115,6 +124,15 @@
 		"criteria":"['b1-2']",
 		"sutEdge": true
 	}, {
+		"name": "SMTP MT Test 47 - Accept failure message for invalid recipient (IG for Delivery Notification Suite - IMAP/POP Receiver)",
+		"id": 147,
+		"protocol": "mu2",
+		"desc": "Verifies the ability of the system to accept failure messages for some of the recipients. The system shall send a single email to multiple recipients: valid one (dispatchedonly-plain@ttpedge.sitenv.org) and an invalid address (noaddressfailure9-plain@dnsops.ttpedge.sitenv.org ). The MDNs are delivered to the 'Mail From' address. The failure MDN for invalid recipient noaddressfailure9-plain@dnsops.ttpedge.sitenv.org  needs to be verified.",
+		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123. This is a test case for systems that receive using SMTP.  ",
+		"sutRole": "sender",
+		"sutHisp": false,
+		"sutEdge": true
+	},  {
 		"name": "SMTP Test 22 (Reject invalid username/password)",
 		"id": 22,
 		"protocol": "smtp",

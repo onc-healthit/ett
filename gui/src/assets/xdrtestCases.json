@@ -748,6 +748,32 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 },  {
+    "name": "XDR MT Test 19",
+    "id": "19mu2",
+    "ID": "19mu2",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. Hit 'RUN' and then the sending system will send three messages with unique identifiers to the endpoint provided. When all three messages have been completely sent, press the 'Pending Refresh' button.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
+        "key": "direct_from",
+        "type": "string"
+    }],
+    "Test Focus": "",
+    "Data Flow in Direct": "",
+    "Metadata Included": "N/A",
+    "Direct Address Block": "N/A",
+    "SUT: Sender/ Receiver": "Sender (Edge - SUT)",
+    "Test Tool: Sender / Receiver": "",
+    "Purpose/Description": "Test to validate that the Edge system is able to create messages with unique message id for XDR profile.",
+    "Conformance  Test Details": "",
+    "Expected Test Results": "Edge system creates each message with a unique message id with no duplicates.",
+    "Required / Conditional per Direct Edge Protocol Guide": "R",
+    "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
+    "Test Data IDs": null
+},  {
     "name": "XDR MT Test 20a",
     "id": "20amu2",
     "ID": "20mu2",
@@ -1217,6 +1243,32 @@
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
 },  {
+    "name": "XDR MT Test 48",
+    "id": "48mu2",
+    "ID": "48mu2",
+    "desc": "Verifies the ability of the sending system to send messages with unique message-IDs. Hit 'RUN' and then the sending system will send three messages with unique identifiers to the endpoint provided. When all three messages have been completely sent, press the 'Pending Refresh' button.  (Message Tracking Using \"Implementation Guide for Delivery Notification\")",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "inputs": [{
+        "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
+        "key": "direct_from",
+        "type": "string"
+    }],
+    "Test Focus": "",
+    "Data Flow in Direct": "",
+    "Metadata Included": "N/A",
+    "Direct Address Block": "N/A",
+    "SUT: Sender/ Receiver": "Sender (Edge - SUT)",
+    "Test Tool: Sender / Receiver": "",
+    "Purpose/Description": "Test to validate that the Edge system is able to create messages with unique message id.",
+    "Conformance  Test Details": "",
+    "Expected Test Results": "Edge system creates each message with a unique message id with no duplicates.",
+    "Required / Conditional per Direct Edge Protocol Guide": "R",
+    "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
+    "Test Data IDs": null
+},  {
     "name": "XDR MT Test 49",
     "id": "49mu2",
     "ID": "49mu2",
@@ -1240,6 +1292,72 @@
     "Purpose/Description": "Test to validate that the Edge system is able to generate the direct address block header including delivery notifications element.",
     "Conformance  Test Details": "",
     "Expected Test Results": "Edge system creates the direct address block including the disposition notifications header.",
+    "Required / Conditional per Direct Edge Protocol Guide": "R",
+    "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
+    "Test Data IDs": null
+}, {
+    "name": "XDR MT Test 50a",
+    "id": "50amu2",
+    "ID": "50amu2",
+    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to valid recipients. The SUT is expected to appropriately track success messages.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
+        "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }],
+    "expectedMDN": true,
+    "Test Focus": "",
+    "Data Flow in Direct": "",
+    "Metadata Included": "N/A",
+    "Direct Address Block": "N/A",
+    "SUT: Sender/ Receiver": "Sender (Edge - SUT)",
+    "Test Tool: Sender / Receiver": "",
+    "Purpose/Description": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to valid recipients.",
+    "Conformance  Test Details": "",
+    "Expected Test Results": "Edge system receives and processes a positive (success) delivery status notification.",
+    "Required / Conditional per Direct Edge Protocol Guide": "R",
+    "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
+    "Test Data IDs": null
+}, {
+    "name": "XDR MT Test 50b",
+    "id": "50bmu2",
+    "ID": "50bmu2",
+    "desc": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to invalid recipients. The SUT is expected to appropriately track failure messages. Failure messages to invalid recipients have to be processed/tracked appropriately by the edge system and has to be made available for testing purposes.",
+    "sutEdge": true,
+    "sutHisp": false,
+    "sutRole": "sender",
+    "status": "configure",
+    "inputs": [{
+        "name": "Direct From Address",
+        "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
+        "key": "direct_from",
+        "type": "string"
+    }, {
+        "name": "Endpoint",
+        "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages",
+        "key": "targetEndpointTLS",
+        "type": "string"
+    }],
+    "expectedMDN": true,
+    "Test Focus": "",
+    "Data Flow in Direct": "",
+    "Metadata Included": "N/A",
+    "Direct Address Block": "N/A",
+    "SUT: Sender/ Receiver": "Sender (Edge - SUT)",
+    "Test Tool: Sender / Receiver": "",
+    "Purpose/Description": "Verify the ability of the sending system to correctly handle the case of sending XDR messages to invalid recipients.",
+    "Conformance  Test Details": "",
+    "Expected Test Results": "Edge system successfully processes the invalid MDN received for tracking. The Edge SUT should display the event in the log for tracking.",
     "Required / Conditional per Direct Edge Protocol Guide": "R",
     "Direct Edge Protocol Guide 1.1 RTM Reference": 1.1,
     "Test Data IDs": null
