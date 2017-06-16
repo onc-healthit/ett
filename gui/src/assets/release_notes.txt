@@ -8,9 +8,7 @@
 
  *4. Content-Disposition check in the direct validation  enhanced to allow paranthesis inside quotes
 
- *5. SMTP MT 41 removed from h1 testing
-
- *6. Fixed: Message Validators showing Criteria instead of C-CDA Document Type
+ *5. Fixed: Message Validators showing Criteria instead of C-CDA Document Type
 
 ==Version 1.2.5.1#5/31/2017
 
