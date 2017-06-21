@@ -156,7 +156,7 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 						test.status = "pending";
 						if(data.content) {
 							if (data.message ==="ran tc 7"){
-								test.endpoint = "http://"+data.content.value.endpoint;
+								test.endpoint = "https://"+data.content.value.endpoint;
 							}else{
 								test.endpoint = data.content.value.endpoint;
 							}
