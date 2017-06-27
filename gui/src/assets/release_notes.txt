@@ -1,3 +1,20 @@
+==Version 1.2.6.1#6/27/2017
+
+ *1. XDR MT 43/44 issue resolved. ETT sends a failure MDN to the SUT HISP as per the test specification without time delay; for 44 however it maintains the delay and the description has been updated to document the delay.
+
+ *2. XDR 7 displays the https endpoint correctly now for copying from clipboard to be used for the test by SUT.
+
+ *3. ETT refreshes IMAP/POP account folders more frequently so that testers will not be affected by occasional problems with missing mails.
+
+ *4. CCDA-validator has been released. The release notes here:
+      -Updated typeCode identification in ConsultationNote2 participant which was causing errors incorrectly.
+      -Updated Problem Value Set from VSAC to accomodate Allergy Reaction codes.
+      -Updated Content Validation to not have an error when the Severity has a nullFlavor value.
+      -Updated Content Validation to produce WARNING instead of ERRORS when Allergy Reaction and Severity are not present or are present with Null Flavors.
+      -Updated Content Validation to allow Lab Result Values without Units to use either PQ or ST data type.
+      -Updated Content Validation to fix defect in PQ validation which was preventing errors when just value was not matching the test data.
+
+
 ==Version 1.2.6#6/15/2017
 
  *1. Restore tests for the 2014 Edition to the UI
