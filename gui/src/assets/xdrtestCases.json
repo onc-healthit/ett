@@ -1229,6 +1229,11 @@
         "name": "Outgoing (ETT --> SUT) Direct From Address",
         "key": "outgoing_from",
         "type": "string"
+    },{
+        "name": "Timeout",
+        "hoverlabel":"Timeout",
+        "key": "timeout",
+        "type": "string"
     }],
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "HISP receives an XDR message from the Edge",

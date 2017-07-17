@@ -59,7 +59,8 @@ final class TestCase44mu2 extends TestCaseSender {
         context.wsaTo = context.endpointTLS
         //an address that provides a processed MDN and a failure MDN after n seconds (n < sending hisp timeout)
       //  context.directTo = "processedfailure@ttpedgetest.sitenv.org"
-		context.directTo = "processedtimeoutfailure@$executor.hostname"
+	//	context.directTo = "processedtimeoutfailure@$executor.hostname"
+		context.directTo = "delaydispatched"+context.timeout+"@$executor.hostname"
         context.directFrom = context.outgoing_from
         context.finalDestinationDelivery = "true"
         context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
