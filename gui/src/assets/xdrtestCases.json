@@ -1220,7 +1220,11 @@
         "hoverlabel":"Receiving endpoint of the SUT for XDR SOAP messages.",
         "key": "targetEndpointTLS",
         "type": "string"
-    }, {
+    }, {"name": "Timeout",
+        "hoverlabel":"Timeout",
+        "key": "timeout",
+        "type": "string"
+    },{
         "name": "Direct From Address",
         "hoverlabel":"SUT (HISP) outgoing SMTP address.",
         "key": "direct_from",
@@ -1228,11 +1232,6 @@
     }, {
         "name": "Outgoing (ETT --> SUT) Direct From Address",
         "key": "outgoing_from",
-        "type": "string"
-    },{
-        "name": "Timeout",
-        "hoverlabel":"Timeout",
-        "key": "timeout",
         "type": "string"
     }],
     "Test Focus": "XDR Receive",
