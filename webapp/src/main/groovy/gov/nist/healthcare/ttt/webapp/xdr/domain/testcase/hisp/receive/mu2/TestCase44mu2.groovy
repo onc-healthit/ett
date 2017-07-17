@@ -25,11 +25,11 @@ import org.springframework.stereotype.Component
 final class TestCase44mu2 extends TestCaseSender {
 
 
-    @Autowired
-    TestCase44mu2(TestCaseExecutor executor) {
-        super(executor)
-    }
-	
+	@Autowired
+	TestCase44mu2(TestCaseExecutor executor) {
+		super(executor)
+	}
+
 	@Override
 	Result configure(){
 		Content c = new Content()
@@ -38,45 +38,53 @@ final class TestCase44mu2 extends TestCaseSender {
 		new Result(Status.PENDING, c)
 	}
 
-    @Override
-    Result run(Map context, String username) {
+	@Override
+	Result run(Map context, String username) {
 
-        executor.validateInputs(context, ["targetEndpointTLS", "outgoing_from"])
+		executor.validateInputs(context, ["targetEndpointTLS", "outgoing_from"])
 
-        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+		TestCaseBuilder builder = new TestCaseBuilder(id, username)
 
-        // Correlate this test to a direct_from address and a simulator id so we can be notified
+		// Correlate this test to a direct_from address and a simulator id so we can be notified
 		if(context.direct_from != null) {
 			XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
 			builder.addStep(step1)
 		}
+
+		registerDocSrcEndpoint(username,context)
+
+		// Send an xdr with the endpoint created above
+		context.endpoint = context.targetEndpointTLS
+		context.simId = id + "_" + username
+		context.wsaTo = context.endpointTLS
+		//an address that provides a processed MDN and a failure MDN after n seconds (n < sending hisp timeout)
+		//  context.directTo = "processedfailure@ttpedgetest.sitenv.org"
+		//	context.directTo = "processedtimeoutfailure@$executor.hostname"
 		
-        registerDocSrcEndpoint(username,context)
+		println("TIMEOUT FOR XDR 44 "+context.timeout)
+		if(context.timeout == null){			
+			context.directTo = "delaydispatched"+"65"+"@$executor.hostname"
+		}
+		else {
+			context.directTo = "delaydispatched"+context.timeout+"@$executor.hostname"
+		}
+		
+		context.directFrom = context.outgoing_from
+		context.finalDestinationDelivery = "true"
+		context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
+		XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
 
-        // Send an xdr with the endpoint created above
-        context.endpoint = context.targetEndpointTLS
-        context.simId = id + "_" + username
-        context.wsaTo = context.endpointTLS
-        //an address that provides a processed MDN and a failure MDN after n seconds (n < sending hisp timeout)
-      //  context.directTo = "processedfailure@ttpedgetest.sitenv.org"
-	//	context.directTo = "processedtimeoutfailure@$executor.hostname"
-		context.directTo = "delaydispatched"+context.timeout+"@$executor.hostname"
-        context.directFrom = context.outgoing_from
-        context.finalDestinationDelivery = "true"
-        context.messageType = ArtifactManagement.Type.XDR_MINIMAL_METADATA
-        XDRTestStepInterface step2 = executor.executeSendXDRStep(context)
+		// Create a new test record
+		XDRRecordInterface record = builder.addStep(step2).build()
+		record.setStatus(step2.status)
+		executor.db.addNewXdrRecord(record)
 
-        // Create a new test record
-        XDRRecordInterface record = builder.addStep(step2).build()
-        record.setStatus(step2.status)
-        executor.db.addNewXdrRecord(record)
+		// Build the message to return to the gui
+		log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
+		def content = executor.buildSendXDRContent(step2)
+		return new Result(Status.PENDING, content)
+	}
 
-        // Build the message to return to the gui
-        log.info(MsgLabel.XDR_SEND_AND_RECEIVE.msg)
-        def content = executor.buildSendXDRContent(step2)
-        return new Result(Status.PENDING, content)
-    }
-	
 	@Override
 	public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
