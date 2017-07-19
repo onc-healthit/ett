@@ -472,7 +472,11 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 					if (data.content.criteriaMet.toLowerCase() === 'pending') {
 						test.status = "pending";
 						if(data.content) {
-							test.endpoint = data.content.value.endpoint;
+							if (data.message ==="ran tc 7" || data.message ==="ran tc 17"){
+								test.endpoint = "https://"+data.content.value.endpoint;
+							}else{
+								test.endpoint = data.content.value.endpoint;
+							}
 							test.endpointTLS = data.content.value.endpointTLS;
 						}
 					} else if (data.content.criteriaMet.toLowerCase() === 'manual') {

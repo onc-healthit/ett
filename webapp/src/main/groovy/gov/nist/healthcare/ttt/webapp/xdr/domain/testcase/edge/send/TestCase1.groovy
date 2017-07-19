@@ -111,8 +111,21 @@ final class TestCase1 extends TestCaseSender {
 		// Extracting C-CDA from the request
 		if(updatedRecord.status.equals(Status.PASSED)) {
 			SOAPWithAttachment soap = Parsing.parseMtom(report.request);
-			String res = validateCCDA_R2(soap.getAttachment().iterator().next(), updatedRecord)
+			List list = new ArrayList(soap.getAttachment());
+			println("LIST SIZE"+list.size());
+			byte[] v;
+			for(byte[] b : list){
+				InputStream is = new ByteArrayInputStream(b);
+				String mimeType = URLConnection.guessContentTypeFromStream(is);
+				println("MIME TYPE"+mimeType);
+				if(mimeType.equals("application/xml")){
+					v = b;
+				}
+			}
+			
+			String res = validateCCDA_R2(v, updatedRecord)
 //			log.info("CCDA validation result: " + res);
+			
 			updatedRecord.setMDHTValidationReport(res);
 		}
         executor.db.updateXDRRecord(updatedRecord)
