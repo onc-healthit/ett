@@ -1,33 +1,41 @@
-<div class="row-fluid" id="footer">
-	<hr>
-	<div class="footeritem col-sm-3 col-md-3">
-		<p class="dateCreated">
-			<br>
+<div  class="row-fluid" id="footer">
+	<div>
+		<div class="row">
+		  <div class="footeritem col-sm-1 text-left" style="font-size:12px; height:25px;">
+		  	&nbsp;
+		  </div>
+		  <div class="footeritem col-sm-3 text-left" style="font-size:12px; height:25px;">
 			<strong>Version: </strong>{{properties.version}}
-			<strong>Last updated: </strong>{{properties.lastUpdated}}
-		</p>
-		<p class="links">
-			<a ui-sref="edge.releaseNotes" target="_blank" style="color: black">Release notes</a>&nbsp;&nbsp;
-			<a ui-sref="edge.announcement" target="_blank" style="color: black">Announcements</a>&nbsp;&nbsp;
-			<a ui-sref="edge.faq" target="_blank" style="color: black">FAQ</a>
-		</p>		
+			<strong>Released: </strong>{{properties.lastUpdated}}
+		  </div>
+		  <div class="footeritem col-sm-7 text-right" style="font-size:12px; height:25px;">
+			Inquiries or questions, email:  <a href="https://groups.google.com/d/forum/edge-test-tool" target="_blank">https://groups.google.com/d/forum/edge-test-tool</a>
+			or <a href="mailto:edge-testing-tool@googlegroups.com" target="_blank">edge-testing-tool@googlegroups.com</a>
+			</a>
+		  </div>
+		  <div class="footeritem col-sm-1 text-right" style="font-size:12px; height:25px;">
+		  	&nbsp;
+		  </div>
+		</div>
 	</div>
-	<div class="footeritem col-sm-6 col-md-6">
-		<p class="links">
-			<a href="http://www.hhs.gov/privacy.html" target="_blank"  style="color: black">Privacy Policy</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="https://www.healthit.gov/newsroom/web-site-disclaimers" target="_blank"  style="color: black">Disclaimers</a>
-			<br>
-		</p>
-		<p>For Technical Support: <a href="https://groups.google.com/d/forum/edge-test-tool" target="_blank"  style="color: black">https://groups.google.com/d/forum/edge-test-tool</a>
-			or <a href="mailto:edge-testing-tool@googlegroups.com" target="_blank"  style="color: black">edge-testing-tool@googlegroups.com</a>
-		</p>
-		<p>
-			Tested with Firefox 3.x and Chrome browsers.
-		</p>
-	</div>
-	<div class="footeritem col-sm-3 col-md-3">
-		<a href="http://www.healthit.gov" target="_blank">
-			<img class="footerImage" src="assets/img/onc_logo.png" alt="The ONC Logo" title="The ONC Logo">
-		</a>
+	<div>
+		<div class="row">
+		  <div class="footeritem col-sm-1 text-left" style="font-size:12px; height:25px;">
+		  	&nbsp;
+		  </div>
+		  <div class="footeritem col-sm-5 text-left" style="font-size:12px; height:25px;">
+				<a ui-sref="edge.announcement" target="_blank">Announcements</a>&nbsp;|&nbsp;
+				<a ui-sref="edge.releaseNotes" target="_blank">Release notes</a>&nbsp;|&nbsp;
+				<a ui-sref="edge.faq" target="_blank">FAQ</a>
+		  </div>
+
+		  <div class="footeritem col-sm-5 text-right" style="font-size:12px; height:25px;">
+			<a href="http://www.hhs.gov/Privacy.html" target="_blank">Privacy
+			Policy</a> | <a href="http://www.hhs.gov/Disclaimer.html" target="_blank">Disclaimers</a>
+		  </div>
+		  <div class="footeritem col-sm-1 text-right" style="font-size:12px; height:25px;">
+		 	 &nbsp;
+		  </div>
+		</div>
 	</div>
 </div>
