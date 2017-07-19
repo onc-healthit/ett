@@ -155,7 +155,7 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 					if (data.content.criteriaMet.toLowerCase() === 'pending') {
 						test.status = "pending";
 						if(data.content) {
-							if (data.message ==="ran tc 7"){
+							if (data.message ==="ran tc 7" || data.message ==="ran tc 17"){
 								test.endpoint = "https://"+data.content.value.endpoint;
 							}else{
 								test.endpoint = data.content.value.endpoint;

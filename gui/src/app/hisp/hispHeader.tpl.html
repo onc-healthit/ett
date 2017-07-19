@@ -1,27 +1,26 @@
 <div class="navbar">
-    <div class="brand" id="appheader">
-        <a style="display: inline-block; text-shadow:none" href ui-sref="home">
-            <div msg="" id="apptitle" key="title">Edge Testing Tool - HISP System</div>
-            <div msg="" key="subtitle" id="appsubtitle">ONC Certification</div>
-        </a>
-        <a href ui-sref="home" style="display: inline-block; text-shadow:none" class="pull-right">
-            <div msg="" key="subtitle" id="appsubtitle">
-                ETT Home <i class="fa fa-chevron-right"></i>
-            </div>
-        </a>
+    <div id="appheader">
+		<a href="https://www.healthit.gov/" title="HealthIT.gov" rel="external" class="site-logo">
+			<img src="assets/img/healthit.gov.logo.png" alt="HealthIT.gov">
+		</a>
     </div>
-    <div class="navbar-inner" ng-controller="HeaderCtrl">
+    <div class="navbar navbar-default" ng-controller="HeaderCtrl">
         <ul class="nav">
+            <li>
+                <a href ui-sref="home">
+                    <div msg="" key="navbar.ttthome">ETT Home</div>
+                </a>
+            </li>
             <li ui-sref-active="active">
                 <a ui-sref=".home">
-                    <div msg="" key="navbar.home">Home</div>
+                    <div msg="" key="navbar.home">HISP Home</div>
                 </a>
             </li>
             <li ng-class="{active: $state.includes('hisp.smtp')}">
                 <a ui-sref=".smtp.main">
                     <div msg="" key="navbar.smtp">SMTP Test Cases</div>
                 </a>
-            </li> 
+            </li>
             <li ng-class="{active: $state.includes('hisp.mu2')}">
                 <a ui-sref=".mu2.main">
                     <div msg="" key="navbar.mu2">Message Tracking</div>
