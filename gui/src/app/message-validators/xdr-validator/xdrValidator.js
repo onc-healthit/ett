@@ -143,7 +143,7 @@ ccdaValidator.controller('XDRValidatorCtrl', ['$scope', 'growl', 'XDRValidatorEn
             $scope.receive = {};
             $scope.statusMessage = "";
             $scope.receive.status = "na";
-            scope.receive.results = "";
+            $scope.receive.results = "";
         };
 
         $scope.resetSend = function () {
