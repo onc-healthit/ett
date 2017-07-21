@@ -1,3 +1,23 @@
+==Version 2.0#7/20/2017
+
+ *1. ETT has been updated with a new look and feel consistent with the rest of the ONC suite of applications.
+
+ *2. The timeout used in XDR MT 44 is now configurable for more effective testing.
+
+ *3. Direct Messages sent now have "Test Session Name" added to the Subject header
+
+ *4. (SMTP test 8, 14) and (SMTP Test 8, 14, 18) descriptions have been updated.
+
+ *5. HISP XDR Test 17 adds "https://" to the description.
+
+ *6. Failure MDN returned from ETT now has the disposition value 'failed' as per the IG
+
+ *7. Validation is performed only if C-CDA in XDR and XDM sender tests.
+
+ *8. XDR MT tests have improved documentation on endpoints used - particularly XDR MT Tests 43/44/50a/50b.
+
+
+
 ==Version 1.2.6.1#6/27/2017
 
  *1. XDR MT 43/44 issue resolved. ETT sends a failure MDN to the SUT HISP as per the test specification without time delay; for 44 however it maintains the delay and the description has been updated to document the delay.
