@@ -1110,7 +1110,7 @@ public class TTTSenderTests {
 			// Adding attachments
 
 			DataSource source =  new ByteArrayDataSource(IOUtils.toByteArray(getClass().getResourceAsStream(filename)),
-					"text/html");
+					"application/xml");
 			messageBodyPart.setDataHandler(new DataHandler(source));
 			messageBodyPart.setFileName("ToC_Ambulatory.xml");
 			multipart.addBodyPart(messageBodyPart);

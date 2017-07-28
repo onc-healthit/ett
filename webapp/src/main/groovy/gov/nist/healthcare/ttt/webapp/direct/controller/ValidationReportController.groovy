@@ -77,7 +77,8 @@ public class ValidationReportController {
 			String rawContent = partRes.getRawMessage();
 			InputStream contentStream;
 			
-			if(partRes.getContentType().contains("application/zip")) {
+			if(partRes.getContentType().contains("application/zip") ||
+			partRes.getContentType().contains("application/x-zip-compressed")) {
 				InputStream tmpZip = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
 				MimeBodyPart zipPart = new MimeBodyPart(tmpZip);
 				contentStream = zipPart.getInputStream();
