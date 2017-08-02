@@ -1,3 +1,21 @@
+==Version 2.0.0.1#8/1/2017
+
+ *1. Fixed Parsing errors in XDR Test 1 and 3.
+
+ *2. Fixed intermittent database exception error while executing XDR Test 1.
+
+ *3. Updated Mime Types for SMTP 26a and 26b
+
+ *4. Updated Attachment Processing for XDR Test 1 to handle HTML and XML attachments sent together.
+
+ *5. Fixed XDM Validation Report download capability.
+
+ *6. Updated Cronjobs to populate mailboxes used by SUTs.
+
+ *7. C-CDA Validator was updated with the following fixes:
+      -Updated Encounter Diagnosis content validation to conform to test data.
+      -Updated DS4P validation to incorporate IG constraints.
+
 ==Version 2.0#7/20/2017
 
  *1. ETT has been updated with a new look and feel consistent with the rest of the ONC suite of applications.
