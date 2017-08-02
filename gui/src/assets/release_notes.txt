@@ -12,7 +12,7 @@
 
  *6. Updated Cronjobs to populate mailboxes used by SUTs.
 
- *7. C-CDA Validator was updated with the following fixes:
+ *7. C-CDA Validator was updated to 1.0.20 with the following fixes:
       -Updated Encounter Diagnosis content validation to conform to test data.
       -Updated DS4P validation to incorporate IG constraints.
 
