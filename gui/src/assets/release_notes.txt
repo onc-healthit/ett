@@ -1,3 +1,20 @@
+==Version 2.0.1#8/17/2017
+
+ *1. Send Direct Message - help hover text for "Wrapped" selection enhanced.
+ 
+ *2. Register Direct narrative has been updated.
+ 
+ *3. Security settings in the server improved
+ 
+ *4. XDM Validation Report download fixed: now accepts application/octect-stream.
+ 
+ *5. The following C-CDA updates have been made as part of the release and will be visible from Friday (8/18/2017) evening.
+        - Removed non-CCDS data elements from (g)(9).
+        - Updated Immunization test data in PDF files to remove inactive codes.
+        - Updated Medication test data in PDF files to remove inactive codes. 
+        - Updated XML samples to remove non-UTF8 characters and inactive codes.
+
+
 ==Version 2.0.0.1#8/1/2017
 
  *1. Fixed Parsing errors in XDR Test 1 and 3.
