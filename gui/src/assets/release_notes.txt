@@ -1,3 +1,9 @@
+==Version 2.0.1.1#8/29/2017
+
+ *1. Issue with XDM Validation Report download fix for application/octect-stream corrected.
+ 
+ *2. Register Direct Title has been updated.
+
 ==Version 2.0.1#8/17/2017
 
  *1. Send Direct Message - help hover text for "Wrapped" selection enhanced.
