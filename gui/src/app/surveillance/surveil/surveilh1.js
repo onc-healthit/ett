@@ -1,27 +1,27 @@
-var certCerth1 = angular.module('ttt.certification.certh1', []);
+var surveilh1 = angular.module('ttt.surveillance.surveilh1', []);
 
-certCerth1.config(['$stateProvider',
+surveilh1.config(['$stateProvider',
 	function($stateProvider) {
-		$stateProvider.state('certification.certh1.main', {
+		$stateProvider.state('surveillance.surveilh1.main', {
 				url: '',
 				views: {
-					"certh1": {
+					"surveilh1": {
 						templateUrl: 'edge/smtp/smtpMain.tpl.html'
 					}
 				}
 			})
-			.state('certification.certh1.description', {
+			.state('surveillance.surveilh1.description', {
 				url: '/description/:id',
 				views: {
-					"certh1": {
+					"surveilh1": {
 						templateUrl: 'edge/smtp/description/testDescription.tpl.html'
 					}
 				}
 			})
-			.state('certification.certh1.logs', {
+			.state('surveillance.surveilh1.logs', {
 				url: '/logs',
 				views: {
-					"certh1": {
+					"surveilh1": {
 						templateUrl: 'edge/smtp/logs/testLog.tpl.html'
 					}
 				}
@@ -30,7 +30,7 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll','XDRCheckStatus',
+surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll','XDRCheckStatus',
 	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll,XDRCheckStatus) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
@@ -53,21 +53,6 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 		if ($scope.filterCrit == "h1"){
 			$scope.edgeProtocol = "certh1";
 			$scope.viewObj = "certh1";
-		}
-		if ($scope.filterCrit == "sb1"){
-			$scope.edgeProtocol = "surveilb1";
-			$scope.viewObj = "surveilb1";
-			$scope.testSystem = "surveillance";
-		}
-		if ($scope.filterCrit == "sh1"){
-			$scope.edgeProtocol = "surveilh1";
-			$scope.viewObj = "surveilh1";
-			$scope.testSystem = "surveillance";
-		}
-		if ($scope.filterCrit == "sh2"){
-			$scope.edgeProtocol = "surveilh2";
-			$scope.viewObj = "surveilh2";
-			$scope.testSystem = "surveillance";
 		}
 		if ($scope.filterCrit == "h2"){
 			$scope.edgeProtocol = "certh2";
@@ -172,23 +157,23 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 		});
 
            $scope.firstCriteriaSelection= [
-            {  name: "All", testList:['h2','sh2'],selectOption:'ALL'},
-            {  name: "Setup", testList:['h2','sh2'],selectOption:'A'},
-            {  name: "Send", testList:['h2','sh2'],selectOption:'B'},
-            {  name: "Send - Delivery Notification for Direct", testList:['h2','sh2'],selectOption:'9'},
-            {  name: "Send using Direct+XDM", testList:['h2','sh2'],selectOption:'2'},
-            {  name: "Send conversion XDR", testList:['h2','sh2'],selectOption:'3'},
-            {  name: "Send using Edge Protocol",testList:['h2','sh2'],selectOption:'4'},
-            {  name: "Receive", testList:['h2','sh2'],selectOption:'5'},
-            {  name: "Receive - Delivery Notification in Direct",testList:['h2','sh2'],selectOption:'10'},
-            {  name: "Receive using Direct+XDM",testList:['h2','sh2'],selectOption:'6'},
-            {  name: "Receive conversion XDR",testList:['h2','sh2'],selectOption:'7'},
-            {  name: "Receive using Edge Protocol",testList:['h2','sh2'],selectOption:'8'}
+            {  name: "All", testList:['h2'],selectOption:'ALL'},
+            {  name: "Setup", testList:['h2'],selectOption:'A'},
+            {  name: "Send", testList:['h2'],selectOption:'B'},
+            {  name: "Send - Delivery Notification for Direct", testList:['h2'],selectOption:'9'},
+            {  name: "Send using Direct+XDM", testList:['h2'],selectOption:'2'},
+            {  name: "Send conversion XDR", testList:['h2'],selectOption:'3'},
+            {  name: "Send using Edge Protocol",testList:['h2'],selectOption:'4'},
+            {  name: "Receive", testList:['h2'],selectOption:'5'},
+            {  name: "Receive - Delivery Notification in Direct",testList:['h2'],selectOption:'10'},
+            {  name: "Receive using Direct+XDM",testList:['h2'],selectOption:'6'},
+            {  name: "Receive conversion XDR",testList:['h2'],selectOption:'7'},
+            {  name: "Receive using Edge Protocol",testList:['h2'],selectOption:'8'}
             ];
 
            $scope.secondCriteriaSelection= [
-            {  name: "Direct", testList:['h2','sh2'],selectOption:'ALL'},
-            {  name: "Edge", testList:['h2','sh2'],selectOption:'1'}
+            {  name: "Direct", testList:['h2'],selectOption:'ALL'},
+            {  name: "Edge", testList:['h2'],selectOption:'1'}
             ];
             });
 
@@ -487,11 +472,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 					if (data.content.criteriaMet.toLowerCase() === 'pending') {
 						test.status = "pending";
 						if(data.content) {
-							if (data.message ==="ran tc 7" || data.message ==="ran tc 17"){
-								test.endpoint = "https://"+data.content.value.endpoint;
-							}else{
-								test.endpoint = data.content.value.endpoint;
-							}
+							test.endpoint = data.content.value.endpoint;
 							test.endpointTLS = data.content.value.endpointTLS;
 						}
 					} else if (data.content.criteriaMet.toLowerCase() === 'manual') {
