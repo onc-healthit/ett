@@ -3,6 +3,11 @@
  *1. Issue with XDM Validation Report download fix for application/octect-stream corrected.
  
  *2. Register Direct Title has been updated.
+ 
+ *3. Updated C-CDA Validator with the following fixes
+ 	- Fixed DS4P validation to align with DS4P IG and Consent Directive IG as they are dependent.
+	- Resolved errors in test data samples provided by ONC.
+	- Fixed CCDS Content Validation issues for Udis.
 
 ==Version 2.0.1#8/17/2017
 
