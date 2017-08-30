@@ -9,6 +9,7 @@
 	- Resolved errors in test data samples provided by ONC.
 	- Fixed CCDS Content Validation issues for Udis.
 	- Updated Code Validator to handle the new VSAC format.
+	- Updated the test data to contain the previous version also.
 
 ==Version 2.0.1#8/17/2017
 
