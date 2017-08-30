@@ -8,6 +8,7 @@
  	- Fixed DS4P validation to align with DS4P IG and Consent Directive IG as they are dependent.
 	- Resolved errors in test data samples provided by ONC.
 	- Fixed CCDS Content Validation issues for Udis.
+	- Updated Code Validator to handle the new VSAC format.
 
 ==Version 2.0.1#8/17/2017
 
