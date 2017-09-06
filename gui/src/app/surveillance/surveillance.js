@@ -29,7 +29,7 @@ surveilMod.config(['$stateProvider',
                 views: {
                     "surveillance": {
                         controller: 'EdgeHomeCtrl',
-                        templateUrl: 'edge/edge-home/edge-home.tpl.html'
+                        templateUrl: 'surveillance/surveil-home.tpl.html'
                     }
                 }
             })
