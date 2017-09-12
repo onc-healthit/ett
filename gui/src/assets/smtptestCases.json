@@ -899,7 +899,7 @@
 		"desc": "Verifies the ability of the SUT to host attachments and make it available for fetching through IMAP. The CCDA is validated using the MDHT validator.",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-5','sh2-5']",
+		"criteria": "['h2-5']",
 		"sutEdge": false,
 		"ccdaFileRequired": true,
 		"fields": [{
@@ -1007,7 +1007,7 @@
 		"desc": "Verifies the ability of the SUT to host attachments and make it available for fetching through POP. The CCDA is validated using the MDHT validator.",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-6','sh2-6']",
+		"criteria": "['h2-6']",
 		"sutEdge": false,
 		"fields": [{
 			"label": "C-CDA Document Type",

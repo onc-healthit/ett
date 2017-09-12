@@ -469,20 +469,6 @@
       "selectOption":"['B','4']"
    },
    {
-      "name":"Criteria (i)(C) Send using Edge Protocol - IMAP",
-      "xdrTest":false,
-      "testList":"['sh2']",
-      "criteria":"'sh2-5'",
-      "selectOption":"['B','4']"
-   },
-   {
-      "name":"Criteria (i)(C) Send using Edge Protocol - POP",
-      "xdrTest":false,
-      "testList":"['sh2']",
-      "criteria":"'sh2-6'",
-      "selectOption":"['B','4']"
-   },
-   {
       "name":"Criteria (i)(C) Receive using Edge Protocol - XDR",
       "xdrTest":true,
       "testList":"['sh2']",
