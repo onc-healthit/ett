@@ -1,12 +1,13 @@
 ==Version 2.0.1.2#9/15/2017
 
  	*The release updates the Direct Certificates related to the domains 
-		• ttpedge.sitenv.org 
-		• ttpds2.sitenv.org
-	The certificates are being updated to remove the invalid CRL URI in the certificates. These certificates will be published via 		DNS and will propagate shortly after the release is done.
+		- ttpedge.sitenv.org 
+		- ttpds2.sitenv.org
+		
+	*The certificates are being updated to remove the invalid CRL URI in the certificates. These certificates will be published via 		- DNS and will propagate shortly after the release is done.
 
-	Note: The trust anchors or intermediate anchors are not being updated, so vendors do not need to change any trust anchors. 
-          	 The Direct transactions should pick up the new CERTS that get published via DNS after the release.
+	 *Note: The trust anchors or intermediate anchors are not being updated, so vendors do not need to change any trust anchors. 
+          	- The Direct transactions should pick up the new CERTS that get published via DNS after the release.
 
 ==Version 2.0.1.1#8/28/2017
 
