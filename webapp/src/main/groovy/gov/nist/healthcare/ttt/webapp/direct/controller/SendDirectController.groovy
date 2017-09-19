@@ -72,10 +72,16 @@ public class SendDirectController {
 			}
 			InputStream signingCert = listener.getSigningPrivateCert(messageInfo.getSigningCert().toLowerCase());
 			
+			String fname = messageInfo.getAttachmentFile();
+			
+			if (fname != null && fname.endsWith("_ett")) {
+				fname = fname.substring(0, fname.lastIndexOf("-ett_"));
+			}
+
 			DirectMessageGenerator messageGenerator = new DirectMessageGenerator(
 					messageInfo.getTextMessage(), messageInfo.getSubject(),
 					messageInfo.getFromAddress(), messageInfo.getToAddress(),
-					attachmentFile, messageInfo.getAttachmentFile(),
+					attachmentFile, fname,
 					signingCert, messageInfo.getSigningCertPassword(),
 					null, messageInfo.isWrapped(), digestAlgo);
 			

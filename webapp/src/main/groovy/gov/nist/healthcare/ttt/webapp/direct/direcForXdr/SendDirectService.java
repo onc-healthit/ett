@@ -64,10 +64,16 @@ public class SendDirectService {
 				messageInfo.setSigningCert("good");
 			}
 			InputStream signingCert = listener.getSigningPrivateCert(messageInfo.getSigningCert().toLowerCase());
-
+			
+			String fname = messageInfo.getAttachmentFile();
+			
+			if (fname != null && fname.endsWith("_ett")) {
+				fname = fname.substring(0, fname.lastIndexOf("-ett_"));
+			}
+	
 			DirectMessageGenerator messageGenerator = new DirectMessageGenerator(messageInfo.getTextMessage(),
 					messageInfo.getSubject(), messageInfo.getFromAddress(), messageInfo.getToAddress(), attachmentFile,
-					messageInfo.getAttachmentFile(), signingCert, messageInfo.getSigningCertPassword(), null,
+					fname, signingCert, messageInfo.getSigningCertPassword(), null,
 					messageInfo.isWrapped(), "SHA1withRSA");
 
 			// Get encryption cert
