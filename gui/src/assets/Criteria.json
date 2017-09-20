@@ -2,7 +2,7 @@
    {
       "name":"Please select",
       "xdrTest":false,
-      "testList":"['h1','h2','b1']",
+      "testList":"['h1','h2','b1','sb1','sh1','sh2']",
       "criteria":"''",
       "selectOption":"['A','B','2','3','4','5','6','7','8','9','10']"
    },
@@ -262,5 +262,252 @@
          "xdrTest":false,
          "testList":"['b1']",
          "criteria":"'b1-7'"
+   },
+   
+
+
+
+   {
+      "name":"Criteria (i)(A) Send using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['sb1']",
+      "criteria":"'sb1-1'"
+   },
+   {
+         "name":"Criteria (i)(A) Send using Edge Protocol - SMTP",
+         "xdrTest":false,
+         "testList":"['sb1']",
+         "criteria":"'sb1-2'"
+   },
+   {
+      "name":"Criteria (i)(B) Receive using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['sb1']",
+      "criteria":"'sb1-3'"
+   },
+   {
+         "name":"Criteria (i)(B) Receive using Edge Protocol - SMTP",
+         "xdrTest":false,
+         "testList":"['sb1']",
+         "criteria":"'sb1-4'"
+   },
+   {
+      "name":"Criteria (i)(B) Receive using Edge Protocol - IMAP",
+      "xdrTest":false,
+      "testList":"['sb1']",
+      "criteria":"'sb1-5'"
+   },
+   {
+         "name":"Criteria (i)(B) Receive using Edge Protocol - POP3",
+         "xdrTest":false,
+         "testList":"['sb1']",
+         "criteria":"'sb1-6'"
+   },
+   {
+         "name":"Criteria (i)(C) XDM Processing(Received via Edge Protocol)",
+         "xdrTest":false,
+         "testList":"['sb1']",
+         "criteria":"'sb1-7'"
+   },
+   {
+      "name":"Criteria (i) Direct Home - Certificates",
+      "testList":"['sh1']",
+      "redirect":{
+         "hrefvalue":"direct.home",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"surveillance.surveilh1.main"
+      }
+   },
+   {
+      "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
+      "testList":"['sh1']",
+      "redirect":{
+         "hrefvalue":"direct.dcdt2",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"surveillance.surveilh1.main"      
+      }
+   },
+   {
+      "name":"Criteria (i) Register Direct",
+      "testList":"['sh1']",
+      "redirect":{
+         "hrefvalue":"direct.register",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"surveillance.surveilh1.main"
+      }
+   },
+   {
+      "name":"Criteria (i) Send Direct Message",
+      "testList":"['sh1']",
+      "redirect":{
+         "hrefvalue":"direct.send",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"surveillance.surveilh1.main"
+      }
+   },
+   {
+      "name":"Criteria (i) Receive - Message Status",
+      "testList":"['sh1']",
+      "redirect":{
+         "hrefvalue":"direct.status",
+         "hreflabel":"170.315(h)(1)",
+         "hrefback":"surveillance.surveilh1.main"
+      }
+   },
+   {
+      "name":"Criteria (ii) Delivery Notifications",
+      "xdrTest":false,
+      "testList":"['sh1']",
+      "criteria":"'sh1-1'",
+      "uploadOption":true
+   },
+   {
+      "name":"Criteria (i) Certificate Discovery / Hosting - 2015 DCDT",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"direct.dcdt2",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      },
+      "selectOption":"['A','B','2','9','5','6','10']"
+   },
+   {
+      "name":"Criteria (i) Register Direct",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"direct.register",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      },
+      "selectOption":"['A','B','2','9']"
+   },
+   {
+      "name":"Criteria (i) Direct Home - Certificates",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"direct.home",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      },
+      "selectOption":"['A','B','6','5']"
+   },
+   {
+      "name":"Criteria (i) Send Direct Message",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"direct.send",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      },
+      "selectOption":"['A','B','5','6']"
+   },
+   {
+      "name":"Criteria (i) Message Status",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"direct.status",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      },
+      "selectOption":"['A','B','5','6']"
+   },
+   {
+      "name":"Criteria (i) C-CDA R2.1 Validator",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"direct.ccdar2",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      },
+      "selectOption":"['B']"
+   },
+   {
+      "name":"Criteria (i) XDR Validator",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"validators.xdr",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      }
+   },
+   {
+      "name":"Criteria (i) XDM Validator",
+      "testList":"['sh2']",
+      "redirect":{
+         "hrefvalue":"validators.xdm",
+         "hreflabel":"170.315(h)(2)",
+         "hrefback":"surveillance.surveilh2.main"
+      },
+      "selectOption":"['2','6','4','B','5']"
+   },
+   {
+      "name":"Criteria (i)(B) Send conversion XDR",
+      "xdrTest":true,
+      "testList":"['sh2']",
+      "criteria":"'sh2-1'",
+      "selectOption":"['3','B']"
+   },
+   {
+      "name":"Criteria (i)(B)  Receive conversion XDR",
+      "xdrTest":true,
+      "testList":"['sh2']",
+      "criteria":"'sh2-2'",
+      "selectOption":"['5','7']"
+   },
+   {
+      "name":"Criteria (i)(C) Send using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['sh2']",
+      "criteria":"'sh2-3'",
+      "selectOption":"['B','3','4']"
+   },
+   {
+      "name":"Criteria (i)(C) Send using Edge Protocol - SMTP",
+      "xdrTest":false,
+      "testList":"['sh2']",
+      "criteria":"'sh2-4'",
+      "selectOption":"['B','4']"
+   },
+   {
+      "name":"Criteria (i)(C) Receive using Edge Protocol - XDR",
+      "xdrTest":true,
+      "testList":"['sh2']",
+      "criteria":"'sh2-7'",
+      "selectOption":"['5','8']"
+   },
+   {
+      "name":"Criteria (i)(C) Receive using Edge Protocol - SMTP",
+      "xdrTest":false,
+      "testList":"['sh2']",
+      "criteria":"'sh2-8'",
+      "selectOption":"['5','8']"
+   },
+   {
+      "name":"Criteria (ii) Delivery Notification in Direct - SMTP",
+      "xdrTest":false,
+      "testList":"['sh2']",
+      "criteria":"'sh2-9'",
+      "selectOption":"['9','B']"
+   },
+   {
+      "name":"Criteria (ii) Receive SMTP: Disposition-Notification",
+      "xdrTest":false,
+      "testList":"['sh2']",
+      "criteria":"'sh2-10'",
+      "selectOption":"['5','10']"
+   },
+   {
+      "name":"Criteria (ii)(C) Delivery Notification in Direct - XDR",
+      "xdrTest":true,
+      "testList":"['sh2']",
+      "criteria":"'sh2-11'",
+      "selectOption":"['9','B']"
+   },
+   {
+      "name":"Criteria (ii)(C) Receive XDR: Disposition-Notification",
+      "xdrTest":true,
+      "testList":"['sh2']",
+      "criteria":"'sh2-12'",
+      "selectOption":"['5','10']"
    }
 ]

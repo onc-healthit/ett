@@ -46,7 +46,7 @@
 	    "longDesc": "Run this series collectively from one action: Test 9 and 16 verifies the ability of the receiving system to accept a STARTTLS connection with PLAIN SASL authentication. Hitting 'Run' will cause ETT to send an email (Test 20). Verify the receipt of email with subject 'STARTTLS & PLAIN SASL AUTHENTICATION'. If TLS Required is unchecked in the profile--STARTTLS validation will be ignored. ",
 		"sutRole": "receiver",
 		"sutHisp": true,
-    "criteria":"['h2-8','b1-4','b1-7']",
+    "criteria":"['h2-8','b1-4','b1-7','sb1-4','sb1-7','sh2-8']",
 		"sutEdge": true,
 		"ccdaFileRequired": true,
 		"fields": [{
@@ -95,7 +95,7 @@
 			"readOnly": false,
 			"display": true
 		}]
-	}, {
+	},{
 		"name": "SMTP MT Test 17 - Generate Unique Message-ID (Processed MDN suite)",
 		"id": 117,
 		"protocol": "mu2",
@@ -121,7 +121,7 @@
 		"longDesc": "The credentials for authentication is vendoraccount@ttpds.sitenv.org / vendortesting123  ",
 		"sutRole": "sender",
 		"sutHisp": false,
-		"criteria":"['b1-2']",
+		"criteria":"['b1-2','sb1-2']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 47 - Accept failure message for invalid recipient (IG for Delivery Notification Suite - IMAP/POP Receiver)",
@@ -149,7 +149,7 @@
 		"desc": " Verifies the ability of SUT to receive text and CCDA attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(b) (Receive PDF and CCDA)",
@@ -158,7 +158,7 @@
 		"desc": " Verifies the ability of SUT to receive PDF and CCDA attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(c) (Receive Text and XDM)",
@@ -167,7 +167,7 @@
 		"desc": " Verifies the ability of SUT to receive text and XDM attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(d) (Receive CCDA and Text)",
@@ -176,7 +176,7 @@
 		"desc": " Verifies the ability of SUT to receive CCDA and text attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(e) (Receive CCDA and Pdf)",
@@ -185,7 +185,7 @@
 		"desc": " Verifies the ability of SUT to receive CCDA and PDF attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 25(f) (Receive XDM and Text)",
@@ -194,7 +194,7 @@
 		"desc": " Verifies the ability of SUT to receive XDM and text attachments",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 26(a) (Receive bad CCDA)",
@@ -230,7 +230,7 @@
 		"desc": " Verifies the ability of SUT to receive an XDM package with MIME-type 'application/octet-stream' at the SMTP layer",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP Test 29 (Receive XDM with MIME type 'application/xml')",
@@ -239,7 +239,7 @@
 		"desc": " Verifies the ability of Vendor to receive an XDM package with MIME-type 'application/xml' at the XDM layer (in METADATA.XML)",
 		"sutRole": "receiver",
 		"sutHisp": true,
-		"criteria":"['b1-4']",
+		"criteria":"['b1-4','sb1-4']",
 		"sutEdge": true
 	}, {
 		"name": "SMTP MT Test 1 (Message to Non-Existent Address)",
@@ -249,7 +249,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP MT Test 2 (Receiving HISP Not Trusted)",
@@ -259,7 +259,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP MT Test 3 (Recipient's Certificate Not Published)",
@@ -269,7 +269,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP MT Test 4 (No Processed MDN)",
@@ -279,7 +279,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/IMAP MT Test 5 (Message to Bad Address)",
@@ -289,7 +289,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/IMAP MT Test 6 (Receiving HISP Not Trusted)",
@@ -299,7 +299,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/IMAP MT Test 7 (Recipient's Certificate Not Published)",
@@ -309,7 +309,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/IMAP MT Test 8 (No Processed MDN)",
@@ -319,7 +319,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/POP MT Test 9 (Message to Bad Address)",
@@ -329,7 +329,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/POP MT Test 10 (Receiving HISP Not Trusted)",
@@ -339,7 +339,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/POP MT Test 11 (Recipient's Certificate Not Published)",
@@ -349,7 +349,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/POP MT Test 12 (No Processed MDN)",
@@ -359,7 +359,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-4']",
+		"criteria": "['h2-4','sh2-4']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP MT Test 21(a) (Message with Good Header)",
@@ -606,7 +606,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-9']",
+		"criteria": "['h2-9','sh2-9']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/IMAP MT Test 29(b) (Positive Notification)",
@@ -616,7 +616,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-9']",
+		"criteria": "['h2-9','sh2-9']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP/POP MT Test 29(c) (Positive Notification)",
@@ -626,7 +626,7 @@
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
-		"criteria": "['h2-9']",
+		"criteria": "['h2-9','sh2-9']",
 		"sutEdge": false
 	}, {
 		"name": "SMTP MT Test 39 (Message with Good Header)",
@@ -635,7 +635,7 @@
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
-		"criteria": "['h1-1','h2-10']",
+		"criteria": "['h1-1','h2-10','sh1-1','sh2-10']",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
@@ -653,7 +653,7 @@
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
-		"criteria": "['h1-1','h2-10']",
+		"criteria": "['h1-1','h2-10','sh1-1','sh2-10']",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
@@ -671,7 +671,7 @@
 		"protocol": "mu2",
 		"longDesc": "If you are acting as a Receiving HISP and need to load your trust anchor and certificates to properly to receive MDNs, please request this service on the mailing list.  ",
 		"sutRole": "receiver",
-		"criteria": "['h1-1']",
+		"criteria": "['h1-1','sh1-1','sh2-10']",
 		"sutHisp": true,
 		"sutEdge": false,
 		"fields": [{
@@ -870,7 +870,7 @@
 		"longDesc": "The user is to establish or configure an email account on the SUT in order to retrieve messages using the credentials. The credentials for authentication is b1-ambulatory@ttpds.sitenv.org, b1-inpatient@ttpds.sitenv.org, b2-ambulatory@ttpds.sitenv.org, b2-inpatient@ttpds.sitenv.org, b5-ambulatory@ttpds.sitenv.org, b5-inpatient@ttpds.sitenv.org, b9-ambulatory@ttpds.sitenv.org, b9-inpatient@ttpds.sitenv.org, negativetestingccds@ttpds.sitenv.org, negativetestingcareplan@ttpds.sitenv.org. The password is smtptesting123 for all accounts. ",
 		"sutRole": "receiver",
 		"sutHisp": false,
-		"criteria":"['b1-5']",
+		"criteria":"['b1-5','sb1-5']",
 		"sutEdge": true,
 		"fields": [{
 			"label": "Attachment type",
@@ -978,7 +978,7 @@
 		"longDesc": "The user is to establish or configure an email account on the SUT in order to retrieve messages using the credentials. The credentials for authentication is b1-ambulatory@ttpds.sitenv.org, b1-inpatient@ttpds.sitenv.org, b2-ambulatory@ttpds.sitenv.org, b2-inpatient@ttpds.sitenv.org, b5-ambulatory@ttpds.sitenv.org, b5-inpatient@ttpds.sitenv.org, b9-ambulatory@ttpds.sitenv.org, b9-inpatient@ttpds.sitenv.org, negativetestingccds@ttpds.sitenv.org, negativetestingcareplan@ttpds.sitenv.org. The password is smtptesting123 for all accounts. ",
 		"sutRole": "receiver",
 		"sutHisp": false,
-		"criteria":"['b1-6']",
+		"criteria":"['b1-6','sb1-6']",
 		"sutEdge": true,
 		"fields": [{
 			"label": "Attachment type",
