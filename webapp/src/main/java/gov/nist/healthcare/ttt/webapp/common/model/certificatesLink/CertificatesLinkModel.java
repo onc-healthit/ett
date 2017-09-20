@@ -1,26 +1,29 @@
 package gov.nist.healthcare.ttt.webapp.common.model.certificatesLink;
 
 public class CertificatesLinkModel {
-	
+
 	private String name;
 	private String icon;
 	private String description;
 	private String link;
-	
-	public CertificatesLinkModel(String name, String icon, String description, String link) {
+	private String hoverText;
+
+	public CertificatesLinkModel(String name, String icon, String description, String link,String hoverText) {
 		super();
 		this.name = name;
 		this.icon = icon;
 		this.description = description;
 		this.link = link;
+		this.hoverText = hoverText;
 	}
-	
+
 	public CertificatesLinkModel() {
 		super();
 		this.name = "";
 		this.icon = "";
 		this.description = "";
 		this.link = "";
+		this.hoverText = "";
 	}
 
 	public String getName() {
@@ -54,5 +57,12 @@ public class CertificatesLinkModel {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	
+
+	public String getHoverText() {
+		return hoverText;
+	}
+
+	public void setHoverText(String hoverText) {
+		this.hoverText = hoverText;
+	}
 }

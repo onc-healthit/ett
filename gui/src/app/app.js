@@ -8,6 +8,7 @@ var ttt = angular.module('ttt', [
     'ttt.edge',
     'ttt.hisp',
     'ttt.certification',
+    'ttt.surveillance',
     'ttt.documents',
     'ttt.validators',
     'ttt.admin',
