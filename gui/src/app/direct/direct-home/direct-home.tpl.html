@@ -8,18 +8,15 @@
 <h2><i class="fa fa-lock"></i> Certificates</h2>
 
 <div class="row">
-    <div class="col-md-3" ng-repeat="certificate in certificatesLink" ng-if="!certNotConfigured">
-        <a type="button" class="btn btn-default" style="white-space: normal; height:125px; " href="{{certificate.link}}" target="_blank" title="{{certificate.name}}">
+    <div class="col-md-2" ng-repeat="certificate in certificatesLink" ng-if="!certNotConfigured">
+        <a type="button" class="btn btn-default" style="white-space: normal; height:125px;" href="{{certificate.link}}" target="_blank" tooltips tooltip-title="{{certificate.hoverText}}">
             <div class="vert-align">
                 <p>
                     <i class="fa fa-{{certificate.icon}} fa-4x"></i>
                 </p>
                 <strong>{{certificate.description}}</strong>
             </div>
-        </a>
-    <label class="control-label" for="sutRole">
-        <i class="fa fa-question-circle fa-2x" tooltips tooltip-title="{{certificate.hoverText}}" tooltip-side="right"></i>
-    </label>
+       </a>
     </div>
     <div class="col-md-12 alert alert-danger" ng-if="certNotConfigured">
         <i class="fa fa-exclamation-triangle"></i>
