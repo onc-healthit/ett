@@ -35,6 +35,7 @@
                 <rim:Classification
                     classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d"
                     classifiedObject="Document01"
+                    nodeRepresentation=""
                     objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"
                     id="id_1">
                     <rim:Slot name="authorPerson">
