@@ -1,3 +1,14 @@
+==Version 2.1#9/21/2017
+
+	*1. "Surveillance Testing" aspect added to ETT - accessible from the ETT home page.
+	
+	*2. DCDT Trust Anchor download option fixed.
+	
+	*3. Added help (hover) descriptions to the Direct Certificates
+	
+	*4. Send Direct Message issue - adding hash value to the file extension - has been fixed. 
+	
+
 ==Version 2.0.1.2#9/15/2017
 
  	*The release updates the Direct Certificates related to the domains 
