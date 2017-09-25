@@ -933,9 +933,9 @@ public class ListenerProcessor implements Runnable {
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DIFF_CASES_822)
 				break
 
-			case 'dsn':
+			/*case 'dsn':
 				EncryptedSmtpMDNMessageGenerator.sendSmtpMDN(message, originalMsgId, from, to, 'processed', '', getSigningPrivateCert(), this.certPassword, MDNType.DSN)
-				break
+				break*/
 
 			default:
 				logger.info("Could not intepret the address $smtpFrom")
