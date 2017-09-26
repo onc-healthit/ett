@@ -1,3 +1,18 @@
+==Version 2.1.0.1#9/25/2017
+
+* Direct:
+	- The endpoint dsn@ttpedge.sitenv.org which was unused as part of ETT tool and 2014 and 2015 Test procedures was removed as it was causing exchanging unnecessary messages with HISPs who sent messages to the endpoint in a continuous loop causing a lot of unnecessary network traffic.
+
+* C-CDA Validator: The C-CDA Validator was updated to 1.0.23 with the following fixes.
+	- Updated the 170.315(b)(2) - CIRI Validation for R1.1 files which was missing. Prior to the release, the R1.1 file reconciliation output submitted to the validator was not being validated for content. This was updated to ensure content matching was performed with the R1.1 reconciliation file outputs. So if the reconciliation of R1.1 files does not produce the output following the instructions provided for the criteria, there will be errors displayed by the validator.
+	- Existing Smoking status validation bug was fixed which was previously preventing an error being displayed when smoking status entry was nullFlavored or missing. The fixing of the bug displays an error if smoking status does not include the proper test data provided. 
+	- DS4P Validation was updated such that PurposeOfUseSecurityObservation/value and all other values and codes of templates which inherit from SecurityObservation now override their parent requirements. This allows for both templates to exist, but only the child's requirement to be enforced. This resolves the possible conflict of differing terminology requirements between a parent and child template. As a result, PurposeOfUseSecurityObservation value/@codesystem now requires ActReason 2.16.840.1.113883.5.8 as opposed to the prior requirement of ObservationValue 2.16.840.1.113883.5.1063, due to an error in the HL7 example XML.
+
+* Test Data Updates:
+	- The R11 Receiver files (XML files) for 170.315(b)(1) and (b)(5) were updated to correct the telephone numbers to be consistent between the narrative display content and the coded information.
+	- The Negative Testing Files for CCDS (Both R2.1 and R1.1) were updated to remove “Bad/Fictitious” template Ids , since vendors were interpreting these templates as open templates and hence not flagging the errors. The omission of these templates and corresponding entries with the right template Ids will make the test data less confusing, so that vendors can directly identify which templates are missing and erroneous based on the C-CDA IG.
+	- The DS4P Sample 1 files were updated based on the DS4P issues resolved in the validator above.
+
 ==Version 2.1#9/21/2017
 
 	*1. "Surveillance Testing" aspect added to ETT - accessible from the ETT home page.
