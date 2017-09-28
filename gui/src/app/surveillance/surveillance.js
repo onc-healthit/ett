@@ -43,7 +43,7 @@ surveilMod.config(['$stateProvider',
                     }
                 },
                 data: {
-                    filterCrit: 'sb1',
+                    filterCrit: 'su1',
                     pageTitle:' 170.315(b)(1)'
                 }
             })
@@ -57,7 +57,7 @@ surveilMod.config(['$stateProvider',
                     }
                 },
                 data: {
-                    filterCrit: 'sh1',
+                    filterCrit: 'sa1',
                     pageTitle:' 170.315(h)(1)'
                 }
             })
@@ -71,7 +71,7 @@ surveilMod.config(['$stateProvider',
                     }
                 },
                 data: {
-                    filterCrit: 'sh2',
+                    filterCrit: 'sc2',
                     pageTitle:' 170.315(h)(2)'
                 }
             })
