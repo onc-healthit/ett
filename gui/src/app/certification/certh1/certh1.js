@@ -461,6 +461,24 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			});
 		};
 
+		$scope.openCcdaValidationReport = function(key, report) {
+			var modalInstance = $uibModal.open({
+				templateUrl: 'CCDAModalContent.html',
+				controller: 'CCDAModalReportCtrl',
+				size: 'lg',
+				backdrop: true,
+				windowClass: 'ccda-modal',
+				resolve: {
+					report: function() {
+						return report;
+					},
+					key: function() {
+						return key;
+					}
+				}
+			});
+		};
+
 		$scope.validateXdr = function(test, validation) {
 			test.status = validation;
 		};

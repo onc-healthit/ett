@@ -502,12 +502,5 @@
       "testList":"['sc2']",
       "criteria":"'sc2-11'",
       "selectOption":"['9','B']"
-   },
-   {
-      "name":"Criteria (ii)(C) Receive XDR: Disposition-Notification",
-      "xdrTest":true,
-      "testList":"['sc2']",
-      "criteria":"'sc2-12'",
-      "selectOption":"['5','10']"
    }
 ]

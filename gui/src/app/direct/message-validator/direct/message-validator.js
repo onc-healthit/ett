@@ -42,6 +42,10 @@ directValidator.controller('DirectValidatorCtrl', ['$scope', 'MessageValidatorFa
             $scope.validator.certFilePath = "";
         };
 
+		$scope.copyCcdaEmail = function(ccda, domain) {
+			return ccda + "@" + domain;
+		};
+
         $scope.validate = function() {
             $scope.laddaLoading = true;
             MessageValidatorFactory.save($scope.validator, function(data) {
