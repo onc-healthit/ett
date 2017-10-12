@@ -12,21 +12,26 @@ capabilities of your system send a message to:<a href="mailto:{{'testing@' + pro
 <h3> Certificates for Download</h3>
 
 <div ng-repeat="certificate in certificatesLink" ng-if="!certNotConfigured">
-	<div class="row">
-        <div class="col-md-2">
+
+
+<div class="middle">
+<div class="row">
+	<div class="col-md-2">
         <a type="button" class="btn btn-default" style="white-space: normal; height:90px; width:130px;" href="{{certificate.link}}" target="_blank" tooltips tooltip-title="{{certificate.hoverText}}">
-            <div class="vert-align">
                 <p>
                     <i class="fa fa-{{certificate.icon}} fa-2x"></i>
                 </p>
-                <strong>{{certificate.description}}</strong>
-            </div>
+                <strong >{{certificate.description}}</strong>
        </a>
-       </div>
-       <div class="col-md-10">
-       		<strong>{{certificate.hoverText}}</strong>
-	   </div>
     </div>
+    <div class="col-md-10">
+       		<p  class="cert_text"><strong >{{certificate.hoverText}}</strong></p>
+    </div>
+</div>
+</div>
+
+
+</div>
 
     <div class="col-md-12 alert alert-danger" ng-if="certNotConfigured">
         <i class="fa fa-exclamation-triangle"></i>
@@ -34,5 +39,4 @@ capabilities of your system send a message to:<a href="mailto:{{'testing@' + pro
         <br>You need to update the file direct_certificates_links.json located in ETT root directory.
         <br>If you do not want to provide links you can just write - for the link of each certificate.
     </div>
-</div>
 
