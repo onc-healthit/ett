@@ -83,7 +83,7 @@ public class TestResult implements ITestResult {
 		this.criteriamet = criteriamet;
 	}
 
-	public enum CriteriaStatus {TRUE, FALSE, MANUAL, STEP2}
+	public enum CriteriaStatus {TRUE, FALSE, MANUAL, STEP2, RETRY}
 	CriteriaStatus criteriamet;
 	boolean didRequestTimeOut = false;
 	long timeElapsedInSeconds = 0L;
