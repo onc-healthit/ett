@@ -389,6 +389,8 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 						test.status = 'manual';
 					} else if (res.criteriaMet === 'STEP2') {
 						test.status = 'fetching';
+					} else if (res.criteriaMet === 'RETRY') {
+						test.status = 'retry';
 					}
 				});
 				$scope.logTestData(test);
