@@ -30,8 +30,8 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll','XDRCheckStatus',
-	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll,XDRCheckStatus) {
+certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$uibModal','$location','$anchorScroll','XDRCheckStatus',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$uibModal,$location,$anchorScroll,XDRCheckStatus) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
