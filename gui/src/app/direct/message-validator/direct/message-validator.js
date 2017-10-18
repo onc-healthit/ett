@@ -1,7 +1,7 @@
 var directValidator = angular.module('ttt.direct.validator', []);
 
-directValidator.controller('DirectValidatorCtrl', ['$scope', 'MessageValidatorFactory', '$state', 'ApiUrl',
-    function($scope, MessageValidatorFactory, $state, ApiUrl) {
+directValidator.controller('DirectValidatorCtrl', ['$scope', 'MessageValidatorFactory', 'PropertiesFactory','growl','CCDADocumentsFactory','$state', 'ApiUrl',
+    function($scope, MessageValidatorFactory, PropertiesFactory, growl, CCDADocumentsFactory, $state, ApiUrl) {
 
         $scope.fileInfo = {
             "flowChunkNumber": "",
@@ -21,6 +21,28 @@ directValidator.controller('DirectValidatorCtrl', ['$scope', 'MessageValidatorFa
             "certFilePath": "",
             "certPassword": ""
         };
+
+		$scope.sutRole = "sender";
+		$scope.ccdaData = {};
+
+		CCDADocumentsFactory.get(function(data) {
+			$scope.ccdaDocuments = data;
+			if (data !== null) {
+				$scope.sutRole = Object.keys(data)[0];
+				$scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+			}
+		}, function(error) {
+			console.log(error);
+		});
+
+		$scope.switchDocType = function(type) {
+			$scope.sutRole = type;
+			$scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+		};
+
+		$scope.displayGrowl = function(text) {
+			growl.success(text);
+		};
 
         $scope.successMessage = function(message) {
             $scope.fileInfo = angular.fromJson(message);
