@@ -94,4 +94,92 @@
 
     <button type="submit" class="btn btn-lg btn-primary center-block" ng-click="validate()" ladda="laddaLoading">Validate</button>
 
+
+
+
+
+<h3><i class="fa fa-hand-o-right"></i>2015 Edition Content Validation</h3>
+<div class="form-group">
+    <label class="control-label" for="sutRole">Message format&nbsp;
+        <i class="fa fa-question-circle" tooltips tooltip-title="The role of the System under Test" tooltip-side="right"></i>
+    </label>
+    <div class="input-group">
+        <div class="btn-group">
+            <a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType}}</a>
+            <!-- <a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="sutRole='sender'">Sender</a>
+                            <a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="sutRole='receiver'">Receiver</a> -->
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-2">
+            <div ng-dropover ng-dropover-options="{'triggerEvent':'click', 'verticalOffset': 10}">
+                <button class="btn btn-default">Select document...</button>
+                <div ng-dropover-contents class="arrowed">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." ng-model="ccdaDocSearch" style="margin-bottom: 10px;">
+                        </div>
+                    </form>
+                    <finder-tree data="ccdaData" ng-model="ccdaDocument" search-filter="ccdaDocSearch"></finder-tree>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <span style="font-style: italic">Validation Objective: </span><strong style="margin-left: 20px;" ng-if="ccdaDocument.path">{{ccdaDocument.path[ccdaDocument.path.length - 1]}}</strong>
+            <br>
+            <span style="font-style: italic">Reference Filename: </span><strong style="margin-left: 20px;">{{ccdaDocument.name}}</strong>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped" ng-if="ccdaDocument">
+    <thead>
+        <tr>
+            <th>Direct (To) address</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <span ng-if="ccdaDocument.name">{{"r2_" + ccdaDocument.name + "@" + properties.domainName}}</span>
+                <span ng-if="ccdaDocument.path && !ccdaDocument.name">{{"r2_" + ccdaDocument.path[ccdaDocument.path.length - 1] + "@" + properties.domainName}}</span>
+            </td>
+            <td align="right">
+                <button class="btn btn-default" clipboard text="copyCcdaEmail('r2_'+ccdaDocument.name, properties.domainName)" on-copied="displayGrowl('Data copied')" title="Copy to clipboard">
+                    <i class="fa fa-clipboard"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+<h3><i class="fa fa-hand-o-right"></i>2014 Edition Content Validation</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Direct (To) address</th>
+            <th>Purpose</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="ccdaSetting in settings.ccda">
+            <td>
+                <a ng-href="mailto:{{ccdaSetting.email + '@' + properties.domainName}}">{{ccdaSetting.email + "@" + properties.domainName}}</a>
+            </td>
+            <td>{{ccdaSetting.description}}</td>
+            <td>
+                <button class="btn btn-default" clipboard text="copyCcdaEmail(ccdaSetting.email, properties.domainName)" on-copied="displayGrowl('Data copied')" title="Copy to clipboard">
+                    <i class="fa fa-clipboard"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 </div>

@@ -282,6 +282,8 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 						test.status = 'manual';
 					} else if (res.criteriaMet === 'STEP2') {
 						test.status = 'fetching';
+					} else if (res.criteriaMet === 'RETRY') {
+						test.status = 'retry';
 					}
 				});
 
