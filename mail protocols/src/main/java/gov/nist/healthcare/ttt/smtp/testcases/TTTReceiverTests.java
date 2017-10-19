@@ -574,7 +574,7 @@ public class TTTReceiverTests {
 			}
 
 			if (result.size() == 0) {
-				tr.setCriteriamet(CriteriaStatus.FALSE);
+				tr.setCriteriamet(CriteriaStatus.RETRY);
 				result.put(
 						"\nERROR",
 						"No messages found! Send a message and try again.\nPlease make sure that the vendor email address is entered correctly and matches the email address from which the email is being sent.");

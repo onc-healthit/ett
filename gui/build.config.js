@@ -91,6 +91,8 @@ module.exports = {
 	  'vendor/ngDropover/dist/ngdropover.js',
 	  'vendor/angular-clipboard/angular-clipboard.js',
 	  'vendor/markdown-js/lib/markdown.js',
+	  'vendor/angulartics/dist/angulartics.min.js',
+	  'vendor/angulartics-google-analytics/dist/angulartics-ga.min.js',
     ],
     css: [
 	  'vendor/bootstrap/dist/css/bootstrap-theme.css',
