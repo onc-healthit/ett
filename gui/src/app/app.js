@@ -48,8 +48,17 @@ var ttt = angular.module('ttt', [
     '720kb.tooltips',
     'finderTree',
     'ngDropover',
-    'angular-clipboard'
+    'angular-clipboard',
+    'angulartics', 'angulartics.google.analytics'
 ]);
+
+ttt.config(['$analyticsProvider',
+    function($analyticsProvider) {
+        $analyticsProvider.firstPageview(true);
+        $analyticsProvider.withAutoBase(true);
+    }
+]);
+
 
 ttt.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {

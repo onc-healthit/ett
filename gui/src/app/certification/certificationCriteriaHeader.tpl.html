@@ -7,11 +7,11 @@
     <div class="navbar navbar-default" ng-controller="HeaderCtrl">
         <ul class="nav">
             <li>
-                <a href ui-sref="home">
+                <a href ui-sref="home" analytics-on="click" analytics-event="Criteria ETT Home" analytics-category="Criteria ETT Home">
                     <div msg="" key="navbar.ttthome">ETT Home</div>
                 </a>
             </li>
-            <li ui-sref-active="active">
+            <li ui-sref-active="active" analytics-on="click" analytics-event="Criteria Home" analytics-category="Criteria Home">
                 <a ui-sref=".home">Criteria Home</a>
             </li>
             <li ng-class="{active: $state.includes('certification.certb1')}">
@@ -24,17 +24,17 @@
                 <a ui-sref=".certh2.main" ui-sref-opts="{inherit: false}">&#167; 170.315(h)(2)</a>
             </li>
            <li ui-sref-active="active" class="pull-right">
-                <a ui-sref=".help">
+                <a ui-sref=".help" analytics-on="click" analytics-event="Criteria Help" analytics-category="Criteria Help">
                     <div msg="" key="navbar.help"><i class="fa fa-question-circle"></i> Help</div>
                 </a>
             </li>
             <li ui-sref-active="active" class="pull-right">
-                <a ui-sref=".documents">
+                <a ui-sref=".documents" analytics-on="click" analytics-event="Criteria Documents" analytics-category="Criteria Documents">
                     <div msg="" key="navbar.documents"><i class="fa fa-book"></i> Documents</div>
                 </a>
             </li>
             <li class="pull-right" ng-show="!userInfo.logged">
-                <a href="">
+                <a href="" analytics-on="click" analytics-event="Criteria Login" analytics-category="Criteria Login">
                     <div key="navbar.login" ng-click="loginPopup()">Login/Sign up</div>
                 </a>
             </li>

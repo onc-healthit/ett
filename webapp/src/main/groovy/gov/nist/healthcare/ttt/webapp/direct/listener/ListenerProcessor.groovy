@@ -196,7 +196,10 @@ public class ListenerProcessor implements Runnable {
 				// }
 				// }
 				// }
-			}
+			}/* else if (directTo[0].startsWith("r2_")) {
+				logger.warn("r2 validation endpoints not supported from 2.1.1")
+				return
+			}*/
 
 			// ccdaType tells us the document type to validate against
 

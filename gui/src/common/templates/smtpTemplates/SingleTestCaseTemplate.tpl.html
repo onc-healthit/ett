@@ -25,15 +25,25 @@
 		</span>
 		</time>
 
-		<time class="fail" ng-click="startTest(test, fieldInput)" ng-switch-when="fail">
+		<time class="fail" ng-click="startTest(test, fieldInput)" ng-switch-when="retry">
 			<span class="fail">
 			<i class="fa fa-times"></i>
 		</span>
 			<span class="retry">
 			Retry
 		</span>
-
 		</time>
+
+
+		<time class="fail" ng-click="startTest(test, fieldInput)" ng-switch-when="fail">
+			<span class="fail">
+			<i class="fa fa-times"></i>
+		</span>
+			<span class="eerror">
+			Error
+		</span>
+		</time>
+
 		<div class="cancel" ng-click="resetTest(test)" ng-if="test.status !== 'na'">
 			<div class="pending">
 				<i class="fa fa-trash"></i>
