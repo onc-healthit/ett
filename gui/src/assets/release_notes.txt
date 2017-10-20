@@ -1,3 +1,28 @@
+==Version 2.1.1#10/19/2017
+
+    *1. Adding Direct address to Direct Home page - To verify basic Direct send capabilities of your system send a message to:testing@ttpedge.sitenv.org.
+    
+     *2. Updated Direct Home Page with more enhancements.
+     
+     *3. Removed orphan listing in the Surveillance (h)(2) dropdown array
+     
+     *4. Corrected SMTP MT Test 46 to display the correct test status - distinctly showing "Failed" instead of the generic "Retry" in case of messages without the header.
+     
+     *5. Updated the files in the inboxes for POP & IMAP Test 31 with the current versions.
+     
+     *6. Changed Text in XDR MT Test 13, 14, 16
+     
+     *7. Fixed SMTP Receive Tests 29 and 29 contain two METADATA.XML files
+     
+     *8. Fixed - CCDA Validation Report link doesn't work for (h)(2) SMTP Send 8, 14 and (b)(1) SMTP Send 8, 14, 18
+     
+     *9. Fix the ttpds2 DNS MX entry to return the host name instead of IP
+     
+     *10. Updated SMTP MIME headers to add Date field
+     
+     *11. nodeRepresentation attribute missing for author in XDR tests 3/5 - fixed and verified.
+     
+     *12. Collecting usage analytics for various user functions.
 
 ==Version 2.1.0.2#9/27/2017
 
