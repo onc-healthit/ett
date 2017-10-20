@@ -18,11 +18,9 @@
      
      *9. Fix the ttpds2 DNS MX entry to return the host name instead of IP
      
-     *10. Updated SMTP MIME headers to add Date field
+     *10. nodeRepresentation attribute missing for author in XDR tests 3/5 - fixed and verified.
      
-     *11. nodeRepresentation attribute missing for author in XDR tests 3/5 - fixed and verified.
-     
-     *12. Collecting usage analytics for various user functions.
+     *11. Collecting usage analytics for various user functions.
 
 ==Version 2.1.0.2#9/27/2017
 
