@@ -16,7 +16,7 @@
      
      *8. Fixed - CCDA Validation Report link doesn't work for (h)(2) SMTP Send 8, 14 and (b)(1) SMTP Send 8, 14, 18
      
-     *9. Fix the ttpds2 DNS MX entry to return the host name instead of IP
+     *9. Fixed the ttpds2 DNS MX entry to return the host name instead of IP
      
      *10. nodeRepresentation attribute missing for author in XDR tests 3/5 - fixed and verified.
      
