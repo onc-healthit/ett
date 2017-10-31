@@ -1,7 +1,7 @@
 ==Version 2.1.1.1#10/30/2017
 
     *1. The C-CDA validator has been updated to Release 1.0.24 which can be accessed here: 
-    https://github.com/siteadmin/reference-ccda-validator/releases
+    - https://github.com/siteadmin/reference-ccda-validator/releases
     
     *2. As part of the release, the latest Value Sets from VSAC have been downloaded and configured.
     
