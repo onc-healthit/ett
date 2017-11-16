@@ -1,28 +1,5 @@
-<h2><i class="fa fa-paper-plane-o"></i> Email addresses for fixed MDN</h2>
+<h2><i class="fa fa-paper-plane-o"></i> Health Information Service Provider Home</h2>
+<br>
 
-<p>
-    A response MDN will be sent from ETT to your SUT upon reception of a SMTP message to those email addresses.
+<p>This area provides tests where ETT simulates the role of the Health Information Service Provider (HISP).  For those principally interested in testing for the 2015 Edition--please visit the "2015 Edition Testing by Criteria" to see what HISP tests are applicable for the respective criteria.
 </p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Email address (To)</th>
-            <th>Purpose</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="mdn in mdnAddresses">
-            <td>
-                <a ng-href="mailto:{{mdn.name}}">{{mdn.name}}</a>
-            </td>
-            <td>{{mdn.purpose}}</td>
-            <td>
-                <button class="btn btn-default" clipboard text="mdn.name" on-copied="displayGrowl('Data copied')" title="Copy to clipboard">
-                    <i class="fa fa-clipboard"></i>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>

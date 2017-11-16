@@ -28,7 +28,7 @@ certMod.config(['$stateProvider',
                 views: {
                     "certification": {
                         controller: 'EdgeHomeCtrl',
-                        templateUrl: 'edge/edge-home/edge-home.tpl.html'
+                        templateUrl: 'certification/certification-home/certification-home.tpl.html'
                     }
                 }
             })
