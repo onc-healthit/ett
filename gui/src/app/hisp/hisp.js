@@ -32,7 +32,7 @@ hisp.config(['$stateProvider',
                 views: {
                     "hisp": {
                         controller: 'EdgeHomeCtrl',
-                        templateUrl: 'edge/edge-home/edge-home.tpl.html'
+                        templateUrl: 'hisp/hisp-home/hisp-home.tpl.html'
                     }
                 }
             })
