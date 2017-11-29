@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -63,6 +64,31 @@ public class LdapDnslookUp {
 		return res;
 	}
 
+	private String getBaseDnSearchBase(DirContext ctx) throws NamingException {
+        Attributes attrs = ctx.getAttributes("", new String[]{"namingContexts"});
+        //System.out.println(" attrs1 = " + attrs.toString());
+        
+        Attribute baseAttr = attrs.get("namingContexts");
+        
+        String searchBase = "";
+       
+        if (baseAttr != null) {
+	        NamingEnumeration<?>  ids = baseAttr.getAll();
+	        while(ids.hasMoreElements()){
+	            Object obj = ids.next();
+	            //System.out.println(obj.toString());
+	            
+	            searchBase +=  (", " + obj.toString());
+	        }
+	        
+	        if (searchBase.startsWith(", ")) {
+	        	searchBase = searchBase.substring(2);
+	        }
+        }
+        
+        return searchBase;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public InputStream getCert(String domain, String email) {
 		InputStream cert = null;
@@ -71,21 +97,50 @@ public class LdapDnslookUp {
 
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.PROVIDER_URL, "ldap://"+ domain);
+        //env.put(Context.REFERRAL, "follow");
+        String searchBase = "";
         DirContext ctx = null;
         NamingEnumeration results = null;
         try {
             ctx = new InitialDirContext(env);
             SearchControls controls = new SearchControls();
             controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-            results = ctx.search("", "(mail=" + email + ")", controls);
+        	String filterString = "(|(mail=" + email + ")(mail=" + getTargetDomain(email) +"))";
+            try {
+            	results = ctx.search(searchBase, filterString, controls);
+            } catch (NamingException e) {
+            	searchBase = getBaseDnSearchBase(ctx);
+            	logger.info("Empty Base Dn search failed with " + e.getMessage() + ". Trying with searchbase - " + searchBase);
+            	results = ctx.search(searchBase, filterString, controls);
+            	logger.info("search results with entries  = " + results != null ? results.toString() : 0);
+            	System.out.println("search results with entries  = " + results != null ? results.toString() : 0);
+            }
+            
             while (results.hasMore()) {
                 SearchResult searchResult = (SearchResult) results.next();
                 Attributes attributes = searchResult.getAttributes();
-//                Attribute attr = attributes.get("cn");
-//                String cn = (String) attr.get();
-//                System.out.println(" Person Common Name = " + cn);
+                Attribute attr = attributes.get("cn");
+                String cn = (String) attr.get();
+                //System.out.println(" Person Common Name = " + cn);
 
-                Attribute certAttribute = attributes.get("userCertificate");
+                Attribute certAttribute = null;
+                for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
+                    Attribute attributesL = (Attribute) ae.next();
+                    System.out.println("attribute: " + attributesL.getID());
+                    if (attributesL.getID().startsWith("userCertificate")) {
+                    	certAttribute = attributes.get(attributesL.getID());
+                    	break;
+                    }
+                    /* print each value 
+                    for (NamingEnumeration e = certAttribute.getAll(); e.hasMore(); System.out
+                        .println("value: " + e.next()))*/
+                      ;
+                  }
+                
+                certAttribute = attributes.get("userCertificate");
+                if (certAttribute == null) {
+                	certAttribute = attributes.get("userCertificate;binary");
+                }
 
                 try {
                     cert = new ByteArrayInputStream((byte[]) certAttribute.get());
@@ -124,4 +179,5 @@ public class LdapDnslookUp {
 		}
 		return targetDomain;
 	}
+
 }
