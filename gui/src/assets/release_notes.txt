@@ -1,3 +1,13 @@
+==Version 2.1.2.1#11/30/2017
+    *1. Updated Direct LDAP Certificate Discovery to account for userCertificate:binary attribute which is used to store direct certificates in certain systems. Prior to this fix the certificate associated with a Direct address stored in the attribute "userCertificate:binary" was not being discovered successfully where as certificate stored in "userCertificate" was being discoverd.
+    
+    *2. Updated the C-CDA Validator to 1.0.25 version which can be accessed at
+    - https://github.com/siteadmin/reference-ccda-validator/releases
+    
+    *3. The C-CDA validator was updated to allow for Translation element within the raceCode attribute to be used to represent granular race code. 
+    
+    *4. The C-CDA Validator was also update to fix the vocabulary defect which prevented validation in certain cases with the error message "The service has encountered the following error: result returns more than one."
+
 ==Version 2.1.2#11/16/2017
     *1. Updated Test Descriptions for XDR MT Test 50a and 50b to move the email addresses to the “More Info” screen.
     
