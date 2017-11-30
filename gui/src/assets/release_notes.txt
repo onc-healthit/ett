@@ -7,6 +7,8 @@
     *3. The C-CDA validator was updated to allow for Translation element within the raceCode attribute to be used to represent granular race code. 
     
     *4. The C-CDA Validator was also update to fix the vocabulary defect which prevented validation in certain cases with the error message "The service has encountered the following error: result returns more than one."
+    
+    *5. Updated the 170.315(b)(2) CIRI Sample XML files with the right Diagnosis code of 282291009 instead of the incorrect code (29308) which is currently present.
 
 ==Version 2.1.2#11/16/2017
     *1. Updated Test Descriptions for XDR MT Test 50a and 50b to move the email addresses to the “More Info” screen.
