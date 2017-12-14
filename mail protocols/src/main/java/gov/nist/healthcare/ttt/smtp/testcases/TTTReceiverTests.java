@@ -86,7 +86,7 @@ public class TTTReceiverTests {
 			props.put("mail.imap.starttls.enable", true);
 			props.put("mail.imap.starttls.required", true);
 			props.put("mail.imap.sasl.enable", true);
-			props.put("mail.imap.sasl.mechanisms", "PLAIN");
+			props.put("mail.imap.sasl.mechanisms", "PLAIN LOGIN");
 			props.put("mail.imap.ssl.trust", "*");
 		}
 		
@@ -636,7 +636,7 @@ public class TTTReceiverTests {
 				props1.put("mail.smtp.auth", "true");
 				props1.put("mail.smtp.starttls.enable","true");
 				props1.put("mail.smtp.starttls.required", "true");
-				props1.put("mail.smtp.auth.mechanisms", "PLAIN");
+				props1.put("mail.smtp.auth.mechanisms", "PLAIN LOGIN");
 				props1.setProperty("mail.smtp.ssl.trust", "*");
 
 				Session session1 = Session.getInstance(props1, null);
