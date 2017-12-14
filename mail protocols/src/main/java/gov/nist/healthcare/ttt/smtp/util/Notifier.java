@@ -27,7 +27,7 @@ public class Notifier
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
     props.put("mail.smtp.starttls.required", "true");
-    props.put("mail.smtp.auth.mechanisms", "PLAIN");
+    props.put("mail.smtp.auth.mechanisms", "PLAIN LOGIN");
     props.setProperty("mail.smtp.ssl.trust", "*");
     
     Session session = Session.getInstance(props, null);

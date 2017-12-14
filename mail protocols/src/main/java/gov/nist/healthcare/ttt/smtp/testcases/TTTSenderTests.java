@@ -41,7 +41,7 @@ public class TTTSenderTests {
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable","true");
 			props.put("mail.smtp.starttls.required", "true");
-			props.put("mail.smtp.auth.mechanisms", "PLAIN");
+			props.put("mail.smtp.auth.mechanisms", "PLAIN LOGIN");
 			props.setProperty("mail.smtp.ssl.trust", "*");
 		}
 		
@@ -980,7 +980,7 @@ public class TTTSenderTests {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", ti.useTLS ? "true" : "false");
-		props.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props.put("mail.smtp.auth.mechanisms", "PLAIN LOGIN");
 		props.put("mail.smtp.ssl.trust", "*");
 
 		Session session = Session.getInstance(props, null);

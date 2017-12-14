@@ -35,7 +35,7 @@ public class LoadEmptyInboxccda {
 		props1.put("mail.smtp.auth", "true");
 		props1.put("mail.smtp.starttls.enable","true");
 		props1.put("mail.smtp.starttls.required", "true");
-		props1.put("mail.smtp.auth.mechanisms", "PLAIN");
+		props1.put("mail.smtp.auth.mechanisms", "PLAIN LOGIN");
 		props1.setProperty("mail.smtp.ssl.trust", "*");
 		Session session1 = Session.getInstance(props1, null);
 		Message message = new MimeMessage(session1);
