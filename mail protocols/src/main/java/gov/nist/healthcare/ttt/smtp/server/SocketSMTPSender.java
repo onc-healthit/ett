@@ -231,8 +231,9 @@ public class SocketSMTPSender extends AbstractSMTPSender {
 	public void AUTHPLAIN(String user, String password) throws Exception {
 		String userpass = new String(Base64.encodeBase64(("\0" + user + "\0" + password).getBytes()));
 		ReqRes r = sndAUTHPLAIN(userpass);
-		if (!r.response.contains("235 "))
-			throw new Exception("Authentication failed with : " + r.response);
-
+		if (!r.response.contains("235 ")) {
+			log.info("AUTH PLAIN generated " + r.response + ";Trying AUTH LOGIN...");
+			AUTHLOGIN(user, password);
+		}
 	}
 }
