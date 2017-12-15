@@ -1,3 +1,7 @@
+==Version 2.1.2.2#12/14/2017
+    *1. Enabled AUTH LOGIN support for the SMTP send/receive tests (in addition to the earlier supported AUTH PLAIN for Plain SASL authentication mechanism).
+
+
 ==Version 2.1.2.1#11/30/2017
     *1. Updated Direct LDAP Certificate Discovery to account for userCertificate:binary attribute which is used to store direct certificates in certain systems. Prior to this fix the certificate associated with a Direct address stored in the attribute "userCertificate:binary" was not being discovered successfully where as certificate stored in "userCertificate" was being discoverd.
     
