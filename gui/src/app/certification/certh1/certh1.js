@@ -44,6 +44,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 		$scope.criterFilterObj = [];
 		$scope.criteriaSelection  = null;
 		$scope.isXdrTest = false;
+		$scope.protocol = "SMTP";
 		$scope.testSystem = "certification";
 		$scope.viewObj = "certh1";
 		$scope.edgeProtocol = "certh1";
@@ -215,7 +216,11 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
                  $scope.uploadOption = selectedItem.uploadOption;
                  $scope.isXdrTest = selectedItem.xdrTest;
                  $scope.redirectLink = selectedItem.redirect;
+                 $scope.protocol = selectedItem.protocol;
                  $scope.openInNewWindow = "";
+                 if ($scope.protocol == "MT"){
+                     $scope.protocol = "";
+                 }              
                  if ($scope.isXdrTest){
                      $scope.testchange = $filter('filter')($scope.xdrTests, {criteria: selectedItem.criteria});
                  }else{

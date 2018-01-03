@@ -54,6 +54,7 @@
    {
       "name":"Criteria (ii) Delivery Notifications",
       "xdrTest":false,
+      "protocol": "MT",
       "testList":"['h1']",
       "criteria":"'h1-1'",
       "uploadOption":true
@@ -161,13 +162,23 @@
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - SMTP",
       "xdrTest":false,
+      "protocol": "SMTP",
       "testList":"['h2']",
-      "criteria":"'h2-4'",
+      "criteria":"'h2-13'",
       "selectOption":"['B','4']"
    },
    {
+         "name":"Criteria (i)(C) Send using Edge Protocol - Delivery Notification",
+         "xdrTest":false,
+         "protocol": "MT",
+  	 "testList":"['h2']",
+	 "criteria":"'h2-4'",
+	 "selectOption":"['B','4']"
+   },   
+   {
       "name":"Criteria (i)(C) Send using Edge Protocol - IMAP",
       "xdrTest":false,
+      "protocol": "IMAP",
       "testList":"['h2']",
       "criteria":"'h2-5'",
       "selectOption":"['B','4']"
@@ -175,6 +186,7 @@
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - POP",
       "xdrTest":false,
+      "protocol": "POP",
       "testList":"['h2']",
       "criteria":"'h2-6'",
       "selectOption":"['B','4']"
@@ -189,6 +201,7 @@
    {
       "name":"Criteria (i)(C) Receive using Edge Protocol - SMTP",
       "xdrTest":false,
+      "protocol": "SMTP",
       "testList":"['h2']",
       "criteria":"'h2-8'",
       "selectOption":"['5','8']"
@@ -196,6 +209,7 @@
    {
       "name":"Criteria (ii) Delivery Notification in Direct - SMTP",
       "xdrTest":false,
+      "protocol": "MT",
       "testList":"['h2']",
       "criteria":"'h2-9'",
       "selectOption":"['9','B']"
@@ -203,6 +217,8 @@
    {
       "name":"Criteria (ii) Receive SMTP: Disposition-Notification",
       "xdrTest":false,
+      "uploadOption":true,
+      "protocol": "MT",
       "testList":"['h2']",
       "criteria":"'h2-10'",
       "selectOption":"['5','10']"
@@ -230,9 +246,17 @@
    {
          "name":"Criteria (i)(A) Send using Edge Protocol - SMTP",
          "xdrTest":false,
+         "protocol": "SMTP",
+         "testList":"['b1']",
+         "criteria":"'b1-8'"
+   },
+   {
+         "name":"Criteria (i)(A) Send using Edge Protocol - Delivery Notification",
+         "xdrTest":false,
+         "protocol": "MT",
          "testList":"['b1']",
          "criteria":"'b1-2'"
-   },
+   },   
    {
       "name":"Criteria (i)(B) Receive using Edge Protocol - XDR",
       "xdrTest":true,
@@ -242,24 +266,28 @@
    {
          "name":"Criteria (i)(B) Receive using Edge Protocol - SMTP",
          "xdrTest":false,
+         "protocol": "SMTP",
          "testList":"['b1']",
          "criteria":"'b1-4'"
    },
    {
       "name":"Criteria (i)(B) Receive using Edge Protocol - IMAP",
       "xdrTest":false,
+      "protocol": "IMAP",
       "testList":"['b1']",
       "criteria":"'b1-5'"
    },
    {
          "name":"Criteria (i)(B) Receive using Edge Protocol - POP3",
          "xdrTest":false,
+         "protocol": "POP",
          "testList":"['b1']",
          "criteria":"'b1-6'"
    },
    {
          "name":"Criteria (i)(C) XDM Processing(Received via Edge Protocol)",
          "xdrTest":false,
+         "protocol": "SMTP",
          "testList":"['b1']",
          "criteria":"'b1-7'"
    },
@@ -274,11 +302,12 @@
       "criteria":"'su1-1'"
    },
    {
-         "name":"Criteria (i)(A) Send using Edge Protocol - SMTP",
+         "name":"Criteria (i)(A) Send using Edge Protocol - Delivery Notification",
          "xdrTest":false,
+         "protocol": "MT",
          "testList":"['su1']",
          "criteria":"'su1-2'"
-   },
+   },  
    {
       "name":"Criteria (i)(B) Receive using Edge Protocol - XDR",
       "xdrTest":true,
@@ -288,24 +317,28 @@
    {
          "name":"Criteria (i)(B) Receive using Edge Protocol - SMTP",
          "xdrTest":false,
+         "protocol": "SMTP",
          "testList":"['su1']",
          "criteria":"'su1-4'"
    },
    {
       "name":"Criteria (i)(B) Receive using Edge Protocol - IMAP",
       "xdrTest":false,
+      "protocol": "IMAP",
       "testList":"['su1']",
       "criteria":"'su1-5'"
    },
    {
          "name":"Criteria (i)(B) Receive using Edge Protocol - POP3",
          "xdrTest":false,
+         "protocol": "POP",
          "testList":"['su1']",
          "criteria":"'su1-6'"
    },
    {
          "name":"Criteria (i)(C) XDM Processing(Received via Edge Protocol)",
          "xdrTest":false,
+         "protocol": "SMTP",
          "testList":"['su1']",
          "criteria":"'su1-7'"
    },
@@ -357,6 +390,7 @@
    {
       "name":"Criteria (ii) Delivery Notifications",
       "xdrTest":false,
+      "protocol": "MT",
       "testList":"['sa1']",
       "criteria":"'sa1-1'",
       "uploadOption":true
@@ -464,6 +498,7 @@
    {
       "name":"Criteria (i)(C) Send using Edge Protocol - SMTP",
       "xdrTest":false,
+      "protocol": "MT",
       "testList":"['sc2']",
       "criteria":"'sc2-4'",
       "selectOption":"['B','4']"
@@ -478,6 +513,7 @@
    {
       "name":"Criteria (i)(C) Receive using Edge Protocol - SMTP",
       "xdrTest":false,
+      "protocol": "SMTP",
       "testList":"['sc2']",
       "criteria":"'sc2-8'",
       "selectOption":"['5','8']"
@@ -485,6 +521,7 @@
    {
       "name":"Criteria (ii) Delivery Notification in Direct - SMTP",
       "xdrTest":false,
+      "protocol": "MT",
       "testList":"['sc2']",
       "criteria":"'sc2-9'",
       "selectOption":"['9','B']"
@@ -492,6 +529,8 @@
    {
       "name":"Criteria (ii) Receive SMTP: Disposition-Notification",
       "xdrTest":false,
+      "uploadOption":true,
+      "protocol": "MT",
       "testList":"['sc2']",
       "criteria":"'sc2-10'",
       "selectOption":"['5','10']"

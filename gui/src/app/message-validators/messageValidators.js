@@ -2,7 +2,8 @@ var validators = angular.module('ttt.validators', [
     // Modules
     'ttt.direct.ccdar2Validator',
     'ttt.direct.ccdaValidator',
-    'ttt.direct.xdmValidator'
+    'ttt.direct.xdmValidator',
+    'ttt.validator.home'
 ]);
 
 validators.config(['$stateProvider',
@@ -24,11 +25,20 @@ validators.config(['$stateProvider',
                 }
             })
             .state('validators.ccdar2', {
-                url: '',
+                url: '/ccdar2',
                 views: {
                     "validators": {
                         controller: 'CCDAR2ValidatorCtrl',
                         templateUrl: 'direct/message-validator/ccda-r2/ccda-r2.tpl.html'
+                    }
+                }
+            })
+            .state('validators.home', {
+                url: '',
+                views: {
+                    "validators": {
+                        controller: 'EdgeHomeCtrl',
+                        templateUrl: 'message-validators/validator-home/validator-home.tpl.html'
                     }
                 }
             })
