@@ -101,7 +101,12 @@
 			<h2 style="font-size: 18px;"> DCDT Information</h2>
 			<div class="row">
 				<div class="col-sm-12 btn-group-vertical" style="width:100%">
-				<p class="btn btn-default" ><a href="http://{{emailDomain}}.sitenv.org/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
+				<div ng-if="year2015">
+					<p class="btn btn-default" ><a href="http://{{propDcdtDomain2015}}/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
+				</div>
+				<div ng-if="year2014">
+					<p class="btn btn-default" ><a href="http://{{propDcdtDomain2014}}/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
+				</div>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
 				<p class="btn btn-default" ><a href="https://groups.google.com/forum/#!forum/directtesttool" target="_blank" style="color: black">DCDT Forum</a>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
@@ -139,7 +144,13 @@
 		<div class="panel-body">
 			<div class="directions">Directions</div>
 			<p>Step 1: Download the Testing Tool's trust anchor.</p>
-			<p style="margin-left: 15px;"> <a href="http://{{emailDomain}}.sitenv.org/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
+			<div ng-if="year2015">
+				<p style="margin-left: 15px;"> <a href="http://{{propDcdtDomain2015}}/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
+			</div>
+			<div ng-if="year2014">
+				<p style="margin-left: 15px;"> <a href="http://{{propDcdtDomain2014}}/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
+			</div>
+
 			<p>Step 2: Upload the anchor to your Direct instance. This will allow you to send messages to our tool.</p>
 			<p>Step 3: Using the form below, map the Direct email address from which you will be sending messages to a
 			non-Direct email address that will receive a regular email containing test results. This email address should be
