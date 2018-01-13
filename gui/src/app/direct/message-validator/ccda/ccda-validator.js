@@ -60,9 +60,14 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 		}];
 
 		$scope.changed = function(item) {
+			console.log(angular.toJson(item, true));
 			$scope.type = item;
 		};
 
+		$scope.resetselection = function() {
+			$scope.type = "";
+			$scope.selectedItem.selected= "";
+		};
 		$scope.apiUrl = ApiUrl.get();
 
 		$scope.validator = {
@@ -85,10 +90,11 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 
 
 		$scope.validate = function() {
-			if ($scope.selectedItem.length > 0) {
+			console.log(angular.toJson($scope.type, true));
+			if ($scope.type) {
 				$scope.laddaLoading = true;
-				$scope.validator.ccdaType = $scope.selectedItem[0].code;
-                $scope.validator.validationObjective = $scope.selectedItem[0].code;
+				$scope.validator.ccdaType = $scope.type.code;
+                $scope.validator.validationObjective = $scope.type.code;
                 $scope.validator.referenceFileName = $scope.fileInfo.flowFilename;
 				CCDAR2ValidatorFactory.save($scope.validator, function(data) {
 					$scope.laddaLoading = false;
