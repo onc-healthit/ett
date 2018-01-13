@@ -36,6 +36,11 @@ public class PropertiesController {
 	@Value("${ttt.version}")
 	String version = "1.0";
 
+	@Value("${dcdt.2014.domain}")
+	String dcdt2014domain = "";
+
+	@Value("${dcdt.2015.domain}")
+	String dcdt2015domain = "";
 
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -56,6 +61,8 @@ public class PropertiesController {
     	prop.put("domainName", domainName);
     	prop.put("lastUpdated", lastUpdated);
     	prop.put("version", version);
+    	prop.put("dcdt2014domain", dcdt2014domain);
+    	prop.put("dcdt2015domain", dcdt2015domain);
     	return prop;
     }
 
