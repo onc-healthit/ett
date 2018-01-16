@@ -12,7 +12,10 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
 	$http.get('api/properties').then(function (response) {
 		$scope.propDcdtDomain2014 = response.data.dcdt2014domain;
 		$scope.propDcdtDomain2015 = response.data.dcdt2015domain;
+		$scope.propDcdtProtocol2014 = response.data.dcdt2014Protocol;
+		$scope.propDcdtProtocol2015 = response.data.dcdt2015Protocol;
 	});
+
 		$scope.fileInfo = {
 			"flowChunkNumber": "",
 			"flowChunkSize": "",

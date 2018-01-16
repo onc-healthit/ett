@@ -102,10 +102,10 @@
 			<div class="row">
 				<div class="col-sm-12 btn-group-vertical" style="width:100%">
 				<div ng-if="year2015">
-					<p class="btn btn-default" ><a href="http://{{propDcdtDomain2015}}/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
+					<p class="btn btn-default" ><a href="{{propDcdtProtocol2015}}://{{propDcdtDomain2015}}/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
 				</div>
 				<div ng-if="year2014">
-					<p class="btn btn-default" ><a href="http://{{propDcdtDomain2014}}/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
+					<p class="btn btn-default" ><a href="{{propDcdtProtocol2014}}://{{propDcdtDomain2014}}/dcdt/version" target="_blank" style="color: black">DCDT Version Information</a>
 				</div>
 			    <a href="{{disclaimerLink}}" target="_blank" style="color: black"><i align="right" class="fa fa-external-link"></i></a></p>
 				<p class="btn btn-default" ><a href="https://groups.google.com/forum/#!forum/directtesttool" target="_blank" style="color: black">DCDT Forum</a>
@@ -145,10 +145,10 @@
 			<div class="directions">Directions</div>
 			<p>Step 1: Download the Testing Tool's trust anchor.</p>
 			<div ng-if="year2015">
-				<p style="margin-left: 15px;"> <a href="http://{{propDcdtDomain2015}}/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
+				<p style="margin-left: 15px;"> <a href="{{propDcdtProtocol2015}}://{{propDcdtDomain2015}}/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
 			</div>
 			<div ng-if="year2014">
-				<p style="margin-left: 15px;"> <a href="http://{{propDcdtDomain2014}}/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
+				<p style="margin-left: 15px;"> <a href="{{propDcdtProtocol2014}}://{{propDcdtDomain2014}}/dcdt/discovery/anchor" target="_blank" tabindex="1">Download Trust Anchor</a> </p>
 			</div>
 
 			<p>Step 2: Upload the anchor to your Direct instance. This will allow you to send messages to our tool.</p>
