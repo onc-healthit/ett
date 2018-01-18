@@ -6,7 +6,7 @@
 </div>
 </div>
 <div flow-prevent-drop flow-drag-enter="dropClass='drag-over'" flow-drag-leave="dropClass=''">
- <h2><i class="fa fa-pie-chart"></i> CCDA R1.1 Validator with ONC MDHT Tool</h2>
+ <h2><i class="fa fa-pie-chart"></i> C-CDA R1.1 Validator</h2>
 
  <div class="row">
      <div class="col-sm-12">
@@ -22,7 +22,7 @@
 				<label class="control-label">Step 1: Select the C-CDA R1.1 Conformance from the list:&nbsp;
 				</label>
 					<ui-select ng-model="selectedItem.selected" theme="bootstrap" on-select="changed(selectedItem.selected)">
-						<ui-select-match placeholder="Select attachment to be sent...">{{$select.selected.desc}}</ui-select-match>
+						<ui-select-match placeholder="Select validation criteria...">{{$select.selected.desc}}</ui-select-match>
 						<ui-select-choices repeat="item in ccdaTypes | filter: $select.search" >
 							<span ng-bind-html="item.desc | highlight: $select.search"></span>
 						</ui-select-choices>
@@ -79,7 +79,7 @@
 </div>
 </div>
 
-    <div ng-if="ccdaResult">
+    <div id="ccdaValdReport" ng-if="ccdaResult">
         <hr>
         <ccda-r1-report data="ccdaResult"></ccda-r1-report>
     </div>

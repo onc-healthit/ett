@@ -1,7 +1,7 @@
 var ccdaValidator = angular.module('ttt.direct.ccdaValidator', []);
 
-ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl',
-	function($scope, CCDAR2ValidatorFactory, $state, ApiUrl) {
+ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl','$location','$anchorScroll',
+	function($scope, CCDAR2ValidatorFactory, $state, ApiUrl,$location,$anchorScroll) {
 
 		$scope.fileInfo = {
 			"flowChunkNumber": "",
@@ -17,6 +17,11 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 		$scope.selectedItem = [];
 
 		$scope.ccdaTypes = [{
+			"selected": true,
+			"desc": "Non-specific C-CDA",
+			"code": "NonSpecificCCDA"
+
+		}, {
 			"selected": false,
 			"desc": "Clinical Office Visit Summary - ONC 2014 Edition 170.314(e)(2) - Clinical Summary",
 			"code": "ClinicalOfficeVisitSummary"
@@ -52,11 +57,6 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 			"selected": false,
 			"desc": "VDT Inpatient Summary - ONC 2014 Edition 170.314 (e)(1) Inpatient Summary",
 			"code": "DTInpatientSummary"
-		}, {
-			"selected": true,
-			"desc": "Non-specific CCDA",
-			"code": "NonSpecificCCDA"
-
 		}];
 
 		$scope.changed = function(item) {
@@ -87,7 +87,11 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 			$scope.validator.messageFilePath = "";
 		};
 
-
+$scope.gotodiv = function(anchor) {
+    $location.hash(anchor);
+   // call $anchorScroll()
+    $anchorScroll();
+};
 
 		$scope.validate = function() {
 			console.log(angular.toJson($scope.type, true));
@@ -100,6 +104,7 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 					$scope.laddaLoading = false;
                     $scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
 					$scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
+					$scope.gotodiv("ccdaValdReport");
 				}, function(data) {
 					$scope.laddaLoading = false;
 					throw {
@@ -111,8 +116,8 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 			} else {
 				throw {
 					code: "0x0045",
-					url: "CCDA validator",
-					message: "You have to select a CCDA type"
+					url: "C-CDA validator",
+					message: "You have to select a C-CDA type"
 				};
 			}
 		};

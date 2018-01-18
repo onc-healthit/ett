@@ -13,11 +13,11 @@
      <div class="col-sm-12">
        <uib-accordion>
        <div aria-multiselectable="true" class="panel-group" role="tablist">
-         	<uib-accordion-group heading="R1.2 Validator" is-open="true">
+         	<uib-accordion-group heading="R2.1 Validator" is-open="true">
 
 <div style="border: thin dashed black">
 
-			<div><h4>To validate your C-CDA with the C-CDA IG Plus Vocabulary Template, attach or drag your C-CDA into the tool and press Validate.</h4></div>
+			<div><h4>To validate with the C-CDA Implementation Guide attach or drag your C-CDA into the tool and press Validate.</h4></div>
 
 			<div class="row">
 				<div class="col-md-6">
@@ -157,10 +157,10 @@
 
 			<div class="row">
 				<div class="col-sm-12">
-						<label class="control-label">Step 2: Select ONC 2015 Edition S&CC objective or other C-CDA IG conformance criteria:&nbsp;
+						<label class="control-label">Step 2: Select the ONC 2015 Edition criteria objective or other C-CDA IG conformance criteria:&nbsp;
 						</label>
 						<ui-select ng-model="objective.selected" theme="bootstrap" on-select="changed(objective.selected)">
-							<ui-select-match placeholder="Select attachment to be sent...">{{$select.selected.name}}</ui-select-match>
+							<ui-select-match placeholder="Select validation criteria...">{{$select.selected.name}}</ui-select-match>
 							<ui-select-choices repeat="item in ccdaSelectData | filter: $select.search" >
 							<span ng-bind-html="item.name | highlight: $select.search"></span>
 							</ui-select-choices>
@@ -174,7 +174,7 @@
 					<label class="control-label">Step 3: Select the scenario file that you used to generate the C-CDA:&nbsp;
 					</label>
 					<ui-select ng-model="filename.selected" theme="bootstrap" on-select="setFileName(filename.selected)">
-						<ui-select-match placeholder="Select attachment to be sent...">{{$select.selected.name}}</ui-select-match>
+						<ui-select-match placeholder="Select scenario file...">{{$select.selected.name}}</ui-select-match>
 						<ui-select-choices repeat="item in ccdaFileNames | filter: $select.search" >
 						<span ng-bind-html="item.name | highlight: $select.search"></span>
 						</ui-select-choices>
@@ -225,7 +225,7 @@
 		</div>
 	</div>
 </div>
-    <div ng-if="ccdaResult">
+    <div id="ccdaValdReport" ng-if="ccdaResult">
         <hr>
         <ccda-r2-report data="ccdaResult"></ccda-r2-report>
     </div>

@@ -1,7 +1,7 @@
 var ccdaValidator = angular.module('ttt.direct.ccdar2Validator', []);
 
-ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl', 'CCDAR21Documents','$filter', 'CCDADocumentsFactory',
-    function($scope, CCDAR2ValidatorFactory, $state, ApiUrl, CCDAR21Documents, $filter,CCDADocumentsFactory) {
+ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl', 'CCDAR21Documents','$filter', 'CCDADocumentsFactory','$location','$anchorScroll',
+    function($scope, CCDAR2ValidatorFactory, $state, ApiUrl, CCDAR21Documents, $filter,CCDADocumentsFactory,$location,$anchorScroll) {
 
         $scope.fileInfo = {
             "flowChunkNumber": "",
@@ -115,7 +115,11 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
         };
 
 
-
+$scope.gotodiv = function(anchor) {
+    $location.hash(anchor);
+   // call $anchorScroll()
+    $anchorScroll();
+};
         $scope.validateCdaIg = function() {
             $scope.laddaLoadingCdaIg = true;
             $scope.getCdaDocType();
@@ -130,6 +134,7 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
                         $scope.laddaLoadingCdaIg = false;
                         $scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
                         $scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
+                        $scope.gotodiv("ccdaValdReport");
                     }, function(data) {
                         $scope.laddaLoadingCdaIg = false;
                         throw {
@@ -144,7 +149,7 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
                     throw {
                         code: "No code",
                         url: "",
-                        message: "No CCDA attachment uploaded "
+                        message: "No C-CDA attachment uploaded "
                     };
                 }
         };
@@ -161,6 +166,7 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
 							$scope.laddaLoading = false;
 							$scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
 							$scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
+							$scope.gotodiv("ccdaValdReport");
 						}, function(data) {
 							$scope.laddaLoading = false;
 							throw {
@@ -190,7 +196,7 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
                     throw {
                         code: "No code",
                         url: "",
-                        message: "No CCDA attachment uploaded "
+                        message: "No C-CDA attachment uploaded "
                     };
                 }
         };
