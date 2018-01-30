@@ -1,3 +1,10 @@
+==Version 2.1.2.3#1/29/2018
+    *1. Added ccda file name of the submitted file for debugging.
+    *2. Added warning messages for telecom content validation.
+    *3. Updated MU Gold Sample XML file to remove Clindamycin Allergy which is not present in the test data.
+    *4. Updated CIRI R1 xml samples files to correct medication dosage.
+    *5. Updated CarePlan PDF's to explicitly mention the Medication Tylenol for the Intervention Act referring to the Medication Entry.
+
 ==Version 2.1.2.2#12/14/2017
     *1. Enabled AUTH LOGIN support for the SMTP send/receive tests (in addition to the earlier supported AUTH PLAIN for Plain SASL authentication mechanism).
 
