@@ -49,6 +49,7 @@ public class LoadEmptyInboxccda {
 		messageBodyPart.setText("This is message body");
 
 		
+		
 		int index = Address.indexOf('@');
 		String foldername = Address.substring(0,index);
 			File folder = new File("./data/"+foldername);
@@ -94,21 +95,28 @@ public class LoadEmptyInboxccda {
 	}
 
 	public static void main(String args[]) throws Exception{
-		List<String> addresses = Arrays.asList("b1-ambulatory@ttpds.sitenv.org","b1-inpatient@ttpds.sitenv.org",
-				"b2-ambulatory@ttpds.sitenv.org","b2-inpatient@ttpds.sitenv.org",
-				"b5-ambulatory@ttpds.sitenv.org","b5-inpatient@ttpds.sitenv.org",
-				"b9-ambulatory@ttpds.sitenv.org","b9-inpatient@ttpds.sitenv.org",
-				"negativetestingcareplan@ttpds.sitenv.org","negativetestingccds@ttpds.sitenv.org",
-				"imaptesting@ttpds.sitenv.org","poptesting@ttpds.sitenv.org",
-				"xdmbadxhtml@ttpds.sitenv.org","xdmmimetypes@ttpds.sitenv.org",
-				"multipleattachments@ttpds.sitenv.org");
+		
+		Properties prop = new Properties();
+		String path = "./hostname.properties";
+		FileInputStream file = new FileInputStream(path);
+		prop.load(file);
+		file.close();
+		
+		List<String> addresses = Arrays.asList("b1-ambulatory@"+prop.getProperty("hostname"),"b1-inpatient@"+prop.getProperty("hostname"),
+				"b2-ambulatory@"+prop.getProperty("hostname"),"b2-inpatient@"+prop.getProperty("hostname"),
+				"b5-ambulatory@"+prop.getProperty("hostname"),"b5-inpatient@"+prop.getProperty("hostname"),
+				"b9-ambulatory@"+prop.getProperty("hostname"),"b9-inpatient@"+prop.getProperty("hostname"),
+				"negativetestingcareplan@"+prop.getProperty("hostname"),"negativetestingccds@"+prop.getProperty("hostname"),
+				"imaptesting@"+prop.getProperty("hostname"),"poptesting@"+prop.getProperty("hostname"),
+				"xdmbadxhtml@"+prop.getProperty("hostname"),"xdmmimetypes@"+prop.getProperty("hostname"),
+				"multipleattachments@"+prop.getProperty("hostname"));
 		
 		Store store;
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 		store = session.getStore("imap");
 		for(String s : addresses){
-			store.connect("ttpds.sitenv.org",143,s,"smtptesting123");
+			store.connect(prop.getProperty("hostname"),143,s,"smtptesting123");
 			Folder inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_WRITE);
 			int mcount = inbox.getMessageCount();
