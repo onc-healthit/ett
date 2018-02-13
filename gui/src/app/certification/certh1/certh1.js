@@ -30,8 +30,8 @@ certCerth1.config(['$stateProvider',
 	}
 ]);
 
-certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$uibModal','$location','$anchorScroll','XDRCheckStatus',
-	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$uibModal,$location,$anchorScroll,XDRCheckStatus) {
+certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','ReplaceDomain','PropFactory','$uibModal','$location','$anchorScroll','XDRCheckStatus',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,ReplaceDomain,PropFactory,$uibModal,$location,$anchorScroll,XDRCheckStatus) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
@@ -78,10 +78,14 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			$scope.edgeProtocol = "certb1";
 			$scope.viewObj = "certb1";
 		}
+		PropFactory.get(function(result) {
+			$scope.ettDomain = result.data;
+		});
 
 		XDRTestCasesTemplate.getTestCasesDescription(function(response) {
 			var result = response.data;
 			angular.forEach(result, function(test) {
+               test = ReplaceDomain.getReplacedDomain(test,$scope.ettDomain);
 				if (!test.status) {
 					test.status = 'na';
 				} else if(test.status === 'configure') {
@@ -168,7 +172,8 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 				test.testResult = [{
 					"criteriaMet": "NA"
 				}];
-					$scope.smtpTests.push(test);
+                test = ReplaceDomain.getReplacedDomain(test,$scope.ettDomain);
+				$scope.smtpTests.push(test);
 			});
 		});
 
@@ -220,7 +225,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
                  $scope.openInNewWindow = "";
                  if ($scope.protocol == "MT"){
                      $scope.protocol = "";
-                 }              
+                 }
                  if ($scope.isXdrTest){
                      $scope.testchange = $filter('filter')($scope.xdrTests, {criteria: selectedItem.criteria});
                  }else{

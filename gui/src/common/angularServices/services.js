@@ -35,6 +35,14 @@ tttService.factory('SettingsFactory', function($http) {
     };
 });
 
+tttService.factory('PropFactory', function($http) {
+    return {
+        get: function(callback, error) {
+            $http.get('api/propfile').then(callback, error);
+        }
+    };
+});
+
 tttService.factory('ReleaseNotesFactory', function($http) {
     return {
         get: function(callback, error) {
@@ -66,6 +74,22 @@ tttService.factory('XDRTestCasesTemplate', function($http) {
         }
     };
 });
+
+tttService.factory('ReplaceDomain', function($http) {
+	return {
+		getReplacedDomain: function(test,ettDomain) {
+			var replaceJsonTest = JSON.stringify(test);
+			var jsonReplacedObjTest = replaceJsonTest.split("ttpedge.sitenv.org").join(ettDomain.ettEdgeDomain);
+			var jsonReplacedObjTest2 = jsonReplacedObjTest.split("ttpds.sitenv.org").join(ettDomain.ettDsDomain);
+			var jsonReplacedObjTest3 = jsonReplacedObjTest2.split("ttpds2.sitenv.org").join(ettDomain.ettDs2Domain);
+			var jsonReplacedObjTest4 = jsonReplacedObjTest3.split("direct2.sitenv.org").join(ettDomain.ettDirect2Domain);
+			var jsonReplacedObjTest5 = jsonReplacedObjTest4.split("dnsops.ttpedge.sitenv.org").join("dnsops."+ettDomain.ettEdgeDomain);
+			//console.log(" jsonReplacedObjTest5 ::"+angular.toJson(jsonReplacedObjTest5, true));
+			return JSON.parse(jsonReplacedObjTest5);
+	}
+};
+});
+
 
 tttService.factory('CriteriaDescription', function($http) {
     return {
