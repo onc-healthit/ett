@@ -33,16 +33,16 @@ public class PropFileController {
 	@Value("${ett.dcdt.2015.hosting.url}")
 	String dcdt2015Url = "";
 
-	@Value("${ett.edge.domain}")
+	@Value("${direct.listener.domainName}")
 	String ettEdgeDomain = "";
 
-	@Value("${ett.ds.domain}")
+	@Value("${ett.smtp.host}")
 	String ettDsDomain = "";
 
-	@Value("${ett.ds2.domain}")
+	@Value("${dir.hostname}")
 	String ettDs2Domain = "";
 
-	@Value("${ett.direct2.domain}")
+	@Value("${not.trusted}")
 	String ettDirect2Domain = "";
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
