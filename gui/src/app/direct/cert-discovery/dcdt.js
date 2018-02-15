@@ -5,14 +5,17 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
 	$scope.pageTitle= $state.current.data.pageTitle;
 	$scope.year2015 = ($scope.pageTitle === "2015");
 	$scope.year2014 = ($scope.pageTitle === "2014");
-	$scope.emailDomain2014 = "dcdt30prod";
-	$scope.emailDomain2015 = "dcdt31prod";
+	$scope.emailDomain2014 = "dcdt30prod.sitenv.org";
+	$scope.emailDomain2015 = "dcdt31prod.sitenv.org";
 	$scope.disclaimerLink ="https://www.hhs.gov/disclaimer.html";
-	if ($scope.year2015){
-         $scope.emailDomain = $scope.emailDomain2015;
-	}else{
-         $scope.emailDomain = $scope.emailDomain2014;
-	}
+
+	$http.get('api/properties').then(function (response) {
+		$scope.propDcdtDomain2014 = response.data.dcdt2014domain;
+		$scope.propDcdtDomain2015 = response.data.dcdt2015domain;
+		$scope.propDcdtProtocol2014 = response.data.dcdt2014Protocol;
+		$scope.propDcdtProtocol2015 = response.data.dcdt2015Protocol;
+	});
+
 		$scope.fileInfo = {
 			"flowChunkNumber": "",
 			"flowChunkSize": "",
@@ -25,16 +28,16 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
 		};
 		$scope.alerts = [];
 		$scope.discalerts = [];
-    $scope.datatool = [
-      {name:"Hosting allows a System Under Test (SUT) to verify that their certificates are hosted correctly, and discoverable by other Direct implementations.", hreflink:"panel_hosting",children:0},
-      {name:"Discovery allows a SUT to verify that they can discover certificates in other Direct implementations by using them to send Direct messages.",  hreflink:"panel_discovery",children:1}
-    ];
+        $scope.datatool = [
+          {name:"Hosting allows a System Under Test (SUT) to verify that their certificates are hosted correctly, and discoverable by other Direct implementations.", hreflink:"panel_hosting",children:0},
+          {name:"Discovery allows a SUT to verify that they can discover certificates in other Direct implementations by using them to send Direct messages.",  hreflink:"panel_discovery",children:1}
+        ];
 
- $scope.directAddress ="";
- $scope.testcase="";
- $scope.discEmailAddr ="";
- $scope.discResultEmailAddr="";
-$scope.discoveryTestCase = [
+       $scope.directAddress ="";
+       $scope.testcase="";
+       $scope.discEmailAddr ="";
+       $scope.discResultEmailAddr="";
+       $scope.discoveryTestCase = [
     { code: "", name: "--No testcase selected--" },
     { code: "D1_DNS_AB_Valid", testcaseid:"1" , name: "D1 - Valid address-bound certificate discovery in DNS",
       Negative: "false",
@@ -87,7 +90,7 @@ $scope.discoveryTestCase = [
          Negative: "false",
          Optional: "false",
          Direct_address_2014: "d2@domain1.dcdt30prod.sitenv.org",
-         Direct_address_2015: "d2@domain1.dcdt31prod.sitenv.org",         
+         Direct_address_2015: "d2@domain1.dcdt31prod.sitenv.org",
          Description: "This test case verifies that your system can query DNS for address-bound CERT records and discover a valid address-bound X.509 certificate for a Direct address.",
          RTM_Sections: "1, 3",
          RFC_4398:  "Section 2.1",
@@ -127,7 +130,7 @@ $scope.discoveryTestCase = [
             Negative: "false",
             Optional: "false",
             Direct_address_2014: "d3@domain2.dcdt30prod.sitenv.org",
-            Direct_address_2015: "d3@domain2.dcdt31prod.sitenv.org",              
+            Direct_address_2015: "d3@domain2.dcdt31prod.sitenv.org",
             Description: "This test case verifies that your system can query DNS for SRV records and discover a valid address-bound X.509 certificate for a Direct address in the associated LDAP server.",
             RTM_Sections: "2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22",
             RFC_2798:  "Section 9.1.2",
@@ -158,7 +161,7 @@ $scope.discoveryTestCase = [
                Negative: "false",
                Optional: "false",
                Direct_address_2014: "d4@domain2.dcdt30prod.sitenv.org",
-               Direct_address_2015: "d4@domain2.dcdt31prod.sitenv.org",                 
+               Direct_address_2015: "d4@domain2.dcdt31prod.sitenv.org",
                Description: "This test case verifies that your system can query DNS for SRV records and discover a valid domain-bound X.509 certificate for a Direct address in the associated LDAP server.",
                RTM_Sections: "2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22",
                RFC_2798:  "Section 9.1.2",
@@ -180,7 +183,7 @@ $scope.discoveryTestCase = [
                   Negative: "false",
                   Optional: "false",
                   Direct_address_2014: "d5@domain1.dcdt30prod.sitenv.org",
-                  Direct_address_2015: "d5@domain1.dcdt31prod.sitenv.org",                    
+                  Direct_address_2015: "d5@domain1.dcdt31prod.sitenv.org",
                   Description: "This test case verifies that your system can query DNS for address-bound CERT records and finds, but does not select the associated invalid address-bound X.509 certificate.",
                   RTM_Sections: "1, 3",
                   Instructions: "Verify that your system did NOT send an email because it could not find a certificate for the Direct address. To pass this test case, you must NOT receive an email in response.",
@@ -199,7 +202,7 @@ $scope.discoveryTestCase = [
                      Negative: "true",
                      Optional: "false",
                      Direct_address_2014: "d6@domain4.dcdt30prod.sitenv.org",
-                     Direct_address_2015: "d6@domain4.dcdt31prod.sitenv.org",                       
+                     Direct_address_2015: "d6@domain4.dcdt31prod.sitenv.org",
                      Description: "This test case verifies that your system can query DNS for domain-bound CERT records and finds, but does not select the associated invalid domain-bound X.509 certificate.",
                      RTM_Sections: "1, 3",
                      Instructions: "Verify that your system did NOT send an email because it could not find a certificate for the Direct address. To pass this test case, you must NOT receive an email in response.",
@@ -218,7 +221,7 @@ $scope.discoveryTestCase = [
                     Negative: "true",
                     Optional: "false",
                     Direct_address_2014: "d7@domain2.dcdt30prod.sitenv.org",
-                    Direct_address_2015: "d7@domain2.dcdt31prod.sitenv.org",                      
+                    Direct_address_2015: "d7@domain2.dcdt31prod.sitenv.org",
                     Description: "This test case verifies that your system can query DNS for SRV records and finds, but does not select the invalid address-bound X.509 certificate in the associated LDAP server.",
                     RTM_Sections: "3, 22",
                     Instructions: "Verify that your system did NOT send an email because it could not find a certificate for the Direct address. To pass this test case, you must NOT receive an email in response.",
@@ -239,7 +242,7 @@ $scope.discoveryTestCase = [
                        Negative: "true",
                        Optional: "false",
                        Direct_address_2014: "d8@domain5.dcdt30prod.sitenv.org",
-                       Direct_address_2015: "d8@domain5.dcdt31prod.sitenv.org",                         
+                       Direct_address_2015: "d8@domain5.dcdt31prod.sitenv.org",
                        Description: "This test case verifies that your system can query DNS for SRV records and finds, but does not select the invalid domain-bound X.509 certificate in the associated LDAP server.",
                        RTM_Sections: " 3, 22",
                        Instructions: "Verify that your system did NOT send an email because it could not find a certificate for the Direct address. To pass this test case, you must NOT receive an email in response.",
@@ -260,7 +263,7 @@ $scope.discoveryTestCase = [
                           Negative: "false",
                           Optional: "false",
                           Direct_address_2014: "d9@domain1.dcdt30prod.sitenv.org",
-                          Direct_address_2015: "d9@domain1.dcdt31prod.sitenv.org",                            
+                          Direct_address_2015: "d9@domain1.dcdt31prod.sitenv.org",
                           Description: "This test case verifies that your system can query DNS for address-bound CERT records and select the valid address-bound X.509 certificate instead of the invalid address-bound X.509 certificate.",
                           RTM_Sections: "1, 3",
                           Instructions: "You should have received an email indicating the test case results for your system. Examine the results to see if your system passed the test case. If you do not receive a message for the test case, then you should assume that the test case failed.",
@@ -287,7 +290,7 @@ $scope.discoveryTestCase = [
                              Negative: "false",
                              Optional: "false",
                              Direct_address_2014: "d10@domain3.dcdt30prod.sitenv.org",
-                             Direct_address_2015: "d10@domain3.dcdt31prod.sitenv.org",                               
+                             Direct_address_2015: "d10@domain3.dcdt31prod.sitenv.org",
                              Description: "This test case verifies that your system can query DNS for SRV records and attempts to connect to an LDAP server based on the priority value specified in the SRV records until a successful connection is made. Your system should first attempt to connect to an LDAP server associated with an SRV record containing the lowest priority value (highest priority). Since this LDAP server is unavailable, your system should then attempt to connect to the LDAP server associated with an SRV record containing the second lowest priority value (second highest priority) and discover the valid address-bound X.509 certificate in the available LDAP server.",
                              RTM_Sections: " 15, 18",
                              RFC_2782:  "Page 3, Priority Section",
@@ -310,7 +313,7 @@ $scope.discoveryTestCase = [
                                 Negative: "true",
                                 Optional: "false",
                                 Direct_address_2014: "d11@domain6.dcdt30prod.sitenv.org",
-                                Direct_address_2015: "d11@domain6.dcdt31prod.sitenv.org",                                  
+                                Direct_address_2015: "d11@domain6.dcdt31prod.sitenv.org",
                                 Description: "This test case verifies that your system does not find any certificates when querying DNS for CERT records and does not find any SRV records in DNS.",
                                 RTM_Sections: "1, 3, 18",
                                 Instructions: "Verify that your system did NOT send an email because it could not find a certificate for the Direct address. To pass this test case, you must NOT receive an email in response.",
@@ -322,7 +325,7 @@ $scope.discoveryTestCase = [
                                    Negative: "true",
                                    Optional: "false",
                                    Direct_address_2014: "d12@domain7.dcdt30prod.sitenv.org",
-                                   Direct_address_2015: "d12@domain7.dcdt31prod.sitenv.org",                                     
+                                   Direct_address_2015: "d12@domain7.dcdt31prod.sitenv.org",
                                    Description: "This test case verifies that your system can query DNS for SRV records and attempts to connect to an LDAP server associated with the only SRV record that should be found. Since this LDAP server is unavailable or does not exist and no additional SRV records should have been found, your system should not discover any X.509 certificates in either DNS CERT records or LDAP servers.",
                                    RTM_Sections: "1, 3, 18",
                                    Instructions: "Verify that your system did NOT send an email because it could not find a certificate for the Direct address. To pass this test case, you must NOT receive an email in response.",
@@ -334,7 +337,7 @@ $scope.discoveryTestCase = [
                                       Negative: "true",
                                       Optional: "false",
                                       Direct_address_2014: "d13@domain8.dcdt30prod.sitenv.org",
-                                      Direct_address_2015: "d13@domain8.dcdt31prod.sitenv.org",                                        
+                                      Direct_address_2015: "d13@domain8.dcdt31prod.sitenv.org",
                                       Description: "This test case verifies that your system does not discover any certificates in DNS CERT records or LDAP servers when no certificates should be found.",
                                       RTM_Sections: "1, 3, 18",
                                       Instructions: "Verify that your system did NOT send an email because it could not find a certificate for the Direct address. To pass this test case, you must NOT receive an email in response.",
@@ -346,7 +349,7 @@ $scope.discoveryTestCase = [
                                          Negative: "false",
                                          Optional: "false",
                                          Direct_address_2014: "d14@domain1.dcdt30prod.sitenv.org",
-                                         Direct_address_2015: "d14@domain1.dcdt31prod.sitenv.org",                                           
+                                         Direct_address_2015: "d14@domain1.dcdt31prod.sitenv.org",
                                          Description: "This test case verifies that your system can query DNS for address-bound CERT records and discover a valid address-bound X.509 certificate that is larger than 512 bytes using a TCP connection.",
                                          RTM_Sections: "1, 3, 4",
                                          RFC_1035:  "Section 4.2",
@@ -368,7 +371,7 @@ $scope.discoveryTestCase = [
                                         Negative: "false",
                                         Optional: "false",
                                         Direct_address_2014: "d15@domain2.dcdt30prod.sitenv.org",
-                                        Direct_address_2015: "d15@domain2.dcdt31prod.sitenv.org",                                          
+                                        Direct_address_2015: "d15@domain2.dcdt31prod.sitenv.org",
                                         Description: "This test case verifies that your system can query DNS for SRV records and discover a valid address-bound X.509 certificate in the LDAP server associated with an SRV record containing the lowest priority value (highest priority).",
                                         RTM_Sections: "15, 18",
                                         RFC_2782:  "Page 3, Priority Section",
@@ -399,7 +402,7 @@ $scope.discoveryTestCase = [
                                            Negative: "false",
                                            Optional: "false",
                                            Direct_address_2014: "d16@domain5.dcdt30prod.sitenv.org",
-                                           Direct_address_2015: "d16@domain5.dcdt31prod.sitenv.org",                                             
+                                           Direct_address_2015: "d16@domain5.dcdt31prod.sitenv.org",
                                            Description: "This test case verifies that your system can query DNS for SRV records and discover a valid address-bound X.509 certificate in the LDAP server associated with an SRV record containing the lowest priority value (highest priority) and the highest weight value when SRV records with the same priority value exist.",
                                            RTM_Sections: "16, 18",
                                            RFC_2782:  "Page 3, Weight Section",
@@ -430,7 +433,7 @@ $scope.discoveryTestCase = [
                                               Negative: "false",
                                               Optional: "false",
                                               Direct_address_2014: "d17@domain9.dcdt30prod.sitenv.org",
-                                              Direct_address_2015: "d17@domain9.dcdt31prod.sitenv.org",                                                
+                                              Direct_address_2015: "d17@domain9.dcdt31prod.sitenv.org",
                                               Description: "This test case verifies that your system can query DNS for address-bound CERT records and discover a valid X.509 certificate whose CRL-based revocation status indicates that it has not been revoked.",
                                               RTM_Sections: "1, 3",
                                               RFC_4398:  "Section 2.1",
@@ -473,7 +476,7 @@ $scope.discoveryTestCase = [
             Negative: "false",
             Optional: "false",
             Direct_address_2014: "d18@domain10.dcdt30prod.sitenv.org",
-            Direct_address_2015: "d18@domain10.dcdt31prod.sitenv.org",              
+            Direct_address_2015: "d18@domain10.dcdt31prod.sitenv.org",
             Description: "This test case verifies that your system can query DNS for an address-bound CERT record and discover a valid X.509 certificate whose path to the trusted root CA certificate must be retrieved via Authority Information Access (AIA) X.509v3 extension caIssuers HTTP URIs.",
             RTM_Sections: "1, 3",
             RFC_5280:  "Section 4.2.2.1",
@@ -560,40 +563,47 @@ $scope.checkEmpty = function(testObject){
 	return "None";
 };
    $scope.onSelectionChange= function(selectedItem,testcase) {
-    $scope.testcase = selectedItem.code;
-if ($scope.testcase !==""){
-if (testcase === "process"){
-$scope.alerts = [];
-$scope.testCaseType = {'Hosting':true};
-$scope.dcdtResult = angular.extend(selectedItem, $scope.testCaseType);
-}else{
-$scope.discalerts = [];
-$scope.testCaseType = {'Discovery':true,'year2014':$scope.year2014,'year2015':$scope.year2015};
-if ($scope.year2015){
-var replaceJson = JSON.stringify(selectedItem);
-var jsonReplacedObj = replaceJson.split($scope.emailDomain2014).join($scope.emailDomain2015);
-$scope.dcdtDiscoveryResult = JSON.parse(jsonReplacedObj);
-}else{
-$scope.dcdtDiscoveryResult = selectedItem;
-}
-$scope.dcdtDiscoveryResult = angular.extend($scope.dcdtDiscoveryResult, $scope.testCaseType);
-}
-}else{
-$scope.dcdtResult = null;
-$scope.dcdtDiscoveryResult=null;
-}
-$scope.testCaseId = selectedItem.testcaseid;
-};
-$scope.gotodiv = function(anchor) {	
+     $scope.testcase = selectedItem.code;
+     if ($scope.testcase !==""){
+         if (testcase === "process"){
+            $scope.alerts = [];
+            $scope.testCaseType = {'Hosting':true};
+            $scope.dcdtResult = angular.extend(selectedItem, $scope.testCaseType);
+        }else{
+            $scope.discalerts = [];
+            $scope.testCaseType = {'Discovery':true,'year2014':$scope.year2014,'year2015':$scope.year2015};
+            var replaceJsonTest = JSON.stringify(selectedItem);
+            var jsonReplacedObjTest = replaceJsonTest.split($scope.emailDomain2014).join($scope.propDcdtDomain2014);
+            var jsonReplacedObj1 = jsonReplacedObjTest.split($scope.emailDomain2015).join($scope.propDcdtDomain2015);
+            selectedItem = JSON.parse(jsonReplacedObj1);
+
+            if ($scope.year2015){
+                var replaceJson = JSON.stringify(selectedItem);
+                var jsonReplacedObj = replaceJson.split($scope.emailDomain2014).join($scope.emailDomain2015);
+                $scope.dcdtDiscoveryResult = JSON.parse(jsonReplacedObj);
+            }else{
+                $scope.dcdtDiscoveryResult = selectedItem;
+            }
+            $scope.dcdtDiscoveryResult = angular.extend($scope.dcdtDiscoveryResult, $scope.testCaseType);
+       }
+    }else{
+        $scope.dcdtResult = null;
+        $scope.dcdtDiscoveryResult=null;
+    }
+        $scope.testCaseId = selectedItem.testcaseid;
+    };
+
+$scope.gotodiv = function(anchor) {
     $location.hash(anchor);
    // call $anchorScroll()
     $anchorScroll();
 };
-$scope.showhidediv = function(dataobj) {
-var tmpobj = dataobj;
-dataobj.expandResult = !dataobj.expandResult;
-return dataobj.expandResult;
-};
+
+    $scope.showhidediv = function(dataobj) {
+       var tmpobj = dataobj;
+       dataobj.expandResult = !dataobj.expandResult;
+       return dataobj.expandResult;
+    };
 	$scope.closeAlert = function() {
 		$scope.alerts = [];
 		$timeout.cancel($scope.timeout);
@@ -627,25 +637,26 @@ return dataobj.expandResult;
              $scope.alerts = [];
              $scope.hostingResultError =[];
         };
-$scope.resetDiscData = function() {
- $scope.discResultEmailAddr = "";
- $scope.discEmailAddr = "";
-$scope.discoveryReport  =[];
-$scope.discalerts = [];
-};
 
-$scope.ignoreTestcase = function(testcaseid) {
-   return (testcaseid.testcaseid !== "17" &&
-  testcaseid.testcaseid !== "18" );
-};
+     $scope.resetDiscData = function() {
+         $scope.discResultEmailAddr = "";
+         $scope.discEmailAddr = "";
+         $scope.discoveryReport  =[];
+         $scope.discalerts = [];
+     };
 
-$scope.discValidate = function() {
-if (!$scope.discEmailAddr || $scope.discEmailAddr === "") {
-showDiscAlert('danger', 'Direct Address must be an email');
-}else if (!$scope.discResultEmailAddr || $scope.discResultEmailAddr === "") {
-showDiscAlert('danger', 'Result Address must be an email');
-}else{
-$scope.discalerts = [];
+    $scope.ignoreTestcase = function(testcaseid) {
+       return (testcaseid.testcaseid !== "17" &&
+         testcaseid.testcaseid !== "18" );
+    };
+
+    $scope.discValidate = function() {
+        if (!$scope.discEmailAddr || $scope.discEmailAddr === "") {
+           showDiscAlert('danger', 'Direct Address must be an email');
+        }else if (!$scope.discResultEmailAddr || $scope.discResultEmailAddr === "") {
+           showDiscAlert('danger', 'Result Address must be an email');
+        }else{
+        $scope.discalerts = [];
    $scope.discValidateRequest = {
            "@type": "discoveryTestcaseMailMapping",
            "directAddr": $scope.discEmailAddr,
@@ -654,7 +665,7 @@ $scope.discalerts = [];
            "hostingcase":"NO"
            };
            DCDTValidatorFactory.save($scope.discValidateRequest, function(data) {
-              console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));                   
+              console.log(" $scope.response dcdt::::"+ angular.toJson(data,true));
              // $scope.hostingResults = angular.extend($scope.hostingResults, data);
               $scope.discoveryReport = data;
             }, function(data) {
@@ -667,13 +678,13 @@ $scope.discalerts = [];
            });
 }
 };
-        $scope.validate = function() {
+      $scope.validate = function() {
       if (!$scope.directAddress || $scope.directAddress === "") {
-      showAlert('danger', 'Direct Address must be an email');
+         showAlert('danger', 'Direct Address must be an email');
       }else if ($scope.testcase === "") {
-      showAlert('danger', 'Please Select a Hosting Testcase');
+          showAlert('danger', 'Please Select a Hosting Testcase');
       }else{
-$scope.alerts = [];
+            $scope.alerts = [];
             $scope.validator = {
                     "@type": "hostingTestcaseSubmission",
                     "directAddr": $scope.directAddress,
@@ -689,11 +700,11 @@ $scope.alerts = [];
                                    itemloopobj.testcase.expandResult =false;
                                });
                             });
-                       }                       
+                       }
                          $scope.hostingResult = data;
                          $scope.hostingResultError = data;
                          $scope.hostingResultsStack.push({'itemloop' : [data]});
-                         $scope.hostingResult = $scope.hostingResultsStack;   
+                         $scope.hostingResult = $scope.hostingResultsStack;
                    }, function(data) {
                         $scope.laddaLoading = false;
                         throw {
@@ -702,12 +713,9 @@ $scope.alerts = [];
                             message: data.data.message
                         };
                     });
-      }
+         }
         };
-
-
-
-     $scope.apiUrl = ApiUrl.get();
+        $scope.apiUrl = ApiUrl.get();
 
     }
 ]);

@@ -11,7 +11,7 @@
                     <i class="fa fa-check fa-4x" ng-switch-when="false"></i>
                 </td>
                 <td>
-                    <strong>CCDA Document Type:</strong> {{data.ccdafilenaame}}
+                    <strong>C-CDA Document Type:</strong> {{data.ccdafilenaame}}
                     <br>
                     <strong ng-if="data.resultsMetaData.serviceErrorMessage">Service Error Message:</strong> {{data.resultsMetaData.serviceErrorMessage}}
                 </td>
@@ -39,7 +39,7 @@
         <br>
 
         <uib-tabset>
-            <uib-tab heading="CCDA Results" active="tabs[0].active" class="clickable not-selectable">
+            <uib-tab heading="C-CDA Results" active="tabs[0].active" class="clickable not-selectable">
                 <div class="error-notice">
                     <div ng-repeat="item in data.ccdaValidationResults" ng-switch on="item.type">
                         <div id="C-CDA MDHT Conformance Error" class="oaerror danger" ng-mouseenter="showDiv=!showDiv" ng-mouseleave="showDiv=!showDiv" ng-init="showDiv=false" ng-switch-when="C-CDA MDHT Conformance Error">
