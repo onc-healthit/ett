@@ -33,7 +33,7 @@ public class Notifier
     Session session = Session.getInstance(props, null);
     
     Message message = new MimeMessage(session);
-    message.setFrom(new InternetAddress("ttpstatus@ttpdstest.com"));
+    message.setFrom(new InternetAddress("ttpstatus@ttpds.com"));
     message.addRecipients(Message.RecipientType.CC, InternetAddress.parse(email1));
     message.addRecipients(Message.RecipientType.CC, InternetAddress.parse(email2));
     message.addRecipients(Message.RecipientType.CC, InternetAddress.parse(email3));
@@ -65,7 +65,7 @@ public class Notifier
     mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822");
     CommandMap.setDefaultCommandMap(mc);
     Transport transport = session.getTransport("smtp");
-    transport.connect("ttpdstest.sitenv.org", "ttpstatus@ttpdstest.sitenv.org", "smtptesting123");
+    transport.connect("ttpds.sitenv.org", "ttpstatus@ttpds.sitenv.org", "smtptesting123");
     transport.sendMessage(message, message.getAllRecipients());
     transport.close();
     System.out.println("Email sent");

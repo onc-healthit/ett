@@ -35,12 +35,16 @@ edgeXdr.config(['$stateProvider',
 ]);
 
 edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q', '$timeout', 'XDRTestCases', 'XDRRunTestCases', 'XDRCheckStatus',
-'XDRTestCasesTemplate', '$state', '$window','$location','$anchorScroll',
+'XDRTestCasesTemplate', '$state', 'ReplaceDomain','PropFactory','$window','$location','$anchorScroll',
 	function($scope, XDRTestCasesDescription, growl, $q, $timeout, XDRTestCases, XDRRunTestCases, XDRCheckStatus,
-	XDRTestCasesTemplate, $state, $window,$location,$anchorScroll) {
+	XDRTestCasesTemplate, $state,ReplaceDomain,PropFactory, $window,$location,$anchorScroll) {
 
 		$scope.senderTests = [];
 		$scope.receiverTests = [];
+
+		PropFactory.get(function(result) {
+			$scope.ettDomain = result.data;
+		});
 
 		// Check type Edge or Hisp
 		$scope.isEdge = $state.current.data.sutEge;
@@ -54,6 +58,7 @@ edgeXdr.controller('XdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl', '$q
 			var result = response.data;
 
 			angular.forEach(result, function(test) {
+            test = ReplaceDomain.getReplacedDomain(test,$scope.ettDomain);
 				if (!test.status) {
 					test.status = 'na';
 				} else if(test.status === 'configure') {

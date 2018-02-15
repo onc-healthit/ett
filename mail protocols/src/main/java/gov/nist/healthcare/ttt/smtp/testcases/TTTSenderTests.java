@@ -1195,7 +1195,7 @@ public class TTTSenderTests {
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(ti.sutEmailAddress));
-			message.setSubject("Testing XDM with application/octect MIME type!");
+			message.setSubject("Testing XDM with application/octet MIME type!");
 			message.setText("This is a message to test Text+XDM!");
 
 			BodyPart messageBodyPart = new MimeBodyPart();

@@ -1,7 +1,7 @@
 var ccdaValidator = angular.module('ttt.direct.ccdaValidator', []);
 
-ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl',
-	function($scope, CCDAR2ValidatorFactory, $state, ApiUrl) {
+ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl','$location','$anchorScroll',
+	function($scope, CCDAR2ValidatorFactory, $state, ApiUrl,$location,$anchorScroll) {
 
 		$scope.fileInfo = {
 			"flowChunkNumber": "",
@@ -17,6 +17,11 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 		$scope.selectedItem = [];
 
 		$scope.ccdaTypes = [{
+			"selected": true,
+			"desc": "Non-specific C-CDA",
+			"code": "NonSpecificCCDA"
+
+		}, {
 			"selected": false,
 			"desc": "Clinical Office Visit Summary - ONC 2014 Edition 170.314(e)(2) - Clinical Summary",
 			"code": "ClinicalOfficeVisitSummary"
@@ -52,17 +57,17 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 			"selected": false,
 			"desc": "VDT Inpatient Summary - ONC 2014 Edition 170.314 (e)(1) Inpatient Summary",
 			"code": "DTInpatientSummary"
-		}, {
-			"selected": true,
-			"desc": "Non-specific CCDA",
-			"code": "NonSpecificCCDA"
-
 		}];
 
 		$scope.changed = function(item) {
+			console.log(angular.toJson(item, true));
 			$scope.type = item;
 		};
 
+		$scope.resetselection = function() {
+			$scope.type = "";
+			$scope.selectedItem.selected= "";
+		};
 		$scope.apiUrl = ApiUrl.get();
 
 		$scope.validator = {
@@ -82,18 +87,24 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 			$scope.validator.messageFilePath = "";
 		};
 
-
+$scope.gotodiv = function(anchor) {
+    $location.hash(anchor);
+   // call $anchorScroll()
+    $anchorScroll();
+};
 
 		$scope.validate = function() {
-			if ($scope.selectedItem.length > 0) {
+			console.log(angular.toJson($scope.type, true));
+			if ($scope.type) {
 				$scope.laddaLoading = true;
-				$scope.validator.ccdaType = $scope.selectedItem[0].code;
-                $scope.validator.validationObjective = $scope.selectedItem[0].code;
+				$scope.validator.ccdaType = $scope.type.code;
+                $scope.validator.validationObjective = $scope.type.code;
                 $scope.validator.referenceFileName = $scope.fileInfo.flowFilename;
 				CCDAR2ValidatorFactory.save($scope.validator, function(data) {
 					$scope.laddaLoading = false;
                     $scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
 					$scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
+					$scope.gotodiv("ccdaValdReport");
 				}, function(data) {
 					$scope.laddaLoading = false;
 					throw {
@@ -105,8 +116,8 @@ ccdaValidator.controller('CCDAValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory
 			} else {
 				throw {
 					code: "0x0045",
-					url: "CCDA validator",
-					message: "You have to select a CCDA type"
+					url: "C-CDA validator",
+					message: "You have to select a C-CDA type"
 				};
 			}
 		};
