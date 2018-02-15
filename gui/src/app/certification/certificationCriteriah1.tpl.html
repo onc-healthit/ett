@@ -1,7 +1,7 @@
 <div class="row">
     <!-- Profile part -->
     <div class="col-sm-4">
-        <!-- <h2 style="margin-top:0px;"><i class="fa fa-line-chart"></i> SMTP Test Cases</h2> -->
+        <!-- <h2 style="margin-top:0px;"><i class="fa fa-line-chart"></i> Test Cases</h2> -->
         <div class="row" style="margin-bottom: 30px;">
             <div class="col-md-12 col-lg-12 text-center">
            	 	<tr><td><h4 style="margin-top:0px;"><i class="fa fa-certificate"></i>&nbsp;&nbsp;&nbsp;&nbsp;Select Criteria for &#167; {{pageTitle}}</h4></td></tr>
@@ -30,18 +30,18 @@
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <div class="field field-tight">
-									<label ng-show="currentProfile.sutSMTPAddress" class="show-hide">Vendor SMTP Hostname/IP</label>
-									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Hostname/IP address of the vendor SMTP system" tooltip-side="top"></i>
-									<input type="text" class="form-control" ng-model="currentProfile.sutSMTPAddress" placeholder="Vendor SMTP Hostname/IP" />
+									<label ng-show="currentProfile.sutSMTPAddress" class="show-hide">Vendor {{protocol}} Hostname/IP</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Hostname/IP address of the vendor {{protocol}} system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutSMTPAddress" placeholder="Vendor {{protocol}} Hostname/IP" />
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <div class="field field-tight">
-									<label ng-show="currentProfile.sutEmailAddress" class="show-hide">Vendor SMTP Email Address</label>
-									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Email address of the vendor SMTP system" tooltip-side="top"></i>
-									<input type="text" class="form-control" ng-model="currentProfile.sutEmailAddress" placeholder="Vendor SMTP Email Address" />
+									<label ng-show="currentProfile.sutEmailAddress" class="show-hide">Vendor {{protocol == '' ? 'Direct' : protocol}} Email Address</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Email address of the vendor {{protocol}} system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutEmailAddress" placeholder="Vendor {{protocol == '' ? 'Direct' : protocol}} Email Address" />
                             </div>
                         </div>
                     </div>
@@ -55,16 +55,16 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="field field-tight">
-									<label ng-show="currentProfile.sutUsername" class="show-hide">Vendor SMTP Username</label>
-									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Username of the vendor SMTP system" tooltip-side="top"></i>
-									<input type="text" class="form-control" ng-model="currentProfile.sutUsername" placeholder="Vendor SMTP Username" />
+									<label ng-show="currentProfile.sutUsername" class="show-hide">Vendor {{protocol}} Username</label>
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Username of the vendor {{protocol}} system" tooltip-side="top"></i>
+									<input type="text" class="form-control" ng-model="currentProfile.sutUsername" placeholder="Vendor {{protocol}} Username" />
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="field field-tight">
 									<label ng-show="currentProfile.sutPassword" class="show-hide">Vendor Password</label>
-									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Password of the vendor SMTP system" tooltip-side="top"></i>
-									<input type="password" class="form-control" ng-model="currentProfile.sutPassword" placeholder="Vendor SMTP Password" />
+									<i class="fa fa-question-circle pull-right tooltipster" tooltips tooltip-title="Password of the vendor {{protocol}} system" tooltip-side="top"></i>
+									<input type="password" class="form-control" ng-model="currentProfile.sutPassword" placeholder="Vendor {{protocol}} Password" />
                             </div>
                         </div>
 						<div class="col-md-12 col-lg-12">
@@ -86,22 +86,22 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-6">
                                 <div class="field field-tight">
-                                    <label ng-show="sutSmtpPort" class="show-hide">Vendor SMTP Port</label>
-                                    <input type="text" class="form-control" ng-model="sutSmtpPort" placeholder="Vendor SMTP Port" />
+                                    <label ng-show="sutSmtpPort" class="show-hide">Vendor {{protocol}} Port</label>
+                                    <input type="text" class="form-control" ng-model="sutSmtpPort" placeholder="Vendor {{protocol}} Port" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-6">
                                 <div class="field field-tight">
-                                    <label ng-show="tttSmtpPort" class="show-hide">ETT SMTP Port</label>
-                                    <input type="text" class="form-control" ng-model="tttSmtpPort" placeholder="ETT SMTP Port" />
+                                    <label ng-show="tttSmtpPort" class="show-hide">ETT {{protocol}} Port</label>
+                                    <input type="text" class="form-control" ng-model="tttSmtpPort" placeholder="ETT {{protocol}} Port" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 col-lg-12">
                                 <div class="field field-tight">
-                                    <label ng-show="tttSmtpAddress" class="show-hide">ETT Smtp Address</label>
-                                    <input type="text" class="form-control" ng-model="tttSmtpAddress" placeholder="ETT Smtp Address" />
+                                    <label ng-show="tttSmtpAddress" class="show-hide">ETT {{protocol}} Address</label>
+                                    <input type="text" class="form-control" ng-model="tttSmtpAddress" placeholder="ETT {{protocol}} Address" />
                                 </div>
                             </div>
                         </div>

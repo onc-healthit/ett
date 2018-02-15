@@ -30,8 +30,8 @@ surveilh1.config(['$stateProvider',
 	}
 ]);
 
-surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','$location','$anchorScroll','XDRCheckStatus',
-	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,$location,$anchorScroll,XDRCheckStatus) {
+surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl','SMTPLogFactory','ApiUrl','SMTPTestCasesDescription','CriteriaDescription','SMTPTestCases','XDRTestCasesTemplate','XDRTestCases','XDRRunTestCases','SMTPProfileFactory','SettingsFactory', 'PropertiesFactory',  '$timeout','$window','CCDADocumentsFactory', 'DirectRICertFactory','DirectCertsLinkFactory','$filter','$state','ReplaceDomain','PropFactory','$location','$anchorScroll','XDRCheckStatus',
+	function($scope, $stateParams, LogInfo,growl,SMTPLogFactory, ApiUrl,SMTPTestCasesDescription,CriteriaDescription,SMTPTestCases,XDRTestCasesTemplate,XDRTestCases,XDRRunTestCases,SMTPProfileFactory,SettingsFactory, PropertiesFactory, $timeout,$window,CCDADocumentsFactory, DirectRICertFactory,DirectCertsLinkFactory,$filter, $state,ReplaceDomain,PropFactory,$location,$anchorScroll,XDRCheckStatus) {
          $scope.paramCri =  $stateParams.paramCri;
          $scope.pageTitle= $state.current.data.pageTitle;
 		$scope.filterCrit = $state.current.data.filterCrit;
@@ -63,6 +63,10 @@ surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl
 			$scope.viewObj = "certb1";
 		}
 
+		PropFactory.get(function(result) {
+			$scope.ettDomain = result.data;
+		});
+
 		XDRTestCasesTemplate.getTestCasesDescription(function(response) {
 			var result = response.data;
 			angular.forEach(result, function(test) {
@@ -71,6 +75,7 @@ surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl
 				} else if(test.status === 'configure') {
 					$scope.configureXdr(test);
 				}
+                test = ReplaceDomain.getReplacedDomain(test,$scope.ettDomain);
 				$scope.xdrTests.push(test);
 			});
 		});
@@ -152,7 +157,8 @@ surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl
 				test.testResult = [{
 					"criteriaMet": "NA"
 				}];
-					$scope.smtpTests.push(test);
+                test = ReplaceDomain.getReplacedDomain(test,$scope.ettDomain);
+				$scope.smtpTests.push(test);
 			});
 		});
 

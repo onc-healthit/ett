@@ -31,8 +31,8 @@ edgeSmtp.config(['$stateProvider',
 ]);
 
 
-edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory', 'SMTPLogFactory', 'growl', '$state', '$uibModal', 'ApiUrl', 'DirectRICertFactory','$location','$anchorScroll','$interval',
-	function($scope, LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory, SMTPLogFactory, growl, $state, $uibModal, ApiUrl, DirectRICertFactory,$location,$anchorScroll,$interval) {
+edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription', 'SMTPTestCases', '$q', '$timeout', '$window', 'SMTPProfileFactory', 'SMTPLogFactory', 'growl', '$state','ReplaceDomain', 'PropFactory','$uibModal', 'ApiUrl', 'DirectRICertFactory','$location','$anchorScroll','$interval',
+	function($scope,  LogInfo, SMTPTestCasesDescription, SMTPTestCases, $q, $timeout, $window, SMTPProfileFactory, SMTPLogFactory, growl, $state,ReplaceDomain, PropFactory,$uibModal, ApiUrl, DirectRICertFactory,$location,$anchorScroll,$interval) {
 
 		// Certificate upload
 		$scope.fileInfo = {
@@ -86,8 +86,14 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 		}
 		$scope.edgeProtocol = $state.current.data.protocol;
 
+
+		PropFactory.get(function(result) {
+			$scope.ettDomain = result.data;
+		});
+
 		SMTPTestCasesDescription.getTestCasesDescription(function(response) {
 			var result = response.data;
+
 
 			$scope.testingMode = result.testingMode;
 			angular.forEach(result.tests, function(test) {
@@ -95,6 +101,10 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 				test.testResult = [{
 					"criteriaMet": "NA"
 				}];
+
+
+               test = ReplaceDomain.getReplacedDomain(test,$scope.ettDomain);
+
 				// Check the protocol first
 				if (test.protocol === $scope.edgeProtocol) {
 					// Check the system edge or hisp
