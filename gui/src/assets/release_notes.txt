@@ -1,3 +1,24 @@
+ ==Version 2.2#2/15/2018 
+  
+    *1. C-CDA Validator UI has been revised - addition of validator home page, IG only option for 2.1
+    
+    *2. Bookmark attribute changed to "ETT Home".
+    
+    *3. HISP SMTP Test 8, 14, 'More Info' updated.
+    
+    *4. R2.1 validator flips the report after the validate button is selected.
+    
+    *5. Test by criteria/Surveillance reorganized to include : (b)(1), Criteria (I)(A) Send using Edge Protocol - Delivery Notification
+    
+    *6. Heading and test panel in the Surveillance test for Direct has been updated 
+    
+    *7. Enhanced google analytics.
+    
+    *8. SMTP Test 28 message subject typographic error has been fixed 
+    
+    
+
+
 ==Version 2.1.2.3#1/29/2018
     *1. Added ccda file name of the submitted file for debugging. 
     
