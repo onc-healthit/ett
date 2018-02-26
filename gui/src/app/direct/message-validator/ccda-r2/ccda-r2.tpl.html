@@ -102,14 +102,7 @@
 									<strong style="margin-left: 20px;">{{ccdaDocument.name}}</strong>
 								</div>
 							</div>
-							<div>
-								<a ng-href="{{ccdaDocument.link}}" target="_self" class="btn btn-primary" download="{{ccdaDocument.name}}" ng-disabled="!ccdaDocument.link">
-									<span>Download</span>
-								</a>
-								<a href="https://github.com/siteadmin/2015-Certification-C-CDA-Test-Data/archive/master.zip" target="_blank" class="btn btn-primary">
-									<span>Download all files</span>
-								</a>
-							</div>
+
 						</div>
 					</div>
 			</div>
@@ -179,6 +172,16 @@
 						</ui-select-choices>
 					</ui-select>
 			</div>
+			<div>
+					<a ng-href="{{ccdaDocument.link}}" target="_self" class="btn btn-primary" download="{{ccdaDocument.name}}" ng-disabled="!ccdaDocument.path">
+						<span>Download</span>
+					</a>
+					<a href="https://github.com/siteadmin/2015-Certification-C-CDA-Test-Data/archive/master.zip" target="_blank" class="btn btn-primary">
+						<span>Download all files</span>
+					</a>
+
+			</div>
+
 		</div>
 
 
@@ -208,8 +211,6 @@
 					</div>
 				</div>
 			</div>
-
-
 
 			<div class="div_left_margin row" class="row">
 				<div class="col-sm-12">
