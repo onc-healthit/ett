@@ -1,3 +1,10 @@
+ ==Version 2.2.1#2/26/2018 
+  
+    *1. C-CDA Validator was updated to produce warnings for care plan sections that are mentioned in the test data but are a SHOULD in the IG.
+    
+    *2. Updated IG validation to align MedicationSection/code rules with R1.1 C-CDATemplateLibrary.
+ 
+ 
  ==Version 2.2#2/15/2018 
   
     *1. C-CDA Validator UI has been revised - addition of validator home page, IG only option for 2.1
