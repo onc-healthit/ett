@@ -1,4 +1,4 @@
- ==Version 2.2.1#2/26/2018 
+ ==Version 2.2.0.1#2/26/2018 
   
     *1. C-CDA Validator was updated to produce warnings for care plan sections that are mentioned in the test data but are a SHOULD in the IG.
     
