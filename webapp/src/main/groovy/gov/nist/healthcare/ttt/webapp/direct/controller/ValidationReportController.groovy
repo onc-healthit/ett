@@ -84,7 +84,7 @@ public class ValidationReportController {
 				InputStream tmpZip = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
 				MimeBodyPart zipPart = new MimeBodyPart(tmpZip);
 				contentStream = zipPart.getInputStream();
-			} else if(partRes.getContentType().contains("xml")) {
+			} else if(partRes.getContentType().contains("application/xml")) {
 				contentStream = new MimeBodyPart(new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8))).getInputStream();
 			} else {
 				contentStream = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
