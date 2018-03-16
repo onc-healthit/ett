@@ -1,3 +1,14 @@
+ ==Version 2.3#3/15/2018 
+ 
+ 	*1. R2.1 validator UI now includes download files option.
+	
+	*2. C32 and CCR files removed from Send Direct Message and Documentation.
+	
+	*3. Mime headers removed from the downloaded ccda file sent using direct.
+	
+	*4. Test data update: 
+		Modified test data for Care Plan (b)(9) criteria to identify clearly the optionality and required data for Care Plan sections
+ 
  ==Version 2.2.0.1#2/26/2018 
   
     *1. C-CDA Validator was updated to produce warnings for care plan sections that are mentioned in the test data but are a SHOULD in the IG.
