@@ -6,8 +6,7 @@
 	
 	*3. Mime headers removed from the downloaded ccda file sent using direct.
 	
-	*4. Test data update: 
-		Modified test data for Care Plan (b)(9) criteria to identify clearly the optionality and required data for Care Plan sections
+	*4. Test data update: Modified test data for Care Plan (b)(9) criteria to identify clearly the optionality and required data for Care Plan sections
  
  ==Version 2.2.0.1#2/26/2018 
   
