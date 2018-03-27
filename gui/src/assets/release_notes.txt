@@ -2,7 +2,7 @@
 
  ==Version 2.3.0.1#3/26/2018 
 
-	*C-CDA Validator Update - 
+	*C-CDA Validator Update:
 
 	-1: Configured Personal And Legal Relationship Role Type
 		urn:oid:2.16.840.1.113883.11.20.12.1 ValueSet vocabulary validation for
