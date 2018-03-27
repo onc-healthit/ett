@@ -2,14 +2,14 @@
 
  ==Version 2.3.0.1#3/26/2018 
 
-C-CDA Validator Update - 
+	*C-CDA Validator Update - 
 
-1: Configured Personal And Legal Relationship Role Type
-urn:oid:2.16.840.1.113883.11.20.12.1 ValueSet vocabulary validation for
-Care Plan documents as per CONF:1198-3236 for both code and codeSystem
-enforcement
+	-1: Configured Personal And Legal Relationship Role Type
+		urn:oid:2.16.840.1.113883.11.20.12.1 ValueSet vocabulary validation for
+		Care Plan documents as per CONF:1198-3236 for both code and codeSystem
+		enforcement
 
-2: Removed Encounter Diagnosis content validation from e1 VDT validation objectives
+	-2: Removed Encounter Diagnosis content validation from e1 VDT validation objectives
  
  ==Version 2.3#3/15/2018 
  
