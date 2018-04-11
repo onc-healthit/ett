@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.database.jdbc;
 
+import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
 import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeLogImpl;
@@ -20,8 +22,9 @@ import gov.nist.healthcare.ttt.misc.Configuration;
  *
  * @author mccaffrey
  */
-public class SmtpEdgeLogFacade extends DatabaseFacade {
 
+public class SmtpEdgeLogFacade extends DatabaseFacade {
+	private static final String SMTPEDGEPROFILE_ENCRYPTKEY = getPasswdEncryKey();
     private static final String SMTPEDGEPROFILE_TABLE = "SmtpEdgeProfile";
     private static final String SMTPEDGEPROFILE_SMTPEDGEPROFILEID = "SmtpEdgeProfileID";
     private static final String SMTPEDGEPROFILE_PROFILENAME = "ProfileName";
@@ -38,9 +41,8 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     private static final String SMTPEDGELOG_TESTCASENUMBER = "TestCaseNumber";
     private static final String SMTPEDGELOG_CRITERIAMET = "CriteriaMet";
     private static final String SMTPEDGELOG_TESTREQUESTRESPONSE = "TestRequestsResponse";
-    private static final String SMTPEDGEPROFILE_ENCRYPTKEY = "F3429A0B371ED2D9423B83240D21A4220C3";
     private static final String CHECKDATA_TYPE = "SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'SmtpEdgeProfile' AND COLUMN_NAME = 'sutPassword'";
-    private static final String ALTER_COLUMN = "ALTER TABLE SMTPEDGEPROFILE MODIFY SUTPASSWORD VARBINARY(255)";
+    private static final String ALTER_COLUMN = "ALTER TABLE SmtpEdgeProfile MODIFY SUTPassword varbinary(255)";
     private static final String DATA_TYPE = "DATA_TYPE";
 
     /**
@@ -48,6 +50,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
      * @param config
      * @throws DatabaseException
      */
+    
     public SmtpEdgeLogFacade(Configuration config) throws DatabaseException {
         super(config);
     }
@@ -554,6 +557,22 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
             }        	
     }
     
+	private static String getPasswdEncryKey(){
+		String passwdEncryKey = "F3429A0B371ED20C3";
+		try{
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			if (prop.getProperty("ttt.passwd.encryKey") !=null){
+				passwdEncryKey = prop.getProperty("ttt.passwd.encryKey");
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return passwdEncryKey;
+	}        
     /**
      *
      * @param args
