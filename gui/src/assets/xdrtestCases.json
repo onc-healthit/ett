@@ -43,6 +43,10 @@
         "hoverlabel":"Direct From Address: SUT (HISP) outgoing SMTP address (or) MDN.",
         "key": "direct_from",
         "type": "string"
+    }, {
+        "name": "C-CDA Document Type",
+        "key": "payload",
+        "type": "CCDAWidget"
     }],
     "Test Focus": "XDR Send",
     "Data Flow in Direct": "Edge Sends an XDR message to HISP along with Full Metadata",
