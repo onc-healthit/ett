@@ -1,10 +1,6 @@
 package gov.nist.healthcare.ttt.database.jdbc;
 
-import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeLogImpl;
-import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeLogInterface;
-import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeProfileImpl;
-import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeProfileInterface;
-import gov.nist.healthcare.ttt.misc.Configuration;
+import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,14 +9,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
+
+import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeLogImpl;
+import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeLogInterface;
+import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeProfileImpl;
+import gov.nist.healthcare.ttt.database.smtp.SmtpEdgeProfileInterface;
+import gov.nist.healthcare.ttt.misc.Configuration;
 
 /**
  *
  * @author mccaffrey
  */
-public class SmtpEdgeLogFacade extends DatabaseFacade {
 
+public class SmtpEdgeLogFacade extends DatabaseFacade {
+	private static final String SMTPEDGEPROFILE_ENCRYPTKEY = getPasswdEncryKey();
     private static final String SMTPEDGEPROFILE_TABLE = "SmtpEdgeProfile";
     private static final String SMTPEDGEPROFILE_SMTPEDGEPROFILEID = "SmtpEdgeProfileID";
     private static final String SMTPEDGEPROFILE_PROFILENAME = "ProfileName";
@@ -37,12 +41,16 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     private static final String SMTPEDGELOG_TESTCASENUMBER = "TestCaseNumber";
     private static final String SMTPEDGELOG_CRITERIAMET = "CriteriaMet";
     private static final String SMTPEDGELOG_TESTREQUESTRESPONSE = "TestRequestsResponse";
+    private static final String CHECKDATA_TYPE = "SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'SmtpEdgeProfile' AND COLUMN_NAME = 'sutPassword'";
+    private static final String ALTER_COLUMN = "ALTER TABLE SmtpEdgeProfile MODIFY SUTPassword varbinary(255)";
+    private static final String DATA_TYPE = "DATA_TYPE";
 
     /**
      *
      * @param config
      * @throws DatabaseException
      */
+    
     public SmtpEdgeLogFacade(Configuration config) throws DatabaseException {
         super(config);
     }
@@ -139,21 +147,19 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
      * @throws DatabaseException
      */
     public String saveSmtpProfile(SmtpEdgeProfileInterface profile) throws DatabaseException {
-
         String existingProfileID = this.getProfileId(profile.getUsername(), profile.getProfileName());
         if(existingProfileID == null || "".equals(existingProfileID))
             return this.addNewSmtpProfile(profile);
-
+        changeSutDataType(); // remove this line of code after DB is updated to new datatype
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE " + SMTPEDGEPROFILE_TABLE + ' ');
         sql.append("SET ");
         sql.append(SMTPEDGEPROFILE_SUTSMTPADDRESS + " = '" + profile.getSutSMTPAddress() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTEMAILADDRESS + " = '" + profile.getSutEmailAddress() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTUSERNAME + " = '" + profile.getSutUsername() + "', ");
-        sql.append(SMTPEDGEPROFILE_SUTPASSWORD + " = '" + profile.getSutPassword() + "' ,");
+        sql.append(SMTPEDGEPROFILE_SUTPASSWORD + " = AES_ENCRYPT('" + profile.getSutPassword() + "','"+SMTPEDGEPROFILE_ENCRYPTKEY+"' ) ,");
         sql.append(SMTPEDGEPROFILE_USETLS + " =  "+ profile.getUseTLS() +" ");
         sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + existingProfileID + "';");
-
         try {
             this.getConnection().executeUpdate(sql.toString());
         } catch (SQLException ex) {
@@ -166,7 +172,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     }
 
     private String addNewSmtpProfile(SmtpEdgeProfileInterface profile) throws DatabaseException {
-
+    	changeSutDataType(); // remove this line of code after DB is updated to new datatype
         String smtpProfileID = UUID.randomUUID().toString();
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + SMTPEDGEPROFILE_TABLE + ' ');
@@ -197,9 +203,11 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(DatabaseConnection.makeSafe(profile.getSutEmailAddress()));
         sql.append("' , '");
         sql.append(DatabaseConnection.makeSafe(profile.getSutUsername()));
-        sql.append("' , '");
-        sql.append(DatabaseConnection.makeSafe(profile.getSutPassword()));
-        sql.append("' , ");
+        sql.append("' , AES_ENCRYPT('");
+        sql.append(profile.getSutPassword());
+        sql.append("',UNHEX('");
+        sql.append(SMTPEDGEPROFILE_ENCRYPTKEY);
+        sql.append("')) , ");
         sql.append(profile.getUseTLS());
         sql.append(");");
         try {
@@ -441,8 +449,34 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
 
         StringBuilder sql = new StringBuilder();
 
-        sql.append("SELECT * ");
-        sql.append("FROM " + SMTPEDGEPROFILE_TABLE + ' ');
+        sql.append("SELECT  ");
+        sql.append(SMTPEDGEPROFILE_SMTPEDGEPROFILEID);
+        sql.append(" , ");
+        sql.append(SMTPEDGEPROFILE_PROFILENAME);
+        sql.append(" , ");
+        sql.append(SMTPEDGEPROFILE_SUTEMAILADDRESS);
+        sql.append(" , ");
+        sql.append(SMTPEDGEPROFILE_SUTSMTPADDRESS);
+        sql.append(" , ");
+        sql.append(SMTPEDGEPROFILE_SUTUSERNAME);
+        sql.append(" , ");
+        sql.append(USERS_USERNAME);
+        sql.append(" , ");
+        sql.append(SMTPEDGEPROFILE_USETLS);
+        sql.append(" , ");
+        sql.append(" if(CAST(AES_DECRYPT(");
+        sql.append(SMTPEDGEPROFILE_SUTPASSWORD);
+        sql.append(", UNHEX('");
+        sql.append(SMTPEDGEPROFILE_ENCRYPTKEY);
+        sql.append("')) AS CHAR(255)) IS NULL,");
+        sql.append(SMTPEDGEPROFILE_SUTPASSWORD);
+        sql.append(", CAST(AES_DECRYPT(");
+        sql.append(SMTPEDGEPROFILE_SUTPASSWORD);
+        sql.append(", UNHEX('");
+        sql.append(SMTPEDGEPROFILE_ENCRYPTKEY);
+        sql.append("')) AS CHAR(255))) ");
+        sql.append(SMTPEDGEPROFILE_SUTPASSWORD);
+        sql.append(" FROM " + SMTPEDGEPROFILE_TABLE + ' ');
         sql.append("WHERE " + USERS_USERNAME + " = '" + username + "';");
 
         ResultSet result = null;
@@ -506,6 +540,39 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
 
     }
 
+    private void changeSutDataType() throws DatabaseException {
+        	ResultSet result = null;
+            String dataType = null;
+            try {
+                result = this.getConnection().executeQuery(CHECKDATA_TYPE);
+                while (result.next()) {
+                	dataType = result.getString(DATA_TYPE);
+                }
+                if (dataType !=null && dataType.equalsIgnoreCase("varchar")){
+                	this.getConnection().execute(ALTER_COLUMN);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new DatabaseException(e.getMessage());
+            }        	
+    }
+    
+	private static String getPasswdEncryKey(){
+		String passwdEncryKey = "F3429A0B371ED20C3";
+		try{
+			Properties prop = new Properties();
+			String path = "./application.properties";
+			FileInputStream file = new FileInputStream(path);
+			prop.load(file);
+			file.close();
+			if (prop.getProperty("ttt.passwd.encryKey") !=null){
+				passwdEncryKey = prop.getProperty("ttt.passwd.encryKey");
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return passwdEncryKey;
+	}        
     /**
      *
      * @param args

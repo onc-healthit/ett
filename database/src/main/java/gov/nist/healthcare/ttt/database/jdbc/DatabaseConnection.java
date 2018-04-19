@@ -103,6 +103,17 @@ public class DatabaseConnection {
     }
 
     /**
+    *
+    * @param sql
+    * @return
+    * @throws SQLException
+    */
+   public boolean execute(String sql) throws SQLException {
+       boolean bo = false;
+       bo = stmt.execute(sql);
+       return bo;
+   }    
+    /**
      *
      * @param sql
      * @return
