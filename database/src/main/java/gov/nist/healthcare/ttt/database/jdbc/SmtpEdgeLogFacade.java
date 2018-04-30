@@ -50,7 +50,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
      * @param config
      * @throws DatabaseException
      */
-    
+
     public SmtpEdgeLogFacade(Configuration config) throws DatabaseException {
         super(config);
     }
@@ -157,9 +157,11 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(SMTPEDGEPROFILE_SUTSMTPADDRESS + " = '" + profile.getSutSMTPAddress() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTEMAILADDRESS + " = '" + profile.getSutEmailAddress() + "', ");
         sql.append(SMTPEDGEPROFILE_SUTUSERNAME + " = '" + profile.getSutUsername() + "', ");
-        sql.append(SMTPEDGEPROFILE_SUTPASSWORD + " = AES_ENCRYPT('" + profile.getSutPassword() + "','"+SMTPEDGEPROFILE_ENCRYPTKEY+"' ) ,");
+        sql.append(SMTPEDGEPROFILE_SUTPASSWORD + " = AES_ENCRYPT('" + profile.getSutPassword() + "',UNHEX('"+SMTPEDGEPROFILE_ENCRYPTKEY+"') ) ,");
         sql.append(SMTPEDGEPROFILE_USETLS + " =  "+ profile.getUseTLS() +" ");
         sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + existingProfileID + "';");
+        //System.out.println("profile.getSutUsername() ..."+profile.getSutUsername());
+        //System.out.println("update sql ..."+sql.toString());
         try {
             this.getConnection().executeUpdate(sql.toString());
         } catch (SQLException ex) {
@@ -554,9 +556,9 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new DatabaseException(e.getMessage());
-            }        	
+            }
     }
-    
+
 	private static String getPasswdEncryKey(){
 		String passwdEncryKey = "F3429A0B371ED20C3";
 		try{
@@ -572,7 +574,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
 			e.printStackTrace();
 		}
 		return passwdEncryKey;
-	}        
+	}
     /**
      *
      * @param args
