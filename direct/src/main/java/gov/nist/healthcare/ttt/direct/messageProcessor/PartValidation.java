@@ -562,7 +562,7 @@ public class PartValidation {
 		if(types.containsKey(trimmedTo)) {
 			logger.info("CCDA R1 type: " + types.get(trimmedTo));
 			return types.get(trimmedTo);
-		} else if(trimmedTo.startsWith("r2_") || trimmedTo.startsWith("testing")) {
+		} else if(trimmedTo.startsWith("r2_")) {
 			logger.info("To address start with r2_ this should contain R2 CCDA");
 			// Get ccdar2 types
 			getCCDAR2Type(trimmedTo);
