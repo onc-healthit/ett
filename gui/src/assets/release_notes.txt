@@ -9,7 +9,7 @@
 	- The validator was updated to allow resolved problems to appear as part of the History of Past Illness section.
 	- The Test XML files for CIRI for R11 version was updated to properly link narrative with entries. 
 	
-	*2. ETT updated with enhanced database security measures.
+	*3. ETT updated with enhanced database security measures.
 
 ==Version 2.3.1#4/19/2018 
 
