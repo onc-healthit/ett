@@ -1,6 +1,13 @@
 ==Version 2.3.1.1#4/30/2018 
 
-	*1. ERRATA C-CDA Validator Update
+	*1. C-CDA ERRATA Updates to the Validator: 
+	- Please refer to the thread https://groups.google.com/forum/#!topic/edge-test-tool/vsA_W9Yg4mc for the descriptions of the ERRATA updates. The Validator has been updated with the ERRATAs that has been approved and released by HL7 in September 2017 for C-CDA R2.1
+	- As a result of the ERRATA the test data was updated. Specifically the XML files being used by Receivers for b1, b2, b4, b7, were updated to comply with the ERRATA.
+	
+	*2. Other C-CDA Validator Updates:
+	- The validator was updated to validate document type and indicate errors based on the certification criteria, previously this was being done visually by the ATLs.
+	- The validator was updated to allow resolved problems to appear as part of the History of Past Illness section.
+	- The Test XML files for CIRI for R11 version was updated to properly link narrative with entries. 
 	
 	*2. ETT updated with enhanced database security measures.
 
