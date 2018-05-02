@@ -1,5 +1,6 @@
 ==Version 2.3.1.2#05/01/2018
 	*1. Fixed ReactionObservation value set binding to Reaction Severity which was incorrect per HL7 clarifications received for ERRATA 836. 
+	
 	*2. Updated value set per ERRATA 1276 to reflect SNOMED-CT instead of FDA for routeCode.
 
 
