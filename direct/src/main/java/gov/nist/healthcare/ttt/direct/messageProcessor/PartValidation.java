@@ -562,7 +562,7 @@ public class PartValidation {
 		if(types.containsKey(trimmedTo)) {
 			logger.info("CCDA R1 type: " + types.get(trimmedTo));
 			return types.get(trimmedTo);
-		} else if(trimmedTo.startsWith("r2_")) {
+		} else if(trimmedTo.startsWith("r2_") || trimmedTo.startsWith("testing")) {
 			logger.info("To address start with r2_ this should contain R2 CCDA");
 			// Get ccdar2 types
 			getCCDAR2Type(trimmedTo);
@@ -574,10 +574,11 @@ public class PartValidation {
 
 	public void getCCDAR2Type(String to) {
 		// Initialize ccda r2 type variables
-		this.ccdaR2Type = "";
+		this.ccdaR2Type = "NonSpecificCCDA";
 		this.ccdaR2ReferenceFilename = "";
 
 		// Get type and reference filename from direct to address
+		/*
 		this.ccdaR2ReferenceFilename = to.substring(3);
 
 		if(this.ccdaR2ReferenceFilename.contains("_sample")) {
@@ -586,7 +587,8 @@ public class PartValidation {
 			this.ccdaR2Type = this.ccdaR2ReferenceFilename;
 			this.ccdaR2ReferenceFilename = "";
 		}
-
+		*/
+		
 		logger.info("CCDA R2 validation params: Type " + this.ccdaR2Type + " Ref filename " + this.ccdaR2ReferenceFilename);
 	}
 
@@ -640,7 +642,9 @@ public class PartValidation {
 			// CONVERT RESPONSE TO STRING
 			String result = EntityUtils.toString(response.getEntity());
 			JSONObject jsonObj = new JSONObject(result);
-			  jsonObj.put("ccdaRType", "r1");
+			JSONObject resultsMetaData = jsonObj.getJSONObject("resultsMetaData");
+			String ccdaversion = (String)resultsMetaData.get("ccdaVersion");
+			  jsonObj.put("ccdaRType", ccdaversion != null && ccdaversion.startsWith("R2") ? "r2" : "r1");
 			result = jsonObj.toString();
 
 			CCDAValidationReportImpl report = new CCDAValidationReportImpl();
@@ -679,7 +683,10 @@ public class PartValidation {
 			// CONVERT RESPONSE TO STRING
 			result = EntityUtils.toString(response.getEntity());
 			  JSONObject jsonObj = new JSONObject(result);
-			  jsonObj.put("ccdaRType", "r2");
+			JSONObject resultsMetaData = jsonObj.getJSONObject("resultsMetaData");
+			String ccdaversion = (String)resultsMetaData.get("ccdaVersion");
+				  jsonObj.put("ccdaRType", ccdaversion != null && ccdaversion.startsWith("R1") ? "r1" : "r2");
+			  //jsonObj.put("ccdaRType", "r2");
 			result = jsonObj.toString();
 		} catch(Exception e) {
 			logger.error("Error validation CCDA " + e.getMessage());
