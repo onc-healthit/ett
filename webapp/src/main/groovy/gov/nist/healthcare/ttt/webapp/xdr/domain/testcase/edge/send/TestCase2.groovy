@@ -48,62 +48,62 @@ final class TestCase2 extends TestCaseSender {
 	String ccdaR2Type = "170.315_b2_CIRI_Amb"
 	String ccdaR2ReferenceFilename = "170.315_b2_ciri__r11_sample1_v4.xml"
 
-	@Autowired
-	public TestCase2(TestCaseExecutor ex){
-		super(ex)
-	}
+    @Autowired
+    public TestCase2(TestCaseExecutor ex){
+        super(ex)
+    }
 
-	@Override
-	Result run(Map context, String username) {
+    @Override
+    Result run(Map context, String username) {
 
-		executor.validateInputs(context,["direct_from"])
-		
-		 try {
+        executor.validateInputs(context,["direct_from"])
+        
+ 		try {
 			this.ccdaR2ReferenceFilename = context.payload.name;
-			ArrayList<String> path = context.payload.path;
+	        ArrayList<String> path = context.payload.path;
 			if(path.size() > 1) {
 				this.ccdaR2Type = path.get(path.size() - 1);
 			}
 		} catch(Exception e) {
-			//throw new TTTCustomException("0x0080", "Could not get properties from C-CDA widget. Make sure you selected a Document type.");
-			this.ccdaR2ReferenceFilename = ccdaR2ReferenceFilename;
-			this.ccdaR2Type = ccdaR2Type;
-		}
+			throw new TTTCustomException("0x0080", "Could not get properties from C-CDA widget. Make sure you selected a Document type.");
+			/*this.ccdaR2ReferenceFilename = ccdaR2ReferenceFilename;
+			this.ccdaR2Type = ccdaR2Type;*/
+		}       
 
-		//correlate this test to a direct_from address and a simulator id so we can be notified
-		TestCaseBuilder builder = new TestCaseBuilder(id, username)
-		XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
-		executor.db.addNewXdrRecord(builder.addStep(step1).build())
+        //correlate this test to a direct_from address and a simulator id so we can be notified
+        TestCaseBuilder builder = new TestCaseBuilder(id, username)
+        XDRTestStepInterface step1 = executor.correlateRecordWithSimIdAndDirectAddress(sim, context.direct_from)
+        executor.db.addNewXdrRecord(builder.addStep(step1).build())
 
-		def content = new Content()
-		content.endpoint = endpoints[0]
-		content.endpointTLS = endpoints[1]
+        def content = new Content()
+        content.endpoint = endpoints[0]
+        content.endpointTLS = endpoints[1]
 
-		return new Result(Status.PENDING, content)
-	}
+        return new Result(Status.PENDING, content)
+    }
 
-	@Override
-	public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
+    @Override
+    public void notifyXdrReceive(XDRRecordInterface record, TkValidationReport report) {
 
-		XDRTestStepInterface step = executor.executeStoreXDRReport(report)
+        XDRTestStepInterface step = executor.executeStoreXDRReport(report)
 		
 		FileUtils.writeStringToFile(new File("response.txt"), report.response);
 
-		//we update the record
-		XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
+        //we update the record
+        XDRRecordInterface updatedRecord = new TestCaseBuilder(record).addStep(step).build()
 		
 		// Parsing of the request
 		try {
 			MetadataLevel level = Parsing.getMetadataLevel(report.request);
 			if(level.equals(MetadataLevel.MINIMAL)) {
-								log.info("XDR Test Case 2: Metadata was minimal, should be XDS.  Failure.")
+                                log.info("XDR Test Case 2: Metadata was minimal, should be XDS.  Failure.")
 				updatedRecord.status = Status.FAILED
 			} else {
 				if(Parsing.isRegistryResponseSuccessFullHeaders(report.response)) {
-										log.info("XDR Test Case 2: Metadata was XDS and NO errors detected by toolkit.")
+                                        log.info("XDR Test Case 2: Metadata was XDS and NO errors detected by toolkit.")
 					updatedRecord.status = Status.PASSED
 				} else {
-										log.info("XDR Test Case 2: Metadata was correctly XDS but had errors detected by toolkit.  Failure.")
+                                        log.info("XDR Test Case 2: Metadata was correctly XDS but had errors detected by toolkit.  Failure.")
 					updatedRecord.status = Status.FAILED
 				}
 			}
@@ -131,9 +131,9 @@ final class TestCase2 extends TestCaseSender {
 			
 			updatedRecord.setMDHTValidationReport(res);
 		}
-		executor.db.updateXDRRecord(updatedRecord)
+        executor.db.updateXDRRecord(updatedRecord)	
 
-	}
+    }
 	public String validateCCDA_R2(byte[] ccdaFile, XDRRecordInterface record) {
 		log.info("Validating CCDA " + "ccda" + " with validation objective " + this.ccdaR2Type + " and reference filename " + this.ccdaR2ReferenceFilename);
 
@@ -179,7 +179,7 @@ final class TestCase2 extends TestCaseSender {
 		return json.toString();
 	}
 
-	public Result getReport(XDRRecordInterface record) {
-		executor.getSimpleSendReportWithCcda(record)
-	}
+    public Result getReport(XDRRecordInterface record) {
+        executor.getSimpleSendReport(record)
+    }
 }
