@@ -345,7 +345,7 @@ class TestCaseExecutor {
 
 			// Convert to json object
 			JsonNode jsonObject = null;
-			log.info(record.MDHTValidationReport);
+			//log.info(record.MDHTValidationReport);
 			try{
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
