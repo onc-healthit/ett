@@ -65,9 +65,9 @@ final class TestCase2 extends TestCaseSender {
 				this.ccdaR2Type = path.get(path.size() - 1);
 			}
 		} catch(Exception e) {
-			//throw new TTTCustomException("0x0080", "Could not get properties from C-CDA widget. Make sure you selected a Document type.");
-			this.ccdaR2ReferenceFilename = ccdaR2ReferenceFilename;
-			this.ccdaR2Type = ccdaR2Type;
+			throw new TTTCustomException("0x0080", "Could not get properties from C-CDA widget. Make sure you selected a Document type.");
+			/*this.ccdaR2ReferenceFilename = ccdaR2ReferenceFilename;
+			this.ccdaR2Type = ccdaR2Type;*/
 		}       
 
         //correlate this test to a direct_from address and a simulator id so we can be notified
