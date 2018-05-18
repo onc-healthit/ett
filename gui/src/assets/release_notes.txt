@@ -1,3 +1,12 @@
+==Version 2.3.2#05/17/2018
+
+	*1. The direct endpoint - testing@ttpedge.sitenv.org augmented for both 1.1 and 2.1 validation based on the attachment.
+	
+	*2. Server log architecture optimization.
+	
+	
+
+
 ==Version 2.3.1.2#05/01/2018
 	*1. Fixed ReactionObservation value set binding to Reaction Severity which was incorrect per HL7 clarifications received for ERRATA 836. 
 	
