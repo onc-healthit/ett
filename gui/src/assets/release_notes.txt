@@ -8,7 +8,7 @@
 	- The modified implementation should look like the following:
 	- <routeCode code="someValidCode" codeSystem="2.16.840.1.113883.3.26.1.1" codeSystemName="NCI Thesaurus">
 	- <translation code="someValidCode" codeSystem="2.16.840.1.113883.6.96"/>
-        = </routeCode>
+        - </routeCode>
         - A single written example of the 4 locations modified is enforced as:
         - Immunization Activity (V3)
         - 1.    MAY contain zero or one [0..1] routeCode, which SHALL be selected from ValueSet Medication Route FDA urn:oid:2.16.840.1.113883.3.88.12.3221.8.7 DYNAMIC (CONF:1198-8839).
