@@ -1,7 +1,7 @@
 ==Version 2.3.2.1#05/29/2018
 
-	*1. CCDA validator updated - see release notes here: 
-		- https://github.com/siteadmin/site-content/blob/master/CCDAValidatorReleaseNotes.md
+	*1. CCDA validator updated
+		- The validator has been updated to include the latest HL7 C-CDA Schema (with internal fix due to errta in HL7 Schema) which includes support for sdtc:functionCode in cda::Performer2 and cda::Participant2
 
 ==Version 2.3.2#05/17/2018
 
