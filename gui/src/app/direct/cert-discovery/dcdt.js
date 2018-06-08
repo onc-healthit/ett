@@ -98,7 +98,7 @@ dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory',
          Instructions: "You should have received an email indicating the test case results for your system. Examine the results to see if your system passed the test case. If you do not receive a message for the test case, then you should assume that the test case failed.",
          Target_Certificate: [{"name": "D2_valB",
                                "Valid": "true",
-                               "Description": "Valid address-bound certificate in a DNS CERT record containing the Direct address in the rfc822Name of the SubjectAlternativeName extension.",
+                               "Description": "Valid domain-bound certificate in a DNS CERT record containing the Direct address in the rfc822Name of the SubjectAlternativeName extension.",
                                "Binding_Type": "DOMAIN",
                                "Locaton": [{"Type": "DNS",
                                     "Mail_Address": "domain1.dcdt30prod.sitenv.org"
