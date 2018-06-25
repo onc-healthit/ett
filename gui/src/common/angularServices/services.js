@@ -238,10 +238,19 @@ tttService.factory('ForgotPassword', ['$resource', 'RESOURCES',
 
 tttService.factory('CCDADocumentsFactory', ['$resource', 'RESOURCES',
     function($resource, RESOURCES) {
-        return $resource(RESOURCES.USERS_API + 'ccdadocuments', {}, {});
+        return $resource(RESOURCES.USERS_API + 'ccdadocuments', {testCaseType: ''}, {});
     }
 ]);
 
+/**
+ *   CCDA SERVICES XDR
+ */
+
+tttService.factory('CCDAXdrDocumentsFactory', ['$resource', 'RESOURCES',
+    function($resource, RESOURCES) {
+        return $resource(RESOURCES.USERS_API + 'ccdadocuments', {testCaseType: 'xdr'}, {});
+    }
+]);
 
 /**
  *  DIRECT RI Cert Upload

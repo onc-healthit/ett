@@ -490,3 +490,137 @@ tttDirective.directive('ccdaWidgetreceiver', ['$uibModal', function($uibModal) {
         }])
     };
 }]);
+
+tttDirective.directive('ccdaWidgetxdr', ['$uibModal', function($uibModal) {
+    return {
+        restrict: 'E',
+        scope: {
+            ccdaDocument: '=ngModel'
+        },
+        replace: true,
+        template: '<div><button class="btn btn-default" ng-click="openCcdaModal()" style="margin-bottom: 10px;"">Select document...</button><strong>{{ccdaDocument.name}}</strong></div>',
+        controller: ('CcdaWidgetCtrl', ['$scope', '$uibModal', function($scope, $uibModal) {
+            $scope.openCcdaModal = function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'templates/ccdaTemplates/ccdaWidgetTemplate.tpl.html',
+                    controller: ('CCDADocumentPicker', ['$scope', '$uibModalInstance', 'CCDAXdrDocumentsFactory',
+                        function($scope, $uibModalInstance, CCDAXdrDocumentsFactory) {
+                            $scope.modalTitle = "Select C-CDA Document Type";
+                            $scope.buttonSuccess = "Ok";
+                            $scope.sutRole = "sender";
+                            $scope.ccdaData = {};
+
+                            CCDAXdrDocumentsFactory.get(function(data) {
+                                $scope.ccdaDocuments = data;
+                                if (data !== null) {
+                                    $scope.sutRole = Object.keys(data)[0];
+                                    $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                                }
+                            }, function(error) {
+                                console.log(error);
+                            });
+
+                            $scope.displayType = function(type, allowedType) {
+                                if (allowedType !== undefined) {
+                                    if (type.toLowerCase().indexOf(allowedType) > -1) {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            };
+
+                            $scope.switchDocType = function(type) {
+                                $scope.sutRole = type;
+                                $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                            };
+
+                            $scope.save = function() {
+                                $uibModalInstance.close($scope.ccdaDocument);
+                            };
+
+
+                            $scope.close = function() {
+                                $uibModalInstance.dismiss("Ok");
+                            };
+                        }
+                    ])
+                });
+
+                modalInstance.result.then(function(selectedItem) {
+                    $scope.ccdaDocument = selectedItem;
+                }, function() {
+                    // console.log('Modal dismissed at: ' + new Date());
+                });
+            };
+        }])
+    };
+}]);
+
+
+tttDirective.directive('ccdaWidgetreceiverxdr', ['$uibModal', function($uibModal) {
+    return {
+        restrict: 'E',
+        scope: {
+            ccdaDocument: '=ngModel'
+        },
+        replace: true,
+        template: '<div><button class="btn btn-default" ng-click="openCcdaModal()" style="margin-bottom: 10px;"">Select document...</button><strong>{{ccdaDocument.name}}</strong></div>',
+        controller: ('CcdaWidgetCtrl', ['$scope', '$uibModal', function($scope, $uibModal) {
+            $scope.openCcdaModal = function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'templates/ccdaTemplates/ccdaWidgetTemplate.tpl.html',
+                    controller: ('CCDADocumentPicker', ['$scope', '$uibModalInstance', 'CCDAXdrDocumentsFactory',
+                        function($scope, $uibModalInstance, CCDAXdrDocumentsFactory) {
+                            $scope.modalTitle = "Select C-CDA Document Type";
+                            $scope.buttonSuccess = "Ok";
+                            $scope.sutRole = "receiver";
+                            $scope.ccdaData = {};
+                            CCDAXdrDocumentsFactory.get(function(data) {
+                                $scope.ccdaDocuments = data;
+                                if (data !== null) {
+                                   $scope.sutRole = Object.keys(data)[1];
+                                    $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                                }
+                            }, function(error) {
+                                console.log(error);
+                            });
+
+                            $scope.displayType = function(type, allowedType) {
+                                if (allowedType !== undefined) {
+                                    if (type.toLowerCase().indexOf(allowedType) > -1) {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            };
+
+                            $scope.switchDocType = function(type) {
+                                $scope.sutRole = type;
+                                $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                            };
+
+                            $scope.save = function() {
+                                $uibModalInstance.close($scope.ccdaDocument);
+                            };
+
+
+                            $scope.close = function() {
+                                $uibModalInstance.dismiss("Ok");
+                            };
+                        }
+                    ])
+                });
+
+                modalInstance.result.then(function(selectedItem) {
+                    $scope.ccdaDocument = selectedItem;
+                }, function() {
+                    // console.log('Modal dismissed at: ' + new Date());
+                });
+            };
+        }])
+    };
+}]);
