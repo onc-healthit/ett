@@ -15,7 +15,7 @@
     }, {
         "name": "C-CDA Document Type",
         "key": "payload",
-        "type": "CCDAWidget"
+        "type": "CCDAWidgetXdr"
     }],
     "Test Focus": "XDR Send ",
     "Data Flow in Direct": "Edge Sends an XDR message to HISP along with Direct Address block",
@@ -46,7 +46,7 @@
     }, {
         "name": "C-CDA Document Type",
         "key": "payload",
-        "type": "CCDAWidget"
+        "type": "CCDAWidgetXdr"
     }],
     "Test Focus": "XDR Send",
     "Data Flow in Direct": "Edge Sends an XDR message to HISP along with Full Metadata",
@@ -77,7 +77,7 @@
     }, {
         "name": "C-CDA Document Type",
         "key": "payload",
-        "type": "CCDAWidgetReceiver"
+        "type": "CCDAWidgetReceiverXdr"
     }],
     "Test Focus": "XDR Receive",
     "Data Flow in Direct": "Edge receives an XDR message from the HISP",

@@ -97,6 +97,15 @@
 						<ccda-widgetreceiver ng-model="fieldInput.ccdaDocument"></ccda-widgetreceiver>
 					</div>
 
+					<!-- When CCDAWidgetxdr -->
+					<div class="input-group" ng-switch-when="CCDAWidgetXdr" style="width:100%; margin-top:10px;">
+						<ccda-widgetxdr ng-model="fieldInput.ccdaDocument"></ccda-widgetxdr>
+					</div>
+					<!-- When CCDAWidgetReceiverSdr -->
+					<div class="input-group" ng-switch-when="CCDAWidgetReceiverXdr" style="width:100%; margin-top:10px;">
+						<ccda-widgetreceiverxdr ng-model="fieldInput.ccdaDocument"></ccda-widgetreceiverxdr>
+					</div>
+
 				</div>
 			</div>
 		</div>

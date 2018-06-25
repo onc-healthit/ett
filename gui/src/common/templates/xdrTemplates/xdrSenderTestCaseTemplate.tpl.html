@@ -106,6 +106,20 @@
 								<ccda-widgetreceiver ng-model="test[input.key]"></ccda-widgetreceiver>
 							</div>
 						</div>
+
+						<!-- When CCDAWidgetXdr -->
+						<div class="col-md-7 small-padding" ng-switch-when="CCDAWidgetXdr">
+							<div class="input-group" style="width:100%; margin-top:10px;">
+								<ccda-widgetxdr ng-model="test[input.key]"></ccda-widgetxdr>
+							</div>
+						</div>
+
+						<!-- When CCDAWidgetReceiverSdr -->
+						<div class="col-md-7 small-padding" ng-switch-when="CCDAWidgetReceiverXdr">
+							<div class="input-group" style="width:100%; margin-top:10px;">
+								<ccda-widgetreceiverxdr ng-model="test[input.key]"></ccda-widgetreceiverxdr>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

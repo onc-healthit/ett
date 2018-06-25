@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,18 +37,18 @@ public class GetCCDADocumentsController {
 	String ccdaFileDirectory;
 
 	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md","README.MD");
-	public List<String> extension2ignore = Arrays.asList("txt");
+	public List<String> extension2ignore = Arrays.asList("");
 	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3,4}$";
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody HashMap<String, Object> getDocuments() throws Exception {
+	public @ResponseBody HashMap<String, Object> getDocuments(@RequestParam(value = "testCaseType") String testCaseType) throws Exception {
 		// Result map
 		HashMap<String, Object> resultMap = new HashMap<>();
 
 		// CCDA cache File path
-		String ccdaFilePath = ccdaFileDirectory + File.separator + "ccda_objectives.txt";
+		String ccdaFilePath = getFilterFiles(testCaseType);
 		File ccdaObjectivesFile = new File(ccdaFilePath);
-
+				
 		if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
 			JsonFactory factory = new JsonFactory();
 			ObjectMapper mapper = new ObjectMapper(factory);
@@ -97,7 +98,7 @@ public class GetCCDADocumentsController {
 				fileExtn = fileExtnAry[fileExtnAry.length-1];
 		    }
 			//create directory only when at least one valid file exist
-			if(Pattern.matches(extensionRegex, fileName) && !files2ignore.contains(fileName) ) {
+			if(Pattern.matches(extensionRegex, fileName) && !files2ignore.contains(fileName) && !extension2ignore.contains(fileExtn) ) {
 				for(int i = 1 ; i < path.length-1 ; i++) {
 					String  currentName = path[i];
 					boolean firstFile = false;
@@ -172,6 +173,15 @@ public class GetCCDADocumentsController {
 		rd.close();
 		return new JSONObject(result.toString());
 	}
-
+	
+	private String getFilterFiles(String testCaseType){
+		String fileName = ccdaFileDirectory + File.separator + "ccda_objectives.txt";
+		extension2ignore = Arrays.asList("");
+		if (testCaseType !=null && testCaseType.equalsIgnoreCase("xdr")){
+			fileName = ccdaFileDirectory + File.separator + "ccda_objectives_xdr.txt";
+			extension2ignore = Arrays.asList("ZIP","zip");
+		}
+		return fileName;
+	}
 
 }
