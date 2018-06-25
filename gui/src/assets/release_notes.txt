@@ -1,3 +1,27 @@
+==Version 2.3.2.1#05/29/2018
+
+	*1. CCDA validator updated
+		- The validator has been updated to include the latest HL7 C-CDA Schema (with internal fix due to errta in HL7 Schema) which includes support for sdtc:functionCode in cda::Performer2 and cda::Participant2
+
+==Version 2.3.2#05/17/2018
+
+	*1. The direct endpoint - testing@ttpedge.sitenv.org augmented for both 1.1 and 2.1 validation based on the attachment.
+	
+	*2. Server log architecture optimization.
+	
+	*3. C-CDA validator updated to revert routeCode terminology and add routeCode/translation rule with terminology as per DSTU:1276 modification. 
+	- The modified implementation should look like the following:
+	- <routeCode code="someValidCode" codeSystem="2.16.840.1.113883.3.26.1.1" codeSystemName="NCI Thesaurus">
+	- <translation code="someValidCode" codeSystem="2.16.840.1.113883.6.96"/>
+        - </routeCode>
+        - A single written example of the 4 locations modified is enforced as:
+        - Immunization Activity (V3)
+        - 1.    MAY contain zero or one [0..1] routeCode, which SHALL be selected from ValueSet Medication Route FDA urn:oid:2.16.840.1.113883.3.88.12.3221.8.7 DYNAMIC (CONF:1198-8839).
+        - a.    The routeCode, if present, SHOULD contain zero or more [0..*] translation, which SHALL be selected from ValueSet Medication Route urn:oid:2.16.840.1.113762.1.4.1099.12 DYNAMIC (CONF:1198-32960).
+	
+	
+
+
 ==Version 2.3.1.2#05/01/2018
 	*1. Fixed ReactionObservation value set binding to Reaction Severity which was incorrect per HL7 clarifications received for ERRATA 836. 
 	
