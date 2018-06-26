@@ -1,6 +1,6 @@
 ==Version 2.3.3#06/25/2018
 
-	*1. Ability to select XDM zip option from the XDR (receive) cases to address the ambiguities arising from the metatdata in multiple locations. 
+	*1. Ability to select XDM zip option removed from the XDR (receive) cases to address the ambiguities arising from the metatdata in multiple locations. 
 	
 	*2. The description in the D2 test for DCDT rendered accurate by changing it to "domain-bound".
 	
