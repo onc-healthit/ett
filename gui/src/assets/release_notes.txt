@@ -1,3 +1,12 @@
+==Version 2.3.3#06/25/2018
+
+	*1. Ability to select XDM zip option from the XDR (receive) cases to address the ambiguities arising from the metatdata in multiple locations. 
+	
+	*2. The description in the D2 test for DCDT rendered accurate by changing it to "domain-bound".
+	
+	*3. CCDA-validator updated. See release notes here: https://github.com/siteadmin/site-content/blob/master/CCDAValidatorReleaseNotes.md
+	
+
 ==Version 2.3.2.1#05/29/2018
 
 	*1. CCDA validator updated
