@@ -1,3 +1,14 @@
+==Version 2.3.4#07/19/2018
+
+	*1. XDR Test narrative updates to enhance user experience.
+	
+	*2. The IMAP/POP inboxes updated to auto-populate test data from github periodically.
+	
+	*3. Updated the XDM to address validation issues.
+	
+	*4. Server security updates for better responsiveness.
+
+
 ==Version 2.3.3#06/25/2018
 
 	*1. Ability to select XDM zip option removed from the XDR (receive) cases to address the ambiguities arising from the metatdata in multiple locations. 
