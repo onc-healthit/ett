@@ -1,11 +1,8 @@
 ==Version 2.3.4.1#07/30/2018
 
-	*1. Updated C-CDA validator with the following changes:
-	
-	 	- a. Substance Reactant Value set was updated to the latest value set from VSAC.
-	 
-		- b. Added support for the latest LOINC.csv file to enable both 2015 baseline and newer versions of LOINC codesystem files.
-		
+	*1. Updated C-CDA validator with the following changes:	
+	 	- a. Substance Reactant Value set was updated to the latest value set from VSAC.	 
+		- b. Added support for the latest LOINC.csv file to enable both 2015 baseline and newer versions of LOINC codesystem files.		
 		- c. Updated VDT Test data XML file to remove errors from ERRATA update
 
 
