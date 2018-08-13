@@ -257,7 +257,7 @@
 		"name": "SMTP MT Test 2 (Receiving HISP Not Trusted)",
 		"id": 102,
 		"desc": "Verify the ability of the system to provide a delivery failure message when a message is sent to an untrusted address). Hitting 'Run' will cause ETT  to send a message to an untrusted final address. Due to SMTP-SMTP configuration limitations, the proctor is to visually inspect for the receipt of the negative delivery status notification message. The expectation is that an appropriate delivery failure message will be returned.",
-		"longDesc": "The email is sent to provider1@direct2.sitenv.org",
+		"longDesc": "The email is sent to direct2.sitenv.org",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -296,7 +296,7 @@
 	}, {
 		"name": "SMTP/IMAP MT Test 6 (Receiving HISP Not Trusted)",
 		"id": 106,
-		"longDesc": "The email is sent to provider1@direct2.sitenv.org",
+		"longDesc": "The email is sent to direct2.sitenv.org",
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address. Hitting 'Run' will  cause ETT to send a message with a final destination that is not a  trusted HISP. The expectation is that if the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
@@ -336,7 +336,7 @@
 	}, {
 		"name": "SMTP/POP MT Test 10 (Receiving HISP Not Trusted)",
 		"id": 110,
-		"longDesc": "The email is sent to provider1@direct2.sitenv.org",
+		"longDesc": "The email is sent to direct2.sitenv.org",
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted address. Hitting 'Run' will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
@@ -436,8 +436,8 @@
 	}, {
 		"name": "SMTP/IMAP MT Test 24(b) (Receiving HISP Not Trusted)",
 		"id": 124,
-		"longDesc": "The email is sent to provider1@direct2.sitenv.org",
-		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted HISP(provider1@direct2.sitenv.org). Hitting 'Run' will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
+		"longDesc": "The email is sent to direct2.sitenv.org",
+		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted HISP(direct2.sitenv.org). Hitting 'Run' will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
 		"sutHisp": true,
@@ -446,7 +446,7 @@
 	}, {
 		"name": "SMTP/POP MT Test 24(c) (Receiving HISP Not Trusted)",
 		"id": 624,
-		"longDesc": "The email is sent to provider1@direct2.sitenv.org",
+		"longDesc": "The email is sent to direct2.sitenv.org",
 		"desc": "Verify the ability of the system to provide a delivery failure message  when a message is sent to an untrusted HISP. Hitting 'Run' will  cause ETT to send a message with a final destination that is not a  trusted HISP. If the message was sent successfully 'Check MDN' will appear. Clicking that will check for the incoming MDN (may have to click multiple times due to lag). The expectation is that an appropriate delivery failure message will be returned.",
 		"protocol": "mu2",
 		"sutRole": "sender",
