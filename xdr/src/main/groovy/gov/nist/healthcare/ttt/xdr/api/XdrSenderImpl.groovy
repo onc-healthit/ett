@@ -1,7 +1,7 @@
 package gov.nist.healthcare.ttt.xdr.api
 
-import gov.nist.toolkit.configDatatypes.SimulatorActorType;
-import gov.nist.toolkit.configDatatypes.SimulatorProperties;
+import gov.nist.toolkit.configDatatypes.server.SimulatorActorType;
+import gov.nist.toolkit.configDatatypes.server.SimulatorProperties;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Artifacts
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings
