@@ -8,8 +8,8 @@ import gov.nist.healthcare.ttt.misc.Configuration;
 import gov.nist.healthcare.ttt.xdr.domain.CreateEndpointResponseParser
 import gov.nist.healthcare.ttt.xdr.domain.EndpointConfig
 import gov.nist.healthcare.ttt.xdr.web.GroovyRestClient
-import gov.nist.toolkit.configDatatypes.SimulatorActorType
-import gov.nist.toolkit.configDatatypes.SimulatorProperties;
+import gov.nist.toolkit.configDatatypes.server.SimulatorActorType
+import gov.nist.toolkit.configDatatypes.server.SimulatorProperties;
 import gov.nist.toolkit.toolkitApi.BasicSimParameters
 import gov.nist.toolkit.toolkitApi.DocumentRecipient
 import gov.nist.toolkit.toolkitApi.SimulatorBuilder
