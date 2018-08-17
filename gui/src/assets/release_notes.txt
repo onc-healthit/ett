@@ -1,3 +1,13 @@
+==Version 2.3.5.1#08/16/2018
+
+	*1. IHE XDS Toolkit updated to the latest 6.3.4.
+	
+	*2.More info in the SMTP MT tests fixed to reflect the appropriate email addresses.
+	
+	*3. index.htm discrepancy (with respect to the inner ccda name) in the XDM (used by direct send) fixed.
+	
+	*4. Internal mailbox adjusted to address the inbox overflow for the SMTP receive tests.
+
 ==Version 2.3.4.1#07/30/2018
 
 	*1. Updated C-CDA validator with the following changes:	
