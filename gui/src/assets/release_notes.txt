@@ -1,4 +1,4 @@
-==Version 2.3.5.1#08/16/2018
+==Version 2.3.5#08/16/2018
 
 	*1. IHE XDS Toolkit updated to the latest 6.3.4.
 	
