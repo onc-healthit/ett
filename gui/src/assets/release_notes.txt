@@ -1,3 +1,7 @@
+==Version 2.3.5.1#08/27/2018
+
+	*1. Updated C-CDA Validator to use the 6-15-2018 value set release from VSAC.
+
 ==Version 2.3.5#08/16/2018
 
 	*1. IHE XDS Toolkit updated to the latest 6.3.4.
