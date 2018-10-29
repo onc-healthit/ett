@@ -1,39 +1,36 @@
 package gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.edge.send
 
-import gov.nist.healthcare.ttt.database.log.CCDAValidationReportImpl;
-import gov.nist.healthcare.ttt.database.xdr.Status
-import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
-import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
-import gov.nist.healthcare.ttt.parsing.Parsing;
-import gov.nist.healthcare.ttt.parsing.Parsing.MetadataLevel
-import gov.nist.healthcare.ttt.parsing.SOAPWithAttachment;
-import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException
-import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
-import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
-import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
-import org.json.JSONArray
-import org.json.JSONObject
 import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ContentBody
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.InputStreamBody
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.tika.Tika
+import org.json.JSONArray
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component
+
+import gov.nist.healthcare.ttt.database.xdr.Status
+import gov.nist.healthcare.ttt.database.xdr.XDRRecordInterface
+import gov.nist.healthcare.ttt.database.xdr.XDRTestStepInterface
+import gov.nist.healthcare.ttt.parsing.Parsing;
+import gov.nist.healthcare.ttt.parsing.SOAPWithAttachment;
+import gov.nist.healthcare.ttt.parsing.Parsing.MetadataLevel
+import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException
+import gov.nist.healthcare.ttt.webapp.xdr.core.TestCaseExecutor
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Content
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
+import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
+import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
 
 /**
  * Created by gerardin on 10/27/14.
@@ -119,9 +116,10 @@ final class TestCase2 extends TestCaseSender {
 			byte[] v;
 			for(byte[] b : list){
 				InputStream is = new ByteArrayInputStream(b);
-				String mimeType = URLConnection.guessContentTypeFromStream(is);
+			//	String mimeType = URLConnection.guessContentTypeFromStream(is);
+				String mimeType = new Tika().detect(b);
 				println("MIME TYPE"+mimeType);
-				if(mimeType.equals("application/xml")){
+				if(mimeType.equals("application/xml") || mimeType.equals("text/xml")){
 					v = b;
 				}
 			}
@@ -180,6 +178,6 @@ final class TestCase2 extends TestCaseSender {
 	}
 
     public Result getReport(XDRRecordInterface record) {
-        executor.getSimpleSendReport(record)
+         executor.getSimpleSendReportWithCcda(record)
     }
 }
