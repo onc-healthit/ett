@@ -1,6 +1,7 @@
 ﻿==Version 2.3.7#10/29/2018
 
 	*1. Updated internal libraries to better detect file mime types.
+	*2. Updated C-CDA Validator to handle NonUniqueResultException.
 
 ==Version 2.3.6#09/25/2018
 
