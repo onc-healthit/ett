@@ -1,4 +1,14 @@
-﻿==Version 2.3.7#10/29/2018
+﻿==Version 2.3.8#11/26/2018
+
+	*1. Update jackson-databind version due to github identified security issue / Fix jackson dependency issues, upgrade both to 2.9.7.
+
+	*2. Implement a new RequiredNodeValidator for enforcing any missing node and add xpath support for the xsi namespace.
+	
+	*3. Update configuration to resolve Lab test result with no units.
+	
+	*4. Update configuration to resolve missing vocabulary rule for CONF:81-16850.
+	
+==Version 2.3.7#10/29/2018
 
 	*1. Updated internal libraries to better detect file mime types.
 
