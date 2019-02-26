@@ -1,6 +1,7 @@
 ==Version 2.3.10#2/25/2019
 
 	*1. Updates to C-CDA validator library dependencies to use newer versions for compilers, jackson etc.
+	
 	*2. Updates to C-CDA validator library dependencies to fix security vulnerabilities.
 	
 ==Version 2.3.9#1/28/2019
