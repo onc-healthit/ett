@@ -1703,6 +1703,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
+			message.addHeader("orig-date", "Date: "+ZonedDateTime.now().toString());
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -2030,6 +2031,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
 			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
+			message.addHeader("orig-date", "Date: "+ZonedDateTime.now().toString());
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -2123,6 +2125,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Mail to receivng HISP");
 			message.setText("This is a message to a SUT!");
+			message.addHeader("orig-date", "Date: "+ZonedDateTime.now().toString());
 
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -2191,6 +2194,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
+			message.addHeader("orig-date", "Date: "+ZonedDateTime.now().toString());
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
@@ -2290,6 +2294,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
+			message.addHeader("orig-date", "Date: "+ZonedDateTime.now().toString());
 
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
