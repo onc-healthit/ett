@@ -1,3 +1,9 @@
+==Version 2.3.11#3/26/2019
+
+	*1. https://github.com/siteadmin/code-validator-api/releases/tag/1.0.20
+	
+	*2. https://github.com/siteadmin/reference-ccda-validator/releases/tag/1.0.40
+	
 ==Version 2.3.10#2/25/2019
 
 	*1. Updates to C-CDA validator library dependencies to use newer versions for compilers, jackson etc.
