@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -46,6 +49,7 @@ import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 public class MU2SenderTests {
 
 	public static Logger log = Logger.getLogger(MU2SenderTests.class.getName());
+	SimpleDateFormat ft = new SimpleDateFormat ("E, dd MMM yyyy hh:mm:ss Z (zzz)");
 	
 	public Properties getProps(TestInput ti) {
 		Properties props = new Properties();
@@ -1703,6 +1707,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
+			message.addHeader("Date", ft.format(new Date()));
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -2030,6 +2035,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
 			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
+			message.addHeader("Date",ft.format(new Date()));
 
 			BodyPart messageBodyPart = new MimeBodyPart();
 
@@ -2123,6 +2129,7 @@ public class MU2SenderTests {
 					InternetAddress.parse(ti.sutEmailAddress));
 			message.setSubject("Mail to receivng HISP");
 			message.setText("This is a message to a SUT!");
+			message.addHeader("Date",ft.format(new Date()));
 
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
@@ -2191,6 +2198,7 @@ public class MU2SenderTests {
 			message.setText("This is a message to a SUT!");
 			message.addHeader("Disposition-Notification-Options", "X-DIRECT-FINAL-DESTINATION-DELIVERY=optional,true");
 			message.addHeader("Disposition-Notification-To", prop.getProperty("dir.username"));
+			message.addHeader("Date",ft.format(new Date()));
 			BodyPart messageBodyPart = new MimeBodyPart();
 
 			messageBodyPart.setText("This is message body");
@@ -2290,6 +2298,7 @@ public class MU2SenderTests {
 			message.setSubject("Testing sending mail with Bad Disposition Notification Header (Test Case MU2-22)!");
 			message.setText("This is a message to a Address 6!");
 			message.addHeader("Disposition-Notification-Options", "X-XXXX-FINAL-X-DELXXXX=optioXXX,tXX");
+			message.addHeader("Date",ft.format(new Date()));
 
 			log.info("Sending Message");
 			System.setProperty("java.net.preferIPv4Stack", "true");
