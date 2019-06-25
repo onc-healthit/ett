@@ -1,3 +1,8 @@
+==Version 2.3.14#6/24/2019
+
+	*1. https://github.com/siteadmin/site-content/blob/master/NewsAndAnnouncements.md
+	*2. Documentation and other updates to Dev and Test environments.
+	
 ==Version 2.3.13#5/28/2019
 
 	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
