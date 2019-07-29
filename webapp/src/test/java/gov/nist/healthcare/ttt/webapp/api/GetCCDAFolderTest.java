@@ -28,15 +28,15 @@ public class GetCCDAFolderTest {
 		long startTime = System.currentTimeMillis();
 		JSONObject res = new JSONObject();
 		HashMap<String, Object> json = new HashMap<>();
-		String sha = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/branches/master")
+		String sha = getHTML("https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/branches/master")
 				.getJSONObject("commit").get("sha").toString();
-		JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/" 
+		JSONArray filesArray = getHTML("https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/git/trees/"
 				+ sha + "?recursive=1").getJSONArray("tree");
 
 		HashMap<String, Object> resultMap = new HashMap<>();
 		for(int i=0; i < filesArray.length(); i++) {
 			JSONObject file = filesArray.getJSONObject(i);
-			if(!files2ignore.contains(file.get("path"))) {				
+			if(!files2ignore.contains(file.get("path"))) {
 				// Get path array
 				String[] path = file.get("path").toString().split("/");
 //				System.out.println(String.join("/", path));
@@ -63,7 +63,7 @@ public class GetCCDAFolderTest {
 		System.out.println("Running time: " + totalTime/1000.0 + "s");
 
 		// Try download
-		//		URL website = new URL("https://raw.githubusercontent.com/siteadmin/2015-Certification-C-CDA-Test-Data/master/Receiver%20SUT%20Test%20Data/170.315_b1_ToC_Amb/170.315_b1_toc_amb_ccd_r11_sample1_v1.xml");
+		//		URL website = new URL("https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/Receiver%20SUT%20Test%20Data/170.315_b1_ToC_Amb/170.315_b1_toc_amb_ccd_r11_sample1_v1.xml");
 		//		InputStream strm = website.openStream();
 		//		System.out.println(IOUtils.toString(strm));
 	}
@@ -81,7 +81,7 @@ public class GetCCDAFolderTest {
 			return parent;
 		}
 	}
-	
+
 	public static void buildJson3(HashMap<String, Object> json, String[] path) {
 		if(path.length == 1) {
 			HashMap<String, Object> newObj = new HashMap<>();
@@ -112,16 +112,16 @@ public class GetCCDAFolderTest {
 						dirsList.add(newObj);
 					}
 				}
-			}			
+			}
 		}
 	}
-	
+
 	public static String getLink(String[] path) {
 		String link = String.join("/", path).replace(" ", "%20");
-		link = "https://raw.githubusercontent.com/siteadmin/2015-Certification-C-CDA-Test-Data/master/" + link;
+		link = "https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
 		return link;
 	}
-	
+
 	public static boolean containsName(List<Map> json, String value) {
 		for(Map obj : json) {
 			if(obj.containsValue(value)) {
@@ -130,7 +130,7 @@ public class GetCCDAFolderTest {
 		}
 		return false;
 	}
-	
+
 	public static int getObjByName(List<Map> json, String value) {
 		for(int i = 0 ; i < json.size() ; i++) {
 			if(json.get(i).containsValue(value)) {
