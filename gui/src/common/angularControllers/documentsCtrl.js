@@ -2,7 +2,7 @@ var documentsCtrl = angular.module('ttt.documents', []);
 
 edgeHelp.controller('DocumentsCtrl', ['$scope',
     function($scope) {
-        $scope.pdfUrl = 'https://github.com/siteadmin/ett/raw/resources/documentation/guides/userguide.pdf';
+        $scope.pdfUrl = 'https://raw.githubusercontent.com/onc-healthit/ett/resources/documentation/guides/userguide.pdf';
         $scope.pdfName = 'Edge Testing Tool User Guide';
         $scope.scroll = 0;
 
