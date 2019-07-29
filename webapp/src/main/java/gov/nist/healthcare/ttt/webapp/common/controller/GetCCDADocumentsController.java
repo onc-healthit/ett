@@ -48,7 +48,7 @@ public class GetCCDADocumentsController {
 		// CCDA cache File path
 		String ccdaFilePath = getFilterFiles(testCaseType);
 		File ccdaObjectivesFile = new File(ccdaFilePath);
-				
+
 		if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
 			JsonFactory factory = new JsonFactory();
 			ObjectMapper mapper = new ObjectMapper(factory);
@@ -56,9 +56,9 @@ public class GetCCDADocumentsController {
 
 			resultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
 		} else {
-			String sha = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/branches/master")
+			String sha = getHTML("https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/branches/master")
 					.getJSONObject("commit").get("sha").toString();
-			JSONArray filesArray = getHTML("https://api.github.com/repos/siteadmin/2015-Certification-C-CDA-Test-Data/git/trees/"
+			JSONArray filesArray = getHTML("https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/git/trees/"
 					+ sha + "?recursive=1").getJSONArray("tree");
 
 			for(int i=0; i < filesArray.length(); i++) {
@@ -138,7 +138,7 @@ public class GetCCDADocumentsController {
 
 	public String getLink(String[] path) {
 		String link = String.join("/", path).replace(" ", "%20");
-		link = "https://raw.githubusercontent.com/siteadmin/2015-Certification-C-CDA-Test-Data/master/" + link;
+		link = "https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
 		return link;
 	}
 
@@ -173,7 +173,7 @@ public class GetCCDADocumentsController {
 		rd.close();
 		return new JSONObject(result.toString());
 	}
-	
+
 	private String getFilterFiles(String testCaseType){
 		String fileName = ccdaFileDirectory + File.separator + "ccda_objectives.txt";
 		extension2ignore = Arrays.asList("");

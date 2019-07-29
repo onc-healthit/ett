@@ -11,7 +11,7 @@ use the standard port 25 (in addition to a few other ports). The main server is 
 
 ####Installation.
 
-Step 1. Navigate to the ETT’s downloadable and executable .jar file (ett.jar) located in the directory located [here](https://github.com/siteadmin/ett/releases). The needed configuration information (contained within the application properties file) is [here](https://github.com/siteadmin/ett/blob/resources/installation-resources/application.properties).
+Step 1. Navigate to the ETT’s downloadable and executable .jar file (ett.jar) located in the directory located [here](https://github.com/onc-healthit/ett/releases). The needed configuration information (contained within the application properties file) is [here](https://github.com/onc-healthit/ett/blob/resources/installation-resources/application.properties).
 
 ```
      # create /opt/ttp/logs (-p for parents create, if not present)
@@ -30,7 +30,7 @@ The ETT depends on a version of XDSTOOLS for its XD* related components.  The us
 Download the most recent version of xdstools?.war from the following link:
 [xdstools] (https://github.com/usnistgov/iheos-toolkit2/releases). This is a web archive that will need to be deployed from a local Tomcat instance.  
  * mkdir -p [tomcat-dir]/toolkit/external_cache/environment/NA2015
- * Unzip [keyAndCert.zip](https://github.com/siteadmin/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip) into [tomcat-dir]/toolkit/external_cache/environment/NA2015.
+ * Unzip [keyAndCert.zip](https://github.com/onc-healthit/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip) into [tomcat-dir]/toolkit/external_cache/environment/NA2015.
  * Deploy the xdstools?.war in tomcat 
  * Open the ui for the xdstools: http://[servername]:11080/xdstools 
  * Click "Toolkit configuration"
@@ -104,7 +104,7 @@ For the below case the java home is : /usr/lib/jvm/java-8-openjdk-amd64
     sudo apt-get install tomcat7
 
 
-Recommendation: Certain versions of tomcat seem to have issues, so please use tomcat-7.0.53 available [here](https://github.com/siteadmin/ett/blob/resources/installation-resources/tomcat7/apache-tomcat-7.0.53.tar.gz).
+Recommendation: Certain versions of tomcat seem to have issues, so please use tomcat-7.0.53 available [here](https://github.com/onc-healthit/ett/blob/resources/installation-resources/tomcat7/apache-tomcat-7.0.53.tar.gz).
 
     sudo tar zxvf /opt/installs/apache-tomcat-7.0.53.tar.gz
 
