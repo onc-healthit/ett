@@ -593,6 +593,10 @@ $scope.checkEmpty = function(testObject){
         $scope.testCaseId = selectedItem.testcaseid;
     };
 
+	$scope.displayGrowl = function(text) {
+		growl.success(text);
+	};
+
 $scope.gotodiv = function(anchor) {
     $location.hash(anchor);
    // call $anchorScroll()
