@@ -1,10 +1,16 @@
 var directRegister = angular.module('ttt.direct.register', []);
 
-directRegister.controller('RegisterCtrl', ['$scope', 'DirectEmailAddress', 'ContactEmailAddress', 'growl', 'LogInfo',
-	function($scope, DirectEmailAddress, ContactEmailAddress, growl, LogInfo) {
+directRegister.controller('RegisterCtrl', ['$scope', 'DirectEmailAddress', 'ContactEmailAddress', '$http','growl', '$window', 'LogInfo',
+	function($scope, DirectEmailAddress, ContactEmailAddress,$http, growl, $window, LogInfo) {
 
 		$scope.directList = [];
 		$scope.contactList = [];
+
+	$http.get('api/properties').then(function (response) {
+		$scope.propDcdtDomain2014 = "@"+response.data.dcdt2014domain;
+		$scope.propDcdtDomain2015 = "@"+response.data.dcdt2015domain;
+		$scope.dcdtDomain = "dcdt31";
+	});
 
 		// Get username
 		$scope.userInfo = LogInfo.getUsername();
@@ -18,11 +24,18 @@ directRegister.controller('RegisterCtrl', ['$scope', 'DirectEmailAddress', 'Cont
 			}
 		});
 
-
+      $scope.doGreeting = function(greeting) {
+        $window.alert(greeting);
+      };
 
 		// Create Direct address and bind it to logged user
-		$scope.createDirect = function(newDirect) {
-			if (newDirect) {
+		$scope.createDirect = function(newDirect){
+			if(newDirect){
+				if ((newDirect.toLowerCase().indexOf($scope.propDcdtDomain2014) > 0) ||
+				(newDirect.toLowerCase().indexOf($scope.propDcdtDomain2015) > 0 ) ||
+				(newDirect.toLowerCase().indexOf($scope.dcdtDomain) > 0 ) ){
+					$scope.doGreeting("Please enter a valid email address.");
+				}else{
 				DirectEmailAddress.save(newDirect, function(data) {
 					growl.success("Direct Email successfully created!");
 					$scope.directList.push(newDirect);
@@ -35,6 +48,7 @@ directRegister.controller('RegisterCtrl', ['$scope', 'DirectEmailAddress', 'Cont
 						message: data.data.message
 					};
 				});
+			}
 			}
 		};
 
@@ -67,6 +81,11 @@ directRegister.controller('RegisterCtrl', ['$scope', 'DirectEmailAddress', 'Cont
 
 		// Add Contact for Direct address
 		$scope.addContactToDirect = function(newContact) {
+			if((newContact.toLowerCase().indexOf($scope.propDcdtDomain2014) > 0) ||
+			(newContact.toLowerCase().indexOf($scope.propDcdtDomain2015) > 0 ) ||
+			(newContact.toLowerCase().indexOf($scope.dcdtDomain) > 0 ) ){
+			$scope.doGreeting("Please enter a valid email address.");
+			}else{
 			ContactEmailAddress.save({
 				'direct': $scope.currentDirect
 			}, newContact, function(data) {
@@ -81,6 +100,7 @@ directRegister.controller('RegisterCtrl', ['$scope', 'DirectEmailAddress', 'Cont
 					message: data.data.message
 				};
 			});
+		}
 		};
 
 		$scope.deleteContactForDirect = function(contactToDelete) {
