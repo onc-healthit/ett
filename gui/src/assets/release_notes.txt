@@ -1,4 +1,8 @@
 
+==Version 2.3.18#11/18/2019
+
+	*1. Add filter to not permit a user to map the DCDT email addresses.
+	
 ==Version 2.3.17#9/30/2019
 
 	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
