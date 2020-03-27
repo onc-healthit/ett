@@ -31,12 +31,14 @@
                     <div msg="" key="navbar.messageValidator">Message Validator</div>
                 </a>
             </li>
-            <li uib-dropdown ng-class="{active: $state.includes('direct.ccda') || $state.includes('direct.ccdar2')}">
+            <li uib-dropdown ng-class="{active: $state.includes('direct.ccda') || $state.includes('direct.ccdar2') || $state.includes('direct.ccdar3')}">
                 <a href="#" uib-dropdown-toggle>C-CDA Validators<b class="caret"></b></a>
                 <ul class="uib-dropdown-menu">
                     <li><a ui-sref=".ccda">C-CDA R1.1 Validator</a>
                     </li>
                     <li><a ui-sref=".ccdar2">C-CDA R2.1 Validator</a>
+                    </li>
+                    <li><a ui-sref=".ccdar3">Cures Update CCDA Validator</a>
                     </li>
                 </ul>
             </li>

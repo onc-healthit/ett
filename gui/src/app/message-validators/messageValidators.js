@@ -1,5 +1,6 @@
 var validators = angular.module('ttt.validators', [
     // Modules
+    'ttt.direct.ccdar3Validator',
     'ttt.direct.ccdar2Validator',
     'ttt.direct.ccdaValidator',
     'ttt.direct.xdmValidator',
@@ -30,6 +31,15 @@ validators.config(['$stateProvider',
                     "validators": {
                         controller: 'CCDAR2ValidatorCtrl',
                         templateUrl: 'direct/message-validator/ccda-r2/ccda-r2.tpl.html'
+                    }
+                }
+            })
+            .state('validators.ccdar3', {
+                url: '/ccdar3',
+                views: {
+                    "validators": {
+                        controller: 'CCDAR3ValidatorCtrl',
+                        templateUrl: 'direct/message-validator/ccda-r3/ccda-r3.tpl.html'
                     }
                 }
             })
