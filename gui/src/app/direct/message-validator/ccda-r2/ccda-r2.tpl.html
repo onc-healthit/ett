@@ -65,9 +65,10 @@
 						</label>
 						<div class="input-group">
 							<div class="btn-group">
-								<a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType ==="Sender SUT Test Data" ? 'Sender' : 'Receiver' }}</a>
-								<!-- <a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="sutRole='sender'">Sender</a>
-								<a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="sutRole='receiver'">Receiver</a> -->
+								<!--<a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType ==="Sender SUT Test Data" ? 'Sender' : 'Receiver' }}</a>
+								-->
+								<a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="switchDocType('Sender SUT Test Data')">Sender</a>
+								<a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="switchDocType('Receiver SUT Test Data')">Receiver</a>
 							</div>
 						</div>
 						<div ng-show="false">

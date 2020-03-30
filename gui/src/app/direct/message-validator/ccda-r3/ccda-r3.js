@@ -25,9 +25,9 @@ ccdaValidator.controller('CCDAR3ValidatorCtrl', ['$scope', 'CCDAR3ValidatorFacto
             "flowRelativePath": "",
             "flowTotalChunks": ""
         };
-        $scope.sutRole = "sender";
+        $scope.sutRole = "Sender Cures Test Data";
 
-        $scope.sutSenderRole ="Sender SUT Test Data";
+        $scope.sutSenderRole ="Sender Cures Test Data";
 
 		$scope.objective = [];
 
@@ -44,13 +44,13 @@ ccdaValidator.controller('CCDAR3ValidatorCtrl', ['$scope', 'CCDAR3ValidatorFacto
         CCDADocumentsFactory.get(function(data) {
           $scope.ccdaDocuments = data;
             if (data !== null) {
-                $scope.ccdaSenderData = $scope.ccdaDocuments[Object.keys(data)[0]];
+                $scope.ccdaSenderData = $scope.ccdaDocuments[$scope.sutSenderRole];
             }
         });
         CCDADocumentsFactory.get(function(data) {
           $scope.ccdaDocuments = data;
             if (data !== null) {
-                $scope.sutRole = Object.keys(data)[0];
+                $scope.sutRole = $scope.sutSenderRole;
                  $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                 $scope.ccdaSelectData = $scope.ccdaData.dirs;
             }

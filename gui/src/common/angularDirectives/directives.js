@@ -378,7 +378,7 @@ tttDirective.directive('ccdaWidget', ['$uibModal', function($uibModal) {
                             CCDADocumentsFactory.get(function(data) {
                                 $scope.ccdaDocuments = data;
                                 if (data !== null) {
-                                    $scope.sutRole = Object.keys(data)[0];
+                                    $scope.sutRole = 'Sender SUT Test Data';
                                     $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                                 }
                             }, function(error) {
@@ -399,6 +399,15 @@ tttDirective.directive('ccdaWidget', ['$uibModal', function($uibModal) {
                             $scope.switchDocType = function(type) {
                                 $scope.sutRole = type;
                                 $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                            };
+
+                            $scope.changeToCures = function() {
+if ($scope.checkCures) {
+	$scope.sutRole =  $scope.sutRole.replace('SUT', 'Cures');
+}else{
+	$scope.sutRole =  $scope.sutRole.replace('Cures', 'SUT');
+}
+                               $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                             };
 
                             $scope.save = function() {
@@ -446,7 +455,7 @@ tttDirective.directive('ccdaWidgetreceiver', ['$uibModal', function($uibModal) {
                             CCDADocumentsFactory.get(function(data) {
                                 $scope.ccdaDocuments = data;
                                 if (data !== null) {
-                                   $scope.sutRole = Object.keys(data)[1];
+                                   $scope.sutRole = 'Receiver SUT Test Data';
                                     $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                                 }
                             }, function(error) {
@@ -469,6 +478,14 @@ tttDirective.directive('ccdaWidgetreceiver', ['$uibModal', function($uibModal) {
                                 $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                             };
 
+                            $scope.changeToCures = function() {
+if ($scope.checkCures) {
+	$scope.sutRole =  $scope.sutRole.replace('SUT', 'Cures');
+}else{
+	$scope.sutRole =  $scope.sutRole.replace('Cures', 'SUT');
+}
+                               $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                            };
                             $scope.save = function() {
                                 $uibModalInstance.close($scope.ccdaDocument);
                             };
@@ -513,7 +530,7 @@ tttDirective.directive('ccdaWidgetxdr', ['$uibModal', function($uibModal) {
                             CCDAXdrDocumentsFactory.get(function(data) {
                                 $scope.ccdaDocuments = data;
                                 if (data !== null) {
-                                    $scope.sutRole = Object.keys(data)[0];
+                                    $scope.sutRole = 'Sender SUT Test Data';
                                     $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                                 }
                             }, function(error) {
@@ -534,6 +551,15 @@ tttDirective.directive('ccdaWidgetxdr', ['$uibModal', function($uibModal) {
                             $scope.switchDocType = function(type) {
                                 $scope.sutRole = type;
                                 $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                            };
+
+                            $scope.changeToCures = function() {
+if ($scope.checkCures) {
+	$scope.sutRole =  $scope.sutRole.replace('SUT', 'Cures');
+}else{
+	$scope.sutRole =  $scope.sutRole.replace('Cures', 'SUT');
+}
+                               $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                             };
 
                             $scope.save = function() {
@@ -580,9 +606,8 @@ tttDirective.directive('ccdaWidgetreceiverxdr', ['$uibModal', function($uibModal
                             CCDAXdrDocumentsFactory.get(function(data) {
                                 $scope.ccdaDocuments = data;
                                 if (data !== null) {
-                                   $scope.sutRole = Object.keys(data)[1];
+                                   $scope.sutRole = 'Receiver SUT Test Data';
                                     $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
-                                }
                             }, function(error) {
                                 console.log(error);
                             });
@@ -601,6 +626,15 @@ tttDirective.directive('ccdaWidgetreceiverxdr', ['$uibModal', function($uibModal
                             $scope.switchDocType = function(type) {
                                 $scope.sutRole = type;
                                 $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+                            };
+
+                            $scope.changeToCures = function() {
+if ($scope.checkCures) {
+	$scope.sutRole =  $scope.sutRole.replace('SUT', 'Cures');
+}else{
+	$scope.sutRole =  $scope.sutRole.replace('Cures', 'SUT');
+}
+                               $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
                             };
 
                             $scope.save = function() {
