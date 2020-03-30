@@ -608,6 +608,7 @@ tttDirective.directive('ccdaWidgetreceiverxdr', ['$uibModal', function($uibModal
                                 if (data !== null) {
                                    $scope.sutRole = 'Receiver SUT Test Data';
                                     $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
+								}
                             }, function(error) {
                                 console.log(error);
                             });
