@@ -89,13 +89,9 @@ public class GetCCDADocumentsController {
 			}
 			
 			// cures files
-			githubTestData = githubCuresTestData;
-			githubSha = githubCuresSha;
-			githubTree = githubCuresTree;
-
-			if (StringUtils.isNotBlank(githubTestData) && githubTestData.length() > 1){
-				sha = getHTML(githubSha).getJSONObject("commit").get("sha").toString();
-				filesArray = getHTML(githubTree + sha + "?recursive=1").getJSONArray("tree");
+			if (StringUtils.isNotBlank(githubCuresTestData) && githubCuresTestData.length() > 1){
+				sha = getHTML(githubCuresSha).getJSONObject("commit").get("sha").toString();
+				filesArray = getHTML(githubCuresTree + sha + "?recursive=1").getJSONArray("tree");
 				
 				for(int i=0; i < filesArray.length(); i++) {
 					JSONObject file = filesArray.getJSONObject(i);
