@@ -25,9 +25,9 @@ ccdaValidator.controller('CCDAR3ValidatorCtrl', ['$scope', 'CCDAR3ValidatorFacto
             "flowRelativePath": "",
             "flowTotalChunks": ""
         };
-        $scope.sutRole = "Sender Cures Test Data";
+        $scope.sutRole = "Cures Update Sender SUT Test Data";
 
-        $scope.sutSenderRole ="Sender Cures Test Data";
+        $scope.sutSenderRole ="Cures Update Sender SUT Test Data";
 
 		$scope.objective = [];
 
