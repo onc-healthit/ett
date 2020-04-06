@@ -402,8 +402,10 @@ tttDirective.directive('ccdaWidget', ['$uibModal', function($uibModal) {
                             };
 
                             $scope.changeToCures = function() {
+if ($scope.ccdaDocument !=null && $scope.ccdaDocument.path != null){
 $scope.ccdaDocument.path ="";
 $scope.ccdaDocument.name ="";
+}
 if ($scope.checkCures) {
 if ($scope.sutRole == "Sender SUT Test Data"){
 $scope.sutRole = "Cures Update Sender SUT Test Data";
@@ -489,8 +491,10 @@ tttDirective.directive('ccdaWidgetreceiver', ['$uibModal', function($uibModal) {
                             };
 
                             $scope.changeToCures = function() {
+if ($scope.ccdaDocument !=null && $scope.ccdaDocument.path != null){
 $scope.ccdaDocument.path ="";
 $scope.ccdaDocument.name ="";
+}
 if ($scope.checkCures) {
 if ($scope.sutRole == "Sender SUT Test Data"){
 $scope.sutRole = "Cures Update Sender SUT Test Data";
@@ -575,8 +579,10 @@ tttDirective.directive('ccdaWidgetxdr', ['$uibModal', function($uibModal) {
                             };
 
                             $scope.changeToCures = function() {
+if ($scope.ccdaDocument !=null && $scope.ccdaDocument.path != null){
 $scope.ccdaDocument.path ="";
 $scope.ccdaDocument.name ="";
+}
 if ($scope.checkCures) {
 if ($scope.sutRole == "Sender SUT Test Data"){
 $scope.sutRole = "Cures Update Sender SUT Test Data";
@@ -662,8 +668,10 @@ tttDirective.directive('ccdaWidgetreceiverxdr', ['$uibModal', function($uibModal
                             };
 
                             $scope.changeToCures = function() {
+if ($scope.ccdaDocument !=null && $scope.ccdaDocument.path != null){
 $scope.ccdaDocument.path ="";
 $scope.ccdaDocument.name ="";
+}
 if ($scope.checkCures) {
 if ($scope.sutRole == "Sender SUT Test Data"){
 $scope.sutRole = "Cures Update Sender SUT Test Data";
