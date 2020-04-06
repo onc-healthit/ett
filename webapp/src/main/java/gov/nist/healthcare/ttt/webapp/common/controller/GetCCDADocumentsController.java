@@ -93,7 +93,7 @@ public class GetCCDADocumentsController {
 			githubSha = githubCuresSha;
 			githubTree = githubCuresTree;
 
-			if (StringUtils.isNotBlank(githubCuresTestData)){
+			if (StringUtils.isNotBlank(githubTestData) && githubTestData.length() > 1){
 				sha = getHTML(githubSha).getJSONObject("commit").get("sha").toString();
 				filesArray = getHTML(githubTree + sha + "?recursive=1").getJSONArray("tree");
 				
