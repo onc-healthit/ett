@@ -6,14 +6,14 @@
 </div>
 </div>
 <div flow-prevent-drop flow-drag-enter="dropClass='drag-over'" flow-drag-leave="dropClass=''">
-    <h2><i class="fa fa-pie-chart"></i> ONC C-CDA R2.1 Validator Tool</h2>
+    <h2><i class="fa fa-pie-chart"></i>2015 Edition Cures Update C-CDA R2.1 Validator tool</h2>
 
 
  <div class="row">
      <div class="col-sm-12">
        <uib-accordion>
        <div aria-multiselectable="true" class="panel-group" role="tablist">
-         	<uib-accordion-group heading="R2.1 Validator" is-open="true">
+         	<uib-accordion-group heading="2015 Edition Cures Update C-CDA R2.1 Validation" is-open="true">
 
 <div class="sandbox-overview">
 			<div class="div_left_margin row" ><h4>To validate with the C-CDA Implementation Guide attach or drag your C-CDA into the tool and press Validate.</h4></div>
@@ -57,7 +57,7 @@
 </div>
 <br></br>
 <div class="sandbox-overview">
-			<div class="div_left_margin row"><h4>To validate your C-CDA with ONC 2015 Edition.</h4></div>
+			<div class="div_left_margin row"><h4>To validate your C-CDA for 2015 Edition Cures Update.</h4></div>
 
 			<div class="div_left_margin row" class="row">
 				<div class="col-sm-12">
@@ -65,10 +65,9 @@
 						</label>
 						<div class="input-group">
 							<div class="btn-group">
-								<!--<a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType ==="Sender SUT Test Data" ? 'Sender' : 'Receiver' }}</a>
-								-->
-								<a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="switchDocType('Sender SUT Test Data')">Sender</a>
-								<a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="switchDocType('Receiver SUT Test Data')">Receiver</a>
+								<!--<a class="btn btn-default" ng-repeat="(docType, value) in ccdaDocuments" ng-class="{active: sutRole === docType}" ng-click="switchDocType(docType)">{{docType}}</a> -->
+								<a class="btn btn-default" ng-class="{'sender': 'active'}[sutRole]" ng-click="switchDocType('Cures Update Sender SUT Test Data')">Sender</a>
+								<a class="btn btn-default" ng-class="{'receiver': 'active'}[sutRole]" ng-click="switchDocType('Cures Update Receiver SUT Test Data')">Receiver</a>
 							</div>
 						</div>
 						<div ng-show="false">
@@ -150,7 +149,7 @@
 
 			<div class="div_left_margin row" class="row">
 				<div class="col-sm-12">
-						<label class="control-label">Step 2: Select the ONC 2015 Edition criteria objective or other C-CDA IG conformance criteria:&nbsp;
+						<label class="control-label">Step 2: Select the ONC 2015 Edition Cures Update criteria objective or other C-CDA IG conformance criteria:&nbsp;
 						</label>
 						<ui-select ng-model="objective.selected" theme="bootstrap" on-select="changed(objective.selected)">
 							<ui-select-match placeholder="Select validation criteria...">{{$select.selected.name}}</ui-select-match>
@@ -177,7 +176,7 @@
 					<a ng-href="{{ccdaDocument.link}}" target="_self" class="btn btn-primary" download="{{ccdaDocument.name}}" ng-disabled="!ccdaDocument.path">
 						<span>Download</span>
 					</a>
-					<a ng-href="{{properties.githubZip}}" target="_blank" class="btn btn-primary">
+					<a ng-href="{{properties.githubCuresZip}}" target="_blank" class="btn btn-primary">
 						<span>Download all files</span>
 					</a>
 

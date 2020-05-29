@@ -107,6 +107,14 @@ tttService.factory('CCDAR21Documents', function($http) {
     };
 });
 
+tttService.factory('CCDAR31Documents', function($http) {
+    return {
+        getCcdaDocuments: function(callback, error) {
+            $http.get('assets/ccdar2list.json').then(callback, error);
+        }
+    };
+});
+
 tttService.factory('PropertiesFactory', ['$resource', 'RESOURCES',
     function($resource, RESOURCES) {
         return $resource(RESOURCES.USERS_API + 'properties', {}, {});

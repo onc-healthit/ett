@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,8 +21,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,6 +37,24 @@ public class GetCCDADocumentsController {
 	@Value("${server.tomcat.basedir}")
 	String ccdaFileDirectory;
 
+	@Value("${github.test.data}")
+	String githubTestData;
+
+	@Value("${github.sha}")
+	String githubSha;
+
+	@Value("${github.tree}")
+	String githubTree;
+
+	@Value("${github.cures.test.data}")
+	String githubCuresTestData;
+
+	@Value("${github.cures.sha}")
+	String githubCuresSha;
+
+	@Value("${github.cures.tree}")
+	String githubCuresTree;
+	
 	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md","README.MD");
 	public List<String> extension2ignore = Arrays.asList("");
 	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3,4}$";
@@ -56,10 +75,8 @@ public class GetCCDADocumentsController {
 
 			resultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
 		} else {
-			String sha = getHTML("https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/branches/master")
-					.getJSONObject("commit").get("sha").toString();
-			JSONArray filesArray = getHTML("https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/git/trees/"
-					+ sha + "?recursive=1").getJSONArray("tree");
+			String sha = getHTML(githubSha).getJSONObject("commit").get("sha").toString();
+			JSONArray filesArray = getHTML(githubTree + sha + "?recursive=1").getJSONArray("tree");
 
 			for(int i=0; i < filesArray.length(); i++) {
 				JSONObject file = filesArray.getJSONObject(i);
@@ -70,6 +87,23 @@ public class GetCCDADocumentsController {
 				}
 
 			}
+			
+			// cures files
+			if (StringUtils.isNotBlank(githubCuresTestData) && githubCuresTestData.length() > 1){
+				sha = getHTML(githubCuresSha).getJSONObject("commit").get("sha").toString();
+				filesArray = getHTML(githubCuresTree + sha + "?recursive=1").getJSONArray("tree");
+				
+				for(int i=0; i < filesArray.length(); i++) {
+					JSONObject file = filesArray.getJSONObject(i);
+					if(!files2ignore.contains(file.get("path"))) {
+						// Get path array
+						String[] path = file.get("path").toString().split("/");
+						buildJson(resultMap, path);
+					}
+
+				}				
+			}
+			
 			// Write the cache file
 			try{
 				JSONObject cacheFile = new JSONObject(resultMap);
@@ -138,7 +172,8 @@ public class GetCCDADocumentsController {
 
 	public String getLink(String[] path) {
 		String link = String.join("/", path).replace(" ", "%20");
-		link = "https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
+		//link = githubTestData"https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
+		link = githubTestData + link;
 		return link;
 	}
 

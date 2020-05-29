@@ -1,7 +1,7 @@
-var ccdaValidator = angular.module('ttt.direct.ccdar2Validator', []);
+var ccdaValidator = angular.module('ttt.direct.ccdar3Validator', []);
 
-ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFactory', '$state', 'ApiUrl', 'CCDAR21Documents','$filter', 'CCDADocumentsFactory','$location','$anchorScroll',
-    function($scope, CCDAR2ValidatorFactory, $state, ApiUrl, CCDAR21Documents, $filter,CCDADocumentsFactory,$location,$anchorScroll) {
+ccdaValidator.controller('CCDAR3ValidatorCtrl', ['$scope', 'CCDAR3ValidatorFactory', '$state', 'ApiUrl', 'CCDAR31Documents','$filter', 'CCDADocumentsFactory','$location','$anchorScroll',
+    function($scope, CCDAR3ValidatorFactory, $state, ApiUrl, CCDAR31Documents, $filter,CCDADocumentsFactory,$location,$anchorScroll) {
 
         $scope.fileInfo = {
             "flowChunkNumber": "",
@@ -25,16 +25,16 @@ ccdaValidator.controller('CCDAR2ValidatorCtrl', ['$scope', 'CCDAR2ValidatorFacto
             "flowRelativePath": "",
             "flowTotalChunks": ""
         };
-        $scope.sutRole = "Sender SUT Test Data";
+        $scope.sutRole = "Cures Update Sender SUT Test Data";
 
-        $scope.sutSenderRole ="Sender SUT Test Data";
+        $scope.sutSenderRole ="Cures Update Sender SUT Test Data";
 
 		$scope.objective = [];
 
 		$scope.filename = [];
 
         $scope.ccdaData = {};
-        CCDAR21Documents.getCcdaDocuments(function(data) {
+        CCDAR31Documents.getCcdaDocuments(function(data) {
             $scope.ccdaDataSender = data.data.sender;
             // $scope.ccdaData = $scope.ccdaDataSender;
             $scope.ccdaDataReceiver = data.data.receiver;
@@ -130,7 +130,7 @@ $scope.gotodiv = function(anchor) {
 				if ($scope.ccdaDocumentCdaIg.name && $scope.ccdaDocumentCdaIg.path) {
                     $scope.validator.validationObjective = $scope.ccdaDocumentCdaIg.path[$scope.ccdaDocumentCdaIg.path.length - 1];
                     $scope.validator.referenceFileName = $scope.ccdaDocumentCdaIg.name;
-                    CCDAR2ValidatorFactory.save($scope.validator, function(data) {
+                    CCDAR3ValidatorFactory.save($scope.validator, function(data) {
                         $scope.laddaLoadingCdaIg = false;
                         $scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
                         $scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
@@ -162,7 +162,7 @@ $scope.gotodiv = function(anchor) {
 					if ($scope.ccdaDocument.name && $scope.ccdaDocument.path) {
 						$scope.validator.validationObjective = $scope.ccdaDocument.path[$scope.ccdaDocument.path.length - 1];
 						$scope.validator.referenceFileName = $scope.ccdaDocument.name;
-						CCDAR2ValidatorFactory.save($scope.validator, function(data) {
+						CCDAR3ValidatorFactory.save($scope.validator, function(data) {
 							$scope.laddaLoading = false;
 							$scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
 							$scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
