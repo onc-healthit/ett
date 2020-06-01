@@ -1,3 +1,7 @@
+==Version 2.3.23#4/27/2020
+
+	*1. Add Cures Update C-CDA R2.1 Validator.
+	
 ==Version 2.3.22#4/27/2020
 
 	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
