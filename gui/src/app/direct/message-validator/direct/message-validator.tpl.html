@@ -95,27 +95,4 @@
     <button type="submit" class="btn btn-lg btn-primary center-block" ng-click="validate()" ladda="laddaLoading">Validate</button>
 
 
-<h3><i class="fa fa-hand-o-right"></i>2014 Edition Content Validation</h3>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Direct (To) address</th>
-            <th>Purpose</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="ccdaSetting in settings.ccda">
-            <td>
-                <a ng-href="mailto:{{ccdaSetting.email + '@' + properties.domainName}}">{{ccdaSetting.email + "@" + properties.domainName}}</a>
-            </td>
-            <td>{{ccdaSetting.description}}</td>
-            <td>
-                <button class="btn btn-default" clipboard text="copyCcdaEmail(ccdaSetting.email, properties.domainName)" on-copied="displayGrowl('Data copied')" title="Copy to clipboard">
-                    <i class="fa fa-clipboard"></i>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
 </div>
