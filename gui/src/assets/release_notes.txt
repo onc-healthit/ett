@@ -1,3 +1,7 @@
+==Version 2.3.24#6/1/2020
+
+	*1. Remove 2014 edition certification tools.
+	
 ==Version 2.3.23#6/1/2020
 
 	*1. Add Cures Update C-CDA R2.1 Validator.
