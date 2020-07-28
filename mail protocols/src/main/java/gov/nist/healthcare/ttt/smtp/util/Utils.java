@@ -11,23 +11,24 @@ import java.util.List;
 public class Utils {
 	
 	public static boolean isProcessedMDN(List<String> headers) {	
-		return isAnyMDN7(headers, "processed");
+		return isAnyMDN7(headers, "processed", "Processed");
 	}
 	
 	public static boolean isFailureMDN(List<String> headers) {
-		return isAnyMDN7(headers, "failure");
+		return isAnyMDN7(headers, "failure", "Failure");
 	}
 	
 	public static boolean isFailedMDN(List<String> headers) {
-		return isAnyMDN7(headers, "failed");
+		return isAnyMDN7(headers, "failed", "Failed");
 	}
 
 	public static boolean isDispatchedMDN(List<String> headers) {
-		return isAnyMDN7(headers,"dispatched");
+		return isAnyMDN7(headers,"dispatched", "Dispatched");
 	}
 	
-	public static boolean isAnyMDN7(List<String> headers, String mdnVal) {
-		return headers.contains("automatic-action/MDN-sent-automatically;" + mdnVal) || headers.contains("automatic-action/MDN-sent-automatically; " + mdnVal);
+	public static boolean isAnyMDN7(List<String> headers, String mdnVal, String mdnValCap) {
+		return headers.contains("automatic-action/MDN-sent-automatically;" + mdnVal) || headers.contains("automatic-action/MDN-sent-automatically; " + mdnVal)
+				|| headers.contains("automatic-action/MDN-sent-automatically;" + mdnValCap) || headers.contains("automatic-action/MDN-sent-automatically; " + mdnValCap);
 	}
 
 	
