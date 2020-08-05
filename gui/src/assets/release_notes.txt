@@ -1,3 +1,7 @@
+==Version 2.3.25#8/5/2020
+
+	*1. Make MDN checks in MU2 39, 40 and 41 case insensitive.
+	
 ==Version 2.3.24#6/1/2020
 
 	*1. Remove 2014 edition certification tools.
