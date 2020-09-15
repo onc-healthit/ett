@@ -1,3 +1,9 @@
+==Version 2.3.25.2#9/14/2020
+	*1. Renamed the test data files to start from version 1.
+	*2. Updated the test data to include USCDI elements as part of Sample3 files.
+	*3. Updated Sample3 for b1, e1 and g9.
+	*4. Updated DS4P test data to include entry level markings.
+	
 ==Version 2.3.25.1#8/13/2020
 	*1. Add endpoints documentation
 
