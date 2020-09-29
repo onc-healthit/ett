@@ -83,7 +83,7 @@ public class GetCCDADocumentsController {
 				if(!files2ignore.contains(file.get("path"))) {
 					// Get path array
 					String[] path = file.get("path").toString().split("/");
-					buildJson(resultMap, path);
+					buildJson(resultMap, path,false);
 				}
 
 			}
@@ -98,7 +98,7 @@ public class GetCCDADocumentsController {
 					if(!files2ignore.contains(file.get("path"))) {
 						// Get path array
 						String[] path = file.get("path").toString().split("/");
-						buildJson(resultMap, path);
+						buildJson(resultMap, path,true);
 					}
 
 				}				
@@ -116,7 +116,7 @@ public class GetCCDADocumentsController {
 		return resultMap;
 	}
 
-	public void buildJson(HashMap<String, Object> json, String[] path) {
+	public void buildJson(HashMap<String, Object> json, String[] path, boolean curesFiles) {
 		if(path.length == 1 && !files2ignore.contains(path[0].toUpperCase())) {
 			HashMap<String, Object> newObj = new HashMap<>();
 			newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
@@ -142,7 +142,7 @@ public class GetCCDADocumentsController {
 						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
 						HashMap<String, Object> newFile = new HashMap<>();
 						newFile.put("name", fileName);
-						newFile.put("link", getLink(path));
+						newFile.put("link", getLink(path,curesFiles));
 						List filesList = (List) current.get("files");
 						filesList.add(newFile);
 					} else {
@@ -161,7 +161,7 @@ public class GetCCDADocumentsController {
 						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
 						HashMap<String, Object> newFile = new HashMap<>();
 						newFile.put("name", fileName);
-						newFile.put("link", getLink(path));
+						newFile.put("link", getLink(path,curesFiles));
 						List filesList = (List) current.get("files");
 						filesList.add(newFile);
 					}
@@ -170,10 +170,14 @@ public class GetCCDADocumentsController {
 		}
 	}
 
-	public String getLink(String[] path) {
+	public String getLink(String[] path,boolean curesFiles) {
 		String link = String.join("/", path).replace(" ", "%20");
 		//link = githubTestData"https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
-		link = githubTestData + link;
+		if (curesFiles){
+			link = githubCuresTestData + link;
+		}else{
+			link = githubTestData + link;
+		}
 		return link;
 	}
 
