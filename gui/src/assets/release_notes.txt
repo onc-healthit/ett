@@ -1,3 +1,12 @@
+==Version 2.3.27#9/28/2020
+	*1. Updated USCDI Sample 3 Test Data for Ambulatory and Inpatient to correct date of birth and timing errors.
+	
+	*2. Updated Notes Error reporting and fixed errors related to Sample 3 for Ambulatory and Inpatient settings.
+	
+	*3. Updated Author Provenance Error Reporting.
+	
+	*4. Changed Telecom and Birth Sex Error reporting from WARNING to ERROR.
+	
 ==Version 2.3.25.2#9/14/2020
 	*1. Renamed the test data files to start from version 1.
 	
