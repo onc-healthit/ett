@@ -7,6 +7,8 @@
 	
 	*4. Changed Telecom and Birth Sex Error reporting from WARNING to ERROR.
 	
+	*5. Fixed a bug on ETT to download cures CCDA files from GitHub.
+	
 ==Version 2.3.25.2#9/14/2020
 	*1. Renamed the test data files to start from version 1.
 	
