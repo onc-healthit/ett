@@ -1,3 +1,13 @@
+==Version 2.3.28#10/27/2020
+	*1. Updated Vocabulary validator with the latest VSAC value sets.
+	
+	*2. Updated Content Validation and fixed defects associated with Notes and Provenance validation.
+	
+	*3. Based on MDHT build https://github.com/mdht/mdht-models/releases/tag/v20201024 contains the following fixes:
+	    - Added Notes Templates
+	    - Added Care Team Template
+	    - Added Provenance Template
+		
 ==Version 2.3.27#9/28/2020
 	*1. Updated USCDI Sample 3 Test Data for Ambulatory and Inpatient to correct date of birth and timing errors.
 	
