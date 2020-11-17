@@ -1,3 +1,10 @@
+==Version 2.3.28.1#11/16/2020
+	*1. Update value sets to the latest available for the CURES option
+	
+        *2.Fix telecom validation to validate numbers only
+
+        *3.Fix issue where the Reference Validator was not producing a log
+	    
 ==Version 2.3.28#10/27/2020
 	*1. Updated Vocabulary validator with the latest VSAC value sets.
 	
