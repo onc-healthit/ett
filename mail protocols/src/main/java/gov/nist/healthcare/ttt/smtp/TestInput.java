@@ -17,7 +17,7 @@ public class TestInput {
 	public String tttEmailAddress;
 
 	public boolean useTLS;
-
+	
 	public int sutCommandTimeoutInSeconds;
 
 	public String sutUserName;
@@ -35,6 +35,8 @@ public class TestInput {
     public String ccdaReferenceFilename;
 
 	public String ccdaValidationObjective;
+	
+	public boolean cures;
 
 	public TestResult tr;
 
@@ -46,7 +48,7 @@ public class TestInput {
 			String _sutEmailAddress, String _tttEmailAddress, boolean _useTLS,
 			String _sutUserName, String _sutPassword,String _tttUserName, String _tttPassword, int _starTtlsPort,
 			int _sutCommandTimeoutInSeconds,
-			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective, byte[] _certificate) {
+			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective, boolean _cures, byte[] _certificate) {
 		sutSmtpAddress = _sutSmtpAddress;
 		tttSmtpAddress = _tttSmtpAddress;
 		sutSmtpPort = _sutSmtpPort;
@@ -63,6 +65,7 @@ public class TestInput {
 		attachments = _attachments;
 		ccdaReferenceFilename = _ccdaReferenceFilename;
 		ccdaValidationObjective = _ccdaValidationObjective;
+		cures = _cures;
 		certificate = _certificate;
 	}
 
@@ -189,6 +192,14 @@ public class TestInput {
 
 	public void setCcdaReferenceFilename(String ccdaReferenceFilename) {
 		this.ccdaReferenceFilename = ccdaReferenceFilename;
+	}
+	
+	public boolean getcures() {
+		return cures;
+	}
+
+	public void setcures(boolean cures) {
+		this.cures = cures;
 	}
 
 	public byte[] getCertificate() {
