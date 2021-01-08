@@ -194,7 +194,12 @@ public class TTTReceiverTests {
 										CloseableHttpClient client = HttpClients.createDefault();
 										FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
 										File file1 = new File("sample.xml");
-										HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+										if(ti.cures) {
+										HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r3.url"));
+										}
+										else {
+											HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
+										}
 										FileBody fileBody = new FileBody(file1);
 
 
