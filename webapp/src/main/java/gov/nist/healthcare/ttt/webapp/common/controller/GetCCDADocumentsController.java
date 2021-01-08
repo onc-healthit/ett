@@ -143,6 +143,7 @@ public class GetCCDADocumentsController {
 						HashMap<String, Object> newFile = new HashMap<>();
 						newFile.put("name", fileName);
 						newFile.put("link", getLink(path,curesFiles));
+						newFile.put("cures",curesFiles);
 						List filesList = (List) current.get("files");
 						filesList.add(newFile);
 					} else {
@@ -162,6 +163,7 @@ public class GetCCDADocumentsController {
 						HashMap<String, Object> newFile = new HashMap<>();
 						newFile.put("name", fileName);
 						newFile.put("link", getLink(path,curesFiles));
+						newFile.put("cures",curesFiles);
 						List filesList = (List) current.get("files");
 						filesList.add(newFile);
 					}

@@ -337,6 +337,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 			var ccdaReferenceFilename = "";
 			var ccdaValidationObjective = "";
 			var fileLink = "";
+			var curesValidator = false;
 			if (test.ccdaFileRequired && (!fieldInput.ccdaDocument)){
 				throw {
 					code: "Error",
@@ -348,6 +349,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 				ccdaReferenceFilename = fieldInput.ccdaDocument.name || "";
 				fileLink = fieldInput.ccdaDocument.link || "";
 				ccdaValidationObjective = fieldInput.ccdaDocument.path[fieldInput.ccdaDocument.path.length - 1] || "";
+				curesValidator = fieldInput.ccdaDocument.cures;
 			}
 
 			var previousTR = null;
@@ -380,7 +382,7 @@ certCerth1.controller('Certh1Ctrl', ['$scope', '$stateParams','LogInfo','growl',
 				"ccdaReferenceFilename": ccdaReferenceFilename,
 				"ccdaValidationObjective": ccdaValidationObjective,
 				"ccdaFileLink": fileLink,
-				"previousResult": previousTR || null
+				"previousResult": previousTR,"cures":curesValidator || null
 			};
 
 			// Set status to loading for loading UI
