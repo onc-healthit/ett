@@ -142,12 +142,12 @@ final class TestCase2 extends TestCaseSender {
 
 		// Query MDHT war endpoint
 		CloseableHttpClient client = HttpClients.createDefault();
-		
+		HttpPost post = new HttpPost(this.mdhtR3Endpoint);
 		if(cures) {
-			HttpPost post = new HttpPost(this.mdhtR3Endpoint);
+			post = new HttpPost(this.mdhtR3Endpoint);
 		}
 		else {
-		HttpPost post = new HttpPost(this.mdhtR2Endpoint);
+		   post = new HttpPost(this.mdhtR2Endpoint);
 		}
 		
 		ContentBody fileBody = new InputStreamBody(new ByteArrayInputStream(ccdaFile), "ccda");
