@@ -96,10 +96,13 @@ certMod.config(['$stateProvider',
     }
 ]);
 
-certMod.controller('CertificationCriteriaCtrl', ['$scope', 'PropertiesFactory',
-    function($scope, PropertiesFactory) {
+certMod.controller('CertificationCriteriaCtrl', ['$scope', 'PropertiesFactory','$rootScope',
+    function($scope, PropertiesFactory,$rootScope) {
         PropertiesFactory.get(function(result) {
             $scope.properties = result;
         });
+        $scope.toggleDisplayDiv = function() {
+			$rootScope.showmessage  = true;
+        };		
     }
 ]);

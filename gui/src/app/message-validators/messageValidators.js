@@ -140,8 +140,8 @@ validators.config(['$stateProvider',
     }
 ]);
 
-validators.controller('MessageValidatorsCtrl', ['$scope', '$stateParams', 'SettingsFactory', 'PropertiesFactory',
-    function($scope,$stateParams, SettingsFactory, PropertiesFactory) {
+validators.controller('MessageValidatorsCtrl', ['$scope', '$stateParams', 'SettingsFactory', 'PropertiesFactory','$rootScope',
+    function($scope,$stateParams, SettingsFactory, PropertiesFactory, $rootScope) {
     $scope.paramsObj =  $stateParams.paramsObj;
 
 		$scope.backTo = null;
@@ -159,6 +159,8 @@ validators.controller('MessageValidatorsCtrl', ['$scope', '$stateParams', 'Setti
         PropertiesFactory.get(function(result) {
             $scope.properties = result;
         });
-
+        $scope.toggleDisplayDiv = function() {
+			$rootScope.showmessage  = true;
+        };
     }
 ]);

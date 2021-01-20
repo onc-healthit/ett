@@ -171,10 +171,13 @@ hisp.config(['$stateProvider',
     }
 ]);
 
-hisp.controller('HispCtrl', ['$scope', 'PropertiesFactory',
-    function($scope, PropertiesFactory) {
+hisp.controller('HispCtrl', ['$scope', 'PropertiesFactory','$rootScope',
+    function($scope, PropertiesFactory, $rootScope) {
         PropertiesFactory.get(function(result) {
             $scope.properties = result;
         });
+        $scope.toggleDisplayDiv = function() {
+			$rootScope.showmessage  = true;
+        };		
     }
 ]);

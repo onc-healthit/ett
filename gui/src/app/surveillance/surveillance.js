@@ -97,10 +97,13 @@ surveilMod.config(['$stateProvider',
     }
 ]);
 
-surveilMod.controller('SurveillanceCriteriaCtrl', ['$scope', 'PropertiesFactory',
-    function($scope, PropertiesFactory) {
+surveilMod.controller('SurveillanceCriteriaCtrl', ['$scope', 'PropertiesFactory','$rootScope',
+    function($scope, PropertiesFactory, $rootScope) {
         PropertiesFactory.get(function(result) {
             $scope.properties = result;
         });
+        $scope.toggleDisplayDiv = function() {
+			$rootScope.showmessage  = true;
+        };		
     }
 ]);
