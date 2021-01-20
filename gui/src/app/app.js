@@ -81,9 +81,10 @@ ttt.config(['KeepaliveProvider', 'IdleProvider',
 ]);
 
 // Run idle as soon as the app starts
-ttt.run(['Idle',
-    function(Idle) {
+ttt.run(['Idle','$rootScope',
+    function(Idle,$rootScope) {
         Idle.watch();
+$rootScope.showmessage = false;		
     }
 ]);
 

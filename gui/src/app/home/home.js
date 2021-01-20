@@ -41,10 +41,13 @@ home.config(['$stateProvider',
 /**
  * And of course we define a controller for our route.
  */
-home.controller('HomeCtrl', ['$scope', 'PropertiesFactory',
-    function($scope, PropertiesFactory) {
+home.controller('HomeCtrl', ['$scope', 'PropertiesFactory','$rootScope',
+    function($scope, PropertiesFactory,$rootScope) {
         PropertiesFactory.get(function(result) {
             $scope.properties = result;
         });
-    }
+        $scope.toggleDisplayDiv = function() {
+			$rootScope.showmessage  = true;
+        };
+   }
 ]);

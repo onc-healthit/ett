@@ -1,10 +1,14 @@
 <div class="home-tools">
-    <div id="appheader">
-		<a href="https://www.healthit.gov/" title="HealthIT.gov" rel="external" class="site-logo">
-			<img src="assets/img/healthit.gov.logo.png" alt="HealthIT.gov">
-		</a>
-    </div>
-
+<div ng-show="!showmessage" class="alert alert-warning alert-dismissible fade in">
+	<a href="#" class="close" data-dismiss="alert" ng-click="toggleDisplayDiv()" aria-label="close">&times;</a>
+	<h6>HHS System Login</h6>
+	<p>This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.</p>
+</div>
+<div id="appheader">
+	<a href="https://www.healthit.gov/" title="HealthIT.gov" rel="external" class="site-logo">
+		<img src="assets/img/healthit.gov.logo.png" alt="HealthIT.gov">
+	</a>
+</div>		
 <div class="container">
   <div class="row">
 	<div class="col-sm-1">&nbsp;
