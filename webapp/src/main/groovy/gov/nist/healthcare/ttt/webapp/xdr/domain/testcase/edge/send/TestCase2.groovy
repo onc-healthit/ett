@@ -42,8 +42,12 @@ final class TestCase2 extends TestCaseSender {
 	@Value('${ett.mdht.r2.url}')
 	String mdhtR2Endpoint;
 	
+	@Value('${ett.mdht.r3.url}')
+	String mdhtR3Endpoint;
+	
 	String ccdaR2Type = "170.315_b2_CIRI_Amb"
 	String ccdaR2ReferenceFilename = "170.315_b2_ciri__r11_sample1_v4.xml"
+	boolean cures = false;
 
     @Autowired
     public TestCase2(TestCaseExecutor ex){
@@ -56,6 +60,7 @@ final class TestCase2 extends TestCaseSender {
         executor.validateInputs(context,["direct_from"])
         
  		try {
+			 this.cures = context.payload.cures;
 			this.ccdaR2ReferenceFilename = context.payload.name;
 	        ArrayList<String> path = context.payload.path;
 			if(path.size() > 1) {
@@ -124,7 +129,7 @@ final class TestCase2 extends TestCaseSender {
 				}
 			}
 			
-			String res = validateCCDA_R2(v, updatedRecord)
+			String res = validateCCDA_R2(v, updatedRecord, this.cures)
 //			log.info("CCDA validation result: " + res);
 			
 			updatedRecord.setMDHTValidationReport(res);
@@ -132,12 +137,18 @@ final class TestCase2 extends TestCaseSender {
         executor.db.updateXDRRecord(updatedRecord)	
 
     }
-	public String validateCCDA_R2(byte[] ccdaFile, XDRRecordInterface record) {
+	public String validateCCDA_R2(byte[] ccdaFile, XDRRecordInterface record, boolean cures) {
 		log.info("Validating CCDA " + "ccda" + " with validation objective " + this.ccdaR2Type + " and reference filename " + this.ccdaR2ReferenceFilename);
 
 		// Query MDHT war endpoint
 		CloseableHttpClient client = HttpClients.createDefault();
-		HttpPost post = new HttpPost(this.mdhtR2Endpoint);
+		HttpPost post = new HttpPost(this.mdhtR3Endpoint);
+		if(cures) {
+			post = new HttpPost(this.mdhtR3Endpoint);
+		}
+		else {
+		   post = new HttpPost(this.mdhtR2Endpoint);
+		}
 		
 		ContentBody fileBody = new InputStreamBody(new ByteArrayInputStream(ccdaFile), "ccda");
 //		FileBody fileBody = new FileBody(ccdaFile);

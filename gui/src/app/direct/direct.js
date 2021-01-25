@@ -174,8 +174,8 @@ direct.config(['$stateProvider',
 	}
 ]);
 
-direct.controller('DirectCtrl', ['$scope', '$stateParams', 'SettingsFactory', 'PropertiesFactory',
-	function($scope, $stateParams, SettingsFactory, PropertiesFactory) {
+direct.controller('DirectCtrl', ['$scope', '$stateParams', 'SettingsFactory', 'PropertiesFactory','$rootScope',
+	function($scope, $stateParams, SettingsFactory, PropertiesFactory, $rootScope) {
     $scope.paramsObj =  $stateParams.paramsObj;
 		$scope.backTo = null;
 		if ($stateParams.paramsObj !=null){
@@ -192,6 +192,8 @@ direct.controller('DirectCtrl', ['$scope', '$stateParams', 'SettingsFactory', 'P
 		PropertiesFactory.get(function(result) {
 			$scope.properties = result;
 		});
-
+        $scope.toggleDisplayDiv = function() {
+			$rootScope.showmessage  = true;
+        };
    }
 ]);

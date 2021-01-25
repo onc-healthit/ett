@@ -201,10 +201,13 @@ edge.config(['$stateProvider',
     }
 ]);
 
-edge.controller('EdgeCtrl', ['$scope', 'PropertiesFactory',
-    function($scope, PropertiesFactory) {
+edge.controller('EdgeCtrl', ['$scope', 'PropertiesFactory','$rootScope',
+    function($scope, PropertiesFactory, $rootScope) {
         PropertiesFactory.get(function(result) {
             $scope.properties = result;
         });
+        $scope.toggleDisplayDiv = function() {
+			$rootScope.showmessage  = true;
+        };		
     }
 ]);

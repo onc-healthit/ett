@@ -26,7 +26,7 @@ public class ConfigReader {
 		TestResult tr = new TestResult();
 		TestInput ti = new TestInput("localhost", "localhost", 25, 25,
 				"blue@localhost", "red@localhost", false, "red", "red", "red",
-				"red", 25, 600, attachment,"a","b", null);
+				"red", 25, 600, attachment,"a","b",false, null);
 		JSONObject jsonf = new JSONObject(readFile("config-all.json"));
 		JSONArray ts = (JSONArray) jsonf.get("tests");
 
