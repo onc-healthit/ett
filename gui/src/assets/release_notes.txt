@@ -3,7 +3,7 @@
 	
 	*2. Updated SMTP 8, 14, 18 test to call the Cures validator when Cures files are selected.
 	
-	*3. C-CDA Validator
+	*3. C-CDA Validator :
             -Fix issue requiring 0 provenance (author) instances 
    	    -Update birth sex and telecom validation to fire error for cures and warning for non-cures
    	    -Fix birth sex and telecom validation not firing relevant issues when severity is set to errors only      
