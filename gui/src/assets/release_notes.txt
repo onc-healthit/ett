@@ -1,5 +1,6 @@
 ==Version 2.3.30#01/25/2021
 	*1. Updated XDR 1 and XDR 2 tests to call the Cures validator when Cures files are selected.
+	
 	*2. Updated SMTP 8, 14, 18 test to call the Cures validator when Cures files are selected.
 	    
 ==Version 2.3.29#12/07/2020
