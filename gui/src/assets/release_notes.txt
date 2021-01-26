@@ -2,6 +2,12 @@
 	*1. Updated XDR 1 and XDR 2 tests to call the Cures validator when Cures files are selected.
 	
 	*2. Updated SMTP 8, 14, 18 test to call the Cures validator when Cures files are selected.
+	
+	*3. C-CDA Validator
+            -Fix issue requiring 0 provenance (author) instances 
+   	    -Update birth sex and telecom validation to fire error for cures and warning for non-cures
+   	    -Fix birth sex and telecom validation not firing relevant issues when severity is set to errors only      
+   	    -Fix scenario file for Cures selecting pre-cures scenarios in SITE C-CDA Validator UI
 	    
 ==Version 2.3.29#12/07/2020
 	*1. Updated cures validator with the following changes:
