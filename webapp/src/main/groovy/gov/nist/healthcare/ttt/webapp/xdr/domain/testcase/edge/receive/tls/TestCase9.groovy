@@ -36,7 +36,7 @@ class TestCase9 extends TestCase {
             log.debug("tls connection for tcid $id and user $username succeeded. Test failed.")
             step.status = Status.FAILED
         }
-        catch(javax.net.ssl.SSLException e){
+        catch(Exception e){
             log.debug("tls connection for tcid $id and user $username succeeded. Test succeeded.")
             e.printStackTrace()
             step.status = Status.PASSED

@@ -139,7 +139,7 @@ public class TLSReceiverImpl extends Thread implements TLSReceiver {
             log.info("client has dropped the connection.")
             status = Status.PASSED
         } finally {
-            w.close();
+          //  w.close();
             //            r.close();
             connection.close();
             String address = connection.inetAddress.hostAddress
