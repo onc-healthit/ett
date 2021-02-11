@@ -870,7 +870,8 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				prop.load(file);
 				file.close();
 				//ti.useTLS = true;
-				String address = "delaydispatched"+ti.sutCommandTimeoutInSeconds+"@"+prop.getProperty("direct.listener.domainName");
+				int finaltimeout = ti.sutCommandTimeoutInSeconds+5;
+				String address = "delaydispatched"+finaltimeout+"@"+prop.getProperty("direct.listener.domainName");
 				TestResult tr128;
 				tr128 = mu2senderTests.testMu2TwoEight(ti,address);
 				tr128.id = 128;
@@ -893,7 +894,8 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				file.close();
 				//ti.useTLS = true;
 				TestResult tr528;
-				String address = "delaydispatched"+ti.sutCommandTimeoutInSeconds+"@"+prop.getProperty("direct.listener.domainName");
+				int finaltimeout = ti.sutCommandTimeoutInSeconds+5;
+				String address = "delaydispatched"+finaltimeout+"@"+prop.getProperty("direct.listener.domainName");
 				tr528 = mu2senderTests.testMu2TwoEightSmtp(ti,address);
 				tr528.id = 528;
 				res.add(tr528);
@@ -915,7 +917,8 @@ public class SMTPTestRunner implements ISMTPTestRunner {
 				file.close();
 				//ti.useTLS = true;
 				TestResult tr158;
-				String address = "delaydispatched"+ti.sutCommandTimeoutInSeconds+"@"+prop.getProperty("direct.listener.domainName");
+				int finaltimeout = ti.sutCommandTimeoutInSeconds+5;
+				String address = "delaydispatched"+finaltimeout+"@"+prop.getProperty("direct.listener.domainName");
 				tr158 = mu2senderTests.testMu2TwoEightPop(ti,address);
 				tr158.id = 158;
 				res.add(tr158);
