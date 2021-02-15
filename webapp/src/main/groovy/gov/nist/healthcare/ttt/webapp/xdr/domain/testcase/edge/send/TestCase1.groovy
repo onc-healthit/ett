@@ -155,6 +155,7 @@ final class TestCase1 extends TestCaseSender {
 		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 		builder.addTextBody("validationObjective", this.ccdaR2Type);
 		builder.addTextBody("referenceFileName", this.ccdaR2ReferenceFilename);
+		builder.addTextBody("curesUpdate", String.valueOf(cures));
 		builder.addPart("ccdaFile", fileBody);
 		HttpEntity entity = builder.build();
 		//
