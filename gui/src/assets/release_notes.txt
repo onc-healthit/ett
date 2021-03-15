@@ -1,3 +1,13 @@
+==Version 2.3.31.1#03/08/2021
+	*1. C-CDA Validator :
+            -Fix invalid errors fired when more authors exist in the submitted data than the scenario
+   	    -Add Note Activity enforcement to Results and Procedures Sections
+   	    -Fix telecom issue for type mailto      
+   	*2. Test Data :
+	    -Updated Vitals Test Data to reflect the CDC growth charts for pediatric vitals
+	    -Updated Validator to remove the provenance to non USCDI data elements
+	    -Updated Telecom values for CIRI b2 criteria for Telecom validation
+	
 ==Version 2.3.31#02/22/2021
 	*1. Fix XDR 1 and XDR 2 tests to call the Cures validator when Cures files are selected with updated parameters.
 	
