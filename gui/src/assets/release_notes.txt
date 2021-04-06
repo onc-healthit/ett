@@ -1,4 +1,4 @@
-==Version 2.3.32#04/06/2021
+==Version 2.3.32#04/05/2021
 	*1. Updated Happy Kid Vitals test data to reflect the CDC growth charts more accurately.
 	
 	*2. Updated the test data sample 3 files for both inpatient and ambulatory to more clearly identify USCDI data elements.
@@ -7,9 +7,11 @@
 	
 	*4. Updated Gold Sample with cures data.
 	
-	*5. Add Provenance date, time/time-zone validation.
+	*5. Fix rejection of a submitted Provenance time which is not matching the scenario time exactly. Instead, the base-level-date is enforced but the time and time-zone can be any value, if formatted correctly.
 	
-	*6. Fix blank Organization Name in Provenance error output.
+	*6. Add Provenance date and time/time-zone validation.
+	
+	*7. Fix blank Organization Name in Provenance error output.
 	
 ==Version 2.3.31.1#03/08/2021
 	*1. C-CDA Validator :
