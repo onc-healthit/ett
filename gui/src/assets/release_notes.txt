@@ -1,3 +1,12 @@
+==Version 2.3.32#04/06/2021
+	*1. Updated Happy Kid Vitals test data to reflect the CDC growth charts more accurately.
+	
+	*2. Updated the test data sample 3 files for both inpatient and ambulatory to more clearly identify USCDI data elements.
+	
+	*3. In the software side, Added tolerance based validation for growth charts to allow for variations by EHR vendors.
+	
+	*4. Updated Gold Sample with cures data.
+	
 ==Version 2.3.31.1#03/08/2021
 	*1. C-CDA Validator :
             -Fix invalid errors fired when more authors exist in the submitted data than the scenario
