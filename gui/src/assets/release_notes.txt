@@ -7,6 +7,10 @@
 	
 	*4. Updated Gold Sample with cures data.
 	
+	*5. Add Provenance date, time/time-zone validation.
+	
+	*6. Fix blank Organization Name in Provenance error output.
+	
 ==Version 2.3.31.1#03/08/2021
 	*1. C-CDA Validator :
             -Fix invalid errors fired when more authors exist in the submitted data than the scenario
