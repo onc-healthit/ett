@@ -1,6 +1,6 @@
 ==Version 2.3.32#04/05/2021
 	*1. C-CDA Validator :
-            -Add Provenance date, time/time-zone validation..
+            -Add Provenance date, time/time-zone validation.
    	    -Fix blank Organization Name in Provenance error output.
    	
 ==Version 2.3.31.1#03/08/2021
