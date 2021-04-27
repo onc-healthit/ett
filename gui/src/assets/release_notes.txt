@@ -1,3 +1,13 @@
+==Version 2.3.33#04/26/2021
+	*1. C-CDA Validator :
+            -Include provenance representedOrganization reporting where applicable to properly clarify error output messages
+	    -Fix provenance checking in Notes Entry to account for time zones     
+   	*2. Test Data :
+	    -Updated Care Team Validation as per the Companion Guide
+	    -Updated Pediatric Vitals Error Message to consult ATL when different results are obtained 
+	    -Updated Sample 3 files for Inpatient criteria to include Henry Seven as Attending Physician Care Team Member
+	    -Updated VDT Xml samples Health Concerns Section to point to Problem Section using right identifiers
+	    
 ==Version 2.3.32#04/05/2021
 	*1. Updated Happy Kid Vitals test data to reflect the CDC growth charts more accurately.
 	
