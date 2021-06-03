@@ -1,3 +1,12 @@
+==Version 2.3.34#06/02/2021
+	*1. Updated Content Validator to allow notes activities in specific sections which include Lab Results, Procedures, Notes and Encounters.
+	
+	*2. Updated Error Messages for Notes Provenance Entries.
+	
+	*3. Updated Provenance Validation for Inpatient setting for Jane Clarkson to have the right organization name.
+	
+	*4. Updated Sample1 and Sample2 files to include Clinical Notes validation.
+	
 ==Version 2.3.33#04/26/2021
 	*1. C-CDA Validator :
             -Include provenance representedOrganization reporting where applicable to properly clarify error output messages
