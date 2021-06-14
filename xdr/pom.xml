@@ -26,14 +26,14 @@
 		</repository>
 
 		<!-- Contains NIST toolkit dependencies  -->
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-	        <id>mdht</id>
-	        <name>ONCSITE-DEV-CCDA-releases</name>	        
-	        <url>http://34.195.107.72:8081/artifactory/libs-release-local</url> <!--34.195.107.72 ccda.dev.sitenv.org -->
-        </repository>		
+		<repository>
+		    <snapshots>
+			<enabled>true</enabled>
+		    </snapshots>
+			<id>mdht</id>
+			<name>ONCSITE-DEV-CCDA-releases</name>
+			<url>http://34.195.107.72:8081/artifactory/libs-release-local</url> <!--34.195.107.72 ccda.dev.sitenv.org -->
+		</repository>
 	</repositories>
 
 	<dependencies>
