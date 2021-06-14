@@ -119,8 +119,8 @@
 
     <script type="text/ng-template" id="error_display">
         <strong style="color: black;"><p style="display: inline; word-break: break-all; word-wrap: break-word;">{{item.xPath}}</p></strong>
-        <div>
-            <u>Line number:</u>
+        <div ng-if="item.documentLineNumber && item.documentLineNumber !== '0'">
+            <u>Line Number:</u>
             <strong style="color: black;"> {{item.documentLineNumber}}</strong>
         </div>
         <div ng-show="showDiv">
