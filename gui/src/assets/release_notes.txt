@@ -1,3 +1,12 @@
+==Version 2.3.35#06/28/2021
+	*1. Remove XML Line number and XPath from Content Validation results.
+	
+	*2. Added logic to allow Notes Activities to be present in any section within the C-CDA document.
+	
+	*3. Relaxed Care Team section requirement to warning instead of errors.
+	
+	*4. Updated Gold Samples for Sample 1 and Sample 2.
+	
 ==Version 2.3.34#06/02/2021
 	*1. Updated Content Validator to allow notes activities in specific sections which include Lab Results, Procedures, Notes and Encounters.
 	
