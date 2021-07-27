@@ -1,3 +1,12 @@
+==Version 2.3.36#07/26/2021
+	*1. Add linked reference support for Note Activity.
+	
+	*2. Implement Errata 2041: Allow for Advance Directive organizer or Advance Directive observation in an Advance Directive section but prevent an entry from having both an observation and an organizer.
+	
+	*3. Update ValueSet HL7 RefrainPolicy 2.16.840.1.113883.1.11.20446 to reflect the DS4P IG.
+	
+	*4. Updated dependencies for security
+	
 ==Version 2.3.35#06/28/2021
 	*1. Remove XML Line number and XPath from Content Validation results.
 	
