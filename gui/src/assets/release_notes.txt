@@ -1,3 +1,10 @@
+==Version 2.3.37#08/30/2021
+	*1. Fix DocumentBuilderFactory XXE vulnerability.
+	
+	*2. Fix exception during parallel execution of DocumentBuilder
+	
+	*3. Update to support HL7 Datatype IVL_REAL as part of new MDHT 20210824 Release
+	
 ==Version 2.3.36#07/26/2021
 	*1. Add linked reference support for Note Activity.
 	
