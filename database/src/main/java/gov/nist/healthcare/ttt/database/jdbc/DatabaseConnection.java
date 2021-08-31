@@ -89,6 +89,10 @@ public class DatabaseConnection {
         result = stmt.executeQuery(sql);
         return result;
     }
+    
+    public Connection getCon() throws SQLException {
+        return con;
+    }
 
     /**
      *

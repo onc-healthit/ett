@@ -11,6 +11,8 @@ import gov.nist.healthcare.ttt.database.log.PartImpl;
 import gov.nist.healthcare.ttt.database.log.PartInterface;
 import gov.nist.healthcare.ttt.misc.Configuration;
 import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -773,16 +775,20 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public PartInterface getPart(String partID) throws DatabaseException {
-
+    	
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + PART_TABLE + " ");
-        sql.append("WHERE " + PART_PARTID + " = '" + partID + "';");
-
+        sql.append("WHERE " + PART_PARTID + " = " + "?" + ";");
+      
         PartInterface part = null;
         ResultSet result = null;
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, partID);
+       	 	result = st.executeQuery();       	 	
             if (result.next()) {
                 part = this.convertDatabaseRecordToPart(result);
             } else {
