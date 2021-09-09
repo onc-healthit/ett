@@ -269,13 +269,17 @@ public class LogFacade extends DatabaseFacade {
 
     public Collection<String> getFromLines(String logID) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
+        PreparedStatement st = null;
         sql.append("SELECT " + FROMLINE_FROMLINE + " ");
         sql.append("FROM " + FROMLINE_TABLE + ' ');
-        sql.append("WHERE " + LOG_LOGID + " = '" + logID + "';");
+        sql.append("WHERE " + LOG_LOGID + " = " + "?" + ";");
         Collection<String> fromLines = new ArrayList<String>();
         ResultSet result = null;
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, logID);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 fromLines.add(result.getString(FROMLINE_FROMLINE));
             }
@@ -329,13 +333,17 @@ public class LogFacade extends DatabaseFacade {
 
     public Collection<String> getToLines(String logID) throws DatabaseException {
         StringBuilder sql = new StringBuilder();
+        PreparedStatement st = null;
         sql.append("SELECT " + TOLINE_TOLINE + " ");
         sql.append("FROM " + TOLINE_TABLE + ' ');
-        sql.append("WHERE " + LOG_LOGID + " = '" + logID + "';");
+        sql.append("WHERE " + LOG_LOGID + " = " + "?" + ";");
         Collection<String> toLines = new ArrayList<String>();
         ResultSet result = null;
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, logID);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 toLines.add(result.getString(TOLINE_TOLINE));
             }
