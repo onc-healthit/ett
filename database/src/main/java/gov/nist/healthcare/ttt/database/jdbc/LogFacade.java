@@ -396,14 +396,18 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public Collection<String> getReceived(String logID) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + RECEIVED_RECEIVED + " ");
         sql.append("FROM " + RECEIVED_TABLE + ' ');
-        sql.append("WHERE " + LOG_LOGID + " = '" + logID + "';");
+        sql.append("WHERE " + LOG_LOGID + " = " + "?" + ";");
         Collection<String> receiveds = new ArrayList<String>();
         ResultSet result = null;
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, logID);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 receiveds.add(result.getString(RECEIVED_RECEIVED));
             }
@@ -456,14 +460,18 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public Collection<String> getReplyTo(String logID) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + REPLYTO_REPLYTO + " ");
         sql.append("FROM " + REPLYTO_TABLE + ' ');
-        sql.append("WHERE " + LOG_LOGID + " = '" + logID + "';");
+        sql.append("WHERE " + LOG_LOGID + " = " + "?" + ";");
         Collection<String> replyTos = new ArrayList<String>();
         ResultSet result = null;
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, logID);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 replyTos.add(result.getString(REPLYTO_REPLYTO));
             }
@@ -547,16 +555,20 @@ public class LogFacade extends DatabaseFacade {
     }
 
     private LogInterface getLogByLogId(String logId) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + LOG_TABLE + ' ');
-        sql.append("WHERE " + LOG_LOGID + " = '" + logId + "';");
+        sql.append("WHERE " + LOG_LOGID + " = " + "?" + ";");
 
         ResultSet result = null;
         LogInterface log = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, logId);
+       	 	result = st.executeQuery();
             if (result.next()) {
                 log = this.convertDatabaseRecordToLog(result);
             }
@@ -570,16 +582,20 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public LogInterface getLogByMessageId(String messageId) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + LOG_TABLE + ' ');
-        sql.append("WHERE " + LOG_MESSAGEID + " = '" + messageId + "';");
+        sql.append("WHERE " + LOG_MESSAGEID + " = " + "?" + ";");
 
         ResultSet result = null;
         LogInterface log = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, messageId);
+       	 	result = st.executeQuery();
             if (result.next()) {
                 log = this.convertDatabaseRecordToLog(result);
             }
@@ -592,16 +608,20 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public LogInterface getLogByOriginalMessageId(String originalMessageId) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + LOG_TABLE + ' ');
-        sql.append("WHERE " + LOG_ORIGINALMESSAGEID + " = '" + originalMessageId + "';");
+        sql.append("WHERE " + LOG_ORIGINALMESSAGEID + " = " + "?" + ";");
 
         ResultSet result = null;
         LogInterface log = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, originalMessageId);
+       	 	result = st.executeQuery();
             if (result.next()) {
                 log = this.convertDatabaseRecordToLog(result);
             }
@@ -754,16 +774,20 @@ public class LogFacade extends DatabaseFacade {
 
     public Collection<CCDAValidationReportInterface> getCCDAValidationReportByMessageId(String messageId) throws DatabaseException {
 
+    	PreparedStatement st = null;
         String logID = this.getLogIDByMessageId(messageId);
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + CCDAVALIDATIONREPORT_TABLE + ' ');
-        sql.append("WHERE " + LOG_LOGID + " = '" + logID + "';");
+        sql.append("WHERE " + LOG_LOGID + " = " + "?" + ";");
 
         Collection<CCDAValidationReportInterface> reports = new ArrayList<CCDAValidationReportInterface>();
         ResultSet result = null;
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, logID);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 CCDAValidationReportInterface report = new CCDAValidationReportImpl();
                 report.setFilename(result.getString(CCDAVALIDATIONREPORT_FILENAME));
@@ -822,16 +846,20 @@ public class LogFacade extends DatabaseFacade {
 
     private Collection<String> getImmediateChildIDs(String partID) throws DatabaseException {
 
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + PARTRELATIONSHIP_CHILDID + " ");
         sql.append("FROM " + PARTRELATIONSHIP_TABLE + " ");
-        sql.append("WHERE " + PARTRELATIONSHIP_PARENTID + " = '" + partID + "';");
+        sql.append("WHERE " + PARTRELATIONSHIP_PARENTID + " = " + "?" + ";");
 
         ResultSet result = null;
         Collection<String> childIDs = new ArrayList<String>();
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, partID);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 String childID = result.getString(PARTRELATIONSHIP_CHILDID);
                 childIDs.add(childID);
@@ -846,17 +874,21 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public List<DetailInterface> getDetailsForPart(String partID) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DETAIL_TABLE + " ");
-        sql.append("WHERE " + PART_PARTID + " = '" + partID + "' ");
+        sql.append("WHERE " + PART_PARTID + " = " + "?" + ";");
         sql.append("ORDER BY " + DETAIL_COUNTER);
 
         ResultSet result = null;
         List<DetailInterface> details = new ArrayList<DetailInterface>();
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, partID);
+       	 	result = st.executeQuery();   
             while (result.next()) {
                 DetailInterface detail = this.convertDatabaseRecordtoDetail(result);
                 details.add(detail);
@@ -908,15 +940,19 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public boolean isPartAChild(String partID) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + PARTRELATIONSHIP_PARTRELATIONSHIPID + " ");
         sql.append("FROM " + PARTRELATIONSHIP_TABLE + " ");
-        sql.append("WHERE " + PARTRELATIONSHIP_CHILDID + " = '" + partID + "';");
+        sql.append("WHERE " + PARTRELATIONSHIP_CHILDID + " = " + "?" + ";");
 
         ResultSet result = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, partID);
+       	 	result = st.executeQuery();     
             if (result.next()) {
                 return true;
             }
@@ -930,15 +966,19 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public boolean isPartAParent(String partID) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + PARTRELATIONSHIP_PARTRELATIONSHIPID + " ");
         sql.append("FROM " + PARTRELATIONSHIP_TABLE + " ");
-        sql.append("WHERE " + PARTRELATIONSHIP_PARENTID + " = '" + partID + "';");
+        sql.append("WHERE " + PARTRELATIONSHIP_PARENTID + " = " + "?" + ";");
 
         ResultSet result = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, partID);
+       	 	result = st.executeQuery();     
             if (result.next()) {
                 return true;
             }
