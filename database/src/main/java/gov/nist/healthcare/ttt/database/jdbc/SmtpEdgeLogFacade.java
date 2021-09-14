@@ -275,9 +275,10 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     public SmtpEdgeLogInterface getLatestSmtpEdgeLogInterface(String username, String profileName, String testcasenumber) throws DatabaseException {
         String profileId = this.getProfileId(username, profileName);
         StringBuilder sql = new StringBuilder();
+        PreparedStatement st = null;
         sql.append("SELECT * ");
         sql.append("FROM " + SMTPEDGELOG_TABLE + ' ');
-        sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + profileId + "' AND ");
+        sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = " + "?" + " AND ");
         sql.append(SMTPEDGELOG_TESTCASENUMBER + " = '" + DatabaseConnection.makeSafe(testcasenumber) + "' ");
         sql.append("ORDER BY " + SMTPEDGELOG_TIMESTAMP + " DESC ");
         sql.append("LIMIT 1;");
@@ -285,7 +286,10 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         ResultSet result = null;
         SmtpEdgeLogInterface log = null;
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, profileId);
+       	 	result = st.executeQuery();
             if (result.next()) {
                 log = this.convertToLog(result);
             }
@@ -370,12 +374,13 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     }
 
     private String getLatestInteractionIDByProfileAndTestCase(String profileId, String testCaseNumber) throws DatabaseException {
-
+    	
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + SMTPEDGELOG_TRANSACTIONID + ' ');
         sql.append("FROM " + SMTPEDGELOG_TABLE + ' ');
-        sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + profileId + "' AND ");
-        sql.append(SMTPEDGELOG_TESTCASENUMBER + " = '" + testCaseNumber + "' ");
+        sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = " + "?" + " AND ");
+        sql.append(SMTPEDGELOG_TESTCASENUMBER + " = " + "?" + " ");
         sql.append("ORDER BY " + SMTPEDGELOG_TIMESTAMP + " DESC ");
         sql.append("LIMIT 1;");
         //System.out.println(sql.toString());
@@ -383,7 +388,11 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         String interactionID = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, profileId);
+       	 	st.setString(2, testCaseNumber);
+       	 	result = st.executeQuery();
             if (result.next()) {
                 interactionID = result.getString(SMTPEDGELOG_TRANSACTIONID);
             }
