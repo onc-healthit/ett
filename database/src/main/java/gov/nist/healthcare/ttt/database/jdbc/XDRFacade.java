@@ -401,7 +401,7 @@ public class XDRFacade extends DatabaseFacade {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT van." + XDRVANILLA_XDRVANILLAID + ' ');
 		sql.append("FROM " + XDRVANILLA_TABLE + " van ");
-		sql.append("WHERE van." + XDRVANILLA_SIMID + " = " + "?" + ";");
+		sql.append("WHERE van." + XDRVANILLA_SIMID + " = " + "?" + " ");
 		sql.append("ORDER BY van." + XDRVANILLA_TIMESTAMP + " DESC ");
 
 		ResultSet result = null;
@@ -437,7 +437,7 @@ public class XDRFacade extends DatabaseFacade {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT van." + XDRVANILLA_XDRVANILLAID + ' ');
 		sql.append("FROM " + XDRVANILLA_TABLE + " van ");
-		sql.append("WHERE van." + XDRVANILLA_SIMID + " = " + "?" + ";");
+		sql.append("WHERE van." + XDRVANILLA_SIMID + " = " + "?" + " ");
 		sql.append("ORDER BY van." + XDRVANILLA_TIMESTAMP + " DESC ");
 		sql.append("LIMIT 1 ");
 
@@ -503,7 +503,7 @@ public class XDRFacade extends DatabaseFacade {
 		sql.append("SELECT rec." + XDRRECORD_XDRRECORDID + ' ');
 		sql.append("FROM " + XDRRECORD_TABLE + " rec, " + XDRTESTSTEP_TABLE + " ts ");
 		sql.append("WHERE rec." + XDRRECORD_XDRRECORDID + " = ts." + XDRRECORD_XDRRECORDID + " AND ");
-		sql.append("ts." + XDRTESTSTEP_HOSTNAME + " = " + "?" + ";");
+		sql.append("ts." + XDRTESTSTEP_HOSTNAME + " = " + "?" + " ");
 		sql.append("ORDER BY rec." + XDRRECORD_TIMESTAMP + " DESC ");
 		sql.append("LIMIT 1;");
 
@@ -535,7 +535,7 @@ public class XDRFacade extends DatabaseFacade {
 		sql.append("SELECT rec." + XDRRECORD_XDRRECORDID + ' ');
 		sql.append("FROM " + XDRRECORD_TABLE + " rec, " + XDRTESTSTEP_TABLE + " ts ");
 		sql.append("WHERE rec." + XDRRECORD_XDRRECORDID + " = ts." + XDRRECORD_XDRRECORDID + " AND ");
-		sql.append("ts." + XDRTESTSTEP_DIRECTFROM + " = " + "?" + ";");
+		sql.append("ts." + XDRTESTSTEP_DIRECTFROM + " = " + "?" + " ");
 		sql.append("ORDER BY rec." + XDRRECORD_TIMESTAMP + " DESC ");
 		sql.append("LIMIT 1;");
 

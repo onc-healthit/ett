@@ -878,7 +878,7 @@ public class LogFacade extends DatabaseFacade {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DETAIL_TABLE + " ");
-        sql.append("WHERE " + PART_PARTID + " = " + "?" + ";");
+        sql.append("WHERE " + PART_PARTID + " = " + "?" + " ");
         sql.append("ORDER BY " + DETAIL_COUNTER);
 
         ResultSet result = null;
