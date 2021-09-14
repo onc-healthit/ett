@@ -3,6 +3,8 @@ package gov.nist.healthcare.ttt.database.jdbc;
 import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -323,17 +325,20 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     }
 
     private List<String> getAllTestCaseNumbers(String profileId) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT DISTINCT " + SMTPEDGELOG_TESTCASENUMBER + ' ');
         sql.append("FROM " + SMTPEDGELOG_TABLE + ' ');
-        sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = '" + profileId + "';");
+        sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = " + "?" + ";");
 
         ResultSet result = null;
         List<String> testCaseNumbers = new ArrayList<String>();
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, profileId);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 testCaseNumbers.add(result.getString(SMTPEDGELOG_TESTCASENUMBER));
             }
@@ -390,17 +395,20 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
     }
 
     private List<SmtpEdgeLogInterface> getLogsByInteraction(String interactionID) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + SMTPEDGELOG_TABLE + ' ');
-        sql.append("WHERE " + SMTPEDGELOG_TRANSACTIONID + " = '" + interactionID + "';" );
+        sql.append("WHERE " + SMTPEDGELOG_TRANSACTIONID + " = " + "?" + ";");
 
         ResultSet result = null;
         List<SmtpEdgeLogInterface> logs = new ArrayList<SmtpEdgeLogInterface>();
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, interactionID);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 SmtpEdgeLogInterface log = this.convertToLog(result);
                 logs.add(log);
@@ -448,7 +456,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
      * @throws DatabaseException
      */
     public List<SmtpEdgeProfileInterface> getAllProfilesByUsername(String username) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT  ");
@@ -479,12 +487,15 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append("')) AS CHAR(255))) ");
         sql.append(SMTPEDGEPROFILE_SUTPASSWORD);
         sql.append(" FROM " + SMTPEDGEPROFILE_TABLE + ' ');
-        sql.append("WHERE " + USERS_USERNAME + " = '" + username + "';");
+        sql.append("WHERE " + USERS_USERNAME + " = " + "?" + ";");
 
         ResultSet result = null;
         List<SmtpEdgeProfileInterface> profiles = new ArrayList<SmtpEdgeProfileInterface>();
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, username);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 SmtpEdgeProfileInterface profile = this.convertToProfile(result);
                 profiles.add(profile);
