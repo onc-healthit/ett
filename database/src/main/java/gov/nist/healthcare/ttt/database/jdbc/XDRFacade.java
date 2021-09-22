@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -395,16 +397,20 @@ public class XDRFacade extends DatabaseFacade {
 	}
 
 	public List<XDRVanillaInterface> getXDRVanillaBySimId(String simId) throws DatabaseException {
+		PreparedStatement st = null; 
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT van." + XDRVANILLA_XDRVANILLAID + ' ');
 		sql.append("FROM " + XDRVANILLA_TABLE + " van ");
-		sql.append("WHERE van." + XDRVANILLA_SIMID + " = '" + simId + "' ");
+		sql.append("WHERE van." + XDRVANILLA_SIMID + " = " + "?" + " ");
 		sql.append("ORDER BY van." + XDRVANILLA_TIMESTAMP + " DESC ");
 
 		ResultSet result = null;
 		List<String> recordIds = new ArrayList<String>();
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, simId);
+       	 	result = st.executeQuery();
 			while (result.next()) {
 				String recordId = result.getString(XDRVANILLA_XDRVANILLAID);
 				recordIds.add(recordId);
@@ -427,17 +433,21 @@ public class XDRFacade extends DatabaseFacade {
 
 
 	public XDRVanillaInterface getLatestXDRVanillaBySimId(String simId) throws DatabaseException {
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT van." + XDRVANILLA_XDRVANILLAID + ' ');
 		sql.append("FROM " + XDRVANILLA_TABLE + " van ");
-		sql.append("WHERE van." + XDRVANILLA_SIMID + " = '" + simId + "' ");
+		sql.append("WHERE van." + XDRVANILLA_SIMID + " = " + "?" + " ");
 		sql.append("ORDER BY van." + XDRVANILLA_TIMESTAMP + " DESC ");
 		sql.append("LIMIT 1 ");
 
 		ResultSet result = null;
 		XDRVanillaInterface vanilla = null;
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, simId);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 
 				vanilla = this.getXDRVanillaByVanillaRecordId(result.getString(XDRVANILLA_XDRVANILLAID));
@@ -454,17 +464,21 @@ public class XDRFacade extends DatabaseFacade {
 
 
 	public List<XDRRecordInterface> getXDRRecordsByHostname(String hostname) throws DatabaseException {
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT rec." + XDRRECORD_XDRRECORDID + ' ');
 		sql.append("FROM " + XDRRECORD_TABLE + " rec, " + XDRTESTSTEP_TABLE + " ts ");
 		sql.append("WHERE rec." + XDRRECORD_XDRRECORDID + " = ts." + XDRRECORD_XDRRECORDID + " AND ");
-		sql.append("ts." + XDRTESTSTEP_HOSTNAME + " = '" + hostname + "';");
+		sql.append("ts." + XDRTESTSTEP_HOSTNAME + " = " + "?" + ";");
 
 		ResultSet result = null;
 		List<String> recordIds = new ArrayList<String>();
 
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, hostname);
+       	 	result = st.executeQuery();
 			while (result.next()) {
 				String recordId = result.getString(XDRRECORD_XDRRECORDID);
 				recordIds.add(recordId);
@@ -484,11 +498,12 @@ public class XDRFacade extends DatabaseFacade {
 	}
 
 	public XDRRecordInterface getLatestXDRRecordByHostname(String hostname) throws DatabaseException {
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT rec." + XDRRECORD_XDRRECORDID + ' ');
 		sql.append("FROM " + XDRRECORD_TABLE + " rec, " + XDRTESTSTEP_TABLE + " ts ");
 		sql.append("WHERE rec." + XDRRECORD_XDRRECORDID + " = ts." + XDRRECORD_XDRRECORDID + " AND ");
-		sql.append("ts." + XDRTESTSTEP_HOSTNAME + " = '" + hostname + "' ");
+		sql.append("ts." + XDRTESTSTEP_HOSTNAME + " = " + "?" + " ");
 		sql.append("ORDER BY rec." + XDRRECORD_TIMESTAMP + " DESC ");
 		sql.append("LIMIT 1;");
 
@@ -496,7 +511,10 @@ public class XDRFacade extends DatabaseFacade {
 		String recordId = null;
 
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, hostname);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				recordId = result.getString(XDRRECORD_XDRRECORDID);
 			}
@@ -512,11 +530,12 @@ public class XDRFacade extends DatabaseFacade {
 
 	// TODO: A lot of redundency here.  Need to clean up.
 	public XDRRecordInterface getLatestXDRRecordByDirectFrom(String directFrom) throws DatabaseException {
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT rec." + XDRRECORD_XDRRECORDID + ' ');
 		sql.append("FROM " + XDRRECORD_TABLE + " rec, " + XDRTESTSTEP_TABLE + " ts ");
 		sql.append("WHERE rec." + XDRRECORD_XDRRECORDID + " = ts." + XDRRECORD_XDRRECORDID + " AND ");
-		sql.append("ts." + XDRTESTSTEP_DIRECTFROM + " = '" + directFrom + "' ");
+		sql.append("ts." + XDRTESTSTEP_DIRECTFROM + " = " + "?" + " ");
 		sql.append("ORDER BY rec." + XDRRECORD_TIMESTAMP + " DESC ");
 		sql.append("LIMIT 1;");
 
@@ -524,7 +543,10 @@ public class XDRFacade extends DatabaseFacade {
 		String recordId = null;
 
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, directFrom);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				recordId = result.getString(XDRRECORD_XDRRECORDID);
 			}
@@ -539,16 +561,20 @@ public class XDRFacade extends DatabaseFacade {
 	}
 
 	private XDRVanillaInterface getXDRVanillaByVanillaRecordId(String vanillaRecordId) throws DatabaseException {
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * ");
 		sql.append("FROM " + XDRVANILLA_TABLE + ' ');
-		sql.append("WHERE " + XDRVANILLA_XDRVANILLAID + " = '" + vanillaRecordId + "';");
+		sql.append("WHERE " + XDRVANILLA_XDRVANILLAID + " = " + "?" + ";");
 
 		ResultSet result = null;
 		XDRVanillaImpl vanilla = null;
 
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, vanillaRecordId);
+       	 	result = st.executeQuery();
 			if(result.next()) {
 				vanilla = new XDRVanillaImpl();
 				vanilla.setRequest(result.getString(XDRVANILLA_REQUEST));
@@ -567,16 +593,20 @@ public class XDRFacade extends DatabaseFacade {
 	}
 
 	public XDRRecordInterface getXDRRecordByRecordId(String xdrRecordId) throws DatabaseException {
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * ");
 		sql.append("FROM " + XDRRECORD_TABLE + ' ');
-		sql.append("WHERE " + XDRRECORD_XDRRECORDID + " = '" + xdrRecordId + "';");
+		sql.append("WHERE " + XDRRECORD_XDRRECORDID + " = " + "?" + ";");
 
 		ResultSet result = null;
 		XDRRecordImpl record = null;
 
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, xdrRecordId);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				record = new XDRRecordImpl();
 				record.setXdrRecordDatabaseId(result.getString(XDRRECORD_XDRRECORDID));
@@ -646,17 +676,20 @@ public class XDRFacade extends DatabaseFacade {
 
 	//returns null if none
 	public XDRTestStepInterface getXDRTestStepByTestStepId(String xdrTestStepId) throws DatabaseException {
-
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * ");
 		sql.append("FROM " + XDRTESTSTEP_TABLE + ' ');
-		sql.append("WHERE " + XDRTESTSTEP_XDRTESTSTEPID + " = '" + xdrTestStepId + "';");
+		sql.append("WHERE " + XDRTESTSTEP_XDRTESTSTEPID + " = " + "?" + ";");
 
 		ResultSet result = null;
 		XDRTestStepImpl testStep = null;
 
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, xdrTestStepId);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				testStep = new XDRTestStepImpl();
 				testStep.setXdrTestStepID(result.getString(XDRTESTSTEP_XDRTESTSTEPID));
@@ -760,16 +793,20 @@ public class XDRFacade extends DatabaseFacade {
 	}
 
 	public XDRSimulatorInterface getSimulatorBySimulatorId(String simulatorId) throws DatabaseException {
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * ");
 		sql.append("FROM " + XDRSIMULATOR_TABLE + ' ');
-		sql.append("WHERE " + XDRSIMULATOR_SIMULATORID + " = '" + simulatorId + "';");
+		sql.append("WHERE " + XDRSIMULATOR_SIMULATORID + " = " + "?" + ";");
 
 		ResultSet result = null;
 		XDRSimulatorImpl simulator = null;
 		try {
 			// TODO this is a duplicate of the code below.  Make this a separate method.
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, simulatorId);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				simulator = new XDRSimulatorImpl();
 				simulator.setXDRSimulatorID(result.getString(XDRSIMULATOR_XDRSIMULATORID));
@@ -790,16 +827,19 @@ public class XDRFacade extends DatabaseFacade {
 
 	// returns null if none
 	private XDRSimulatorInterface getXDRSimulatorBySimulatorId(String xdrSimulatorID) throws DatabaseException {
-
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * ");
 		sql.append("FROM " + XDRSIMULATOR_TABLE + ' ');
-		sql.append("WHERE " + XDRSIMULATOR_XDRSIMULATORID + " = '" + xdrSimulatorID + "';");
+		sql.append("WHERE " + XDRSIMULATOR_XDRSIMULATORID + " = " + "?" + ";");
 
 		ResultSet result = null;
 		XDRSimulatorImpl simulator = null;
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, xdrSimulatorID);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				simulator = new XDRSimulatorImpl();
 				simulator.setXDRSimulatorID(result.getString(XDRSIMULATOR_XDRSIMULATORID));
@@ -819,16 +859,19 @@ public class XDRFacade extends DatabaseFacade {
 
 	// returns null if none
 	public XDRReportItemInterface getXDRReportItemByReportItemId(String xdrReportItemId) throws DatabaseException {
-
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * ");
 		sql.append("FROM " + XDRREPORTITEM_TABLE + ' ');
-		sql.append("WHERE " + XDRREPORTITEM_XDRREPORTITEMID + " = '" + xdrReportItemId + "';");
+		sql.append("WHERE " + XDRREPORTITEM_XDRREPORTITEMID + " = " + "?" + ";");
 
 		ResultSet result = null;
 		XDRReportItemImpl reportItem = null;
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, xdrReportItemId);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				reportItem = new XDRReportItemImpl();
 				reportItem.setXDRReportItemID(result.getString(XDRREPORTITEM_XDRREPORTITEMID));
@@ -1140,16 +1183,19 @@ public class XDRFacade extends DatabaseFacade {
 	}
 
 	public String getTestStepRecordId(String testStepId) throws DatabaseException {
-
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT " + XDRRECORD_XDRRECORDID + ' ');
 		sql.append("FROM " + XDRTESTSTEP_TABLE + ' ');
-		sql.append("WHERE " + XDRTESTSTEP_XDRTESTSTEPID + " = '" + testStepId + "';");
+		sql.append("WHERE " + XDRTESTSTEP_XDRTESTSTEPID + " = " + "?" + ";");
 
 		ResultSet result = null;
 		String recordId = null;
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, testStepId);
+       	 	result = st.executeQuery();
 			if (result.next()) {
 				recordId = result.getString(XDRRECORD_XDRRECORDID);
 			}
@@ -1329,17 +1375,20 @@ public class XDRFacade extends DatabaseFacade {
 	}
 
 	public int removeAllByUsername(String username) throws DatabaseException {
-
+		PreparedStatement st = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT " + XDRRECORD_XDRRECORDID + ' ');
 		sql.append("FROM " + XDRRECORD_TABLE + ' ');
-		sql.append("WHERE " + XDRRECORD_USERNAME + " = '" + username + "';");
+		sql.append("WHERE " + XDRRECORD_USERNAME + " = " + "?" + ";");
 
 		List<String> recordIDs = new ArrayList<String>();
 		ResultSet result = null;
 
 		try {
-			result = this.getConnection().executeQuery(sql.toString());
+			Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, username);
+       	 	result = st.executeQuery();
 			while (result.next()) {
 				String recordId = result.getString(XDRRECORD_XDRRECORDID);
 				recordIDs.add(recordId);

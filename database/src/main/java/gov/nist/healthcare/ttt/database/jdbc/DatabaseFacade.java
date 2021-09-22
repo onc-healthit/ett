@@ -6,6 +6,9 @@
 package gov.nist.healthcare.ttt.database.jdbc;
 
 import gov.nist.healthcare.ttt.misc.Configuration;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -120,16 +123,20 @@ public class DatabaseFacade {
      */
     public Collection<String> getDirectAddresses(String contactEmail) throws DatabaseException {
 
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " ");
         sql.append("FROM " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ce , " + DatabaseFacade.DIRECT_EMAIL_TABLE + " de ");
         sql.append("WHERE ce." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = de." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " ");
-        sql.append("AND ce." + DatabaseFacade.CONTACT_EMAIL_COLUMN + " = '" + contactEmail + "';");
+        sql.append("AND ce." + DatabaseFacade.CONTACT_EMAIL_COLUMN + " = " + "?" + ";");
 
         ResultSet result = null;
         Collection<String> directAddresses = new ArrayList<String>();
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, contactEmail);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 directAddresses.add(result.getString(DatabaseFacade.DIRECT_EMAIL_COLUMN));
             }
@@ -153,16 +160,20 @@ public class DatabaseFacade {
      */
     public Collection<String> getContactAddresses(String directEmail) throws DatabaseException {
 
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ce." + DatabaseFacade.CONTACT_EMAIL_COLUMN + " ");
         sql.append("FROM " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ce , " + DatabaseFacade.DIRECT_EMAIL_TABLE + " de ");
         sql.append("WHERE ce." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = de." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " ");
-        sql.append("AND de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = '" + directEmail + "';");
+        sql.append("AND de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = " + "?" + ";");
 
         ResultSet result = null;
         Collection<String> contactAddresses = new ArrayList<String>();
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, directEmail);
+       	 	result = st.executeQuery();
             while (result.next()) {
                 contactAddresses.add(result.getString(DatabaseFacade.CONTACT_EMAIL_COLUMN));
             }
@@ -353,16 +364,20 @@ public class DatabaseFacade {
     }
 
     private boolean doesUsernameDirectIdMappingExist(String username, String directEmailId) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ");
         sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
-        sql.append("AND " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = '" + directEmailId + "';");
+        sql.append("AND " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = " + "?" + ";");
 
         ResultSet result = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+        	Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, directEmailId);
+       	 	result = st.executeQuery();
             if (result.next()) {
                 return true;
             }
