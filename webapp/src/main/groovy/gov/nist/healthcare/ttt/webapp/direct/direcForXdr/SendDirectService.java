@@ -6,7 +6,8 @@ import java.io.InputStream;
 
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor;
 @Component
 public class SendDirectService {
 
-	private static Logger logger = Logger.getLogger(SendDirectService.class.getName());
+	private static Logger logger = LogManager.getLogger(SendDirectService.class.getName());
 
 	private ListenerProcessor listener = new ListenerProcessor();
 	private DirectMessageSender sender = new DirectMessageSender();

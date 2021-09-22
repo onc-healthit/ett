@@ -29,10 +29,11 @@ import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 public class TTTSenderNegativeTests {
-	static Logger log = Logger.getLogger(TTTSenderNegativeTests.class);
+	static Logger log = LogManager.getLogger(TTTSenderNegativeTests.class);
 
 	AbstractSMTPSender smtpSender = new SocketSMTPSender();
 	Properties config;

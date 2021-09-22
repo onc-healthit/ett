@@ -1,6 +1,7 @@
 package gov.nist.healthcare.ttt.direct.sender;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.SRVRecord;
@@ -21,7 +22,7 @@ import java.util.Hashtable;
 
 public class LdapDnslookUp {
 
-	private static Logger logger = Logger.getLogger(LdapDnslookUp.class.getName());
+	private static Logger logger = LogManager.getLogger(LdapDnslookUp.class.getName());
 	
 	public InputStream getLdapCert(String email) {
 		ArrayList<String> domains = getLDAPServer(getTargetDomain(email));

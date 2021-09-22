@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 public class PropFileController {
 
-	private static Logger logger = Logger.getLogger(PropFileController.class.getName());
+	private static Logger logger = LogManager.getLogger(PropFileController.class.getName());
 
 	@Value("${direct.listener.domainName}")
 	String domainName = "localhost";

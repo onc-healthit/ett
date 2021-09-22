@@ -28,7 +28,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.bouncycastle.cms.CMSException;
 import org.bouncycastle.cms.RecipientId;
 import org.bouncycastle.cms.RecipientInformation;
@@ -41,7 +42,7 @@ import org.bouncycastle.mail.smime.SMIMEUtil;
 
 public class DirectMessageProcessor {
 
-	private Logger logger = Logger.getLogger(DirectMessageProcessor.class
+	private Logger logger = LogManager.getLogger(DirectMessageProcessor.class
 			.getName());
 
 	private InputStream directMessage;

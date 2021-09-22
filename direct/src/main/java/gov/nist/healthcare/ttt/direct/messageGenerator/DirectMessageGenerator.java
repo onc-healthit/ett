@@ -14,7 +14,8 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -38,7 +39,7 @@ import org.xbill.DNS.TextParseException;
 
 public class DirectMessageGenerator {
 
-	private static Logger logger = Logger.getLogger(DirectMessageGenerator.class.getName());
+	private static Logger logger = LogManager.getLogger(DirectMessageGenerator.class.getName());
 
 	protected String textMessage;
 	protected String subject;

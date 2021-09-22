@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ import gov.nist.healthcare.ttt.smtp.testcases.MU2SenderTests;
 @RequestMapping("/api/directricert")
 public class MU2DirectRiCertUpload {
 
-	private static Logger logger = Logger.getLogger(MU2DirectRiCertUpload.class.getName());
+	private static Logger logger = LogManager.getLogger(MU2DirectRiCertUpload.class.getName());
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody TestResult uploadCert(@RequestBody String filePath) throws Exception {

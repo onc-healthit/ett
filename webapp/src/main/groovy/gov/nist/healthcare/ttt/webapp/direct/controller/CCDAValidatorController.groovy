@@ -16,7 +16,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/ccdaValidator")
 public class CCDAValidatorController {
 	
-	private static Logger logger = Logger.getLogger(CCDAValidatorController.class.getName());
+	private static Logger logger = LogManager.getLogger(CCDAValidatorController.class.getName());
 	
 	@Autowired
 	private DatabaseInstance db;

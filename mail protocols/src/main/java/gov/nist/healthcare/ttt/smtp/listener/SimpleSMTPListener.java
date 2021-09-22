@@ -8,10 +8,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 public class SimpleSMTPListener extends AbstractSMTPListener {
-	private static Logger log = Logger.getLogger(SimpleSMTPListener.class);
+	private static Logger log = LogManager.getLogger(SimpleSMTPListener.class);
 
 	public static void main(String[] args) {
 		System.out.println("Running Chameleon Server on Port: "

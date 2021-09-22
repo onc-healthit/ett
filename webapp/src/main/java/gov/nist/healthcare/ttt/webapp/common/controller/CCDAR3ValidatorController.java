@@ -12,7 +12,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +32,7 @@ public class CCDAR3ValidatorController {
 	@Value("${ett.mdht.r3.url}")
 	String mdhtUrl;
 
-	private static Logger logger = Logger.getLogger(CCDAR3ValidatorController.class.getName());
+	private static Logger logger = LogManager.getLogger(CCDAR3ValidatorController.class.getName());
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String validateCCDAR2(@RequestBody HashMap<String, String> filePath) throws Exception {

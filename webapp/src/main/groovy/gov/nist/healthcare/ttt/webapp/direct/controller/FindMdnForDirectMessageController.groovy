@@ -9,7 +9,8 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/findmdn")
 class FindMdnForDirectMessageController {
 	
-	static Logger logger = Logger.getLogger(FindMdnForDirectMessageController.class.getName())
+	static Logger logger = LogManager.getLogger(FindMdnForDirectMessageController.class.getName())
 	
 	@Autowired
 	private DatabaseInstance db

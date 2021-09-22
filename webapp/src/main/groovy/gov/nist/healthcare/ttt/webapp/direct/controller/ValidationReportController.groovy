@@ -6,7 +6,8 @@ import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomExcept
 import gov.nist.healthcare.ttt.webapp.direct.model.messageValidator.DirectMessageAttachments;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,7 @@ import java.util.Collection;
 @RequestMapping("/api/validationReport")
 public class ValidationReportController {
 
-	private static Logger logger = Logger.getLogger(ValidationReportController.class.getName());
+	private static Logger logger = LogManager.getLogger(ValidationReportController.class.getName());
 	
 	private int attachmentNumber = 0;
 

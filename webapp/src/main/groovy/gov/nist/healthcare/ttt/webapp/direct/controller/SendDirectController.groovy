@@ -9,7 +9,8 @@ import gov.nist.healthcare.ttt.webapp.common.model.ObjectWrapper.ObjWrapper;
 import gov.nist.healthcare.ttt.model.logging.LogModel;
 import gov.nist.healthcare.ttt.model.sendDirect.SendDirectMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ import java.security.cert.X509Certificate;
 @RequestMapping("/api/sendDirect")
 public class SendDirectController {
 	
-	private static Logger logger = Logger.getLogger(SendDirectController.class.getName());
+	private static Logger logger = LogManager.getLogger(SendDirectController.class.getName());
 	
 	@Value('${direct.certificates.repository.path}')
 	String certificatesPath
