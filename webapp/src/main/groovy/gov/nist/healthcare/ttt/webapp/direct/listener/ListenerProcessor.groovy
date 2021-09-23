@@ -11,7 +11,8 @@ import gov.nist.healthcare.ttt.direct.smtpMdns.EncryptedSmtpMDNMessageGenerator.
 import gov.nist.healthcare.ttt.direct.smtpMdns.SmtpMDNMessageGenerator;
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -70,7 +71,7 @@ public class ListenerProcessor implements Runnable {
 
 	private DatabaseInstance db;
 
-	private static Logger logger = Logger.getLogger(ListenerProcessor.class.getName());
+	private static Logger logger = LogManager.getLogger(ListenerProcessor.class.getName());
 
 	ListenerProcessor(Socket server, DatabaseInstance db, String mdhtR1Endpoint, String mdhtR2Endpoint, String toolkitUrl) throws DatabaseException, SQLException {
 		this.server = server;

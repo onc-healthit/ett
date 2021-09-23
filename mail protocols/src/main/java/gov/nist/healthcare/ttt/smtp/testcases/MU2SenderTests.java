@@ -39,7 +39,8 @@ import javax.xml.soap.SOAPPart;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.bouncycastle.openssl.PEMWriter;
 
 import gov.nist.healthcare.ttt.smtp.TestInput;
@@ -48,7 +49,7 @@ import gov.nist.healthcare.ttt.smtp.TestResult.CriteriaStatus;
 
 public class MU2SenderTests {
 
-	public static Logger log = Logger.getLogger(MU2SenderTests.class.getName());
+	public static Logger log = LogManager.getLogger(MU2SenderTests.class.getName());
 	SimpleDateFormat ft = new SimpleDateFormat ("E, dd MMM yyyy hh:mm:ss Z (zzz)");
 	
 	public Properties getProps(TestInput ti) {

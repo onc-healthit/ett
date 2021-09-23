@@ -27,13 +27,14 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 
 public class TTTSenderTests {
 
-	public static Logger log = Logger.getLogger(TTTSenderTests.class.getName());
+	public static Logger log = LogManager.getLogger(TTTSenderTests.class.getName());
 
 	public Properties getProps(TestInput ti) {
 		Properties props = new Properties();

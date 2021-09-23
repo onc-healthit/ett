@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 /**
  * @author sriniadhi
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
  * 
  */
 public class SMTPTestRunner implements ISMTPTestRunner {
-	static Logger log = Logger.getLogger(SMTPTestRunner.class);
+	static Logger log = LogManager.getLogger(SMTPTestRunner.class);
 	Properties config = new Properties();
 	String configFileName = "config.properties";
 

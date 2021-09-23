@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ import gov.nist.healthcare.ttt.webapp.common.model.certificatesLink.Certificates
 @RequestMapping("/api/directcertlinks")
 public class DirectCertificateLinksController {
 
-	private static Logger logger = Logger.getLogger(DirectCertificateLinksController.class.getName());
+	private static Logger logger = LogManager.getLogger(DirectCertificateLinksController.class.getName());
 
 	@Value("${server.tomcat.basedir}")
 	String fileDirectory;

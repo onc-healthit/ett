@@ -2,7 +2,8 @@ package gov.nist.healthcare.ttt.webapp.direct.listener;
 
 import gov.nist.healthcare.ttt.webapp.common.db.DatabaseInstance;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -66,7 +67,7 @@ public class DirectListener implements Runnable {
 
 	private ArrayList<Thread> threadsList = new ArrayList<Thread>();
 
-	private static Logger logger = Logger.getLogger(DirectListener.class.getName());
+	private static Logger logger = LogManager.getLogger(DirectListener.class.getName());
 
 	public DirectListener() {
 		

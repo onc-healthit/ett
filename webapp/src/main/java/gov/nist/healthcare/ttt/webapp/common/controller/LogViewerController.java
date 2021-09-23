@@ -8,7 +8,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class LogViewerController {
 	@Value("${server.tomcat.basedir}")
 	String logsBasedir;
 
-	private static Logger logger = Logger.getLogger(LogViewerController.class.getName());
+	private static Logger logger = LogManager.getLogger(LogViewerController.class.getName());
 
 	private final String datePattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} ";
 

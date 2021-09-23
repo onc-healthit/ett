@@ -16,7 +16,8 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class XDMValidationController {
 	@Value("${toolkit.url}")
 	String toolkitUrl;
 
-	private static Logger logger = Logger.getLogger(XDMValidationController.class.getName());
+	private static Logger logger = LogManager.getLogger(XDMValidationController.class.getName());
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String validateXdm(@RequestBody HashMap<String, String> filePath) throws Exception {

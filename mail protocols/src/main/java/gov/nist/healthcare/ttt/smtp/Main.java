@@ -11,11 +11,12 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONException;
 
 public class Main {
-	public static Logger log = Logger.getLogger("Main");
+	public static Logger log = LogManager.getLogger("Main");
 
 	/*public static void main(String[] args) throws Exception {
 		// Run all tests

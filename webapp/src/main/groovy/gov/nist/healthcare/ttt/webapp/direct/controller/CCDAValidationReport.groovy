@@ -12,7 +12,8 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.core.JsonParser;
 @Controller
 @RequestMapping("/api/ccdaReport")
 public class CCDAValidationReport {
-	private static Logger logger = Logger.getLogger(CCDAValidationReport.class.getName());
+	private static Logger logger = LogManager.getLogger(CCDAValidationReport.class.getName());
 	
 	@Autowired
 	private DatabaseInstance db;

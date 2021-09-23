@@ -36,7 +36,8 @@ import java.util.Collection;
 import java.util.Enumeration;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -56,7 +57,7 @@ import org.bouncycastle.util.Store;
 
 public class PrivateCertificateLoader {
 
-	private static Logger logger = Logger.getLogger(PrivateCertificateLoader.class.getName());
+	private static Logger logger = LogManager.getLogger(PrivateCertificateLoader.class.getName());
 	
 	String keyAlias = "";
 	X509Certificate cert;

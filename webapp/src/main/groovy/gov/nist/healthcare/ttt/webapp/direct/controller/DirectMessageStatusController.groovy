@@ -8,7 +8,8 @@ import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomExcept
 import gov.nist.healthcare.ttt.webapp.direct.model.messageStatus.MessageStatusDetail;
 import gov.nist.healthcare.ttt.webapp.direct.model.messageStatus.MessageStatusList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -32,7 +33,7 @@ import java.util.Iterator;
 @RequestMapping("/api/directMessageStatus")
 class DirectMessageStatusController {
 	
-	static Logger logger = Logger.getLogger(DirectMessageStatusController.class.getName())
+	static Logger logger = LogManager.getLogger(DirectMessageStatusController.class.getName())
 	
 	@Autowired
 	private DatabaseInstance db

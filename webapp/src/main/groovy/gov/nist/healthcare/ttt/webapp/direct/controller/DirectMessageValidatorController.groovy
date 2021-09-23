@@ -6,7 +6,8 @@ import gov.nist.healthcare.ttt.direct.messageProcessor.DirectMessageProcessor;
 import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException;
 import gov.nist.healthcare.ttt.model.logging.LogModel;
 import gov.nist.healthcare.ttt.webapp.direct.model.messageValidator.MessageValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ import java.io.FileNotFoundException;
 @RequestMapping("/api/directValidator")
 public class DirectMessageValidatorController {
 	
-private static Logger logger = Logger.getLogger(DirectMessageValidatorController.class.getName());
+private static Logger logger = LogManager.getLogger(DirectMessageValidatorController.class.getName());
 	
 	@Autowired
 	private DatabaseInstance db;

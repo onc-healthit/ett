@@ -2,7 +2,8 @@ package gov.nist.healthcare.ttt.webapp.common.controller;
 
 import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.ExceptionJSONInfo;
 import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +16,7 @@ import java.security.Principal;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	private static Logger logger = Logger.getLogger(GlobalExceptionHandler.class.getName());
+	private static Logger logger = LogManager.getLogger(GlobalExceptionHandler.class.getName());
 	
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)

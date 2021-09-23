@@ -2,13 +2,14 @@ package gov.nist.healthcare.ttt.webapp.direct.direcForXdr
 import gov.nist.healthcare.ttt.direct.messageGenerator.DirectMessageGenerator
 import gov.nist.healthcare.ttt.direct.sender.DirectMessageSender
 import gov.nist.healthcare.ttt.webapp.direct.listener.ListenerProcessor
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.mail.internet.MimeMessage
 
 class DirectMessageSenderForXdr {
 	
-	static Logger logger = Logger.getLogger(DirectMessageSenderForXdr.class.getName())
+	static Logger logger = LogManager.getLogger(DirectMessageSenderForXdr.class.getName())
 
 	// Used to get the ressources
 	private ListenerProcessor listener = new ListenerProcessor()

@@ -67,7 +67,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -78,7 +79,7 @@ import com.sun.mail.pop3.POP3Folder;
 
 public class TTTReceiverTests {
 
-	public static Logger log = Logger.getLogger("TTTReceiverTests");
+	public static Logger log = LogManager.getLogger("TTTReceiverTests");
 	
 	public Properties getImapProps(TestInput ti) {
 		Properties props = new Properties();

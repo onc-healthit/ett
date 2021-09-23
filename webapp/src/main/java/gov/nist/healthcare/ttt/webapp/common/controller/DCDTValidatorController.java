@@ -11,7 +11,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,7 @@ public class DCDTValidatorController {
 	@Value("${ett.dcdt.2015.discovery.url}")
 	String dcdt2015discoveryUrl;
 
-	private static Logger logger = Logger.getLogger(DCDTValidatorController.class.getName());
+	private static Logger logger = LogManager.getLogger(DCDTValidatorController.class.getName());
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String validateDCDT(@RequestBody HashMap<String, String> requestParms) throws Exception {

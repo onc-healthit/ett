@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +28,7 @@ public class MarkDownController {
 	@Value("${localinstall.path}")
 	String localInstallPath;
 
-	private static Logger logger = Logger.getLogger(MarkDownController.class.getName());
+	private static Logger logger = LogManager.getLogger(MarkDownController.class.getName());
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getProperties(@RequestParam("moduleInfo") String moduleInfo) throws IOException {
