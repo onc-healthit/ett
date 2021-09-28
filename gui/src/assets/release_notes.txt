@@ -1,3 +1,12 @@
+==Version 2.3.38#09/27/2021
+	*1. Relax participant constraints to allow free-text names in Referral Note as part of new MDHT 20210924 Release.
+	
+	*2. Update 170.315(e)(1) Inpatient setting Sample 1 files to include Reason for Referral instructions to enable vendors to create Referral Notes.
+	
+	*3. Update ETT dependencies as per dependabot.
+	
+	*4. Fix potential SQL injection issues in ETT
+	
 ==Version 2.3.37#08/30/2021
 	*1. Fix DocumentBuilderFactory XXE vulnerability.
 	
