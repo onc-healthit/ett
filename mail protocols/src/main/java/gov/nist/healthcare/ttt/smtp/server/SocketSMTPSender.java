@@ -19,11 +19,12 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.apache.commons.codec.binary.Base64;
 
 public class SocketSMTPSender extends AbstractSMTPSender {
-	static Logger log = Logger.getLogger(SocketSMTPSender.class);
+	static Logger log = LogManager.getLogger(SocketSMTPSender.class);
 
 	protected Socket smtpSocket;
 	protected DataOutputStream os;

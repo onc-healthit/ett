@@ -10,7 +10,8 @@ import gov.nist.healthcare.ttt.webapp.direct.listener.EmailerModel;
 import java.security.Principal;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("api/passwordManager")
 public class PasswordManagerController {
 
-	private static Logger logger = Logger.getLogger(PasswordManagerController.class.getName());
+	private static Logger logger = LogManager.getLogger(PasswordManagerController.class.getName());
 
 	@Autowired
 	private DatabaseInstance db;

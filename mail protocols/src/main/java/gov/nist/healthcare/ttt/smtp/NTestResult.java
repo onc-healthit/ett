@@ -5,7 +5,8 @@ import gov.nist.healthcare.ttt.smtp.util.ReqRes;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 /*
  * See rfc2821 for the basic specification of SMTP; see also rfc1123 for important additional information. 
@@ -47,7 +48,7 @@ public class NTestResult extends TestResult {
 
 	public ArrayList<Integer> expectedResult = new ArrayList<Integer>();
 	protected boolean commandBeforeLastFailed = false;
-	static Logger log = Logger.getLogger(NTestResult.class);
+	static Logger log = LogManager.getLogger(NTestResult.class);
 	public CriteriaStatus forcedCriteriaStatus = null;
 	
 	public void setForcedCriteriaStatus(CriteriaStatus forcedCriteriaStatus) {

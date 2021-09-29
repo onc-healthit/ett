@@ -6,7 +6,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class ReleaseNotesController {
 	@Value("${releasesnotes.path}")
 	String releaseNotesPath;
 
-	private static Logger logger = Logger.getLogger(ReleaseNotesController.class.getName());
+	private static Logger logger = LogManager.getLogger(ReleaseNotesController.class.getName());
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/txt")
 	public @ResponseBody String getProperties() throws IOException {

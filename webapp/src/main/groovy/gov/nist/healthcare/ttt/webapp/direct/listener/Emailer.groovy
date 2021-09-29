@@ -13,12 +13,13 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Emailer extends Authenticator {
 	
-	private Logger logger = Logger.getLogger(Emailer.class.getName());
+	private Logger logger = LogManager.getLogger(Emailer.class.getName());
 
 	private EmailerModel model;
 

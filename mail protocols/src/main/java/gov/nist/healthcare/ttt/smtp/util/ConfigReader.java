@@ -12,11 +12,12 @@ import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.json.*;
 
 public class ConfigReader {
-	public static Logger log = Logger.getLogger(ConfigReader.class);
+	public static Logger log = LogManager.getLogger(ConfigReader.class);
 
 	public static TestInput getTestInput(int testcase) throws JSONException,
 			IOException, NoSuchFieldException, SecurityException,

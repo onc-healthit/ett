@@ -10,7 +10,8 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 import javax.mail.internet.MimeMessage;
 import javax.net.ssl.SSLContext;
@@ -21,7 +22,7 @@ import javax.net.ssl.X509TrustManager;
 
 public class DirectMessageSender {
 	
-	private static Logger logger = Logger.getLogger(DirectMessageSender.class.getName());
+	private static Logger logger = LogManager.getLogger(DirectMessageSender.class.getName());
 
 	public static final String CRLF = "\r\n";
 	public BufferedReader in = null;

@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/api/ccdadocuments")
 public class GetCCDADocumentsController {
 
-	private static Logger logger = Logger.getLogger(GetCCDADocumentsController.class.getName());
+	private static Logger logger = LogManager.getLogger(GetCCDADocumentsController.class.getName());
 
 	@Value("${server.tomcat.basedir}")
 	String ccdaFileDirectory;

@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("api/smtpcasesjson")
 public class SmtpJsonController {
-	private static Logger logger = Logger.getLogger(SmtpJsonController.class.getName());
+	private static Logger logger = LogManager.getLogger(SmtpJsonController.class.getName());
 	private @Autowired ApplicationContext appContext;
 	private @Autowired ServletContext servletContext;
 	private @Autowired HttpServletRequest httpServletRequest;

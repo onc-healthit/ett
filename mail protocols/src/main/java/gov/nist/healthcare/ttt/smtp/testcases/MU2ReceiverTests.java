@@ -31,13 +31,14 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.search.FlagTerm;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 import com.sun.mail.dsn.DispositionNotification;
 
 
 public class MU2ReceiverTests {
-	public static Logger log = Logger.getLogger(MU2ReceiverTests.class.getName());
+	public static Logger log = LogManager.getLogger(MU2ReceiverTests.class.getName());
 
 	public TestResult fetchMail(TestInput ti) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");

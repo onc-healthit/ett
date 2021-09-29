@@ -37,7 +37,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.cms.Attribute;
@@ -66,7 +67,7 @@ import gov.nist.healthcare.ttt.model.logging.PartModel;
 
 public class PartValidation {
 
-	private Logger logger = Logger.getLogger(PartValidation.class.getName());
+	private Logger logger = LogManager.getLogger(PartValidation.class.getName());
 
 	private DetailedPartValidation detailedpartValidation = new DetailedPartValidation();
 	private DirectMessageValidator directMessageValidator = new DirectMessageValidator();
