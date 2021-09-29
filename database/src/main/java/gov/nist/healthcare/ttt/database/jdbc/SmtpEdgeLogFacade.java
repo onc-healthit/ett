@@ -88,6 +88,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
             throw new DatabaseException("Invalid username / profile name combination.");
         }
 
+        PreparedStatement st = null;
         String smtpLogId = UUID.randomUUID().toString();
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + SMTPEDGELOG_TABLE + ' ');
@@ -104,11 +105,11 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(SMTPEDGELOG_CRITERIAMET);
         sql.append(", ");
         sql.append(SMTPEDGELOG_TESTREQUESTRESPONSE);
-        sql.append(") VALUES ('");
-        sql.append(smtpLogId);
-        sql.append("' , '");
-        sql.append(profileId);
-        sql.append("' , '");
+        sql.append(") VALUES (");
+        sql.append("?");
+        sql.append(" , ");
+        sql.append("?");
+        sql.append(" , '");
         if (smtpLog.getTimestamp() != null) {
             sql.append(smtpLog.getTimestamp());
         } else {
@@ -132,7 +133,11 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(smtpLog.getTestRequestsResponse());
         sql.append("');");
         try {
-            this.getConnection().executeUpdate(sql.toString());
+            Connection con = this.getConnection().getCon();
+       	 	st = con.prepareStatement(sql.toString());
+       	 	st.setString(1, smtpLogId);
+       	 	st.setString(2, profileId);
+       	 	st.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
