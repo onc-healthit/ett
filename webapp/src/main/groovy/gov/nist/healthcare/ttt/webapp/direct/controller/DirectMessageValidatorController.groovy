@@ -46,12 +46,12 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 		FileInputStream certFile;
 		
 		try {
-			messageFile = new FileInputStream(new File(validator.getMessageFilePath()));
+			messageFile = new FileInputStream(new File(validator.getMessageFilePath().normalize()));
 		} catch(FileNotFoundException e) {
 			throw new TTTCustomException("0x0028", "You need to upload a message file");
 		}
 		try {
-			certFile = new FileInputStream(new File(validator.getCertFilePath()));
+			certFile = new FileInputStream(new File(validator.getCertFilePath().normalize()));
 		} catch(FileNotFoundException e) {
 			messageFile.close();
 			throw new TTTCustomException("0x0028", "You need to upload a private certificate");
