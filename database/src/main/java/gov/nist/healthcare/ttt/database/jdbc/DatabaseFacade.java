@@ -144,6 +144,12 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         }
         return directAddresses;
 
@@ -181,6 +187,12 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         }
         return contactAddresses;
     }
@@ -245,19 +257,19 @@ public class DatabaseFacade {
      * @return
      */
     private String getIdOfDirect(String directEmail) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " ");
         sql.append("FROM " + DatabaseFacade.DIRECT_EMAIL_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(directEmail) + "'");
+        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = ? ");
 
         ResultSet result = null;
         String id = null;
 
         try {
-
-            DatabaseConnection connection = this.getConnection();
-            result = connection.executeQuery(sql.toString());
-
+       	 	st = this.getConnection().getCon().prepareStatement(sql.toString());
+       	    st.setString(1, DatabaseConnection.makeSafe(directEmail));
+       		result = st.executeQuery();           
             if (result.next()) {
                 id = result.getString(DatabaseFacade.DIRECT_EMAIL_ID_COLUMN);
             }
@@ -265,6 +277,12 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        }finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         }
         return id;
     }
@@ -286,6 +304,7 @@ public class DatabaseFacade {
             directEmailId = UUID.randomUUID().toString();
 
             StringBuilder sqlDirect = new StringBuilder();
+            PreparedStatement st = null;
 
             sqlDirect.append("INSERT INTO ");
             sqlDirect.append(DatabaseFacade.DIRECT_EMAIL_TABLE);
@@ -294,17 +313,22 @@ public class DatabaseFacade {
             sqlDirect.append(DatabaseFacade.DIRECT_EMAIL_ID_COLUMN);
             sqlDirect.append(", ");
             sqlDirect.append(DatabaseFacade.DIRECT_EMAIL_COLUMN);
-            sqlDirect.append(") VALUES ('");
-            sqlDirect.append(directEmailId);
-            sqlDirect.append("','");
-            sqlDirect.append(DatabaseConnection.makeSafe(directEmail));
-            sqlDirect.append("');");
+            sqlDirect.append(") VALUES ( ? , ? );");
 
             try {
-                this.getConnection().executeUpdate(sqlDirect.toString());
+                st = this.getConnection().getCon().prepareStatement(sqlDirect.toString());
+                st.setString(1, directEmailId);
+                st.setString(2, DatabaseConnection.makeSafe(directEmail));
+                st.executeUpdate();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 throw new DatabaseException(ex.getMessage());
+            }finally {
+            	try {
+            		if (st !=null ) st.close();
+    			} catch (SQLException e) {
+    				e.printStackTrace();
+    			}
             }
 
         }
@@ -334,18 +358,21 @@ public class DatabaseFacade {
         if (directEmailId == null) {
             return false;
         }
-
+        PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " de,  " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ce ");
         sql.append("WHERE de." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = ce." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " AND ");
-        sql.append("de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " ='" + DatabaseConnection.makeSafe(directEmail) + "' AND ");
-        sql.append("ce." + DatabaseFacade.CONTACT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(contactEmail) + "';");
+        sql.append("de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = ? AND ");
+        sql.append("ce." + DatabaseFacade.CONTACT_EMAIL_COLUMN + " = ? ;");
 
         ResultSet result = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(directEmail));
+            st.setString(2, DatabaseConnection.makeSafe(contactEmail));
+            result = st.executeQuery();       	
             if (result.next()) {
                 return true;
             }
@@ -353,6 +380,12 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        }finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         }
         return false;
 
@@ -368,7 +401,7 @@ public class DatabaseFacade {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = ? ");
         sql.append("AND " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = " + "?" + ";");
 
         ResultSet result = null;
@@ -376,7 +409,8 @@ public class DatabaseFacade {
         try {
         	Connection con = this.getConnection().getCon();
        	 	st = con.prepareStatement(sql.toString());
-       	 	st.setString(1, directEmailId);
+       	 	st.setString(1, DatabaseConnection.makeSafe(username));
+       	 	st.setString(2, directEmailId);
        	 	result = st.executeQuery();
             if (result.next()) {
                 return true;
@@ -385,40 +419,57 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         }
         return false;
     }
 
     private boolean deleteUsernameDirectIdMapping(String username, String directEmailId) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE ");
         sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
-        sql.append("AND " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = '" + directEmailId + "';");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = ? ");
+        sql.append("AND " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = ? ;");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(username));
+            st.setString(2, directEmailId);
+            st.executeUpdate();            
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        }finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         }
         return true;
 
     }
 
     public boolean isDirectMappedToAUsername(String directEmail) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DatabaseFacade.USER_DIRECT_TABLE + " ud ," + DatabaseFacade.DIRECT_EMAIL_TABLE + " de ");
-        sql.append("WHERE de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(directEmail) + "' ");
+        sql.append("WHERE de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = ? ");
         sql.append("AND ud." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = de." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN);
 
         ResultSet result = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1,DatabaseConnection.makeSafe(directEmail));
+            result =  st.executeQuery();           
             if (result.next()) {
                 return true;
             }
@@ -426,22 +477,30 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return false;
 
     }
 
     public boolean doesUsernameExist(String username) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT username ");
         sql.append("FROM " + DatabaseFacade.USERS_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "';");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = ? ;");
 
         ResultSet result = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(username));
+            result =  st.executeQuery();   
             if (result.next()) {
                 return true;
             }
@@ -449,6 +508,12 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return false;
 
@@ -458,18 +523,28 @@ public class DatabaseFacade {
         if (doesUsernameExist(username)) {
             return false;
         }
+        PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO ");
         sql.append(DatabaseFacade.USERS_TABLE);
         sql.append(" (");
         sql.append(DatabaseFacade.USERS_USERNAME + " , " + DatabaseFacade.USERS_PASSWORD);
-        sql.append(" ) VALUES ( '" + DatabaseConnection.makeSafe(username) + "','" + DatabaseConnection.makeSafe(password) + "');");
+        sql.append(" ) VALUES ( ? , ? );");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(username));
+            st.setString(2, DatabaseConnection.makeSafe(password));
+            st.executeUpdate();             
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
     }
@@ -478,16 +553,20 @@ public class DatabaseFacade {
         if (!doesUsernameExist(username)) {
             return false;
         }
+        PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM " + DatabaseFacade.USERS_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
-        sql.append("AND " + DatabaseFacade.USERS_PASSWORD + " = '" + DatabaseConnection.makeSafe(password) + "';");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = ? ");
+        sql.append("AND " + DatabaseFacade.USERS_PASSWORD + " = ? ;");
 
         ResultSet result = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1,DatabaseConnection.makeSafe(username));
+            st.setString(2,DatabaseConnection.makeSafe(password));
+            result =  st.executeQuery();               
             if (result.next()) {
                 return true;
             }
@@ -495,6 +574,12 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return false;
 
@@ -504,16 +589,19 @@ public class DatabaseFacade {
         if (!doesUsernameExist(username)) {
             return null;
         }
+        PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT " + DatabaseFacade.USERS_PASSWORD + " ");
         sql.append("FROM " + DatabaseFacade.USERS_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "';");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = ? ;");
 
         ResultSet result = null;
         String password = null;
 
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1,DatabaseConnection.makeSafe(username));
+            result =  st.executeQuery();               
             if (result.next()) {
                 password = result.getString(DatabaseFacade.USERS_PASSWORD);
                 return password;
@@ -522,36 +610,56 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return null;
     }
 
     public boolean changePassword(String username, String newPassword) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE " + DatabaseFacade.USERS_TABLE + " ");
-        sql.append("SET " + DatabaseFacade.USERS_PASSWORD + " = '" + DatabaseConnection.makeSafe(newPassword) + "' ");
-        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
+        sql.append("SET " + DatabaseFacade.USERS_PASSWORD + " = ? ");
+        sql.append("WHERE " + DatabaseFacade.USERS_USERNAME + " = ? ");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(newPassword));
+            st.setString(2, DatabaseConnection.makeSafe(username));
+            st.executeUpdate();             
+           
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
     }
 
     public Collection<String> getDirectEmailsForUser(String username) throws DatabaseException {
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT de." + DatabaseFacade.DIRECT_EMAIL_COLUMN + " ");
         sql.append("FROM " + DatabaseFacade.DIRECT_EMAIL_TABLE + " de, " + DatabaseFacade.USER_DIRECT_TABLE + " ud ");
-        sql.append("WHERE ud." + DatabaseFacade.USERS_USERNAME + " = '" + DatabaseConnection.makeSafe(username) + "' ");
+        sql.append("WHERE ud." + DatabaseFacade.USERS_USERNAME + " = ? ");
         sql.append("AND ud." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = de." + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + ";");
 
         ResultSet result = null;
         Collection<String> directAddresses = new ArrayList<String>();
         try {
-            result = this.getConnection().executeQuery(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1,DatabaseConnection.makeSafe(username));
+            result =  st.executeQuery();               
             while (result.next()) {
                 directAddresses.add(result.getString(DatabaseFacade.DIRECT_EMAIL_COLUMN));
             }
@@ -559,6 +667,12 @@ public class DatabaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return directAddresses;
     }
@@ -573,18 +687,29 @@ public class DatabaseFacade {
             return true;
         }
         String directId = this.getIdOfDirect(directEmail);
+        PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO ");
         sql.append(DatabaseFacade.USER_DIRECT_TABLE);
         sql.append(" (" + DatabaseFacade.USERS_USERNAME + ", " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + ") ");
         sql.append("VALUES ");
-        sql.append("('" + DatabaseConnection.makeSafe(username) + "', '" + directId + "');");
+        sql.append("(? , ? );");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(username));
+            st.setString(2, directId);
+            st.executeUpdate();              
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
 
@@ -608,6 +733,7 @@ public class DatabaseFacade {
         if (this.doesDirectAndContactExist(directEmail, contactEmail)) {
             return directEmailId;
         }
+        PreparedStatement st = null;
         StringBuilder sqlContact = new StringBuilder();
         sqlContact.append("INSERT INTO ");
         sqlContact.append(DatabaseFacade.CONTACT_EMAIL_TABLE);
@@ -618,19 +744,23 @@ public class DatabaseFacade {
         sqlContact.append(DatabaseFacade.DIRECT_EMAIL_ID_COLUMN);
         sqlContact.append(", ");
         sqlContact.append(DatabaseFacade.CONTACT_EMAIL_COLUMN);
-        sqlContact.append(") VALUES ('");
-        sqlContact.append(contactEmailId);
-        sqlContact.append("','");
-        sqlContact.append(directEmailId);
-        sqlContact.append("','");
-        sqlContact.append(DatabaseConnection.makeSafe(contactEmail));
-        sqlContact.append("');");
+        sqlContact.append(") VALUES (? , ? , ?);");
 
         try {
-            this.getConnection().executeUpdate(sqlContact.toString());
+            st = this.getConnection().getCon().prepareStatement(sqlContact.toString());
+            st.setString(1, contactEmailId);
+            st.setString(2, directEmailId);
+            st.setString(3, DatabaseConnection.makeSafe(contactEmail));
+            st.executeUpdate();                  
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return directEmailId;
     }
@@ -655,16 +785,24 @@ public class DatabaseFacade {
             return false;
         }
         this.deleteUsernameDirectIdMapping(username, directId);
-
+        PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM " + DatabaseFacade.DIRECT_EMAIL_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(directEmail) + "';");
+        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_COLUMN + " = ? ;");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(directEmail));
+            st.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
 
@@ -684,17 +822,27 @@ public class DatabaseFacade {
         if (directId == null) {
             return false;
         }
+        PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
 
         sql.append("DELETE FROM " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = '" + directId + "' AND ");
-        sql.append(DatabaseFacade.CONTACT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(contactEmail) + "';");
+        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = ? AND ");
+        sql.append(DatabaseFacade.CONTACT_EMAIL_COLUMN + " = ? ;");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, directId);
+            st.setString(2, DatabaseConnection.makeSafe(contactEmail));
+            st.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
 
@@ -708,16 +856,24 @@ public class DatabaseFacade {
      * @return 'true' if success; 'false' if failure.
      */
     public boolean deleteContactEmailByDirectId(String directId) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = '" + DatabaseConnection.makeSafe(directId) + "';");
+        sql.append("WHERE " + DatabaseFacade.DIRECT_EMAIL_ID_COLUMN + " = ? ;");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
-        } catch (SQLException ex) {
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(directId));
+            st.executeUpdate();
+         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
 
@@ -731,16 +887,24 @@ public class DatabaseFacade {
      * @return 'true' if success; 'false' if failure.
      */
     public boolean deleteContactEmail(String contactEmail) throws DatabaseException {
-
+    	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM " + DatabaseFacade.CONTACT_EMAIL_TABLE + " ");
-        sql.append("WHERE " + DatabaseFacade.CONTACT_EMAIL_COLUMN + " = '" + DatabaseConnection.makeSafe(contactEmail) + "';");
+        sql.append("WHERE " + DatabaseFacade.CONTACT_EMAIL_COLUMN + " = ? ;");
 
         try {
-            this.getConnection().executeUpdate(sql.toString());
-        } catch (SQLException ex) {
+            st = this.getConnection().getCon().prepareStatement(sql.toString());
+            st.setString(1, DatabaseConnection.makeSafe(contactEmail));
+            st.executeUpdate();
+         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DatabaseException(ex.getMessage());
+        } finally {
+        	try {
+        		if (st !=null ) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
 
