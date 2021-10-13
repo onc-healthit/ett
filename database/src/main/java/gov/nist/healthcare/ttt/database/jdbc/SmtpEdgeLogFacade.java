@@ -284,7 +284,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append("SELECT * ");
         sql.append("FROM " + SMTPEDGELOG_TABLE + ' ');
         sql.append("WHERE " + SMTPEDGEPROFILE_SMTPEDGEPROFILEID + " = " + "?" + " AND ");
-        sql.append(SMTPEDGELOG_TESTCASENUMBER + " = '" + DatabaseConnection.makeSafe(testcasenumber) + "' ");
+        sql.append(SMTPEDGELOG_TESTCASENUMBER + " = " + "?" + " ");
         sql.append("ORDER BY " + SMTPEDGELOG_TIMESTAMP + " DESC ");
         sql.append("LIMIT 1;");
 
@@ -294,6 +294,7 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         	Connection con = this.getConnection().getCon();
        	 	st = con.prepareStatement(sql.toString());
        	 	st.setString(1, profileId);
+       	 	st.setString(2, DatabaseConnection.makeSafe(testcasenumber));
        	 	result = st.executeQuery();
             if (result.next()) {
                 log = this.convertToLog(result);
