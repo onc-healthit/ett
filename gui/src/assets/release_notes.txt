@@ -1,3 +1,6 @@
+==Version 2.3.38.2#10/13/2021
+	*1. Fix potential security issues in ETT
+	
 ==Version 2.3.38.1#09/27/2021
 	*1. Fix potential security issues in ETT
 	
