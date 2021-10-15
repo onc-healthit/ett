@@ -106,20 +106,8 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(", ");
         sql.append(SMTPEDGELOG_TESTREQUESTRESPONSE);
         sql.append(") VALUES (");
-        sql.append("?");
-        sql.append(" , ");
-        sql.append("?");
-        sql.append(" , '");
-        sql.append("? ,");
-        sql.append("? ,");
-        sql.append("? ,");
-        sql.append("? ,");
-        sql.append("? ");
-        
-        String stTimeStamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
-        if (smtpLog.getTimestamp() != null) { 
-        	stTimeStamp = smtpLog.getTimestamp();
-        } 
+        sql.append("? , ? , ? , ? , ?, ? , ? );");
+
         String stTransactionId = UUID.randomUUID().toString();
         if(smtpLog.getTransaction() != null) {
         	stTransactionId = smtpLog.getTransaction();
@@ -135,7 +123,11 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
        	 	st = con.prepareStatement(sql.toString());
        	 	st.setString(1, smtpLogId);
        	 	st.setString(2, profileId);
-       	 	st.setString(3, stTimeStamp);
+            if (smtpLog.getTimestamp() != null) { 
+            	st.setString(3, smtpLog.getTimestamp());
+            }else {
+            	st.setLong(3, Calendar.getInstance().getTimeInMillis());
+            }
        	 	st.setString(4, stTransactionId);
        	 	st.setString(5, stTestCaseNumber);
        	 	st.setString(6, isCriteriaMet);
