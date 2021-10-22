@@ -64,7 +64,7 @@ public class TempUploadController {
 			fileInfo.setFlowRelativePath(f.getAbsolutePath());
 			return fileInfo;
 		} else {
-			//response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 		return fileInfo;
 	}
