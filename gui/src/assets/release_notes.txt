@@ -1,3 +1,20 @@
+==Version 2.3.39#10/25/2021
+	*1. Require provenance identification using templateId for provenance TS validation
+	
+  	*2. Fix configuredExpression totals by severity in production by enabling dynamic vocab
+	
+  	*3. Implement errata CDA-2008 https://jira.hl7.org/browse/CDA-2008 which relaxes NoteActivity/code/translation requirement to a SHOULD vs a SHALL: Consol Note Activity SHALL contain exactly one [1..1] code (3250-16895)/@code="34109-9" Note (CodeSystem: 2.16.840.1.113883.6.1 LOINC) (3250-16940, 3250-16941) code SHOULD contain zero or more [0..*] translation, which SHOULD be selected from ValueSet NoteTypes 2.16.840.1.113883.11.20.9.68 STATIC 20191017
+	
+  	*4. Fix inheritance bug in Medications Section where an error in both entries optional and required is reported, instead of reporting required only
+	
+  	*5. Fix patient name elements for b2 CIRI ambulatory scenario files
+	
+  	*6. Fix parsing bug where Procedures/NoteActivity is mistaken for ProcedureActivityProcedure
+	
+  	*7. Update the following value sets to the latest published version: CVX Vaccines Administered Vaccine Set and Substance Reactant for Intolerance
+	
+  	*8. Add newly available value sets: Transmission Based Precaution Types, Organism, Microbiology and Antimicrobial Susceptibility Tests, and Infectious Disease
+
 ==Version 2.3.38.2#10/13/2021
 	*1. Fix potential security issues in ETT
 	

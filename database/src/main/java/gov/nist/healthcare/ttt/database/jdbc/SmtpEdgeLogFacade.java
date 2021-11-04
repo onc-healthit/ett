@@ -106,37 +106,33 @@ public class SmtpEdgeLogFacade extends DatabaseFacade {
         sql.append(", ");
         sql.append(SMTPEDGELOG_TESTREQUESTRESPONSE);
         sql.append(") VALUES (");
-        sql.append("?");
-        sql.append(" , ");
-        sql.append("?");
-        sql.append(" , '");
-        if (smtpLog.getTimestamp() != null) {
-            sql.append(smtpLog.getTimestamp());
-        } else {
-            sql.append(Calendar.getInstance().getTimeInMillis());
-        }
-        sql.append("' ,'");
+        sql.append("? , ? , ? , ? , ?, ? , ? );");
+
+        String stTransactionId = UUID.randomUUID().toString();
         if(smtpLog.getTransaction() != null) {
-            sql.append(smtpLog.getTransaction());
-        } else {
-            sql.append(UUID.randomUUID().toString());
+        	stTransactionId = smtpLog.getTransaction();
         }
-        sql.append("','");
-        sql.append(smtpLog.getTestCaseNumber());
-        sql.append("' , '");
+        String stTestCaseNumber = smtpLog.getTestCaseNumber();
+        String isCriteriaMet = "0";
         if (smtpLog.isCriteriaMet()) {
-            sql.append("1");
-        } else {
-            sql.append("0");
-        }
-        sql.append("' , '");
-        sql.append(smtpLog.getTestRequestsResponse());
-        sql.append("');");
+        	isCriteriaMet = "1";
+        } 
+        String stRequestResponseText = smtpLog.getTestRequestsResponse();
         try {
             Connection con = this.getConnection().getCon();
        	 	st = con.prepareStatement(sql.toString());
        	 	st.setString(1, smtpLogId);
        	 	st.setString(2, profileId);
+            if (smtpLog.getTimestamp() != null) { 
+            	st.setString(3, smtpLog.getTimestamp());
+            }else {
+            	st.setLong(3, Calendar.getInstance().getTimeInMillis());
+            }
+       	 	st.setString(4, stTransactionId);
+       	 	st.setString(5, stTestCaseNumber);
+       	 	st.setString(6, isCriteriaMet);
+       	 	st.setString(7, stRequestResponseText);
+       	 
        	 	st.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
