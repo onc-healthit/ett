@@ -39,6 +39,8 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 	@Value('${toolkit.url}')
 	String toolkitUrl;
 	
+	String tDir = System.getProperty("java.io.tmpdir");
+	
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
     LogModel validateDirectMessage(@RequestBody MessageValidator validator, HttpServletRequest request) throws Exception {
@@ -46,7 +48,11 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 		FileInputStream certFile;
 		
 		try {
-			messageFile = new FileInputStream(new File(validator.getMessageFilePath().normalize()));
+			if (validator.getMessageFilePath().startsWith(tDir)){
+				messageFile = new FileInputStream(new File(validator.getMessageFilePath().normalize()));		
+			}else{
+				throw new TTTCustomException("0x0028", "Invalid message file");
+			}
 		} catch(FileNotFoundException e) {
 			throw new TTTCustomException("0x0028", "You need to upload a message file");
 		}
