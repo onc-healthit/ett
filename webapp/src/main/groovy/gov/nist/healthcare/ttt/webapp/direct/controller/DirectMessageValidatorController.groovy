@@ -48,9 +48,11 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 		FileInputStream certFile;
 		
 		try {
+			logger.info("tDir " + tDir);
 			if (validator.getMessageFilePath().startsWith(tDir)){
 				messageFile = new FileInputStream(new File(validator.getMessageFilePath().normalize()));		
 			}else{
+				logger.info("Invalid message file " + validator.getMessageFilePath());
 				throw new TTTCustomException("0x0028", "Invalid message file");
 			}
 		} catch(FileNotFoundException e) {
@@ -64,23 +66,28 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 		}
 		
 		// Validate the message
-		logger.debug("Started validation of message");
-		DirectMessageProcessor processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword(), mdhtR1Url, mdhtR2Url, toolkitUrl);
-		processor.processDirectMessage();
-		logger.info("Validating message" + processor.getLogModel().getMessageId() + " done");
+		logger.info("Before Start validation of message");
+		DirectMessageProcessor processor = new DirectMessageProcessor();
+		if (validator.getMessageFilePath().startsWith(tDir)){
+			logger.debug("Started validation of message");
+			processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword(), mdhtR1Url, mdhtR2Url, toolkitUrl);
+			processor.processDirectMessage();
+			logger.info("Validating message" + processor.getLogModel().getMessageId() + " done");
 		
-		try {
-			db.getLogFacade().addNewLog(processor.getLogModel());
-			db.getLogFacade().addNewPart(processor.getLogModel().getMessageId(), processor.getMainPart());
-			if(processor.hasCCDAReport()) {
-				processor.getCcdaReport().each {
-					db.getLogFacade().addNewCCDAValidationReport(processor.getLogModel().getMessageId(), it);					
+			try {
+				db.getLogFacade().addNewLog(processor.getLogModel());
+				db.getLogFacade().addNewPart(processor.getLogModel().getMessageId(), processor.getMainPart());
+				if(processor.hasCCDAReport()) {
+					processor.getCcdaReport().each {
+						db.getLogFacade().addNewCCDAValidationReport(processor.getLogModel().getMessageId(), it);					
+					}
 				}
-			}
-		} catch(DatabaseException e) {
-			e.printStackTrace();
-			return processor.getLogModel();
+			} catch(DatabaseException e) {
+				e.printStackTrace();
+				return processor.getLogModel();
+			}		
 		}
+
 		
 		return processor.getLogModel();
 	}
