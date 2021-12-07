@@ -49,7 +49,14 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 		
 		try {
 			logger.info("tDir " + tDir);
-			if (validator.getMessageFilePath().startsWith(tDir)){
+			String filePath = "";
+			if (validator.getMessageFilePath() !=null) {
+				logger.info("validator.getMessageFilePath() ::::: " + validator.getMessageFilePath());
+				filePath = validator.getMessageFilePath().normalize();
+				logger.info("filePath::::: " + validator.getMessageFilePath());
+			}
+			
+			if (filePath.startsWith(tDir)){
 				messageFile = new FileInputStream(new File(validator.getMessageFilePath().normalize()));		
 			}else{
 				logger.info("Invalid message file " + validator.getMessageFilePath());
@@ -68,7 +75,7 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 		// Validate the message
 		logger.info("Before Start validation of message");
 		DirectMessageProcessor processor = new DirectMessageProcessor();
-		if (validator.getMessageFilePath().startsWith(tDir)){
+		if (filePath(tDir)){
 			logger.debug("Started validation of message");
 			processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword(), mdhtR1Url, mdhtR2Url, toolkitUrl);
 			processor.processDirectMessage();
