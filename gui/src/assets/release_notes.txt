@@ -1,4 +1,11 @@
 ==Version 2.3.39#10/25/2021
+	*1. Enforce provenance templateId and extension requirements at a stricter level for content comparisons
+	
+	*2. Fix potential provenance null pointer exception
+	
+	*3. Fix potential security issues in ETT
+	
+==Version 2.3.39#10/25/2021
 	*1. Require provenance identification using templateId for provenance TS validation
 	
   	*2. Fix configuredExpression totals by severity in production by enabling dynamic vocab
