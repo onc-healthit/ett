@@ -1,4 +1,4 @@
-==Version 2.3.39#10/25/2021
+==Version 2.3.40#12/06/2021
 	*1. Enforce provenance templateId and extension requirements at a stricter level for content comparisons
 	
 	*2. Fix potential provenance null pointer exception
