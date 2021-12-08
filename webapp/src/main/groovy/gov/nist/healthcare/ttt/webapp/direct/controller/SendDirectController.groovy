@@ -47,8 +47,9 @@ public class SendDirectController {
 	private DatabaseInstance db;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody ObjWrapper<Boolean> sendDirectMessage(@RequestBody SendDirectMessage messageInfo) throws Exception {
-		
+	public @ResponseBody ObjWrapper<Boolean> sendDirectMessage(@RequestBody SendDirectMessage messageInfo) {
+		try  
+        {  
 		// Set certificates values
 		listener.setCertificatesPath(this.certificatesPath)
 		listener.setCertPassword(this.certPassword)
@@ -112,8 +113,19 @@ public class SendDirectController {
 			return new ObjWrapper<Boolean>(sender.send(25, messageGenerator.getTargetDomain(messageInfo.getToAddress()), msg, messageInfo.getFromAddress(), messageInfo.getToAddress()));
 		}
 		return new ObjWrapper<Boolean>(false);
-	}
+		}
+		
+		
+		catch (FileNotFoundException e){
+		          println(e);
+		        //  throw new Exception("Error: " + "Cannot send message", e);
+		      }
+		catch (Exception e){
+		          println(e);
+		          throw new Exception("Error: " + e.getMessage(), e);
+		      }
 
+	}
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody SendDirectMessage generate() throws IOException {
 
