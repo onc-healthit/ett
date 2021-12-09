@@ -32,6 +32,8 @@ class TestCasesController {
 		ISMTPTestRunner smtpTestRunner = new SMTPTestRunner()
 		MU2ReceiverTests fetchMail = new MU2ReceiverTests()
 		ArrayList<ITestResult> res = new ArrayList<ITestResult>()
+		
+	if(ti.ccdaFileLink.contains("githubusercontent")){
 		def trs;
 		if(ti.status !=null && ti.status.toLowerCase().equals("fetching")) {
 			trs = fetchMail.fetchMail(ti.convert(domainName, smtpHost))
@@ -41,5 +43,13 @@ class TestCasesController {
 		trs.each { res << it }
 		
 		res
+		
+		}
+		
+		else{
+		    
+		    throw new Exception("Error: This action is not supported by API");
+		}
+
 	}
 }
