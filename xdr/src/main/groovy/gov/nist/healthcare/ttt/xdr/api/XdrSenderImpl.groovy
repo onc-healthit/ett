@@ -60,6 +60,9 @@ class XdrSenderImpl implements XdrSender{
 
     @Value('${toolkit.testName}')
     private String testName
+	
+    @Value('${github.test.url}')
+    private String githubTestUrl
 
     @Override
     public def sendXdr(Map config) {
@@ -75,11 +78,17 @@ class XdrSenderImpl implements XdrSender{
 		}
 
         if(config.payload) {
-            StringWriter writer = new StringWriter();
-            InputStream ccdaAttachment = new URL(config.payload.link).openStream();
-            IOUtils.copy(ccdaAttachment, writer, "UTF-8");
-            String payload = writer.toString();
-            settings.setPayload(payload)
+			if(config.payload.link && config.payload.link.startsWith(githubTestUrl)) {
+				log.info("githubTestUrl 11111 :" + githubTestUrl)
+				log.info("config.payload.link 11111 :" + config.payload.link)
+				log.info("link starts with test url 1111::::"+config.payload.link.startsWith(githubTestUrl));
+
+				StringWriter writer = new StringWriter();
+				InputStream ccdaAttachment = new URL(config.payload.link).openStream();
+				IOUtils.copy(ccdaAttachment, writer, "UTF-8");
+				String payload = writer.toString();
+				settings.setPayload(payload)
+			}
         }
         Artifacts art = ArtifactManagement.generateArtifacts(config.messageType, settings);
 //
@@ -178,7 +187,10 @@ class XdrSenderImpl implements XdrSender{
 		// CCDA attachment
 		String ccdaAttachmentString = "";
 		if(config.payload) {
-			if(config.payload.link) {
+			if(config.payload.link && config.payload.link.startsWith(githubTestUrl)) {
+				log.info("githubTestUrl 222222 :" + githubTestUrl)
+				log.info("config.payload.link 222222 :" + config.payload.link);
+				log.info("link starts with test url 222222::::"+config.payload.link.startsWith(githubTestUrl));
 				InputStream ccdaAttachment = new URL(config.payload.link).openStream();
 				DocumentResource document = new DocumentResource();
 				byte[] ccdaAttachmentByte = IOUtils.toByteArray(ccdaAttachment);
