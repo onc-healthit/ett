@@ -79,9 +79,9 @@ class XdrSenderImpl implements XdrSender{
 
         if(config.payload) {
 			if(config.payload.link && config.payload.link.startsWith(githubTestUrl)) {
-				log.info("githubTestUrl 11111 :" + githubTestUrl)
-				log.info("config.payload.link 11111 :" + config.payload.link)
-				log.info("link starts with test url 1111::::"+config.payload.link.startsWith(githubTestUrl));
+				log.info("githubTestUrl 111111 :" + githubTestUrl)
+				log.info("config.payload.link 111111 :" + config.payload.link)
+				log.info("link starts with test url 11111::::"+config.payload.link.startsWith(githubTestUrl));
 
 				StringWriter writer = new StringWriter();
 				InputStream ccdaAttachment = new URL(config.payload.link).openStream();
@@ -190,7 +190,7 @@ class XdrSenderImpl implements XdrSender{
 			if(config.payload.link && config.payload.link.startsWith(githubTestUrl)) {
 				log.info("githubTestUrl 222222 :" + githubTestUrl)
 				log.info("config.payload.link 222222 :" + config.payload.link);
-				log.info("link starts with test url 222222::::"+config.payload.link.startsWith(githubTestUrl));
+				log.info("link starts with test url  222222::::"+config.payload.link.startsWith(githubTestUrl));
 				InputStream ccdaAttachment = new URL(config.payload.link).openStream();
 				DocumentResource document = new DocumentResource();
 				byte[] ccdaAttachmentByte = IOUtils.toByteArray(ccdaAttachment);
