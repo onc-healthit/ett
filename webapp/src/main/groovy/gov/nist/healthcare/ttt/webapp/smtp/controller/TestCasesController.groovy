@@ -33,7 +33,7 @@ class TestCasesController {
 		MU2ReceiverTests fetchMail = new MU2ReceiverTests()
 		ArrayList<ITestResult> res = new ArrayList<ITestResult>()
 		
-	if(ti.ccdaFileLink.contains("githubusercontent")){
+	if(ti.ccdaFileLink.contains("githubusercontent") || ti.ccdaFileLink.equals("")){
 		def trs;
 		if(ti.status !=null && ti.status.toLowerCase().equals("fetching")) {
 			trs = fetchMail.fetchMail(ti.convert(domainName, smtpHost))
