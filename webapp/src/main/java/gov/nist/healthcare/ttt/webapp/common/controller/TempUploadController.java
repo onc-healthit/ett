@@ -13,6 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -59,7 +61,10 @@ public class TempUploadController {
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody FileInfo uploadCert(@RequestParam(value = "flowFilename") String filename, HttpServletResponse response) throws IOException {
 		FileInfo fileInfo = new FileInfo();
-		File f = new File(tDir + File.separator + filename);
+		Path path  = Paths.get(flowFilename);
+		Path normalizedPath =  path.normalize();
+
+    	File f = new File(tDir + File.separator + normalizedPath.toString());        	
 		if(f.exists()) {
 			fileInfo.setFlowRelativePath(f.getAbsolutePath());
 			return fileInfo;
