@@ -61,7 +61,7 @@ public class TempUploadController {
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody FileInfo uploadCert(@RequestParam(value = "flowFilename") String filename, HttpServletResponse response) throws IOException {
 		FileInfo fileInfo = new FileInfo();
-		Path path  = Paths.get(flowFilename);
+		Path path  = Paths.get(filename);
 		Path normalizedPath =  path.normalize();
 
     	File f = new File(tDir + File.separator + normalizedPath.toString());        	
