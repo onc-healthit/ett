@@ -23,4 +23,5 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Build with Maven
+      run: cd common-config
       run: mvn -B clean install -DskipTests
