@@ -63,7 +63,11 @@ public class SendDirectController {
 		if (messageInfo.isValidSendEmail()) {
 			InputStream attachmentFile = null;
 			if(messageInfo.getOwnCcdaAttachment() != null && !messageInfo.getOwnCcdaAttachment().equals("")) {
-				File ownCcda = new File(messageInfo.getOwnCcdaAttachment());
+			    
+				String[] parts = messageInfo.getOwnCcdaAttachment().split("/");
+				String fileName = parts[ parts.length - 1 ]
+				
+				File ownCcda = new File("/tmp/" + fileName);
 				messageInfo.setAttachmentFile(ownCcda.getName());
 				attachmentFile = new FileInputStream(ownCcda);
 			} else if(!messageInfo.getAttachmentFile().equals("")) {
