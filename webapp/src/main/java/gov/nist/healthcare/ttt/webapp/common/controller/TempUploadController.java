@@ -41,9 +41,10 @@ public class TempUploadController {
         
         // Unique uuid for filename
         UUID fileuuid = UUID.randomUUID();
-        
+		Path path  = Paths.get(fileInfo.getFlowFilename());
+		Path normalizedPath =  path.normalize();           
         if(!fileInfo.getFlowFilename().equals("")) {
-        	temp = new File(tDir + File.separator + fileInfo.getFlowFilename() + "-ett_" + fileuuid + "_ett");
+        	temp = new File(tDir + File.separator + normalizedPath.toString() + "-ett_" + fileuuid + "_ett");
         } else {
         	temp = File.createTempFile("tempfile", ".tmp");
         }
