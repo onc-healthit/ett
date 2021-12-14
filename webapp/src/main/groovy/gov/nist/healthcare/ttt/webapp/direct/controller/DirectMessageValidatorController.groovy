@@ -46,10 +46,11 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
     LogModel validateDirectMessage(@RequestBody MessageValidator validator, HttpServletRequest request) throws Exception {
 		FileInputStream messageFile;
 		FileInputStream certFile;
+		String filePath = "";
+		String foundFile = true;
 		
 		try {
 			logger.info("tDir " + tDir);
-			String filePath = "";
 			if (validator.getMessageFilePath() !=null) {
 				logger.info("validator.getMessageFilePath() ::::: " + validator.getMessageFilePath());
 				filePath = validator.getMessageFilePath().normalize();
@@ -59,10 +60,12 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 			if (filePath.startsWith(tDir)){
 				messageFile = new FileInputStream(new File(validator.getMessageFilePath().normalize()));		
 			}else{
+				foundFile = false;
 				logger.info("Invalid message file " + validator.getMessageFilePath());
 				throw new TTTCustomException("0x0028", "Invalid message file");
 			}
 		} catch(FileNotFoundException e) {
+			foundFile = false;
 			throw new TTTCustomException("0x0028", "You need to upload a message file");
 		}
 		try {
@@ -75,7 +78,7 @@ private static Logger logger = LogManager.getLogger(DirectMessageValidatorContro
 		// Validate the message
 		logger.info("Before Start validation of message");
 		DirectMessageProcessor processor = new DirectMessageProcessor();
-		if (filePath(tDir)){
+		if (filePath.startsWith(tDir) && foundFile){
 			logger.debug("Started validation of message");
 			processor = new DirectMessageProcessor(messageFile, certFile, validator.getCertPassword(), mdhtR1Url, mdhtR2Url, toolkitUrl);
 			processor.processDirectMessage();
