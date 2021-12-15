@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,7 @@ import java.util.UUID;
 public class TempUploadController {
 	
 	String tDir = System.getProperty("java.io.tmpdir");
+	private static Logger logger = LogManager.getLogger(TempUploadController.class.getName());
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody FileInfo uploadCert(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -41,11 +44,14 @@ public class TempUploadController {
         
         // Unique uuid for filename
         UUID fileuuid = UUID.randomUUID();
-		Path path  = Paths.get(fileInfo.getFlowFilename());
-		Path normalizedPath =  path.normalize();
-		
+		logger.info("fileInfo.getFlowFilename() 1111:::::"+fileInfo.getFlowFilename());
         if(!fileInfo.getFlowFilename().equals("")) {
-        	temp = new File(tDir + File.separator + normalizedPath.toString() + "-ett_" + fileuuid + "_ett");
+    		Path path  = Paths.get(fileInfo.getFlowFilename());
+    		Path normalizedPath =  path.normalize();
+    		fileInfo.setFlowFilename(normalizedPath.toString());
+    		logger.info("FlowFilename normalizedPath.toString() :::::"+normalizedPath.toString());
+    		logger.info("FlowFilename fileInfo.getFlowFilename() 22222 :::::"+fileInfo.getFlowFilename());
+    		temp = new File(tDir + File.separator + normalizedPath.toString() + "-ett_" + fileuuid + "_ett");
         } else {
         	temp = File.createTempFile("tempfile", ".tmp");
         }
@@ -65,6 +71,7 @@ public class TempUploadController {
 		FileInfo fileInfo = new FileInfo();
 		Path path  = Paths.get(filename);
 		Path normalizedPath =  path.normalize();
+		logger.info("FlowFilename normalizedPath.toString() 22222 :::::"+normalizedPath.toString());
 
     	File f = new File(tDir + File.separator + normalizedPath.toString());        	
 		if(f.exists()) {
