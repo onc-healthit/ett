@@ -34,4 +34,12 @@ jobs:
       continue-on-error: true
     - name: Build ett 2
       if: always()
-      run: mvn -B clean install -DskipTests
+      run: |
+        mvn -B clean install -DskipTests
+        mkdir staging && cp ./webapp/target/*.jar staging
+    - name: Persist jar
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: staging
+      
