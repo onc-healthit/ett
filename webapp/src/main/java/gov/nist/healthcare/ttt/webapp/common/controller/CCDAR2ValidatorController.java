@@ -1,6 +1,8 @@
 package gov.nist.healthcare.ttt.webapp.common.controller;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
@@ -53,7 +55,12 @@ public class CCDAR2ValidatorController {
 				
 				// Query MDHT war endpoint
 				CloseableHttpClient client = HttpClients.createDefault();
-				File file = new File(messageFilePath);
+	    		Path path  = Paths.get(messageFilePath);
+	    		Path normalizedPath =  path.normalize();				
+				File file = new File(normalizedPath.toString());
+				if(!file.exists() || messageFilePath.startsWith("../")) {
+					throw new TTTCustomException("0x0050", "Action not supported by API.");
+				}
 				HttpPost post = new HttpPost(mdhtUrl);
 				FileBody fileBody = new FileBody(file);
 				//

@@ -16,11 +16,30 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK 8
       uses: actions/setup-java@v2
       with:
         java-version: '8'
         distribution: 'adopt'
         cache: maven
-    - name: Build with Maven
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.2
+      with:
+        maven-version: 3.6.0
+    - name: Build common-config
+      working-directory: ./common-config
       run: mvn -B clean install -DskipTests
+    - name: Build ett
+      run: mvn -B clean install -DskipTests
+      continue-on-error: true
+    - name: Build ett 2
+      if: always()
+      run: |
+        mvn -B clean install -DskipTests
+        mkdir staging && cp ./webapp/target/*.jar staging
+    - name: Persist jar
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: staging
+      
