@@ -26,5 +26,4 @@ jobs:
       working-directory: ./common-config
       run: mvn -B clean install -DskipTests
     - name: Build ett
-      working-directory: ./ett
       run: mvn -B clean install -DskipTests
