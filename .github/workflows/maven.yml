@@ -22,6 +22,10 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         cache: maven
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.2
+      with:
+        maven-version: 3.6.0
     - name: Build common-config
       working-directory: ./common-config
       run: mvn -B clean install -DskipTests
