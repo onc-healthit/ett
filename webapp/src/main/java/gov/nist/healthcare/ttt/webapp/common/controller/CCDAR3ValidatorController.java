@@ -59,7 +59,7 @@ public class CCDAR3ValidatorController {
 	    		Path path  = Paths.get(messageFilePath);
 	    		Path normalizedPath =  path.normalize();				
 				File file = new File(normalizedPath.toString());
-				if(!file.exists()) {
+				if(!file.exists() || messageFilePath.startsWith("../")) {
 					throw new TTTCustomException("0x0050", "Action not supported by API.");
 				}				
 				HttpPost post = new HttpPost(mdhtUrl);

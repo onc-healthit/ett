@@ -45,7 +45,12 @@ public class TempUploadController {
         // Unique uuid for filename
         UUID fileuuid = UUID.randomUUID();
 		logger.info("fileInfo.getFlowFilename() 1111:::::"+fileInfo.getFlowFilename());
-        if(!fileInfo.getFlowFilename().equals("")) {
+		if(!fileInfo.getFlowFilename().equals("")){
+			logger.info("fileInfo.getFlowFilename() startsWith:::::"+fileInfo.getFlowFilename().startsWith("../"));
+		}
+
+
+        if(!fileInfo.getFlowFilename().equals("") && !fileInfo.getFlowFilename().startsWith("../")) {
     		Path path  = Paths.get(fileInfo.getFlowFilename());
     		Path normalizedPath =  path.normalize();
     		fileInfo.setFlowFilename(normalizedPath.toString());
