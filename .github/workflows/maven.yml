@@ -28,4 +28,5 @@ jobs:
     - name: Build ett
       run: mvn -B clean install -DskipTests
     - name: Build ett 2
+      if: always()
       run: mvn -B clean install -DskipTests
