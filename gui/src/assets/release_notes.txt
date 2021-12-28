@@ -1,3 +1,16 @@
+==Version 2.3.41#12/27/2021
+	*1. Update linked reference mismatched org name message for clarity and specificity
+	
+	*2. Fix recent server configuration issue which may have suppressed certain vocabulary results
+	
+	*3. Add missing CDA Extensions from 2018: sdtc:asPatientRelationship, sdtc:deceasedInd, sdtc:deceasedTime, sdtc:multipleBirthInd, sdtc:multipleBirthOrderNumber, sdtc:statusCode and stdc:desc
+	
+	*4. Limit Vital Sign Observation/value to data type PQ
+	
+	*5. Update value set for Marital Status to include U: Unmarried and C: Common Law
+	
+	*6. Report only one validation issue (versus two issues) for an incorrect or missing Allergy Section Code
+
 ==Version 2.3.40#12/06/2021
 	*1. Enforce provenance templateId and extension requirements at a stricter level for content comparisons
 	
