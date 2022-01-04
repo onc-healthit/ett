@@ -94,7 +94,11 @@ public class SendDirectController {
 			// Get encryption cert
 			InputStream encryptionCert = null;
 			if(!messageInfo.getEncryptionCert().equals("")) {
-				encryptionCert = new FileInputStream(new File(messageInfo.getEncryptionCert()));
+				
+				String[] parts = messageInfo.getEncryptionCert().split("/");
+				String fileName = parts[ parts.length - 1 ]
+				File ownEncryptionCert = new File("/tmp/" + fileName);
+				encryptionCert = new FileInputStream(ownEncryptionCert);
 			} else {
 				logger.debug("Trying to fetch encryption cert for " + messageInfo.getToAddress());
 				encryptionCert = messageGenerator.getEncryptionCertByDnsLookup(messageInfo.getToAddress());
