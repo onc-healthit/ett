@@ -30,7 +30,7 @@ import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomExcept
 @Controller
 @RequestMapping("/api/ccdar2")
 public class CCDAR2ValidatorController {
-	
+	String tDir = System.getProperty("java.io.tmpdir");
 	@Value("${ett.mdht.r2.url}")
 	String mdhtUrl;
 	
@@ -58,7 +58,7 @@ public class CCDAR2ValidatorController {
 	    		Path path  = Paths.get(messageFilePath);
 	    		Path normalizedPath =  path.normalize();				
 				File file = new File(normalizedPath.toString());
-				if(!file.exists() || messageFilePath.startsWith("../") || messageFilePath.startsWith("\\")) {
+				if(!file.exists() || messageFilePath.startsWith("../") || !messageFilePath.startsWith(tDir + File.separator)) {
 					throw new TTTCustomException("0x0050", "Action not supported by API.");
 				}
 				HttpPost post = new HttpPost(mdhtUrl);

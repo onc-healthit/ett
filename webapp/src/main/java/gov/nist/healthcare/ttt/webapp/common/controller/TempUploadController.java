@@ -52,7 +52,7 @@ public class TempUploadController {
 
 
         if(!fileInfo.getFlowFilename().equals("") && !fileInfo.getFlowFilename().startsWith("../") &&
-		!fileInfo.getFlowFilename().startsWith("\\")) {
+		!fileInfo.getFlowFilename().contains("\\") && !fileInfo.getFlowFilename().contains("/")) {
     		Path path  = Paths.get(fileInfo.getFlowFilename());
     		Path normalizedPath =  path.normalize();
     		fileInfo.setFlowFilename(normalizedPath.toString());
