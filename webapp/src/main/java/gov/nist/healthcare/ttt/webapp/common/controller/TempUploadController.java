@@ -52,13 +52,18 @@ public class TempUploadController {
 
 
         if(!fileInfo.getFlowFilename().equals("") && !fileInfo.getFlowFilename().startsWith("../") &&
-		!fileInfo.getFlowFilename().contains("\\") && !fileInfo.getFlowFilename().contains("/")) {
+		!fileInfo.getFlowFilename().startsWith("\\")) {
     		Path path  = Paths.get(fileInfo.getFlowFilename());
     		Path normalizedPath =  path.normalize();
-    		fileInfo.setFlowFilename(normalizedPath.toString());
     		logger.info("FlowFilename normalizedPath.toString() :::::"+normalizedPath.toString());
+
+			String[] parts = normalizedPath.toString().split("/");
+			String fileName = parts[ parts.length - 1 ];
+    		logger.info("FlowFilename fileName :::::"+fileName);
+			
+    		fileInfo.setFlowFilename(fileName);
     		logger.info("FlowFilename fileInfo.getFlowFilename() 22222 :::::"+fileInfo.getFlowFilename());
-    		temp = new File(tDir + File.separator + normalizedPath.toString() + "-ett_" + fileuuid + "_ett");
+    		temp = new File(tDir + File.separator + fileName + "-ett_" + fileuuid + "_ett");
         } else {
         	temp = File.createTempFile("tempfile", ".tmp");
         }
@@ -80,7 +85,11 @@ public class TempUploadController {
 		Path normalizedPath =  path.normalize();
 		logger.info("FlowFilename normalizedPath.toString() 22222 :::::"+normalizedPath.toString());
 
-    	File f = new File(tDir + File.separator + normalizedPath.toString());        	
+		String[] parts = normalizedPath.toString().split("/");
+		String fileName = parts[ parts.length - 1 ];
+		logger.info("FlowFilename fileName :::::"+fileName);
+			
+    	File f = new File(tDir + File.separator + fileName);        	
 		if(f.exists()) {
 			fileInfo.setFlowRelativePath(f.getAbsolutePath());
 			return fileInfo;
