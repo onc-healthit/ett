@@ -57,7 +57,7 @@ public class TempUploadController {
     		Path normalizedPath =  path.normalize();
     		logger.info("FlowFilename normalizedPath.toString() :::::"+normalizedPath.toString());
 
-			String fileName = normalizedPath.getFileName();
+			String fileName = normalizedPath.getFileName().toString();
     		logger.info("FlowFilename fileName :::::"+fileName);
 			
     		fileInfo.setFlowFilename(fileName);
@@ -84,7 +84,7 @@ public class TempUploadController {
 		Path normalizedPath =  path.normalize();
 		logger.info("FlowFilename normalizedPath.toString() 22222 :::::"+normalizedPath.toString());
 
-		String fileName = normalizedPath.getFileName();
+		String fileName = normalizedPath.getFileName().toString();
 		logger.info("FlowFilename fileName :::::"+fileName);
 			
     	File f = new File(tDir + File.separator + fileName);        	
