@@ -1,3 +1,6 @@
+==Version 2.3.43#02/28/2022
+	*1. Update metadata for XDM in SMTP 28/29
+
 ==Version 2.3.42#01/31/2022
 	*1. Fixed errata on Lot or Batch Number observation to support ED versus ST
 	
