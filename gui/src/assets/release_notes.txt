@@ -1,9 +1,12 @@
-==Version 2.3.44#03/28/2022
+==Version 2.3.45#04/25/2022
 	*1. Update CIRI (b2) test data instructions and test data xml files to allow the reconciliation of Patient birth names appropriately
 	
-	*2. Add DS4P jars to MDHT build scripts for future builds/releases
+==Version 2.3.44#03/28/2022
+	*1. Update value set 2.16.840.1.113883.3.88.12.80.62 Vital Sign Result Type to the latest version in order to allow the use of code 3150-0
 	
-	*3. Increase Artifactory server uptime to enhance Reference C-CDA Validator builds
+	*2. Update test data to change Allergy Drug Class to a value in the Value set for b1, e1, g9 criteria. The sender pdf files have been updated
+	
+	*3. Update CIRI (b2) test data instructions to allow the reconciliation of an Allergy due to a drug class
 	
 ==Version 2.3.43#02/28/2022
 	*1. Update metadata for XDM in SMTP 28/29
