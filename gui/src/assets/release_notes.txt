@@ -1,3 +1,10 @@
+==Version 2.3.44#03/28/2022
+	*1. Update CIRI (b2) test data instructions and test data xml files to allow the reconciliation of Patient birth names appropriately
+	
+	*2. Add DS4P jars to MDHT build scripts for future builds/releases
+	
+	*3. Increase Artifactory server uptime to enhance Reference C-CDA Validator builds
+	
 ==Version 2.3.43#02/28/2022
 	*1. Update metadata for XDM in SMTP 28/29
 
