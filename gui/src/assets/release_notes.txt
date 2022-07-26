@@ -1,4 +1,13 @@
 ==Version 2.3.46#05/31/2022
+	*1. Implement Appendix A and B, C-CDA Templates from Clinical Notes STU Companion Guide, Release 3 (US Realm), May 2022 - Include update in C-CDA R2.1 Cures Update Validator within SITE and ETT UIs as 'USCDI Version 2 Beta'
+	
+	*2. Reference external Docker setup option in the Reference C-CDA Validator readme
+	
+	*3. Update Artifactory, the public repository for Reference C-CDA Validator dependencies
+	
+	*4. Update server infrastructure
+	
+==Version 2.3.46#05/31/2022
 	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
 	
 ==Version 2.3.45#04/25/2022
