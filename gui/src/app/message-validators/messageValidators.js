@@ -2,6 +2,7 @@ var validators = angular.module('ttt.validators', [
     // Modules
     'ttt.direct.ccdar3Validator',
     'ttt.direct.ccdar2Validator',
+    'ttt.direct.SVAPValidator',    
     'ttt.direct.ccdaValidator',
     'ttt.direct.xdmValidator',
     'ttt.validator.home'
@@ -43,6 +44,15 @@ validators.config(['$stateProvider',
                     }
                 }
             })
+            .state('validators.svap', {
+                url: '/ccdasvap2022',
+                views: {
+                    "validators": {
+                        controller: 'SVAPValidatorCtrl',
+                        templateUrl: 'direct/message-validator/svap/svap.tpl.html'
+                    }
+                }
+            })            
             .state('validators.home', {
                 url: '',
                 views: {

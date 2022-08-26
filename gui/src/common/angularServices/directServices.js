@@ -102,6 +102,13 @@ directService.factory('CCDAR3ValidatorFactory', ['$resource', 'RESOURCES',
     }
 ]);
 
+directService.factory('SVAPValidatorFactory', ['$resource', 'RESOURCES',
+    function($resource, RESOURCES) {
+        return $resource(RESOURCES.USERS_API + 'ccdasvap2022', {}, {
+        });
+    }
+]);
+
 directService.factory('DCDTValidatorFactory', ['$resource', 'RESOURCES',
     function($resource, RESOURCES) {
         return $resource(RESOURCES.USERS_API + 'dcdt', {}, {
