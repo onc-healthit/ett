@@ -72,7 +72,7 @@ public class SVAPValidatorCtrl {
 				builder.addTextBody("validationObjective", validationObjective);
 				builder.addTextBody("referenceFileName", referenceFileName);
 				builder.addPart("ccdaFile", fileBody);
-				builder.addTextBody("curesUpdate", "true");
+				builder.addTextBody("curesUpdate", "false");
 				builder.addTextBody("svap2022", "true");
 				HttpEntity entity = builder.build();
 				//
