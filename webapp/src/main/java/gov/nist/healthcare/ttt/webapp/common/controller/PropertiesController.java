@@ -48,6 +48,9 @@ public class PropertiesController {
 	
 	@Value("${github.cures.download.zip}")
 	String githubCuresZip = "";
+
+	@Value("${github.svap.download.zip}")
+	String githubSvapZip = "";
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody HashMap<String, String> getProperties() throws IOException {
@@ -67,6 +70,7 @@ public class PropertiesController {
 		    	prop.put("dcdt2015Protocol", aURL.getProtocol());
 				prop.put("githubZip",githubZip);
 				prop.put("githubCuresZip", githubCuresZip);
+				prop.put("githubSvapZip",githubSvapZip)
 			}
 		} catch (FileNotFoundException fnfe) {
 			logger.info(fnfe.getMessage());
