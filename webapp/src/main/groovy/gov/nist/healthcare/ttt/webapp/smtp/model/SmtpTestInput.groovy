@@ -55,6 +55,8 @@ public class SmtpTestInput {
 	
 	String cures;
 
+	String svap;
+
 	public SmtpTestInput() {
 
 	}		
@@ -63,7 +65,7 @@ public class SmtpTestInput {
 			String sutEmailAddress, String tttEmailAddress, String useTLS, String sutCommandTimeoutInSeconds,
 			String sutUserName, String sutPassword, String tttUserName, String tttPassword, String tttSmtpAddress,
 			String startTlsPort, String status, String attachmentType, String ccdaReferenceFilename,
-			String ccdaValidationObjective, String ccdaFileLink, TestResult previousTr, String cures) {
+			String ccdaValidationObjective, String ccdaFileLink, TestResult previousTr, String cures, String svap) {
 		super();
 		this.testCaseNumber = testCaseNumber;
 		this.sutSmtpAddress = sutSmtpAddress;
@@ -86,6 +88,7 @@ public class SmtpTestInput {
 		this.ccdaFileLink = ccdaFileLink;
 		this.previousTr = previousTr;
 		this.cures = cures;
+		this.svap = svap;
 	}
 
 	public SmtpTestInput(String testCaseNumber, String sutSmtpAddress,
@@ -166,7 +169,7 @@ public class SmtpTestInput {
 				this.tttEmailAddress, getBool(this.useTLS), this.sutUserName,
 				this.sutPassword, this.tttUserName, this.tttPassword,
 				Integer.parseInt(this.startTlsPort),
-				Integer.parseInt(this.sutCommandTimeoutInSeconds), attachment, this.ccdaReferenceFilename, this.ccdaValidationObjective,getBool(this.cures))
+				Integer.parseInt(this.sutCommandTimeoutInSeconds), attachment, this.ccdaReferenceFilename, this.ccdaValidationObjective,getBool(this.cures),getBool(this.svap))
 
 		res.setTr(this.previousResult)
 		

@@ -38,6 +38,8 @@ public class TestInput {
 	
 	public boolean cures;
 
+	public boolean svap;
+
 	public TestResult tr;
 
 	public byte[] certificate;
@@ -48,7 +50,7 @@ public class TestInput {
 			String _sutEmailAddress, String _tttEmailAddress, boolean _useTLS,
 			String _sutUserName, String _sutPassword,String _tttUserName, String _tttPassword, int _starTtlsPort,
 			int _sutCommandTimeoutInSeconds,
-			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective, boolean _cures, byte[] _certificate) {
+			LinkedHashMap<String, byte[]> _attachments, String _ccdaReferenceFilename, String _ccdaValidationObjective, boolean _cures, boolean _svap, byte[] _certificate) {
 		sutSmtpAddress = _sutSmtpAddress;
 		tttSmtpAddress = _tttSmtpAddress;
 		sutSmtpPort = _sutSmtpPort;
@@ -66,6 +68,7 @@ public class TestInput {
 		ccdaReferenceFilename = _ccdaReferenceFilename;
 		ccdaValidationObjective = _ccdaValidationObjective;
 		cures = _cures;
+		svap = _svap;
 		certificate = _certificate;
 	}
 
@@ -200,6 +203,14 @@ public class TestInput {
 
 	public void setcures(boolean cures) {
 		this.cures = cures;
+	}
+
+	public boolean getsvap() {
+		return svap;
+	}
+
+	public void setsvap(boolean svap) {
+		this.svap = svap;
 	}
 
 	public byte[] getCertificate() {
