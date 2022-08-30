@@ -195,15 +195,17 @@ public class TTTReceiverTests {
 										CloseableHttpClient client = HttpClients.createDefault();
 										FileUtils.writeByteArrayToFile(new File("sample.xml"), targetArray);
 										File file1 = new File("sample.xml");
-										HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r3.url"));
+										HttpPost post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
 										if(ti.cures) {
 										post = new HttpPost(prop.getProperty("ett.mdht.r3.url"));
 										System.out.println("Calling CURES validator");
 										}
-										else {
-										post = new HttpPost(prop.getProperty("ett.mdht.r2.url"));
-										System.out.println("Calling NON-CURES validator");
-										}
+										
+										if(ti.svap) {
+										post = new HttpPost(prop.getProperty("ett.mdht.svap.url"));
+										System.out.println("Calling SVAP validator");
+										}										
+
 										FileBody fileBody = new FileBody(file1);
 
 

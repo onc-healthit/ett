@@ -25,9 +25,9 @@ ccdaValidator.controller('SVAPValidatorCtrl', ['$scope', 'SVAPValidatorFactory',
             "flowRelativePath": "",
             "flowTotalChunks": ""
         };
-        $scope.sutRole = "Cures Update Sender SUT Test Data";
+        $scope.sutRole = "Cures Update Svap Uscdiv2 Receiver SUT Test Data";
 
-        $scope.sutSenderRole ="Cures Update Sender SUT Test Data";
+        $scope.sutSenderRole ="Cures Update Svap Uscdiv2 Sender SUT Test Data";
 
 		$scope.objective = [];
 

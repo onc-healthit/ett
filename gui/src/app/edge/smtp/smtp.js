@@ -231,6 +231,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 			var ccdaValidationObjective = "";
 			var fileLink = "";
 			var curesValidator = false;
+			var svapValidator = false;
 			if (test.ccdaFileRequired && (!fieldInput.ccdaDocument)){
 				throw {
 					code: "Error",
@@ -243,6 +244,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 				fileLink = fieldInput.ccdaDocument.link || "";
 				ccdaValidationObjective = fieldInput.ccdaDocument.path[fieldInput.ccdaDocument.path.length - 1] || "";
 				curesValidator = fieldInput.ccdaDocument.cures;
+				svapValidator = fieldInput.ccdaDocument.svap;
 			}
 
 			var previousTR = null;
@@ -275,7 +277,7 @@ edgeSmtp.controller('SmtpCtrl', ['$scope', 'LogInfo', 'SMTPTestCasesDescription'
 				"ccdaReferenceFilename": ccdaReferenceFilename,
 				"ccdaValidationObjective": ccdaValidationObjective,
 				"ccdaFileLink": fileLink,
-				"previousResult": previousTR,"cures":curesValidator || null
+				"previousResult": previousTR,"cures":curesValidator,"svap":svapValidator || null
 			};
 
 			// Set status to loading for loading UI
