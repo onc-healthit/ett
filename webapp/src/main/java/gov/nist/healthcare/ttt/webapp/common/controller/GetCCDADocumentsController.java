@@ -201,15 +201,15 @@ public class GetCCDADocumentsController {
 	}
 
 	public String getLink(String[] path,boolean curesFiles,boolean svapFiles) {
-		String link = String.join("/", path).replace(" ", "%20");
-		link = githubTestData + link;
+		String linkMaster = String.join("/", path).replace(" ", "%20");
+		String link = githubTestData + linkMaster;
 		//link = githubTestData"https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
 		if (curesFiles){
-			link = githubCuresTestData + link;
+			link = githubCuresTestData + linkMaster;
 		}
 
 		if (svapFiles){
-			link = githubSvapTestData + link;
+			link = githubSvapTestData + linkMaster;
 		}
 		
 		return link;
