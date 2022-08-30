@@ -70,7 +70,7 @@ public class PropertiesController {
 		    	prop.put("dcdt2015Protocol", aURL.getProtocol());
 				prop.put("githubZip",githubZip);
 				prop.put("githubCuresZip", githubCuresZip);
-				prop.put("githubSvapZip",githubSvapZip)
+				prop.put("githubSvapZip",githubSvapZip);
 			}
 		} catch (FileNotFoundException fnfe) {
 			logger.info(fnfe.getMessage());
