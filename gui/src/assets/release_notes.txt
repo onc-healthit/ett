@@ -1,3 +1,16 @@
+==Version 2.3.48#08/31/2022
+	*1. Release the new C-CDA R2.1 Validator for 2015 Edition Cures Update and SVAP 2022.Includes new test scenario files and test data files (https://github.com/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata)
+	
+	*2. Update vocabulary to the July 2022 VSAC release
+	
+	*3. Resolve ETT Google Groups thread, "Pregnancy Observation for Possible Pregnancy or Not Pregnant" by adding the new codes to the Extended Pregnancy Status Value Set 2.16.840.1.113762.1.4.1099.24 DYNAMIC
+	
+	*4. Resolve ETT Google Groups thread, "Result referenceRange validation error when the requirements are met" by adding support for IVL_REAL
+	
+	*5. Resolve ETT Google Groups thread, "ETT bug validating Care Team Member Act?" by relaxing Care Team Member Act participant conformance rule to a MAY vs a SHALL severity
+	
+	*6. Resolve ETT Google Groups thread, "170.315(b)(9) – Care Plan_Phone Number Issue"
+	
 ==Version 2.3.47#07/25/2022
 	*1. Implement Appendix A and B, C-CDA Templates from Clinical Notes STU Companion Guide, Release 3 (US Realm), May 2022 - Include update in C-CDA R2.1 Cures Update Validator within SITE and ETT UIs as 'USCDI Version 2 Beta'
 	
