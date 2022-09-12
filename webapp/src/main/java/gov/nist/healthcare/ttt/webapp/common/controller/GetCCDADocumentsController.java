@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.codec.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger; 
@@ -73,18 +74,11 @@ public class GetCCDADocumentsController {
 	public @ResponseBody HashMap<String, Object> getDocuments(@RequestParam(value = "testCaseType") String testCaseType) throws Exception {
 		// Result map
 		HashMap<String, Object> resultMap = new HashMap<>();
-
+		try{
 		// CCDA cache File path
 		String ccdaFilePath = getFilterFiles(testCaseType);
 		File ccdaObjectivesFile = new File(ccdaFilePath);
 
-		if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
-			JsonFactory factory = new JsonFactory();
-			ObjectMapper mapper = new ObjectMapper(factory);
-			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
-
-			resultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
-		} else {
 			String sha = getHTML(githubSha).getJSONObject("commit").get("sha").toString();
 			JSONArray filesArray = getHTML(githubTree + sha + "?recursive=1").getJSONArray("tree");
 
@@ -131,14 +125,28 @@ public class GetCCDADocumentsController {
 			}
 			
 			// Write the cache file
-			try{
 				JSONObject cacheFile = new JSONObject(resultMap);
-				FileUtils.writeStringToFile(ccdaObjectivesFile, cacheFile.toString(2));
+				HashMap<String, Object> existingResultMap = new HashMap<>();
+				// check exiting file before creating
+				if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
+					JsonFactory factory = new JsonFactory();
+					ObjectMapper mapper = new ObjectMapper(factory);
+					TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
+					existingResultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
+				}
+				//Create Json object from the existing file
+				JSONObject existingFile = new JSONObject(existingResultMap);
+				
+				//Create File if the content is different
+				if (!cacheFile.toString().equals(existingFile.toString())) {
+					logger.info("Creating CCDA OBJECTIVES file....");
+					FileUtils.writeStringToFile(ccdaObjectivesFile, cacheFile.toString(2),Charsets.UTF_8);					
+				}
+				
 			} catch(Exception e) {
 				logger.error("Could not create ccda cache file: " + e.getMessage());
 				e.printStackTrace();
 			}
-		}
 		return resultMap;
 	}
 
