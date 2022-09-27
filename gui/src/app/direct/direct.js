@@ -3,6 +3,7 @@ var direct = angular.module('ttt.direct', [
 	'ttt.direct.home',
 	'ttt.direct.register',
 	'ttt.direct.send',
+	'ttt.direct.senddirect13',
 	'ttt.direct.validator',
 	'ttt.direct.ccdaValidator',
 	'ttt.direct.ccdar2Validator',
@@ -56,6 +57,15 @@ direct.config(['$stateProvider',
 					"direct": {
 						controller: 'DirectSendCtrl',
 						templateUrl: 'direct/send/send.tpl.html'
+					}
+				}
+			})
+			.state('direct.senddirect13', {
+				url: '/senddirect13',
+				views: {
+					"direct": {
+						controller: 'DirectSendV13Ctrl',
+						templateUrl: 'direct/send/V13/senddirect13.tpl.html'
 					}
 				}
 			})

@@ -22,11 +22,23 @@
                     <div msg="" key="navbar.registration">Register Direct</div>
                 </a>
             </li>
+            <!--
             <li ui-sref-active="active">
                 <a ui-sref=".send">
                     <div msg="" key="navbar.sendDirect">Send Direct Message</div>
                 </a>
             </li>
+           --> 
+             <li uib-dropdown ng-class="{active: $state.includes('direct.send') || $state.includes('direct.send13') }">
+                <a href="#" uib-dropdown-toggle>Send Direct Message<b class="caret"></b></a>
+                <ul class="uib-dropdown-menu">
+                    <li><a ui-sref=".send">Direct v1.2</a>
+                    </li>
+                    <li><a ui-sref=".senddirect13">Direct v1.3</a>
+                    </li>                  
+                </ul>
+            </li>   
+                       
             <li ui-sref-active="active">
                 <a ui-sref=".validator">
                     <div msg="" key="navbar.messageValidator">Message Validator</div>
@@ -53,7 +65,7 @@
                 </ul>
             </li>
 
-            <li ui-sref-active="active" ng-show="userInfo.logged">
+            <li ui-sref-active="active">
                 <a ui-sref=".status">
                     <div msg="" key="navbar.messageStatus">Message Status</div>
                 </a>
