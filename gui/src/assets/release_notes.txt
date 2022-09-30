@@ -5,8 +5,6 @@
 	
 	*3. Update scenarios for SVAP-2022 to match test data for inpatient samples
 	
-	*4. Resolve a bug which had the potential to fail to update C-CDA objectives during deployment	
-	
 ==Version 2.3.48#08/31/2022
 	*1. Release the new C-CDA R2.1 Validator for 2015 Edition Cures Update and SVAP 2022.Includes new test scenario files and test data files (https://github.com/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata)
 	
