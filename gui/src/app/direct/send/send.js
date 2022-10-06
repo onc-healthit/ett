@@ -103,7 +103,8 @@ directSend.controller('DirectSendCtrl', ['$scope', 'SettingsFactory', 'SendDirec
                 "encryptionCert": $scope.message.CertFilePath,
                 "wrapped": $scope.isWrapped,
                 "invalidDigest": $scope.invalidDigest || false,
-                "digestAlgo": $scope.digestAlgo || 'sha1'
+                "digestAlgo": $scope.digestAlgo || 'sha1',
+                "directVersion": "v12"
             };
 
             SendDirect.save($scope.msgToSend, function(data) {

@@ -35,8 +35,24 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
         $scope.sample = {};
         $scope.isWrapped = true;
         $scope.certType = 'GOOD';
+        $scope.invalidDigest = false;
         
-     
+		$scope.signingCertificate = [
+    		{ name: 'GOOD_CERT', val: 'GOOD' },
+    		{ name: 'INVALID_CERT', val: 'INVALID' },
+    		{ name: 'EXPIRED_CERT', val: 'EXPIRED' },
+    		{ name: 'DIFFERENT_TRUST_ANCHOR', val: 'DIFF'  },
+    		{ name: 'BAD_AIA', val: 'AIA' },
+    		{ name: 'Wild card domain', val: 'WILD_CARD' },
+    		{ name: 'emailAddress', val: 'EMAIL' },
+    		{ name: 'Less than 2048 bits', val: 'LESS_2048' },
+    		{ name: 'No CRL', val: 'NO_CRL' },
+    		{ name: 'No notBefore', val: 'NO_NOTBEFORE' },
+    		{ name: 'No notAfter', val: 'NO_NOTAFTER' },
+    		{ name: 'For 3072 bit', val: 'CERT_3072' },
+    		{ name: 'For 4096 bit', val: 'CERT_4096' },
+  		];
+  		
 		$scope.signingAlgorithm = [
     		{ name: 'SHA-256', val: 'sha256' },
     		{ name: 'SHA-384', val: 'sha384' },
@@ -45,7 +61,9 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
     		{ name: 'ECDSA with SHA-256', val: 'edsasha256' },
     		{ name: 'ECDSA with P-384', val: 'edsap256' },
     		{ name: 'ECDSA with SHA-384', val: 'edsasha384' },
-  		];
+    		{ name: 'AES with CBC', val: 'aescbc' },
+    		{ name: 'AES with GCM', val: 'aesgcm' },
+  		];  		
 
         $scope.success = function(message) {
             $scope.fileInfo = angular.fromJson(message);
@@ -78,11 +96,11 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
         $scope.toggleCertType = function(type) {
             if (type === 'INVALID_DIGEST') {
                 $scope.certType = '';
+                $scope.signingCertificate.selected = undefined;
                 $scope.invalidDigest = true;
-            } else {
-                $scope.invalidDigest = false;
-                $scope.certType = type;
-            }
+            }else{
+	 			$scope.invalidDigest = false;
+			}
         };
 
         $scope.send = function() {
@@ -109,12 +127,13 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
                 "toAddress": $scope.message.toAddress,
                 "attachmentFile": $scope.message.attachmentFile,
                 "ownCcdaAttachment": $scope.message.ownCcdaPath,
-                "signingCert": $scope.certType,
+                "signingCert": $scope.signingCertificate.selected ? $scope.signingCertificate.selected.val : '',
                 "signingCertPassword": "",
                 "encryptionCert": $scope.message.CertFilePath,
                 "wrapped": $scope.isWrapped,
                 "invalidDigest": $scope.invalidDigest || false,
-                "digestAlgo": $scope.signingAlgorithm.selected.val || 'sha256'
+                "digestAlgo": $scope.signingAlgorithm.selected ? $scope.signingAlgorithm.selected.val : 'sha256',
+                "directVersion": "v13"
             };
 
             SendDirect.save($scope.msgToSend, function(data) {
