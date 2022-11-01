@@ -54,8 +54,20 @@
 			<groupId>gov.nist.healthcare.ttt</groupId>
 			<artifactId>database</artifactId>
 			<version>1.0-SNAPSHOT</version>
+		      <exclusions>
+		        <exclusion>  <!-- declare the exclusion here -->
+		            <groupId>mysql</groupId>
+		            <artifactId>mysql-connector-java</artifactId>
+		        </exclusion>
+		      </exclusions>			
 		</dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.30</version>
+        </dependency>
+        
 		<dependency>
 			<groupId>gov.nist.healthcare.ttt</groupId>
 			<artifactId>mailprotocols</artifactId>
