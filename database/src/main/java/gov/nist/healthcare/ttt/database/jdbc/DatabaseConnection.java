@@ -47,12 +47,12 @@ public class DatabaseConnection {
     private void initialize() throws DatabaseException {
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
             String url = null;
-            url = "jdbc:mysql://" + this.getConfig().getDatabaseHostname() + "/" + this.getConfig().getDatabaseName() + "?autoReconnect=true";
+            url = "jdbc:mysql://" + this.getConfig().getDatabaseHostname() + "/" + this.getConfig().getDatabaseName() + "?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true";
 
-            // System.out.println("Connecting to mysql on url " + url);
+//             System.out.println("Connecting to mysql on url " + url);
 
             if (this.getConfig().getDatabaseUsername() != null) {
                 con = DriverManager.getConnection(url, this.getConfig().getDatabaseUsername(), this.getConfig().getDatabasePassword());
@@ -61,6 +61,7 @@ public class DatabaseConnection {
             }
             stmt = con.createStatement();
             successfulConnection = true;
+//            System.out.println("successfulConnection to mysql " + successfulConnection);
 
         } catch (Exception e) {
             e.printStackTrace();
