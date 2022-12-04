@@ -35,6 +35,7 @@ import org.bouncycastle.operator.OperatorCreationException;
 import gov.nist.healthcare.ttt.database.log.DetailInterface.Status;
 import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
 import gov.nist.healthcare.ttt.model.logging.DetailModel;
+import org.bouncycastle.asn1.pkcs.RSAPublicKey;
 
 public class DirectSignatureValidator {
 
@@ -73,8 +74,59 @@ public class DirectSignatureValidator {
 		} else {
 			return new DetailModel("225", "tbsCertificate.subject", tbsCertSubject,  "tbsCertificate.subject (subject name) must be present", rfc, Status.ERROR);
 		}
+	}         
+        
+        // SITE-3496 JIRA ticket
+        public DetailModel validateTbsCertificateSubjectEmailAddress(Collection<List<?>> ExtensionSubjectAltName) {
+		String rfc = "";
+		if(ExtensionSubjectAltName != null) {
+			if (!ExtensionSubjectAltName.isEmpty()){
+				if(ExtensionSubjectAltName.size() > 1) {
+					return new DetailModel("No DTS", "Extensions.subjectAltName.emailAddress", ExtensionSubjectAltName.toString(),  "Email Address should not be present", rfc, Status.ERROR);
+				} else {
+					return new DetailModel("No DTS", "Extensions.subjectAltName.emailAddress", ExtensionSubjectAltName.toString(),  "Email Address not present", rfc, Status.SUCCESS);
+				}
+			} else {
+				return new DetailModel("No DTS", "Extensions.subjectAltName.emailAddress", "Not present",  "Must be present", rfc, Status.ERROR);
+			}
+		}
+		return new DetailModel("No DTS", "Extensions.subjectAltName", "Not present",  "Must be present", rfc, Status.ERROR);
 	}
-	
+
+        // SITE-3496 JIRA ticket
+        public DetailModel validateTbsCertificateSubjectDnsName(String cnName) {
+		String rfc = "";
+		if(!cnName.startsWith("*")) {
+			return new DetailModel("No DTS", "tbsCertificate.subject.CN", cnName,  "certificate does not use wild card names in the dNSName attribute", rfc, Status.SUCCESS);
+		} else {
+			return new DetailModel("No DTS", "tbsCertificate.subject.CN", cnName,  "certificate uses wild card names in the dNSName attribute", rfc, Status.ERROR);
+		}
+	}
+        
+        // SITE-3496 JIRA ticket
+        public DetailModel validateTbsCertificatenotBeforenotAfter(X509Certificate cert) {
+		String rfc = "";
+		if(cert.getNotBefore() !=null && cert.getNotAfter() !=null) {
+			return new DetailModel("No DTS", "tbsCertificate.subject", cert.getNotBefore().toString()+cert.getNotBefore().toString(),  "notBefore and notAfter must be present", rfc, Status.SUCCESS);
+		} else {
+			return new DetailModel("No DTS", "tbsCertificate.subject", "Expiry dates not present",  "notBefore and notAfter not present", rfc, Status.ERROR);
+		}
+	}
+        
+        // SITE-3500 JIRA ticket
+        public DetailModel validateTbsCertificateKeySize(X509Certificate cert) {
+		String rfc = "RFC 4055: section 8. Security Considerations; https://www.ietf.org/rfc/rfc4055.txt";
+                RSAPublicKey rsaPk = (RSAPublicKey) cert.getPublicKey();
+                if(rsaPk.getModulus().bitLength() == 2048) {
+                   return new DetailModel("No DTS", "tbsCertificate.keyLength", "2048",  "2048", rfc, Status.SUCCESS);
+                } else if (rsaPk.getModulus().bitLength() > 2048){
+                   return new DetailModel("No DTS", "tbsCertificate.keyLength", "Greater than 2048",  "2048", rfc, Status.WARNING);
+                }else {
+                   return new DetailModel("No DTS", "tbsCertificate.keyLength", "Not 2048",  "2048", rfc, Status.ERROR);
+                }
+
+	}   
+        
 	// DTS 240, Extensions.subjectAltName, Conditional
 	public DetailModel validateExtensionsSubjectAltName(Collection<List<?>> ExtensionSubjectAltName) {
 		String rfc = "RFC 5280: 4.1.2.6;http://tools.ietf.org/html/rfc5280#section-4.1.2.6";
