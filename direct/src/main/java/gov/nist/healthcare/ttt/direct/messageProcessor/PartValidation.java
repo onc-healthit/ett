@@ -64,6 +64,11 @@ import gov.nist.healthcare.ttt.direct.directValidator.DirectSignatureValidator;
 import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
 import gov.nist.healthcare.ttt.model.logging.DetailModel;
 import gov.nist.healthcare.ttt.model.logging.PartModel;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x500.style.IETFUtils;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 public class PartValidation {
 
@@ -418,7 +423,13 @@ public class PartValidation {
 
 			// DTS 225, tbsCertificate.subject
 			part.addNewDetailLine(signatureValidator.validateTbsCertificateSubject(cert.getSubjectDN().toString()));
-
+                        part.addNewDetailLine(signatureValidator.validateTbsCertificateSubjectEmailAddress(cert.getSubjectAlternativeNames()));
+                        X500Name x500name = new JcaX509CertificateHolder(cert).getSubject();
+			RDN cn = x500name.getRDNs(BCStyle.CN)[0];
+			part.addNewDetailLine(signatureValidator.validateTbsCertificateSubjectDnsName(IETFUtils.valueToString(cn.getFirst().getValue())));
+                        part.addNewDetailLine(signatureValidator.validateTbsCertificatenotBeforenotAfter(cert));
+                        part.addNewDetailLine(signatureValidator.validateTbsCertificateKeySize(cert));
+                        
 			// DTS 240, Extensions.subjectAltName
 			// C-4 - cert/subjectAltName must contain either rfc822Name or dNSName extension
 			// C-5 cert/subjectAltName/rfc822Name must be an email address - Conditional
