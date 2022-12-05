@@ -8,7 +8,7 @@
 <div flow-prevent-drop flow-drag-enter="dropClass='drag-over'" flow-drag-leave="dropClass=''">
 
     <div class="row">
-        <h2><i class="fa fa-envelope"></i>Send Direct Message v1.2</h2>
+        <h2><i class="fa fa-envelope"></i>Send Direct Message v1.3</h2>
         <p>
             Send a Direct message from this tool to a HISP of your choosing
             <br>
@@ -91,7 +91,6 @@
                     <div class="input-group">
                         <div class="btn-group">
                             <a class="btn btn-default" ng-class="{true: 'active'}[isWrapped]" ng-click="toggleWrapped(true)">Wrapped</a>
-                            <a class="btn btn-default" ng-class="{false: 'active'}[isWrapped]" ng-click="toggleWrapped(false)">Unwrapped</a>
                         </div>
                     </div>
                 </div>
@@ -102,15 +101,12 @@
                     <label class="control-label" for="cert">Signing Certificate&nbsp;
                         <i class="fa fa-question-circle" tooltips tooltip-title="The private certificate which will be used to sign the message" tooltip-side="right"></i>
                     </label>
-                    <div class="input-group">
-                        <div class="btn-group">
-                            <a class="btn btn-default" ng-class="{'GOOD': 'active btn-success'}[certType]" ng-click="toggleCertType('GOOD')">GOOD_CERT</a>
-                            <a class="btn btn-default" ng-class="{'INVALID': 'active btn-danger'}[certType]" ng-click="toggleCertType('INVALID')">INVALID_CERT</a>
-                            <a class="btn btn-default" ng-class="{'EXPIRED': 'active btn-danger'}[certType]" ng-click="toggleCertType('EXPIRED')">EXPIRED_CERT</a>
-                            <a class="btn btn-default" ng-class="{'DIFF': 'active btn-danger'}[certType]" ng-click="toggleCertType('DIFF')">DIFFERENT_TRUST_ANCHOR</a>
-                            <a class="btn btn-default" ng-class="{'AIA': 'active btn-danger'}[certType]" ng-click="toggleCertType('AIA')" tooltips tooltip-title="Certificate with no Authority Information Access (AIA)" tooltip-side="bottom">BAD_AIA</a>
-                        </div>
-                    </div>
+                        <ui-select ng-model="signingCertificate.selected" on-select="toggleCertType(signingCertificate.selected)" theme="bootstrap">
+                            <ui-select-match placeholder="Select Signing Certificate...">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="item in signingCertificate | filter: $select.search">
+                                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
                     <br />
                     <label class="control-label" for="cert">or select message with invalid digest (message which had been altered)&nbsp;
                         <i class="fa fa-question-circle" tooltips tooltip-title="The signature (digest) will not match the content of the message" tooltip-side="right"></i>
@@ -124,16 +120,16 @@
 
                 <hr>
 
-                <div class="form-group" data-ng-init="digestAlgo = 'sha1'">
+                <div class="form-group" data-ng-init="digestAlgo = 'sha256'">
                     <label class="control-label" for="algo">Signing Algorithm&nbsp;
                         <i class="fa fa-question-circle" tooltips tooltip-title="This is the algorithm used to sign the message." tooltip-side="right"></i>
                     </label>
-                    <div class="input-group">
-                        <div class="btn-group">
-                            <a class="btn btn-default" ng-class="{true: 'active'}[digestAlgo === 'sha1']" ng-click="digestAlgo = 'sha1'">SHA-1</a>
-                            <a class="btn btn-default" ng-class="{true: 'active'}[digestAlgo === 'sha256']" ng-click="digestAlgo = 'sha256'">SHA-256</a>
-                        </div>
-                    </div>
+                        <ui-select ng-model="signingAlgorithm.selected" theme="bootstrap">
+                            <ui-select-match placeholder="Select Signing Algorithm...">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="item in signingAlgorithm | filter: $select.search">
+                                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
                 </div>
 
                 <hr>
