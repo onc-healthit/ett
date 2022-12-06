@@ -5,7 +5,7 @@
 	
 	*3. Various Direct and other server infrastructure upgrades and fixes
 	
-	*4. FIx ETT GG issue, "XDR Endpoint with TLS not working"
+	*4. Fix ETT GG issue, "XDR Endpoint with TLS not working"
 	
 ==Version 2.3.49#09/29/2022	
 	*1. Correct template versions for Problem Status and Allergy Status to 2019-06-20
