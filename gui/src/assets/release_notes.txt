@@ -1,5 +1,11 @@
 ==Version 2.3.50#12/05/2022	
-	*1. Add table explanation to the validator home which relates certification criteria version with C-CDA and USCDI version:
+	*1. Add table explanation to the ETT validator home which relates certification criteria version with C-CDA and USCDI version: https://ett.healthit.gov/ett/#/validators
+	
+	*2. FHIR - R4 dependency update for bulk R4
+	
+	*3. Various Direct and other server infrastructure upgrades and fixes
+	
+	*4. FIx ETT GG issue, "XDR Endpoint with TLS not working"
 	
 ==Version 2.3.49#09/29/2022	
 	*1. Correct template versions for Problem Status and Allergy Status to 2019-06-20
