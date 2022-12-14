@@ -36,6 +36,7 @@ import gov.nist.healthcare.ttt.database.log.DetailInterface.Status;
 import gov.nist.healthcare.ttt.direct.utils.ValidationUtils;
 import gov.nist.healthcare.ttt.model.logging.DetailModel;
 import org.bouncycastle.asn1.pkcs.RSAPublicKey;
+import org.bouncycastle.jcajce.provider.asymmetric.rsa.BCRSAPublicKey;
 
 public class DirectSignatureValidator {
 
@@ -116,7 +117,7 @@ public class DirectSignatureValidator {
         // SITE-3500 JIRA ticket
         public DetailModel validateTbsCertificateKeySize(X509Certificate cert) {
 		String rfc = "RFC 4055: section 8. Security Considerations; https://www.ietf.org/rfc/rfc4055.txt";
-                RSAPublicKey rsaPk = (RSAPublicKey) cert.getPublicKey();
+                BCRSAPublicKey rsaPk = (BCRSAPublicKey) cert.getPublicKey();
                 if(rsaPk.getModulus().bitLength() == 2048) {
                    return new DetailModel("No DTS", "tbsCertificate.keyLength", "2048",  "2048", rfc, Status.SUCCESS);
                 } else if (rsaPk.getModulus().bitLength() > 2048){
