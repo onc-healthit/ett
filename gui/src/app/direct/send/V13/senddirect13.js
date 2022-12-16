@@ -57,6 +57,7 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
     		{ name: 'SHA-256', val: 'sha256' },
     		{ name: 'SHA-384', val: 'sha384' },
     		{ name: 'SHA-512', val: 'sha512' },
+            { name: 'Optimal Asymmetric Encryption Padding (OAEP) for RSA encryption and decryption', val: 'OAEP-RSA' },
     		{ name: 'ECDSA with P-256', val: 'edsap256'  },
     		{ name: 'ECDSA with SHA-256', val: 'edsasha256' },
     		{ name: 'ECDSA with P-384', val: 'edsap384' },
