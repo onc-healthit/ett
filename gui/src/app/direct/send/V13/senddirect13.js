@@ -59,7 +59,7 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
     		{ name: 'SHA-512', val: 'sha512' },
     		{ name: 'ECDSA with P-256', val: 'edsap256'  },
     		{ name: 'ECDSA with SHA-256', val: 'edsasha256' },
-    		{ name: 'ECDSA with P-384', val: 'edsap256' },
+    		{ name: 'ECDSA with P-384', val: 'edsap384' },
     		{ name: 'ECDSA with SHA-384', val: 'edsasha384' },
     		{ name: 'AES with CBC', val: 'aescbc' },
     		{ name: 'AES with GCM', val: 'aesgcm' },

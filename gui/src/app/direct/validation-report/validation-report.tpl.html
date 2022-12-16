@@ -50,6 +50,7 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="detail in selectedPart.details">
+								<div ng-if="detail.detailID !==  'SVAP 2022'">
 								<td>{{detail.name}}</td>
 								<td class="{{detail.status | detailStatusFilter}}">{{detail.status}}</td>
 								<td>{{detail.dts}}</td>
@@ -59,6 +60,7 @@
 									<p ng-repeat="rfc in detail.rfc track by $index"><a href="{{rfc.link}}" target="_blank">{{rfc.name}}</a>
 									</p>
 								</td>
+								</div>
 							</tr>
 						</tbody>
 					</table>
