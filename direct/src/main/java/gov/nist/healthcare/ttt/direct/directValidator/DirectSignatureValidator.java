@@ -96,36 +96,35 @@ public class DirectSignatureValidator {
 
         // SITE-3496 JIRA ticket
         public DetailModel validateTbsCertificateSubjectDnsName(String cnName) {
-		String rfc = "";
+		String rfc = "Refer to section 1.4 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
 		if(!cnName.startsWith("*")) {
-			return new DetailModel("No DTS", "tbsCertificate.subject.CN", cnName,  "certificate does not use wild card names in the dNSName attribute", rfc, Status.SUCCESS);
+			return new DetailModel("SVAP 2022", "tbsCertificate.subject.CN", cnName,  "certificate does not use wild card names in the dNSName attribute", rfc, Status.SUCCESS);
 		} else {
-			return new DetailModel("No DTS", "tbsCertificate.subject.CN", cnName,  "certificate uses wild card names in the dNSName attribute", rfc, Status.ERROR);
+			return new DetailModel("SVAP 2022", "tbsCertificate.subject.CN", cnName,  "certificate uses wild card names in the dNSName attribute", rfc, Status.ERROR);
 		}
 	}
         
         // SITE-3496 JIRA ticket
         public DetailModel validateTbsCertificatenotBeforenotAfter(X509Certificate cert) {
-		String rfc = "";
+		String rfc = "Refer to section 1.4 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
 		if(cert.getNotBefore() !=null && cert.getNotAfter() !=null) {
-			return new DetailModel("No DTS", "tbsCertificate.subject", cert.getNotBefore().toString()+cert.getNotBefore().toString(),  "notBefore and notAfter must be present", rfc, Status.SUCCESS);
+			return new DetailModel("SVAP 2022", "tbsCertificate.subject", cert.getNotBefore().toString()+cert.getNotBefore().toString(),  "notBefore and notAfter must be present", rfc, Status.SUCCESS);
 		} else {
-			return new DetailModel("No DTS", "tbsCertificate.subject", "Expiry dates not present",  "notBefore and notAfter not present", rfc, Status.ERROR);
+			return new DetailModel("SVAP 2022", "tbsCertificate.subject", "Expiry dates not present",  "notBefore and notAfter not present", rfc, Status.ERROR);
 		}
 	}
         
         // SITE-3500 JIRA ticket
         public DetailModel validateTbsCertificateKeySize(X509Certificate cert) {
-		String rfc = "RFC 4055: section 8. Security Considerations; https://www.ietf.org/rfc/rfc4055.txt";
+		String rfc = "Refer to section 2.8 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
                 BCRSAPublicKey rsaPk = (BCRSAPublicKey) cert.getPublicKey();
                 if(rsaPk.getModulus().bitLength() == 2048) {
-                   return new DetailModel("No DTS", "tbsCertificate.keyLength", "2048",  "2048", rfc, Status.SUCCESS);
+                   return new DetailModel("SVAP 2022", "tbsCertificate.keyLength", "2048",  "2048", rfc, Status.SUCCESS);
                 } else if (rsaPk.getModulus().bitLength() > 2048){
-                   return new DetailModel("No DTS", "tbsCertificate.keyLength", "Greater than 2048",  "2048", rfc, Status.WARNING);
+                   return new DetailModel("SVAP 2022", "tbsCertificate.keyLength", "Greater than 2048",  "2048", rfc, Status.WARNING);
                 }else {
-                   return new DetailModel("No DTS", "tbsCertificate.keyLength", "Not 2048",  "2048", rfc, Status.ERROR);
+                   return new DetailModel("SVAP 2022", "tbsCertificate.keyLength", "Not 2048",  "2048", rfc, Status.ERROR);
                 }
-
 	}   
         
 	// DTS 240, Extensions.subjectAltName, Conditional
