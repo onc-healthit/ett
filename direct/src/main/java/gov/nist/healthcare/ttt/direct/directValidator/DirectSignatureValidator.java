@@ -56,12 +56,36 @@ public class DirectSignatureValidator {
     // DTS 222, tbsCertificate.signature.algorithm, Required
     public DetailModel validateTbsCertificateSA(String tbsCertSA) {
         String rfc = "RFC 5280: 4.1.2.3;http://tools.ietf.org/html/rfc5280#section-4.1.2.3";
-        if (!tbsCertSA.equals("")) {
-            return new DetailModel("222", "tbsCertificate.signature.algorithm", tbsCertSA, "tbsCertificate.signature.algorithm (name of the algorithm) must be present", rfc, Status.SUCCESS);
+        String rfc1 = "Refer to section 2.8 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7";
+        DetailModel dm = new DetailModel("222", "tbsCertificate.signature.algorithm", tbsCertSA, "tbsCertificate.signature.algorithm (name of the algorithm) must be present", rfc, Status.SUCCESS);
+        dm.setDetailID("SVAP 2022");
+        if (tbsCertSA.equals("SHA256WITHRSA")) {
+            return dm;
+        } else if (tbsCertSA.equals("SHA256withPLAIN-ECDSA")) {
+            dm.setExpected("tbsCertificate.signature.algorithm (name of the algorithm) must be present");
+            dm.setRfc(rfc1);            
+            return dm;
+        } else if (tbsCertSA.equals("SHA384withPLAIN-ECDSA")) {
+            dm.setExpected("tbsCertificate.signature.algorithm (name of the algorithm) must be present");
+            dm.setRfc(rfc1);
+            dm.setStatus(Status.SUCCESS);
+            return dm;
+        } else if (tbsCertSA.equals("SHA256withECDSA")) {
+            dm.setExpected("tbsCertificate.signature.algorithm (name of the algorithm) must be present");
+            dm.setRfc(rfc1);
+            dm.setStatus(Status.SUCCESS);
+            return dm;
+        } else if (tbsCertSA.equals("SHA384withECDSA")) {
+            dm.setExpected("tbsCertificate.signature.algorithm (name of the algorithm) must be present");
+            dm.setRfc(rfc1);
+            dm.setStatus(Status.SUCCESS);
+            return dm;
         } else {
-            return new DetailModel("222", "tbsCertificate.signature.algorithm", tbsCertSA, "tbsCertificate.signature.algorithm (name of the algorithm) must be present", rfc, Status.ERROR);
+            dm.setExpected("tbsCertificate.signature.algorithm (name of the algorithm) must be present");
+            dm.setRfc(rfc);
+            dm.setStatus(Status.ERROR);
+            return dm;
         }
-
     }
 
     // DTS 225, tbsCertificate.subject, Required
@@ -81,18 +105,18 @@ public class DirectSignatureValidator {
         dm.setDetailID("SVAP 2022");
         if (ExtensionSubjectAltName != null) {
             if (!ExtensionSubjectAltName.isEmpty()) {
-                if (ExtensionSubjectAltName.size() > 1) {                                    
-                    dm.setExpected("Email Address should not be present");                    
+                if (ExtensionSubjectAltName.size() > 1) {
+                    dm.setExpected("Email Address should not be present");
                     dm.setStatus(Status.ERROR);
                     return dm;
-                } else {                                        
-                    dm.setExpected("Email Address not present");                    
+                } else {
+                    dm.setExpected("Email Address not present");
                     dm.setStatus(Status.SUCCESS);
                     return dm;
                 }
-            } else {                
+            } else {
                 dm.setFound("Not present");
-                dm.setExpected("Must be present");                
+                dm.setExpected("Must be present");
                 dm.setStatus(Status.ERROR);
                 return dm;
             }
@@ -125,7 +149,7 @@ public class DirectSignatureValidator {
     // SITE-3496 JIRA ticket
     public DetailModel validateTbsCertificatenotBeforenotAfter(X509Certificate cert) {
         String rfc = "Refer to section 1.4 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
-        DetailModel dm = new DetailModel("No DTS", "tbsCertificate.subject", cert.getNotBefore().toString()+ cert.getNotBefore().toString(), "notBefore and notAfter must be present", rfc, Status.SUCCESS);
+        DetailModel dm = new DetailModel("No DTS", "tbsCertificate.subject", cert.getNotBefore().toString() + cert.getNotBefore().toString(), "notBefore and notAfter must be present", rfc, Status.SUCCESS);
         dm.setDetailID("SVAP 2022");
         if (cert.getNotBefore() != null && cert.getNotAfter() != null) {
             return dm;
