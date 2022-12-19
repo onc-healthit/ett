@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -16,9 +17,11 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
+import java.security.KeyStore;
+import java.util.Objects;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -67,7 +70,11 @@ public class SimpleSOAPSender {
         String hostname = url.getHost();
         int port = url.getPort();
         if (port == -1) {
-            port = 80;
+        	if("https".endsWith(url.getProtocol())) {
+        		port = 443;
+        	}else {
+        		port = 80;
+        	}
         }
         String path = url.getPath();
 
@@ -77,8 +84,7 @@ public class SimpleSOAPSender {
         // SSLSocket socket = (SSLSocket) factory.createSocket(addr,port);
         Socket socket = null;
         if (sc != null) {
-            SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
-            socket = (SSLSocket) f.createSocket(addr, port);
+        	socket = getSecureSocket(addr, port, sc);
         } else {
             socket = new Socket(addr, port);
         }
@@ -94,6 +100,37 @@ public class SimpleSOAPSender {
 
     }
 
+	private static SSLSocket getSecureSocket(final InetAddress host, final int port, final SSLContext sc)
+			throws IOException {
+		SSLSocket socket = null;
+		try {
+			final SSLContext ctx = SSLContext.getInstance("TLS");
+			final KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+			final TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+			final KeyStore ks = KeyStore.getInstance("JKS");
+			if (Objects.nonNull(ks)) {
+				String passPhrase = System.getProperty("keyStorePassword");
+				if (Objects.nonNull(passPhrase)) {
+					char[] passphrase = passPhrase.toCharArray();
+					String keystoreFile = System.getProperty("keyStore");
+					ks.load(new FileInputStream(keystoreFile), passphrase);
+					kmf.init(ks, passphrase);
+					tmf.init(ks);
+					ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+					final SSLSocketFactory factory = ctx.getSocketFactory();
+					socket = (SSLSocket) factory.createSocket(host, port);
+				}
+			} else {
+				SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
+				socket = (SSLSocket) f.createSocket(host, port);
+			}
+
+		} catch (final Exception e) {
+			throw new IOException(e.getMessage());
+		}
+		return socket;
+	}
+	
     private static String getResponse(BufferedReader bufferedReader) throws IOException {
 
         StringBuilder response = new StringBuilder();
@@ -139,7 +176,7 @@ public class SimpleSOAPSender {
         httpHeaders.append("Content-Type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"<0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"\r\n");
 
         httpHeaders.append("User-Agent: TempXDRSender\r\n");
-        httpHeaders.append("Host: ttpedge.sitenv.org\r\n");
+        httpHeaders.append("Host: " + url.getHost() + ":" + url.getPort() + "\r\n");
         httpHeaders.append("Content-Length: " + (payload.length()) + "\r\n");
 
         httpHeaders.append("\r\n");
