@@ -69,12 +69,20 @@ public class SendDirectController {
 		}
 
 		if(messageInfo.getDigestAlgo().equals("edsasha256")) {
-			digestAlgo = "SHA256withECDSA";
+			digestAlgo = "SHA256withPLAIN-ECDSA";
 		}
 
 		if(messageInfo.getDigestAlgo().equals("edsasha384")) {
-			digestAlgo = "SHA384withECDSA";
+			digestAlgo = "SHA384withPLAIN-ECDSA";
 		}
+                
+                if(messageInfo.getDigestAlgo().equals("edsap256")) {
+                        digestAlgo = "SHA256withECDSA";
+                }
+                
+                if(messageInfo.getDigestAlgo().equals("edsap384")) {
+                        digestAlgo = "SHA384withECDSA";
+                }
 
 		if (messageInfo.isValidSendEmail()) {
 			InputStream attachmentFile = null;
