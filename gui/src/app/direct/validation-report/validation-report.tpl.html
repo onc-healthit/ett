@@ -50,7 +50,7 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="detail in selectedPart.details">
-								<div ng-if="detail.detailID !==  'SVAP 2022'">
+								<div ng-if="detail.dts !==  'SVAP 2022'">
 								<td>{{detail.name}}</td>
 								<td class="{{detail.status | detailStatusFilter}}">{{detail.status}}</td>
 								<td>{{detail.dts}}</td>
