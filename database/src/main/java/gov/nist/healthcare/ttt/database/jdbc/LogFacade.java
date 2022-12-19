@@ -1027,6 +1027,9 @@ public class LogFacade extends DatabaseFacade {
 
     public String addNewDetail(String partID, DetailInterface detail) throws DatabaseException {
         String detailID = UUID.randomUUID().toString();
+        if (detail.getDetailID() !=null) {
+            detailID = detail.getDetailID();
+        }        
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + DETAIL_TABLE + ' ');
         sql.append("(" + DETAIL_DETAILID);
