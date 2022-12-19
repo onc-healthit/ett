@@ -57,8 +57,7 @@ public class DirectSignatureValidator {
     public DetailModel validateTbsCertificateSA(String tbsCertSA) {
         String rfc = "RFC 5280: 4.1.2.3;http://tools.ietf.org/html/rfc5280#section-4.1.2.3";
         String rfc1 = "Refer to section 2.8 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7";
-        DetailModel dm = new DetailModel("222", "tbsCertificate.signature.algorithm", tbsCertSA, "tbsCertificate.signature.algorithm (name of the algorithm) must be present", rfc, Status.SUCCESS);
-        dm.setDetailID("SVAP 2022");
+        DetailModel dm = new DetailModel("SVAP 2022", "tbsCertificate.signature.algorithm", tbsCertSA, "tbsCertificate.signature.algorithm (name of the algorithm) must be present", rfc, Status.SUCCESS);        
         if (tbsCertSA.equals("SHA256WITHRSA")) {
             return dm;
         } else if (tbsCertSA.equals("SHA256withPLAIN-ECDSA")) {
@@ -101,8 +100,7 @@ public class DirectSignatureValidator {
     // SITE-3496 JIRA ticket
     public DetailModel validateTbsCertificateSubjectEmailAddress(Collection<List<?>> ExtensionSubjectAltName) {
         String rfc = "Refer to section 1.4 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
-        DetailModel dm = new DetailModel("No DTS", "Extensions.subjectAltName.emailAddress", ExtensionSubjectAltName.toString(), "", rfc, Status.SUCCESS);
-        dm.setDetailID("SVAP 2022");
+        DetailModel dm = new DetailModel("SVAP 2022", "Extensions.subjectAltName.emailAddress", ExtensionSubjectAltName.toString(), "", rfc, Status.SUCCESS);        
         if (ExtensionSubjectAltName != null) {
             if (!ExtensionSubjectAltName.isEmpty()) {
                 if (ExtensionSubjectAltName.size() > 1) {
@@ -133,8 +131,7 @@ public class DirectSignatureValidator {
     // SITE-3496 JIRA ticket
     public DetailModel validateTbsCertificateSubjectDnsName(String cnName) {
         String rfc = "Refer to section 1.4 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
-        DetailModel dm = new DetailModel("No DTS", "tbsCertificate.subject.CN", cnName, "", rfc, Status.SUCCESS);
-        dm.setDetailID("SVAP 2022");
+        DetailModel dm = new DetailModel("SVAP 2022", "tbsCertificate.subject.CN", cnName, "", rfc, Status.SUCCESS);        
         if (!cnName.startsWith("*")) {
             dm.setExpected("certificate does not use wild card names in the dNSName attribute");
             dm.setStatus(Status.SUCCESS);
@@ -149,8 +146,8 @@ public class DirectSignatureValidator {
     // SITE-3496 JIRA ticket
     public DetailModel validateTbsCertificatenotBeforenotAfter(X509Certificate cert) {
         String rfc = "Refer to section 1.4 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
-        DetailModel dm = new DetailModel("No DTS", "tbsCertificate.subject", cert.getNotBefore().toString() + cert.getNotBefore().toString(), "notBefore and notAfter must be present", rfc, Status.SUCCESS);
-        dm.setDetailID("SVAP 2022");
+        DetailModel dm = new DetailModel("SVAP 2022", "tbsCertificate.subject", cert.getNotBefore().toString() + cert.getNotBefore().toString(), "notBefore and notAfter must be present", rfc, Status.SUCCESS);
+        
         if (cert.getNotBefore() != null && cert.getNotAfter() != null) {
             return dm;
         } else {
@@ -165,8 +162,7 @@ public class DirectSignatureValidator {
     public DetailModel validateTbsCertificateKeySize(X509Certificate cert) {
         String rfc = "Refer to section 2.8 from Direct Specification: https://directtrust.app.box.com/s/p1dpmt9tkoa9ay7h3bmcwwo5jj0yrhw7 ";
         BCRSAPublicKey rsaPk = (BCRSAPublicKey) cert.getPublicKey();
-        DetailModel dm = new DetailModel("No DTS", "tbsCertificate.keyLength", "2048", "2048", rfc, Status.SUCCESS);
-        dm.setDetailID("SVAP 2022");
+        DetailModel dm = new DetailModel("SVAP 2022", "tbsCertificate.keyLength", "2048", "2048", rfc, Status.SUCCESS);        
         if (rsaPk.getModulus().bitLength() == 2048) {
             return dm;
         } else if (rsaPk.getModulus().bitLength() > 2048) {
