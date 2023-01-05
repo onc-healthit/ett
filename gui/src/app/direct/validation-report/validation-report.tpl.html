@@ -50,7 +50,6 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="detail in selectedPart.details">
-								<div ng-if="detail.dts !==  'SVAP 2022'">
 								<td>{{detail.name}}</td>
 								<td class="{{detail.status | detailStatusFilter}}">{{detail.status}}</td>
 								<td>{{detail.dts}}</td>
@@ -60,7 +59,6 @@
 									<p ng-repeat="rfc in detail.rfc track by $index"><a href="{{rfc.link}}" target="_blank">{{rfc.name}}</a>
 									</p>
 								</td>
-								</div>
 							</tr>
 						</tbody>
 					</table>
@@ -108,14 +106,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="detail in selectedPart.details">
-								<td>{{detail.name}}</td>
-								<td class="{{detail.status | detailStatusFilter}}">{{detail.status}}</td>
-								<td>{{detail.dts}}</td>
-								<td>{{detail.found}}</td>
-								<td>{{detail.expected}}</td>
+							<tr ng-repeat="svapdetail in selectedPart.svapdetails">
+								<td>{{svapdetail.name}}</td>
+								<td class="{{detail.status | detailStatusFilter}}">{{svapdetail.status}}</td>
+								<td>{{svapdetail.dts}}</td>
+								<td>{{svapdetail.found}}</td>
+								<td>{{svapdetail.expected}}</td>
 								<td>
-									<p ng-repeat="rfc in detail.rfc track by $index"><a href="{{rfc.link}}" target="_blank">{{rfc.name}}</a>
+									<p ng-repeat="rfc in svapdetail.rfc track by $index"><a href="{{rfc.link}}" target="_blank">{{rfc.name}}</a>
 									</p>
 								</td>
 							</tr>

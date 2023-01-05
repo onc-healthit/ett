@@ -18,6 +18,7 @@ public class PartImpl implements PartInterface {
     private Boolean status = null;
     private Collection<PartInterface> children = null;
     private List<DetailInterface> details = null;
+    private List<DetailInterface> svapdetails = null;
     
 
     /**
@@ -164,6 +165,21 @@ public class PartImpl implements PartInterface {
         this.details = details;
     }
     
-    
+    /**
+     * @return the svapdetails
+     */
+    @Override
+    public List<DetailInterface> getSvapdetails() {
+        return svapdetails;
+    }
+
+    /**
+     * @param details the details to set
+     */
+    @Override
+    public void setSvapdetails(List<DetailInterface> svapdetails) {
+        this.svapdetails = svapdetails;
+    }
+       
     
 }
