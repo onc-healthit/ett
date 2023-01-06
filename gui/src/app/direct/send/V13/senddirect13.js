@@ -43,14 +43,14 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
     		{ name: 'EXPIRED_CERT', val: 'EXPIRED' },
     		{ name: 'DIFFERENT_TRUST_ANCHOR', val: 'DIFF'  },
     		{ name: 'BAD_AIA', val: 'AIA' },
-    		{ name: 'Wild card domain', val: 'WILD_CARD' },
-    		{ name: 'emailAddress', val: 'EMAIL' },
-    		{ name: 'Less than 2048 bits', val: 'LESS_2048' },
-    		{ name: 'No CRL', val: 'NO_CRL' },
-    		{ name: 'No notBefore', val: 'NO_NOTBEFORE' },
-    		{ name: 'No notAfter', val: 'NO_NOTAFTER' },
-    		{ name: 'For 3072 bit', val: 'CERT_3072' },
-    		{ name: 'For 4096 bit', val: 'CERT_4096' },
+    		{ name: 'WILD_CARD_DOMAIN_CERT', val: 'WILD_CARD' },
+    		{ name: 'CERT_WITH_EMAIL_ADDRESS', val: 'EMAIL' },
+    		{ name: 'CERT_LESS_THAN_2048_BITS', val: 'LESS_2048' },
+    		{ name: 'CERT_WITH_NO_CRL', val: 'NO_CRL' },
+    		{ name: 'CERT_WITH_NO_NOTBEFORE_ATTR', val: 'NO_NOTBEFORE' },
+    		{ name: 'CERT_WITH_NO_NOTAFTER_ATT', val: 'NO_NOTAFTER' },
+    		{ name: 'CERT_WITH_3072_BITS', val: 'CERT_3072' },
+    		{ name: 'CERT_WITH_4096_BITS', val: 'CERT_4096' },
   		];
   		
 		$scope.signingAlgorithm = [
