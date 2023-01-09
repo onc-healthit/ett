@@ -830,7 +830,8 @@ public class LogFacade extends DatabaseFacade {
             e.printStackTrace();
             throw new DatabaseException(e.getMessage());
         }
-        part.setDetails(this.getDetailsForPart(partID));
+        part.setDetails(this.getDetailsForPart(partID,false)); //include svap is false
+        part.setSvapdetails(this.getDetailsForPart(partID,true)); //include svap is true
         Collection<String> childIDs = this.getImmediateChildIDs(partID);
         Collection<PartInterface> children = new ArrayList<PartInterface>();
         Iterator<String> it = childIDs.iterator();
@@ -873,7 +874,7 @@ public class LogFacade extends DatabaseFacade {
         return childIDs;
     }
 
-    public List<DetailInterface> getDetailsForPart(String partID) throws DatabaseException {
+    public List<DetailInterface> getDetailsForPart(String partID, boolean includeSvap) throws DatabaseException {
     	PreparedStatement st = null;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
@@ -890,8 +891,16 @@ public class LogFacade extends DatabaseFacade {
        	 	st.setString(1, partID);
        	 	result = st.executeQuery();   
             while (result.next()) {
-                DetailInterface detail = this.convertDatabaseRecordtoDetail(result);
-                details.add(detail);
+            	if (includeSvap) {
+                    DetailInterface detail = this.convertDatabaseRecordtoDetail(result);
+                    details.add(detail);
+            	}else {
+            		if (!result.getString(DETAIL_DTS).equalsIgnoreCase("SVAP 2022")) {
+                        DetailInterface detail = this.convertDatabaseRecordtoDetail(result);
+                        details.add(detail);           			
+            		}
+            	}
+
             }
 
         } catch (Exception e) {
@@ -1026,7 +1035,7 @@ public class LogFacade extends DatabaseFacade {
     }
 
     public String addNewDetail(String partID, DetailInterface detail) throws DatabaseException {
-        String detailID = UUID.randomUUID().toString();
+        String detailID = UUID.randomUUID().toString();     
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO " + DETAIL_TABLE + ' ');
         sql.append("(" + DETAIL_DETAILID);

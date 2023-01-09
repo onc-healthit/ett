@@ -36,6 +36,11 @@ public interface PartInterface {
     List<DetailInterface> getDetails();
 
     /**
+     * @return the details
+     */
+    List<DetailInterface> getSvapdetails();
+    
+    /**
      * @return the logID
      */
     String getLogID();
@@ -80,6 +85,11 @@ public interface PartInterface {
      */
     void setDetails(List<DetailInterface> details);
 
+    /**
+     * @param svapdetails the details to set
+     */
+    void setSvapdetails(List<DetailInterface> svapdetails);
+    
     /**
      * @param logID the logID to set
      */
