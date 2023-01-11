@@ -176,7 +176,15 @@ public class SimpleSOAPSender {
         httpHeaders.append("Content-Type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"<0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"\r\n");
 
         httpHeaders.append("User-Agent: TempXDRSender\r\n");
-        httpHeaders.append("Host: " + url.getHost() + ":" + url.getPort() + "\r\n");
+        int port = url.getPort();
+        if (port == -1) {
+            if("https".endsWith(url.getProtocol())) {
+                port = 443;
+            }else {
+                port = 80;
+            }
+        }
+        httpHeaders.append("Host: " + url.getHost() + ":" + port + "\r\n");
         httpHeaders.append("Content-Length: " + (payload.length()) + "\r\n");
 
         httpHeaders.append("\r\n");
