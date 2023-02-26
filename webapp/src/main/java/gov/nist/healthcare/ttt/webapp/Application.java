@@ -5,6 +5,7 @@ import gov.nist.healthcare.ttt.webapp.common.config.ToolkitClientConfig;
 import gov.nist.healthcare.ttt.webapp.common.security.PortFilter;
 
 import org.apache.catalina.connector.Connector;
+import org.apache.commons.io.FileUtils;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import java.io.File;
+import java.io.IOException;
 
 @EnableAutoConfiguration
 @Import({ComponentConfig.class,
@@ -79,8 +83,10 @@ public class Application {
     }
 
         
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		System.setProperty("java.net.preferIPv4Stack", "true");
+		FileUtils.touch(new File("./ccda_objectives.txt"));
+	    FileUtils.forceDelete(FileUtils.getFile("./ccda_objectives.txt"));
 		SpringApplication.run(Application.class, args);
 	}
 
