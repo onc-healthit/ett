@@ -1,3 +1,12 @@
+==Version 2.3.52#02/27/2023
+	*1. C-CDA: Update SubstanceReactantForIntolerance value set to include the latest codes from VSAC
+	
+	*2. Direct: Fix drop downs not loading for "Select a Discovery Test Case"
+	
+	*3. Direct: For Direct: 4.0, add ability to send a direct message using a certificate that does not have a CRL
+	
+	*4. Infrastructure updates
+
 ==Version 2.3.51#01/09/2023	
 	*1. Add Direct version 1.3
 	
