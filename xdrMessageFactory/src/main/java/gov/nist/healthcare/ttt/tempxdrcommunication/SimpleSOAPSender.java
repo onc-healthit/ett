@@ -80,11 +80,13 @@ public class SimpleSOAPSender {
 
         InetAddress addr = InetAddress.getByName(hostname);
 
-        // SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-        // SSLSocket socket = (SSLSocket) factory.createSocket(addr,port);
         Socket socket = null;
         if (sc != null) {
-        	socket = getSecureSocket(addr, port, sc);
+            socket = getSecureSocket(addr, port, sc);
+            if(socket == null){
+                SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
+                socket = (SSLSocket) f.createSocket(addr, port);
+            }
         } else {
             socket = new Socket(addr, port);
         }
@@ -100,34 +102,32 @@ public class SimpleSOAPSender {
 
     }
 
-	private static SSLSocket getSecureSocket(final InetAddress host, final int port, final SSLContext sc)
-			throws IOException {
+	private static SSLSocket getSecureSocket(final InetAddress host, final int port, final SSLContext sc){
 		SSLSocket socket = null;
-		try {
-			final SSLContext ctx = SSLContext.getInstance("TLS");
-			final KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-			final TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-			final KeyStore ks = KeyStore.getInstance("JKS");
-			if (Objects.nonNull(ks)) {
-				String passPhrase = System.getProperty("keyStorePassword");
-				if (Objects.nonNull(passPhrase)) {
-					char[] passphrase = passPhrase.toCharArray();
-					String keystoreFile = System.getProperty("keyStore");
-					ks.load(new FileInputStream(keystoreFile), passphrase);
-					kmf.init(ks, passphrase);
-					tmf.init(ks);
-					ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
-					final SSLSocketFactory factory = ctx.getSocketFactory();
-					socket = (SSLSocket) factory.createSocket(host, port);
-				}
-			} else {
-				SSLSocketFactory f = (SSLSocketFactory) sc.getSocketFactory();
-				socket = (SSLSocket) f.createSocket(host, port);
-			}
-
-		} catch (final Exception e) {
-			throw new IOException(e.getMessage());
-		}
+        try {
+            final SSLContext ctx = SSLContext.getInstance("TLS");
+            final KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+            final TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+            final KeyStore ks = KeyStore.getInstance("JKS");
+            if (Objects.nonNull(ks)) {
+                String passPhrase = System.getProperty("keyStorePassword");
+                if (Objects.isNull(passPhrase)) {
+                    passPhrase = "changeit";
+                }
+                char[] passphrase = passPhrase.toCharArray();
+                String keystoreFile = System.getProperty("keyStore");
+                if (Objects.nonNull(keystoreFile)) {
+                    ks.load(new FileInputStream(keystoreFile), passphrase);
+                    kmf.init(ks, passphrase);
+                    tmf.init(ks);
+                    ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+                    final SSLSocketFactory factory = ctx.getSocketFactory();
+                    socket = (SSLSocket) factory.createSocket(host, port);
+                }
+            }
+        }catch(Exception ex){
+            System.out.println("Unable to create secure socket " + ex.getMessage());
+        }
 		return socket;
 	}
 	
