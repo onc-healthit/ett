@@ -114,18 +114,6 @@ direct.config(['$stateProvider',
 					}
 				}
 			})
-			.state('direct.certsvap', {
-				url: '/certdiscovery/svap',
-				views: {
-					"direct": {
-						controller: 'DCDTValidatorCtrl',
-						templateUrl: 'direct/cert-discovery/dcdt.tpl.html'
-					}
-				},
-                data: {
-                    pageTitle:'SVAP 2022'
-                }
-			})
 			.state('direct.dcdt2', {
 				url: '/certdiscovery/dcdt2',
 				views: {

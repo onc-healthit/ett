@@ -2,11 +2,9 @@ var dcdtValidator = angular.module('ttt.direct.dcdtValidator', []);
 
 dcdtValidator.controller('DCDTValidatorCtrl', ['$scope', 'DCDTValidatorFactory', '$state', 'ApiUrl','$http','CCDADocumentsFactory','$timeout', 'growl','$sce','$location', '$anchorScroll',
 	function($scope, DCDTValidatorFactory, $state, ApiUrl,$http,CCDADocumentsFactory,$timeout ,growl,$sce,$location,$anchorScroll) {
-	$scope.pageTitle= $state.current.data.pageTitle;
+	$scope.pageTitle= "2015";
 	$scope.year2015 = ($scope.pageTitle === "2015");
-    if (!$scope.year2015 ){
-        $scope.year2015 = ($scope.pageTitle === "SVAP 2022");
-    }
+
 	$scope.year2014 = ($scope.pageTitle === "2014");
 	$scope.emailDomain2014 = "dcdt30prod.sitenv.org";
 	$scope.emailDomain2015 = "dcdt31prod.sitenv.org";
