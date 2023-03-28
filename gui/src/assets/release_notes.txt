@@ -1,3 +1,13 @@
+==Version 2.3.53#03/27/2023
+	*1. C-CDA: Resolve ETT Google Groups thread, "Vocabulary Errors for birthplace address"
+	
+	*2. C-CDA: Improve memory handling
+	
+	*3. ETT: Remove SVAP 2022 DCDT from Cert Discovery drop down
+
+	*4. ETT: Remove broken links in 2015 Direct Certificate Discovery Tool page
+
+	*5. General: Infrastructure updates
 ==Version 2.3.52#02/27/2023
 	*1. C-CDA: Update SubstanceReactantForIntolerance value set to include the latest codes from VSAC
 	
