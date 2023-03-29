@@ -2,10 +2,10 @@ package gov.nist.healthcare.ttt.tempxdrcommunication;
 
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.ArtifactManagement.Type;
-import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.PayloadManager;
 import gov.nist.healthcare.ttt.tempxdrcommunication.artifact.Settings;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,9 +16,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
+import java.util.Properties;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -112,23 +110,12 @@ public class SimpleSOAPSender {
 
     }
 
-    private static String addHttpHeaders(String endpoint, String payload) {
-
-        StringBuilder httpHeaders = new StringBuilder();
-        httpHeaders.append("POST " + endpoint + " HTTP/1.1\r\n");
-        httpHeaders.append("content-type: application/xml\r\n");
-        httpHeaders.append("user-agent: TempXDRSender\r\n");
-        httpHeaders.append("host: ttpedge.sitenv.org\r\n");
-        // httpHeaders.append("transfer-encoding: chunked\r\n\r\n");
-        httpHeaders.append("Content-Length: " + payload.length() + "\r\n");
-        httpHeaders.append("\r\n");
-        httpHeaders.append(payload);
-
-        return httpHeaders.toString();
-    }
-
-    public static String addHttpHeadersMtom(String endpoint, String payload) throws MalformedURLException {
-
+    public static String addHttpHeadersMtom(String endpoint, String payload) throws IOException {
+        Properties prop = new Properties();
+        String propPath = "./application.properties";
+        FileInputStream file = new FileInputStream(propPath);
+        prop.load(file);
+        file.close();
         StringBuilder httpHeaders = new StringBuilder();
 
         URL url = new URL(endpoint);
@@ -139,7 +126,7 @@ public class SimpleSOAPSender {
         httpHeaders.append("Content-Type: multipart/related; boundary=\"MIMEBoundary_1293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20\"; type=\"application/xop+xml\"; start=\"<0.0293f28762856bdafcf446f2a6f4a61d95a95d0ad1177f20@apache.org>\"; start-info=\"application/soap+xml\"; action=\"urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b\"\r\n");
 
         httpHeaders.append("User-Agent: TempXDRSender\r\n");
-        httpHeaders.append("Host: ttpedge.sitenv.org\r\n");
+        httpHeaders.append("Host: "+prop.getProperty("direct.listener.domainName")+ "\r\n");
         httpHeaders.append("Content-Length: " + (payload.length()) + "\r\n");
 
         httpHeaders.append("\r\n");

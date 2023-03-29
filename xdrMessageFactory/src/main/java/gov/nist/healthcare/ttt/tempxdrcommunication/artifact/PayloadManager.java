@@ -3,7 +3,7 @@ package gov.nist.healthcare.ttt.tempxdrcommunication.artifact;
 
 import gov.nist.healthcare.ttt.tempxdrcommunication.SimpleSOAPSender;
 import static gov.nist.healthcare.ttt.tempxdrcommunication.SimpleSOAPSender.buildMTOMPackage;
-import java.net.MalformedURLException;
+import java.io.IOException;
 
 /**
  *
@@ -11,7 +11,7 @@ import java.net.MalformedURLException;
  */
 public class PayloadManager {
 
-    public static String getPayload(String endpoint, ArtifactManagement.Type type, Settings settings) throws MalformedURLException {
+    public static String getPayload(String endpoint, ArtifactManagement.Type type, Settings settings) throws IOException {
 
         String metadata = null;
 
