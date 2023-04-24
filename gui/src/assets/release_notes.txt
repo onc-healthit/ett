@@ -1,3 +1,9 @@
+==Version 2.3.54#04/24/2023
+	*1. C-CDA: Further improve memory handling to address recent downtime issues
+	
+	*2. C-CDA: Change §170.315(b)(2)(iv) language in test data to clarify that the output file is to be in a CCD format. Update: "The SUT should then generate a C-CDA (using the CCD template in C-CDA Release 2.1) that contains the Allergies, Medications and Problems from the two Referral Notes that were provided.
+	
+	*3. General: Implement security updates in infrastructure
 ==Version 2.3.53#03/27/2023
 	*1. C-CDA: Resolve ETT Google Groups thread, "Vocabulary Errors for birthplace address"
 	
