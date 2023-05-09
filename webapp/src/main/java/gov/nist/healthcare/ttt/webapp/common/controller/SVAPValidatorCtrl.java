@@ -63,7 +63,8 @@ public class SVAPValidatorCtrl {
 				File file = new File(fileName);
 				if(!file.exists() || fileName.startsWith("../") || !fileName.startsWith(tDir + File.separator)) {
 					throw new TTTCustomException("0x0050", "Action not supported by API.");
-				}								
+				}
+				
 				HttpPost post = new HttpPost(svapUrl);
 				FileBody fileBody = new FileBody(file);
 				//
@@ -87,6 +88,10 @@ public class SVAPValidatorCtrl {
 					throw e;
 				}
 
+				//logger.info("Result: "+ result);
+				if(result.contains("Status 404")) {
+					throw new TTTCustomException("0x0050", "There was a problem reaching the API. Please try again later.");
+				}
 				JSONObject json = new JSONObject(result);
 				json.put("hasError", false);
 				// Check errors
