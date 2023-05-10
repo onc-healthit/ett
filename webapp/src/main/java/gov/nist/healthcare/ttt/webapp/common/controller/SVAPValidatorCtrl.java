@@ -79,8 +79,11 @@ public class SVAPValidatorCtrl {
 				//
 				post.setEntity(entity);
 				String result = "";
+				int statusCode;
 				try {
 					HttpResponse response = client.execute(post);
+					
+					statusCode = response.getStatusLine().getStatusCode();
 					// CONVERT RESPONSE TO STRING
 					result = EntityUtils.toString(response.getEntity());
 				} catch(Exception e) {
@@ -89,8 +92,8 @@ public class SVAPValidatorCtrl {
 				}
 
 				//logger.info("Result: "+ result);
-				if(result.contains("Status 404")) {
-					throw new TTTCustomException("0x0050", "There was a problem reaching the API. Please try again later.");
+				if(statusCode == 404) {
+					throw new TTTCustomException("0x0065", "There was a problem reaching the API. Please try again later.");
 				}
 				JSONObject json = new JSONObject(result);
 				json.put("hasError", false);
