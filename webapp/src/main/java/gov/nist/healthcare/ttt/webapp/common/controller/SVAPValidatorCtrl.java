@@ -62,7 +62,7 @@ public class SVAPValidatorCtrl {
 				String fileName = normalizedPath.toString();
 				File file = new File(fileName);
 				if(TempUploadController.isValidFileSize()) {
-					throw new TTTCustomException("0x0050", "Attached files cannot be larger than 1MB");
+					throw new TTTCustomException("0x0070", "Attached files cannot be larger than 1MB");
 				}
 				if(!file.exists() || fileName.startsWith("../") || !fileName.startsWith(tDir + File.separator)) {
 					throw new TTTCustomException("0x0050", "Action not supported by API.");
