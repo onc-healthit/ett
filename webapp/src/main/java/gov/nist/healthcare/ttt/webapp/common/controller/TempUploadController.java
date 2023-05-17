@@ -26,7 +26,8 @@ import java.util.UUID;
 
 public class TempUploadController {
 	
-	public static boolean exceededFileSizeLimit;
+	private static boolean exceededFileSizeLimit;
+	private static boolean fileSizeExists;
 	String tDir = System.getProperty("java.io.tmpdir");
 	private static Logger logger = LogManager.getLogger(TempUploadController.class.getName());
 	
@@ -38,6 +39,15 @@ public class TempUploadController {
 		fileInfo.setAttributes(request);
 		
 		exceededFileSizeLimit = false;
+		fileSizeExists = true;
+		
+		//Check file size exists
+		if(fileInfo.getFlowTotalSize() == null) {
+			logger.info("Unknown file size");
+			fileSizeExists = false;
+			return fileInfo;
+		}
+		
 		//Check file size
 		if(Integer.parseInt(fileInfo.getFlowTotalSize()) > 1000000) {
 			logger.info("File size exceeded, upload cancelled. Limit: 1000000 File size: " +fileInfo.getFlowTotalSize());
@@ -109,6 +119,10 @@ public class TempUploadController {
 	
 	public static boolean isValidFileSize() {
 		return exceededFileSizeLimit;
+	}
+	
+	public static boolean hasFileSize() {
+		return fileSizeExists;
 	}
 
 }

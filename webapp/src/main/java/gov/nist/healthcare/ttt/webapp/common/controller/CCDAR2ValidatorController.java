@@ -59,6 +59,9 @@ public class CCDAR2ValidatorController {
 	    		Path normalizedPath =  path.normalize();
 				String fileName = normalizedPath.toString();
 				File file = new File(fileName);
+				if(!TempUploadController.hasFileSize()) {
+					throw new TTTCustomException("0x0082", "Unknown file size");
+				}
 				if(TempUploadController.isValidFileSize()) {
 					throw new TTTCustomException("0x0070", "Attached files cannot be larger than 1MB");
 				}
