@@ -61,9 +61,15 @@ public class CCDAR3ValidatorController {
 	    		Path normalizedPath =  path.normalize();				
 				String fileName = normalizedPath.toString();
 				File file = new File(fileName);
+				if(!TempUploadController.hasFileSize()) {
+					throw new TTTCustomException("0x0082", "Unknown file size");
+				}
+				if(TempUploadController.isValidFileSize()) {
+					throw new TTTCustomException("0x0070", "Attached files cannot be larger than 1MB");
+				}
 				if(!file.exists() || fileName.startsWith("../") || !fileName.startsWith(tDir + File.separator)) {
 					throw new TTTCustomException("0x0050", "Action not supported by API.");
-				}								
+				}
 				HttpPost post = new HttpPost(mdhtUrl);
 				FileBody fileBody = new FileBody(file);
 				//

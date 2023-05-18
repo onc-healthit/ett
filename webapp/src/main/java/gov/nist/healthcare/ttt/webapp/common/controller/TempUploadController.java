@@ -1,5 +1,6 @@
 package gov.nist.healthcare.ttt.webapp.common.controller;
 
+import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException;
 import gov.nist.healthcare.ttt.webapp.common.model.FileInfo.FileInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,20 +23,39 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/upload")
+
 public class TempUploadController {
 	
+	private static boolean exceededFileSizeLimit;
+	private static boolean fileSizeExists;
 	String tDir = System.getProperty("java.io.tmpdir");
 	private static Logger logger = LogManager.getLogger(TempUploadController.class.getName());
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody FileInfo uploadCert(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	public @ResponseBody FileInfo uploadCert(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {
 		
 		FileInfo fileInfo = new FileInfo();
 		
 		fileInfo.setAttributes(request);
 		
-		// Extract the file
+		exceededFileSizeLimit = false;
+		fileSizeExists = true;
 		
+		//Check file size exists
+		if(fileInfo.getFlowTotalSize() == null) {
+			logger.info("Unknown file size");
+			fileSizeExists = false;
+			return fileInfo;
+		}
+		
+		//Check file size
+		if(Integer.parseInt(fileInfo.getFlowTotalSize()) > 1000000) {
+			logger.info("File size exceeded, upload cancelled. Limit: 1000000 File size: " +fileInfo.getFlowTotalSize());
+			exceededFileSizeLimit = true;
+			return fileInfo;
+		}
+		
+		// Extract the file
 		Iterator<String> itr = request.getFileNames();
 
         MultipartFile file = request.getFile(itr.next());
@@ -95,6 +115,14 @@ public class TempUploadController {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 		return fileInfo;
+	}
+	
+	public static boolean isValidFileSize() {
+		return exceededFileSizeLimit;
+	}
+	
+	public static boolean hasFileSize() {
+		return fileSizeExists;
 	}
 
 }
