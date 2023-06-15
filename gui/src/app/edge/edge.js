@@ -154,18 +154,6 @@ edge.config(['$stateProvider',
                         templateUrl: 'templates/accountInfo.tpl.html'
                     }
                 }
-            })
-            .state('edge.announcement', {
-                url: '/announcement',
-                views: {
-                    "edge": {
-                        controller: 'MarkDownCtrl',
-                        templateUrl: 'templates/announcement.tpl.html'
-                    }
-                },
-                data: {
-                    moduleInfo: "announcement"
-                }
             }).state('edge.faq', {
                 url: '/faq',
                 views: {
