@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -70,6 +71,12 @@ public class CCDAR3ValidatorController {
 				if(!file.exists() || fileName.startsWith("../") || !fileName.startsWith(tDir + File.separator)) {
 					throw new TTTCustomException("0x0050", "Action not supported by API.");
 				}
+				GenerateAccessToken generateAccessToken = new GenerateAccessToken();
+				String accessToken = generateAccessToken.getAccessToken();;
+
+				if (StringUtils.isBlank(accessToken)){
+					throw new  TTTCustomException("0x0090", "Unauthorized to access CCDA API.");
+				}
 				HttpPost post = new HttpPost(mdhtUrl);
 				FileBody fileBody = new FileBody(file);
 				//
@@ -82,6 +89,7 @@ public class CCDAR3ValidatorController {
 				HttpEntity entity = builder.build();
 				//
 				post.setEntity(entity);
+				post.addHeader("Authorization", "Bearer "+accessToken);
 				String result = "";
 				int statusCode;
 				try {

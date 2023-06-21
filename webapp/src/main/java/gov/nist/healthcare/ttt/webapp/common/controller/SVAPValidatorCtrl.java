@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -19,6 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,7 +73,14 @@ public class SVAPValidatorCtrl {
 				if(!file.exists() || fileName.startsWith("../") || !fileName.startsWith(tDir + File.separator)) {
 					throw new TTTCustomException("0x0050", "Action not supported by API.");
 				}
-				
+
+				GenerateAccessToken generateAccessToken = new GenerateAccessToken();
+				String accessToken = generateAccessToken.getAccessToken();;
+
+			if (StringUtils.isBlank(accessToken)){
+				throw new  TTTCustomException("0x0090", "Unauthorized to access CCDA API.");
+			}
+
 				HttpPost post = new HttpPost(svapUrl);
 				FileBody fileBody = new FileBody(file);
 				//
@@ -81,9 +91,11 @@ public class SVAPValidatorCtrl {
 				builder.addPart("ccdaFile", fileBody);
 				builder.addTextBody("curesUpdate", "false");
 				builder.addTextBody("svap2022", "true");
+
 				HttpEntity entity = builder.build();
 				//
 				post.setEntity(entity);
+				post.addHeader("Authorization", "Bearer "+accessToken);
 				String result = "";
 				int statusCode;
 				try {
@@ -98,7 +110,8 @@ public class SVAPValidatorCtrl {
 				}
 
 				//logger.info("Result: "+ result);
-				if(statusCode == 404) {
+				logger.info("Status Code : "+statusCode);
+				if(statusCode == 404 || statusCode == 500) {
 					throw new TTTCustomException("0x0065", "There was a problem reaching the API. Please try again later.");
 				}
 				JSONObject json = new JSONObject(result);

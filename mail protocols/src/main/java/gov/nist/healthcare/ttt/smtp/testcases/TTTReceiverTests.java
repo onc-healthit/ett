@@ -221,6 +221,12 @@ public class TTTReceiverTests {
 										builder.addPart("ccdaFile", fileBody);
 										HttpEntity entity = builder.build();
 										//
+										GenerateAccessToken generateAccessToken = new GenerateAccessToken();
+										String accessToken = generateAccessToken.getAccessToken();
+
+										if (accessToken ==null) {
+											log.info("Error while calling CCDA accesstoken not found ");
+										}else {											
 										post.setEntity(entity);
 
 
@@ -246,6 +252,7 @@ public class TTTReceiverTests {
 										ObjectMapper mapper = new ObjectMapper();
 										JsonNode jsonObject = mapper.readTree(newresult) ;
 										validationResult.put( bodyPart.getFileName() , jsonObject );
+									}
 									}
 
 								} else {
@@ -2164,6 +2171,12 @@ public class TTTReceiverTests {
 									builder.addPart("ccdaFile", fileBody);
 									HttpEntity entity = builder.build();
 									//
+										GenerateAccessToken generateAccessToken = new GenerateAccessToken();
+										String accessToken = generateAccessToken.getAccessToken();
+
+										if (accessToken ==null) {
+											log.info("Error while calling CCDA accesstoken not found ");
+										}else {										
 									post.setEntity(entity);
 
 
@@ -2173,6 +2186,7 @@ public class TTTReceiverTests {
 									ObjectMapper mapper = new ObjectMapper();
 									JsonNode jsonObject = mapper.readTree(result1) ;
 									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
 								}
 
 							} else {
@@ -2299,6 +2313,12 @@ public class TTTReceiverTests {
 									builder.addPart("ccdaFile", fileBody);
 									HttpEntity entity = builder.build();
 									//
+										GenerateAccessToken generateAccessToken = new GenerateAccessToken();
+										String accessToken = generateAccessToken.getAccessToken();
+
+										if (accessToken ==null) {
+											log.info("Error while calling CCDA accesstoken not found ");
+										}else {										
 									post.setEntity(entity);
 
 
@@ -2307,7 +2327,7 @@ public class TTTReceiverTests {
 									result1 = EntityUtils.toString(response.getEntity());
 									ObjectMapper mapper = new ObjectMapper();
 									JsonNode jsonObject = mapper.readTree(result1) ;
-									validationResult.put( bodyPart.getFileName() , jsonObject );
+								}
 								}
 
 							} else {
