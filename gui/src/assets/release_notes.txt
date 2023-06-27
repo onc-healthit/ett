@@ -1,6 +1,7 @@
 ==Version 2.3.56#06/23/2023
 	*1. C-CDA: Soft-deploy Keycloak for Reference C-CDA Validator Service API access. Full authentication required by July 10, 2023. Please see the thread, "API Key Authorization (Reference C-CDA Validator API/Scorecard API)" on ETT Google Groups for more information
 
+
 	*2. C-CDA: Fix Google Group issue, "SVAP Message Validator - Goal LOINC"
 	
 	*3. C-CDA: Fix Google Group issue, "routeCode translation displays as not an active code"
