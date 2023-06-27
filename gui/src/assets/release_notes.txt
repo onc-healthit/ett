@@ -1,3 +1,19 @@
+==Version 2.3.56#06/23/2023
+	*1. C-CDA: Soft-deploy Keycloak for Reference C-CDA Validator Service API access. Full authentication required by July 10, 2023. Please see the thread, "API Key Authorization (Reference C-CDA Validator API/Scorecard API)" on ETT Google Groups for more information
+	*2. C-CDA: Fix Google Group issue, "SVAP Message Validator - Goal LOINC"
+	
+	*3. C-CDA: Fix Google Group issue, "routeCode translation displays as not an active code"
+
+	*4. ETT: Remove announcement page from UI
+	
+	*5. ETT: Fix JSONObject Text error for ETT C-CDA Validator
+
+	*6. ETT: Fix error message for ETT C-CDA Validator if RefVal service is down
+
+	*7. ETT: Update error message for excessively large files for ETT C-CDA Validator
+
+	*8. General: Infrastructure updates
+
 ==Version 2.3.55#05/08/2023
 	*1. C-CDA: Update Test Data scenario files to ensure SVAP 2022 USCDI v2 criteria is being applied properly for Inpatient scenarios
 	
