@@ -49,6 +49,12 @@
     <div ng-if="xdmResult">
         <hr>
         <pre>{{xdmResult.report}}</pre>
+
+         <div ng-if="!xdmResult.pass">
+            <hr>
+            <pre>Validation failed.</pre>    
+        </div>
+    
     </div>
 
 </div>
