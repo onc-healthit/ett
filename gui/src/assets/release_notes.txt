@@ -1,5 +1,5 @@
-==Version 2.3.57#07/30/2023
-	*1. C-CDA: SSoft-deploy Keycloak for C-CDA Scorecard API access
+==Version 2.3.57#07/31/2023
+	*1. C-CDA: Soft-deploy Keycloak for C-CDA Scorecard API access
 
 	*2. ETT: Update JSON and File Upload dependencies
 
