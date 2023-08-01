@@ -1,3 +1,18 @@
+==Version 2.3.57#07/30/2023
+	*1. C-CDA: SSoft-deploy Keycloak for C-CDA Scorecard API access
+
+	*2. ETT: Update JSON and File Upload dependencies
+
+	*3. ETT: Fix XDM Validator not displaying Pass/Fail Status
+
+	*4. ETT: Remove direct link to announcement page
+	
+	*5. ETT: Correct home phone value in 170.315_b9_CP_Amb scenario file
+
+	*6. FHIR: Address Google Groups issue, "FHIR server returns 500 on querying example url" via update to 404 as per hl7 documentation and update to links
+
+	*7. General: Infrastructure updates
+
 ==Version 2.3.56#06/26/2023
 	*1. C-CDA: Soft-deploy Keycloak for Reference C-CDA Validator Service API access. Full authentication required by July 10, 2023. Please see the thread, "API Key Authorization (Reference C-CDA Validator API/Scorecard API)" on ETT Google Groups for more information
 
