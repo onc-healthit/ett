@@ -5,7 +5,7 @@
 
 	*3. SITE Content: Updated SITE/test-tools section to remove non functional links
 
-	*4. C-CDA: Update senario files language in word document to match pdf senarios
+	*4. C-CDA: Update scenario files language in word document to match pdf scenarios
 
 ==Version 2.3.57#07/31/2023
 	*1. C-CDA: Soft-deploy Keycloak for C-CDA Scorecard API access
