@@ -30,13 +30,14 @@
                     <div ng-dropover ng-dropover-options="{'triggerEvent':'click', 'verticalOffset': 10}">
                         <button class="btn btn-default">Select document...</button>
                         <div ng-dropover-contents class="arrowed">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Search..." ng-model="ccdaDocSearch" style="margin-bottom: 10px;">
-                                </div>
-                            </form>
-                            <finder-tree data="ccdaData" ng-model="ccdaDocument" search-filter="ccdaDocSearch"></finder-tree>
-                        </div>
+						    <form class="form-inline">
+						        <div class="form-group">
+						            <input type="text" class="form-control" placeholder="Search..." ng-model="ccdaDocSearch" style="margin-bottom: 10px;">
+						        </div>
+						    </form>
+						    <finder-tree data="ccdaData" ng-model="ccdaDocument" search-filter="ccdaDocSearch"></finder-tree>
+						    <button type="submit" class="btn btn-primary dropover-footer-btn" ng-disabled="!ccdaDocument.name" ng-click="save()">{{buttonSuccess}}</button>
+						</div>
                     </div>
                 </div>
                 <div class="col-md-8">
