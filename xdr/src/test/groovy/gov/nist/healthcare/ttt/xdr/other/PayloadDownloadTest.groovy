@@ -18,7 +18,7 @@ class PayloadDownloadTest extends Specification {
     def test() {
 
         given:
-        def link = "https://raw.githubusercontent.com/siteadmin/2015-Certification-C-CDA-Test-Data/master/Receiver%20SUT%20Test%20Data/NegativeTesting_CarePlan/NT_Missing_PatientSuffix_r21_v1.xml"
+        def link = "https://github.com/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata/blob/master/Cures%20Update%20Svap%20Uscdiv2%20Receiver%20SUT%20Test%20Data/NegativeTesting_CarePlan/NT_CP_Sample1_r21_v5.xml"
 
         when:
             StringWriter writer = new StringWriter();
