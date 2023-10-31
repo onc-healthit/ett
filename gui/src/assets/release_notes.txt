@@ -1,3 +1,17 @@
+==Version 2.3.59#10/30/2023
+	*1. Reference C-CDA: Add public API usage to readme
+
+	*2. ETT: Resize document search window to resolve truncated document names
+
+	*3. ETT: Add submit button inside document search window
+
+	*4. ETT: Update separate clientId and key for Keycloak.
+
+	*5. ETT: Added link for SVAP standards versions to validator home page.
+
+	*6. SITE: Update separate clientId and key for Keycloak.
+
+
 ==Version 2.3.58#08/28/2023
 	*1. Reference C-CDA: Removed SHALL constraint for Nonexistent id Requirement in Section Time Range Observation
 
