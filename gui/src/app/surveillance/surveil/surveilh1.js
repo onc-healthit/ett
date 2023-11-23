@@ -468,6 +468,15 @@ surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl
 			test.status = 'na';
 		};
 
+		$scope.sleepRunXdr = function(test) {
+               $timeout(function() {
+					if (test.status.indexOf("sleep_") != -1){
+						test.status = test.status.substr(6);
+					}
+                }, 120000);			
+			$scope.runXdr(test);
+		};
+	
 		$scope.runXdr = function(test) {
 			test.status = "loading";
 			var properties = {};
@@ -480,13 +489,22 @@ surveilh1.controller('Surveilh1Ctrl', ['$scope', '$stateParams','LogInfo','growl
 				test.results = data;
 				if (data.content !== null && data.content !== undefined) {
 					if (data.content.criteriaMet.toLowerCase() === 'pending') {
-						test.status = "pending";
+						test.status = "sleep_pending";
 						if(data.content) {
-							test.endpoint = data.content.value.endpoint;
+							if (data.message ==="ran tc 7" || data.message ==="ran tc 17"){
+								test.endpoint = "https://"+data.content.value.endpoint;
+							}else{
+								test.endpoint = data.content.value.endpoint;
+							}
 							test.endpointTLS = data.content.value.endpointTLS;
 						}
 					} else if (data.content.criteriaMet.toLowerCase() === 'manual') {
-						test.status = "manual";
+						if (test.status === "loading"){
+							test.status = "manual";
+						}else{
+							test.status = "sleep_manual";
+						}
+						
 					} else if (data.content.criteriaMet.toLowerCase() === 'passed') {
 						test.status = "success";
 					} else {

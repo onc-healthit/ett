@@ -1,6 +1,6 @@
 <li ng-switch on="test.status">
 	<div class="leftButton">
-		<time ng-click="runXdr(test)" ng-switch-when="na">
+		<time ng-click="sleepRunXdr(test)" ng-switch-when="na">
 			<span class="month">RUN</span>
 		</time>
 
@@ -23,13 +23,28 @@
 			<span class="refresh">Validation</span>
 		</time>
 
-		<time class="pass" ng-click="runXdr(test)" ng-switch-when="success">
+		<time class="pass" ng-click="sleepRunXdr(test)" ng-switch-when="success">
 			<span class="day">
 			<i class="fa fa-check"></i>
 		</span>
 			<!-- <span class="month">PASS</span> -->
 		</time>
-		<time class="fail" ng-click="runXdr(test)" ng-switch-when="error">
+		
+		<time ng-switch-when="sleep_pending">
+			<!-- Loading spinner -->
+			<div us-spinner>
+				<span class="pending">Please wait</span>
+				<span class="pending">Processing.......</span>
+			</div>
+		</time>			
+		<time ng-switch-when="sleep_manual">
+			<!-- Loading spinner -->
+			<div us-spinner>
+				<span class="pending">Please wait</span>
+				<span class="pending">Processing.......</span>
+			</div>
+		</time>			
+		<time class="fail" ng-click="sleepRunXdr(test)" ng-switch-when="error">
 			<span class="fail">
 			<i class="fa fa-times"></i>
 		</span>
