@@ -9,6 +9,7 @@ var direct = angular.module('ttt.direct', [
 	'ttt.direct.ccdar2Validator',
 	'ttt.direct.ccdar3Validator',
 	'ttt.direct.SVAPValidator',
+	'ttt.direct.SVAP2023Validator',
 	'ttt.direct.dcdtValidator',
 	'ttt.direct.status',
 	'ttt.direct.report',
@@ -114,6 +115,15 @@ direct.config(['$stateProvider',
 					}
 				}
 			})
+			.state('direct.svap2023', {
+				url: '/validator/ccda/ccdasvap2023',
+				views: {
+					"direct": {
+						controller: 'SVAP2023ValidatorCtrl',
+						templateUrl: 'direct/message-validator/svap2023/svap2023.tpl.html'
+					}
+				}
+			})			
 			.state('direct.dcdt2', {
 				url: '/certdiscovery/dcdt2',
 				views: {
