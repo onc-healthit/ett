@@ -1,7 +1,7 @@
-var ccdaValidator = angular.module('ttt.direct.SVAP2023Validator', []);
+var ccdaValidator = angular.module('ttt.direct.USCDIV3Validator', []);
 
-ccdaValidator.controller('SVAP2023ValidatorCtrl', ['$scope', 'SVAP2023ValidatorFactory', '$state', 'ApiUrl', 'CCDAR31Documents','$filter', 'CCDADocumentsFactory','$location','$anchorScroll',
-    function($scope, SVAP2023ValidatorFactory, $state, ApiUrl, CCDAR31Documents, $filter,CCDADocumentsFactory,$location,$anchorScroll) {
+ccdaValidator.controller('USCDIV3ValidatorCtrl', ['$scope', 'USCDIV3ValidatorFactory', '$state', 'ApiUrl', 'CCDAR31Documents','$filter', 'CCDADocumentsFactory','$location','$anchorScroll',
+    function($scope, USCDIV3ValidatorFactory, $state, ApiUrl, CCDAR31Documents, $filter,CCDADocumentsFactory,$location,$anchorScroll) {
 
         $scope.fileInfo = {
             "flowChunkNumber": "",
@@ -130,7 +130,7 @@ $scope.gotodiv = function(anchor) {
 				if ($scope.ccdaDocumentCdaIg.name && $scope.ccdaDocumentCdaIg.path) {
                     $scope.validator.validationObjective = $scope.ccdaDocumentCdaIg.path[$scope.ccdaDocumentCdaIg.path.length - 1];
                     $scope.validator.referenceFileName = $scope.ccdaDocumentCdaIg.name;
-                    SVAP2023ValidatorFactory.save($scope.validator, function(data) {
+                    USCDIV3ValidatorFactory.save($scope.validator, function(data) {
                         $scope.laddaLoadingCdaIg = false;
                         $scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
                         $scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);
@@ -162,7 +162,7 @@ $scope.gotodiv = function(anchor) {
 					if ($scope.ccdaDocument.name && $scope.ccdaDocument.path) {
 						$scope.validator.validationObjective = $scope.ccdaDocument.path[$scope.ccdaDocument.path.length - 1];
 						$scope.validator.referenceFileName = $scope.ccdaDocument.name;
-						SVAP2023ValidatorFactory.save($scope.validator, function(data) {
+						USCDIV3ValidatorFactory.save($scope.validator, function(data) {
 							$scope.laddaLoading = false;
 							$scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
 							$scope.ccdaResult = angular.extend(data, $scope.ccdaappendfilename);

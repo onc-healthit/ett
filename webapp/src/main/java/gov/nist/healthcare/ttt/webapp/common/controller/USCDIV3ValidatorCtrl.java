@@ -31,14 +31,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import gov.nist.healthcare.ttt.webapp.common.model.exceptionJSON.TTTCustomException;
 
 @Controller
-@RequestMapping("/api/ccdasvap2023")
-public class SVAP2023ValidatorCtrl {
+@RequestMapping("/api/ccdauscdiv3")
+public class USCDIV3ValidatorCtrl {
 	String tDir = System.getProperty("java.io.tmpdir");
 	
 	@Value("${ett.mdht.svap.url}")
 	String svapUrl;
 
-	private static Logger logger = LogManager.getLogger(SVAP2023ValidatorCtrl.class.getName());
+	private static Logger logger = LogManager.getLogger(USCDIV3ValidatorCtrl.class.getName());
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String validateSVAP(@RequestBody HashMap<String, String> filePath) throws Exception {
