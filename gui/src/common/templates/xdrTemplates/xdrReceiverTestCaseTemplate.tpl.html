@@ -1,5 +1,5 @@
 <li>
-	<time ng-if="test.status === 'na'" ng-click="runXdr(test)">
+	<time ng-if="test.status === 'na'" ng-click="sleepRunXdr(test)">
 		<span class="month">RUN</span>
 	</time>
 
@@ -13,13 +13,13 @@
 		<span class="refresh">Validation</span>
 	</time>
 
-	<time class="pass" ng-if="test.status === 'success'" ng-click="runXdr(test)">
+	<time class="pass" ng-if="test.status === 'success'" ng-click="sleepRunXdr(test)">
 		<span class="day">
 			<i class="fa fa-check"></i>
 		</span>
 		<!-- <span class="month">PASS</span> -->
-	</time>
-	<time class="fail" ng-if="test.status === 'error'" ng-click="runXdr(test)">
+	</time>	
+	<time class="fail" ng-if="test.status === 'error'" ng-click="sleepRunXdr(test)">
 		<span class="fail">
 			<i class="fa fa-times"></i>
 		</span>

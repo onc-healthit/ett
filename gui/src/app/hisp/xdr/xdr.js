@@ -89,6 +89,16 @@ edgeXdr.controller('HispXdrCtrl', ['$scope', 'XDRTestCasesDescription', 'growl',
             }
         });
 
+
+        $scope.sleepRunXdr = function(test) {
+               $timeout(function() {
+                    if (test.status.indexOf("sleep_") != -1){
+                        test.status = test.status.substr(6);
+                    }
+                }, 120000);         
+            $scope.runXdr(test);
+        };
+        
         $scope.runXdr = function(test) {
             test.status = "loading";
             XDRTestCases.save({

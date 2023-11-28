@@ -2,7 +2,8 @@ var validators = angular.module('ttt.validators', [
     // Modules
     'ttt.direct.ccdar3Validator',
     'ttt.direct.ccdar2Validator',
-    'ttt.direct.SVAPValidator',    
+    'ttt.direct.SVAPValidator',   
+    'ttt.direct.USCDIV3Validator',    
     'ttt.direct.ccdaValidator',
     'ttt.direct.xdmValidator',
     'ttt.validator.home'
@@ -52,7 +53,16 @@ validators.config(['$stateProvider',
                         templateUrl: 'direct/message-validator/svap/svap.tpl.html'
                     }
                 }
-            })            
+            })      
+            .state('validators.uscdiv3', {
+                url: '/ccdauscidv3',
+                views: {
+                    "validators": {
+                        controller: 'USCDIV3ValidatorCtrl',
+                        templateUrl: 'direct/message-validator/uscdiv3/uscdiv3.tpl.html'
+                    }
+                }
+            })                   
             .state('validators.home', {
                 url: '',
                 views: {
