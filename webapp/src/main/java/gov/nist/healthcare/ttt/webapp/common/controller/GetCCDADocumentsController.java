@@ -64,6 +64,15 @@ public class GetCCDADocumentsController {
 
 	@Value("${github.svap.tree}")
 	String githubSvapTree;
+
+	@Value("${github.uscdiv3.test.data}")
+	String githubUscdiv3TestData;
+
+	@Value("${github.uscdiv3.sha}")
+	String githubUscdiv3Sha;
+
+	@Value("${github.uscdiv3.tree}")
+	String githubUscdiv3Tree;	
 	
 	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md","README.MD");
 	public List<String> extension2ignore = Arrays.asList("");
@@ -93,7 +102,7 @@ public class GetCCDADocumentsController {
 				if(!files2ignore.contains(file.get("path"))) {
 					// Get path array
 					String[] path = file.get("path").toString().split("/");
-					buildJson(resultMap, path,false,false);
+					buildJson(resultMap, path,false,false,false);
 				}
 
 			}
@@ -108,7 +117,7 @@ public class GetCCDADocumentsController {
 					if(!files2ignore.contains(file.get("path"))) {
 						// Get path array
 						String[] path = file.get("path").toString().split("/");
-						buildJson(resultMap, path,true,false);
+						buildJson(resultMap, path,true,false,false);
 					}
 
 				}				
@@ -124,12 +133,27 @@ public class GetCCDADocumentsController {
 					if(!files2ignore.contains(file.get("path"))) {
 						// Get path array
 						String[] path = file.get("path").toString().split("/");
-						buildJson(resultMap, path,false,true);
+						buildJson(resultMap, path,false,true,false);
 					}
 
 				}				
 			}
 			
+			// USCDI v3 files
+			if (StringUtils.isNotBlank(githubUscdiv3TestData) && githubUscdiv3TestData.length() > 1){
+				sha = getHTML(githubUscdiv3Sha).getJSONObject("commit").get("sha").toString();
+				filesArray = getHTML(githubUscdiv3Tree + sha + "?recursive=1").getJSONArray("tree");
+				
+				for(int i=0; i < filesArray.length(); i++) {
+					JSONObject file = filesArray.getJSONObject(i);
+					if(!files2ignore.contains(file.get("path"))) {
+						// Get path array
+						String[] path = file.get("path").toString().split("/");
+						buildJson(resultMap, path,false,false,true);
+					}
+
+				}				
+			}			
 			// Write the cache file
 			try{
 				JSONObject cacheFile = new JSONObject(resultMap);
@@ -142,7 +166,7 @@ public class GetCCDADocumentsController {
 		return resultMap;
 	}
 
-	public void buildJson(HashMap<String, Object> json, String[] path, boolean curesFiles, boolean svapFiles) {
+	public void buildJson(HashMap<String, Object> json, String[] path, boolean curesFiles, boolean svapFiles,boolean uscdiv3Files) {
 		if(path.length == 1 && !files2ignore.contains(path[0].toUpperCase())) {
 			HashMap<String, Object> newObj = new HashMap<>();
 			newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
@@ -168,9 +192,11 @@ public class GetCCDADocumentsController {
 						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
 						HashMap<String, Object> newFile = new HashMap<>();
 						newFile.put("name", fileName);
-						newFile.put("link", getLink(path,curesFiles,svapFiles));
+						newFile.put("link", getLink(path,curesFiles,svapFiles,uscdiv3Files));
 						newFile.put("cures",curesFiles);
 						newFile.put("svap",svapFiles);
+						newFile.put("uscdiv3",uscdiv3Files);
+						
 						List filesList = (List) current.get("files");
 						filesList.add(newFile);
 					} else {
@@ -189,9 +215,11 @@ public class GetCCDADocumentsController {
 						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
 						HashMap<String, Object> newFile = new HashMap<>();
 						newFile.put("name", fileName);
-						newFile.put("link", getLink(path,curesFiles,svapFiles));
+						newFile.put("link", getLink(path,curesFiles,svapFiles,uscdiv3Files));
 						newFile.put("cures",curesFiles);
 						newFile.put("svap",svapFiles);
+						newFile.put("uscdiv3",uscdiv3Files);
+
 						List filesList = (List) current.get("files");
 						filesList.add(newFile);
 					}
@@ -200,7 +228,7 @@ public class GetCCDADocumentsController {
 		}
 	}
 
-	public String getLink(String[] path,boolean curesFiles,boolean svapFiles) {
+	public String getLink(String[] path,boolean curesFiles,boolean svapFiles, boolean uscdiv3Files) {
 		String linkMaster = String.join("/", path).replace(" ", "%20");
 		String link = githubTestData + linkMaster;
 		//link = githubTestData"https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
@@ -211,6 +239,10 @@ public class GetCCDADocumentsController {
 		if (svapFiles){
 			link = githubSvapTestData + linkMaster;
 		}
+
+		if (uscdiv3Files){
+			link = githubUscdiv3TestData + linkMaster;
+		}		
 		
 		return link;
 	}
