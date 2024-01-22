@@ -66,11 +66,11 @@
     "certificates": [{
         "description": "ETT Public Cert",
         "icon": "key",
-        "name": ""
+        "name": "ttpedge.sitenv.org.der"
     }, {
         "description": "ETT Trust Anchor",
         "icon": "anchor",
-        "name": "nist.gov.der"
+        "name": "intermediate.sitenv.org.der"
     }, {
         "description": "Invalid Trust Anchor",
         "icon": "anchor",
@@ -87,36 +87,20 @@
         "description": "2015 Certification C-CDA Test Data",
         "icon": "file-code-o",
         "name": "ccda-samples",
-        "link": "https://github.com/siteadmin/2015-Certification-C-CDA-Test-Data/tree/master"
+        "link": "https://codeload.github.com/onc-healthit/2015-certification-ccda-testdata/zip/master"
     }],
 
     "cdaSamples": [{
         "name": "CCDA_Ambulatory.xml"
     }, {
-        "name": "CCDA_Ambulatory_in_XDM.zip"
+        "name": "CCDA_AMB.ZIP"
     }, {
         "name": "CCDA_Inpatient.xml"
     }, {
-        "name": "CCDA_Inpatient_in_XDM.zip"
+        "name": "CCDA_INPATIENT_IN_XDM.ZIP"
     }, {
-        "name": "CCR_Sample1.xml"
+        "name": "TOC_XDM_FULL_METADATA.ZIP"
     }, {
-        "name": "CCR_Sample1_in_XDM.zip"
-    }, {
-        "name": "C32_Sample1.xml"
-    }, {
-        "name": "C32_Sample1_in_XDM.zip"
-    }, {
-        "name": "CCR_Sample2.xml"
-    }, {
-        "name": "CCR_Sample2_in_XDM.zip"
-    }, {
-        "name": "C32_Sample2.xml"
-    }, {
-        "name": "C32_Sample2_in_XDM.zip"
-    }, {
-        "name": "ToC_XDM_Full_Metadata.zip"
-    }, {
-        "name": "ToC_XDM_Limited_Metadata.zip"
+        "name": "TOC_XDM_LIMITED_METADATA.ZIP"
     }]
 }
