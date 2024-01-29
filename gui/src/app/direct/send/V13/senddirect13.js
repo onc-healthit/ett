@@ -39,6 +39,7 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
         
 		$scope.signingCertificate = [
     		{ name: 'GOOD_CERT', val: 'GOOD' },
+            { name: 'GOOD_ECDSA_CERT', val: 'GOOD_ECDSA_CERT' },
     		{ name: 'INVALID_CERT', val: 'INVALID' },
     		{ name: 'EXPIRED_CERT', val: 'EXPIRED' },
     		{ name: 'DIFFERENT_TRUST_ANCHOR', val: 'DIFF'  },
@@ -53,7 +54,7 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
     		{ name: 'CERT_WITH_4096_BITS', val: 'CERT_4096' },
   		];
   		
-		$scope.signingAlgorithm = [
+		$scope.signingAlgorithmNonEcdsa = [
     		{ name: 'SHA-256', val: 'sha256' },
     		{ name: 'SHA-384', val: 'sha384' },
     		{ name: 'SHA-512', val: 'sha512' },
@@ -64,7 +65,16 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
     		{ name: 'ECDSA with SHA-384', val: 'edsasha384' },
     		{ name: 'AES with CBC', val: 'aescbc' },
     		{ name: 'AES with GCM', val: 'aesgcm' },
-  		];  		
+  		];  
+
+        $scope.signingAlgorithmEcdsa = [
+            { name: 'ECDSA with P-256', val: 'edsap256'  },
+            { name: 'ECDSA with SHA-256', val: 'edsasha256' },
+            { name: 'ECDSA with P-384', val: 'edsap384' },
+            { name: 'ECDSA with SHA-384', val: 'edsasha384' }
+        ];  
+
+        $scope.signingAlgorithm = $scope.signingAlgorithmNonEcdsa;
 
         $scope.success = function(message) {
             $scope.fileInfo = angular.fromJson(message);
@@ -101,6 +111,11 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
                 $scope.invalidDigest = true;
             }else{
 	 			$scope.invalidDigest = false;
+                if (type.val === 'GOOD_ECDSA_CERT') {
+                    $scope.signingAlgorithm = $scope.signingAlgorithmEcdsa;
+                }else{
+                    $scope.signingAlgorithm = $scope.signingAlgorithmNonEcdsa;
+                }
 			}
         };
 
