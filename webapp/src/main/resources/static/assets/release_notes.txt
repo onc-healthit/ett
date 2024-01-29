@@ -1,3 +1,1099 @@
+==Version 2.3.61#12/18/2023
+	*1. Reference C-CDA: Improve C-CDA R1.1/MU2 Validator uptime
+
+	*2. Reference C-CDA: Remove more granular race code with unpopulated data
+
+	*3. ETT: Added USCDI v3 C-CDA Validator
+
+	*4. SITE: Added USCDI v3 C-CDA Validator
+
+==Version 2.3.60#11/27/2023
+	*1. Reference C-CDA: Apply fix for ETT GG: "Patient Kid,Happy Chest X-ray completed before birth"
+
+	*2. Reference C-CDA: Apply fix for ETT GG: "Community Health and Hospitals"
+
+	*3. Reference C-CDA: Improve R2.1/USCDI C-CDA Validator uptime
+
+	*4. ETT: Add Clear pass/fail indicators in the XDR Test Cases
+
+	*5. ETT: Update SVAP 2022 to USCDI v2
+
+	*6. SITE: Update SVAP 2022 to USCDI v2
+
+==Version 2.3.59#10/30/2023
+	*1. Reference C-CDA: Add public API usage to readme
+
+	*2. ETT: Resize document search window to resolve truncated document names
+
+	*3. ETT: Add submit button inside document search window
+
+	*4. ETT: Update separate clientId and key for Keycloak.
+
+	*5. ETT: Added link for SVAP standards versions to validator home page.
+
+	*6. SITE: Update separate clientId and key for Keycloak.
+
+
+==Version 2.3.58#08/28/2023
+	*1. Reference C-CDA: Removed SHALL constraint for Nonexistent id Requirement in Section Time Range Observation
+
+	*2. Reference C-CDA: Fixed incorrect error for Informant RelatedEntity
+
+	*3. SITE Content: Updated SITE/test-tools section to remove non functional links
+
+	*4. C-CDA: Update scenario files language in word document to match pdf scenarios
+
+==Version 2.3.57#07/31/2023
+	*1. C-CDA: Soft-deploy Keycloak for C-CDA Scorecard API access
+
+	*2. ETT: Update JSON and File Upload dependencies
+
+	*3. ETT: Fix XDM Validator not displaying Pass/Fail Status
+
+	*4. ETT: Remove direct link to announcement page
+	
+	*5. ETT: Correct home phone value in 170.315_b9_CP_Amb scenario file
+
+	*6. FHIR: Address Google Groups issue, "FHIR server returns 500 on querying example url" via update to 404 as per hl7 documentation and update to links
+
+	*7. General: Infrastructure updates
+
+==Version 2.3.56#06/26/2023
+	*1. C-CDA: Soft-deploy Keycloak for Reference C-CDA Validator Service API access. Full authentication required by July 10, 2023. Please see the thread, "API Key Authorization (Reference C-CDA Validator API/Scorecard API)" on ETT Google Groups for more information
+
+	*2. Fix Google Group issue, "SVAP Message Validator - Goal LOINC"
+
+	*3. C-CDA: Fix Google Group issue, "routeCode translation displays as not an active code"
+
+	*4. ETT: Remove announcement page from UI
+	
+	*5. ETT: Fix JSONObject Text error for ETT C-CDA Validator
+
+	*6. ETT: Fix error message for ETT C-CDA Validator if RefVal service is down
+
+	*7. ETT: Update error message for excessively large files for ETT C-CDA Validator
+
+	*8. General: Infrastructure updates
+
+==Version 2.3.55#05/08/2023
+	*1. C-CDA: Update Test Data scenario files to ensure SVAP 2022 USCDI v2 criteria is being applied properly for Inpatient scenarios
+	
+	*2. Correct Gender Identity Extension in scenario files.
+	
+	*3. Fix incorrect code system OID in scenario files.
+	
+	*4. Update EffectiveTime checking in PlannedProcedure to allow specification of high value even if not present in scenario
+	
+	*5. Fix XDR Submit scenarios to send Negative Testing files
+	
+	*6. Remove erroneous procedures from scenario files
+	
+	*7. Remove Discharge Disposition codes from Ambulatory samples
+	
+==Version 2.3.54#04/24/2023
+	*1. C-CDA: Further improve memory handling to address recent downtime issues
+	
+	*2. C-CDA: Change §170.315(b)(2)(iv) language in test data to clarify that the output file is to be in a CCD format. Update: "The SUT should then generate a C-CDA (using the CCD template in C-CDA Release 2.1) that contains the Allergies, Medications and Problems from the two Referral Notes that were provided.
+	
+	*3. General: Implement security updates in infrastructure
+==Version 2.3.53#03/27/2023
+	*1. C-CDA: Resolve ETT Google Groups thread, "Vocabulary Errors for birthplace address"
+	
+	*2. C-CDA: Improve memory handling
+	
+	*3. ETT: Remove SVAP 2022 DCDT from Cert Discovery drop down
+
+	*4. ETT: Remove broken links in 2015 Direct Certificate Discovery Tool page
+
+	*5. General: Infrastructure updates
+==Version 2.3.52#02/27/2023
+	*1. C-CDA: Update SubstanceReactantForIntolerance value set to include the latest codes from VSAC
+	
+	*2. Direct: Fix drop downs not loading for "Select a Discovery Test Case"
+	
+	*3. Direct: For Direct: 4.0, add ability to send a direct message using a certificate that does not have a CRL
+	
+	*4. General: Infrastructure updates
+
+==Version 2.3.51#01/09/2023	
+	*1. Add Direct version 1.3
+	
+	*2. Add SVAP 2022 DCDT
+	
+==Version 2.3.50#12/05/2022	
+	*1. Add table explanation to the ETT validator home which relates certification criteria version with C-CDA and USCDI version: https://ett.healthit.gov/ett/#/validators
+	
+	*2. FHIR - R4 dependency update for bulk R4
+	
+	*3. Various Direct and other server infrastructure upgrades and fixes
+	
+	*4. Fix ETT GG issue, "XDR Endpoint with TLS not working"
+	
+==Version 2.3.49#09/29/2022	
+	*1. Correct template versions for Problem Status and Allergy Status to 2019-06-20
+	
+	*2. Relax severity of value set constraint on Provenance Author Participation to match IG
+	
+	*3. Update scenarios for SVAP-2022 to match test data for inpatient samples
+	
+==Version 2.3.48#08/31/2022
+	*1. Release the new C-CDA R2.1 Validator for 2015 Edition Cures Update and SVAP 2022.Includes new test scenario files and test data files (https://github.com/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata)
+	
+	*2. Update vocabulary to the July 2022 VSAC release
+	
+	*3. Resolve ETT Google Groups thread, "Pregnancy Observation for Possible Pregnancy or Not Pregnant" by adding the new codes to the Extended Pregnancy Status Value Set 2.16.840.1.113762.1.4.1099.24 DYNAMIC
+	
+	*4. Resolve ETT Google Groups thread, "Result referenceRange validation error when the requirements are met" by adding support for IVL_REAL
+	
+	*5. Resolve ETT Google Groups thread, "ETT bug validating Care Team Member Act?" by relaxing Care Team Member Act participant conformance rule to a MAY vs a SHALL severity
+	
+	*6. Resolve ETT Google Groups thread, "170.315(b)(9) – Care Plan_Phone Number Issue"
+	
+==Version 2.3.47#07/25/2022
+	*1. Implement Appendix A and B, C-CDA Templates from Clinical Notes STU Companion Guide, Release 3 (US Realm), May 2022 - Include update in C-CDA R2.1 Cures Update Validator within SITE and ETT UIs as 'USCDI Version 2 Beta'
+	
+	*2. Reference external Docker setup option in the Reference C-CDA Validator readme
+	
+	*3. Update Artifactory, the public repository for Reference C-CDA Validator dependencies
+	
+	*4. Update server infrastructure
+	
+==Version 2.3.46#05/31/2022
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.45#04/25/2022
+	*1. Update CIRI (b2) test data instructions and test data xml files to allow the reconciliation of Patient birth names appropriately
+	
+==Version 2.3.44#03/28/2022
+	*1. Update value set 2.16.840.1.113883.3.88.12.80.62 Vital Sign Result Type to the latest version in order to allow the use of code 3150-0
+	
+	*2. Update test data to change Allergy Drug Class to a value in the Value set for b1, e1, g9 criteria. The sender pdf files have been updated
+	
+	*3. Update CIRI (b2) test data instructions to allow the reconciliation of an Allergy due to a drug class
+	
+==Version 2.3.43#02/28/2022
+	*1. Update metadata for XDM in SMTP 28/29
+
+==Version 2.3.42#01/31/2022
+	*1. Fixed errata on Lot or Batch Number observation to support ED versus ST
+	
+	*2. https://jira.hl7.org/browse/CDA-1981
+	
+	*3. Add missing SDTC extension sdtc:text and implementation on organizer
+	
+	*4. Add support for IVL_REAL datatype and implementation on organizer
+	
+==Version 2.3.41#12/27/2021
+	*1. Update linked reference mismatched org name message for clarity and specificity
+	
+	*2. Fix recent server configuration issue which may have suppressed certain vocabulary results
+	
+	*3. Add missing CDA Extensions from 2018: sdtc:asPatientRelationship, sdtc:deceasedInd, sdtc:deceasedTime, sdtc:multipleBirthInd, sdtc:multipleBirthOrderNumber, sdtc:statusCode and stdc:desc
+	
+	*4. Limit Vital Sign Observation/value to data type PQ
+	
+	*5. Update value set for Marital Status to include U: Unmarried and C: Common Law
+	
+	*6. Report only one validation issue (versus two issues) for an incorrect or missing Allergy Section Code
+
+==Version 2.3.40#12/06/2021
+	*1. Enforce provenance templateId and extension requirements at a stricter level for content comparisons
+	
+	*2. Fix potential provenance null pointer exception
+	
+	*3. Fix potential security issues in ETT
+	
+==Version 2.3.39#10/25/2021
+	*1. Require provenance identification using templateId for provenance TS validation
+	
+  	*2. Fix configuredExpression totals by severity in production by enabling dynamic vocab
+	
+  	*3. Implement errata CDA-2008 https://jira.hl7.org/browse/CDA-2008 which relaxes NoteActivity/code/translation requirement to a SHOULD vs a SHALL: Consol Note Activity SHALL contain exactly one [1..1] code (3250-16895)/@code="34109-9" Note (CodeSystem: 2.16.840.1.113883.6.1 LOINC) (3250-16940, 3250-16941) code SHOULD contain zero or more [0..*] translation, which SHOULD be selected from ValueSet NoteTypes 2.16.840.1.113883.11.20.9.68 STATIC 20191017
+	
+  	*4. Fix inheritance bug in Medications Section where an error in both entries optional and required is reported, instead of reporting required only
+	
+  	*5. Fix patient name elements for b2 CIRI ambulatory scenario files
+	
+  	*6. Fix parsing bug where Procedures/NoteActivity is mistaken for ProcedureActivityProcedure
+	
+  	*7. Update the following value sets to the latest published version: CVX Vaccines Administered Vaccine Set and Substance Reactant for Intolerance
+	
+  	*8. Add newly available value sets: Transmission Based Precaution Types, Organism, Microbiology and Antimicrobial Susceptibility Tests, and Infectious Disease
+
+==Version 2.3.38.2#10/13/2021
+	*1. Fix potential security issues in ETT
+	
+==Version 2.3.38.1#09/27/2021
+	*1. Fix potential security issues in ETT
+	
+==Version 2.3.38#09/27/2021
+	*1. Relax participant constraints to allow free-text names in Referral Note as part of new MDHT 20210924 Release.
+	
+	*2. Update 170.315(e)(1) Inpatient setting Sample 1 files to include Reason for Referral instructions to enable vendors to create Referral Notes.
+	
+	*3. Update ETT dependencies as per dependabot.
+	
+	*4. Fix potential SQL injection issues in ETT
+	
+==Version 2.3.37#08/30/2021
+	*1. Fix DocumentBuilderFactory XXE vulnerability.
+	
+	*2. Fix exception during parallel execution of DocumentBuilder
+	
+	*3. Update to support HL7 Datatype IVL_REAL as part of new MDHT 20210824 Release
+	
+==Version 2.3.36#07/26/2021
+	*1. Add linked reference support for Note Activity.
+	
+	*2. Implement Errata 2041: Allow for Advance Directive organizer or Advance Directive observation in an Advance Directive section but prevent an entry from having both an observation and an organizer.
+	
+	*3. Update ValueSet HL7 RefrainPolicy 2.16.840.1.113883.1.11.20446 to reflect the DS4P IG.
+	
+	*4. Updated dependencies for security
+	
+==Version 2.3.35#06/28/2021
+	*1. Remove XML Line number and XPath from Content Validation results.
+	
+	*2. Added logic to allow Notes Activities to be present in any section within the C-CDA document.
+	
+	*3. Relaxed Care Team section requirement to warning instead of errors.
+	
+	*4. Updated Gold Samples for Sample 1 and Sample 2.
+	
+==Version 2.3.34#06/02/2021
+	*1. Updated Content Validator to allow notes activities in specific sections which include Lab Results, Procedures, Notes and Encounters.
+	
+	*2. Updated Error Messages for Notes Provenance Entries.
+	
+	*3. Updated Provenance Validation for Inpatient setting for Jane Clarkson to have the right organization name.
+	
+	*4. Updated Sample1 and Sample2 files to include Clinical Notes validation.
+	
+==Version 2.3.33#04/26/2021
+	*1. C-CDA Validator :
+            -Include provenance representedOrganization reporting where applicable to properly clarify error output messages
+	    -Fix provenance checking in Notes Entry to account for time zones     
+   	*2. Test Data :
+	    -Updated Care Team Validation as per the Companion Guide
+	    -Updated Pediatric Vitals Error Message to consult ATL when different results are obtained 
+	    -Updated Sample 3 files for Inpatient criteria to include Henry Seven as Attending Physician Care Team Member
+	    -Updated VDT Xml samples Health Concerns Section to point to Problem Section using right identifiers
+	    
+==Version 2.3.32#04/05/2021
+	*1. Updated Happy Kid Vitals test data to reflect the CDC growth charts more accurately.
+	
+	*2. Updated the test data sample 3 files for both inpatient and ambulatory to more clearly identify USCDI data elements.
+	
+	*3. In the software side, Added tolerance based validation for growth charts to allow for variations by EHR vendors.
+	
+	*4. Updated Gold Sample with cures data.
+	
+	*5. Fix rejection of a submitted Provenance time which is not matching the scenario time exactly. Instead, the base-level-date is enforced but the time and time-zone can be any value, if formatted correctly.
+	
+	*6. Add Provenance date and time/time-zone validation.
+	
+	*7. Fix blank Organization Name in Provenance error output.
+	
+==Version 2.3.31.1#03/08/2021
+	*1. C-CDA Validator :
+            -Fix invalid errors fired when more authors exist in the submitted data than the scenario
+   	    -Add Note Activity enforcement to Results and Procedures Sections
+   	    -Fix telecom issue for type mailto      
+   	*2. Test Data :
+	    -Updated Vitals Test Data to reflect the CDC growth charts for pediatric vitals
+	    -Updated Validator to remove the provenance to non USCDI data elements
+	    -Updated Telecom values for CIRI b2 criteria for Telecom validation
+	
+==Version 2.3.31#02/22/2021
+	*1. Fix XDR 1 and XDR 2 tests to call the Cures validator when Cures files are selected with updated parameters.
+	
+	*2. Update XDR 7 and XDR 9 tests to pass when an exception is thrown.
+	
+==Version 2.3.30#01/25/2021
+	*1. Updated XDR 1 and XDR 2 tests to call the Cures validator when Cures files are selected.
+	
+	*2. Updated SMTP 8, 14, 18 test to call the Cures validator when Cures files are selected.
+	
+	*3. C-CDA Validator :
+            -Fix issue requiring 0 provenance (author) instances 
+   	    -Update birth sex and telecom validation to fire error for cures and warning for non-cures
+   	    -Fix birth sex and telecom validation not firing relevant issues when severity is set to errors only      
+   	    -Fix scenario file for Cures selecting pre-cures scenarios in SITE C-CDA Validator UI
+	    
+==Version 2.3.29#12/07/2020
+	*1. Updated cures validator with the following changes:
+	    -Add IG-level UDI validation
+	    -Add Provenance content validation for section and entry relationships
+	    -Update CDT, CPT, LOINC, SNOMED, and RXNORM code systems
+	    -Fix Care Team cardinality and severity issues (4435-152, 4435-166, etc.)
+	    -Fix Note Types translation code issue where our value set was out of date (3250-16940, 3250-16941)
+ 	    -Fix cardinality and remove 'such that it' for Note Activity Author Participation (3250-16913)
+	
+==Version 2.3.28.1#11/16/2020
+	*1.Update value sets to the latest available for the CURES option
+	
+        *2.Fix telecom validation to validate numbers only
+
+        *3.Fix issue where the Reference Validator was not producing a log
+	    
+==Version 2.3.28#10/27/2020
+	*1. Updated Vocabulary validator with the latest VSAC value sets.
+	
+	*2. Updated Content Validation and fixed defects associated with Notes and Provenance validation.
+	
+	*3. Based on MDHT build https://github.com/mdht/mdht-models/releases/tag/v20201024 contains the following fixes:
+	    - Added Notes Templates
+	    - Added Care Team Template
+	    - Added Provenance Template
+		
+==Version 2.3.27#9/28/2020
+	*1. Updated USCDI Sample 3 Test Data for Ambulatory and Inpatient to correct date of birth and timing errors.
+	
+	*2. Updated Notes Error reporting and fixed errors related to Sample 3 for Ambulatory and Inpatient settings.
+	
+	*3. Updated Author Provenance Error Reporting.
+	
+	*4. Changed Telecom and Birth Sex Error reporting from WARNING to ERROR.
+	
+	*5. Fixed a bug on ETT to download cures CCDA files from GitHub.
+	
+==Version 2.3.25.2#9/14/2020
+	*1. Renamed the test data files to start from version 1.
+	
+	*2. Updated the test data to include USCDI elements as part of Sample3 files.
+	
+	*3. Updated Sample3 for b1, e1 and g9.
+	
+	*4. Updated DS4P test data to include entry level markings.
+	
+==Version 2.3.25.1#8/13/2020
+	*1. Add endpoints documentation
+
+==Version 2.3.25#8/5/2020
+
+	*1. Make MDN checks in MU2 39, 40 and 41 case insensitive.
+	
+==Version 2.3.24#6/1/2020
+
+	*1. Remove 2014 edition certification tools.
+	
+==Version 2.3.23#6/1/2020
+
+	*1. Add Cures Update C-CDA R2.1 Validator.
+	
+==Version 2.3.22#4/27/2020
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.21#3/30/2020
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.20#2/24/2020
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.19#1/27/2020
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.18#11/18/2019
+
+	*1. Add filter to not permit a user to map the DCDT email addresses.
+	
+==Version 2.3.17#9/30/2019
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.16#8/26/2019
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.15#7/29/2019
+
+	*1. Updated github links from siteadmin to onc-healthit
+	
+	*2. https://github.com/onc-healthit/reference-ccda-validator/releases/tag/1.0.42
+	
+==Version 2.3.14#6/24/2019
+
+	*1. https://github.com/siteadmin/site-content/blob/master/NewsAndAnnouncements.md
+	
+	*2. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.13#5/28/2019
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.12#4/29/2019
+
+	*1. No Updates to tools. Documentation and other updates to Dev and Test environments.
+	
+==Version 2.3.11.1#3/28/2019
+
+	*1. Add date header to MT tests 39, 40 and 41.
+	
+==Version 2.3.11#3/26/2019
+
+	*1. https://github.com/siteadmin/code-validator-api/releases/tag/1.0.20
+	
+	*2. https://github.com/siteadmin/reference-ccda-validator/releases/tag/1.0.40
+	
+==Version 2.3.10#2/25/2019
+
+	*1. Updates to C-CDA validator library dependencies to use newer versions for compilers, jackson etc.
+	
+	*2. Updates to C-CDA validator library dependencies to fix security vulnerabilities.
+	
+==Version 2.3.9#1/28/2019
+
+	*1. Update apache commons and apache tika version due to github identified security issue.
+
+	*2. Fix a bug in XDR HISP test cases where processed MDNs sent by the SUT cause inconsistent results.
+	
+	*3. New validator release-https://github.com/siteadmin/reference-ccda-validator/releases/tag/1.0.38
+	
+==Version 2.3.8#11/26/2018
+
+	*1. Update jackson-databind version due to github identified security issue / Fix jackson dependency issues, upgrade both to 2.9.7.
+
+	*2. Implement a new RequiredNodeValidator for enforcing any missing node and add xpath support for the xsi namespace.
+	
+	*3. Update configuration to resolve Lab test result with no units.
+	
+	*4. Update configuration to resolve missing vocabulary rule for CONF:81-16850.
+	
+==Version 2.3.7#10/29/2018
+
+	*1. Updated internal libraries to better detect file mime types.
+
+	*2. Updated C-CDA Validator to handle NonUniqueResultException. Addresses google group user issues.
+
+==Version 2.3.6#09/25/2018
+
+	*1. Combined Monthly Update
+
+==Version 2.3.5.1#08/27/2018
+
+	*1. Updated C-CDA Validator to use the 6-15-2018 value set release from VSAC.
+
+==Version 2.3.5#08/16/2018
+
+	*1. IHE XDS Toolkit updated to the latest 6.3.4.
+	
+	*2.More info in the SMTP MT tests fixed to reflect the appropriate email addresses.
+	
+	*3. index.htm discrepancy (with respect to the inner ccda name) in the XDM (used by direct send) fixed.
+	
+	*4. Internal mailbox adjusted to address the inbox overflow for the SMTP receive tests.
+
+==Version 2.3.4.1#07/30/2018
+
+	*1. Updated C-CDA validator with the following changes:	
+	 	- a. Substance Reactant Value set was updated to the latest value set from VSAC.	 
+		- b. Added support for the latest LOINC.csv file to enable both 2015 baseline and newer versions of LOINC codesystem files.		
+		- c. Updated VDT Test data XML file to remove errors from ERRATA update
+
+
+==Version 2.3.4#07/19/2018
+
+	*1. XDR Test narrative updates to enhance user experience.
+	
+	*2. The IMAP/POP inboxes updated to auto-populate test data from github periodically.
+	
+	*3. Updated the XDM to address validation issues.
+	
+	*4. Server security updates for better responsiveness.
+
+
+==Version 2.3.3#06/25/2018
+
+	*1. Ability to select XDM zip option removed from the XDR (receive) cases to address the ambiguities arising from the metatdata in multiple locations. 
+	
+	*2. The description in the D2 test for DCDT rendered accurate by changing it to "domain-bound".
+	
+	*3. CCDA-validator updated. See release notes here: https://github.com/siteadmin/site-content/blob/master/CCDAValidatorReleaseNotes.md
+	
+
+==Version 2.3.2.1#05/29/2018
+
+	*1. CCDA validator updated
+		- The validator has been updated to include the latest HL7 C-CDA Schema (with internal fix due to errta in HL7 Schema) which includes support for sdtc:functionCode in cda::Performer2 and cda::Participant2
+
+==Version 2.3.2#05/17/2018
+
+	*1. The direct endpoint - testing@ttpedge.sitenv.org augmented for both 1.1 and 2.1 validation based on the attachment.
+	
+	*2. Server log architecture optimization.
+	
+	*3. C-CDA validator updated to revert routeCode terminology and add routeCode/translation rule with terminology as per DSTU:1276 modification. 
+	- The modified implementation should look like the following:
+	- <routeCode code="someValidCode" codeSystem="2.16.840.1.113883.3.26.1.1" codeSystemName="NCI Thesaurus">
+	- <translation code="someValidCode" codeSystem="2.16.840.1.113883.6.96"/>
+        - </routeCode>
+        - A single written example of the 4 locations modified is enforced as:
+        - Immunization Activity (V3)
+        - 1.    MAY contain zero or one [0..1] routeCode, which SHALL be selected from ValueSet Medication Route FDA urn:oid:2.16.840.1.113883.3.88.12.3221.8.7 DYNAMIC (CONF:1198-8839).
+        - a.    The routeCode, if present, SHOULD contain zero or more [0..*] translation, which SHALL be selected from ValueSet Medication Route urn:oid:2.16.840.1.113762.1.4.1099.12 DYNAMIC (CONF:1198-32960).
+	
+	
+
+
+==Version 2.3.1.2#05/01/2018
+	*1. Fixed ReactionObservation value set binding to Reaction Severity which was incorrect per HL7 clarifications received for ERRATA 836. 
+	
+	*2. Updated value set per ERRATA 1276 to reflect SNOMED-CT instead of FDA for routeCode.
+
+
+==Version 2.3.1.1#4/30/2018 
+
+	*1. C-CDA ERRATA Updates to the Validator: 
+	- Please refer to the thread https://groups.google.com/forum/#!topic/edge-test-tool/vsA_W9Yg4mc for the descriptions of the ERRATA updates. The Validator has been updated with the ERRATAs that has been approved and released by HL7 in September 2017 for C-CDA R2.1
+	- As a result of the ERRATA the test data was updated. Specifically the XML files being used by Receivers for b1, b2, b4, b7, were updated to comply with the ERRATA.
+	
+	*2. Other C-CDA Validator Updates:
+	- The validator was updated to validate document type and indicate errors based on the certification criteria, previously this was being done visually by the ATLs.
+	- The validator was updated to allow resolved problems to appear as part of the History of Past Illness section.
+	- The Test XML files for CIRI for R11 version was updated to properly link narrative with entries. 
+	
+	*3. ETT updated with enhanced database security measures.
+
+==Version 2.3.1#4/19/2018 
+
+	*1. XDR Test 2 enhanced so that ccda document type can be specified and received document validated accordingly.
+	
+	*2. Database security enhanced with encryption measures.
+
+ ==Version 2.3.0.1#3/26/2018 
+
+	*C-CDA Validator Update:
+	- 1: Configured Personal And Legal Relationship Role Type urn:oid:2.16.840.1.113883.11.20.12.1 ValueSet vocabulary validation for Care Plan documents as per CONF:1198-3236 for both code and codeSystem enforcement
+	- 2: Removed Encounter Diagnosis content validation from e1 VDT validation objectives
+ 
+ ==Version 2.3#3/15/2018 
+ 
+ 	*1. R2.1 validator UI now includes download files option.
+	
+	*2. C32 and CCR files removed from Send Direct Message and Documentation.
+	
+	*3. Mime headers removed from the downloaded ccda file sent using direct.
+	
+	*4. Test data update: Modified test data for Care Plan (b)(9) criteria to identify clearly the optionality and required data for Care Plan sections
+ 
+ ==Version 2.2.0.1#2/26/2018 
+  
+    *1. C-CDA Validator was updated to produce warnings for care plan sections that are mentioned in the test data but are a SHOULD in the IG.
+    
+    *2. Updated IG validation to align MedicationSection/code rules with R1.1 C-CDATemplateLibrary.
+ 
+ 
+ ==Version 2.2#2/15/2018 
+  
+    *1. C-CDA Validator UI has been revised - addition of validator home page, IG only option for 2.1
+    
+    *2. Bookmark attribute changed to "ETT Home".
+    
+    *3. HISP SMTP Test 8, 14, 'More Info' updated.
+    
+    *4. R2.1 validator flips the report after the validate button is selected.
+    
+    *5. Test by criteria/Surveillance reorganized to include : (b)(1), Criteria (I)(A) Send using Edge Protocol - Delivery Notification
+    
+    *6. Heading and test panel in the Surveillance test for Direct has been updated 
+    
+    *7. Enhanced google analytics.
+    
+    *8. SMTP Test 28 message subject typographic error has been fixed 
+    
+    
+
+
+==Version 2.1.2.3#1/29/2018
+    *1. Added ccda file name of the submitted file for debugging. 
+    
+    *2. Added warning messages for telecom content validation.
+    
+    *3. Updated MU Gold Sample XML file to remove Clindamycin Allergy which is not present in the test data.
+    
+    *4. Updated CIRI R1 xml samples files to correct medication dosage.
+    
+    *5. Updated CarePlan PDF's to explicitly mention the Medication Tylenol for the Intervention Act referring to the Medication Entry.
+    
+
+==Version 2.1.2.2#12/14/2017
+    *1. Enabled AUTH LOGIN support for the SMTP send/receive tests (in addition to the earlier supported AUTH PLAIN for Plain SASL authentication mechanism).
+
+
+==Version 2.1.2.1#11/30/2017
+    *1. Updated Direct LDAP Certificate Discovery to account for userCertificate:binary attribute which is used to store direct certificates in certain systems. Prior to this fix the certificate associated with a Direct address stored in the attribute "userCertificate:binary" was not being discovered successfully where as certificate stored in "userCertificate" was being discoverd.
+    
+    *2. Updated the C-CDA Validator to 1.0.25 version which can be accessed at
+    - https://github.com/onc-healthit/reference-ccda-validator/releases
+    
+    *3. The C-CDA validator was updated to allow for Translation element within the raceCode attribute to be used to represent granular race code. 
+    
+    *4. The C-CDA Validator was also update to fix the vocabulary defect which prevented validation in certain cases with the error message "The service has encountered the following error: result returns more than one."
+    
+    *5. Updated the 170.315(b)(2) CIRI Sample XML files with the right Diagnosis code of 282291009 instead of the incorrect code (29308) which is currently present.
+
+==Version 2.1.2#11/16/2017
+    *1. Updated Test Descriptions for XDR MT Test 50a and 50b to move the email addresses to the “More Info” screen.
+    
+    *2. Updated the “More Info” screen for SMTP Test 26a and 26b to document the expected outcome.
+    
+    *3. Added a link to the documents and help from ETT Home page.
+    
+    *4. Removed Email addresses for various MDN endpoints from ETT HISP and Edge Home pages since the addresses are already part of the Test Cases.
+    
+    *5. Removed 2015 Edition Direct Content Validation endpoints from ETT HISP and Edge Home.
+    
+    *6. Clarified “Vendor Email Address” as “Vendor Direct Email Address” as part of the ETT UI.
+    
+    *7. Added a link to the FAQs as part of the Documents page.
+    
+    *8. Corrected Typos in XDR Tests 10, 11 and 12 on More Info pages.
+
+==Version 2.1.1.1#10/30/2017
+
+    *1. The C-CDA validator has been updated to Release 1.0.24 which can be accessed here: 
+    - https://github.com/onc-healthit/reference-ccda-validator/releases
+    
+    *2. As part of the release, the latest Value Sets from VSAC have been downloaded and configured.
+    
+    *3. For more information about the Value Sets, please refer to the github location
+    - https://github.com/onc-healthit/code-validator-api/tree/master/codevalidator-api/docs
+    
+    *4. The Code Validation has been updated to print warnings for inactive codes as specified by the CodeSystem files.
+
+==Version 2.1.1#10/19/2017
+
+    *1. Adding Direct address to Direct Home page - To verify basic Direct send capabilities of your system send a message to:testing@ttpedge.sitenv.org.
+    
+     *2. Updated Direct Home Page with more enhancements.
+     
+     *3. Removed orphan listing in the Surveillance (h)(2) dropdown array
+     
+     *4. Corrected SMTP MT Test 46 to display the correct test status - distinctly showing "Failed" instead of the generic "Retry" in case of messages without the header.
+     
+     *5. Updated the files in the inboxes for POP & IMAP Test 31 with the current versions.
+     
+     *6. Changed Text in XDR MT Test 13, 14, 16
+     
+     *7. Fixed SMTP Receive Tests 29 and 29 contain two METADATA.XML files
+     
+     *8. Fixed - CCDA Validation Report link doesn't work for (h)(2) SMTP Send 8, 14 and (b)(1) SMTP Send 8, 14, 18
+     
+     *9. Fixed the ttpds2 DNS MX entry to return the host name instead of IP
+     
+     *10. nodeRepresentation attribute missing for author in XDR tests 3/5 - fixed and verified.
+     
+     *11. Collecting usage analytics for various user functions.
+
+==Version 2.1.0.2#9/27/2017
+
+  * 2015 Edition Testing by Criteria 
+      - lists duplicate entries in the criteria dropdown - fixed.
+
+==Version 2.1.0.1#9/25/2017
+
+* Direct:
+	- The endpoint dsn@ttpedge.sitenv.org which was unused as part of ETT tool and 2014 and 2015 Test procedures was removed as it was causing exchanging unnecessary messages with HISPs who sent messages to the endpoint in a continuous loop causing a lot of unnecessary network traffic.
+
+* C-CDA Validator: The C-CDA Validator was updated to 1.0.23 with the following fixes.
+	- Updated the 170.315(b)(2) - CIRI Validation for R1.1 files which was missing. Prior to the release, the R1.1 file reconciliation output submitted to the validator was not being validated for content. This was updated to ensure content matching was performed with the R1.1 reconciliation file outputs. So if the reconciliation of R1.1 files does not produce the output following the instructions provided for the criteria, there will be errors displayed by the validator.
+	- Existing Smoking status validation bug was fixed which was previously preventing an error being displayed when smoking status entry was nullFlavored or missing. The fixing of the bug displays an error if smoking status does not include the proper test data provided. 
+	- DS4P Validation was updated such that PurposeOfUseSecurityObservation/value and all other values and codes of templates which inherit from SecurityObservation now override their parent requirements. This allows for both templates to exist, but only the child's requirement to be enforced. This resolves the possible conflict of differing terminology requirements between a parent and child template. As a result, PurposeOfUseSecurityObservation value/@codesystem now requires ActReason 2.16.840.1.113883.5.8 as opposed to the prior requirement of ObservationValue 2.16.840.1.113883.5.1063, due to an error in the HL7 example XML.
+
+* Test Data Updates:
+	- The R11 Receiver files (XML files) for 170.315(b)(1) and (b)(5) were updated to correct the telephone numbers to be consistent between the narrative display content and the coded information.
+	- The Negative Testing Files for CCDS (Both R2.1 and R1.1) were updated to remove “Bad/Fictitious” template Ids , since vendors were interpreting these templates as open templates and hence not flagging the errors. The omission of these templates and corresponding entries with the right template Ids will make the test data less confusing, so that vendors can directly identify which templates are missing and erroneous based on the C-CDA IG.
+	- The DS4P Sample 1 files were updated based on the DS4P issues resolved in the validator above.
+
+==Version 2.1#9/21/2017
+
+	*1. "Surveillance Testing" aspect added to ETT - accessible from the ETT home page.
+	
+	*2. DCDT Trust Anchor download option fixed.
+	
+	*3. Added help (hover) descriptions to the Direct Certificates
+	
+	*4. Send Direct Message issue - adding hash value to the file extension - has been fixed. 
+	
+
+==Version 2.0.1.2#9/15/2017
+
+ 	*The release updates the Direct Certificates related to the domains 
+		- ttpedge.sitenv.org 
+		- ttpds2.sitenv.org
+		
+	*The certificates are being updated to remove the invalid CRL URI in the certificates. These certificates will be published via 		- DNS and will propagate shortly after the release is done.
+
+	 *Note: The trust anchors or intermediate anchors are not being updated, so vendors do not need to change any trust anchors. 
+          	- The Direct transactions should pick up the new CERTS that get published via DNS after the release.
+
+==Version 2.0.1.1#8/28/2017
+
+ *1. Issue with XDM Validation Report download fix for application/octect-stream corrected.
+ 
+ *2. Register Direct Title has been updated.
+ 
+ *3. Updated C-CDA Validator with the following fixes
+ 	- Fixed DS4P validation to align with DS4P IG and Consent Directive IG as they are dependent.
+	- Resolved errors in test data samples provided by ONC.
+	- Fixed CCDS Content Validation issues for Udis.
+	- Updated Code Validator to handle the new VSAC format.
+	- Updated the test data to contain the previous version also.
+
+==Version 2.0.1#8/17/2017
+
+ *1. Send Direct Message - help hover text for "Wrapped" selection enhanced.
+ 
+ *2. Register Direct narrative has been updated.
+ 
+ *3. Security settings in the server improved
+ 
+ *4. XDM Validation Report download fixed: now accepts application/octect-stream.
+ 
+ *5. The following C-CDA updates have been made as part of the release and will be visible from Friday (8/18/2017) evening.
+        - Removed non-CCDS data elements from (g)(9).
+        - Updated Immunization test data in PDF files to remove inactive codes.
+        - Updated Medication test data in PDF files to remove inactive codes. 
+        - Updated XML samples to remove non-UTF8 characters and inactive codes.
+
+
+==Version 2.0.0.1#8/1/2017
+
+ *1. Fixed Parsing errors in XDR Test 1 and 3.
+
+ *2. Fixed intermittent database exception error while executing XDR Test 1.
+
+ *3. Updated Mime Types for SMTP 26a and 26b
+
+ *4. Updated Attachment Processing for XDR Test 1 to handle HTML and XML attachments sent together.
+
+ *5. Fixed XDM Validation Report download capability.
+
+ *6. Updated Cronjobs to populate mailboxes used by SUTs.
+
+ *7. C-CDA Validator was updated to 1.0.20 with the following fixes:
+      -Updated Encounter Diagnosis content validation to conform to test data.
+      -Updated DS4P validation to incorporate IG constraints.
+
+==Version 2.0#7/20/2017
+
+ *1. ETT has been updated with a new look and feel consistent with the rest of the ONC suite of applications.
+
+ *2. The timeout used in XDR MT 44 is now configurable for more effective testing.
+
+ *3. Direct Messages sent now have "Test Session Name" added to the Subject header
+
+ *4. (SMTP test 8, 14) and (SMTP Test 8, 14, 18) descriptions have been updated.
+
+ *5. HISP XDR Test 17 adds "https://" to the description.
+
+ *6. Failure MDN returned from ETT now has the disposition value 'failed' as per the IG
+
+ *7. Validation is performed only if C-CDA in XDR and XDM sender tests.
+
+ *8. XDR MT tests have improved documentation on endpoints used - particularly XDR MT Tests 43/44/50a/50b.
+
+
+
+==Version 1.2.6.1#6/27/2017
+
+ *1. XDR MT 43/44 issue resolved. ETT sends a failure MDN to the SUT HISP as per the test specification without time delay; for 44 however it maintains the delay and the description has been updated to document the delay.
+
+ *2. XDR 7 displays the https endpoint correctly now for copying from clipboard to be used for the test by SUT.
+
+ *3. ETT refreshes IMAP/POP account folders more frequently so that testers will not be affected by occasional problems with missing mails.
+
+ *4. CCDA-validator has been released. The release notes here:
+      -Updated typeCode identification in ConsultationNote2 participant which was causing errors incorrectly.
+      -Updated Problem Value Set from VSAC to accomodate Allergy Reaction codes.
+      -Updated Content Validation to not have an error when the Severity has a nullFlavor value.
+      -Updated Content Validation to produce WARNING instead of ERRORS when Allergy Reaction and Severity are not present or are present with Null Flavors.
+      -Updated Content Validation to allow Lab Result Values without Units to use either PQ or ST data type.
+      -Updated Content Validation to fix defect in PQ validation which was preventing errors when just value was not matching the test data.
+
+
+==Version 1.2.6#6/15/2017
+
+ *1. Restore tests for the 2014 Edition to the UI
+
+ *2. Remove IMAP/POP 12 tests
+
+ *3. DCDT issue fixed whereby test case selection is prompted after reset
+
+ *4. Content-Disposition check in the direct validation  enhanced to allow paranthesis inside quotes
+
+ *5. Fixed: Message Validators showing Criteria instead of C-CDA Document Type
+
+==Version 1.2.5.1#5/31/2017
+
+  *1.  The C-CDA Validator was updated to Release 1.0.17 and it can be accessed here :                                    https://github.com/onc-healthit/referenceccdavalidator/releases
+				     
+  *2.  Select by Criteria b(1) issues have been corrected.
+  
+  *3.  Miscellaneous documents links to 2014 certification samples from github.
+  
+
+==Version 1.2.5#5/18/2017
+
+*1. IMAP/POP folders populated periodically.
+
+*2. UI updataes: More info XDR Test 1, MT Test 20a/b, Rename HISP IMAP/POP Tests, Update Test by Criteria drop-dwon labels (h)(2),
+   Labels for IMAP/POP 31, XDR 3 address corrected, SMTP Test 1 text changed to "non-existent address", DCDT accordian hyperlink at the top fix.
+   
+*3. XDMs used in the tests changed to uppercase.
+
+*4. Content Disposition check ignores comment check for quoted strings for Direct Message Validation.
+
+==Version 1.2.4.3#5/09/2017
+
+  *1. Fixes the issue with attachments in the b(1) due to encoding
+
+==Version 1.2.4.2#4/28/2017
+
+  *1. Fixes the issue with the XDR tests adding extraneous "http" in the endpoint.
+
+
+==Version 1.2.4.1#4/25/2017
+
+ *1. The Direct Certificate Discovery Tool has been updated to use the ETT UI framework.
+
+ *2. As a result, the new links to the tool are :
+     -2014 DCDT: https://ttpedge.sitenv.org/ttp/#/direct/certdiscovery/dcdt1
+     -2015 DCDT: https://ttpedge.sitenv.org/ttp/#/direct/certdiscovery/dcdt2
+     
+ *3. The old links will not be accessible going forward.
+
+ *4. The C-CDA Validator was updated to Release 1.0.16 and it can be accessed here :    
+        -https://github.com/onc-healthit/referenceccdavalidator/releases
+ 
+==Version 1.2.4#4/20/2017
+
+ *1.  Added option to selectively use STARTTLS (default selected) for SMTP/IMAP/POP profiles for systems demonstrating security through other means such as secure networks.
+ 
+ *2.  Testing by Criteria § 170.315(b)(1) updated for accuracy.
+ 
+ *3.  Content type for SMTP 25d order updated to reflect the correct types.
+ 
+ *4.  UI fixes:  timeout field in SMTP MT 28 removed, endpoint listed for XDR Test 7 fixed,  removed *: from the XDR MT Direct From Address hover over
+
+==Version 1.2.3.1#3/27/2017
+
+ *1.  CCDA validator (2.1 and 1.1) updated to 1.0.5.  Release notes can be accessed here : https://github.com/onc-healthit/referenceccdavalidator/releases
+
+ *2. The criteria (b)(1)(i)(C) XDM Processing was wrongly listed as (i)(B) in the dropdown - fixed.
+
+
+
+==Version 1.2.3#3/16/2017
+
+*1. "Test By Criteria" - (b)(1)  has been added for easier navigation for this criteria.
+
+*2. Updated test by criteria h(2) to include "Send using Direct + XDM".
+
+*3. h(1) (ii) criteria now adds upload file button for uploading certificates.
+
+*4. The direct validation link issue due to un-encoded url is now fixed.
+
+*5. SMTP 18(a)/47(a) deliver the MDNs from ETT to the user specified address, though still needs to be validated manually (see: https://groups.google.com/forum/#!msg/edge-test-tool/S-QqSkxTzRE/tTfocNK2CQAJ)
+
+*6. All the SMTP receiver tests now have the manual validation workflow
+
+*7. SMTP MT 28 allows configuration for timeout value 
+
+*8.  More info sections have been updated for Edge IMAP, Edge POP, XDR 10/11/12, SMTP 18, Direct From/Direct To for XDR tests
+
+*9. UI fixes: documents page links shown with right icons, read version numbers from github
+
+*10. The ccda-validator has been updated with these changes :
+       - 1. Updated the Negative Test XML Files for (b)(9) Care Plan criteria to include the US Realm Header Template Id.
+       - 2. Update the Administrative Gender value set to include the "UN" code.
+
+
+
+==Version 1.2.2.1#2/28/2017
+
+  *1. C-CDA Validator Updated to version [1.0.14](https://github.com/onc-healthit/referenceccdavalidator/releases/tag/1.0.14)
+
+==Version 1.2.2#2/16/2017
+
+  *1. "Test By Criteria" - h(2) has been added for easier navigation for this criteria.
+
+  *2. SMTP HISP MT tests for SMTP receiver 1-4, 21(a), 23(a), 24(a), 25(a), 26(a), 27(a), 28(a), 29(a) and Edge MT tests 18(a), 47(a) incorporate the workflow for manual verification of the MDN.
+
+   *3. XDS Toolkit updated - which in particular addresses, [XDR validation of sourcePatientInfo does not permit PID-3 identifier list](https://github.com/usnistgov/iheos-toolkit2/issues/193)
+
+   *4. CCDA Validator updated - [1.0.12](https://github.com/onc-healthit/referenceccdavalidator/releases/tag/1.0.12)
+   
+    *5. Test Data XDM_LIM.zip updated - details [here](https://groups.google.com/d/msgid/edge-test-tool/cfc85156-c6d5-447e-96a4-170f2c895911%40googlegroups.com)
+
+   *6. SMTP HISP Test 1-8, 14 (Send) Test - endpoint changed to edge-receiver@ttpds.sitenv.org to enable local delivery (AUTH not required).
+
+    *7. SMTP MT 45 Description updated.
+
+    *8. UI changes: Certificate upload text for SMTP MT Tests now indicates that a .der file is required., download page shows external links.
+
+
+
+==Version 1.2.1#1/19/2017
+
+    *1. Select by criteria 170.315(h)(1) now lists all the steps needed for the test
+    
+    *2. The file dialog selection of ccda-documents are mandatory for all the cases except the SMTP MT 39/40/41.
+    
+    *3. Descriptions on EDGE MT - SMTP MT Tests 18a and 47a updated.
+    
+    *4. Included XDS Toolkit 4.2 (allows multiple patient IDs within a sourcePatientInfo)
+
+    *5. UI changes: all the footers now consistent, profile user input is also consistent, added copy "widget" to the CCDA R2.1 Direct (to) address section, XDR validation changed from "NOSAML" to "No SAML", XDR "Link to Certificates"
+        to "Click to download XDR TLS certificates".
+    
+    *6. Documentation updates: User Manual inclues the section "Test By Criteria", Local installation guide and installing from       AMI guide  included in the github and as a link from the Documents page.
+	
+    *7. Updated the XDM_LIM.zip in the github testdata which fixes a validation issue with the slot (used by XDR MT 11).
+    
+    *Update: 1/31/2017 -  Updated the XDM_LIM.zip/XDM_FULL.zip - https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!msg/edge-test-tool/YrgbgRix5vo/e6FZQukhDAAJ
+    
+==Version 1.2.0.1#12/23/2016
+
+	*1. Fix broken URL calls.
+	
+==Version 1.2.0#12/19/2016
+
+	*1. New panel to the ETT Home page "Test By Criteria" has been added - allowing logical navigation of the test cases. This release addresses a part of criteria § 170.315(h)(1) and the remaining criteria to be addressed in the upcoming releases.
+
+	*2. Certificate discovery in ETT (for Direct Send) now uses the certificate that has not expired if multiple certificates are encountered.
+
+	*3. ETT now adds the Disposition-Notification-To header in the Message Tracking HISP cases.
+	
+	*4. XDR Validator - Turning SAML off now shows "No SAML" instead of "No Errors" in the SAML tab.
+	
+	*5. The tool has been fixed to skip malformed or corrupted messages in the ETT mailstore folder which cause issues when fetching emails.
+	
+	*6. Documentation updates:
+		- Added link to FAQ in the Help Page
+		- Hosting Training Videos on ETT again - please note that the references to nist.gov server names in the videos need to modified accordingly (to sitenv.org equivalent).
+		- Removed Section 3, Local Install from the User Guide. This will be included in the Installation Guide.
+		- CCR/C32 samples from the documents page are now linked to the github repository.
+	  
+	*7. UI changes: Tool tip indicator for 'Message format' on File section pop up and "MU2" label text from profile dialog removed.
+
+
+
+
+==Version 1.1.3.1#11/28/2016
+
+	*1. XDR SAML validation is available at ETT - migrated from TTT.
+
+	*2. HISP XDR Sender Test 12: XDM metadata now conformant
+
+	*3. XDS toolkit updated to version 4.
+	
+
+==Version 1.1.3#11/17/2016
+
+	*1. Final-Recipient field for MDNs returned by ETT now conform per RFC 3798 Section 3.2.4 to use message recipient (earlier it was pointing to the sender).
+
+	*2. The failure message tracking cases now pass only if X-Original-Message-ID can be correlated and do not fallback to In-Reply-To anymore
+
+	*3. XDM limited metadata fixed for the issue reported and is referenced from github now.
+	
+        *4. UI Enhancements
+             - After clicking More Info/Log links from the test case, the back button navigates back to the corresponding test case.
+             - Labels changed to "XDM Validator" & "XDR Validator".
+
+	*5. FAQ page added [https://ttpedge.sitenv.org/ttp/#/edge/faq] (can also be accessed directly from here: https://github.com/onc-healthit/ett/wiki/FAQ)
+	
+	*6. CCDA validator updated to 1.0.7 [https://github.com/onc-healthit/referenceccdavalidator/releases]
+	
+	
+==Version 1.1.2#10/20/2016
+
+	*1. HISP XDR Sender Tests 11 and 12: XDM metadata sent by ETT is now conformant
+	
+	*2. File selection dialog display fixed to show html as files instead of folders.
+	
+	*3. 'More Info.' section missing description for XDR test cases now added.
+		
+	*4. The "Step 1" instruction in the XDR test case has been fixed to have increased clarity.
+	
+	*5. Server configured to run the MDHT validator on a separate instance for better performance.
+
+
+==Version 1.1.1#10/06/2016
+
+	*1. ETT User guide updated and is available from the github repository.
+	
+	*2. ETT Public Root CA download from the Direct component fixed to point to sitenv.org.der.
+	
+	*3. SMTP HISP MT tests use X-Original-Message-ID  (earlier used In-Reply-To, now only as a fallback) header for failure DSNs
+	
+	*4. SMTP test case descriptions are configurable from a JSON file in the application directory.
+	
+	*5. XDR MT 38: referenced endpoint updated from processedonly to processeddispatched for correct behavior and the logs show the asynchronous notification.
+	
+	*6. References to previous ETT Instruction/Demonstration Videos have been dropped
+	
+	*7. HISP MT SMTP/SMTP cases description changed to reflect the limitation
+	
+	*8. Direct Page ETT Certificate tool tips updated to relevant names
+	
+	*9. Validation report for profile now lists the test result in a sorted order by date
+	
+	*10. DCDT is accessible from the menu inside Direct component.
+	
+	*11. The direct validation report link URL port reference removed.
+	
+==Version 1.1.0.1#09/30/2016
+	*1.   UI change: XDR TLS certificates from the UI now point to the github location:    
+	      -https://github.com/onc-healthit/ett/blob/resources/certificates/common/xdr-tls/keyAndCert.zip
+	      
+	*2.   Direct send decryption issue reported has been fixed which involves
+	      - Java Cryptography Extension (JCE) key strength update in the environment
+	      - the encryption library points to the right version
+	      
+	*3.   Environment updated so that the TTP mail server allows MAIL FROM differing from AUTH information.		
+
+==Version 1.1.0#09/22/2016
+
+	*1.     For SUT Receiver Test Cases: XDR Test 3, SMTP MT-39, SMTP MT-40 and SMTP MT-41, the C-CDA Document Selection dialog now automatically sets the context to select documents required for testing.
+		-a.     https://ttpedge.sitenv.org/ttp/#/edge/xdr (XDR Test 3)
+		-b.     https://ttpedge.sitenv.org/ttp/#/hisp/mu2 (SMTP MT-39, SMTP MT-40 and SMTP MT-41)
+		
+	*2.     Changed the TTP Footer notice about browsers from "Recommended Browsers: For best result use, Firefox 3.x and Chrome" to “Tested with Firefox 3.x and Chrome browsers.”
+	
+	*3.     Resolved TEXT WRAP Issues for C-CDA vocabulary results where the results were not wrapping earlier and will get wrapped properly.
+	
+	*4.     Added descriptions to XDR Test Cases 19, 48, 49, 20a/20b, 50a/50b which is available when “More Info” is clicked.
+	
+	*5.     Message Validator UI changes:
+		-a.     Removed the Sender / Receiver selection for Step 3 of the validation.
+		-b.     Added checks to ensure context is set (Validation Objective and Reference File Name) before allowing documents to be validated.
+		
+	*6.     C-CDA Document Selection Dialog
+		-a.     Removed the Sender/Receiver selection button since the test cases provide the necessary context of Sender or Receiver. As a result, the files that need to be used are shown based on a Sender or Receiver Test Case.
+		
+	*7.     For HISP Sender SMTP Tests 1-8, 14 (Send), added clarification to the narrative to indicate that the C-CDA document type selected for validation does not affect the test result.
+	
+	*8.     For Edge Sender SMTP Tests 1-8, 14, 18 (Send), added clarification to the narrative to indicate that the C-CDA document type selected for validation does not affect the test result.
+	
+	*9.     Also corrected the test cases in the description for Edge Sender SMTP Tests 1-8, 14,18 (Send) to include all the test case numbers.
+
+
+==Version 1.0.23#09/08/2016
+
+	* SMTP
+ 		- Receiving HISP MT case exception due to corrupt email in the RI inbox fixed; this also enhances the MT cases to be able to run simultaneously
+		- Announcements to the footer added
+		- Other fixes include new footers, release notes link in the footer, show all registered direct addresses list, 
+			validation result order, errors from more info, xdr validator dropdown
+		- Displaying the correct validation status (passed/failed) for SMTP and XDR cases
+	* Baselines all the changes from the NIST 1.0.22 release
+	
+
 ==Version 1.0.22#8/15/2016
 	* Direct
 		-Added SHA-256 signature algorithm selection on Direct send page.
@@ -5,10 +1101,14 @@
 
 	* XDR
 	    -Removed XDR 4c and 15c.
-	    -Added Direct from field for XDR 13 and 14.
+	    -HISP, Your System As Receiver: Updates to allow the outgoing "Direct From" address to be configurable from the UI.  This affects: XDR 13, XDR 14, XDR MT Test 15, XDR MT Test 16, XDR MT Test 30, XDR MT Test 31, XDR MT Test 32, XDR MT Test 33, XDR MT Test 34, XDR MT Test 35, XDR MT Test 36, XDR MT Test 37, XDR MT Test 38, XDR MT Test 43, XDR MT Test 44.
+        -Removed XDR 4c and XDR 15c.  Full explanation is available here: https://groups.google.com/forum/#!topic/edge-test-tool/v7DTivWWdR8
 
-	*C-CDA R2.1 Validator
-		-Fix display issue: green check when there are errors with C-CDA validator
+	* C-CDA R2.1 Validator
+		-Corrected a display issue where a green check was in some situations showing when the XML contained errors.
+
+	* IMAP
+	    -HISP, Your System As Sender: IMAP 9 updated to allow a greater flexibility of error messages from SUT
 
 ==Version 1.0.21#7/27/2016
 	* SMTP
