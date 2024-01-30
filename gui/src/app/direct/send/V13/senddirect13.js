@@ -39,7 +39,6 @@ directSendV13.controller('DirectSendV13Ctrl', ['$scope', 'SettingsFactory', 'Sen
         
 		$scope.signingCertificate = [
     		{ name: 'GOOD_CERT', val: 'GOOD' },
-            { name: 'GOOD_ECDSA_CERT', val: 'GOOD_ECDSA_CERT' },
     		{ name: 'INVALID_CERT', val: 'INVALID' },
     		{ name: 'EXPIRED_CERT', val: 'EXPIRED' },
     		{ name: 'DIFFERENT_TRUST_ANCHOR', val: 'DIFF'  },
