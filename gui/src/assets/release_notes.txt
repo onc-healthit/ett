@@ -1,3 +1,22 @@
+==Version 2.3.62#01/29/2024
+	*1. ETT: Fix for GG issue granular race checking in b.1 - Alice Newman
+
+	*2. ETT: Remove reference of 2015 Edition/Cures Update from tools
+
+	*3. ETT: New Signing Certificate value was added - GOOD_ECDSA_CERT
+
+	*4. ETT: UI Table update for USCDIv3
+
+	*5. SITE: Remove reference of 2015 Edition/Cures Update from tools
+
+	*6. SITE: New Signing Certificate value was added - GOOD_ECDSA_CERT
+
+	*7. Reference C-CDA: Fix defects for RelatedPerson
+
+	*8. Reference C-CDA: Updates to USCDI v3 RelatedPerson, Specimen, SocialHistory Observations
+
+	*9. Reference C-CDA: Updated USCDIv3 content validation for RelatedPerson, Specimen and Socialhistory observations
+
 ==Version 2.3.61#12/18/2023
 	*1. Reference C-CDA: Improve C-CDA R1.1/MU2 Validator uptime
 
