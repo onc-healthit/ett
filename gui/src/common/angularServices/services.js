@@ -239,6 +239,15 @@ tttService.factory('ForgotPassword', ['$resource', 'RESOURCES',
     }
 ]);
 
+/**
+ *   CCDA SERVICES
+ */
+
+tttService.factory('CCDADocumentService', ['$resource', 'RESOURCES',
+    function($resource, RESOURCES) {
+        return $resource(RESOURCES.USERS_API + 'ccdaservice', {}, {});
+    }
+]);
 
 /**
  *   CCDA SERVICES

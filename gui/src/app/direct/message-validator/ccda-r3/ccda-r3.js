@@ -1,7 +1,7 @@
 var ccdaValidator = angular.module('ttt.direct.ccdar3Validator', []);
 
-ccdaValidator.controller('CCDAR3ValidatorCtrl', ['$scope', 'CCDAR3ValidatorFactory', '$state', 'ApiUrl', 'CCDAR31Documents','$filter', 'CCDADocumentsFactory','$location','$anchorScroll',
-    function($scope, CCDAR3ValidatorFactory, $state, ApiUrl, CCDAR31Documents, $filter,CCDADocumentsFactory,$location,$anchorScroll) {
+ccdaValidator.controller('CCDAR3ValidatorCtrl', ['$scope', '$state', 'ApiUrl','$filter', 'CCDAR3ValidatorFactory','CCDADocumentService','$location','$anchorScroll',
+    function($scope, $state, ApiUrl, $filter,CCDAR3ValidatorFactory,CCDADocumentService,$location,$anchorScroll) {
 
         $scope.fileInfo = {
             "flowChunkNumber": "",
@@ -25,58 +25,52 @@ ccdaValidator.controller('CCDAR3ValidatorCtrl', ['$scope', 'CCDAR3ValidatorFacto
             "flowRelativePath": "",
             "flowTotalChunks": ""
         };
-        $scope.sutRole = "Cures Update Sender SUT Test Data";
+        $scope.sutRole = "Receiver";
 
-        $scope.sutSenderRole ="Cures Update Sender SUT Test Data";
+        $scope.sutSenderRole ="Sender";
 
 		$scope.objective = [];
 
 		$scope.filename = [];
 
         $scope.ccdaData = {};
-        CCDAR31Documents.getCcdaDocuments(function(data) {
-            $scope.ccdaDataSender = data.data.sender;
-            // $scope.ccdaData = $scope.ccdaDataSender;
-            $scope.ccdaDataReceiver = data.data.receiver;
-        });
-
+  
         $scope.ccdaSenderData = {};
-        CCDADocumentsFactory.get(function(data) {
-          $scope.ccdaDocuments = data;
-            if (data !== null) {
-                $scope.ccdaSenderData = $scope.ccdaDocuments[$scope.sutSenderRole];
-            }
-        });
-        CCDADocumentsFactory.get(function(data) {
-          $scope.ccdaDocuments = data;
-            if (data !== null) {
-                $scope.sutRole = $scope.sutSenderRole;
-                 $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
-                $scope.ccdaSelectData = $scope.ccdaData.dirs;
-            }
-        }, function(error) {
-            console.log(error);
-        });
+        $scope.ccdatype = "Uscdiv1";
+  
+        $scope.ccdaParams = {
+            "ccdatype": $scope.ccdatype,
+            "sutrole": $scope.sutRole ,
+            "filename": ''  
+        };
 
         $scope.switchDocType = function(type) {
-            $scope.sutRole = type;
-            $scope.ccdaData = $scope.ccdaDocuments[$scope.sutRole];
-            $scope.ccdaSelectData = $scope.ccdaData.dirs;
-			$scope.ccdaDocument = "";
-			$scope.filename.selected ="";
-			$scope.objective.selected = "";
-        };
+            console.log("before switch $scope.ccdaParams.sutrole :::::"+$scope.ccdaParams.sutrole);
+            $scope.ccdaParams.filename = '';
+            $scope.ccdaParams.sutrole =type;
+            console.log("$scope.ccdaParams.sutrole :::::"+$scope.ccdaParams.sutrole);
 
-        $scope.getCdaDocType = function() {
-            $scope.ccdaDataCdaIg = $scope.ccdaDocuments[$scope.sutSenderRole];
-        };
+            CCDADocumentService.get($scope.ccdaParams , function(data) {
+              $scope.ccdaDocuments = data;
+                if (data !== null) {
+                    $scope.ccdaSelectData = JSON.parse($scope.ccdaDocuments['ccdadata']);
+                }
+            });            
 
-		$scope.changed = function(item) {
-			$scope.type = item;
-			$scope.ccdaFileNames = item.files;
-			$scope.ccdaDocument = "";
-			$scope.filename.selected ="";
-		};
+       };
+
+        $scope.changed = function(item) {
+            $scope.ccdaParams.filename = item.name ;
+           console.log("$scope.ccdaParams.sutrole for file name:::::"+$scope.ccdaParams.sutrole);
+            CCDADocumentService.get($scope.ccdaParams , function(data) {
+                if (data !== null) {
+                    $scope.ccdaFileNames = JSON.parse(data['ccdadata']);
+                }
+            });
+            $scope.type = item;
+            $scope.ccdaDocument = "";
+            $scope.filename.selected ="";
+        };
 
 		$scope.setFileName = function(item) {
 			$scope.ccdaDocument = item;
@@ -122,14 +116,10 @@ $scope.gotodiv = function(anchor) {
 };
         $scope.validateCdaIg = function() {
             $scope.laddaLoadingCdaIg = true;
-            $scope.getCdaDocType();
-            $scope.ccdaDocumentCdaIg =$filter('filter')($scope.ccdaDataCdaIg.dirs,  {"name": "CDA_IG_Plus_Vocab"})[0];
-            $scope.ccdaDocumentCdaIg =$filter('filter')($scope.ccdaDocumentCdaIg.files,  {"name": "Readme.txt"})[0];
-			if ($scope.uploadCdaIg!==undefined){
-				$scope.validator.messageFilePath = $scope.validator.messageFileCdaIg;
-				if ($scope.ccdaDocumentCdaIg.name && $scope.ccdaDocumentCdaIg.path) {
-                    $scope.validator.validationObjective = $scope.ccdaDocumentCdaIg.path[$scope.ccdaDocumentCdaIg.path.length - 1];
-                    $scope.validator.referenceFileName = $scope.ccdaDocumentCdaIg.name;
+            if ($scope.uploadCdaIg!==undefined){
+                $scope.validator.messageFilePath = $scope.validator.messageFileCdaIg;
+                    $scope.validator.validationObjective = 'Readme.txt';
+                    $scope.validator.referenceFileName = 'CDA_IG_Plus_Vocab';
                     CCDAR3ValidatorFactory.save($scope.validator, function(data) {
                         $scope.laddaLoadingCdaIg = false;
                         $scope.ccdaappendfilename =    {ccdafilenaame : $scope.validator.referenceFileName};
@@ -143,8 +133,7 @@ $scope.gotodiv = function(anchor) {
                             message: data.data.message
                         };
                     });
-                }
-			}else{
+            }else{
                     $scope.laddaLoadingCdaIg = false;
                     throw {
                         code: "No code",
