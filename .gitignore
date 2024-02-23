@@ -63,3 +63,9 @@ gui/vendor/
 webapp/src/main/resources/public/
 **target/
 .idea/
+webapp/src/main/resources/static/assets/Criteria.json
+webapp/src/main/resources/static/index.html
+webapp/src/main/resources/static/assets/release_notes.txt
+webapp/src/main/resources/static/assets/ttt-0.0.1.css
+webapp/src/main/resources/static/assets/ttt-0.0.1.js
+webapp/src/main/resources/static/assets/xdrtestCases.json
