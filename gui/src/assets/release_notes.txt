@@ -1,3 +1,16 @@
+==Version 2.3.63#02/26/2024
+	*1. ETT: UI language updates to Validator Home page
+
+	*2. ETT: Removed USCDI v2 option from Direct Testing Home C-CDA Validator dropdown
+
+	*3. ETT: Use SITE API for C-CDA objectives
+
+	*4. DIRECT: UI Updates for send/receive messages with various ECDSA signatures
+
+	*5. SITE: Enable Keycloak
+
+	*6. Reference C-CDA: Update 170.315_b1_toc_amb_svap_uscdiv2_sample1.xml to fix SDOH error
+
 ==Version 2.3.62#01/29/2024
 	*1. ETT: Fix for GG issue granular race checking in b.1 - Alice Newman
 
