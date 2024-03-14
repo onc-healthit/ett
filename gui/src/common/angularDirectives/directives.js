@@ -408,13 +408,13 @@ $scope.ccdaDocument.name ="";
 }
     $scope.checkSvap = false;
 if ($scope.checkCures) {
-if ($scope.sutRole == "Sender SUT Test Data" || $scope.sutRole == "Cures Update Svap Uscdiv2 Sender SUT Test Data" ){
+if ($scope.sutRole == "Sender SUT Test Data" || $scope.sutRole == "Cures Update Svap Uscdiv3 Sender SUT Test Data" ){
 $scope.sutRole = "Cures Update Sender SUT Test Data";
 }else{
 $scope.sutRole = "Cures Update Receiver SUT Test Data";
 }
 }else{
-if ($scope.sutRole == "Cures Update Sender SUT Test Data" || $scope.sutRole == "Cures Update Svap Uscdiv2 Sender SUT Test Data"){
+if ($scope.sutRole == "Cures Update Sender SUT Test Data" || $scope.sutRole == "Cures Update Svap Uscdiv3 Sender SUT Test Data"){
 $scope.sutRole = "Sender SUT Test Data";
 }else{
 $scope.sutRole = "Receiver SUT Test Data";
@@ -432,12 +432,12 @@ $scope.ccdaDocument.name ="";
     $scope.checkCures=false;
 if ($scope.checkSvap) {
 if ($scope.sutRole == "Sender SUT Test Data" || $scope.sutRole == "Cures Update Receiver SUT Test Data"){
-$scope.sutRole = "Cures Update Svap Uscdiv2 Sender SUT Test Data";
+$scope.sutRole = "Cures Update Svap Uscdiv3 Sender SUT Test Data";
 }else{
-$scope.sutRole = "Cures Update Svap Uscdiv2 Receiver SUT Test Data";
+$scope.sutRole = "Cures Update Svap Uscdiv3 Receiver SUT Test Data";
 }
 }else{
-if ($scope.sutRole == "Cures Update Sender SUT Test Data" || $scope.sutRole == "Cures Update Svap Uscdiv2 Sender SUT Test Data"){
+if ($scope.sutRole == "Cures Update Sender SUT Test Data" || $scope.sutRole == "Cures Update Svap Uscdiv3 Sender SUT Test Data"){
 $scope.sutRole = "Sender SUT Test Data";
 }else{
 $scope.sutRole = "Receiver SUT Test Data";
