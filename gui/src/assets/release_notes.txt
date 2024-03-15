@@ -1,3 +1,6 @@
+==Version 2.3.64#03/15/2024
+    *1. ETT: Update SVAP buttons b1, h1 and h2 to point to USCDIv3 instead of v2. (SITE-3968)
+
 ==Version 2.3.63#02/26/2024
 	*1. ETT: UI language updates to Validator Home page
 
