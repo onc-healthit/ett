@@ -1,3 +1,6 @@
+==Version 2.3.65#03/25/2024
+    *1. Reference C-CDA: USCDIv3 vocabulary added validation for Gender Identity, Sexual Orientation and Specimen Type.
+
 ==Version 2.3.64#03/15/2024
     *1. ETT: Update SVAP buttons b1, h1 and h2 to point to USCDIv3 instead of v2. (SITE-3968)
 
