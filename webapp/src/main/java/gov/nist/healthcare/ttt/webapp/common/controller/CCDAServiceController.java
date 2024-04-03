@@ -81,6 +81,9 @@ public class CCDAServiceController {
 	}
 
 	public static String getHtmlContent(String urlToRead) throws Exception {
+
+		String ettApiToken = System.getenv("ETT_API_TOKEN");
+
 		  if(urlToRead.contains(" "))
 			  urlToRead = urlToRead.replace(" ", "%20");	
 
@@ -88,6 +91,7 @@ public class CCDAServiceController {
 		URL url = new URL(urlToRead);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Authorization","Bearer "+ettApiToken);
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		String line;
 		while ((line = rd.readLine()) != null) {
