@@ -36,8 +36,8 @@ public class CCDAServiceController {
 	public @ResponseBody HashMap<String, Object> getCcdaDocument(@RequestParam(value = "ccdatype") String ccdatype, 
 		@RequestParam(value = "sutrole")  String sutrole,
 		@RequestParam(value = "filename")  String filename) throws Exception {
-		  String v1SenderGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/contents/Sender SUT Test Data";
-		  String v1ReceiverGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-certification-ccda-testdata/contents/Receiver SUT Test Data";
+		  String v1SenderGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-data/contents/Cures Update Sender SUT Test Data";
+		  String v1ReceiverGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-data/contents/Cures Update Receiver SUT Test Data";
 		  String v2SenderGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata/contents/Cures Update Svap Uscdiv2 Sender SUT Test Data";
 		  String v2ReceiverGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata/contents/Cures Update Svap Uscdiv2 Receiver SUT Test Data";
 		  String v3SenderGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-uscdi-v3-testdata/contents/Cures Update Svap Uscdiv3 Sender SUT Test Data";
