@@ -82,7 +82,7 @@ public class CCDAServiceController {
 
 	public static String getHtmlContent(String urlToRead, String filename) throws Exception {
 		if (StringUtils.isNotBlank(filename) && filename.length() > 1){
-		 	urlToRead = urlToRead+"/"+filename+"?ref=master";
+		 	urlToRead = urlToRead+"/"+filename+"?ref=main";
 		 }
 		 logger.info("CCDAServiceController urlToRead:::::"+urlToRead);
 		return getHtmlContent(urlToRead);
