@@ -1,3 +1,20 @@
+==Version 2.3.67#06/03/2024
+    *1. ETT: Fix reference validator API call that broke scenario testing
+
+    *2. ETT: Fix download button in USCDIv3 validator
+
+    *3. ETT: Remove reference to "2015 Edition Cures Update"
+
+    *4. C-CDA Validator: Update MDHT per 2018 and later errata
+
+    *5. C-CDA Validator: Update ReadMe to remove public API references and add keycloak properties
+
+    *6. C-CDA Validator: Fix USCDIv3 referral error
+
+    *7. C-CDA Validator: Fix USCDIv3 goals and health concerns error
+
+    *8. C-CDA Validator: Fix health concern observation code in MDHT
+
 ==Version 2.3.66#04/29/2024
     *1. ETT: Remove Cures Update references from USCDI v2 and v3 scenario files
 
