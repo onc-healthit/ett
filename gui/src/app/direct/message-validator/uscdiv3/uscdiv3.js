@@ -152,7 +152,9 @@ $scope.gotodiv = function(anchor) {
                 $scope.validator.messageFilePath = $scope.validator.messageFile;
                 if ($scope.ccdaDocument) {
                     if ($scope.ccdaDocument.name && $scope.ccdaDocument.path) {
-                        $scope.validator.validationObjective = $scope.ccdaDocument.path[$scope.ccdaDocument.path.length - 1];
+                        console.log("before switch $scope.ccdaParams.filename :::::"+$scope.ccdaParams.filename);             
+                        $scope.validator.validationObjective = $scope.ccdaParams.filename;
+                        console.log("before switch validationObjective :::::"+$scope.validator.validationObjective );
                         $scope.validator.referenceFileName = $scope.ccdaDocument.name;
                         USCDIV3ValidatorFactory.save($scope.validator, function(data) {
                             $scope.laddaLoading = false;

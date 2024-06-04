@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,17 +33,24 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class CCDAServiceController {
 	private static Logger logger = LogManager.getLogger(CCDAServiceController.class.getName());
 
+	@Value("${ett.v1sender.github.url}")
+	String v1SenderGitHubUrl;
+	@Value("${ett.v1receiver.github.url}")
+	String v1ReceiverGitHubUrl;
+	@Value("${ett.v2sender.github.url}")
+	String v2SenderGitHubUrl;
+	@Value("${ett.v2receiver.github.url}")
+	String v2ReceiverGitHubUrl;
+	@Value("${ett.v3sender.github.url}")
+	String v3SenderGitHubUrl;
+	@Value("${ett.v3receiver.github.url}")
+	String v3ReceiverGitHubUrl;	
+
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody HashMap<String, Object> getCcdaDocument(@RequestParam(value = "ccdatype") String ccdatype, 
 		@RequestParam(value = "sutrole")  String sutrole,
 		@RequestParam(value = "filename")  String filename) throws Exception {
-		  String v1SenderGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-data/contents/Cures Update Sender SUT Test Data";
-		  String v1ReceiverGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-data/contents/Cures Update Receiver SUT Test Data";
-		  String v2SenderGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata/contents/Cures Update Svap Uscdiv2 Sender SUT Test Data";
-		  String v2ReceiverGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-uscdi-v2-testdata/contents/Cures Update Svap Uscdiv2 Receiver SUT Test Data";
-		  String v3SenderGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-uscdi-v3-testdata/contents/Cures Update Svap Uscdiv3 Sender SUT Test Data";
-		  String v3ReceiverGitHubUrl = "https://api.github.com/repos/onc-healthit/2015-edition-cures-update-uscdi-v3-testdata/contents/Cures Update Svap Uscdiv3 Receiver SUT Test Data";
-		  String gtHubUrl = v3ReceiverGitHubUrl;
+		String gtHubUrl = v3ReceiverGitHubUrl;
 
 		String returnVal ="";
 		if (ccdatype.equalsIgnoreCase("Uscdiv3")){
@@ -74,7 +82,7 @@ public class CCDAServiceController {
 
 	public static String getHtmlContent(String urlToRead, String filename) throws Exception {
 		if (StringUtils.isNotBlank(filename) && filename.length() > 1){
-		 	urlToRead = urlToRead+"/"+filename+"?ref=master";
+		 	urlToRead = urlToRead+"/"+filename+"?ref=main";
 		 }
 		 logger.info("CCDAServiceController urlToRead:::::"+urlToRead);
 		return getHtmlContent(urlToRead);
