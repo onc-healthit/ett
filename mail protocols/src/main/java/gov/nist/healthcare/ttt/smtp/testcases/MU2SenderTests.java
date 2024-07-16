@@ -72,6 +72,16 @@ public class MU2SenderTests {
 		return props;
 
 	}
+	public Properties getPropsForDirect6(TestInput ti) {
+		Properties props = new Properties();
+		if(ti.useTLS){
+			props.put("mail.smtp.auth", "true");
+			props.setProperty("mail.smtp.ssl.trust", "*");
+			props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+		}
+		return props;
+
+	}
 	
 	/**
 	 * Implements  a Testcase to send an email to a Bad Address. Authenticates with SUT and sends a mail from SUT Server to a end point using STARTTLS.
@@ -1687,7 +1697,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getProps(ti);
+		Properties props = getPropsForDirect6(ti);
 		tr.setFetchType("imap1");
 		tr.setSearchType("both");
 		Session session = Session.getInstance(props, null);
@@ -2017,7 +2027,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getProps(ti);
+		Properties props = getPropsForDirect6(ti);
 		tr.setFetchType("imap1");
 		tr.setSearchType("either");
 		Session session = Session.getInstance(props, null);
@@ -2180,7 +2190,7 @@ public class MU2SenderTests {
 		tr.setCriteriamet(CriteriaStatus.STEP2);
 		HashMap<String, String> result = tr.getTestRequestResponses();
 
-		Properties props = getProps(ti);
+		Properties props = getPropsForDirect6(ti);
 		tr.setFetchType("imap1");
 		tr.setSearchType("processedandfailure");
 		Session session = Session.getInstance(props, null);
