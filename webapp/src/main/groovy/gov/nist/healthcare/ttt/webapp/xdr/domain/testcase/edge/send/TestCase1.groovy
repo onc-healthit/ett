@@ -153,6 +153,9 @@ final class TestCase1 extends TestCaseSender {
 			post = new HttpPost(this.mdhtSvapEndpoint);
 		}
 		
+		GenerateAccessToken generateAccessToken = new GenerateAccessToken();
+                String accessToken = generateAccessToken.getAccessToken();
+		
 		ContentBody fileBody = new InputStreamBody(new ByteArrayInputStream(ccdaFile), "ccda");
 //		FileBody fileBody = new FileBody(ccdaFile);
 		//
@@ -166,6 +169,7 @@ final class TestCase1 extends TestCaseSender {
 		HttpEntity entity = builder.build();
 		//
 		post.setEntity(entity);
+		post.addHeader("Authorization", "Bearer " + accessToken);
 		String result = "";
 		try {
 			HttpResponse response = client.execute(post);
