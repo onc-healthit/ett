@@ -48,25 +48,6 @@
 		</dependency>
 
 
-<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-web</artifactId>
-    <version>1.5.22.RELEASE</version>
-		      <exclusions>
-		        <exclusion>  <!-- declare the exclusion here -->
-		            <groupId>ch.qos.logback</groupId>
-		            <artifactId>logback-classic</artifactId>
-		        </exclusion>
-		      </exclusions>	    
-</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
-		</dependency>
-
 <dependency>
     <groupId>javax.ws.rs</groupId>
     <artifactId>javax.ws.rs-api</artifactId>
@@ -140,7 +121,7 @@
 		    <version>3.0.0</version>
 		    <type>jar</type>
 		   <scope>system</scope>
-		   <systemPath>/Users/girish/Documents/build_prod/ett/mail protocols/target/mailprotocols-3.0.0.jar</systemPath>
+		   <systemPath>${pom.basedir}/../mail protocols/target/mailprotocols-3.0.0.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -149,7 +130,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>system</scope>
-			<systemPath>/Users/girish/Documents/build_prod/ett/direct/target/direct-0.0.1-SNAPSHOT.jar</systemPath>
+			<systemPath>/${pom.basedir}/../direct/target/direct-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 
 		<dependency>
