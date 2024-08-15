@@ -1,3 +1,70 @@
+==Version 2.3.69#07/29/2024
+    *1. SITE release notes are now being tracked in a single location. Go [here](https://github.com/onc-healthit/site-content/blob/master/ReleaseNotes.md) to see release notes.
+
+    *2. Update MT 39, 40, 41 to support TLS v1.2
+
+==Version 2.3.67#06/03/2024
+    *1. ETT: Fix reference validator API call that broke scenario testing
+
+    *2. ETT: Fix download button in USCDIv3 validator
+
+    *3. ETT: Remove reference to "2015 Edition Cures Update"
+
+    *4. C-CDA Validator: Update MDHT per 2018 and later errata
+
+    *5. C-CDA Validator: Update ReadMe to remove public API references and add keycloak properties
+
+    *6. C-CDA Validator: Fix USCDIv3 referral error
+
+    *7. C-CDA Validator: Fix USCDIv3 goals and health concerns error
+
+    *8. C-CDA Validator: Fix health concern observation code in MDHT
+
+==Version 2.3.66#04/29/2024
+    *1. ETT: Remove Cures Update references from USCDI v2 and v3 scenario files
+
+    *2. ETT: C-CDA Validators - Removed need to use c-cda objectves text file
+
+    *3. ETT: Updated b1 Negative testing files to reference USCDI instead of CCDS
+
+    *4. SITE: Update Test Data File titles and introduction to remove 2015/Cures Update
+
+    *5. SITE: Removed USCDIv2
+
+    *6. C-CDA Validator: Correct a typo in Hunger Vital Assessment Code in Newman and Larson Data sets
+
+==Version 2.3.65#03/25/2024
+    *1. Reference C-CDA: USCDIv3 vocabulary added validation for Gender Identity, Sexual Orientation and Specimen Type.
+
+==Version 2.3.64#03/15/2024
+    *1. ETT: Update SVAP buttons b1, h1 and h2 to point to USCDIv3 instead of v2. (SITE-3968)
+
+==Version 2.3.63#02/26/2024
+	*1. ETT: UI language updates to Validator Home page
+
+	*2. ETT: Removed USCDI v2 option from Direct Testing Home C-CDA Validator dropdown
+
+	*3. DIRECT: UI Updates for send/receive messages with various ECDSA signatures
+
+	*4. SITE: Enable Keycloak
+
+	*5. Reference C-CDA: Update 170.315_b1_toc_amb_svap_uscdiv2_sample1.xml to fix SDOH error
+
+==Version 2.3.62#01/29/2024
+	*1. ETT: Fix for GG issue granular race checking in b.1 - Alice Newman
+
+	*2. ETT: Remove reference of 2015 Edition/Cures Update from tools
+
+	*3. ETT: UI Table update for USCDIv3
+
+	*4. SITE: Remove reference of 2015 Edition/Cures Update from tools
+
+	*5. Reference C-CDA: Fix defects for RelatedPerson
+
+	*6. Reference C-CDA: Updates to USCDI v3 RelatedPerson, Specimen, SocialHistory Observations
+
+	*7. Reference C-CDA: Updated USCDIv3 content validation for RelatedPerson, Specimen and Socialhistory observations
+
 ==Version 2.3.61#12/18/2023
 	*1. Reference C-CDA: Improve C-CDA R1.1/MU2 Validator uptime
 
