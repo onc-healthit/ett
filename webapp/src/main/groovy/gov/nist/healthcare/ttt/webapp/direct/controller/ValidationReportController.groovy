@@ -82,7 +82,7 @@ public class ValidationReportController {
 			partRes.getContentType().contains("application/x-zip-compressed") ||
 			partRes.getContentType().contains("application/octet-stream") ||
 			partRes.getContentType().contains("application/pdf")) {
-				InputStream tmpZip = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
+				InputStream tmpZip = new ByteArrayInputStream(rawContent);
 				MimeBodyPart zipPart = new MimeBodyPart(tmpZip);
 				contentStream = zipPart.getInputStream();
 			} else if(partRes.getContentType().contains("application/xml")) {
