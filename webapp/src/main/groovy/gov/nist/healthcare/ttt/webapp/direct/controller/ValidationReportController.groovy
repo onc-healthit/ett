@@ -64,54 +64,91 @@ public class ValidationReportController {
 		
 		res = getPartContentTable(res, partRes);
 		
-		// Reset attachment number
 		this.attachmentNumber = 0;
 		
 		return res;
 	}
 	
 	@RequestMapping(value = "/download/{partId:.+}", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody void downloadContent(@PathVariable String partId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+public @ResponseBody void downloadContent(@PathVariable String partId, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		try {
-			PartInterface partRes = db.getLogFacade().getPart(partId);
-			String rawContent = partRes.getRawMessage();
-			InputStream contentStream;
-			
-			if(partRes.getContentType().contains("application/zip") ||
-			partRes.getContentType().contains("application/x-zip-compressed") ||
-			partRes.getContentType().contains("application/octet-stream") ||
-			partRes.getContentType().contains("application/pdf")) {
-				InputStream tmpZip = new ByteArrayInputStream(rawContent);
-				MimeBodyPart zipPart = new MimeBodyPart(tmpZip);
-				contentStream = zipPart.getInputStream();
-			} else if(partRes.getContentType().contains("application/xml")) {
-				contentStream = new MimeBodyPart(new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8))).getInputStream();
-			} else {
-				contentStream = new ByteArrayInputStream(rawContent.getBytes(StandardCharsets.UTF_8));
-			}
+    logger.info("Starting download for partId: " + partId);
 
-			// Create response
-			response.setContentType(partRes.getContentType());
-			response.setContentLength(contentStream.available());
-			String headerKey = "Content-Disposition";
-			String headerValue = String.format("attachment; filename=\"%s\"", getFilename(partRes));
-			if(hasFilename(partRes)) {
-				headerValue = String.format(partRes.getContentDisposition());
-			}
-			response.setHeader(headerKey, headerValue);
-	
-			// writes the file to the client
-			IOUtils.copy(contentStream, response.getOutputStream());
+    try {
+        PartInterface partRes = db.getLogFacade().getPart(partId);
+        if (partRes == null) {
+            String msg = "Part not found for partId: " + partId;
+            logger.error(msg);
+            throw new TTTCustomException("0x0030", msg);
+        }
 
-			contentStream.close();
-			response.flushBuffer();
+        String rawContent = partRes.getRawMessage();
+        String contentType = partRes.getContentType();
+        String filename = getFilename(partRes);
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			response.getWriter().print("Error: " + ex.getMessage());
-		}
-	}
+        logger.info("Content type: " + contentType);
+        logger.info("Filename determined by getFilename: " + filename);
+
+        InputStream contentStream;
+        byte[] binaryData;
+
+        if (contentType.contains("application/zip") ||
+            contentType.contains("application/x-zip-compressed") ||
+            contentType.contains("application/octet-stream") ||
+            contentType.contains("application/pdf")) {
+
+            binaryData = partRes.getRawMessageBytes();
+            logger.info("rawMessageBytes length: " + binaryData.length);
+
+            InputStream tmpZip = new ByteArrayInputStream(binaryData);
+            MimeBodyPart zipPart = new MimeBodyPart(tmpZip);
+            contentStream = zipPart.getInputStream();
+
+        } else if (contentType.contains("application/xml")) {
+
+            binaryData = rawContent.getBytes(StandardCharsets.UTF_8);
+            logger.info("rawContent length (UTF-8 bytes): " + binaryData.length);
+
+            contentStream = new MimeBodyPart(new ByteArrayInputStream(binaryData)).getInputStream();
+
+        } else {
+
+            binaryData = rawContent.getBytes(StandardCharsets.UTF_8);
+            logger.info("rawContent length (UTF-8 bytes): " + binaryData.length);
+
+            contentStream = new ByteArrayInputStream(binaryData);
+        }
+
+        int fileSize = binaryData.length;
+        logger.info("Sending fileSize: " + fileSize + " bytes in Content-Length header.");
+
+        response.setContentLength(fileSize);
+        response.setContentType(contentType);
+
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", filename);
+        if (hasFilename(partRes)) {
+            headerValue = partRes.getContentDisposition();
+        }
+        response.setHeader(headerKey, headerValue);
+
+        OutputStream out = response.getOutputStream();
+        int bytesCopied = IOUtils.copy(contentStream, out);
+
+        logger.info("IOUtils.copy copied " + bytesCopied + " bytes to output stream.");
+
+        contentStream.close();
+        out.flush();
+        response.flushBuffer();
+
+        logger.info("Download completed successfully for partId: " + partId);
+
+    } catch (Exception ex) {
+        logger.error("Error during download for partId: " + partId, ex);
+        response.getWriter().print("Error: " + ex.getMessage());
+    }
+}
+
 	
 	public Collection<DirectMessageAttachments> getPartContentTable(Collection<DirectMessageAttachments> res, PartInterface part) {
 		if(!part.getRawMessage().equals("")) {
