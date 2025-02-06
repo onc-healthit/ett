@@ -70,10 +70,10 @@ public class ValidationReportController {
 	}
 	
 	@RequestMapping(value = "/download/{partId:.+}", method = RequestMethod.GET, produces = "application/json")
-public @ResponseBody void downloadContent(@PathVariable String partId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+public @ResponseBody void downloadContent(@PathVariable String partId,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
     logger.info("Starting download for partId: " + partId);
-
     try {
         PartInterface partRes = db.getLogFacade().getPart(partId);
         if (partRes == null) {
@@ -81,74 +81,72 @@ public @ResponseBody void downloadContent(@PathVariable String partId, HttpServl
             logger.error(msg);
             throw new TTTCustomException("0x0030", msg);
         }
-
         String rawContent = partRes.getRawMessage();
         String contentType = partRes.getContentType();
         String filename = getFilename(partRes);
-
         logger.info("Content type: " + contentType);
         logger.info("Filename determined by getFilename: " + filename);
-
-        InputStream contentStream;
-        byte[] binaryData;
-
-        if (contentType.contains("application/zip") ||
-            contentType.contains("application/x-zip-compressed") ||
-            contentType.contains("application/octet-stream") ||
-            contentType.contains("application/pdf")) {
-
-            binaryData = partRes.getRawMessageBytes();
-            logger.info("rawMessageBytes length: " + binaryData.length);
-
-            InputStream tmpZip = new ByteArrayInputStream(binaryData);
-            MimeBodyPart zipPart = new MimeBodyPart(tmpZip);
-            contentStream = zipPart.getInputStream();
-
+        byte[] originalBytes = rawContent.getBytes(StandardCharsets.UTF_8);
+        InputStream finalStream;
+        boolean hasBase64Header = rawContent.contains("Content-Transfer-Encoding: base64");
+        if (hasBase64Header || contentType.contains("application/octet-stream")) {
+            logger.info("Detected base64 or octet-stream, parsing with MimeBodyPart.");
+            MimeBodyPart part = new MimeBodyPart(new ByteArrayInputStream(originalBytes));
+            Object partContent = part.getContent();
+            if (partContent instanceof InputStream) {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                IOUtils.copy((InputStream) partContent, bos);
+                finalStream = new ByteArrayInputStream(bos.toByteArray());
+            } else if (partContent instanceof String) {
+                byte[] textBytes = ((String) partContent).getBytes(StandardCharsets.UTF_8);
+                finalStream = new ByteArrayInputStream(textBytes);
+            } else {
+                logger.info("Unknown content type in MIME part. Using original bytes.");
+                finalStream = new ByteArrayInputStream(originalBytes);
+            }
         } else if (contentType.contains("application/xml")) {
-
-            binaryData = rawContent.getBytes(StandardCharsets.UTF_8);
-            logger.info("rawContent length (UTF-8 bytes): " + binaryData.length);
-
-            contentStream = new MimeBodyPart(new ByteArrayInputStream(binaryData)).getInputStream();
-
+            logger.info("Detected XML content. Using MimeBodyPart parsing.");
+            MimeBodyPart part = new MimeBodyPart(new ByteArrayInputStream(originalBytes));
+            finalStream = part.getInputStream();
+        } else if (contentType.contains("application/pdf")) {
+            logger.info("Detected PDF content. Using direct approach.");
+            finalStream = new ByteArrayInputStream(originalBytes);
         } else {
-
-            binaryData = rawContent.getBytes(StandardCharsets.UTF_8);
-            logger.info("rawContent length (UTF-8 bytes): " + binaryData.length);
-
-            contentStream = new ByteArrayInputStream(binaryData);
+            logger.info("Detected other content type. Using MimeBodyPart parsing.");
+            MimeBodyPart part = new MimeBodyPart(new ByteArrayInputStream(originalBytes));
+            finalStream = part.getInputStream();
         }
-
-        int fileSize = binaryData.length;
-        logger.info("Sending fileSize: " + fileSize + " bytes in Content-Length header.");
-
+        logger.info("rawContent length: " + originalBytes.length);
+        byte[] finalData;
+        if (finalStream.markSupported()) {
+            finalStream.mark(Integer.MAX_VALUE);
+            finalData = IOUtils.toByteArray(finalStream);
+            finalStream.reset();
+        } else {
+            finalData = IOUtils.toByteArray(finalStream);
+            finalStream = new ByteArrayInputStream(finalData);
+        }
+        int fileSize = finalData.length;
         response.setContentLength(fileSize);
         response.setContentType(contentType);
-
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"", filename);
         if (hasFilename(partRes)) {
             headerValue = partRes.getContentDisposition();
         }
         response.setHeader(headerKey, headerValue);
-
         OutputStream out = response.getOutputStream();
-        int bytesCopied = IOUtils.copy(contentStream, out);
-
+        int bytesCopied = IOUtils.copy(new ByteArrayInputStream(finalData), out);
         logger.info("IOUtils.copy copied " + bytesCopied + " bytes to output stream.");
-
-        contentStream.close();
+        finalStream.close();
         out.flush();
         response.flushBuffer();
-
         logger.info("Download completed successfully for partId: " + partId);
-
     } catch (Exception ex) {
         logger.error("Error during download for partId: " + partId, ex);
         response.getWriter().print("Error: " + ex.getMessage());
     }
 }
-
 	
 	public Collection<DirectMessageAttachments> getPartContentTable(Collection<DirectMessageAttachments> res, PartInterface part) {
 		if(!part.getRawMessage().equals("")) {
