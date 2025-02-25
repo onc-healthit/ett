@@ -38,45 +38,27 @@ public class GetCCDADocumentsController {
 	@Value("${server.tomcat.basedir}")
 	String ccdaFileDirectory;
 
-	@Value("${github.test.data}")
-	String githubTestData;
+	@Value("${github.ccda.uscdi.test.data}")
+	String githubUscdiTestData;
 
-	@Value("${github.sha}")
-	String githubSha;
+	@Value("${github.ccda.uscdi.sha}")
+	String githubUscdiSha;
 
-	@Value("${github.tree}")
-	String githubTree;
-
-	@Value("${github.cures.test.data}")
-	String githubCuresTestData;
-
-	@Value("${github.cures.sha}")
-	String githubCuresSha;
-
-	@Value("${github.cures.tree}")
-	String githubCuresTree;
-	
-	@Value("${github.svap.test.data}")
-	String githubSvapTestData;
-
-	@Value("${github.svap.sha}")
-	String githubSvapSha;
-
-	@Value("${github.svap.tree}")
-	String githubSvapTree;
-
-	@Value("${github.uscdiv3.test.data}")
-	String githubUscdiv3TestData;
-
-	@Value("${github.uscdiv3.sha}")
-	String githubUscdiv3Sha;
-
-	@Value("${github.uscdiv3.tree}")
-	String githubUscdiv3Tree;	
+	@Value("${github.ccda.uscdi.tree}")
+	String githubUscdiTree;		
 	
 	public List<String> files2ignore = Arrays.asList("LICENSE", "README.md","README.MD");
+	
+	public List<String> rootId = Arrays.asList("RECEIVER SUT TEST DATA", "SENDER SUT TEST DATA");
+	public final String CURES_LABEL = "Cures Update ";
+	public final String SVAP_LABEL = "Cures Update Svap Uscdiv2 ";
+	public final String USCDIV3_LABEL = "Cures Update Svap Uscdiv3 ";
+	
+	public final String USCDI_V1_TESTDATA = "uscdi-v1-testdata";
+	public final String USCDI_V2_TESTDATA = "uscdi-v2-testdata";
+	public final String USCDI_V3_TESTDATA = "uscdi-v3-testdata";
+	
 	public List<String> extension2ignore = Arrays.asList("");
-	public String extensionRegex = ".*\\.[a-zA-Z0-9]{3,4}$";
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody HashMap<String, Object> getDocuments(@RequestParam(value = "testCaseType") String testCaseType) throws Exception {
@@ -86,70 +68,18 @@ public class GetCCDADocumentsController {
 		// CCDA cache File path
 		String ccdaFilePath = getFilterFiles(testCaseType);
 		File ccdaObjectivesFile = new File(ccdaFilePath);
-
-		if(ccdaObjectivesFile.exists() && !ccdaObjectivesFile.isDirectory()) {
-			JsonFactory factory = new JsonFactory();
-			ObjectMapper mapper = new ObjectMapper(factory);
-			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
-
-			resultMap = mapper.readValue(ccdaObjectivesFile, typeRef);
-		} else {
-			String sha = getHTML(githubSha).getJSONObject("commit").get("sha").toString();
-			JSONArray filesArray = getHTML(githubTree + sha + "?recursive=1").getJSONArray("tree");
-
-			for(int i=0; i < filesArray.length(); i++) {
-				JSONObject file = filesArray.getJSONObject(i);
-				if(!files2ignore.contains(file.get("path"))) {
-					// Get path array
-					String[] path = file.get("path").toString().split("/");
-					buildJson(resultMap, path,false,false,false);
-				}
-
-			}
-			
-			// cures files
-			if (StringUtils.isNotBlank(githubCuresTestData) && githubCuresTestData.length() > 1){
-				sha = getHTML(githubCuresSha).getJSONObject("commit").get("sha").toString();
-				filesArray = getHTML(githubCuresTree + sha + "?recursive=1").getJSONArray("tree");
+		
+			if (StringUtils.isNotBlank(githubUscdiTestData) && githubUscdiTestData.length() > 1){
+				String sha = getHTML(githubUscdiSha).getJSONObject("commit").get("sha").toString();
+				JSONArray filesArray = getHTML(githubUscdiTree + sha + "?recursive=1").getJSONArray("tree");
 				
 				for(int i=0; i < filesArray.length(); i++) {
 					JSONObject file = filesArray.getJSONObject(i);
+					
 					if(!files2ignore.contains(file.get("path"))) {
 						// Get path array
 						String[] path = file.get("path").toString().split("/");
-						buildJson(resultMap, path,true,false,false);
-					}
-
-				}				
-			}
-			
-			// SVAP files
-			if (StringUtils.isNotBlank(githubSvapTestData) && githubSvapTestData.length() > 1){
-				sha = getHTML(githubSvapSha).getJSONObject("commit").get("sha").toString();
-				filesArray = getHTML(githubSvapTree + sha + "?recursive=1").getJSONArray("tree");
-				
-				for(int i=0; i < filesArray.length(); i++) {
-					JSONObject file = filesArray.getJSONObject(i);
-					if(!files2ignore.contains(file.get("path"))) {
-						// Get path array
-						String[] path = file.get("path").toString().split("/");
-						buildJson(resultMap, path,false,true,false);
-					}
-
-				}				
-			}
-			
-			// USCDI v3 files
-			if (StringUtils.isNotBlank(githubUscdiv3TestData) && githubUscdiv3TestData.length() > 1){
-				sha = getHTML(githubUscdiv3Sha).getJSONObject("commit").get("sha").toString();
-				filesArray = getHTML(githubUscdiv3Tree + sha + "?recursive=1").getJSONArray("tree");
-				
-				for(int i=0; i < filesArray.length(); i++) {
-					JSONObject file = filesArray.getJSONObject(i);
-					if(!files2ignore.contains(file.get("path"))) {
-						// Get path array
-						String[] path = file.get("path").toString().split("/");
-						buildJson(resultMap, path,false,false,true);
+						buildJson(resultMap, path);
 					}
 
 				}				
@@ -162,88 +92,116 @@ public class GetCCDADocumentsController {
 				logger.error("Could not create ccda cache file: " + e.getMessage());
 				e.printStackTrace();
 			}
-		}
+		//}
 		return resultMap;
 	}
 
-	public void buildJson(HashMap<String, Object> json, String[] path, boolean curesFiles, boolean svapFiles,boolean uscdiv3Files) {
-		if(path.length == 1 && !files2ignore.contains(path[0].toUpperCase())) {
-			HashMap<String, Object> newObj = new HashMap<>();
-			newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
-			newObj.put("files", new ArrayList<HashMap<String, Object>>());
-			json.put(path[0], newObj);
+	public void buildJson(HashMap<String, Object> resultMapJson, String[] path) {
+		try {
+			boolean curesFiles = false;
+			boolean svapFiles = false;
+			boolean uscdiv3Files = false;
+			
+			String  currentName = null;
+			HashMap<String, Object> current = null;
 
-		} else {
-			HashMap<String, Object> current = (HashMap<String, Object>) json.get(path[0]);
-			String fileName = path[path.length-1];
-			String fileExtnAry[] = fileName.split("\\.");
-			String fileExtn = "";
-			if (fileExtnAry.length > 0){
-				fileExtn = fileExtnAry[fileExtnAry.length-1];
-		    }
-			//create directory only when at least one valid file exist
-			if(Pattern.matches(extensionRegex, fileName) && !files2ignore.contains(fileName) && !extension2ignore.contains(fileExtn) ) {
-				for(int i = 1 ; i < path.length-1 ; i++) {
-					String  currentName = path[i];
-					boolean firstFile = false;
-					//For the first filename the direcotry is not found
-					if(containsName((List<Map>) current.get("dirs"), currentName)) {
-						List<Map> directories = (List<Map>) current.get("dirs");
-						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
-						HashMap<String, Object> newFile = new HashMap<>();
-						newFile.put("name", fileName);
-						newFile.put("link", getLink(path,curesFiles,svapFiles,uscdiv3Files));
-						newFile.put("cures",curesFiles);
-						newFile.put("svap",svapFiles);
-						newFile.put("uscdiv3",uscdiv3Files);
-						
-						List filesList = (List) current.get("files");
-						filesList.add(newFile);
-					} else {
-						firstFile = true;
-						HashMap<String, Object> newObj = new HashMap<>();
-						newObj.put("name", currentName);
-						newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
-						newObj.put("files", new ArrayList<HashMap<String, Object>>());
-						List dirsList = (List) current.get("dirs");
-						dirsList.add(newObj);
-					}
-					//For the first filename the when direcotry is not found and the files
-					if(firstFile && containsName((List<Map>) current.get("dirs"), currentName)) {
-						current = (HashMap<String, Object>) json.get(path[0]);
-						List<Map> directories = (List<Map>) current.get("dirs");
-						current = (HashMap<String, Object>) directories.get(getObjByName(directories, currentName));
-						HashMap<String, Object> newFile = new HashMap<>();
-						newFile.put("name", fileName);
-						newFile.put("link", getLink(path,curesFiles,svapFiles,uscdiv3Files));
-						newFile.put("cures",curesFiles);
-						newFile.put("svap",svapFiles);
-						newFile.put("uscdiv3",uscdiv3Files);
-
-						List filesList = (List) current.get("files");
-						filesList.add(newFile);
-					}
-				} // end of For loop
+			if (path.length > 1 ) {
+			   currentName = path[1];
+			   current = (HashMap<String, Object>) resultMapJson.get(path[1]);				
 			}
+			
+			if (path.length == 2 && rootId.contains(path[1].toUpperCase())) {
+				HashMap<String, Object> newObj = new HashMap<>();
+				newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
+				newObj.put("files", new ArrayList<HashMap<String, Object>>());
+				resultMapJson.put(path[1], newObj);
+				addRootFiles(resultMapJson,path);
+			}else if (path.length == 3) {
+				HashMap<String, Object> newObj = new HashMap<>();
+				newObj.put("name",path[2]);
+				newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
+				newObj.put("files", new ArrayList<HashMap<String, Object>>());
+				
+				if (path[0].contains(USCDI_V3_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(USCDIV3_LABEL+path[1]);
+				}else if (path[0].contains(USCDI_V2_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(SVAP_LABEL+path[1]);
+				}else if (path[0].contains(USCDI_V1_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(CURES_LABEL+path[1]);
+				}else {
+					current = (HashMap<String, Object>) resultMapJson.get(path[1]);	
+				}				
+				
+				List dirsList = (List) current.get("dirs");
+				dirsList.add(newObj);				
+			}else if (path.length > 3 ) {
+				if (path[0].contains(USCDI_V3_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(USCDIV3_LABEL+path[1]);
+					uscdiv3Files = true;					
+				}else if (path[0].contains(USCDI_V2_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(SVAP_LABEL+path[1]);
+					svapFiles = true;										
+				}else if (path[0].contains(USCDI_V1_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(CURES_LABEL+path[1]);
+					curesFiles = true;
+				}else {
+					current = (HashMap<String, Object>) resultMapJson.get(path[1]);	
+				}				
+				List<Map> directories = (List<Map>) current.get("dirs");
+				int objPos = getObjByName(directories, path[2]);
+				if (objPos >= 0) {
+					current = (HashMap<String, Object>) directories.get(objPos);
+				}
+				
+				String link = getLink(path);
+				String fileName = path[path.length-1];
+				
+				HashMap<String, Object> newFile = new HashMap<>();
+				newFile.put("name", fileName);
+				newFile.put("link", link);
+				newFile.put("cures",curesFiles);
+				newFile.put("svap",svapFiles);
+				newFile.put("uscdiv3",uscdiv3Files);
+				
+				List filesList = (List) current.get("files");
+				filesList.add(newFile);				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	public String getLink(String[] path,boolean curesFiles,boolean svapFiles, boolean uscdiv3Files) {
-		String linkMaster = String.join("/", path).replace(" ", "%20");
-		String link = githubTestData + linkMaster;
-		//link = githubTestData"https://raw.githubusercontent.com/onc-healthit/2015-certification-ccda-testdata/master/" + link;
-		if (curesFiles){
-			link = githubCuresTestData + linkMaster;
-		}
-
-		if (svapFiles){
-			link = githubSvapTestData + linkMaster;
-		}
-
-		if (uscdiv3Files){
-			link = githubUscdiv3TestData + linkMaster;
-		}		
+	public void addRootFiles(HashMap<String, Object> resultMapJson, String[] path) {
+		boolean addNewDirFiles = false;
+		String sutHeaderVal = "";
 		
+		if (path[0].contains(USCDI_V1_TESTDATA)) {
+			addNewDirFiles = true;
+			sutHeaderVal =CURES_LABEL;
+		}
+
+		if (path[0].contains(USCDI_V2_TESTDATA)) {
+			addNewDirFiles = true;
+			sutHeaderVal =SVAP_LABEL;
+		}
+		
+		if (path[0].contains(USCDI_V3_TESTDATA)) {
+			addNewDirFiles = true;
+			sutHeaderVal =USCDIV3_LABEL;
+		}
+		
+		if (addNewDirFiles) {
+			HashMap<String, Object> newObj = new HashMap<>();
+			newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
+			newObj.put("files", new ArrayList<HashMap<String, Object>>());
+			resultMapJson.put(sutHeaderVal+path[1], newObj);			
+		}
+	}
+	
+	public String getLink(String[] path) {
+		String linkMaster = String.join("/", path).replace(" ", "%20");
+		String link = githubUscdiTestData + linkMaster;	
+
 		return link;
 	}
 
@@ -256,7 +214,7 @@ public class GetCCDADocumentsController {
 		return false;
 	}
 
-	public static int getObjByName(List<Map> json, String value) {
+	public static int getObjByName(List<Map> json, String value) {	
 		for(int i = 0 ; i < json.size() ; i++) {
 			if(json.get(i).containsValue(value)) {
 				return i;
@@ -278,7 +236,7 @@ public class GetCCDADocumentsController {
 		rd.close();
 		return new JSONObject(result.toString());
 	}
-
+	
 	private String getFilterFiles(String testCaseType){
 		String fileName = ccdaFileDirectory + File.separator + "ccda_objectives.txt";
 		extension2ignore = Arrays.asList("");
