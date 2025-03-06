@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html ng-app="ttt" ng-controller="AppCtrl">
 	<head>
-		<title ng-bind="pageTitle"></title>
-
+		<title ng-bind="pageTitle || 'Retired Edge Testing Tool'"></title>		
+		
 		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Edge Testing Tool</title>
-		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!-- Instantly redirect to the new combined ETT and SITE UI website: SITE 4. -->
+		<meta http-equiv="refresh" content="0; url=https://site.healthit.gov">
+		<!-- Fallback for the very rare case that users have disabled meta redirects -->
+		<script>
+		  if (window.location.hostname === "ett.healthit.gov") {
+		    window.location.href = "https://site.healthit.gov";
+		  }
+		</script>	
 
+		<!-- Basic/generic requirements -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">		
+		<meta name="description" content="Retired Edge Testing Tool provided prior to the new combined SITE 4">
+		<meta name="viewport" content="width=device-width, initial-scale=1">		
+		
 		<!-- font awesome from BootstrapCDN -->
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 		<!-- Bootstrap CSS CDN -->
@@ -21,7 +31,7 @@
 		<script type="text/javascript" src="<%= file %>"></script><% }); %>
 
 		<!-- Favicon -->
-		<link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+		<link rel="icon" href="assets/favicon.ico" type="image/x-icon" />			
 
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -35,13 +45,15 @@ ga('create', 'UA-40163006-1', 'auto');
 	</head>
 
 	<body>
+		<!-- Fallback for the rare case that users have disabled JS -->
+		<noscript>
+		  	<h1>Notice: ETT has been permanently moved to the new and improved SITE 4.</h1>
+			<p>Please click <a href="https://site.healthit.gov">here</a> to navigate to SITE 4 if you are not redirected automatically within a second.</p>
+		</noscript>
+		
 		<div growl></div>
-	    <div ui-view="main"></div>
-	    <back-to-top></back-to-top>
+		<div ui-view="main"></div>
+		<back-to-top></back-to-top>
 	</body>
-
-
-
+			
 </html>
-
-
