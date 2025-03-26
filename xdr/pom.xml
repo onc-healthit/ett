@@ -33,7 +33,7 @@
 		    </snapshots>
 			<id>mdht</id>
 			<name>ONCSITE-DEV-CCDA-releases</name>
-			<url>http://34.195.107.72:8081/artifactory/libs-release-local</url> <!--34.195.107.72 ccda.dev.sitenv.org -->
+			<url>https://ccda.dev.sitenv.org/artifactory/libs-release-local</url> <!--34.195.107.72 ccda.dev.sitenv.org -->
 		</repository>
 	</repositories>
 

@@ -31,6 +31,7 @@ import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.Result
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseBuilder
 import gov.nist.healthcare.ttt.webapp.xdr.domain.testcase.TestCaseSender
 import gov.nist.healthcare.ttt.xdr.domain.TkValidationReport
+import gov.nist.healthcare.ttt.webapp.common.controller.GenerateAccessToken
 
 /**
  * Created by gerardin on 10/27/14.
@@ -154,8 +155,13 @@ final class TestCase2 extends TestCaseSender {
 		if(svap) {
 			post = new HttpPost(this.mdhtSvapEndpoint);
 		}
+		
+		//SITE-4246
+		GenerateAccessToken generateAccessToken = new GenerateAccessToken();
+		String accessToken = generateAccessToken.getAccessToken();
+
 		ContentBody fileBody = new InputStreamBody(new ByteArrayInputStream(ccdaFile), "ccda");
-//		FileBody fileBody = new FileBody(ccdaFile);
+//		FileBody fileBody = new FileBody(ccdaFile);		
 		//
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -167,6 +173,10 @@ final class TestCase2 extends TestCaseSender {
 		HttpEntity entity = builder.build();
 		//
 		post.setEntity(entity);
+		
+		//SITE-4246
+		post.addHeader("Authorization", "Bearer " + accessToken);
+		
 		String result = "";
 		try {
 			HttpResponse response = client.execute(post);

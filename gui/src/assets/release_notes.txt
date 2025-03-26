@@ -1,6 +1,7 @@
-SITE release notes are now being tracked in a single location. Go to 
-https://github.com/onc-healthit/site-content/blob/master/ReleaseNotes.md
-to see release notes.
+==Version 2.3.69#07/29/2024
+    *1. SITE release notes are now being tracked in a single location. Go [here](https://github.com/onc-healthit/site-content/blob/master/ReleaseNotes.md) to see release notes.
+
+    *2. Update MT 39, 40, 41 to support TLS v1.2
 
 ==Version 2.3.67#06/03/2024
     *1. ETT: Fix reference validator API call that broke scenario testing
