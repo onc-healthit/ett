@@ -135,6 +135,12 @@
 		    <type>jar</type>
 		   <scope>system</scope>
 		   <systemPath>${pom.basedir}/../mail protocols/target/mailprotocols-3.0.0.jar</systemPath>
+		      <exclusions>
+		        <exclusion>  <!-- declare the exclusion here -->
+		            <groupId>org.apache.logging.log4j</groupId>
+		            <artifactId>log4j-core</artifactId>
+		        </exclusion>
+		      </exclusions>			
 		</dependency>
 
 		<dependency>
@@ -144,6 +150,12 @@
 			<type>jar</type>
 			<scope>system</scope>
 			<systemPath>/${pom.basedir}/../direct/target/direct-0.0.1-SNAPSHOT.jar</systemPath>
+		      <exclusions>
+		        <exclusion>  <!-- declare the exclusion here -->
+		            <groupId>org.apache.logging.log4j</groupId>
+		            <artifactId>log4j-core</artifactId>
+		        </exclusion>
+		      </exclusions>			
 		</dependency>
 
 		<dependency>
