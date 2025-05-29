@@ -34,7 +34,7 @@
 			<artifactId>toolkit-api</artifactId>
 			<version>6.3.4</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/toolkit-api-6.3.4.jar</systemPath>
+			<systemPath>${project.basedir}/lib/toolkit-api-7.7.2.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -42,7 +42,7 @@
 			<artifactId>toolkit-services-common</artifactId>
 			<version>6.3.4</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/toolkit-services-common-6.3.4.jar</systemPath>
+			<systemPath>${project.basedir}/lib/toolkit-services-common-7.7.2.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -50,7 +50,7 @@
 			<artifactId>config-datatypes</artifactId>
 			<version>6.3.4</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/config-datatypes-6.3.4.jar</systemPath>
+			<systemPath>${project.basedir}/lib/config-datatypes-7.7.2.jar</systemPath>
 		</dependency>
 
 		<dependency>
