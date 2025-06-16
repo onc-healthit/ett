@@ -25,16 +25,6 @@
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
-
-		<!-- Contains NIST toolkit dependencies  -->
-		<repository>
-		    <snapshots>
-			<enabled>true</enabled>
-		    </snapshots>
-			<id>mdht</id>
-			<name>ONCSITE-DEV-CCDA-releases</name>
-			<url>https://ccda.dev.sitenv.org/artifactory/libs-release-local</url> <!--34.195.107.72 ccda.dev.sitenv.org -->
-		</repository>
 	</repositories>
 
 	<dependencies>
@@ -43,18 +33,24 @@
 			<groupId>gov.nist.toolkit</groupId>
 			<artifactId>toolkit-api</artifactId>
 			<version>6.3.4</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/toolkit-api-6.3.4.jar</systemPath>
 		</dependency>
 
 		<dependency>
 			<groupId>gov.nist.toolkit</groupId>
 			<artifactId>toolkit-services-common</artifactId>
 			<version>6.3.4</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/toolkit-services-common-6.3.4.jar</systemPath>
 		</dependency>
 
 		<dependency>
 			<groupId>gov.nist.toolkit</groupId>
 			<artifactId>config-datatypes</artifactId>
 			<version>6.3.4</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/config-datatypes-6.3.4.jar</systemPath>
 		</dependency>
 
 		<dependency>
