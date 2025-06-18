@@ -53,10 +53,12 @@ public class GetCCDADocumentsController {
 	public final String CURES_LABEL = "Cures Update ";
 	public final String SVAP_LABEL = "Cures Update Svap Uscdiv2 ";
 	public final String USCDIV3_LABEL = "Cures Update Svap Uscdiv3 ";
+	public final String USCDIV4_LABEL = "Uscdiv4 Test Data ";
 	
 	public final String USCDI_V1_TESTDATA = "uscdi-v1-testdata";
 	public final String USCDI_V2_TESTDATA = "uscdi-v2-testdata";
 	public final String USCDI_V3_TESTDATA = "uscdi-v3-testdata";
+	public final String USCDI_V4_TESTDATA = "uscdi-v4-testdata";
 	
 	public List<String> extension2ignore = Arrays.asList("");
 
@@ -101,6 +103,7 @@ public class GetCCDADocumentsController {
 			boolean curesFiles = false;
 			boolean svapFiles = false;
 			boolean uscdiv3Files = false;
+			boolean uscdiv4Files = false;
 			
 			String  currentName = null;
 			HashMap<String, Object> current = null;
@@ -122,7 +125,10 @@ public class GetCCDADocumentsController {
 				newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
 				newObj.put("files", new ArrayList<HashMap<String, Object>>());
 				
-				if (path[0].contains(USCDI_V3_TESTDATA)) {
+
+				if (path[0].contains(USCDI_V4_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(USCDIV4_LABEL+path[1]);
+				}else if (path[0].contains(USCDI_V3_TESTDATA)) {
 					current = (HashMap<String, Object>) resultMapJson.get(USCDIV3_LABEL+path[1]);
 				}else if (path[0].contains(USCDI_V2_TESTDATA)) {
 					current = (HashMap<String, Object>) resultMapJson.get(SVAP_LABEL+path[1]);
@@ -135,7 +141,11 @@ public class GetCCDADocumentsController {
 				List dirsList = (List) current.get("dirs");
 				dirsList.add(newObj);				
 			}else if (path.length > 3 ) {
-				if (path[0].contains(USCDI_V3_TESTDATA)) {
+				
+				if (path[0].contains(USCDI_V4_TESTDATA)) {
+					current = (HashMap<String, Object>) resultMapJson.get(USCDIV4_LABEL+path[1]);
+					uscdiv4Files = true;					
+				}else if (path[0].contains(USCDI_V3_TESTDATA)) {
 					current = (HashMap<String, Object>) resultMapJson.get(USCDIV3_LABEL+path[1]);
 					uscdiv3Files = true;					
 				}else if (path[0].contains(USCDI_V2_TESTDATA)) {
@@ -162,6 +172,7 @@ public class GetCCDADocumentsController {
 				newFile.put("cures",curesFiles);
 				newFile.put("svap",svapFiles);
 				newFile.put("uscdiv3",uscdiv3Files);
+				newFile.put("uscdiv4",uscdiv4Files);
 				
 				List filesList = (List) current.get("files");
 				filesList.add(newFile);				
@@ -190,6 +201,11 @@ public class GetCCDADocumentsController {
 			sutHeaderVal =USCDIV3_LABEL;
 		}
 		
+		if (path[0].contains(USCDI_V4_TESTDATA)) {
+			addNewDirFiles = true;
+			sutHeaderVal =USCDIV4_LABEL;
+		}
+
 		if (addNewDirFiles) {
 			HashMap<String, Object> newObj = new HashMap<>();
 			newObj.put("dirs", new ArrayList<HashMap<String, Object>>());
