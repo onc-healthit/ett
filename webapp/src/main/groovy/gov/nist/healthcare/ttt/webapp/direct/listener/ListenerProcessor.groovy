@@ -285,7 +285,10 @@ public class ListenerProcessor implements Runnable {
 	//	String url = "https://${domainName}:${port}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
 	//	String url = "https://${domainName}${servletName}/#/direct/report/${this.processor.getLogModel().getMessageId()}"
 		String urlappend = "${this.processor.getLogModel().getMessageId()}";
-		String url = "https://${domainName}${servletName}/#/direct/report/" + URLEncoder.encode(urlappend,"UTF-8");
+		final String siteDomain = "site.healthit.gov"
+		final String siteRoute = "/direct/messagestatus/validationreport"
+		final String directionRoute = "/incoming"
+		String url = "https://${siteDomain}${siteRoute}${directionRoute}" + "/" + URLEncoder.encode(urlappend,"UTF-8");
 		// Generate report template
 		String announcement = "<h2>Direct Validation Report</h2>Validation from ${new Date()}<p>Report link: <a href=\"${url}\">${url}</p>"
 
